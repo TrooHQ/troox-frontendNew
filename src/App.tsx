@@ -8,6 +8,7 @@ import ForgotPassword from "./components/ForgotPassword.tsx";
 import Register from "./components/Register.tsx";
 import ResetPassword from "./components/ResetPassword.tsx";
 import PasswordChanged from "./components/PasswordChanged.tsx";
+import BusinessProfiles from "./components/BusinessProfiles.tsx";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/business-profile" element={<BusinessProfiles />} />
           <Route path="/checkmail" element={<CheckMail />} />
           <Route path="/password-changed" element={<PasswordChanged />} />
           <Route path="/reset-password" element={<ResetPassword />} />

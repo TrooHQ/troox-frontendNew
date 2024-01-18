@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../assets/troo-logo.png";
+import Logo from "../assets/trooLogo.svg";
 import { Button } from "./Button";
 import PasswordInput from "./PasswordInput";
 

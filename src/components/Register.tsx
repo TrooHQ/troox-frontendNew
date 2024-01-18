@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../assets/troo-logo.png";
+import Logo from "../assets/trooLogo.svg";
 
 import { Button } from "./Button";
 import BackButton from "./backButton";
@@ -22,12 +22,12 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-[#EFEFEF] h-screen">
-      <div className="flex flex-col items-center justify-center h-screen my-auto">
+    <div className="bg-[#EFEFEF] ">
+      <div className="flex flex-col items-center justify-center h-screen  my-auto">
         <div className="">
           <img src={Logo} alt="" />
-        </div>{" "}
-        <div className="bg-white grid gap-5 p-8 my-5 w-full md:w-[530px] rounded shadow-md">
+        </div>
+        <div className="bg-white grid gap-3 py-4 px-8 my-5 w-full md:w-[530px] rounded shadow-md">
           <p className="text-2xl text-[#121212] mb-4">New Account</p>
           <CustomInput
             type="text"
@@ -41,7 +41,6 @@ const Register = () => {
             value={email}
             onChange={(newValue) => setEmail(newValue)}
           />
-
           <PasswordInput
             label="Enter your password"
             value={password}
@@ -52,7 +51,6 @@ const Register = () => {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
-
           <CustomInput
             type="text"
             label="Create pin (Create a four-digit pin)"
@@ -67,9 +65,9 @@ const Register = () => {
             maxLength={4}
             onChange={(newValue) => setConfirmPin(newValue)}
           />
-          <div className=" my-3">
+          <div className=" ">
             <Button text="Create Account" />
-            <div className=" flex items-center justify-center my-2">
+            <div className=" flex items-center justify-center ">
               <BackButton />
             </div>
           </div>

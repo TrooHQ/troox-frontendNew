@@ -1,4 +1,4 @@
-import Logo from "../assets/troo-logo.png";
+import Logo from "../assets/trooLogo.svg";
 import lockIcon from "../assets/passwordlockicon.png";
 import { Button } from "./Button";
 
