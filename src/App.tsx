@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ScrollToTop from "./components/ScrollToTop.tsx";
+// import ScrollToTop from "./components/ScrollToTop.tsx";
 import LoginPage from "./pages/LoginPage.js";
 import NotFound from "./components/NotFound.tsx";
 import CheckMail from "./components/authPages/CheckMail.tsx";
@@ -15,7 +15,7 @@ export default function App() {
   return (
     <div className="">
       <Router>
-        <ScrollToTop />
+        {/* <ScrollToTop /> */}
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
