@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Arrow from "../assets/arrow.png";
 
 interface FAQProps {
@@ -9,30 +8,32 @@ interface FAQProps {
 
 const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
   return (
-    <div className=" ">
+    <div className=" grid gap-3">
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className="text-[#5955B3] border-2 p-4 focus:outline-[#5955B3] w-full rounded border-[#484590]"
+          className="text-[#5955B3] border p-4 focus:outline-[#5955B3] w-full rounded border-[#484590]"
         >
           <div
             className="flex items-center justify-between cursor-pointer font-bold "
             onClick={() => toggleAnswer(index)}
           >
             <div className="flex items-center">
-              <div className="font-[500] text-[#333333] text-[14px] lg:text-[20px]">
-                <p className=" mb-2 cursor-pointer flex items-center justify-between">
-                  <span className=" text-[#121212]">Business information</span>
-                  <img
-                    src={Arrow}
-                    alt=""
-                    className={`transform transition-transform duration-300 ${
-                      openIndex === index ? "rotate-180" : ""
-                    }`}
-                  />
-                </p>
-                {` ${faq.question}`}
+              <div className="font-[400] text-[#333333] text-[14px] lg:text-[18px]">
+                <div className="mb-2 cursor-pointer">
+                  <p className="text-[#121212]">{` ${faq.question}`}</p>
+                </div>
               </div>
+            </div>
+            <div className="ml-2">
+              {" "}
+              <img
+                src={Arrow}
+                alt=""
+                className={`transform transition-transform duration-300 ${
+                  openIndex === index ? "rotate-180" : ""
+                }`}
+              />
             </div>
           </div>
           {openIndex === index && (

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Logo from "../assets/trooLogo.svg";
-import lockIcon from "../assets/passwordlockIcon2.png";
-import { Button } from "./Button";
-import EmailInput from "./CustomInput";
-import BackButton from "./backButton";
+import Logo from "../../assets/trooLogo.svg";
+import lockIcon from "../../assets/passwordlockIcon2.png";
+import { Button } from "../buttons/Button";
+import EmailInput from "../inputFields/CustomInput";
+import BackButton from "../buttons/backButton";
 
 const ForgotPassword = () => {
   const [value, setValue] = useState<string>("");

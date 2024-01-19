@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Logo from "../assets/trooLogo.svg";
-import { Button } from "./Button";
-import PasswordInput from "./PasswordInput";
+import Logo from "../../assets/trooLogo.svg";
+import { Button } from "../buttons/Button.js";
+import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link } from "react-router-dom";
-import CustomInput from "./CustomInput";
+import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setEmail,
   setPassword,
   selectEmail,
   selectPassword,
-} from "../slices/authSlice.js";
+} from "../../slices/authSlice.js";
 
 const Login = () => {
   const dispatch = useDispatch();

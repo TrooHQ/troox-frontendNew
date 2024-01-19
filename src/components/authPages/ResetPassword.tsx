@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Logo from "../assets/trooLogo.svg";
-import { Button } from "./Button";
-import PasswordInput from "./PasswordInput";
+import Logo from "../../assets/trooLogo.svg";
+import { Button } from "../buttons/Button";
+import PasswordInput from "../inputFields/PasswordInput";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState<string>("");
