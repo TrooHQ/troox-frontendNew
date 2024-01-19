@@ -6,7 +6,7 @@ const Dashboard: React.FC = () => {
     <div className="">
       <DashboardLayout>
         <div className="">
-          <p>Hello</p>
+          <p>Hellooo</p>
         </div>
       </DashboardLayout>
     </div>
