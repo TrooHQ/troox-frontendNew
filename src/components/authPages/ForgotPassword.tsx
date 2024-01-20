@@ -37,7 +37,7 @@ const ForgotPassword = () => {
           </div>
           <Button link="/checkmail" text="Get a reset link" />
           <div className=" text-center py-3">
-            <BackButton />
+            <BackButton text="Go Back" />
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
+import BackButton from "../buttons/backButton";
+import { Link } from "react-router-dom";
 
 interface FAQItem {
   question: string;
@@ -55,10 +57,13 @@ const BusinessProfiles: React.FC = () => {
 
           <div className=" flex justify-end items-center gap-2">
             <div className="border-2 border-[#5955b3] rounded px-3 py-2 font-[600] text-[#5955B3]">
-              <button className=" ">Cancel</button>
+              <BackButton text="Cancel" />
             </div>
+
             <div className="border-2 border-[#5955b3] bg-[#5955b3] rounded px-3 py-2 font-[600] text-[#ffffff]">
-              <button className="">Save and continue</button>
+              <Link to="/">
+                <button className="">Save and continue</button>
+              </Link>
             </div>
           </div>
         </div>
