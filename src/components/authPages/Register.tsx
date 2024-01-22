@@ -65,9 +65,9 @@ const Register = () => {
             onChange={(newValue) => setConfirmPin(newValue)}
           />
           <div className=" ">
-            <Button text="Create Account" />
-            <div className=" flex items-center justify-center ">
-              <BackButton />
+            <Button link="/business-profile" text="Create Account" />
+            <div className=" flex items-center justify-center my-5">
+              <BackButton text="Go Back" />
             </div>
           </div>
         </div>

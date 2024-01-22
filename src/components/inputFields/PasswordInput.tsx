@@ -1,6 +1,6 @@
 import React, { useState, useRef, CSSProperties } from "react";
-import EyeFillIcon from "remixicon-react/EyeFillIcon";
-import EyeCloseFillIcon from "remixicon-react/EyeCloseFillIcon";
+import EyeOpen from "../../assets/eyeOpen.png";
+import EyeClose from "../../assets/eyeClose.png";
 interface PasswordInputProps {
   label: string;
   value: string;
@@ -68,9 +68,9 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
           onClick={togglePasswordVisibility}
         >
           {showPassword ? (
-            <EyeFillIcon className="text-gray-400" />
+            <img src={EyeOpen} alt="" className="text-gray-400" />
           ) : (
-            <EyeCloseFillIcon className="text-gray-400" />
+            <img src={EyeClose} alt="" className="text-gray-400" />
           )}
         </div>
       </div>

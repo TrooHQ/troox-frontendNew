@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
-
-const BackButton = () => {
+interface ButtonProps {
+  text: string;
+}
+const BackButton: React.FC<ButtonProps> = ({ text }) => {
   const navigate = useNavigate();
   return (
     <div onClick={() => navigate(-1)}>
-      <p className=" font-[500] text-[16px] text-[#5955B3] cursor-pointer">
-        Go Back
+      <p className=" font-[600] text-[16px] text-[#5955B3] cursor-pointer">
+        {text}
       </p>
     </div>
   );

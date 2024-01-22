@@ -1,12 +1,13 @@
 import React from "react";
 import DashboardLayout from "./DashboardLayout";
+import Table from "./TableItem";
 
 const Dashboard: React.FC = () => {
   return (
     <div className="">
       <DashboardLayout>
         <div className="">
-          <p>Hellooo</p>
+          <Table />
         </div>
       </DashboardLayout>
     </div>
