@@ -10,6 +10,10 @@ import PasswordChanged from "./components/authPages/PasswordChanged.tsx";
 import BusinessProfiles from "./components/authPages/BusinessProfiles.tsx";
 import Register from "./components/authPages/Register.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
+import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
+import Overview from "./components/Dashboard/Overview.tsx";
+import Roles from "./components/Dashboard/Roles.tsx";
+import NewRoles from "./components/Dashboard/NewRoles.tsx";
 
 export default function App() {
   return (
@@ -19,6 +23,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/overview" element={<Overview />} />
+          <Route path="/roles" element={<Roles />} />
+          <Route path="/new-roles" element={<NewRoles />} />
           <Route path="/register" element={<Register />} />
           <Route path="/business-profile" element={<BusinessProfiles />} />
           <Route path="/checkmail" element={<CheckMail />} />
