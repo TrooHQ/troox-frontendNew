@@ -38,7 +38,7 @@ const Tabs: React.FC<TabsProps> = ({
             </p>
           ))}
         </div>
-        <div className="border-2 border-purple500 bg-purple500 rounded px-3 py-2 font-[600] text-[#ffffff]">
+        <div className="border-2 border-purple500 bg-purple500 rounded px-3 py-2 font-[500] text-[#ffffff]">
           <Link to={`${activeTab === 0 && "/new-roles"}`}>
             <button
               className=""
