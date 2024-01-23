@@ -1,35 +1,39 @@
 import ProfilePic from "../../assets/profilePic.png";
 import NotificationIcon from "../../assets/notificationIcon.png";
 
-const TopMenuNav = ({ pathName }) => {
+interface TopMenuNavProps {
+  pathName: string;
+}
+
+const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
   const userName = "John Doe";
   const role = "Admin";
 
   return (
     <div className="">
-      <div className=" w-full">
-        <div className=" flex  items-center justify-between">
-          <div className="">
-            <p className=" text-[28px] font-[600] Capitalize text-[#5955B3]">
+      <div className="w-full">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-[28px] font-[600] Capitalize text-purple500">
               {pathName}
             </p>
           </div>
-          <div className=" flex gap-3 items-center">
+          <div className="flex gap-3 items-center">
             <input
               type="text"
-              className=" bg-[#F8F8F8] rounded p-2 mr-2 border"
+              className="bg-[#F8F8F8] rounded p-2 mr-2 border"
               placeholder="Search"
             />
-            <div className=" mr-5">
+            <div className="mr-5">
               <img src={NotificationIcon} alt="" />
             </div>
-            <div className="">
-              <p className=" text-[#121212] text-[16px] font-[500]">
+            <div>
+              <p className="text-[#121212] text-[16px] font-[500]">
                 {userName}
               </p>
-              <p className=" text-right text-[#606060] text-[12px]">{role}</p>
+              <p className="text-right text-grey300 text-[12px]">{role}</p>
             </div>
-            <div className="">
+            <div>
               <img src={ProfilePic} alt="" />
             </div>
           </div>

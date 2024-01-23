@@ -44,7 +44,7 @@ const BusinessProfiles: React.FC = () => {
           <img src={Logo} alt="" />
         </div>
         <div className="bg-white grid gap-3 py-4 px-8 my-5 w-full md:w-[700px] rounded shadow-md">
-          <p className="text-[24px] font-[500] text-[#5955B3] mb-8">
+          <p className="text-[24px] font-[500] text-purple500 mb-8">
             Business profile | ID:TR89340
           </p>
 
@@ -56,11 +56,11 @@ const BusinessProfiles: React.FC = () => {
           />
 
           <div className=" flex justify-end items-center gap-2">
-            <div className="border-2 border-[#5955b3] rounded px-3 py-2 font-[600] text-[#5955B3]">
+            <div className="border-2 border-purple500 rounded px-3 py-2 font-[600] text-purple500">
               <BackButton text="Cancel" />
             </div>
 
-            <div className="border-2 border-[#5955b3] bg-[#5955b3] rounded px-3 py-2 font-[600] text-[#ffffff]">
+            <div className="border-2 border-purple500 bg-purple500 rounded px-3 py-2 font-[600] text-[#ffffff]">
               <Link to="/">
                 <button className="">Save and continue</button>
               </Link>

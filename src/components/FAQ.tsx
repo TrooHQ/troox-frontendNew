@@ -36,7 +36,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`text-[#5955B3] border p-4 focus:outline-[#5955B3] w-full rounded border-[#484590] ${
+          className={`text-purple500 border p-4 focus:outline-[#5955B3] w-full rounded border-[#484590] ${
             openIndex === index ? "overflow-y-scroll max-h-96" : ""
           }`}
         >
@@ -83,7 +83,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
                             checkedLegalType ===
                             "Sole trader/Private Individual"
-                              ? "bg-[#5955B3] text-white"
+                              ? "bg-purple500 text-white"
                               : "bg-[#E7E7E7] text-[#121212]"
                           }`}
                         >
@@ -111,7 +111,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           htmlFor="otherLegalType"
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
                             checkedLegalType === "Other legal type"
-                              ? "bg-[#5955B3] text-white"
+                              ? "bg-purple500 text-white"
                               : "bg-[#E7E7E7] text-[#121212]"
                           }`}
                         >
@@ -221,7 +221,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             className=" text-[16px] font-[500] text-[#121212]"
                           >
                             Address (Line 2){" "}
-                            <span className=" text-[#929292]">(optional)</span>
+                            <span className=" text-grey200">(optional)</span>
                           </label>
                           <CustomInput
                             type="text"

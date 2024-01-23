@@ -133,7 +133,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     <div>
       <div
         className={` ${
-          open ? "w-full" : "w-20 "
+          open ? "w-full" : "w-20"
         } p-5  pt-8 relative duration-300 border-r `}
       >
         <img
@@ -163,17 +163,17 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
         </div>
         <ul className="pt-6">
           {selectedMenu.map((menu, index) => (
-            <NavLink to={menu.link}>
+            <NavLink to={menu.link || "#"}>
               {" "}
               <li key={index}>
                 <p
                   className={`flex   ${
                     menu.title &&
                     "rounded-md p-2 cursor-pointer py-5 hover:bg-[#8580F0]"
-                  }  text-gray-300 text-sm items-center gap-x-4 
+                  }  text-purple200 text-sm items-center gap-x-4 
      ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                     isMenuItemActive(menu.link || "")
-                      ? "bg-[#8580F0] font-[600] text-[16px] text-white "
+                      ? "  bg-selectedState font-[600] text-[16px] text-white "
                       : " "
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}

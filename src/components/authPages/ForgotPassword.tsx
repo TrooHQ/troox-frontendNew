@@ -22,7 +22,7 @@ const ForgotPassword = () => {
             <p className=" text-[#121212] text-[24px] font-[600] py-5">
               Forgot Password?
             </p>
-            <p className=" text-[#606060] text-[16px] font-[500] leading-[24px]">
+            <p className=" text-grey300 text-[16px] font-[500] leading-[24px]">
               Enter email or phone number associated with your account and we'll
               send you an email/SMS to reset it.
             </p>
