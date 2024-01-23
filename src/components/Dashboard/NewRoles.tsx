@@ -11,6 +11,7 @@ interface FAQItem {
 
 const NewRoles = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndexInner, setOpenIndexInner] = useState<number | null>(null);
 
   const faqData: FAQItem[] = [
     {
@@ -35,8 +36,18 @@ const NewRoles = () => {
     },
   ];
 
+  const faqDataInner: FAQItem[] = [
+    {
+      question: "Till",
+      inputValue: "Input 1",
+    },
+  ];
+
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
+  };
+  const toggleAnswer2 = (index2: number) => {
+    setOpenIndexInner(openIndexInner === index2 ? null : index2);
   };
 
   const handleInputChange = (
@@ -46,6 +57,14 @@ const NewRoles = () => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);
+  };
+  const handleInputChange2 = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const newFAQData2 = [...faqDataInner];
+    newFAQData2[index].inputValue = event.target.value;
+    console.log(newFAQData2);
   };
 
   return (
@@ -92,9 +111,13 @@ const NewRoles = () => {
             <div className=" grid gap-[48px]">
               <FAQSetting
                 faqData={faqData}
+                faqDataInner={faqDataInner}
                 openIndex={openIndex}
+                openIndexInner={openIndexInner}
                 toggleAnswer={toggleAnswer}
+                toggleAnswer2={toggleAnswer2}
                 handleInputChange={handleInputChange}
+                handleInputChange2={handleInputChange2}
               />
             </div>
           </div>
