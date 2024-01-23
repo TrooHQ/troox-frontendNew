@@ -20,7 +20,7 @@ const CheckMail = () => {
                 We have sent a password recover <br /> instruction to your email
               </p>
             </div>
-            <Button link="/reset-password" text="Open email app" />
+            <Button link="/reset-password" text="Check email" />
           </div>
         </div>
       </div>
