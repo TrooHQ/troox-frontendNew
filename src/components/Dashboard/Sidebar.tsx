@@ -132,7 +132,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div>
       <div
-        className={` p-5 w-full  pt-8 relative duration-300 `}
+        className={` p-2 w-[253px]  pt-8 relative duration-300 `}
         // ${
         //   open ? "w-full" : "w-20"
         // }
@@ -170,13 +170,16 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
               <li key={index}>
                 <p
                   className={`flex relative ${
-                    menu.title &&
-                    " p-2 cursor-pointer py-3 hover:bg-selectedState"
-                  }  text-purple200 text-[16px] items-center gap-x-2  
-  ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
+                    menu.title && " p-2 cursor-pointer py-3  "
+                  }  text-purple200 text-[16px] items-center gap-x-2
+            ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                     isMenuItemActive(menu.link || "")
                       ? "  bg-selectedState font-[600] text-[16px] text-white "
                       : " "
+                  }${
+                    !isMenuItemActive(menu.link || "") &&
+                    !menu.subTitle &&
+                    "hover:bg-purple700"
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}
                 >
@@ -212,7 +215,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                       {menu.subMenu.map((subMenuItem, subIndex) => (
                         <li
                           key={subIndex}
-                          className={`flex  p-2 cursor-pointer py-2 hover:bg-selectedState hover:text-white text-purple200 text-sm items-center gap-x-4 ${
+                          className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
                             isMenuItemActive(subMenuItem.link || "")
                               ? "text-white"
                               : ""
