@@ -43,7 +43,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
       <div className="relative">
         <input
           type={showPassword ? "text" : "password"}
-          className={`border-2 border-gray-300 p-2 focus:outline-[#5955B3] w-full rounded ${
+          className={`border-2 outline-grey200 p-2 text-[#121212] text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
             error ? "border-red-500" : ""
           }`}
           value={value}
@@ -56,7 +56,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
           className={`absolute transition-all duration-300 cursor-text ${
             isFocused
               ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
-              : "top-2 left-4 bg-white text-gray-400"
+              : "top-2 left-4 bg-white text-grey200"
           } ${error ? "text-red-500" : ""}`}
           onClick={handleLabelClick}
         >

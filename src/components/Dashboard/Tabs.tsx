@@ -22,15 +22,15 @@ const Tabs: React.FC<TabsProps> = ({
 
   return (
     <div className="">
-      <div className="flex justify-between items-center border-b border-[#B6B6B6] my-10">
+      <div className="flex justify-between items-center border-b border-grey100 my-10">
         <div className="flex items-center gap-10">
           {tabs.map((tab, index) => (
             <p
               key={index}
-              className={` text-[22px] px-3 py-2  cursor-pointer ${
+              className={` text-[22px] px-3 py-2 font-GeneralSans  cursor-pointer ${
                 index === activeTab
-                  ? " text-[#5955B3] font-[600] border-b-4 border-b-[#5955B3]"
-                  : "text-[#606060]"
+                  ? " text-purple500 font-[600] border-b-4 border-b-[#5955B3]"
+                  : "text-grey300"
               }`}
               onClick={() => handleTabChange(index)}
             >
@@ -38,7 +38,7 @@ const Tabs: React.FC<TabsProps> = ({
             </p>
           ))}
         </div>
-        <div className="border-2 border-[#5955b3] bg-[#5955b3] rounded px-3 py-2 font-[600] text-[#ffffff]">
+        <div className="border-2 border-purple500 bg-purple500 rounded px-3 py-2 font-[500] text-[#ffffff]">
           <Link to={`${activeTab === 0 && "/new-roles"}`}>
             <button
               className=""

@@ -13,7 +13,7 @@ import PointOfSalesIcon from "../../assets/posIcon.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import LogoutIcon from "../../assets/logout.svg";
-import Arrow from "../../assets/arrow.png";
+import ArrowToggle from "../../assets/arrowToggle.svg";
 import { NavLink } from "react-router-dom";
 
 interface MenuItem {
@@ -32,7 +32,7 @@ interface SIdeBarProps {
 
 const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   const location = useLocation();
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
 
   const commonMenu: MenuItem[] = [
@@ -58,10 +58,10 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
       icon: MenuIcon,
       subMenu: [
         {
-          title: "Submenu 1",
+          title: "Menu Builder",
         },
         {
-          title: "Submenu 2",
+          title: "Price List",
         },
       ],
     },
@@ -132,48 +132,50 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div>
       <div
-        className={` ${
-          open ? "w-full" : "w-20 "
-        } p-5  pt-8 relative duration-300 border-r `}
+        className={` p-5 w-full  pt-8 relative duration-300 `}
+        // ${
+        //   open ? "w-full" : "w-20"
+        // }
       >
-        <img
+        {/* <img
           src="./src/assets/Arrow2.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 
        ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
-        />
+        /> */}
 
         <div className=" grid gap-10 items-center">
           <div className="flex gap-x-4 items-center justify-center">
             <img
               src={Logo}
-              className={`cursor-pointer duration-500 ${
-                open && "rotate-[360deg]"
-              }`}
+              className={`cursor-pointer duration-500  `}
+              // ${
+              //   open && "rotate-[360deg]"}
             />
           </div>
           <div className="flex gap-x-4 items-center justify-center">
             <img
               src={RestaurantLogo}
-              className={`cursor-pointer duration-500 ${
-                open && "rotate-[360deg]"
-              }`}
+              className={`cursor-pointer duration-500`}
+              // ${
+              //   open && "rotate-[360deg]"
+              // }
             />
           </div>
         </div>
         <ul className="pt-6">
           {selectedMenu.map((menu, index) => (
-            <NavLink to={menu.link}>
+            <NavLink to={menu.link || "#"}>
               {" "}
               <li key={index}>
                 <p
-                  className={`flex   ${
+                  className={`flex relative ${
                     menu.title &&
-                    "rounded-md p-2 cursor-pointer py-5 hover:bg-[#8580F0]"
-                  }  text-gray-300 text-sm items-center gap-x-4 
-     ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
+                    " p-2 cursor-pointer py-3 hover:bg-selectedState"
+                  }  text-purple200 text-[16px] items-center gap-x-2  
+  ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                     isMenuItemActive(menu.link || "")
-                      ? "bg-[#8580F0] font-[600] text-[16px] text-white "
+                      ? "  bg-selectedState font-[600] text-[16px] text-white "
                       : " "
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}
@@ -191,25 +193,31 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                     {menu.title}
                     {menu.subTitle}
                   </span>
-                  {menu.subMenu && <img src={Arrow} alt="" />}
+                  {menu.subMenu && (
+                    <img
+                      src={ArrowToggle}
+                      alt=""
+                      className={`text-white absolute right-0  transition-transform ${
+                        openSubmenuIndex === index ? "rotate-180" : ""
+                      }`}
+                      style={{}}
+                    />
+                  )}
                 </p>
+
                 <div className="">
                   {menu.subMenu && openSubmenuIndex === index && (
-                    <ul className="pl-4">
+                    <ul className="pl-2">
+                      {" "}
                       {menu.subMenu.map((subMenuItem, subIndex) => (
                         <li
                           key={subIndex}
-                          className={`flex   rounded-md p-2 cursor-pointer py-5 hover:bg-[#8580F0]  text-gray-300 text-sm items-center gap-x-4 ${
+                          className={`flex  p-2 cursor-pointer py-2 hover:bg-selectedState hover:text-white text-purple200 text-sm items-center gap-x-4 ${
                             isMenuItemActive(subMenuItem.link || "")
                               ? "text-white"
                               : ""
                           }`}
                         >
-                          <img
-                            src={subMenuItem.icon}
-                            alt={subMenuItem.title}
-                            style={{ width: "16px", marginRight: "4px" }}
-                          />
                           {subMenuItem.title}
                         </li>
                       ))}

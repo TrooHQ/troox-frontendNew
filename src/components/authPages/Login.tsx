@@ -27,12 +27,11 @@ const Login = () => {
     if (!Email || !Password) {
       setError("Invalid email/password");
       return;
+    } else {
+      console.log("Email:", Email);
+      console.log("Password:", Password);
+      setError("");
     }
-
-    console.log("Email:", Email);
-    console.log("Password:", Password);
-
-    setError("");
   };
 
   return (
@@ -48,7 +47,7 @@ const Login = () => {
           </div>
           <CustomInput
             type="email"
-            label="Email"
+            label="Business email"
             value={Email}
             error={error}
             onChange={(newValue) => dispatch(setEmail(newValue))}
@@ -63,7 +62,7 @@ const Login = () => {
 
           <div className="flex justify-end">
             <Link to="/forgot-password">
-              <p className="text-[#5955B3]">Forgot password?</p>
+              <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
           <div className="" onClick={handleButtonClick}>
@@ -72,7 +71,7 @@ const Login = () => {
         </div>
         <div className="">
           <Link to="/register">
-            <p className="font-[500] text-[16px] text-[#5955B3]">
+            <p className="font-[500] text-[16px] text-purple500">
               Create a business account
             </p>
           </Link>

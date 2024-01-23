@@ -17,7 +17,7 @@ import NewRoles from "./components/Dashboard/NewRoles.tsx";
 
 export default function App() {
   return (
-    <div className="">
+    <div className=" font-GeneralSans">
       <Router>
         {/* <ScrollToTop /> */}
         <Routes>
