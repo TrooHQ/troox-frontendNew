@@ -42,7 +42,7 @@ const Login = () => {
         </div>
         <div className="bg-white grid  p-[40px] mt-[32px] mb-[40px] w-full md:w-[530px] rounded shadow-md">
           <div className=" mb-[40px]">
-            <p className="text-2xl text-[#121212] ">Login Details</p>
+            <p className="text-2xl text-grey500 ">Login Details</p>
             {error && <p className="text-red-500 pt-4">{error}</p>}
           </div>
           <div className=" grid gap-[24px]">

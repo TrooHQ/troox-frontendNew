@@ -47,7 +47,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
             <div className="flex items-center">
               <div className="font-[300] text-[#333333] text-[14px] lg:text-[20px]">
                 <div className="mb-2 cursor-pointer">
-                  <p className="text-[#121212]">{` ${faq.question}`}</p>
+                  <p className="text-grey500">{` ${faq.question}`}</p>
                 </div>
               </div>
             </div>
@@ -67,13 +67,13 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
               <div className="text-[#757575] text-[12px] lg:text-[18px] font-[300] ">
                 {openIndex === 0 && (
                   <div className=" ">
-                    <p className=" text-[14px] font-sans leading-[24px] py-5 text-[#121212]">
+                    <p className=" text-[14px] font-sans leading-[24px] py-5 text-grey500">
                       This information is required in order to verify your
                       business. It will show up on your payout report, invoices
                       and receipts.
                     </p>
                     <div className="">
-                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-[#121212]">
+                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
                         What is the legal type of your business?
                       </p>
 
@@ -84,7 +84,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             checkedLegalType ===
                             "Sole trader/Private Individual"
                               ? "bg-purple500 text-white"
-                              : "bg-[#E7E7E7] text-[#121212]"
+                              : "bg-[#E7E7E7] text-grey500"
                           }`}
                         >
                           <input
@@ -112,7 +112,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
                             checkedLegalType === "Other legal type"
                               ? "bg-purple500 text-white"
-                              : "bg-[#E7E7E7] text-[#121212]"
+                              : "bg-[#E7E7E7] text-grey500"
                           }`}
                         >
                           <input
@@ -141,10 +141,11 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           onChange={(newValue) => setName(newValue)}
                         />
                         <CustomSelect
-                          label="Select Option"
+                          label=""
                           options={["Option 1", "Option 2", "Option 3"]}
                           value={selectedValue}
                           onChange={(value) => setSelectedValue(value)}
+                          disabledOption="How would you categorize your business?"
                         />
 
                         <CustomInput
@@ -163,7 +164,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                     </div>
 
                     <div className=" my-8">
-                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-[#121212]">
+                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
                         Web page: Website, Social media page, Business listing,
                         Google map location, etc
                       </p>
@@ -187,7 +188,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             />
                             <label
                               htmlFor="rememberMe"
-                              className="text-[14px] text-[#121212]"
+                              className="text-[14px] text-grey500"
                             >
                               I don't have a web page
                             </label>
@@ -197,14 +198,14 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                     </div>
 
                     <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-[#121212] my-8">
+                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-8">
                         Business address
                       </p>
                       <div className=" grid gap-5">
                         <div className="grid gap-2">
                           <label
                             htmlFor=""
-                            className=" text-[16px] font-[500] text-[#121212]"
+                            className=" text-[16px] font-[500] text-grey500"
                           >
                             Address (Line 1)
                           </label>
@@ -218,7 +219,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <div className=" grid gap-2">
                           <label
                             htmlFor=""
-                            className=" text-[16px] font-[500] text-[#121212]"
+                            className=" text-[16px] font-[500] text-grey500"
                           >
                             Address (Line 2){" "}
                             <span className=" text-grey200">(optional)</span>
@@ -233,7 +234,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <div className="grid gap-2">
                           <label
                             htmlFor=""
-                            className=" text-[16px] font-[500] text-[#121212]"
+                            className=" text-[16px] font-[500] text-grey500"
                           >
                             City
                           </label>
@@ -248,14 +249,14 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                     </div>
 
                     <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-[#121212] my-4">
+                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-4">
                         Business fiscal year
                       </p>
                       <div className=" grid md:grid-cols-2 items-center gap-5">
                         <div className="grid gap-2">
                           <label
                             htmlFor=""
-                            className=" text-[16px] font-[500] text-[#121212]"
+                            className=" text-[16px] font-[500] text-grey500"
                           >
                             From:
                           </label>
@@ -269,7 +270,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <div className=" grid gap-2">
                           <label
                             htmlFor=""
-                            className=" text-[16px] font-[500] text-[#121212]"
+                            className=" text-[16px] font-[500] text-grey500"
                           >
                             To:
                           </label>

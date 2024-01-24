@@ -132,7 +132,9 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div>
       <div
-        className={` p-2 w-[253px]  pt-8 relative duration-300 `}
+        className={`p-2 w-[253px] h-full fixed overflow-y-auto left-0 top-0 duration-300`}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        // className={` p-2 w-[253px] h-full fixed no-scrollbar overflow-y-auto left-0 top-0  pt-8 duration-300 `}
         // ${
         //   open ? "w-full" : "w-20"
         // }
@@ -145,7 +147,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
         /> */}
 
         <div className=" grid gap-10 items-center">
-          <div className="flex gap-x-4 items-center justify-center">
+          <div className="flex gap-x-4  items-center justify-center">
             <img
               src={Logo}
               className={`cursor-pointer duration-500  `}

@@ -22,7 +22,7 @@ const ResetPassword = () => {
         </div>{" "}
         <div className="bg-white grid gap-5 p-8 my-10 w-full md:w-[530px] rounded shadow-md">
           <div className=" max-w-[387px]">
-            <p className="text-2xl text-[#121212] mb-4 font-[600]">
+            <p className="text-2xl text-grey500 mb-4 font-[600]">
               Create new password
             </p>
             <p>

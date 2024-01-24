@@ -36,9 +36,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
               <img src={NotificationIcon} alt="" />
             </div>
             <div>
-              <p className="text-[#121212] text-[16px] font-[500]">
-                {userName}
-              </p>
+              <p className="text-grey500 text-[16px] font-[500]">{userName}</p>
               <p className="text-right text-grey300 text-[12px]">{role}</p>
             </div>
             <div>
