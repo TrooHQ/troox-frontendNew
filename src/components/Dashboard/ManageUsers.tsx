@@ -5,13 +5,15 @@ import { useState } from "react";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
 import CustomSelect from "../inputFields/CustomSelect";
-import { Link } from "react-router-dom";
 import CancelButton from "../buttons/CancelButton";
+import { useDispatch, useSelector } from "react-redux";
+import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
+import { RootState } from "@reduxjs/toolkit/query";
 
 const ManageUsers: React.FC = () => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.InviteUser);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string>("");
 
   const handleNewRoleClick = () => {
     console.log("New Role button clicked");
@@ -22,6 +24,14 @@ const ManageUsers: React.FC = () => {
     setIsModalOpen(true);
   };
 
+  const handleInputChange = (fieldName: string, value: string) => {
+    dispatch(setUserData({ [fieldName]: value }));
+  };
+
+  const handleSendInvite = () => {
+    dispatch(sendInvite());
+    setIsModalOpen(false);
+  };
   return (
     <div className="">
       <DashboardLayout>
@@ -43,45 +53,55 @@ const ManageUsers: React.FC = () => {
                 <CustomInput
                   type="text"
                   label="First Name"
-                  value=""
+                  value={userData.firstName}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("firstName", newValue)
+                  }
                 />
                 <CustomInput
                   type="text"
                   label="Last Name"
-                  value=""
+                  value={userData.lastName}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("lastName", newValue)
+                  }
                 />
                 <CustomInput
                   type="email"
                   label="Email address"
-                  value=""
+                  value={userData.email}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) => handleInputChange("email", newValue)}
                 />
                 <CustomInput
                   type="text"
                   label="Mobile number"
-                  value=""
+                  value={userData.mobileNumber}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("mobileNumber", newValue)
+                  }
                 />
                 <CustomInput
                   type="text"
                   label="Pin code"
-                  value=""
+                  value={userData.pinCode}
                   error=""
                   maxLength={4}
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("pinCode", newValue)
+                  }
                 />
                 <CustomInput
                   type="password"
                   label="Password"
-                  value=""
+                  value={userData.password}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("password", newValue)
+                  }
                 />
                 <CustomSelect
                   label=""
@@ -93,24 +113,29 @@ const ManageUsers: React.FC = () => {
                     "Account",
                     "Server",
                   ]}
-                  value={selectedValue}
-                  onChange={(value) => setSelectedValue(value)}
+                  value={userData.userRole}
+                  onChange={(newValue) =>
+                    handleInputChange("userRole", newValue)
+                  }
                   disabledOption="User Role"
                 />
                 <CustomSelect
                   label=""
                   options={["Full time", "Part time", "Contract"]}
-                  value={selectedValue}
-                  onChange={(value) => setSelectedValue(value)}
+                  value={userData.employeeType}
+                  onChange={(newValue) =>
+                    handleInputChange("employeeType", newValue)
+                  }
                   disabledOption="Employee type"
                 />
-
                 <CustomInput
                   type="text"
                   label="Department"
-                  value=""
+                  value={userData.department}
                   error=""
-                  onChange={(newValue) => setEmail(email)}
+                  onChange={(newValue) =>
+                    handleInputChange("department", newValue)
+                  }
                 />
               </div>
             </div>
@@ -124,10 +149,11 @@ const ManageUsers: React.FC = () => {
                 <CancelButton text="Cancel" />
               </div>
 
-              <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff]">
-                <Link to="/">
-                  <button className=" text-[16px]">Send invite</button>
-                </Link>
+              <div
+                className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff]"
+                onClick={handleSendInvite}
+              >
+                <button className=" text-[16px]">Send invite</button>
               </div>
             </div>
           </div>
