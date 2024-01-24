@@ -165,7 +165,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
             />
           </div>
         </div>
-        <ul className="pt-6">
+        <ul className="pt-6 pl-[15px]">
           {selectedMenu.map((menu, index) => (
             <NavLink to={menu.link || "#"}>
               {" "}

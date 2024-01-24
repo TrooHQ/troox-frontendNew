@@ -11,7 +11,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         <Sidebar userType="user" />
 
         <div
-          className={` m-5 w-[980px] 2xl:w-[1243px] h-full overflow-y-auto`}
+          className={` m-5 w-[980px] 2xl:w-[1293px] h-full overflow-y-auto`}
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div

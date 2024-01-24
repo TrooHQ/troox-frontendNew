@@ -1,9 +1,15 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
 import BackButton from "./buttons/BackButton";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@reduxjs/toolkit/query";
+import {
+  updateInputValue,
+  updateInputValueInner,
+} from "../slices/FaqSettingSlice";
 
 interface FAQItem {
   question: string;
@@ -38,16 +44,29 @@ const FAQSetting: React.FC<FAQProps> = ({
   toggleAnswer2,
   // handleInputChange2,
 }) => {
-  // const [checkedLegalType, setCheckedLegalType] = useState<string>("");
+  const dispatch = useDispatch();
+  const faqState = useSelector((state: RootState) => state.faq);
 
-  // const handleLegalTypeChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setCheckedLegalType(event.target.value);
-  //   console.log(event.target.value, "checked");
-  // };
-  // const [name, setName] = useState<string>("");
-  // const [selectedValue, setSelectedValue] = useState<string>("");
+  const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
+    Array(faqData.length).fill(false)
+  );
+  const [checkedInnerCategories, setCheckedInnerCategories] = useState<
+    boolean[]
+  >(Array(faqDataInner.length).fill(false));
+
+  const handleCategoryChange = (index: number) => {
+    const newCheckedCategories = [...checkedCategories];
+    newCheckedCategories[index] = !newCheckedCategories[index];
+    setCheckedCategories(newCheckedCategories);
+    console.log("Handling category change...", newCheckedCategories);
+  };
+
+  const handleInnerCategoryChange = (index: number) => {
+    const newCheckedInnerCategories = [...checkedInnerCategories];
+    newCheckedInnerCategories[index] = !newCheckedInnerCategories[index];
+    setCheckedInnerCategories(newCheckedInnerCategories);
+    console.log("Handling inner category change...", newCheckedInnerCategories);
+  };
 
   return (
     <div className="grid gap-[24px]">
@@ -83,13 +102,12 @@ const FAQSetting: React.FC<FAQProps> = ({
                       <div className="flex  items-center">
                         <input
                           type="checkbox"
-                          id="rememberMe"
+                          id={`categoryCheckbox${index}`}
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
+                          onChange={() => handleCategoryChange(index)}
                         />
                         <label
-                          htmlFor="rememberMe"
+                          htmlFor={`categoryCheckbox${index}`}
                           className="text-[16px] font-[400] text-grey500"
                         >
                           Create Category
@@ -100,8 +118,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -115,8 +131,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -136,8 +150,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -151,8 +163,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -166,8 +176,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -212,8 +220,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -227,8 +233,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -242,8 +246,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -257,8 +259,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -272,8 +272,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -287,8 +285,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -302,8 +298,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -317,8 +311,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -332,8 +324,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -347,8 +337,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -362,8 +350,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -377,8 +363,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                                   type="checkbox"
                                   id="rememberMe"
                                   className="h-6 w-6 mr-[24px] border border-black"
-                                  // checked={auth.rememberMe}
-                                  // onChange={handleRememberMeToggle}
                                 />
                                 <label
                                   htmlFor="rememberMe"
@@ -402,8 +386,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -417,8 +399,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -432,8 +412,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -447,8 +425,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -468,8 +444,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -483,8 +457,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -504,8 +476,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -519,8 +489,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -535,8 +503,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -550,8 +516,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
@@ -565,8 +529,6 @@ const FAQSetting: React.FC<FAQProps> = ({
                           type="checkbox"
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
-                          // checked={auth.rememberMe}
-                          // onChange={handleRememberMeToggle}
                         />
                         <label
                           htmlFor="rememberMe"
