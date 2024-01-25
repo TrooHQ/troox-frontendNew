@@ -173,7 +173,9 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                 <p
                   className={`flex relative ${
                     menu.title && " p-2 cursor-pointer py-3  "
-                  }  text-purple200 text-[16px] items-center gap-x-2
+                  }  ${
+                    menu.subTitle && "text-[12px]"
+                  } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                     isMenuItemActive(menu.link || "")
                       ? "  bg-selectedState font-[600] text-[16px] text-white "
@@ -181,7 +183,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                   }${
                     !isMenuItemActive(menu.link || "") &&
                     !menu.subTitle &&
-                    "hover:bg-purple700"
+                    "hover:bg-purple700 "
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}
                 >
@@ -212,7 +214,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
 
                 <div className="">
                   {menu.subMenu && openSubmenuIndex === index && (
-                    <ul className="pl-2">
+                    <ul className="pl-8">
                       {" "}
                       {menu.subMenu.map((subMenuItem, subIndex) => (
                         <li

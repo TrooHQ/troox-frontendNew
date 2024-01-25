@@ -25,7 +25,7 @@ const initialState: UserState = {
 };
 
 const InviteUserSlice = createSlice({
-  name: "InviteUser",
+  name: "inviteUser",
   initialState,
   reducers: {
     setUserData: (state, action: PayloadAction<Partial<UserState>>) => {

@@ -45,7 +45,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
             onClick={() => toggleAnswer(index)}
           >
             <div className="flex items-center">
-              <div className="font-[300] text-[#333333] text-[14px] lg:text-[20px]">
+              <div className="font-[400]  text-[14px] lg:text-[22px]">
                 <div className="mb-2 cursor-pointer">
                   <p className="text-grey500">{` ${faq.question}`}</p>
                 </div>

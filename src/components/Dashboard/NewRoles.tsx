@@ -70,24 +70,30 @@ const NewRoles = () => {
   return (
     <DashboardLayout>
       <TopMenuNav pathName="Manage Users" />
-      <div className="  max-w-[797px] 2xl:max-w-[1070px]">
+      <div className="  max-w-[897px] 2xl:max-w-[1070px]">
         <div className="my-10 ">
           <p className="text-[24px] font-[500] text-purple500">New Roles</p>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
               <div className="flex items-start">
-                <label htmlFor="" className="flex-shrink-0 mr-4">
+                <label
+                  htmlFor=""
+                  className="flex-shrink-0 mr-4  text-[16px] text-[#606060] font-[400]"
+                >
                   Role Name
                 </label>
                 <div className="flex-1">
                   <input
                     type="text"
-                    className="px-2 w-full h-[48px] rounded-[5px] border-2 border-grey100"
+                    className="px-2 w-full h-[48px] rounded-[5px] border border-grey100"
                   />
                 </div>
               </div>
               <div className="flex items-start">
-                <label htmlFor="" className="flex-shrink-0 mr-4">
+                <label
+                  htmlFor=""
+                  className="flex-shrink-0 mr-4  text-[16px] text-[#606060] font-[400]"
+                >
                   Description
                 </label>
                 <div className="flex-1">
@@ -95,7 +101,7 @@ const NewRoles = () => {
                     type="text"
                     name=""
                     id=""
-                    className="px-2 w-full h-[128px] rounded-[5px] border-2 border-grey100"
+                    className="px-2 w-full h-[128px] rounded-[5px] border border-grey100"
                   />
                 </div>
               </div>

@@ -39,7 +39,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="relative">
         <input
           type={type}
-          className={`border-2 outline-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
+          className={`border outline-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
             error ? "border-red-500" : ""
           }`}
           value={value}

@@ -4,12 +4,6 @@ import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
 import BackButton from "./buttons/BackButton";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
-import {
-  updateInputValue,
-  updateInputValueInner,
-} from "../slices/FaqSettingSlice";
 
 interface FAQItem {
   question: string;
@@ -44,15 +38,15 @@ const FAQSetting: React.FC<FAQProps> = ({
   toggleAnswer2,
   // handleInputChange2,
 }) => {
-  const dispatch = useDispatch();
-  const faqState = useSelector((state: RootState) => state.faq);
+  // const dispatch = useDispatch();
+  // const faqState = useSelector((state: RootState) => state.faq);
 
   const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
     Array(faqData.length).fill(false)
   );
-  const [checkedInnerCategories, setCheckedInnerCategories] = useState<
-    boolean[]
-  >(Array(faqDataInner.length).fill(false));
+  // const [checkedInnerCategories, setCheckedInnerCategories] = useState<
+  //   boolean[]
+  // >(Array(faqDataInner.length).fill(false));
 
   const handleCategoryChange = (index: number) => {
     const newCheckedCategories = [...checkedCategories];
@@ -61,12 +55,12 @@ const FAQSetting: React.FC<FAQProps> = ({
     console.log("Handling category change...", newCheckedCategories);
   };
 
-  const handleInnerCategoryChange = (index: number) => {
-    const newCheckedInnerCategories = [...checkedInnerCategories];
-    newCheckedInnerCategories[index] = !newCheckedInnerCategories[index];
-    setCheckedInnerCategories(newCheckedInnerCategories);
-    console.log("Handling inner category change...", newCheckedInnerCategories);
-  };
+  // const handleInnerCategoryChange = (index: number) => {
+  //   const newCheckedInnerCategories = [...checkedInnerCategories];
+  //   newCheckedInnerCategories[index] = !newCheckedInnerCategories[index];
+  //   setCheckedInnerCategories(newCheckedInnerCategories);
+  //   console.log("Handling inner category change...", newCheckedInnerCategories);
+  // };
 
   return (
     <div className="grid gap-[24px]">
