@@ -14,6 +14,9 @@ import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
 import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
+import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
+import Coffee from "./components/Dashboard/Coffee.tsx";
+import CoffeeItems from "./components/Dashboard/CoffeeItems.tsx";
 
 export default function App() {
   return (
@@ -24,6 +27,9 @@ export default function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/menu-builder" element={<MenuBuilder />} />
+          <Route path="/coffee" element={<Coffee />} />
+          <Route path="/coffee-items" element={<CoffeeItems />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />
