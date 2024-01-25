@@ -39,7 +39,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="relative">
         <input
           type={type}
-          className={`border-2 outline-grey200 p-2 text-[#121212] text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
+          className={`border-2 outline-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
             error ? "border-red-500" : ""
           }`}
           value={value}
@@ -53,7 +53,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           className={`absolute transition-all duration-300 cursor-text ${
             isFocused
               ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
-              : "top-2 left-4 bg-white text-grey200"
+              : "top-3 left-4 bg-white text-grey200"
           } ${error ? "text-red-500" : ""}`}
           onClick={handleLabelClick}
         >

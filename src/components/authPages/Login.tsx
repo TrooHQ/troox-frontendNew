@@ -40,27 +40,29 @@ const Login = () => {
         <div className="">
           <img src={Logo} alt="" />
         </div>
-        <div className="bg-white grid gap-5 p-8 my-10 w-full md:w-[530px] rounded shadow-md">
-          <div className=" mb-4">
-            <p className="text-2xl text-[#121212] ">Login Details</p>
+        <div className="bg-white grid  p-[40px] mt-[32px] mb-[40px] w-full md:w-[530px] rounded shadow-md">
+          <div className=" mb-[40px]">
+            <p className="text-2xl text-grey500 ">Login Details</p>
             {error && <p className="text-red-500 pt-4">{error}</p>}
           </div>
-          <CustomInput
-            type="email"
-            label="Business email"
-            value={Email}
-            error={error}
-            onChange={(newValue) => dispatch(setEmail(newValue))}
-          />
-          <PasswordInput
-            label="Password"
-            value={Password}
-            onChange={handlePasswordChange}
-            error={error}
-            style={{ marginTop: "10px", color: "blue" }}
-          />
+          <div className=" grid gap-[24px]">
+            <CustomInput
+              type="email"
+              label="Business email"
+              value={Email}
+              error={error}
+              onChange={(newValue) => dispatch(setEmail(newValue))}
+            />
+            <PasswordInput
+              label="Password"
+              value={Password}
+              onChange={handlePasswordChange}
+              error={error}
+              style={{ marginTop: "10px", color: "blue" }}
+            />
+          </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-[16px] mb-[32px]">
             <Link to="/forgot-password">
               <p className="text-purple500">Forgot password?</p>
             </Link>
@@ -69,7 +71,7 @@ const Login = () => {
             <Button text="Login" />
           </div>
         </div>
-        <div className="">
+        <div className=" mt-[40px]">
           <Link to="/register">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account

@@ -43,7 +43,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
       <div className="relative">
         <input
           type={showPassword ? "text" : "password"}
-          className={`border-2 outline-grey200 p-2 text-[#121212] text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
+          className={`border-2 outline-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
             error ? "border-red-500" : ""
           }`}
           value={value}

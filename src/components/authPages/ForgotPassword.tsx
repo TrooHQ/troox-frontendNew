@@ -3,7 +3,7 @@ import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
 import { Button } from "../buttons/Button";
 import EmailInput from "../inputFields/CustomInput";
-import BackButton from "../buttons/backButton";
+import BackButton from "../buttons/BackButton";
 
 const ForgotPassword = () => {
   const [value, setValue] = useState<string>("");
@@ -19,7 +19,7 @@ const ForgotPassword = () => {
             <img src={lockIcon} alt="" />
           </div>
           <div className=" flex flex-col items-center justify-center text-center ">
-            <p className=" text-[#121212] text-[24px] font-[600] py-5">
+            <p className=" text-grey500 text-[24px] font-[600] py-5">
               Forgot Password?
             </p>
             <p className=" text-grey300 text-[16px] font-[500] leading-[24px]">

@@ -3,7 +3,7 @@ import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
 import { Button } from "../buttons/Button";
-import BackButton from "../buttons/backButton";
+import BackButton from "../buttons/BackButton";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
@@ -27,7 +27,7 @@ const Register = () => {
           <img src={Logo} alt="" />
         </div>
         <div className="bg-white grid gap-3 py-4 px-8 my-5 w-full md:w-[530px] rounded shadow-md">
-          <p className="text-2xl text-[#121212] mb-4">New Account</p>
+          <p className="text-2xl text-grey500 mb-4">New Account</p>
           <CustomInput
             type="text"
             label="Business Name"
