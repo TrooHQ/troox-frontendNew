@@ -56,11 +56,11 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "/coffee",
+      link: "/menu-builder",
       subMenu: [
         {
           title: "Menu Builder",
-          link: "/coffee",
+          link: "/menu-builder",
         },
         {
           title: "Price List",
@@ -167,14 +167,14 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
             />
           </div>
         </div>
-        <ul className="pt-6 pl-[15px]">
+        <ul className="pt-6 pl-[15px] grid gap-[10px]">
           {selectedMenu.map((menu, index) => (
             <NavLink to={menu.link || "#"}>
               {" "}
               <li key={index}>
                 <p
                   className={`flex relative ${
-                    menu.title && " p-2 cursor-pointer py-3  "
+                    menu.title && " px-[14px] cursor-pointer py-[8px]  "
                   }  ${
                     menu.subTitle && "text-[12px]"
                   } text-purple200  items-center gap-x-2
@@ -185,7 +185,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                   }${
                     !isMenuItemActive(menu.link || "") &&
                     !menu.subTitle &&
-                    "hover:bg-purple700 "
+                    "hover:bg-[#504EA3] "
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}
                 >
@@ -206,7 +206,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                     <img
                       src={ArrowToggle}
                       alt=""
-                      className={`text-white absolute right-0  transition-transform ${
+                      className={`text-white absolute right-[10px]  transition-transform ${
                         openSubmenuIndex === index ? "rotate-180" : ""
                       }`}
                       style={{}}

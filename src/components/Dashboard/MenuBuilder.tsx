@@ -26,7 +26,7 @@ const MenuBuilder = () => {
               </Link>
             </div>
           </div>
-          <MenuLayout />
+          {/* <MenuLayout /> */}
         </div>
       </DashboardLayout>
     </div>

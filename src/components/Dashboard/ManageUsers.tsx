@@ -9,6 +9,7 @@ import CancelButton from "../buttons/CancelButton";
 import { useDispatch, useSelector } from "react-redux";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import { RootState } from "../../store/rootReducer";
+import CustomSelect2 from "../inputFields/CustomSelect2";
 
 // interface UserState {
 //   firstName: string;
@@ -23,6 +24,11 @@ import { RootState } from "../../store/rootReducer";
 // }
 
 const ManageUsers: React.FC = () => {
+  const options = [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ];
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.inviteUser);
 
@@ -119,7 +125,11 @@ const ManageUsers: React.FC = () => {
                       handleInputChange("password", newValue)
                     }
                   />
-                  <CustomSelect
+                  <CustomSelect2
+                    options={["Full time", "Part time", "Contract"]}
+                  />
+
+                  {/* <CustomSelect
                     label=""
                     options={[
                       "Manager",
@@ -134,8 +144,8 @@ const ManageUsers: React.FC = () => {
                       handleInputChange("userRole", newValue)
                     }
                     disabledOption="User Role"
-                  />
-                  <CustomSelect
+                  /> */}
+                  {/* <CustomSelect
                     label=""
                     options={["Full time", "Part time", "Contract"]}
                     value={userData.employeeType}
@@ -143,7 +153,7 @@ const ManageUsers: React.FC = () => {
                       handleInputChange("employeeType", newValue)
                     }
                     disabledOption="Employee type"
-                  />
+                  /> */}
                   <CustomInput
                     type="text"
                     label="Department"

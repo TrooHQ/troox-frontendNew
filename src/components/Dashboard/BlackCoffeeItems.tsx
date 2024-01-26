@@ -5,9 +5,9 @@ import Add from "../../assets/addWhite.svg";
 import Publish from "../../assets/publish.svg";
 import CoffeeLayout from "./CoffeeLayout";
 import MenuLayout from "./MenuLayout";
-import MenuItemList from "./MenuItemList";
+import BlackCoffeeList from "./BlackCoffeeList";
 
-const CoffeeItems = () => {
+const BlackCoffeeItems = () => {
   return (
     <div>
       <DashboardLayout>
@@ -49,7 +49,7 @@ const CoffeeItems = () => {
                     <div className=" mt-[4px] py-[12px] px-[8px]">
                       <div className=" flex justify-between items-center">
                         <p className=" text-[16px] font-[500] text-[#5855B3]">
-                          Coffee
+                          Black Coffee
                         </p>
                         <div className=" ">
                           <Link to="/">
@@ -59,7 +59,7 @@ const CoffeeItems = () => {
                           </Link>
                         </div>
                       </div>
-                      <MenuItemList />
+                      <BlackCoffeeList />
                       {/* <div className=" mt-[16px]">
                         <div className=" grid gap-[8px]">
                           <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
@@ -212,4 +212,4 @@ const CoffeeItems = () => {
   );
 };
 
-export default CoffeeItems;
+export default BlackCoffeeItems;
