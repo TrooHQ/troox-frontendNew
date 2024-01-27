@@ -213,3 +213,57 @@ const BlackCoffeeItems = () => {
 };
 
 export default BlackCoffeeItems;
+// {subMenu.map((menuGroup, index) => (
+//   <div key={index}>
+//     {menuGroup.data.map((group, groupIndex) => (
+//       <div key={groupIndex} className="">
+//         <p
+//           className=" text-grey200 hover:bg-purple100 flex justify-between items-center w-[201px]  text-[16px] font-[400] py-[12px] px-[8px]"
+//           onClick={() => toggleGroup(group.type)}
+//         >
+//           {group.type}{" "}
+//           <img src={chevron_right} alt="" className=" " />
+//         </p>
+
+//         <div className="">
+//           {selectedGroup === group.type && (
+//             <div>
+//               {group.data.map(
+//                 (
+//                   item: { name: string; price: string },
+//                   itemIndex: number
+//                 ) => (
+//                   <div className=" mt-[16px]" key={itemIndex}>
+//                     <div className=" grid gap-[8px]">
+//                       <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+//                         <div className=" flex gap-[8px]">
+//                           {/* <img src={Coffee} alt="" /> */}
+//                           <div className="">
+//                             <p className=" text-[12px] font-[400] text-grey300">
+//                               Item
+//                             </p>
+//                             <p className=" leading-[24px] text-[16px] text-[#121212] font-[500]">
+//                               {item.name}
+//                             </p>
+//                             <p className=" text-[12px] font-[400] text-grey300">
+//                               Modifier groups (6)
+//                             </p>
+//                           </div>
+//                         </div>
+//                         <div className=" flex">
+//                           <p className=" text-[16px] font-[500] text-[#121212]">
+//                             {item.price}
+//                           </p>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </div>
+//                 )
+//               )}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     ))}
+//   </div>
+// ))}

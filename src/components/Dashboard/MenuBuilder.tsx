@@ -1,6 +1,5 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import MenuLayout from "./MenuLayout";
 import Add from "../../assets/add.svg";
 import Publish from "../../assets/publish.svg";
 import { Link } from "react-router-dom";
@@ -26,7 +25,6 @@ const MenuBuilder = () => {
               </Link>
             </div>
           </div>
-          {/* <MenuLayout /> */}
         </div>
       </DashboardLayout>
     </div>

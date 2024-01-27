@@ -3,12 +3,17 @@ import Arrow from "../../assets/arrow.png";
 
 interface CustomSelect2Props {
   options: (string | { value: string; label: string })[];
+  disabledOptions?: string[];
+  placeholder?: string;
 }
 
-const CustomSelect2: React.FC<CustomSelect2Props> = ({ options }) => {
+const CustomSelect2: React.FC<CustomSelect2Props> = ({
+  options,
+  disabledOptions,
+  placeholder = "",
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] =
-    useState<string>("Select an option");
+  const [selectedOption, setSelectedOption] = useState<string>(placeholder);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -47,9 +52,23 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({ options }) => {
         {options.map((option, index) => (
           <div
             key={index}
-            className="option p-2 cursor-pointer transition-colors hover:bg-gray-100"
+            className={`option p-2 cursor-pointer transition-colors hover:bg-gray-100 ${
+              disabledOptions &&
+              disabledOptions.includes(
+                typeof option === "string" ? option : option.value
+              )
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
             onClick={() =>
-              selectOption(typeof option === "string" ? option : option.value)
+              !disabledOptions ||
+              !disabledOptions.includes(
+                typeof option === "string" ? option : option.value
+              )
+                ? selectOption(
+                    typeof option === "string" ? option : option.value
+                  )
+                : null
             }
           >
             {getOptionLabel(option)}

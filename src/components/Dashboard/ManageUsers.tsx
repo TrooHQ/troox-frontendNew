@@ -4,31 +4,13 @@ import Tabs from "./Tabs";
 import { useState } from "react";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
-import CustomSelect from "../inputFields/CustomSelect";
 import CancelButton from "../buttons/CancelButton";
 import { useDispatch, useSelector } from "react-redux";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import { RootState } from "../../store/rootReducer";
 import CustomSelect2 from "../inputFields/CustomSelect2";
 
-// interface UserState {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   mobileNumber: string;
-//   pinCode: string;
-//   password: string;
-//   userRole: string;
-//   employeeType: string;
-//   department: string;
-// }
-
 const ManageUsers: React.FC = () => {
-  const options = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
-  ];
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.inviteUser);
 
@@ -126,34 +108,15 @@ const ManageUsers: React.FC = () => {
                     }
                   />
                   <CustomSelect2
-                    options={["Full time", "Part time", "Contract"]}
+                    options={["Manager", "Kitchen", "Admin"]}
+                    placeholder="User Role"
                   />
 
-                  {/* <CustomSelect
-                    label=""
-                    options={[
-                      "Manager",
-                      "Utility personnel",
-                      "Kitchen staff",
-                      "Supply",
-                      "Account",
-                      "Server",
-                    ]}
-                    value={userData.userRole}
-                    onChange={(newValue) =>
-                      handleInputChange("userRole", newValue)
-                    }
-                    disabledOption="User Role"
-                  /> */}
-                  {/* <CustomSelect
-                    label=""
+                  <CustomSelect2
                     options={["Full time", "Part time", "Contract"]}
-                    value={userData.employeeType}
-                    onChange={(newValue) =>
-                      handleInputChange("employeeType", newValue)
-                    }
-                    disabledOption="Employee type"
-                  /> */}
+                    placeholder="Employee Type"
+                  />
+
                   <CustomInput
                     type="text"
                     label="Department"

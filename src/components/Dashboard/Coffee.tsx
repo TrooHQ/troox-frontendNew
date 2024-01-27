@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Add from "../../assets/add.svg";
+import AddWhite from "../../assets/addWhite.svg";
 import Publish from "../../assets/publish.svg";
-
 import chevron_right from "../../assets/chevron_right.svg";
+import activeArrow from "../../assets/activeArrow.svg";
 import { useState } from "react";
+import CoffeeImg from "../../assets/coffeeImg.png";
 
 interface MenuItem {
   title: string;
@@ -18,8 +20,15 @@ interface MenuItem {
     }[];
   }[];
 }
+
 const Coffee = () => {
-  const Menu: string[] = ["coffee", "soup", "pizza"];
+  const Menu: string[] = [
+    "coffee",
+    "soups",
+    "specials",
+    "desert",
+    "happy meal",
+  ];
   const arrayDummy: MenuItem[] = [
     {
       title: "coffee",
@@ -28,18 +37,46 @@ const Coffee = () => {
           type: "coffee",
           data: [
             { img: "", price: "200-300", name: "brown coffee" },
-            { img: "", price: "100-500", name: "brown coffee1" },
-            { img: "", price: "800-900", name: "brown coffee2" },
-            { img: "", price: "200-400", name: "brown coffee3" },
+            {
+              img: "",
+              price: "100-500",
+              name: "brown coffee1",
+            },
+            {
+              img: "",
+              price: "800-900",
+              name: "brown coffee2",
+            },
+            {
+              img: "",
+              price: "200-400",
+              name: "brown coffee3",
+            },
           ],
         },
         {
           type: "black coffee",
           data: [
-            { img: "", price: "100-200", name: "spanish coffee" },
-            { img: "", price: "200-500", name: "spanish coffee1" },
-            { img: "", price: "300-500", name: "spanish coffee1" },
-            { img: "", price: "400-500", name: "spanish coffee1" },
+            {
+              img: "",
+              price: "100-200",
+              name: "spanish coffee",
+            },
+            {
+              img: "",
+              price: "200-500",
+              name: "spanish coffee1",
+            },
+            {
+              img: "",
+              price: "300-500",
+              name: "spanish coffee1",
+            },
+            {
+              img: "",
+              price: "400-500",
+              name: "spanish coffee1",
+            },
           ],
         },
         {
@@ -63,7 +100,7 @@ const Coffee = () => {
       ],
     },
     {
-      title: "soup",
+      title: "soups",
       data: [
         {
           type: "Egusi",
@@ -85,10 +122,49 @@ const Coffee = () => {
       ],
     },
     {
-      title: "pizza",
+      title: "specials",
       data: [
         {
-          type: "Spanish Pizza",
+          type: " chinese special",
+          data: [
+            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
+            { img: "", price: "100-200", name: "Chicken Pizza" },
+            { img: "", price: "200-400", name: "Beef Pizza" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "desert",
+      data: [
+        {
+          type: "desert Pizza",
+          data: [
+            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
+            { img: "", price: "100-200", name: "Chicken Pizza" },
+            { img: "", price: "200-400", name: "Beef Pizza" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "happy meal",
+      data: [
+        {
+          type: "happy meal Pizza",
+          data: [
+            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
+            { img: "", price: "100-200", name: "Chicken Pizza" },
+            { img: "", price: "200-400", name: "Beef Pizza" },
+          ],
+        },
+      ],
+    },
+    {
+      title: "Drinks",
+      data: [
+        {
+          type: "red wine",
           data: [
             { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
             { img: "", price: "100-200", name: "Chicken Pizza" },
@@ -100,21 +176,29 @@ const Coffee = () => {
   ];
 
   const [subMenu, setSubmenu] = useState<MenuItem[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  // const SubMenuContent = [];
+
+  const [subMenuContent, setSubmenuContent] = useState<
+    {
+      img: string;
+      price: string;
+      name: string;
+      type?: string;
+    }[]
+  >([]);
+  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(null);
+  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(null);
 
   const getSubmenu = (data: string) => {
     const array = arrayDummy.filter((e) => e.title === data);
-    setSubmenu(array);
-    console.log(array);
+
+    setSubmenu(array[0].data);
+    setActiveSubMenu(array[0].data[0].type);
+    setSubmenuContent(array[0].data[0].data);
+    setActiveMainMenu(array[0].title);
+    console.log(array[0].data);
   };
-  const toggleGroup = (groupTitle: string) => {
-    if (selectedGroup === groupTitle) {
-      setSelectedGroup(null);
-    } else {
-      setSelectedGroup(groupTitle);
-    }
-  };
+
   return (
     <div>
       <DashboardLayout>
@@ -137,93 +221,114 @@ const Coffee = () => {
                 </Link>
               </div>
             </div>
-            <div className=""></div>
             <div className=" flex ">
-              {/* {Menu.map((data, index) => (
-                <div className=" grid gap-5">
-                  <button
-                    className={`text-grey200 hover:bg-purple100 flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] 
-                    )}`}
-                  >
-                    COFFEE <img src={chevron_right} alt="" />
-                  </button>
-                </div>
-              ))} */}
               <div className="mt-[24px]">
                 <nav className="flex flex-col gap-[8px]">
                   {Menu.map((data, index) => (
                     <button
                       onClick={() => getSubmenu(data)}
                       key={index}
-                      className={`  text-grey200 hover:bg-purple100 flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                      className={`${
+                        activeMainMenu === data &&
+                        " bg-purple100 text-purple600 font-[500]"
+                      }  text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
-                      {data} <img src={chevron_right} alt="" />
+                      {data}{" "}
+                      {activeMainMenu === data ? (
+                        <img src={activeArrow} />
+                      ) : (
+                        <img src={chevron_right} alt="" />
+                      )}
                     </button>
                   ))}
                 </nav>
               </div>
-              <div className="">
+              <div className=" flex-grow">
                 <div className="mt-[24px] w-full border p-[16px]">
-                  <p className=" font-[400] text-[12px] text-[#606060]">
-                    Menu Group
-                  </p>
-                  {subMenu.map((menuGroup, index) => (
-                    <div key={index}>
-                      {menuGroup.data.map((group, groupIndex) => (
-                        <div key={groupIndex}>
+                  <div className=" flex gap-[16px] items-start">
+                    <div className=" w-[204px]">
+                      <p className=" font-[400] text-[12px] text-[#606060]">
+                        Menu Group
+                      </p>
+                      <div className="">
+                        {subMenu.map((data, index) => (
                           <p
-                            className=" text-grey200 hover:bg-purple100 flex justify-between items-center w-[201px]  text-[16px] font-[400] py-[12px] px-[8px]"
-                            onClick={() => toggleGroup(group.type)}
+                            className={`${
+                              activeSubMenu === data.type
+                                ? " font-[500] text-[#5855B3] "
+                                : " text-grey200"
+                            }  hover:bg-purple100 flex justify-between items-center w-[201px]  text-[16px] font-[400] py-[12px] px-[8px]`}
+                            key={index}
+                            onClick={() => {
+                              setSubmenuContent(data.data),
+                                setActiveSubMenu(data.type);
+                              setType(data.type);
+                            }}
                           >
-                            {group.type}{" "}
-                            <img src={chevron_right} alt="" className=" " />
-                          </p>
-
-                          <div className="">
-                            {selectedGroup === group.type && (
-                              <div>
-                                {group.data.map(
-                                  (
-                                    item: { name: string; price: string },
-                                    itemIndex: number
-                                  ) => (
-                                    <div className=" mt-[16px]" key={itemIndex}>
-                                      <div className=" grid gap-[8px]">
-                                        <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
-                                          <div className=" flex gap-[8px]">
-                                            {/* <img src={Coffee} alt="" /> */}
-                                            <div className="">
-                                              <p className=" text-[12px] font-[400] text-grey300">
-                                                Item
-                                              </p>
-                                              <p className=" leading-[24px] text-[16px] text-[#121212] font-[500]">
-                                                {item.name}
-                                              </p>
-                                              <p className=" text-[12px] font-[400] text-grey300">
-                                                Modifier groups (6)
-                                              </p>
-                                            </div>
-                                          </div>
-                                          <div className=" flex">
-                                            <p className=" text-[16px] font-[500] text-[#121212]">
-                                              {item.price}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      {/* <p>{item.name}</p>
-                                      <p>{item.price}</p> */}
-                                    </div>
-                                  )
-                                )}
-                              </div>
+                            {data.type}
+                            {activeSubMenu === data.type ? (
+                              <img src={activeArrow} />
+                            ) : (
+                              <img src={chevron_right} alt="" />
                             )}
+                          </p>
+                        ))}
+                        <div className=" w-[196px]  px-[10px] py-[6px] font-[500] text-purple500">
+                          <Link to="/">
+                            <button className="text-[16px] flex items-center gap-[8px]">
+                              <img src={AddWhite} alt="" /> Add Menu Group
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div className=" flex-grow space-y-[16px]">
+                      <p className=" font-[400] text-[12px] text-[#606060]">
+                        Menu Item
+                      </p>
+                      <div className=" flex items-start justify-between ">
+                        <p className=" text-[16px] font-[500] text-[#5855B3]">
+                          {type || "Type"}
+                        </p>
+                        <div className=" ">
+                          <Link to="/">
+                            <button className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]">
+                              <img src={AddWhite} alt="" /> Add Menu Item
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
+                      {subMenuContent.map((data, index) => (
+                        <div className="" key={index}>
+                          <div className=" grid gap-[8px]">
+                            <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+                              <div className=" flex gap-[8px]">
+                                <img src={CoffeeImg} alt="" />
+
+                                <div className="">
+                                  <p className=" text-[12px] font-[400] text-grey300">
+                                    Item
+                                  </p>
+                                  <p className=" leading-[24px] text-[16px] text-[#121212] font-[500] capitalize">
+                                    {data.name}
+                                  </p>
+                                  <p className=" text-[12px] font-[400] text-grey300">
+                                    Modifier groups (6)
+                                  </p>
+                                </div>
+                              </div>
+                              <div className=" flex">
+                                <p className=" text-[16px] font-[500] text-[#121212]">
+                                  {data.price}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       ))}
                     </div>
-                  ))}
-                </div>{" "}
+                  </div>
+                </div>
                 <div className="">
                   <div className=" mt-[32px] max-w-[628px]">
                     <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
