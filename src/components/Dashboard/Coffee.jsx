@@ -9,27 +9,9 @@ import activeArrow from "../../assets/activeArrow.svg";
 import { useState } from "react";
 import CoffeeImg from "../../assets/coffeeImg.png";
 
-interface MenuItem {
-  title: string;
-  data: {
-    type: string;
-    data: {
-      img: string;
-      price: string;
-      name: string;
-    }[];
-  }[];
-}
-
 const Coffee = () => {
-  const Menu: string[] = [
-    "coffee",
-    "soups",
-    "specials",
-    "desert",
-    "happy meal",
-  ];
-  const arrayDummy: MenuItem[] = [
+  const Menu = ["coffee", "soups", "specials", "desert", "happy meal"];
+  const arrayDummy = [
     {
       title: "coffee",
       data: [
@@ -175,21 +157,14 @@ const Coffee = () => {
     },
   ];
 
-  const [subMenu, setSubmenu] = useState<MenuItem[]>([]);
+  const [subMenu, setSubmenu] = useState([]);
 
-  const [subMenuContent, setSubmenuContent] = useState<
-    {
-      img: string;
-      price: string;
-      name: string;
-      type?: string;
-    }[]
-  >([]);
-  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(null);
-  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
-  const [type, setType] = useState<string | null>(null);
+  const [subMenuContent, setSubmenuContent] = useState([]);
+  const [activeMainMenu, setActiveMainMenu] = useState(null);
+  const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const [type, setType] = useState(null);
 
-  const getSubmenu = (data: string) => {
+  const getSubmenu = (data) => {
     const array = arrayDummy.filter((e) => e.title === data);
 
     setSubmenu(array[0].data);
