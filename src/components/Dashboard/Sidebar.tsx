@@ -56,7 +56,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "/menu-builder",
+      link: location.pathname,
       subMenu: [
         {
           title: "Menu Builder",
@@ -64,6 +64,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
         },
         {
           title: "Price List",
+          link: "/price-list",
         },
       ],
     },
@@ -169,72 +170,78 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
         </div>
         <ul className="pt-6 pl-[15px] grid gap-[10px]">
           {selectedMenu.map((menu, index) => (
-            <NavLink to={menu.link || "#"}>
-              {" "}
-              <li key={index}>
-                <p
-                  className={`flex relative ${
-                    menu.title && " px-[14px] cursor-pointer py-[8px]  "
-                  }  ${
-                    menu.subTitle && "text-[12px]"
-                  } text-purple200  items-center gap-x-2
+            <div className="">
+              <NavLink to={menu.link || "#"}>
+                {" "}
+                <li key={index}>
+                  <p
+                    className={`flex relative ${
+                      menu.title && " px-[14px] cursor-pointer py-[8px]  "
+                    }  ${
+                      menu.subTitle && "text-[12px]"
+                    } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
-                    isMenuItemActive(menu.link || "")
-                      ? "  bg-selectedState font-[600] text-[16px] text-white "
-                      : " "
-                  }${
-                    !isMenuItemActive(menu.link || "") &&
-                    !menu.subTitle &&
-                    "hover:bg-[#504EA3] "
-                  }`}
-                  onClick={() => menu.subMenu && handleSubmenuToggle(index)}
-                >
-                  {menu.title && (
-                    <img
-                      src={menu.icon}
-                      alt={menu.title}
-                      style={{ width: "20px", marginRight: "8px" }}
-                    />
-                  )}
-                  <span
-                    className={`${!open && "hidden"} origin-left duration-200 `}
+                      isMenuItemActive(menu.link || "")
+                        ? "  bg-selectedState font-[600] text-[16px] text-white "
+                        : " "
+                    }${
+                      !isMenuItemActive(menu.link || "") &&
+                      !menu.subTitle &&
+                      "hover:bg-[#504EA3] "
+                    }`}
+                    onClick={() => menu.subMenu && handleSubmenuToggle(index)}
                   >
-                    {menu.title}
-                    {menu.subTitle}
-                  </span>
-                  {menu.subMenu && (
-                    <img
-                      src={ArrowToggle}
-                      alt=""
-                      className={`text-white absolute right-[10px]  transition-transform ${
-                        openSubmenuIndex === index ? "rotate-180" : ""
-                      }`}
-                      style={{}}
-                    />
-                  )}
-                </p>
+                    {menu.title && (
+                      <img
+                        src={menu.icon}
+                        alt={menu.title}
+                        style={{ width: "20px", marginRight: "8px" }}
+                      />
+                    )}
+                    <span
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200 `}
+                    >
+                      {menu.title}
+                      {menu.subTitle}
+                    </span>
+                    {menu.subMenu && (
+                      <img
+                        src={ArrowToggle}
+                        alt=""
+                        className={`text-white absolute right-[10px]  transition-transform ${
+                          openSubmenuIndex === index ? "rotate-180" : ""
+                        }`}
+                        style={{}}
+                      />
+                    )}
+                  </p>
 
-                <div className="">
-                  {menu.subMenu && openSubmenuIndex === index && (
-                    <ul className="pl-8">
-                      {" "}
-                      {menu.subMenu.map((subMenuItem, subIndex) => (
-                        <li
-                          key={subIndex}
-                          className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
-                            isMenuItemActive(subMenuItem.link || "")
-                              ? "text-white"
-                              : ""
-                          }`}
-                        >
-                          {subMenuItem.title}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </li>
-            </NavLink>
+                  <div className="">
+                    {menu.subMenu && openSubmenuIndex === index && (
+                      <ul className="pl-8">
+                        {" "}
+                        {menu.subMenu.map((subMenuItem, subIndex) => (
+                          <NavLink to={subMenuItem.link || "#"}>
+                            <li
+                              key={subIndex}
+                              className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
+                                isMenuItemActive(subMenuItem.link || "")
+                                  ? "text-white"
+                                  : ""
+                              }`}
+                            >
+                              {subMenuItem.title}
+                            </li>
+                          </NavLink>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              </NavLink>
+            </div>
           ))}
         </ul>
       </div>
