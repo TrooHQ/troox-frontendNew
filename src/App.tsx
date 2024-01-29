@@ -14,7 +14,7 @@ import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
 import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
-import Coffee from "./components/Dashboard/Coffee1.jsx";
+import Coffee from "./components/Dashboard/Coffee.tsx";
 import CoffeeItems from "./components/Dashboard/CoffeeItems.tsx";
 import BlackCoffeeItems from "./components/Dashboard/BlackCoffeeItems.tsx";
 
