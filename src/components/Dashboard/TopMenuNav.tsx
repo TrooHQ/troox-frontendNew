@@ -14,7 +14,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
       <div className="w-full">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[28px] font-[600] Capitalize text-purple500">
+            <p className="text-[28px] font-[500] Capitalize text-purple500">
               {pathName}
             </p>
           </div>
@@ -22,7 +22,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
             <div className="relative">
               <input
                 type="text"
-                className="bg-[#F8F8F8] rounded p-2 pl-14 border"
+                className="bg-[#F8F8F8] rounded p-2 pl-14"
                 placeholder="Search"
               />
               <img

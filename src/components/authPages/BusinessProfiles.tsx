@@ -43,7 +43,7 @@ const BusinessProfiles: React.FC = () => {
         <div>
           <img src={Logo} alt="" />
         </div>
-        <div className="bg-white grid gap-3 py-4 px-8 my-5 w-full md:w-[700px] rounded shadow-md">
+        <div className="bg-white grid gap-3 py-[40px] px-8 my-5 w-full md:w-[700px] rounded shadow-md">
           <p className="text-[24px] font-[500] text-purple500 mb-8">
             Business profile | ID:TR89340
           </p>
@@ -55,12 +55,12 @@ const BusinessProfiles: React.FC = () => {
             handleInputChange={handleInputChange}
           />
 
-          <div className=" flex justify-end items-center gap-2">
-            <div className="border-2 border-purple500 rounded px-3 py-2 font-[600] text-purple500">
+          <div className=" flex justify-end items-center gap-2 mt-[32px]">
+            <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
               <BackButton text="Cancel" />
             </div>
 
-            <div className="border-2 border-purple500 bg-purple500 rounded px-3 py-2 font-[600] text-[#ffffff]">
+            <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
               <Link to="/">
                 <button className="">Save and continue</button>
               </Link>

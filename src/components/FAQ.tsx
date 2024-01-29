@@ -45,7 +45,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
             onClick={() => toggleAnswer(index)}
           >
             <div className="flex items-center">
-              <div className="font-[300] text-[#333333] text-[14px] lg:text-[20px]">
+              <div className="font-[400]  text-[14px] lg:text-[22px]">
                 <div className="mb-2 cursor-pointer">
                   <p className="text-grey500">{` ${faq.question}`}</p>
                 </div>
@@ -67,13 +67,13 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
               <div className="text-[#757575] text-[12px] lg:text-[18px] font-[300] ">
                 {openIndex === 0 && (
                   <div className=" ">
-                    <p className=" text-[14px] font-sans leading-[24px] py-5 text-grey500">
+                    <p className=" text-[16px] font-[400] leading-[24px] py-5 text-grey500">
                       This information is required in order to verify your
                       business. It will show up on your payout report, invoices
                       and receipts.
                     </p>
                     <div className="">
-                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
+                      <p className=" text-[16px] font-[500] leading-[24px] text-grey500">
                         What is the legal type of your business?
                       </p>
 
@@ -99,10 +99,10 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             onChange={handleLegalTypeChange}
                             className="hidden"
                           />
-                          <p className="text-[16px] font-[500] font-sans leading-[24px]">
+                          <p className="text-[16px] font-[500] text-grey500 font-sans leading-[24px]">
                             Sole trader/Private Individual
                           </p>
-                          <p className="text-[14px] font-sans leading-[24px]">
+                          <p className="text-[14px]  text-grey500 leading-[24px]">
                             e.g. self-employed
                           </p>
                         </label>
@@ -127,7 +127,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           <p className="text-[16px] font-[500] font-sans leading-[24px]">
                             Other legal type
                           </p>
-                          <p className="text-[14px] font-sans leading-[24px]">
+                          <p className="text-[14px]  text-grey500 leading-[24px]">
                             e.g. Ltd, LP, LLP, etc
                           </p>
                         </label>
@@ -287,7 +287,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 )}
                 {openIndex === 1 && (
                   <div className="">
-                    <p className=" my-8">
+                    <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
                       Please make sure that your personal details remain
                       up-to-date. Because this information is used to verify
                       your identity. You will need to send our Support Team a
@@ -339,7 +339,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 )}
                 {openIndex === 2 && (
                   <div className="">
-                    <p className=" my-8">
+                    <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
                       Please enter your bank account information. You’ll receive
                       a four-digit verification code via text message. Once you
                       enter the code Troo will direct all payouts to the

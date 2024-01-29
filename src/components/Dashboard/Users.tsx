@@ -16,7 +16,7 @@ const Users = () => {
         <p className="  px-3 py-2">Mobile #</p>
         <p className=" col-span-2 px-3 py-2"></p>
       </div>
-      <div className=" grid mt-[16px] gap-[16px]">
+      <div className=" grid mt-[16px] gap-[8px]">
         <div className=" grid grid-cols-7 items-center px-5 py-4 font-[400] bg-[#F8F8F8] text-[16px] text-grey500  ">
           <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
             <img src={Profileimg} alt="" />
