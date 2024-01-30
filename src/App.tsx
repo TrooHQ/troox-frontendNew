@@ -16,6 +16,8 @@ import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
 import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
 import PriceList from "./components/Dashboard/PriceList.tsx";
+import ManageTables from "./components/Dashboard/ManageTables.tsx";
+import TableList from "./components/Dashboard/TableList.tsx";
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/manage-tables" element={<ManageTables />} />
+          <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/overview" element={<Overview />} />

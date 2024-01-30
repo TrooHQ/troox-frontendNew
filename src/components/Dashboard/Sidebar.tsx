@@ -56,7 +56,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: location.pathname,
+      link: "",
       subMenu: [
         {
           title: "Menu Builder",
@@ -128,8 +128,22 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const isMenuItemActive = (menuLink: string) => {
-    return location.pathname === menuLink;
+  // const isMenuItemActive = (menuLink: string) => {
+  //   return location.pathname === menuLink;
+  // };
+  const isMenuItemActive = (
+    menuLink: string,
+    subMenu?: MenuItem[]
+  ): boolean => {
+    if (location.pathname === menuLink) {
+      return true;
+    }
+    if (subMenu) {
+      return subMenu.some((subMenuItem) =>
+        isMenuItemActive(subMenuItem.link || "", subMenuItem.subMenu)
+      );
+    }
+    return false;
   };
 
   return (
@@ -169,7 +183,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
           </div>
         </div>
         <ul className="pt-6 pl-[15px] grid gap-[10px]">
-          {selectedMenu.map((menu, index) => (
+          {/* {selectedMenu.map((menu, index) => (
             <div className="">
               <NavLink to={menu.link || "#"}>
                 {" "}
@@ -214,6 +228,77 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                           openSubmenuIndex === index ? "rotate-180" : ""
                         }`}
                         style={{}}
+                      />
+                    )}
+                  </p>
+
+                  <div className="">
+                    {menu.subMenu && openSubmenuIndex === index && (
+                      <ul className="pl-8">
+                        {" "}
+                        {menu.subMenu.map((subMenuItem, subIndex) => (
+                          <NavLink to={subMenuItem.link || "#"}>
+                            <li
+                              key={subIndex}
+                              className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
+                                isMenuItemActive(subMenuItem.link || "")
+                                  ? "text-white"
+                                  : ""
+                              }`}
+                            >
+                              {subMenuItem.title}
+                            </li>
+                          </NavLink>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              </NavLink>
+            </div>
+          ))} */}
+          {selectedMenu.map((menu, index) => (
+            <div key={index}>
+              <NavLink to={menu.link || "#"}>
+                <li>
+                  <p
+                    className={`flex relative ${
+                      menu.title && " px-[14px] cursor-pointer py-[8px]  "
+                    }  ${
+                      menu.subTitle && "text-[12px]"
+                    } text-purple200  items-center gap-x-2
+            ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
+                      isMenuItemActive(menu.link || "", menu.subMenu)
+                        ? "  bg-selectedState font-[600] text-[16px] text-white "
+                        : !isMenuItemActive(menu.link || "", menu.subMenu) &&
+                          !menu.subTitle
+                        ? " hover:bg-[#504EA3] "
+                        : ""
+                    }`}
+                    onClick={() => menu.subMenu && handleSubmenuToggle(index)}
+                  >
+                    {menu.title && (
+                      <img
+                        src={menu.icon}
+                        alt={menu.title}
+                        style={{ width: "20px", marginRight: "8px" }}
+                      />
+                    )}
+                    <span
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200 `}
+                    >
+                      {menu.title}
+                      {menu.subTitle}
+                    </span>
+                    {menu.subMenu && (
+                      <img
+                        src={ArrowToggle}
+                        alt=""
+                        className={`text-white absolute right-[10px]  transition-transform ${
+                          openSubmenuIndex === index ? "rotate-180" : ""
+                        }`}
                       />
                     )}
                   </p>
