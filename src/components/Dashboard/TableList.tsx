@@ -11,14 +11,14 @@ import { setUserData } from "../../slices/InviteUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 
-const DropdownMenu = ({ onClose }) => {
-  const handleItemClick = (action) => {
+const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
+  const handleItemClick = (action: string) => {
     console.log("Clicked:", action);
     onClose();
   };
 
   return (
-    <ul className="dropdown-menu absolute bg-white p-[24px]  left-10 top-[50px] z-10">
+    <ul className="dropdown-menu absolute bg-white p-[24px] left-10 top-[50px] z-10">
       <li
         onClick={() => handleItemClick("Edit")}
         className="font-[400] pb-[24px]"
@@ -35,8 +35,11 @@ const DropdownMenu = ({ onClose }) => {
 const TableList = () => {
   const [activeMenuIndex, setActiveMenuIndex] = useState(null);
 
-  const toggleMenu = (index) => {
-    setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
+  const toggleMenu = (index: number | null) => {
+    // @ts-ignore
+    setActiveMenuIndex((prevIndex: number | null) =>
+      prevIndex === null || prevIndex !== index ? index : null
+    );
   };
 
   interface Table {
@@ -114,7 +117,7 @@ const TableList = () => {
                           src={More}
                           alt=""
                           onClick={() => toggleMenu(index)}
-                          className="cursor-pointer"
+                          className="cursor-pointer w-[5px]"
                         />
                         {activeMenuIndex === index && (
                           <DropdownMenu onClose={() => toggleMenu(index)} />
