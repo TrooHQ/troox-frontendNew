@@ -2,7 +2,7 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import { Button } from "../buttons/Button.js";
 import PasswordInput from "../inputFields/PasswordInput.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,7 +11,6 @@ import {
   selectEmail,
   selectPassword,
 } from "../../slices/authSlice.js";
-
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
@@ -23,6 +22,8 @@ const Login = () => {
     dispatch(setPassword(newValue));
   };
 
+  const history = useNavigate();
+
   const handleButtonClick = () => {
     if (!Email || !Password) {
       setError("Invalid email/password");
@@ -31,6 +32,8 @@ const Login = () => {
       console.log("Email:", Email);
       console.log("Password:", Password);
       setError("");
+
+      history("/overview");
     }
   };
 
