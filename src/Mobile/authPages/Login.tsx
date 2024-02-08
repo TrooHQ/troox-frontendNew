@@ -33,7 +33,7 @@ const Login = () => {
       console.log("Password:", Password);
       setError("");
 
-      history("/overview");
+      history("/dashboard");
     }
   };
 
@@ -43,15 +43,15 @@ const Login = () => {
         <div className="">
           <img src={Logo} alt="" />
         </div>
-        <div className="bg-white grid  p-[40px] mt-[32px] mb-[40px] w-full md:w-[530px] rounded shadow-md">
-          <div className=" mb-[40px]">
+        <div className=" grid  p-[40px] mt-[128px] mb-[40px] w-full md:w-[530px]">
+          <div className=" mb-[40px] text-center">
             <p className="text-2xl text-grey500 ">Login Details</p>
             {error && <p className="text-red-500 pt-4">{error}</p>}
           </div>
-          <div className=" grid gap-[24px]">
+          <div className=" grid gap-[16px]">
             <CustomInput
-              type="email"
-              label="Business email"
+              type="text"
+              label="Business name/phone number"
               value={Email}
               error={error}
               onChange={(newValue) => dispatch(setEmail(newValue))}
@@ -61,7 +61,7 @@ const Login = () => {
               value={Password}
               onChange={handlePasswordChange}
               error={error}
-              style={{ marginTop: "10px", color: "blue" }}
+              style={{ color: "blue" }}
             />
           </div>
 
@@ -74,7 +74,7 @@ const Login = () => {
             <Button text="Login" />
           </div>
         </div>
-        <div className=" mt-[40px]">
+        <div className=" mt-[150px]">
           <Link to="/register">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account
