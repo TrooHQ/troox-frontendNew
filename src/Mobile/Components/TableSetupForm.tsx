@@ -1,0 +1,67 @@
+import Logo from "../../assets/trooLogo.svg";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import CustomInput from "../inputFields/CustomInput";
+
+const menuData = [
+  {
+    category: "Soups",
+    items: [
+      { title: "Egusi Soup", link: "/egusi" },
+      { title: "Okra  Soup", link: "/okra" },
+      { title: "Ogbono Soup", link: "/ogbono" },
+      { title: "White Soup", link: "/white" },
+    ],
+  },
+];
+
+const TableSetupForm = () => {
+  const [email, setEmail] = useState<string>("");
+
+  return (
+    <div className=" bg-[#EFEFEF] h-screen">
+      <div className=" mx-10">
+        <div className=" py-[48px] flex items-center justify-center">
+          <img src={Logo} alt="" />
+        </div>
+
+        <>
+          <p className=" text-[#121212] text-[14px] my-[24px]">
+            Stage 3/ <span className="text-[20px]"> Set Tables</span>{" "}
+          </p>
+
+          <div className="">
+            <p className=" text-[16px]  font-[400] text-[#929292] mb-[8px]">
+              How many tables does your business have?
+            </p>
+
+            <CustomInput
+              type="text"
+              label="Enter number of tables"
+              value={email}
+              onChange={(newValue) => setEmail(newValue)}
+            />
+          </div>
+
+          <div className=" grid mt-[32px] gap-[8px]">
+            <div
+              className={`${
+                menuData.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
+              } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
+            >
+              <p>Save Table</p>
+            </div>
+
+            <Link to="/">
+              <button className=" text-[16px] font-[500] text-purple500  w-full text-center py-3 rounded">
+                Skip
+              </button>
+            </Link>
+          </div>
+        </>
+      </div>
+    </div>
+  );
+};
+
+export default TableSetupForm;

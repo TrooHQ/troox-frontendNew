@@ -33,7 +33,7 @@ const Login = () => {
       console.log("Password:", Password);
       setError("");
 
-      history("/overview");
+      history("/dashboard");
     }
   };
 

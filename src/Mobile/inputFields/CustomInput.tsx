@@ -53,7 +53,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           className={`absolute transition-all duration-300 cursor-text ${
             isFocused
               ? "text-[14px] -top-3 left-2 bg-[#EFEFEF] px-2 text-[#000000]"
-              : "top-2 left-4 bg-[#EFEFEF] text-grey200"
+              : "top-2 left-4  text-grey200"
           } ${error ? "text-red-500" : ""}`}
           onClick={handleLabelClick}
         >
