@@ -13,27 +13,29 @@ const Dashboard = () => {
         <p className=" text-20px font-[400] text-[#121212]">Restaurant Name</p>
       </div>
 
-      <div className=" py-[16px] px-[24px] bg-[#DB7F3B] rounded-[5px] mt-[16px]">
-        <div className=" flex items-center justify-between">
-          <p className=" font-[400] text-[12px] text-white">Total sales</p>
-          <p className=" font-[400] text-[12px] text-white py-[4px] px-[12px] bg-[#B66A31] inline rounded-[5px]">
-            Today
-          </p>
-        </div>
+      <Link to="/report">
+        <div className=" py-[16px] px-[24px] bg-[#DB7F3B] rounded-[5px] mt-[16px]">
+          <div className=" flex items-center justify-between">
+            <p className=" font-[400] text-[12px] text-white">Total sales</p>
+            <p className=" font-[400] text-[12px] text-white py-[4px] px-[12px] bg-[#B66A31] inline rounded-[5px]">
+              Today
+            </p>
+          </div>
 
-        <p className=" text-[28px] font-[500] text-white leading-[36px]">
-          N250,000.00
-        </p>
+          <p className=" text-[28px] font-[500] text-white leading-[36px]">
+            N250,000.00
+          </p>
 
-        <div className=" grid gap-[5px] mt-[16px]">
-          <p className=" text-[14px] font-[500] text-white leading-[21px]">
-            30 Processed orders
-          </p>
-          <p className=" text-[14px] font-[500] text-white leading-[21px]">
-            30 Processed orders
-          </p>
+          <div className=" grid gap-[5px] mt-[16px]">
+            <p className=" text-[14px] font-[500] text-white leading-[21px]">
+              30 Processed orders
+            </p>
+            <p className=" text-[14px] font-[500] text-white leading-[21px]">
+              30 Processed orders
+            </p>
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className=" mt-[16px] grid grid-cols-2 gap-[16px]">
         <Link to="/ticket">

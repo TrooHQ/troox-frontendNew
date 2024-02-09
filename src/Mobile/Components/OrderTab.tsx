@@ -78,7 +78,7 @@ const OrderTab: React.FC = () => {
           <div className=" bg-[#11AE16] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
             <p className=" text-white text-center font-[500] text-[14px]">
               {" "}
-              Accept
+              Serve
             </p>
           </div>
         </div>
@@ -96,7 +96,7 @@ const OrderTab: React.FC = () => {
           <div className=" bg-[#11AE16] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
             <p className=" text-white text-center font-[500] text-[14px]">
               {" "}
-              Accept
+              Serve
             </p>
           </div>
         </div>

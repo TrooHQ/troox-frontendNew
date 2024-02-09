@@ -9,9 +9,10 @@ import Dashboard from "./Mobile/authPages/Dashboard";
 import Tickets from "./Mobile/Components/Tickets";
 import Menu from "./Mobile/Components/Menu";
 import Order from "./Mobile/Components/Order";
+import Reporting from "./Mobile/Components/Reporting";
 const MobileLayout = () => {
   return (
-    <div>
+    <div className=" font-GeneralSans">
       <Router>
         <ScrollToTop />
         <Routes>
@@ -20,6 +21,7 @@ const MobileLayout = () => {
           <Route path="/ticket" element={<Tickets />} />
           <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />
           <Route path="/menu" element={<MenuSetupForm />} />
           <Route path="/table" element={<TableSetupForm />} />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MenuImg from "../assets/tacosMenu.svg";
 import Close from "../../assets/closeIcon.svg";
-
+import EditIcon from "../assets/EditIcon.svg";
 import Modal from "./Modal";
 import CustomInput from "../inputFields/CustomInput";
 interface TabItem {
@@ -64,49 +64,15 @@ const MenuTab: React.FC = () => {
     setActiveTab(tabId);
   };
 
-  //   function renderMenuCategory(categoryData: MenuCategory) {
-  //     return (
-  //       <div>
-  //         <h2 className=" border-b border-b-[#E7E7E7] py-[8px] px-[17px] font-[500] text-[18px] uppercase">
-  //           {categoryData.category}
-  //         </h2>
-  //         <ul className="  grid gap-[8px] px-[17px]">
-  //           {categoryData.items.map((item, index) => (
-  //             <div className=" flex items-center justify-between   border-b py-[8px]">
-  //               <div key={index} className=" flex items-center gap-[16px]">
-  //                 <img src={MenuImg} alt="" />
-  //                 <div className=" grid gap-[8px]">
-  //                   <p className=" text-[16px] font-[500] text-[#121212]">
-  //                     {" "}
-  //                     {item.title}
-  //                   </p>
-  //                   <p className=" text-[#121212] text-[16px] font-[400]">
-  //                     {" "}
-  //                     ${item.price}
-  //                   </p>
-  //                 </div>
-  //               </div>
-  //               <p
-  //                 className=" cursor-pointer"
-  //                 onClick={() => handleEditModal(item)}
-  //               >
-  //                 Edit
-  //               </p>
-  //             </div>
-  //           ))}
-  //         </ul>
-  //       </div>
-  //     );
-  //   }
   function renderMenuCategory(menuData: MenuCategory[]) {
     return (
-      <div>
+      <div className="">
         {menuData.map((categoryData, categoryIndex) => (
           <div key={categoryIndex}>
-            <h2 className="border-b border-b-[#E7E7E7] py-[8px] px-[17px] font-[500] text-[18px] uppercase">
+            <h2 className="border-b border-b-[#E7E7E7] py-[8px]  font-[500] text-[18px] uppercase">
               {categoryData.category}
             </h2>
-            <ul className="grid gap-[8px] px-[17px]">
+            <ul className="grid gap-[8px] px-[16px]">
               {categoryData.items.map((item, index) => (
                 <div
                   key={index}
@@ -123,12 +89,12 @@ const MenuTab: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <p
+                  <div
                     className="cursor-pointer"
                     onClick={() => handleEditModal(item)}
                   >
-                    Edit
-                  </p>
+                    <img src={EditIcon} alt="" />
+                  </div>
                 </div>
               ))}
             </ul>
@@ -167,14 +133,14 @@ const MenuTab: React.FC = () => {
       </div>
 
       <Modal isOpen={editModal}>
-        <div className="bg-white w-[300px]">
+        <div className="bg-white w-[300px] relative">
           <div
-            className="cursor-pointer flex items-center justify-end"
+            className="cursor-pointer  absolute top-0  right-0"
             onClick={() => setEditModal(false)}
           >
-            <img src={Close} alt="" />
+            <img src={Close} alt="" className="" />
           </div>
-          <div className="">
+          <div className=" pt-[16px]">
             {editItem && (
               <>
                 <p className=" text-[18px] font-[500] text-[#000000]">
