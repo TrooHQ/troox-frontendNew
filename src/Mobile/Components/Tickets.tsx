@@ -78,7 +78,7 @@ const Tickets = () => {
         ))}
       </div>
 
-      <Modal isOpen={ticketModal} onClose={() => setTicketModal(false)}>
+      <Modal isOpen={ticketModal}>
         <div className=" w-[328px] h-[500px]">
           <div className=" flex items-center justify-between">
             <div className=" py-[16px] border-b border-b-[#E7E7E7]">
@@ -133,21 +133,6 @@ const Tickets = () => {
               {selectedTicket?.status}
             </span>
           </p>
-
-          {/* <p className="flex items-center gap-[8px]">
-            {selectedTicket?.status === "served" && (
-              <img src={Green} alt="Green" />
-            )}
-            {selectedTicket?.status === "accepted" && (
-              <img src={Red} alt="Red" />
-            )}
-            {selectedTicket?.status === "ready" && (
-              <img src={Orange} alt="Orange" />
-            )}
-            <span className="font-[500] text-[16px] text-[#414141] capitalize">
-              {selectedTicket?.status}
-            </span>
-          </p> */}
         </div>
       </Modal>
     </div>

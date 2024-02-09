@@ -32,15 +32,18 @@ interface MenuCategory {
   category: string;
   items: MenuItem[];
 }
-
 interface Props {
-  menuData: MenuCategory[];
+  menuData?: MenuCategory[];
 }
 
-const MenuSetupForm = () => {
+const MenuSetupForm: React.FC<Props> = () => {
   const [expandedCategories, setExpandedCategories] = useState<{
     [key: string]: boolean;
   }>({});
+  // const MenuSetupForm: React.FC<Props> = ({ menuData }) => {
+  //   const [expandedCategories, setExpandedCategories] = useState<{
+  //     [key: string]: boolean;
+  //   }>({});
 
   const toggleCategory = (category: string) => {
     setExpandedCategories((prevState) => ({
@@ -287,14 +290,14 @@ const MenuSetupForm = () => {
       </MenuModal>
 
       <MenuModal isOpen={successModal} onClose={() => setSuccessModal(false)}>
-        <div className=" absolute bottom-0 bg-white w-full px-[32px] py-[32px]">
-          <div className=" flex flex-col gap-[24px] items-center justify-center">
+        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
+          <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
             <img
+              className=" cursor-pointer"
               src={CheckCircle}
               alt=""
               onClick={() => setSuccessModal(false)}
             />
-
             <p className="text-[16px] font-[400] text-grey500">
               Menu has been setup successfully
             </p>
