@@ -55,7 +55,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   const options = ["yes", "no"];
   const [addModifierModar, setAddModifierModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [addCategory, setAddCategoryModay] = useState(false);
+  const [addCategory, setAddCategoryModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -65,12 +65,12 @@ const MenuSetupForm: React.FC<Props> = () => {
     setAddModifierModal(true);
   };
   const handleSuccessModal = () => {
-    setAddCategoryModay(false);
+    setAddCategoryModal(false);
     setSuccessModal(true);
   };
   const handleAddMenuItem = () => {
     setAddModifierModal(false);
-    setAddCategoryModay(true);
+    setAddCategoryModal(true);
   };
   const handleInfoModal = () => {
     setInfoModal(!infoModal);
@@ -231,7 +231,7 @@ const MenuSetupForm: React.FC<Props> = () => {
 
       <MenuModal
         isOpen={addCategory}
-        onClose={() => setAddCategoryModay(false)}
+        onClose={() => setAddCategoryModal(false)}
       >
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
           <div className=" ">

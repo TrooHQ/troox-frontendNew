@@ -10,6 +10,7 @@ import Tickets from "./Mobile/Components/Tickets";
 import Menu from "./Mobile/Components/Menu";
 import Order from "./Mobile/Components/Order";
 import Reporting from "./Mobile/Components/Reporting";
+import SettingsPage from "./Mobile/SettingsPage";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -24,6 +25,7 @@ const MobileLayout = () => {
           <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />
           <Route path="/menu" element={<MenuSetupForm />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/table" element={<TableSetupForm />} />
 
           <Route path="*" element={<NotFound />} />

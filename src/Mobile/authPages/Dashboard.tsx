@@ -65,12 +65,14 @@ const Dashboard = () => {
           </div>
         </Link>
 
-        <div className=" px-[28px] py-[47px] bg-[#F9D9CA] rounded-[5px]">
-          <div className=" flex flex-col gap-[8px] items-center justify-center">
-            <img src={setting} alt="" />
-            <p className=" text-[20px] font-[400] text-[#121212]">Settings</p>
+        <Link to="/settings">
+          <div className=" px-[28px] py-[47px] bg-[#F9D9CA] rounded-[5px]">
+            <div className=" flex flex-col gap-[8px] items-center justify-center">
+              <img src={setting} alt="" />
+              <p className=" text-[20px] font-[400] text-[#121212]">Settings</p>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
