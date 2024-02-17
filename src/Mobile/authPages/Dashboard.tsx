@@ -27,10 +27,10 @@ const Dashboard = () => {
           </p>
 
           <div className=" grid gap-[5px] mt-[16px]">
-            <p className=" text-[14px] font-[500] text-white leading-[21px]">
+            <p className=" text-[14px] font-[400] text-white leading-[21px]">
               30 Processed orders
             </p>
-            <p className=" text-[14px] font-[500] text-white leading-[21px]">
+            <p className=" text-[14px] font-[400] text-white leading-[21px]">
               30 Processed orders
             </p>
           </div>

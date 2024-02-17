@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import CustomSelect3 from "../inputFields/CustomSelect3";
-
+import ProcessedIcon from "../assets/Processed.svg";
+import AcceptedIcon from "../assets/Accepted.svg";
+import TotalIcon from "../assets/Total.svg";
 interface TabItem {
   id: number;
   label: string;
@@ -21,35 +23,50 @@ const ReportTab: React.FC = () => {
 
   function renderOrderReporting() {
     return (
-      <>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
-          <p className=" text-[16px] text-[#414141]">Total Orders</p>
-          <p className=" text-[#121212] text-[28px]">150 orders</p>
+      <div className=" grid gap-[8px]">
+        <div className=" rounded-[10px] px-[16px] py-[20px] border-b grid gap-[17px] bg-[#EEEEF7]">
+          <div className=" flex items-start gap-[9px]">
+            <img src={TotalIcon} alt="" />
+            <div className="">
+              <p className=" text-[16px] text-[#414141]">Total Orders</p>
+              <p className=" text-[#121212] text-[28px]">150 orders</p>
+            </div>
+          </div>
         </div>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
-          <p className=" text-[16px] text-[#414141]">Accepted Orders</p>
-          <p className=" text-[#121212] text-[28px]">150 orders</p>
+        <div className=" rounded-[10px] px-[16px] py-[20px] border-b grid gap-[17px] bg-[#F6EEE7]">
+          <div className=" flex items-start gap-[9px]">
+            <img src={AcceptedIcon} alt="" />
+            <div className="">
+              <p className=" text-[16px] text-[#414141]">Accepted Orders</p>
+              <p className=" text-[#121212] text-[28px]">150 orders</p>
+            </div>
+          </div>
         </div>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
-          <p className=" text-[16px] text-[#414141]">Fulfilled Orders</p>
-          <p className=" text-[#121212] text-[28px]">127 orders</p>
+        <div className=" rounded-[10px] px-[16px] py-[20px] border-b grid gap-[17px] bg-[#E9F8E9]">
+          <div className=" flex items-start gap-[9px]">
+            <img src={ProcessedIcon} alt="" />
+            <div className="">
+              <p className=" text-[16px] text-[#414141]">Fulfilled Orders</p>
+              <p className=" text-[#121212] text-[28px]">127 orders</p>
+            </div>
+          </div>
         </div>
-      </>
+      </div>
     );
   }
 
   function renderIncomeReporting() {
     return (
       <>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
+        <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Daily Income</p>
           <p className=" text-[#121212] text-[28px]">N 85,000</p>
         </div>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
+        <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Weekly Income</p>
           <p className=" text-[#121212] text-[28px]">N 85,000</p>
         </div>
-        <div className=" rounded-[5px] px-[1px] py-[16px] border-b grid gap-[17px]">
+        <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Monthly Income</p>
           <p className=" text-[#121212] text-[28px]">N 85,000</p>
         </div>

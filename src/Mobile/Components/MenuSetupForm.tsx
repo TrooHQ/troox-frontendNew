@@ -163,7 +163,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         isOpen={addModifierModar}
         onClose={() => setAddModifierModal(false)}
       >
-        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
             <div className=" flex relative items-center justify-between mb-[16px]">
               <p className=" text-[20px]  font-[400] text-[#121212]">
@@ -233,7 +233,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         isOpen={addCategory}
         onClose={() => setAddCategoryModal(false)}
       >
-        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tl-[20px] rounded-tr-[20px]">
           <div className=" ">
             <p className=" text-[20px]  font-[400] text-[#121212] mb-[16px]">
               New menu Item

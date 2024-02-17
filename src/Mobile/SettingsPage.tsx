@@ -62,7 +62,7 @@ const SettingsPage = () => {
   const [editModal, setEditModal] = useState(false);
   const [editItem, setEditItem] = useState(false);
 
-  const [addModifierModar, setAddModifierModal] = useState(false);
+  const [addModifierModal, setAddModifierModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [addCategory, setAddCategoryModal] = useState(false);
@@ -97,6 +97,7 @@ const SettingsPage = () => {
   };
 
   const handleAddMenuItem = () => {
+    setAddModifierModal(false);
     setEditItem(false);
     setAddCategoryModal(true);
   };
@@ -404,7 +405,7 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal
-        isOpen={addModifierModar}
+        isOpen={addModifierModal}
         onClose={() => setAddModifierModal(false)}
       >
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
@@ -543,7 +544,7 @@ const SettingsPage = () => {
               onClick={() => setSuccessModal(false)}
             />
             <p className="text-[16px] font-[400] text-grey500">
-              Menu has been edited successfully
+              Menu has been Added successfully
             </p>
           </div>
         </div>
