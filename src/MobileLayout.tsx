@@ -11,6 +11,8 @@ import Menu from "./Mobile/Components/Menu";
 import Order from "./Mobile/Components/Order";
 import Reporting from "./Mobile/Components/Reporting";
 import SettingsPage from "./Mobile/SettingsPage";
+import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
+import ManageQrCode from "./Mobile/Components/Settings/QrCodeSettings/ManageQrCode";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -26,7 +28,9 @@ const MobileLayout = () => {
           <Route path="/register" element={<RegistrationStepForm />} />
           <Route path="/menu" element={<MenuSetupForm />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/manage-qr" element={<ManageQrCode />} />
           <Route path="/table" element={<TableSetupForm />} />
+          <Route path="/room" element={<RoomSetupForm />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

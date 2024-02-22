@@ -7,6 +7,7 @@ import PasswordInput from "../inputFields/PasswordInput";
 import { Button } from "../buttons/Button";
 import { Link } from "react-router-dom";
 import Back from "../assets/Back.svg";
+import CustomSelect4 from "../inputFields/CustomSelect4";
 
 const RegistrationStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -14,6 +15,10 @@ const RegistrationStepForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [businessType, setBusinessType] = useState<string>("");
+
+  sessionStorage.setItem("businessType", businessType);
+  console.log(businessType);
 
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
@@ -97,6 +102,12 @@ const RegistrationStepForm = () => {
                 label="Confirm Password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
+              />
+
+              <CustomSelect4
+                options={["Restaurant", "Hotel & Lodgings", "Bar & Lounge"]}
+                placeholder="Business Type"
+                onSelect={(selectedValue) => setBusinessType(selectedValue)}
               />
 
               <div className=" grid mt-[32px] gap-[8px]">

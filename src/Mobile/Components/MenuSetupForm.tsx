@@ -8,6 +8,7 @@ import CheckInput from "../inputFields/CheckInput";
 import CustomInput from "../inputFields/CustomInput";
 import RadioInput from "../inputFields/RadioInput";
 import imageIcon from "../assets/image.svg";
+import Skip from "../assets/skip.svg";
 import Arrow from "../assets/arrow.png";
 import MenuModal from "./MenuModal";
 
@@ -75,14 +76,16 @@ const MenuSetupForm: React.FC<Props> = () => {
   const handleInfoModal = () => {
     setInfoModal(!infoModal);
   };
+
+  const businessType = sessionStorage.getItem("businessType");
   return (
-    <div className=" bg-[#EFEFEF] h-screen">
+    <div className=" bg-[#EFEFEF] h-screen relative">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
         </div>
 
-        <>
+        <div className=" ">
           <p className=" text-[#121212] text-[14px] my-[24px]">
             Stage 2/ <span className="text-[20px]"> Menu Setup</span>{" "}
           </p>
@@ -142,7 +145,11 @@ const MenuSetupForm: React.FC<Props> = () => {
               } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
             >
               {menuData.length > 0 ? (
-                <Link to="/table">
+                <Link
+                  to={`${
+                    businessType === "Hotel & Lodgings" ? "/room" : "/table"
+                  }`}
+                >
                   <p>Save and continue</p>
                 </Link>
               ) : (
@@ -156,7 +163,7 @@ const MenuSetupForm: React.FC<Props> = () => {
               </button>
             </Link>
           </div>
-        </>
+        </div>
       </div>
 
       <MenuModal
@@ -304,6 +311,19 @@ const MenuSetupForm: React.FC<Props> = () => {
           </div>
         </div>
       </MenuModal>
+
+      <div className=" absolute bottom-10 right-10 ">
+        <Link
+          to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}
+        >
+          <div className="flex items-end gap-[5px]">
+            <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
+              Skip this part for now
+            </p>
+            <img src={Skip} alt="" />
+          </div>{" "}
+        </Link>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import DashboardBackButton from "./buttons/DashboardBackButton";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
-import MenuIcon from "./assets/MenuIcon2.svg";
+// import MenuIcon from "./assets/MenuIcon2.svg";
 import QrIcon from "./assets/QRImage.svg";
 // import arrowDown from "./assets/ArrowDown3.svg";
 import MenuModal from "./Components/MenuModal";
@@ -10,16 +10,22 @@ import CheckCircle from "../assets/check_circle.svg";
 import WarningIcon from "./assets/WarningModal.svg";
 import DeleteSuccess from "./assets/DeleteSuccess.svg";
 import Trash from "./assets/delete.svg";
-import info from "./assets/info.svg";
-import AddWhite from "./assets/addWhite.svg";
-import imageIcon from "./assets/image.svg";
-import EditIcon from "./assets/EditIcon.svg";
+// import info from "./assets/info.svg";
+// import AddWhite from "./assets/addWhite.svg";
+// import imageIcon from "./assets/image.svg";
+// import EditIcon from "./assets/EditIcon.svg";
+import QrCode from "./assets/qr_code_2.svg";
+import downloadIcon from "./assets/downloadIcon.svg";
+import copyIcon from "./assets/copyicon.svg";
+import printIcon from "./assets/printer.svg";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import CustomInput from "./inputFields/CustomInput";
-import CheckInput from "./inputFields/CheckInput";
-import RadioInput from "./inputFields/RadioInput";
+import MenuSettings from "./Components/Settings/MenuSettings";
 import { Link } from "react-router-dom";
+// import CustomInput from "./inputFields/CustomInput";
+// import CheckInput from "./inputFields/CheckInput";
+// import RadioInput from "./inputFields/RadioInput";
+// import { Link } from "react-router-dom";
 
 interface FormData extends FieldValues {
   employee_name?: string;
@@ -43,94 +49,148 @@ const SettingsPage = () => {
     },
   ];
 
-  const menu = [
-    {
-      id: 1,
-      name: "Soup",
-    },
-    {
-      id: 2,
-      name: "Swallow",
-    },
-    {
-      id: 3,
-      name: "Rice",
-    },
-  ];
-  const options = ["yes", "no"];
+  // const menu = [
+  //   {
+  //     id: 1,
+  //     name: "Soup",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Swallow",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Rice",
+  //   },
+  // ];
+  // const options = ["yes", "no"];
 
-  const [editModal, setEditModal] = useState(false);
-  const [editItem, setEditItem] = useState(false);
+  // const [editModal, setEditModal] = useState(false);
+  // const [editItem, setEditItem] = useState(false);
 
-  const [addModifierModal, setAddModifierModal] = useState(false);
-  const [infoModal, setInfoModal] = useState(false);
-  const [email, setEmail] = useState<string>("");
-  const [addCategory, setAddCategoryModal] = useState(false);
+  // // const [addModifierModal, setAddModifierModal] = useState(false);
+  // const [infoModal, setInfoModal] = useState(false);
+  // const [email, setEmail] = useState<string>("");
+  // const [addCategory, setAddCategoryModal] = useState(false);
+
+  const [QRCodeModal, setQRCodeModal] = useState(false);
+  const [roomQRCodeModal, setRoomQRCodeModal] = useState(false);
+  const [tableQRCodeModal, setTableQRCodeModal] = useState(false);
+  const [tableListModal, setTableListModal] = useState(false);
+  const [roomQRCodeContentModal, setRoomQRCodeContentModal] = useState(false);
+  const [saveTableGroupModal, setSaveTableGroupModal] = useState(false);
+  const [tableGroupSuccessModal, setTableGroupSuccessModal] = useState(false);
 
   const [successModal, setSuccessModal] = useState(false);
-  const [successModal2, setSuccessModal2] = useState(false);
+  const [resetSuccessModal, setResetSuccessModal] = useState(false);
+  // const [successModal2, setSuccessModal2] = useState(false);
   const [warningModal, setWarningModal] = useState(false);
-  const [warningModal2, setWarningModal2] = useState(false);
+  // const [warningModal2, setWarningModal2] = useState(false);
   const [deleteSuccessfullModal, setDeleteSuccessfullModal] = useState(false);
-  const [deleteSuccessfullModal2, setDeleteSuccessfullModal2] = useState(false);
+  // const [deleteSuccessfullModal2, setDeleteSuccessfullModal2] = useState(false);
 
+  const [resetPasswordModal, setResetPasswordModal] = useState(false);
   const [employeeModal, setEmployeeModal] = useState(false);
   const [removeEmployeeModal, setRemoveEmployeeModal] = useState(false);
-  const [removeMenuModal, setRemoveMenuModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const handleAddMenuCategory = () => {
-    setAddModifierModal(true);
-  };
-  const handleInfoModal = () => {
-    setInfoModal(!infoModal);
-  };
-  const handleOptionChange = (option: string) => {
-    setSelectedOption(option);
-  };
-  const handleEditModal = () => {
-    setEditModal(true);
+  // const [removeMenuModal, setRemoveMenuModal] = useState(false);
+  // const [selectedOption, setSelectedOption] = useState<string>("");
+
+  // // const handleAddMenuCategory = () => {
+  // //   setAddModifierModal(true);
+  // // };
+  // const handleInfoModal = () => {
+  //   setInfoModal(!infoModal);
+  // };
+  // const handleOptionChange = (option: string) => {
+  //   setSelectedOption(option);
+  // };
+  // const handleEditModal = () => {
+  //   setEditModal(true);
+  // };
+
+  // const handleEditMenu = () => {
+  //   setEditModal(false);
+  //   setEditItem(true);
+  // };
+
+  const handleQRCodeModal = () => {
+    setQRCodeModal(true);
   };
 
-  const handleEditMenu = () => {
-    setEditModal(false);
-    setEditItem(true);
+  const handleRoomQRCodeModal = () => {
+    setQRCodeModal(false);
+    setRoomQRCodeModal(true);
   };
 
-  const handleAddMenuItem = () => {
-    setAddModifierModal(false);
-    setEditItem(false);
-    setAddCategoryModal(true);
+  const handleTableQRCodeModal = () => {
+    setQRCodeModal(false);
+    setTableQRCodeModal(true);
+  };
+
+  const handleTableListModal = () => {
+    setTableQRCodeModal(false);
+    setTableListModal(true);
+  };
+
+  const handleSaveTableGroupModal = () => {
+    setTableListModal(false);
+    setSaveTableGroupModal(true);
+  };
+
+  const handleTableGroupSuccessModal = () => {
+    setSaveTableGroupModal(false);
+    setTableGroupSuccessModal(true);
+  };
+
+  const handleRoomQRCodeContentModal = () => {
+    setRoomQRCodeModal(false);
+    setRoomQRCodeContentModal(true);
+    // setQRCodeModal(true);
+  };
+
+  const handleDownloadQRCodeModal = () => {
+    setRoomQRCodeContentModal(false);
+    setQRCodeModal(true);
+  };
+
+  // const handleAddMenuItem = () => {
+  //   setAddModifierModal(false);
+  //   setEditItem(false);
+  //   setAddCategoryModal(true);
+  // };
+  const handlePasswordResetModal = () => {
+    setResetPasswordModal(true);
   };
   const handleEmployeeModal = () => {
     setEmployeeModal(true);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log("Selected file:", file);
-  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   console.log("Selected file:", file);
+  // };
   const handleWarningModal = () => {
-    setRemoveMenuModal(false);
+    // setRemoveMenuModal(false);
     setRemoveEmployeeModal(false);
     setWarningModal(true);
   };
-  const handleWarningModal2 = () => {
-    setRemoveMenuModal(false);
-    setWarningModal2(true);
-  };
+  // const handleWarningModal2 = () => {
+  //   setRemoveMenuModal(false);
+  //   setWarningModal2(true);
+  // };
 
   const handleDeleteSuccessModal = () => {
     setWarningModal(false);
     setDeleteSuccessfullModal(true);
   };
 
-  const handleDeleteSuccessModal2 = () => {
-    setWarningModal2(false);
-    setDeleteSuccessfullModal2(true);
-  };
-  const handleRemoveMenuModal = () => {
-    setRemoveMenuModal(true);
-  };
+  // const handleDeleteSuccessModal2 = () => {
+  //   setWarningModal2(false);
+  //   setDeleteSuccessfullModal2(true);
+  // };
+  // const handleRemoveMenuModal = () => {
+  //   setRemoveMenuModal(true);
+  // };
 
   const handleRemoveEmployeeModal = () => {
     setRemoveEmployeeModal(true);
@@ -138,17 +198,22 @@ const SettingsPage = () => {
 
   const handleSuccessModal = () => {
     setEmployeeModal(false);
-    setAddCategoryModal(false);
-    setEditItem(false);
+    // setAddCategoryModal(false);
+    // setEditItem(false);
     setSuccessModal(true);
   };
 
-  const handleEditSuccessModal = () => {
-    // setEmployeeModal(false);
-    setAddCategoryModal(false);
-    setEditItem(false);
-    setSuccessModal2(true);
+  const handlePasswordResetSuccessModal = () => {
+    setResetPasswordModal(false);
+    setResetSuccessModal(true);
   };
+
+  // const handleEditSuccessModal = () => {
+  //   // setEmployeeModal(false);
+  //   setAddCategoryModal(false);
+  //   setEditItem(false);
+  //   setSuccessModal2(true);
+  // };
 
   const {
     register,
@@ -157,7 +222,7 @@ const SettingsPage = () => {
   } = useForm();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data.employee_name);
+    console.log(data);
   };
 
   return (
@@ -166,7 +231,7 @@ const SettingsPage = () => {
         <DashboardBackButton text="Settings" img={Arrow} />
 
         <div className="mt-[24px]">
-          <div className="bg-[#CFF5EE] p-[24px] rounded-[5px] cursor-pointer">
+          <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
@@ -175,15 +240,20 @@ const SettingsPage = () => {
             </div>
 
             <div className="ml-[36px] grid gap-[24px] my-[24px]">
-              <p className="text-grey300 text-[16px]">Reset Password</p>
               <p
-                className="text-grey300 text-[16px]"
+                className="  text-grey300 text-[16px] cursor-pointer"
+                onClick={handlePasswordResetModal}
+              >
+                Reset Password
+              </p>
+              <p
+                className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleEmployeeModal}
               >
                 Add Employee
               </p>
               <p
-                className="text-grey300 text-[16px]"
+                className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleRemoveEmployeeModal}
               >
                 Remove Employee
@@ -191,69 +261,394 @@ const SettingsPage = () => {
             </div>
           </div>
 
-          <div
-            className="bg-[#F3EBE8] p-[24px] rounded-[5px] mt-[24px] cursor-pointer"
-            // onClick={toggleMenu}
+          {/* <div
+            className="bg-[#F3EBE8] p-[24px] rounded-[5px] mt-[24px]"
           >
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={MenuIcon} alt="" />
                 <p className="text-[#121212] text-[20px]">Menu</p>
               </div>
-              {/* <img
-                src={arrowDown}
-                alt=""
-                className={isMenuOpen ? "transform rotate-180" : ""}
-              /> */}
             </div>
 
-            {/* {isMenuOpen && ( */}
             <div className="ml-[36px] grid gap-[24px] my-[24px]">
               <p
-                className="text-grey300 text-[16px]"
+                className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleAddMenuCategory}
               >
                 Add Menu
               </p>
               <p
-                className="text-grey300 text-[16px]"
+                className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleRemoveMenuModal}
               >
                 Remove Menu
               </p>
-              <p className="text-grey300 text-[16px]" onClick={handleEditModal}>
+              <p
+                className="text-grey300 text-[16px] cursor-pointer"
+                onClick={handleEditModal}
+              >
                 Edit Menu
               </p>
             </div>
-            {/* )} */}
-          </div>
+          </div> */}
 
-          <div
-            className="bg-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] cursor-pointer"
-            // onClick={toggleQr}
-          >
+          <MenuSettings />
+
+          <div className="bg-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] ">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={QrIcon} alt="" />
                 <p className="text-[#121212] text-[20px]">QR Code</p>
               </div>
-              {/* <img
-                src={arrowDown}
-                alt=""
-                className={isQrOpen ? "transform rotate-180" : ""}
-              /> */}
             </div>
 
-            {/* {isQrOpen && ( */}
             <div className="ml-[36px] grid gap-[24px] my-[24px]">
-              <p className="text-grey300 text-[16px]"> Create QR Code</p>
-              <p className="text-grey300 text-[16px]">Manage QR Code</p>
+              <p
+                className=" cursor-pointer text-grey300 text-[16px]"
+                onClick={handleQRCodeModal}
+              >
+                {" "}
+                Create QR Code
+              </p>
+              <Link to="/manage-qr">
+                <p className="text-grey300 text-[16px]">Manage QR Code</p>
+              </Link>
               <p className="text-grey300 text-[16px]">Delete QR Code</p>
             </div>
-            {/* )} */}
           </div>
         </div>
       </div>
+
+      <MenuModal
+        isOpen={resetPasswordModal}
+        onClose={() => setResetPasswordModal(false)}
+      >
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div>
+              <p className="text-[20px] font-[400] text-[#121212]">
+                Reset password
+              </p>
+              <div className=" mt-[24px] grid gap-[16px]">
+                <p className="text-red-500 text-sm mt-1">
+                  {/* {errors && "All Fields are required"} */}
+                </p>
+                <input
+                  type="password"
+                  id="new_password"
+                  {...register("new_password", {
+                    required: "New Password is required",
+                  })}
+                  placeholder="Create new password"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
+                    errors.new_password ? "border-red-500" : ""
+                  }`}
+                />
+                <input
+                  type="password"
+                  id="confirm_password"
+                  {...register("confirm_password", {
+                    required: "Confirm Password is required",
+                  })}
+                  placeholder="Confirm password"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
+                    errors.confirm_password ? "border-red-500" : ""
+                  }`}
+                />
+
+                <button
+                  type="submit"
+                  onClick={handlePasswordResetSuccessModal}
+                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal isOpen={QRCodeModal} onClose={() => setQRCodeModal(false)}>
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div>
+            <p className="text-[20px] font-[400] text-[#121212]">
+              Create QR Code
+            </p>
+            <div className=" mt-[24px] grid gap-[16px]">
+              <p className="text-red-500 text-sm mt-1">
+                {/* {errors && "All Fields are required"} */}
+              </p>
+
+              <div className=" grid gap-[12px]">
+                <button
+                  onClick={handleRoomQRCodeModal}
+                  className="bg-purple500 w-full font-[500] text-center text-white py-3 rounded"
+                >
+                  Create QR Code for Rooms
+                </button>
+                <button
+                  onClick={handleTableQRCodeModal}
+                  className="bg-purple500 text-[16px] font-[500] w-full text-center text-white py-3 rounded"
+                >
+                  Create QR Code for Tables
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={roomQRCodeModal}
+        onClose={() => setRoomQRCodeModal(false)}
+      >
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div className=" max-w-[280px] mx-auto">
+            <p className="text-[16px] font-[400] text-[#121212] text-center">
+              Do you want to create QR Code for rooms at Deluxe Hotel?
+            </p>
+            <div className=" mt-[24px] grid gap-[16px]">
+              <p className="text-red-500 text-sm mt-1">
+                {/* {errors && "All Fields are required"} */}
+              </p>
+
+              <div className=" flex items-center gap-[8px]">
+                <button
+                  onClick={() => setRoomQRCodeModal(false)}
+                  className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                >
+                  No
+                </button>
+                <button
+                  onClick={handleRoomQRCodeContentModal}
+                  className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
+                >
+                  Yes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={roomQRCodeContentModal}
+        onClose={() => setRoomQRCodeContentModal(false)}
+      >
+        <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div className=" ">
+            <div
+              className=" cursor-pointer flex items-center justify-center"
+              onClick={handleDownloadQRCodeModal}
+            >
+              <img src={QrCode} alt="" />
+            </div>
+            <p className="text-[16px] font-[400] text-[#121212] text-center">
+              QR Code for rooms at Deluxe Hotel has been created successfully
+            </p>
+            <div className=" mt-[24px] grid gap-[16px]">
+              <p className="text-red-500 text-sm mt-1">
+                {/* {errors && "All Fields are required"} */}
+              </p>
+
+              <div className=" flex items-center gap-[8px]">
+                <button
+                  // onClick={() => setRoomQRCodeModal(false)}
+                  className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                >
+                  <img src={downloadIcon} alt="" />
+                  Download
+                </button>
+                <button
+                  // onClick={() => setRoomQRCodeModal(false)}
+                  className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                >
+                  <img src={copyIcon} alt="" />
+                  Copy
+                </button>
+                <button
+                  // onClick={() => setRoomQRCodeModal(false)}
+                  className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                >
+                  <img src={printIcon} alt="" />
+                  Print
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={tableQRCodeModal}
+        onClose={() => setTableQRCodeModal(false)}
+      >
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div>
+              <p className="text-[20px] font-[400] text-[#121212]">
+                How many tables do you have?
+              </p>
+              <div className=" mt-[16px] ">
+                <p className="text-red-500 text-sm mt-1">
+                  {/* {errors && "All Fields are required"} */}
+                </p>
+                <input
+                  type="text"
+                  id="new_password"
+                  {...register("new_password", {
+                    required: "New Password is required",
+                  })}
+                  placeholder=""
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
+                    errors.new_password ? "border-red-500" : ""
+                  }`}
+                />
+
+                <button
+                  type="submit"
+                  onClick={handleTableListModal}
+                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={tableListModal}
+        onClose={() => setTableListModal(false)}
+      >
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div>
+              <p className="text-[16px] font-[400] text-[#121212]">
+                Do you want to create these QR Codes for 11 tables at Chicken
+                Express Restaurant?
+              </p>
+
+              <div className=" mt-[32px] grid gap-[16px]">
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 1</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 2</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 3</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 4</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 5</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+                <div className=" flex items-center justify-between">
+                  <p className="  text-grey500">Table 6</p>
+                  <img src={QrCode} alt="" className=" h-[18px]" />
+                </div>
+              </div>
+              <div className=" mt-[16px] ">
+                <p className="text-red-500 text-sm mt-1">
+                  {/* {errors && "All Fields are required"} */}
+                </p>
+
+                <div className=" mt-[32px] flex items-center gap-[16px]">
+                  <button
+                    onClick={() => setRoomQRCodeModal(false)}
+                    className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                  >
+                    No
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={handleSaveTableGroupModal}
+                    className="bg-purple500 w-full text-center text-white py-3 rounded "
+                  >
+                    Yes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={saveTableGroupModal}
+        onClose={() => setSaveTableGroupModal(false)}
+      >
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div>
+              <p className="text-[20px] font-[400] text-[#121212]">
+                Save Table Group As{" "}
+              </p>
+              <div className=" mt-[16px] ">
+                <p className="text-red-500 text-sm mt-1">
+                  {/* {errors && "All Fields are required"} */}
+                </p>
+                <input
+                  type="text"
+                  id="group_name"
+                  {...register("group_name", {
+                    required: "Group Name is required",
+                  })}
+                  placeholder="Enter table group name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
+                    errors.group_name ? "border-red-500" : ""
+                  }`}
+                />
+
+                <div className=" flex items-center gap-[8px] mt-[16px]">
+                  <button
+                    onClick={() => setSaveTableGroupModal(false)}
+                    className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleTableGroupSuccessModal}
+                    className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={tableGroupSuccessModal}
+        onClose={() => setTableGroupSuccessModal(false)}
+      >
+        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
+          <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
+            <img
+              className=" cursor-pointer"
+              src={CheckCircle}
+              alt=""
+              onClick={() => setTableGroupSuccessModal(false)}
+            />
+            <p className="text-[16px] font-[400] text-grey500 text-center">
+              QR Codes successfully created for tables at Chicken Express
+              Restaurant
+            </p>
+          </div>
+        </div>
+      </MenuModal>
 
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
         <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -404,7 +799,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
+      {/* <MenuModal
         isOpen={addModifierModal}
         onClose={() => setAddModifierModal(false)}
       >
@@ -472,9 +867,9 @@ const SettingsPage = () => {
             </Link>
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal
+      {/* <MenuModal
         isOpen={addCategory}
         onClose={() => setAddCategoryModal(false)}
       >
@@ -532,6 +927,25 @@ const SettingsPage = () => {
             </div>
           </div>
         </div>
+      </MenuModal> */}
+
+      <MenuModal
+        isOpen={resetSuccessModal}
+        onClose={() => setResetSuccessModal(false)}
+      >
+        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
+          <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
+            <img
+              className=" cursor-pointer"
+              src={CheckCircle}
+              alt=""
+              onClick={() => setResetSuccessModal(false)}
+            />
+            <p className="text-[16px] font-[400] text-grey500">
+              Your password has been reset successfully
+            </p>
+          </div>
+        </div>
       </MenuModal>
 
       <MenuModal isOpen={successModal} onClose={() => setSuccessModal(false)}>
@@ -549,8 +963,7 @@ const SettingsPage = () => {
           </div>
         </div>
       </MenuModal>
-
-      <MenuModal
+      {/* <MenuModal
         isOpen={removeMenuModal}
         onClose={() => setRemoveMenuModal(false)}
       >
@@ -576,9 +989,9 @@ const SettingsPage = () => {
             ))}
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal isOpen={warningModal2} onClose={() => setWarningModal2(false)}>
+      {/* <MenuModal isOpen={warningModal2} onClose={() => setWarningModal2(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
             <img
@@ -600,9 +1013,9 @@ const SettingsPage = () => {
             </button>
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal
+      {/* <MenuModal
         isOpen={deleteSuccessfullModal2}
         onClose={() => setDeleteSuccessfullModal2(false)}
       >
@@ -619,9 +1032,9 @@ const SettingsPage = () => {
             </p>
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal isOpen={editModal} onClose={() => setEditModal(false)}>
+      {/* <MenuModal isOpen={editModal} onClose={() => setEditModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <p className="text-[20px] font-[400] text-[#121212]">
             Edit menu category
@@ -645,9 +1058,9 @@ const SettingsPage = () => {
             ))}
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal isOpen={editItem} onClose={() => setEditItem(false)}>
+      {/* <MenuModal isOpen={editItem} onClose={() => setEditItem(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
             <h2 className=" mb-[16px] text-[#121212] font-[400] text-[20px]">
@@ -703,9 +1116,9 @@ const SettingsPage = () => {
             </div>
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
 
-      <MenuModal isOpen={successModal2} onClose={() => setSuccessModal2(false)}>
+      {/* <MenuModal isOpen={successModal2} onClose={() => setSuccessModal2(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
             <img
@@ -719,7 +1132,7 @@ const SettingsPage = () => {
             </p>
           </div>
         </div>
-      </MenuModal>
+      </MenuModal> */}
     </div>
   );
 };
