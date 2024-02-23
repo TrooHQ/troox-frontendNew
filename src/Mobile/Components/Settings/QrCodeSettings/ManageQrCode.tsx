@@ -18,7 +18,6 @@ const data = [
     arrowImage: "ArrowDown3.svg",
     content: "Table 2",
   },
-
   {
     id: 3,
     name: "Poolside3 Table",
@@ -35,9 +34,15 @@ const data = [
 
 const ManageQrCode = () => {
   const [visibleTableId, setVisibleTableId] = useState<number | null>(null);
+  const [menu, setMenu] = useState(false);
 
   const toggleTableVisibility = (id: number) => {
     setVisibleTableId((prevId) => (prevId === id ? null : id));
+    setMenu(false);
+  };
+
+  const HandleModal = () => {
+    setMenu((prevState) => !prevState);
   };
 
   return (
@@ -65,12 +70,37 @@ const ManageQrCode = () => {
             </div>
 
             {visibleTableId === table.id && (
-              <div className=" flex items-center justify-between mt-[16px]">
+              <div className=" flex items-center justify-between mt-[16px] relative">
                 <p>{table.content}</p>
                 <div className=" flex items-center gap-[10px]">
                   <img src={QrIcon} alt="" className=" h-[18px]" />
-                  <img src={More} alt="" className=" cursor-pointer w-[5px]" />
+                  <img
+                    src={More}
+                    alt=""
+                    className=" cursor-pointer w-[5px]"
+                    onClick={HandleModal}
+                  />
                 </div>
+
+                {/* <div className=" absolute right-0 top-10 bg-[#ffffff] p-[24px] shadow-lg">
+                  {menu && (
+                    <div className=" grid gap-[16px]">
+                      <p className="">Download</p>
+                      <p>Print</p>
+                      <p>Delete</p>
+                    </div>
+                  )}
+                </div> */}
+
+                {menu && (
+                  <div className=" absolute right-0 top-10 bg-[#ffffff] p-[24px] shadow-lg w-[150px] z-50">
+                    <div className=" grid gap-[16px]">
+                      <p className=" text-[14px] font-[400]">Download</p>
+                      <p className=" text-[14px] font-[400]">Print</p>
+                      <p className=" text-[14px] font-[400]">Delete</p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
