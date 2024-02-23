@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddWhite from "../../assets/addWhite.svg";
+import CheckCircle from "../assets/check_circle1.svg";
 
 interface ReusableCheckInputProps {
   text: string;
@@ -22,7 +22,7 @@ const CheckInput: React.FC<ReusableCheckInputProps> = ({ text }) => {
         {text}
       </p>
 
-      {isChecked && <img src={AddWhite} alt="" />}
+      {isChecked && <img src={CheckCircle} alt="" />}
     </div>
   );
 };

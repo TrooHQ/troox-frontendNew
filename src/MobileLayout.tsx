@@ -9,9 +9,13 @@ import Dashboard from "./Mobile/authPages/Dashboard";
 import Tickets from "./Mobile/Components/Tickets";
 import Menu from "./Mobile/Components/Menu";
 import Order from "./Mobile/Components/Order";
+import Reporting from "./Mobile/Components/Reporting";
+import SettingsPage from "./Mobile/SettingsPage";
+import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
+import ManageQrCode from "./Mobile/Components/Settings/QrCodeSettings/ManageQrCode";
 const MobileLayout = () => {
   return (
-    <div>
+    <div className=" font-GeneralSans">
       <Router>
         <ScrollToTop />
         <Routes>
@@ -20,9 +24,13 @@ const MobileLayout = () => {
           <Route path="/ticket" element={<Tickets />} />
           <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />
+          <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />
           <Route path="/menu" element={<MenuSetupForm />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/manage-qr" element={<ManageQrCode />} />
           <Route path="/table" element={<TableSetupForm />} />
+          <Route path="/room" element={<RoomSetupForm />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

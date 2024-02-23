@@ -4,7 +4,7 @@ interface CustomInputProps {
   label: string;
   type: string;
   value: string;
-  error?: string;
+  error?: string | undefined;
   maxLength?: number;
   onChange: (value: string) => void;
 }

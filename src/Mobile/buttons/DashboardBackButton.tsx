@@ -8,7 +8,7 @@ const DashboardBackButton: React.FC<ButtonProps> = ({ text, img }) => {
   return (
     <div
       onClick={() => navigate(-1)}
-      className=" flex items-center gap-[20px] cursor-pointer"
+      className=" inline-flex items-center gap-[20px] cursor-pointer"
     >
       <img src={img} alt="" />
       <p className=" font-[500] text-[20px] text-[#121212] cursor-pointer">

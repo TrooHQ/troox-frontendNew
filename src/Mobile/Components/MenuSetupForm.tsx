@@ -8,6 +8,7 @@ import CheckInput from "../inputFields/CheckInput";
 import CustomInput from "../inputFields/CustomInput";
 import RadioInput from "../inputFields/RadioInput";
 import imageIcon from "../assets/image.svg";
+import Skip from "../assets/skip.svg";
 import Arrow from "../assets/arrow.png";
 import MenuModal from "./MenuModal";
 
@@ -32,15 +33,18 @@ interface MenuCategory {
   category: string;
   items: MenuItem[];
 }
-
 interface Props {
-  menuData: MenuCategory[];
+  menuData?: MenuCategory[];
 }
 
-const MenuSetupForm = () => {
+const MenuSetupForm: React.FC<Props> = () => {
   const [expandedCategories, setExpandedCategories] = useState<{
     [key: string]: boolean;
   }>({});
+  // const MenuSetupForm: React.FC<Props> = ({ menuData }) => {
+  //   const [expandedCategories, setExpandedCategories] = useState<{
+  //     [key: string]: boolean;
+  //   }>({});
 
   const toggleCategory = (category: string) => {
     setExpandedCategories((prevState) => ({
@@ -52,7 +56,7 @@ const MenuSetupForm = () => {
   const options = ["yes", "no"];
   const [addModifierModar, setAddModifierModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [addCategory, setAddCategoryModay] = useState(false);
+  const [addCategory, setAddCategoryModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -62,24 +66,26 @@ const MenuSetupForm = () => {
     setAddModifierModal(true);
   };
   const handleSuccessModal = () => {
-    setAddCategoryModay(false);
+    setAddCategoryModal(false);
     setSuccessModal(true);
   };
   const handleAddMenuItem = () => {
     setAddModifierModal(false);
-    setAddCategoryModay(true);
+    setAddCategoryModal(true);
   };
   const handleInfoModal = () => {
     setInfoModal(!infoModal);
   };
+
+  const businessType = sessionStorage.getItem("businessType");
   return (
-    <div className=" bg-[#EFEFEF] h-screen">
+    <div className=" bg-[#EFEFEF] h-screen relative">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
         </div>
 
-        <>
+        <div className=" ">
           <p className=" text-[#121212] text-[14px] my-[24px]">
             Stage 2/ <span className="text-[20px]"> Menu Setup</span>{" "}
           </p>
@@ -139,7 +145,11 @@ const MenuSetupForm = () => {
               } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
             >
               {menuData.length > 0 ? (
-                <Link to="/table">
+                <Link
+                  to={`${
+                    businessType === "Hotel & Lodgings" ? "/room" : "/table"
+                  }`}
+                >
                   <p>Save and continue</p>
                 </Link>
               ) : (
@@ -153,14 +163,14 @@ const MenuSetupForm = () => {
               </button>
             </Link>
           </div>
-        </>
+        </div>
       </div>
 
       <MenuModal
         isOpen={addModifierModar}
         onClose={() => setAddModifierModal(false)}
       >
-        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
             <div className=" flex relative items-center justify-between mb-[16px]">
               <p className=" text-[20px]  font-[400] text-[#121212]">
@@ -228,9 +238,9 @@ const MenuSetupForm = () => {
 
       <MenuModal
         isOpen={addCategory}
-        onClose={() => setAddCategoryModay(false)}
+        onClose={() => setAddCategoryModal(false)}
       >
-        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tl-[20px] rounded-tr-[20px]">
           <div className=" ">
             <p className=" text-[20px]  font-[400] text-[#121212] mb-[16px]">
               New menu Item
@@ -287,20 +297,33 @@ const MenuSetupForm = () => {
       </MenuModal>
 
       <MenuModal isOpen={successModal} onClose={() => setSuccessModal(false)}>
-        <div className=" absolute bottom-0 bg-white w-full px-[32px] py-[32px]">
-          <div className=" flex flex-col gap-[24px] items-center justify-center">
+        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
+          <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
             <img
+              className=" cursor-pointer"
               src={CheckCircle}
               alt=""
               onClick={() => setSuccessModal(false)}
             />
-
             <p className="text-[16px] font-[400] text-grey500">
               Menu has been setup successfully
             </p>
           </div>
         </div>
       </MenuModal>
+
+      <div className=" absolute bottom-10 right-10 ">
+        <Link
+          to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}
+        >
+          <div className="flex items-end gap-[5px]">
+            <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
+              Skip this part for now
+            </p>
+            <img src={Skip} alt="" />
+          </div>{" "}
+        </Link>
+      </div>
     </div>
   );
 };
