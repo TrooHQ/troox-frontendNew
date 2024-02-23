@@ -2,8 +2,8 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Button } from "../buttons/Button";
-import BackButton from "../buttons/BackButton";
+import { Button } from "../Buttons/Button";
+import BackButtonMain from "../Buttons/BackButtonMain";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
@@ -67,7 +67,7 @@ const Register = () => {
           <div className=" ">
             <Button link="/business-profile" text="Create Account" />
             <div className=" flex items-center justify-center my-5">
-              <BackButton text="Go Back" />
+              <BackButtonMain text="Go Back" />
             </div>
           </div>
         </div>

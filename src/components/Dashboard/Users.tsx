@@ -2,7 +2,7 @@ import { useState } from "react";
 import Profileimg from "../../assets/Profileimg.svg";
 import Delete from "../../assets/DeleteIcon.svg";
 import Modal from "../Modal";
-import CancelButton from "../buttons/CancelButton";
+import CancelButton from "../Buttons/CancelButton";
 import { Link } from "react-router-dom";
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

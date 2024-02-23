@@ -1,8 +1,8 @@
 import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
-import BackButton from "../buttons/BackButton";
 import { Link } from "react-router-dom";
+import BackButtonMain from "../Buttons/BackButtonMain";
 
 interface FAQItem {
   question: string;
@@ -57,7 +57,7 @@ const BusinessProfiles: React.FC = () => {
 
           <div className=" flex justify-end items-center gap-2 mt-[32px]">
             <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
-              <BackButton text="Cancel" />
+              <BackButtonMain text="Cancel" />
             </div>
 
             <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">

@@ -2,8 +2,8 @@ import { ChangeEvent, useState } from "react";
 
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
-import BackButton from "./buttons/BackButton";
 import { Link } from "react-router-dom";
+import BackButtonMain from "./Buttons/BackButtonMain";
 
 interface FAQItem {
   question: string;
@@ -542,7 +542,7 @@ const FAQSetting: React.FC<FAQProps> = ({
 
       <div className=" flex justify-end items-center gap-2">
         <div className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
-          <BackButton text="Cancel" />
+          <BackButtonMain text="Cancel" />
         </div>
 
         <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff]">

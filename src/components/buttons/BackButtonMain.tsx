@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 interface ButtonProps {
   text: string;
 }
-const BackButton: React.FC<ButtonProps> = ({ text }) => {
+const BackButtonMain: React.FC<ButtonProps> = ({ text }) => {
   const navigate = useNavigate();
   return (
     <div onClick={() => navigate(-1)}>
@@ -13,4 +13,4 @@ const BackButton: React.FC<ButtonProps> = ({ text }) => {
   );
 };
 
-export default BackButton;
+export default BackButtonMain;

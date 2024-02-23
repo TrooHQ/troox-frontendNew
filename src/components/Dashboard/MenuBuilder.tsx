@@ -17,7 +17,7 @@ import CustomSelect2 from "../inputFields/CustomSelect2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
-import CancelButton from "../buttons/CancelButton";
+import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
   type?: string;
