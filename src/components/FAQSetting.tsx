@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
-import BackButton from "./buttons/BackButton";
+import BackButton from "./Buttons/BackButton";
 import { Link } from "react-router-dom";
 
 interface FAQItem {
