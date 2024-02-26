@@ -15,6 +15,9 @@ import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
 import ManageQrCode from "./Mobile/Components/Settings/QrCodeSettings/ManageQrCode";
 import EmployeeDashboard from "./Mobile/Employee/EmployeeDashboard";
 import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
+import EnterPassword from "./Mobile/authPages/EnterPassword";
+import CreatePassword from "./Mobile/authPages/CreatePassword";
+import EmployeeLogin from "./Mobile/authPages/EmployeeLogin";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -22,6 +25,7 @@ const MobileLayout = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/ticket" element={<Tickets />} />
@@ -32,6 +36,8 @@ const MobileLayout = () => {
           <Route path="/menu" element={<MenuSetupForm />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/employee-settings" element={<EmployeeSettingsPage />} />
+          <Route path="/password" element={<EnterPassword />} />
+          <Route path="/create-password" element={<CreatePassword />} />
           <Route path="/manage-qr" element={<ManageQrCode />} />
           <Route path="/table" element={<TableSetupForm />} />
           <Route path="/room" element={<RoomSetupForm />} />
