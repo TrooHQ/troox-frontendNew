@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Grey from "../assets/Grey.svg";
-import Purple from "../assets/purple.svg";
+import Grey from "../assets/GreyStroke.svg";
+import Purple from "../assets/PurpleStroke.svg";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
@@ -16,9 +16,11 @@ const RegistrationStepForm = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [businessType, setBusinessType] = useState<string>("");
+  const [bank, setBank] = useState<string>("");
 
   sessionStorage.setItem("businessType", businessType);
-  console.log(businessType);
+  sessionStorage.setItem("bank", bank);
+  console.log(businessType, bank);
 
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
@@ -42,11 +44,19 @@ const RegistrationStepForm = () => {
   //   setFormData({ ...formData, [name]: value });
   // };
   const nextStep = () => {
-    setCurrentStep(currentStep + 1);
+    if (businessType === "Hotel & Lodgings") {
+      setCurrentStep(currentStep + 1);
+    } else {
+      setCurrentStep(currentStep + 2);
+    }
   };
 
   const prevStep = () => {
-    setCurrentStep(currentStep - 1);
+    if (businessType === "Hotel & Lodgings") {
+      setCurrentStep(currentStep - 1);
+    } else {
+      setCurrentStep(currentStep - 2);
+    }
   };
 
   return (
@@ -58,11 +68,18 @@ const RegistrationStepForm = () => {
 
         {currentStep === 1 && (
           <>
-            <div className=" flex justify-center gap-[20px] items-center">
-              <img src={Purple} />
-              <img src={Grey} />
-              <img src={Grey} />
-            </div>
+            {businessType === "Hotel & Lodgings" ? (
+              <div className=" grid grid-cols-3 gap-[10px]">
+                <img src={Purple} />
+                <img src={Grey} />
+                <img src={Grey} />
+              </div>
+            ) : (
+              <div className=" grid grid-cols-2 gap-[10px]">
+                <img src={Purple} />
+                <img src={Grey} />
+              </div>
+            )}
             <p className=" text-[#121212] text-[14px] my-[24px]">
               Stage 1/{" "}
               <span className="text-[20px]"> Business information</span>{" "}
@@ -70,16 +87,17 @@ const RegistrationStepForm = () => {
             <div className=" grid gap-3  my-5 w-full md:w-[530px] ">
               <CustomInput
                 type="text"
-                label="Business name"
+                label="Business name (e.g. Deluxe Restaurant)"
                 value={name}
                 onChange={(newValue) => setName(newValue)}
               />
               <CustomInput
                 type="text"
-                label="Business phone number"
+                label="Business contact (e.g. Sade Adu)"
                 value={email}
                 onChange={(newValue) => setEmail(newValue)}
               />
+
               <CustomInput
                 type="text"
                 label="Business address"
@@ -87,8 +105,15 @@ const RegistrationStepForm = () => {
                 onChange={(newValue) => setEmail(newValue)}
               />
               <CustomInput
+                type="email"
+                label="Business email"
+                value={email}
+                onChange={(newValue) => setEmail(newValue)}
+              />
+
+              <CustomInput
                 type="text"
-                label="City"
+                label="Phone number (e.g. +234 812 345 6789)"
                 value={email}
                 onChange={(newValue) => setEmail(newValue)}
               />
@@ -125,11 +150,18 @@ const RegistrationStepForm = () => {
         )}
         {currentStep === 2 && (
           <>
-            <div className=" grid grid-cols-3 gap-[10px]">
-              <img src={Purple} />
-              <img src={Purple} />
-              <img src={Grey} />
-            </div>
+            {businessType === "Hotel & Lodgings" ? (
+              <div className=" grid grid-cols-3 gap-[10px]">
+                <img src={Purple} />
+                <img src={Purple} />
+                <img src={Grey} />
+              </div>
+            ) : (
+              <div className=" grid grid-cols-2 gap-[10px]">
+                <img src={Purple} />
+                <img src={Grey} />
+              </div>
+            )}
             <div
               className="  items-center mt-[9px] flex gap-[8px]"
               onClick={prevStep}
@@ -190,11 +222,18 @@ const RegistrationStepForm = () => {
         )}
         {currentStep === 3 && (
           <>
-            <div className=" grid grid-cols-3 gap-[10px]">
-              <img src={Purple} />
-              <img src={Purple} />
-              <img src={Purple} />
-            </div>
+            {businessType === "Hotel & Lodgings" ? (
+              <div className=" grid grid-cols-3 gap-[10px]">
+                <img src={Purple} />
+                <img src={Purple} />
+                <img src={Purple} />
+              </div>
+            ) : (
+              <div className=" grid grid-cols-2 gap-[10px]">
+                <img src={Purple} />
+                <img src={Grey} />
+              </div>
+            )}
             <div
               className="  items-center mt-[9px] flex gap-[8px]"
               onClick={prevStep}
@@ -214,6 +253,19 @@ const RegistrationStepForm = () => {
                 label="Bank account name"
                 value={name}
                 onChange={(newValue) => setName(newValue)}
+              />
+
+              <CustomInput
+                type="text"
+                label="Bank account number"
+                value={name}
+                onChange={(newValue) => setName(newValue)}
+              />
+
+              <CustomSelect4
+                options={["UBA", "FIRST BANK", "ACCESS BANK"]}
+                placeholder="Bank"
+                onSelect={(selectedValue) => setBank(selectedValue)}
               />
               <CustomInput
                 type="text"

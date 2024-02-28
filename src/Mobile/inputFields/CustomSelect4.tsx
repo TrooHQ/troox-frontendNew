@@ -62,7 +62,7 @@ const CustomSelect4: React.FC<CustomSelect4Props> = ({
         {options.map((option, index) => (
           <div
             key={index}
-            className={`option px-2 py-2 cursor-pointer transition-colors  hover:bg-gray-100 ${
+            className={`option px-2 py-2 text-[14px] cursor-pointer transition-colors  hover:bg-gray-100 ${
               disabledOptions &&
               disabledOptions.includes(
                 typeof option === "string" ? option : option.value
