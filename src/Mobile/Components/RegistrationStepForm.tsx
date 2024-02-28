@@ -4,7 +4,7 @@ import Purple from "../assets/PurpleStroke.svg";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Button } from "../buttons/Button";
+import { Button } from "../Buttons/Button";
 import { Link } from "react-router-dom";
 import Back from "../assets/Back.svg";
 import CustomSelect4 from "../inputFields/CustomSelect4";

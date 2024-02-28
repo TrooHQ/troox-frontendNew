@@ -2,7 +2,7 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Button } from "../buttons/Button";
+import { Button } from "../Buttons/Button";
 import BackButton from "../Buttons/BackButton";
 
 const Register = () => {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "../../assets/trooLogo.svg";
-import { Button } from "../buttons/Button.js";
+import { Button } from "../Buttons/Button.js";
 
 const EnterPassword = () => {
   return (

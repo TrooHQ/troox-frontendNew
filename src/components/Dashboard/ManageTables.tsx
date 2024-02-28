@@ -1,7 +1,7 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Add from "../../assets/add.svg";
-import CancelButton from "../buttons/CancelButton";
+import CancelButton from "../Buttons/CancelButton";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
 import { useState } from "react";

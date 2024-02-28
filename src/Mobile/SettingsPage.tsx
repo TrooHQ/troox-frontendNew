@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DashboardBackButton from "./buttons/DashboardBackButton";
+import DashboardBackButton from "./Buttons/DashboardBackButton";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
 // import MenuIcon from "./assets/MenuIcon2.svg";

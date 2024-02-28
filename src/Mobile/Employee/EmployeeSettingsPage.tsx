@@ -5,7 +5,7 @@ import MenuModal from "../Components/MenuModal";
 import CheckCircle from "../assets/check_circle.svg";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import DashboardBackButton from "../buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton";
 
 interface FormData extends FieldValues {
   employee_name?: string;
