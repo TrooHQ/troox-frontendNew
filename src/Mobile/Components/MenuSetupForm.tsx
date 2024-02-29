@@ -86,7 +86,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         </div>
 
         <div className=" ">
-          <p className=" text-[#121212] text-[14px] my-[24px]">
+          <p className=" text-grey500 text-[14px] my-[24px]">
             Stage 2/ <span className="text-[20px]"> Menu Setup</span>{" "}
           </p>
           <p
@@ -173,7 +173,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
             <div className=" flex relative items-center justify-between mb-[16px]">
-              <p className=" text-[20px]  font-[400] text-[#121212]">
+              <p className=" text-[20px]  font-[400] text-grey500">
                 New menu category
               </p>
               <img
@@ -184,11 +184,11 @@ const MenuSetupForm: React.FC<Props> = () => {
               />
               {infoModal && (
                 <div className="grid gap-[10px] absolute top-[30px] right-0 shadow-2xl z-[50] w-[300px] py-[32px] px-[16px] bg-white">
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     New Menu allows you create a new menu category where other
                     food items can be added to it.
                   </p>
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     E.g when you create a menu for soup, you have created a
                     category called soup in your database. You can add soups
                     such as Pepper soup e.t.c. when you create a menu item.
@@ -210,7 +210,7 @@ const MenuSetupForm: React.FC<Props> = () => {
               onChange={(newValue) => setEmail(newValue)}
             />
             <div className=" grid gap-[8px] my-[16px]">
-              <p className=" text-[#121212] text-[16px] font-[400]">
+              <p className=" text-grey500 text-[16px] font-[400]">
                 Setup menu group
               </p>
               <p className=" text-[#606060] text-[14px] font-[400]">
@@ -242,7 +242,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       >
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white rounded-tl-[20px] rounded-tr-[20px]">
           <div className=" ">
-            <p className=" text-[20px]  font-[400] text-[#121212] mb-[16px]">
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
               New menu Item
             </p>
 
@@ -254,7 +254,7 @@ const MenuSetupForm: React.FC<Props> = () => {
             />
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                   Add image
                 </p>
 

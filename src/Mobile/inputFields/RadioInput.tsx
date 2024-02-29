@@ -30,7 +30,7 @@ const RadioInput: React.FC<RadioInputProps> = ({ options, onChange }) => {
           />
           <label
             htmlFor={option}
-            className="text-[#121212] font-[400] text-[14px] cursor-pointer capitalize"
+            className="text-grey500 font-[400] text-[14px] cursor-pointer capitalize"
           >
             {option}
           </label>

@@ -47,7 +47,7 @@ const EmployeeSettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">Account</p>
+                <p className="text-grey500 text-[20px]">Account</p>
               </div>
             </div>
 
@@ -70,7 +70,7 @@ const EmployeeSettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Reset password
               </p>
               <div className=" mt-[24px] grid gap-[16px]">

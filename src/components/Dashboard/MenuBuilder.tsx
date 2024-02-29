@@ -389,7 +389,7 @@ const MenuBuilder = () => {
                                   <p className=" text-[12px] font-[400] text-grey300">
                                     Item
                                   </p>
-                                  <p className=" leading-[24px] text-[16px] text-[#121212] font-[500] capitalize">
+                                  <p className=" leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
                                     {data.name}
                                   </p>
                                   <p className=" text-[12px] font-[400] text-grey300">
@@ -398,7 +398,7 @@ const MenuBuilder = () => {
                                 </div>
                               </div>
                               <div className=" flex">
-                                <p className=" text-[16px] font-[500] text-[#121212]">
+                                <p className=" text-[16px] font-[500] text-grey500">
                                   {data.price}
                                 </p>
                               </div>
@@ -531,7 +531,7 @@ const MenuBuilder = () => {
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-[#121212]">
+                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
                         Tags
                       </p>
                       <div className=" flex items-center gap-[8px] justify-center">
@@ -746,10 +746,10 @@ const MenuBuilder = () => {
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                         Pricing
                       </p>
-                      <p className=" text-[14px] font-[400] text-[#121212]">
+                      <p className=" text-[14px] font-[400] text-grey500">
                         Do you want this price to apply to all the items in this
                         menu group?
                       </p>
@@ -767,7 +767,7 @@ const MenuBuilder = () => {
                         />
                         <label
                           htmlFor="yes"
-                          className="mr-4  text-[#121212] text-[16px] font-[400]"
+                          className="mr-4  text-grey500 text-[16px] font-[400]"
                         >
                           Yes
                         </label>
@@ -785,7 +785,7 @@ const MenuBuilder = () => {
                         />
                         <label
                           htmlFor="no"
-                          className=" text-[#121212] text-[16px] font-[400]"
+                          className=" text-grey500 text-[16px] font-[400]"
                         >
                           No
                         </label>
@@ -812,7 +812,7 @@ const MenuBuilder = () => {
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                         Add image
                       </p>
 
@@ -897,10 +897,10 @@ const MenuBuilder = () => {
                     />
 
                     <div className="">
-                      <p className="text-[18px] mb-[8px] font-[500] text-[#121212]">
+                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
                         Pricing
                       </p>
-                      <p className="text-[14px] font-[400] text-[#121212]">
+                      <p className="text-[14px] font-[400] text-grey500">
                         Choose a pricing option.
                       </p>
                       <div className="flex items-center my-[8px]">
@@ -917,7 +917,7 @@ const MenuBuilder = () => {
                         />
                         <label
                           htmlFor="base"
-                          className="mr-4 text-[#121212] text-[14px] font-[400]"
+                          className="mr-4 text-grey500 text-[14px] font-[400]"
                         >
                           Base Price
                         </label>
@@ -935,7 +935,7 @@ const MenuBuilder = () => {
                         />
                         <label
                           htmlFor="range"
-                          className="mr-4 text-[#121212] text-[14px] font-[400]"
+                          className="mr-4 text-grey500 text-[14px] font-[400]"
                         >
                           Range Price
                         </label>
@@ -953,7 +953,7 @@ const MenuBuilder = () => {
                         />
                         <label
                           htmlFor="time"
-                          className="text-[#121212] text-[14px] font-[400]"
+                          className="text-grey500 text-[14px] font-[400]"
                         >
                           Time Specific Price
                         </label>
@@ -1070,7 +1070,7 @@ const MenuBuilder = () => {
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                         Add image
                       </p>
 
@@ -1106,7 +1106,7 @@ const MenuBuilder = () => {
                     </div>
 
                     <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-[#121212]">
+                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
                         Tags
                       </p>
                       <div className=" flex items-center gap-[8px] justify-center">

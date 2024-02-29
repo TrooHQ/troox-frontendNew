@@ -18,6 +18,8 @@ import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
 import EnterPassword from "./Mobile/authPages/EnterPassword";
 import CreatePassword from "./Mobile/authPages/CreatePassword";
 import EmployeeLogin from "./Mobile/authPages/EmployeeLogin";
+import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
+import StartOrder from "./Mobile/Customers/StartOrder";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -28,6 +30,8 @@ const MobileLayout = () => {
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+          <Route path="/restaurants" element={<ListofRestaurants />} />
+          <Route path="/start-order" element={<StartOrder />} />
           <Route path="/ticket" element={<Tickets />} />
           <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />

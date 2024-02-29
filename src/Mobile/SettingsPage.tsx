@@ -235,7 +235,7 @@ const SettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">Account</p>
+                <p className="text-grey500 text-[20px]">Account</p>
               </div>
             </div>
 
@@ -267,7 +267,7 @@ const SettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={MenuIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">Menu</p>
+                <p className="text-grey500 text-[20px]">Menu</p>
               </div>
             </div>
 
@@ -299,7 +299,7 @@ const SettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={QrIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">QR Code</p>
+                <p className="text-grey500 text-[20px]">QR Code</p>
               </div>
             </div>
 
@@ -327,7 +327,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Reset password
               </p>
               <div className=" mt-[24px] grid gap-[16px]">
@@ -373,7 +373,7 @@ const SettingsPage = () => {
       <MenuModal isOpen={QRCodeModal} onClose={() => setQRCodeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
-            <p className="text-[20px] font-[400] text-[#121212]">
+            <p className="text-[20px] font-[400] text-grey500">
               Create QR Code
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -406,7 +406,7 @@ const SettingsPage = () => {
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" max-w-[280px] mx-auto">
-            <p className="text-[16px] font-[400] text-[#121212] text-center">
+            <p className="text-[16px] font-[400] text-grey500 text-center">
               Do you want to create QR Code for rooms at Deluxe Hotel?
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -445,7 +445,7 @@ const SettingsPage = () => {
             >
               <img src={QrCode} alt="" />
             </div>
-            <p className="text-[16px] font-[400] text-[#121212] text-center">
+            <p className="text-[16px] font-[400] text-grey500 text-center">
               QR Code for rooms at Deluxe Hotel has been created successfully
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -488,7 +488,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 How many tables do you have?
               </p>
               <div className=" mt-[16px] ">
@@ -527,7 +527,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[16px] font-[400] text-[#121212]">
+              <p className="text-[16px] font-[400] text-grey500">
                 Do you want to create these QR Codes for 11 tables at Chicken
                 Express Restaurant?
               </p>
@@ -591,7 +591,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Save Table Group As{" "}
               </p>
               <div className=" mt-[16px] ">
@@ -654,7 +654,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Add employee
               </p>
               <div className=" mt-[24px] grid gap-[16px]">
@@ -715,16 +715,14 @@ const SettingsPage = () => {
         onClose={() => setRemoveEmployeeModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">
-            Remove employee
-          </p>
+          <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {users.map((user) => (
               <div
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={user.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {user.name}
                 </p>
                 <p
@@ -806,7 +804,7 @@ const SettingsPage = () => {
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
           <div className=" ">
             <div className=" flex relative items-center justify-between mb-[16px]">
-              <p className=" text-[20px]  font-[400] text-[#121212]">
+              <p className=" text-[20px]  font-[400] text-grey500">
                 New menu category
               </p>
               <img
@@ -817,11 +815,11 @@ const SettingsPage = () => {
               />
               {infoModal && (
                 <div className="grid gap-[10px] absolute top-[30px] right-0 shadow-2xl z-[50] w-[300px] py-[32px] px-[16px] bg-white">
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     New Menu allows you create a new menu category where other
                     food items can be added to it.
                   </p>
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     E.g when you create a menu for soup, you have created a
                     category called soup in your database. You can add soups
                     such as Pepper soup e.t.c. when you create a menu item.
@@ -843,7 +841,7 @@ const SettingsPage = () => {
               onChange={(newValue) => setEmail(newValue)}
             />
             <div className=" grid gap-[8px] my-[16px]">
-              <p className=" text-[#121212] text-[16px] font-[400]">
+              <p className=" text-grey500 text-[16px] font-[400]">
                 Setup menu group
               </p>
               <p className=" text-[#606060] text-[14px] font-[400]">
@@ -875,7 +873,7 @@ const SettingsPage = () => {
       >
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
           <div className=" ">
-            <p className=" text-[20px]  font-[400] text-[#121212] mb-[16px]">
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
               New menu Item
             </p>
 
@@ -887,7 +885,7 @@ const SettingsPage = () => {
             />
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                   Add image
                 </p>
 
@@ -968,14 +966,14 @@ const SettingsPage = () => {
         onClose={() => setRemoveMenuModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">Remove menu</p>
+          <p className="text-[20px] font-[400] text-grey500">Remove menu</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {menu.map((user) => (
               <div
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={user.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {user.name}
                 </p>
                 <p
@@ -1036,7 +1034,7 @@ const SettingsPage = () => {
 
       {/* <MenuModal isOpen={editModal} onClose={() => setEditModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">
+          <p className="text-[20px] font-[400] text-grey500">
             Edit menu category
           </p>
           <div className=" mt-[24px] grid gap-[16px]">
@@ -1045,7 +1043,7 @@ const SettingsPage = () => {
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={menuItem.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {menuItem.name}
                 </p>
                 <p
@@ -1063,7 +1061,7 @@ const SettingsPage = () => {
       {/* <MenuModal isOpen={editItem} onClose={() => setEditItem(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
-            <h2 className=" mb-[16px] text-[#121212] font-[400] text-[20px]">
+            <h2 className=" mb-[16px] text-grey500 font-[400] text-[20px]">
               Edit Menu Category
             </h2>
             <CustomInput
@@ -1073,7 +1071,7 @@ const SettingsPage = () => {
               onChange={(newValue) => setEmail(newValue)}
             />
             <div className=" grid gap-[8px] my-[16px]">
-              <p className=" text-[#121212] text-[16px] font-[400]">
+              <p className=" text-grey500 text-[16px] font-[400]">
                 Edit menu group
               </p>
               <p className=" text-[#606060] text-[14px] font-[400]">

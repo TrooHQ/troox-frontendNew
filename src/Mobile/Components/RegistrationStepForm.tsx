@@ -80,7 +80,7 @@ const RegistrationStepForm = () => {
                 <img src={Grey} />
               </div>
             )}
-            <p className=" text-[#121212] text-[14px] my-[24px]">
+            <p className=" text-grey500 text-[14px] my-[24px]">
               Stage 1/{" "}
               <span className="text-[20px]"> Business information</span>{" "}
             </p>
@@ -171,7 +171,7 @@ const RegistrationStepForm = () => {
                 Back
               </p>
             </div>
-            <p className=" text-[#121212] text-[14px] my-[24px]">
+            <p className=" text-grey500 text-[14px] my-[24px]">
               Stage 1/{" "}
               <span className="text-[20px]"> Personal information</span>{" "}
             </p>
@@ -243,7 +243,7 @@ const RegistrationStepForm = () => {
                 Back
               </p>
             </div>
-            <p className=" text-[#121212] text-[14px] my-[24px]">
+            <p className=" text-grey500 text-[14px] my-[24px]">
               Stage 1/{" "}
               <span className="text-[20px]"> Payout & bank details</span>{" "}
             </p>
