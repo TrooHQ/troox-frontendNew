@@ -1,5 +1,10 @@
+import { useState } from "react";
+import Modal from "../Components/Modal";
 import Logo from "../assets/chickenExpressLogo.svg";
+import { Link } from "react-router-dom";
 const StartOrder = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className=" mx-[22px]">
       <div className=" flex flex-col items-center justify-center mt-[64px]">
@@ -9,7 +14,10 @@ const StartOrder = () => {
         </p>
 
         <div className=" mt-[40px] flex flex-col items-center justify-center">
-          <p className=" text-grey500 px-[24px] py-[10px] bg-[#EFB519] rounded-[5px] font-[500] inline  ">
+          <p
+            className=" cursor-pointer text-grey500 px-[24px] py-[10px] bg-[#EFB519] rounded-[5px] font-[500] inline  "
+            onClick={() => setIsOpen(true)}
+          >
             Start Your Order
           </p>
           <p className=" text-purple500 border-b border-b-purple500 text-[16px] mt-[24px]">
@@ -24,6 +32,29 @@ const StartOrder = () => {
           </p>
         </div>
       </div>
+
+      <Modal isOpen={isOpen}>
+        <div className=" w-[330px] h-[228px] flex flex-col items-center justify-center">
+          <input
+            className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
+            type="text"
+            placeholder="Enter your first name"
+          />
+          <div className=" mt-[25px]">
+            <p
+              className=" px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#E16B07] text-[16px] font-[500] cursor-pointer"
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </p>
+            <Link to="/explore-menu">
+              <p className=" px-[24px] py-[10px] bg-[#EFB519] inline rounded-[5px] text-grey500 text-[16px] font-[500]">
+                Submit
+              </p>
+            </Link>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
