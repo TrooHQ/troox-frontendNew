@@ -22,6 +22,7 @@ import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
+import Home from "./LandingPage/Home";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -29,6 +30,7 @@ const MobileLayout = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />

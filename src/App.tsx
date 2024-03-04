@@ -18,6 +18,7 @@ import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
+import Home from "./LandingPage/Home.tsx";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         {/* <ScrollToTop /> */}
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/manage-tables" element={<ManageTables />} />
