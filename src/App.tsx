@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import ScrollToTop from "./components/ScrollToTop.tsx";
+import ScrollToTop from "./components/ScrollToTop.tsx";
 import LoginPage from "./pages/LoginPage.js";
 import NotFound from "./components/NotFound.tsx";
 import CheckMail from "./components/authPages/CheckMail.tsx";
@@ -20,15 +20,19 @@ import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
 import Home from "./LandingPage/Home.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
+import PosPage from "./LandingPage/Products/PosPage.tsx";
+import KDSPage from "./LandingPage/Products/KDSPage.tsx";
 
 export default function App() {
   return (
     <div className=" font-GeneralSans">
       <Router>
-        {/* <ScrollToTop /> */}
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/pos" element={<PosPage />} />
+          <Route path="/kds" element={<KDSPage />} />
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />

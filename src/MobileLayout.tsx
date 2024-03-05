@@ -23,6 +23,8 @@ import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
 import Home from "./LandingPage/Home";
+import PosPage from "./LandingPage/Products/PosPage";
+import KDSPage from "./LandingPage/Products/KDSPage";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -31,6 +33,8 @@ const MobileLayout = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/pos" element={<PosPage />} />
+          <Route path="/kds" element={<KDSPage />} />
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />

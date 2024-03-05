@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../assets/trooLogoGrey.svg";
 const Footer = () => {
   return (
@@ -27,8 +28,12 @@ const Footer = () => {
 
           <div className="  flex flex-col gap-[16px]  md:border-l border-[#606060] py-[16px] px-[16px] h-full">
             <p className=" text-[16px] font-[500] text-white">Products</p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">POS</p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">KDS</p>
+            <Link to="/pos">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">POS</p>
+            </Link>
+            <Link to="/kds">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">KDS</p>
+            </Link>
             <p className=" font-[500] text-[14px] text-[#B6B6B6]">
               Table Ordering
             </p>
