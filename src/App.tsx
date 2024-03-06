@@ -25,6 +25,12 @@ import KDSPage from "./LandingPage/Products/KDSPage.tsx";
 import TableOrderingPage from "./LandingPage/Products/TableOrderingPage.tsx";
 import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage.tsx";
 import PaymentPage from "./LandingPage/Products/PaymentPage.tsx";
+import RestaurantsPage from "./LandingPage/Businesses/RestaurantsPage.tsx";
+import HotelPage from "./LandingPage/Businesses/HotelPage.tsx";
+import LoungesPage from "./LandingPage/Businesses/LoungesPage.tsx";
+import CafePage from "./LandingPage/Businesses/CafePage.tsx";
+import FastFoodPage from "./LandingPage/Businesses/FastFoodPage.tsx";
+import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
 
 export default function App() {
   return (
@@ -39,6 +45,13 @@ export default function App() {
           <Route path="/table-ordering" element={<TableOrderingPage />} />
           <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/restaurant" element={<RestaurantsPage />} />
+          <Route path="/hotel" element={<HotelPage />} />
+          <Route path="/lounges" element={<LoungesPage />} />
+          <Route path="/cafe" element={<CafePage />} />
+          <Route path="/fast-food" element={<FastFoodPage />} />
+          <Route path="/food-truck" element={<FoodTruckPage />} />
+
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />

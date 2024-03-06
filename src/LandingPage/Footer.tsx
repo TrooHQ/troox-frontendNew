@@ -10,20 +10,34 @@ const Footer = () => {
         <div className=" px-[16px] md:border-b border-[#606060] grid sm:grid-cols-3 md:grid-cols-5 items-start justify-between">
           <div className=" py-[16px] px-[16px] flex flex-col gap-[16px] h-full ">
             <p className=" text-[16px] font-[500] text-white">Business Type</p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Restaurants
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Food Trucks
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Cafes & Bakeries
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">Fast Foods</p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Clubs & Lounges
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">Hotels</p>
+            <Link to="/restaurant">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Restaurants
+              </p>
+            </Link>
+            <Link to="/food-truck">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Food Trucks
+              </p>
+            </Link>
+            <Link to="/cafe">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Cafes & Bakeries
+              </p>
+            </Link>
+            <Link to="/fast-food">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Fast Foods
+              </p>
+            </Link>
+            <Link to="/lounges">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Clubs & Lounges
+              </p>
+            </Link>
+            <Link to="/hotel">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">Hotels</p>
+            </Link>
           </div>
 
           <div className="  flex flex-col gap-[16px]  md:border-l border-[#606060] py-[16px] px-[16px] h-full">

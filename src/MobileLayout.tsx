@@ -28,6 +28,12 @@ import KDSPage from "./LandingPage/Products/KDSPage";
 import TableOrderingPage from "./LandingPage/Products/TableOrderingPage";
 import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage";
 import PaymentPage from "./LandingPage/Products/PaymentPage";
+import RestaurantsPage from "./LandingPage/Businesses/RestaurantsPage";
+import HotelPage from "./LandingPage/Businesses/HotelPage";
+import LoungesPage from "./LandingPage/Businesses/LoungesPage";
+import CafePage from "./LandingPage/Businesses/CafePage";
+import FastFoodPage from "./LandingPage/Businesses/FastFoodPage";
+import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -41,6 +47,13 @@ const MobileLayout = () => {
           <Route path="/table-ordering" element={<TableOrderingPage />} />
           <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/restaurant" element={<RestaurantsPage />} />
+          <Route path="/hotel" element={<HotelPage />} />
+          <Route path="/lounges" element={<LoungesPage />} />
+          <Route path="/cafe" element={<CafePage />} />
+          <Route path="/fast-food" element={<FastFoodPage />} />
+          <Route path="/food-truck" element={<FoodTruckPage />} />
+
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
