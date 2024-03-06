@@ -34,15 +34,21 @@ const Footer = () => {
             <Link to="/kds">
               <p className=" font-[500] text-[14px] text-[#B6B6B6]">KDS</p>
             </Link>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Table Ordering
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Digital Ordering
-            </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Payment Process
-            </p>
+            <Link to="/table-ordering">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Table Ordering
+              </p>
+            </Link>
+            <Link to="/digital-ordering">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Digital Ordering
+              </p>
+            </Link>
+            <Link to="/payment">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Payment Process
+              </p>
+            </Link>
           </div>
           <div className=" flex flex-col gap-[16px] md:border-l border-[#606060] py-[16px] px-[16px] h-full">
             <p className=" text-[16px] font-[500] text-white">

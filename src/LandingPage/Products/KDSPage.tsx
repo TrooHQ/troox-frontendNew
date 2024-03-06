@@ -1,12 +1,13 @@
 import Navbar from "../Navbar";
 import Circle from "../../assets/greyCircle.svg";
 import KDSMockup from "../../assets/kdsScreen.png";
-import Integration from "../../assets/integration.png";
-import Online from "../../assets/online icon.png";
-import RestaurantGuest from "../../assets/restaurant guest.png";
-import RestaurantHardware from "../../assets/restaurant hardware.png";
-import RestaurantTable from "../../assets/restaurant table.png";
-import Trending from "../../assets/trending_up.png";
+import Cloud from "../../assets/cloud integration.svg";
+import integration from "../../assets/integration_instructions.svg";
+import NoPaper from "../../assets/no paper.svg";
+import Order from "../../assets/order.svg";
+import printer from "../../assets/printer.svg";
+import Synchronize from "../../assets/synchronize.svg";
+import SOT from "../../assets/source of truth.svg";
 import LandingPageFAQ from "../LandingPageFAQ";
 import Blog from "../Blog";
 import Footer from "../Footer";
@@ -48,80 +49,100 @@ const KDSPage = () => {
         </div>
 
         <div className="">
-          <div className=" mt-[20px] md:my-[59px] flex flex-col justify-center items-center md:items-start md:grid md:grid-cols-3 md:mx-[40px] 2xl:mx-[158px]">
-            <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={Online} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Online & Offline Mode
+          <div className=" mt-[20px] md:my-[59px]  md:mx-[40px] 2xl:mx-[158px]">
+            <div className=" flex flex-col items-center justify-center sm:grid sm:grid-cols-2 lg:grid-cols-3">
+              <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={NoPaper} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    No Papers, No Clutters
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Eradicate paper tickets in your kitchen. Connect orders on any
+                  device on-premise and online and have them fired straight to
+                  the KDS.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                Troo ePOS offers a cloud-based cash register that helps you take
-                and manage orders, record sales, receive payment etc
-              </p>
-            </div>
 
-            <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={Trending} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Increase Check Sizes
+              <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={Synchronize} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    Synchronized Operations
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Bridge the gap between your front-of-house and back-of-house
+                  operations by delivering the right order to the right guests.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                Create menu hierarchy that include category, menu and menu items
-                to help waiters accurately place orders and increase bill sizes.
-              </p>
-            </div>
-            <div className="h-[243px]  md:border-b  px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={RestaurantHardware} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Restaurant-grade Hardware
+              <div className="h-[243px]  md:border-b  px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={SOT} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    One source of truth for fulfilment
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Troo KDS organizes all your tickets real-time, from all
+                  sources providing kitchen staff with full visibility to
+                  deliver excellent fulfillment.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                Complete with durable hardware to with-stand the rigours of your
-                operations.
-              </p>
             </div>
-            <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={RestaurantTable} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Map Tables
+            <div className="  flex flex-col items-center justify-center sm:grid sm:grid-cols-2 lg:grid-cols-4">
+              <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={printer} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    Bulk Print
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Bulk print end-of-day and runner tickets on any network
+                  connected printer directly from KDS.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                Organize your floor plan and tables to manage tickets and
-                orders.
-              </p>
-            </div>
-            <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={RestaurantGuest} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Built for Guests
+              <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={Order} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    Process More Orders
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Process more order volumes and increase revenues without
+                  losing accuracy.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                Customize orders by modifying menus, special requests like "less
-                spicy", "extra
-              </p>
-            </div>
 
-            <div className=" h-[243px]   px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
-                <img src={Integration} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
-                  Seamless Integration
+              <div className=" h-[243px]   px-[30px] pt-[51px] pb-[59px]  md:border-r">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={Cloud} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    Fulfilment Status
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Help your waiters manage expectations by tracking order status
+                  with fulfilment reporting.
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
-                API integration capabilities with delivery apps like uber eats,
-                glovo, etc.
-              </p>
+
+              <div className=" h-[243px]   px-[30px] pt-[51px] pb-[59px]">
+                <div className=" flex items-center gap-[24px] ">
+                  <img src={integration} alt="" />
+                  <p className=" text-[20px] font-[500] text-[#5855B3]">
+                    Integration
+                  </p>
+                </div>
+                <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+                  Troo KDS automatically integrates with Troo ePOS and Online
+                  Ordering for synchronized communication between front and back
+                  of house.
+                </p>
+              </div>
             </div>
           </div>
         </div>

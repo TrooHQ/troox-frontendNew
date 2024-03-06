@@ -49,56 +49,61 @@ const Organize = () => {
           </div>
         </Link>
 
-        <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
-          <img
-            src={TableOrdering}
-            alt=""
-            className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
-          />
-          <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
-            <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
-              Table Ordering
-            </p>
-            <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
-              Empower your wait staff to deliver faster table side ordering with
-              troo handhelds.
-            </p>
+        <Link to="/table-ordering">
+          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+            <img
+              src={TableOrdering}
+              alt=""
+              className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
+            />
+            <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
+              <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
+                Table Ordering
+              </p>
+              <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
+                Empower your wait staff to deliver faster table side ordering
+                with troo handhelds.
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
+        <Link to="/digital-ordering">
+          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+            <img
+              src={DigitalOrdering}
+              alt=""
+              className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
+            />
+            <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
+              <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
+                Digital Ordering
+              </p>
+              <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
+                Leverage several digital ordering workflows to accept to
+                in-store and online orders.
+              </p>
+            </div>
+          </div>
+        </Link>
 
-        <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
-          <img
-            src={DigitalOrdering}
-            alt=""
-            className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
-          />
-          <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
-            <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
-              Digital Ordering
-            </p>
-            <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
-              Leverage several digital ordering workflows to accept to in-store
-              and online orders.
-            </p>
+        <Link to="/payment">
+          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+            <img
+              src={Payment}
+              alt=""
+              className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
+            />
+            <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
+              <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
+                Payment Processing
+              </p>
+              <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
+                Payments integrated with your cash register and other touch
+                points to ensure no loose ends.
+              </p>
+            </div>
           </div>
-        </div>
-
-        <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
-          <img
-            src={Payment}
-            alt=""
-            className=" w-full object-cover rounded-t-[5px] transition-transform duration-300 transform group-hover:scale-105"
-          />
-          <div className=" px-[29px] text-center pt-[16px] pb-[45px]">
-            <p className=" text-[16px] font-[500] text-[#121212]  group-hover:text-white">
-              Payment Processing
-            </p>
-            <p className=" text-[12px] font-[400] text-[#121212] leading-[18px] mt-[12px]  group-hover:text-white">
-              Payments integrated with your cash register and other touch points
-              to ensure no loose ends.
-            </p>
-          </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

@@ -22,6 +22,9 @@ import Home from "./LandingPage/Home.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
 import PosPage from "./LandingPage/Products/PosPage.tsx";
 import KDSPage from "./LandingPage/Products/KDSPage.tsx";
+import TableOrderingPage from "./LandingPage/Products/TableOrderingPage.tsx";
+import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage.tsx";
+import PaymentPage from "./LandingPage/Products/PaymentPage.tsx";
 
 export default function App() {
   return (
@@ -33,6 +36,9 @@ export default function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
+          <Route path="/table-ordering" element={<TableOrderingPage />} />
+          <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />

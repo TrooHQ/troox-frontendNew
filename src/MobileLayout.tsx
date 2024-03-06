@@ -25,6 +25,9 @@ import { MenuPage } from "./Mobile/Customers/MenuPage";
 import Home from "./LandingPage/Home";
 import PosPage from "./LandingPage/Products/PosPage";
 import KDSPage from "./LandingPage/Products/KDSPage";
+import TableOrderingPage from "./LandingPage/Products/TableOrderingPage";
+import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage";
+import PaymentPage from "./LandingPage/Products/PaymentPage";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -35,6 +38,9 @@ const MobileLayout = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
+          <Route path="/table-ordering" element={<TableOrderingPage />} />
+          <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
