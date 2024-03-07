@@ -16,7 +16,7 @@ const DemoPage = () => {
         />
       </div>
 
-      <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] py-[62px]">
+      <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] py-[62px] mb-[100px]">
         <div className=" grid gap-[10px] md:flex items-center justify-between  ">
           <div className=" max-w-[491px] text-start grid gap-[32px]">
             <p className=" text-[44px] font-[500] leading-[66px]">

@@ -8,6 +8,7 @@ import Restaurant4 from "../../assets/online ordering 1.png";
 import LandingPageFAQ from "../LandingPageFAQ";
 import Blog from "../Blog";
 import Footer from "../Footer";
+import { Link } from "react-router-dom";
 
 const FoodTruckPage = () => {
   return (
@@ -43,9 +44,11 @@ const FoodTruckPage = () => {
               </p>
             </div>
             <div className=" flex items-center">
-              <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
-                Learn More
-              </p>
+              <Link to="/request-demo">
+                <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+                  Learn More
+                </p>
+              </Link>
             </div>
           </div>
 
@@ -63,9 +66,11 @@ const FoodTruckPage = () => {
             </p>
 
             <div className=" flex items-center">
-              <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
-                Learn More
-              </p>
+              <Link to="/request-demo">
+                <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+                  Learn More
+                </p>
+              </Link>
             </div>
           </div>
 
