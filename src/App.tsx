@@ -31,6 +31,7 @@ import LoungesPage from "./LandingPage/Businesses/LoungesPage.tsx";
 import CafePage from "./LandingPage/Businesses/CafePage.tsx";
 import FastFoodPage from "./LandingPage/Businesses/FastFoodPage.tsx";
 import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
+import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="/cafe" element={<CafePage />} />
           <Route path="/fast-food" element={<FastFoodPage />} />
           <Route path="/food-truck" element={<FoodTruckPage />} />
+          <Route path="/request-demo" element={<DemoPage />} />
 
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />

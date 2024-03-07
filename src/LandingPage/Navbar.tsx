@@ -1,7 +1,7 @@
 import Logo from "../assets/trooLogo1.svg";
 import Arrow from "../assets/arrow_downward.svg";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { CloseLineIcon, Menu1LineIcon } from "../assets/icons";
 
 const Navbar = () => {
@@ -46,9 +46,11 @@ const Navbar = () => {
               About us
             </li>
 
-            <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
-              Schedule A Demo
-            </li>
+            <NavLink to="/request-demo">
+              <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+                Schedule A Demo
+              </li>
+            </NavLink>
           </ul>
         </div>
         {open === true ? (

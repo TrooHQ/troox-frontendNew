@@ -34,6 +34,7 @@ import LoungesPage from "./LandingPage/Businesses/LoungesPage";
 import CafePage from "./LandingPage/Businesses/CafePage";
 import FastFoodPage from "./LandingPage/Businesses/FastFoodPage";
 import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage";
+import DemoPage from "./LandingPage/Businesses/DemoPage";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -53,6 +54,7 @@ const MobileLayout = () => {
           <Route path="/cafe" element={<CafePage />} />
           <Route path="/fast-food" element={<FastFoodPage />} />
           <Route path="/food-truck" element={<FoodTruckPage />} />
+          <Route path="/request-demo" element={<DemoPage />} />
 
           <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />

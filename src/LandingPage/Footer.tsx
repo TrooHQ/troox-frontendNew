@@ -68,9 +68,11 @@ const Footer = () => {
             <p className=" text-[16px] font-[500] text-white">
               I want to know more
             </p>
-            <p className=" font-[500] text-[14px] text-[#B6B6B6]">
-              Schedule a demo
-            </p>
+            <Link to="/request-demo">
+              <p className=" font-[500] text-[14px] text-[#B6B6B6]">
+                Schedule a demo
+              </p>
+            </Link>
             <p className=" font-[500] text-[14px] text-[#B6B6B6]">
               Whatsapp Sales
             </p>
