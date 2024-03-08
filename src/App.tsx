@@ -32,11 +32,14 @@ import CafePage from "./LandingPage/Businesses/CafePage.tsx";
 import FastFoodPage from "./LandingPage/Businesses/FastFoodPage.tsx";
 import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
 import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   return (
     <div className=" font-GeneralSans">
       <Router>
+        <ToastContainer />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />

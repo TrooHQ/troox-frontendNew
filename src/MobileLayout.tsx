@@ -35,9 +35,12 @@ import CafePage from "./LandingPage/Businesses/CafePage";
 import FastFoodPage from "./LandingPage/Businesses/FastFoodPage";
 import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage";
 import DemoPage from "./LandingPage/Businesses/DemoPage";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
+      <ToastContainer />
       <Router>
         <ScrollToTop />
         <Routes>
