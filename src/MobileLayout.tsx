@@ -37,6 +37,11 @@ import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage";
 import DemoPage from "./LandingPage/Businesses/DemoPage";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { Basket } from "./Mobile/Customers/Basket";
+import { Tip } from "./Mobile/Customers/Tip";
+import { SelectPayment } from "./Mobile/Customers/SelectPayment";
+import { Receipt } from "./Mobile/Customers/Receipt";
+import { GetReceipt } from "./Mobile/Customers/GetReceipt";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -44,8 +49,8 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -66,6 +71,12 @@ const MobileLayout = () => {
           <Route path="/start-order" element={<StartOrder />} />
           <Route path="/explore-menu" element={<MenuPage />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
+          <Route path="/basket" element={<Basket />} />
+          <Route path="/tip" element={<Tip />} />
+          <Route path="/payment-type" element={<SelectPayment />} />
+          <Route path="/receipt" element={<Receipt />} />
+          <Route path="/get-receipt" element={<GetReceipt />} />
+
           <Route path="/ticket" element={<Tickets />} />
           <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />

@@ -79,8 +79,28 @@ export const MenuPage = () => {
     },
   ];
 
+  const id = sessionStorage.getItem("id");
+  const price = sessionStorage.getItem("totalPrice");
+
+  const count = sessionStorage.getItem("count");
+  console.log(id);
+
+  // const handleAddToBasket = () => {
+  //   console.log("Selected Item ID:", id);
+  //   if (id) {
+  //     sessionStorage.setItem("id", id);
+  //   }
+  //   console.log("Selected Options:");
+  //   selectedOptions.forEach((option) => {
+  //     const selectedOption = options.find((opt) => opt.value === option);
+  //     if (selectedOption) {
+  //       console.log(selectedOption.label + " - Price: " + selectedOption.price);
+  //     }
+  //   });
+  // };
+
   return (
-    <div className="">
+    <div className="  ">
       <TopMenuNav />
       <div className="grid grid-cols-4 items-center border-b border-grey100 mt-[24px] px-[20px]">
         {data.map((menu, index) => (
@@ -111,7 +131,9 @@ export const MenuPage = () => {
               <Link to={`/menu-details/${item.id}`}>
                 <div
                   key={item.id}
-                  className=" flex items-center justify-between border-b pb-[5px] mt-[8px]"
+                  className={`flex items-center justify-between border-b pb-[5px] mt-[8px] ${
+                    id === item.id.toString() ? "bg-red-500" : ""
+                  }`}
                 >
                   <div className=" flex items-start gap-[16px]">
                     <img
@@ -130,6 +152,18 @@ export const MenuPage = () => {
             ))}
           </div>
         ))}
+      </div>
+
+      <div className=" mx-[16px] my-[16px]">
+        <div className=" flex justify-between items-center py-[13px] px-[24px] bg-[#EFB519] rounded-[3px] cursor-pointer">
+          <div className=" flex items-center gap-[16px]">
+            <p className=" bg-white py-[12px] px-[10px] text-[16px] font-[500]">
+              {count}
+            </p>
+            <p>#{price}</p>
+          </div>
+          <p className=" text-[16px] font-[500]">Add to basket</p>
+        </div>
       </div>
     </div>
   );

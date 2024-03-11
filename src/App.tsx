@@ -42,8 +42,8 @@ export default function App() {
         <ToastContainer />
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />

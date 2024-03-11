@@ -1,8 +1,14 @@
 import Cart from "../assets/basket.svg";
 import BackArrow from "../assets/arrow-small-left.svg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const TopMenuNav = () => {
+interface TopMenuNavProps {
+  exploreMenuText?: string; // Optional prop
+}
+
+const TopMenuNav: React.FC<TopMenuNavProps> = ({
+  exploreMenuText = "Explore Menu",
+}) => {
   const navigate = useNavigate();
   return (
     <div>
@@ -13,8 +19,10 @@ const TopMenuNav = () => {
           onClick={() => navigate(-1)}
           style={{ cursor: "pointer" }}
         />
-        <p className="text-[16px] font-[500]">Explore Menu</p>
-        <img src={Cart} alt="Cart" />
+        <p className="text-[16px] font-[500]">{exploreMenuText}</p>
+        <Link to="/basket">
+          <img src={Cart} alt="Cart" />
+        </Link>
       </div>
     </div>
   );

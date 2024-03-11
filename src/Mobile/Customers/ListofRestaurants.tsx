@@ -3,7 +3,7 @@ import Arrow from "../assets/arrowrightIcon.svg";
 import { Link } from "react-router-dom";
 const ListofRestaurants = () => {
   return (
-    <div className=" mx-[22px]">
+    <div className=" mx-[22px]  ">
       <div className=" border-b pb-[22px]">
         <p className=" text-grey500 text-[28px] font-[500]">Collect at</p>
         <p className=" text-[#414141] text-[16px]">
