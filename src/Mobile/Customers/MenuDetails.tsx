@@ -155,7 +155,7 @@ const MenuDetails = () => {
         id: number;
         title: string;
         image: string;
-        price: string;
+        price: number;
       };
       setMenuItem(foundItem);
       hasRunRef.current = true;

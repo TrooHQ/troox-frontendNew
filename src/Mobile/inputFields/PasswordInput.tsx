@@ -25,9 +25,8 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   };
 
   const handleBlur = () => {
-    setIsFocused(value !== "");
+    setIsFocused(value !== "" || isFocused);
   };
-
   const handleLabelClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();
