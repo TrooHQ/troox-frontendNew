@@ -17,7 +17,6 @@ import EmployeeDashboard from "./Mobile/Employee/EmployeeDashboard";
 import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
 import EnterPassword from "./Mobile/authPages/EnterPassword";
 import CreatePassword from "./Mobile/authPages/CreatePassword";
-import EmployeeLogin from "./Mobile/authPages/EmployeeLogin";
 import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
@@ -42,6 +41,8 @@ import { Tip } from "./Mobile/Customers/Tip";
 import { SelectPayment } from "./Mobile/Customers/SelectPayment";
 import { Receipt } from "./Mobile/Customers/Receipt";
 import { GetReceipt } from "./Mobile/Customers/GetReceipt";
+import VerifyAccount from "./Mobile/Components/VerifyAccount";
+import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -50,6 +51,8 @@ const MobileLayout = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
@@ -64,7 +67,7 @@ const MobileLayout = () => {
           <Route path="/food-truck" element={<FoodTruckPage />} />
           <Route path="/request-demo" element={<DemoPage />} />
 
-          <Route path="/login" element={<EmployeeLogin />} />
+          {/* <Route path="/login" element={<EmployeeLogin />} /> */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
@@ -82,6 +85,7 @@ const MobileLayout = () => {
           <Route path="/order" element={<Order />} />
           <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />
+          <Route path="/verify" element={<VerifyAccount />} />
           <Route path="/menu" element={<MenuSetupForm />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/employee-settings" element={<EmployeeSettingsPage />} />

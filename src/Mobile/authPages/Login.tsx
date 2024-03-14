@@ -34,6 +34,8 @@ const Login = () => {
       return;
     }
 
+    sessionStorage.setItem("email", Email);
+
     try {
       setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/login`, {
@@ -41,15 +43,24 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
-      console.log(response.data.account_details);
-      console.log(response.data.message);
+      console.log(response.data);
+      sessionStorage.setItem("email_verified", response.data.email_verified);
+      sessionStorage.setItem("token", response.data.token);
       toast.success(response.data.message);
-      history("/login");
-    } catch (error: any) {
+      history("/menu");
+    } catch (error) {
       console.error("Error occurred:", error);
-      if (error.response) {
-        setError(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+          if (error.response.data.message === "Your Email is not verified") {
+            history("/verify");
+          }
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
       } else {
+        // Handle other types of errors (e.g., network errors)
         setError("An error occurred. Please try again later.");
       }
     }

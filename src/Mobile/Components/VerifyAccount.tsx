@@ -1,0 +1,151 @@
+import { useState } from "react";
+import Logo from "../../assets/trooLogo.svg";
+import { Button } from "../Buttons/Button";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import CustomInput from "../inputFields/CustomInput";
+import { useNavigate } from "react-router-dom";
+import DigitInput from "../inputFields/DigitInput";
+
+const VerifyAccount = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [token, setToken] = useState<string>("");
+  const history = useNavigate();
+
+  const [digits, setDigits] = useState(["", "", "", "", "", ""]);
+  const email = sessionStorage.getItem("email");
+
+  const handleChange = (index, newValue) => {
+    const newDigits = [...digits];
+    newDigits[index] = newValue;
+    setDigits(newDigits);
+  };
+
+  const handleFocus = (index) => {
+    if (digits[index] === "") {
+      const newDigits = [...digits];
+      newDigits[index] = "0";
+      setDigits(newDigits);
+    }
+  };
+
+  const handleBlur = (index) => {
+    if (digits[index] === "0") {
+      const newDigits = [...digits];
+      newDigits[index] = "";
+      setDigits(newDigits);
+    }
+  };
+
+  const resendOTP = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
+        email,
+      });
+      setLoading(false);
+      console.log(response.data);
+      toast.success("Token has been resent");
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verify = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
+        token,
+      });
+      setLoading(false);
+      console.log(response.data);
+      toast.success("User verified successfully");
+      history("/menu");
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className=" bg-[#EFEFEF] h-screen">
+      <div className=" mx-10">
+        <div className=" py-[48px] flex items-center justify-center">
+          <img src={Logo} alt="" />
+        </div>
+
+        <div className="">
+          <p className=" text-red-500">{error}</p>
+          <div className=" flex flex-col text-center justify-center items-center gap-[24px] mt-[128px]">
+            <p className=" font-[500] text-[20px] text-[#121212]">
+              Verify Account
+            </p>
+            <p className=" text-[16px] font-[400] text-[#121212]">
+              {" "}
+              A verification code has been sent to your email. Click on the link
+              to verify your account
+            </p>
+          </div>
+
+          <div className="grid grid-cols-6 gap-4">
+            {digits.map((value, index) => (
+              <DigitInput
+                key={index}
+                value={value}
+                onChange={(newValue) => handleChange(index, newValue)}
+                onFocus={() => handleFocus(index)}
+                onBlur={() => handleBlur(index)}
+              />
+            ))}
+          </div>
+          {/* <CustomInput
+            type="text"
+            label="OTP"
+            value={token}
+            onChange={(newValue) => setToken(newValue)}
+          /> */}
+          <div className=" mt-[24px]" onClick={verify}>
+            <Button text="Verify Account" loading={loading} />
+          </div>
+          <div
+            className=" mt-[24px] flex items-center justify-end cursor-pointer"
+            onClick={resendOTP}
+          >
+            <button
+              className=" font-[600] text-[16px] text-[#5955B3]"
+              disabled={loading}
+            >
+              Resend Code
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VerifyAccount;

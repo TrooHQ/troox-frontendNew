@@ -43,26 +43,26 @@ const RegistrationStepForm = () => {
   };
 
   const createBusinessAccount = async () => {
-    if (
-      !name ||
-      !email ||
-      !contact ||
-      !address ||
-      !phone ||
-      !password ||
-      !confirmPassword ||
-      !businessType
-    ) {
-      setError("All Fields are required...");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
     try {
+      if (
+        !name ||
+        !email ||
+        !contact ||
+        !address ||
+        !phone ||
+        !password ||
+        !confirmPassword ||
+        !businessType
+      ) {
+        setError("All fields are required...");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+
       setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/createBusiness`, {
         business_name: name,
@@ -81,24 +81,30 @@ const RegistrationStepForm = () => {
       sessionStorage.setItem("user_role", response.data.user_role);
       sessionStorage.setItem("email_verified", response.data.email_verified);
       setCurrentStep(currentStep + 1);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error occurred:", error);
-      if (error.response) {
-        setError(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
       } else {
         setError("An error occurred. Please try again later.");
       }
+    } finally {
+      setLoading(false);
+      setError("");
     }
-    setLoading(false);
   };
 
   const createAccountDetails = async () => {
-    if (!accountName || !accountNumber || !bankName || !bvn || !country) {
-      setError("All Fields are required...");
-      return;
-    }
-
     try {
+      if (!accountName || !accountNumber || !bankName || !bvn || !country) {
+        setError("All fields are required...");
+        return;
+      }
+
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/createAccountDetails`,
@@ -115,16 +121,22 @@ const RegistrationStepForm = () => {
       console.log(response.data.account_details);
       console.log(response.data.message);
       toast.success(response.data.message);
-      history("/login");
-    } catch (error: any) {
+      history("/verify");
+    } catch (error) {
       console.error("Error occurred:", error);
-      if (error.response) {
-        setError(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
       } else {
         setError("An error occurred. Please try again later.");
       }
+    } finally {
+      setLoading(false);
+      setError("");
     }
-    setLoading(false);
   };
 
   const prevStep = () => {
@@ -374,11 +386,7 @@ const RegistrationStepForm = () => {
                 value={bankName}
                 onChange={(newValue) => setBankName(newValue)}
               />
-              {/* <CustomSelect4
-                options={["UBA", "FIRST BANK", "ACCESS BANK"]}
-                placeholder="Bank"
-                onSelect={(selectedValue) => setBank(selectedValue)}
-              /> */}
+
               <CustomInput
                 type="text"
                 label="Bank Verification Number (BVN)"

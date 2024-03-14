@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 interface ButtonProps {
   text: string;
   link?: string;
-  loading?: boolean; // Add loading prop
+  loading?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({ text, link, loading }) => {
