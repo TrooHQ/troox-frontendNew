@@ -106,14 +106,14 @@ const VerifyAccount = () => {
 
         <div className="">
           <p className=" text-red-500">{error}</p>
-          <div className=" flex flex-col text-center justify-center items-center gap-[24px] mt-[128px]">
+          <div className=" flex flex-col text-center justify-center items-center gap-[24px] mt-[128px] mb-[40px]">
             <p className=" font-[500] text-[20px] text-[#121212]">
               Verify Account
             </p>
             <p className=" text-[16px] font-[400] text-[#121212]">
               {" "}
-              A verification code has been sent to your email. Click on the link
-              to verify your account
+              A verification code has been sent to your email. Please enter the
+              six-digit OTP that was sent to your email
             </p>
           </div>
 
@@ -129,22 +129,31 @@ const VerifyAccount = () => {
             ))}
           </div>
 
-          {allInputsFilled() && (
-            <div className=" mt-[24px]" onClick={verify}>
-              <Button text="Verify Account" loading={loading} />
-            </div>
-          )}
           <div
-            className=" mt-[24px] flex items-center justify-end cursor-pointer"
+            className=" mt-[24px] flex items-center justify-start cursor-pointer"
             onClick={resendOTP}
           >
             <button
-              className=" font-[600] text-[16px] text-[#5955B3]"
+              className=" font-[400] text-[16px] text-[#5955B3]"
               disabled={loading}
             >
               Resend Code
             </button>
           </div>
+          {allInputsFilled() ? (
+            <div className=" mt-[16px]" onClick={verify}>
+              <Button text="Activate account" loading={loading} />
+            </div>
+          ) : (
+            <div className=" mt-[16px]">
+              <button
+                className="bg-[#E7E7E7] text-[#B6B6B6] w-full text-center  py-3 rounded"
+                disabled
+              >
+                Activate account
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,5 +1,19 @@
-const DigitInput = ({ value, onChange, onFocus, onBlur }) => {
-  const handleChange = (e) => {
+import React from "react";
+
+interface DigitInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}
+
+const DigitInput: React.FC<DigitInputProps> = ({
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+}) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/\D/g, "");
     onChange(newValue);
   };
@@ -16,4 +30,5 @@ const DigitInput = ({ value, onChange, onFocus, onBlur }) => {
     />
   );
 };
+
 export default DigitInput;

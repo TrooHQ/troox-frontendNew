@@ -92,6 +92,20 @@ const Navbar = () => {
                 Schedule A Demo
               </li>
             </NavLink>
+
+            <div className=" flex items-center gap-[8px]">
+              <Link to="/login">
+                <li className=" text-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[8px] inline border bg-[#5955B3] rounded-[5px] text-white">
+                  Login
+                </li>
+              </Link>
+
+              <Link to="/register">
+                <li className="text-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[8px] inline border border-[#5955B3] rounded-[5px] text-[#5955B3]">
+                  Sign Up
+                </li>
+              </Link>
+            </div>
           </ul>
         </div>
         {open === true ? (
