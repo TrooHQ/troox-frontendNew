@@ -1,39 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import { Button } from "../Buttons/Button";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import CustomInput from "../inputFields/CustomInput";
 import { useNavigate } from "react-router-dom";
 import DigitInput from "../inputFields/DigitInput";
 
 const VerifyAccount = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [token, setToken] = useState<string>("");
   const history = useNavigate();
 
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
   const email = sessionStorage.getItem("email");
 
-  const handleChange = (index, newValue) => {
+  const handleChange = (index: number, newValue: string) => {
     const newDigits = [...digits];
-    newDigits[index] = newValue;
+    newDigits[index] = newValue.toString();
     setDigits(newDigits);
   };
 
-  const handleFocus = (index) => {
+  const handleFocus = (index: number) => {
     if (digits[index] === "") {
       const newDigits = [...digits];
-      newDigits[index] = "0";
+      newDigits[index] = "";
       setDigits(newDigits);
     }
   };
 
-  const handleBlur = (index) => {
-    if (digits[index] === "0") {
+  const handleBlur = (index: number) => {
+    if (digits[index] === "") {
       const newDigits = [...digits];
       newDigits[index] = "";
       setDigits(newDigits);
@@ -68,6 +66,7 @@ const VerifyAccount = () => {
   const verify = async () => {
     try {
       setLoading(true);
+      const token = parseInt(digits.join(""));
       const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
         token,
       });
@@ -91,6 +90,13 @@ const VerifyAccount = () => {
     }
   };
 
+  const allInputsFilled = () => {
+    return digits.every((digit) => digit !== "");
+  };
+
+  useEffect(() => {
+    setError(allInputsFilled() ? "" : "Please fill all input fields");
+  }, [digits]);
   return (
     <div className=" bg-[#EFEFEF] h-screen">
       <div className=" mx-10">
@@ -116,21 +122,18 @@ const VerifyAccount = () => {
               <DigitInput
                 key={index}
                 value={value}
-                onChange={(newValue) => handleChange(index, newValue)}
+                onChange={(newValue: string) => handleChange(index, newValue)}
                 onFocus={() => handleFocus(index)}
                 onBlur={() => handleBlur(index)}
               />
             ))}
           </div>
-          {/* <CustomInput
-            type="text"
-            label="OTP"
-            value={token}
-            onChange={(newValue) => setToken(newValue)}
-          /> */}
-          <div className=" mt-[24px]" onClick={verify}>
-            <Button text="Verify Account" loading={loading} />
-          </div>
+
+          {allInputsFilled() && (
+            <div className=" mt-[24px]" onClick={verify}>
+              <Button text="Verify Account" loading={loading} />
+            </div>
+          )}
           <div
             className=" mt-[24px] flex items-center justify-end cursor-pointer"
             onClick={resendOTP}

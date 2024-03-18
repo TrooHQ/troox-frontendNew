@@ -52,7 +52,6 @@ const MobileLayout = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
@@ -67,7 +66,6 @@ const MobileLayout = () => {
           <Route path="/food-truck" element={<FoodTruckPage />} />
           <Route path="/request-demo" element={<DemoPage />} />
 
-          {/* <Route path="/login" element={<EmployeeLogin />} /> */}
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />

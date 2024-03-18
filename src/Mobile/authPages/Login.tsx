@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import { Button } from "../Buttons/Button.tsx";
 import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
@@ -15,6 +14,7 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { Button } from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
@@ -46,21 +46,31 @@ const Login = () => {
       console.log(response.data);
       sessionStorage.setItem("email_verified", response.data.email_verified);
       sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("name", response.data.admin_name);
+      sessionStorage.setItem("businessName", response.data.business_name);
+      sessionStorage.setItem("id", response.data.id);
+      sessionStorage.setItem("userType", response.data.user_role);
+      const userType = response.data.user_role;
       toast.success(response.data.message);
-      history("/menu");
+      if (userType === "employee") {
+        history("/employee-dashboard");
+      } else if (userType === "admin") {
+        history("/menu");
+      }
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
+          console.log(error.response.data);
           if (error.response.data.message === "Your Email is not verified") {
             history("/verify");
+            console.log("Unverified");
           }
         } else {
           setError("An error occurred. Please try again later.");
         }
       } else {
-        // Handle other types of errors (e.g., network errors)
         setError("An error occurred. Please try again later.");
       }
     }
@@ -81,7 +91,7 @@ const Login = () => {
           <div className=" grid gap-[16px]">
             <CustomInput
               type="text"
-              label="Business name/phone number"
+              label="Business email/phone number"
               value={Email}
               error={error}
               onChange={(newValue) => dispatch(setEmail(newValue))}
