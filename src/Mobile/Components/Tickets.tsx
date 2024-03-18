@@ -1,5 +1,5 @@
 import Arrow from "../assets/BackArrow.svg";
-import DashboardBackButton from "../buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton";
 import More from "../../assets/more_vert.svg";
 import Modal from "./Modal";
 import { useState } from "react";
@@ -56,7 +56,7 @@ const Tickets = () => {
     <div className="my-[16px] mx-[24px]">
       <DashboardBackButton text="Tickets" img={Arrow} />
       <div className="">
-        <div className="my-[32px] text-[14px] font-[400] text-[#121212] flex justify-between border-b pb-[12px] px-[8px]">
+        <div className="my-[32px] text-[14px] font-[400] text-grey500 flex justify-between border-b pb-[12px] px-[8px]">
           <p className="">Name</p>
           <p className="">Number</p>
           <p className="w-[90px]">Orders</p>
@@ -65,7 +65,7 @@ const Tickets = () => {
         {ticketData.map((ticket, index) => (
           <div
             key={index}
-            className="cursor-pointer my-[32px] text-[14px] font-[400] text-[#121212]  border-b pb-[12px] px-[8px] flex items-center justify-between"
+            className="cursor-pointer my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex items-center justify-between"
             onClick={() => handleTicketModal(ticket)}
           >
             <p className="">{ticket.name}</p>
@@ -82,8 +82,8 @@ const Tickets = () => {
         <div className=" w-[328px] h-[500px]">
           <div className=" flex items-center justify-between">
             <div className=" py-[16px] border-b border-b-[#E7E7E7]">
-              <p className=" text-[16px] font-[500] text-[#121212] ">Name</p>
-              <p className=" text-[16px] font-[400] text-[#121212] flex items-center justify-between">
+              <p className=" text-[16px] font-[500] text-grey500 ">Name</p>
+              <p className=" text-[16px] font-[400] text-grey500 flex items-center justify-between">
                 <p>{selectedTicket?.name}</p>
               </p>
             </div>
@@ -95,10 +95,10 @@ const Tickets = () => {
             />
           </div>
           <div className="  py-[16px] border-b border-b-[#E7E7E7]">
-            <p className=" text-[16px] font-[500] text-[#121212]  pb-[16px]">
+            <p className=" text-[16px] font-[500] text-grey500  pb-[16px]">
               Orders
             </p>
-            <p className="text-[16px] font-[500] text-[#121212]">
+            <p className="text-[16px] font-[500] text-grey500">
               {selectedTicket?.orders.map((order, index) => (
                 <div key={index} className=" flex items-center justify-between">
                   <p>{order}</p>
@@ -108,17 +108,17 @@ const Tickets = () => {
             </p>
           </div>
           <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px]">
-            <p className="text-[16px] font-[500] text-[#121212] ">
+            <p className="text-[16px] font-[500] text-grey500 ">
               Order Number
             </p>
-            <p className=" text-[16px] font-[400] text-[#121212]">
+            <p className=" text-[16px] font-[400] text-grey500">
               {" "}
               {selectedTicket?.number}
             </p>
           </div>
           <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px]">
-            <p className=" text-[16px] font-[500] text-[#121212]">Time</p>
-            <p className=" text-[16px] font-[400] text-[#121212]">
+            <p className=" text-[16px] font-[500] text-grey500">Time</p>
+            <p className=" text-[16px] font-[400] text-grey500">
               {" "}
               {selectedTicket?.Time}
             </p>

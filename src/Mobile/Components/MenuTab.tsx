@@ -81,10 +81,10 @@ const MenuTab: React.FC = () => {
                   <div className="flex items-center gap-[16px]">
                     <img src={MenuImg} alt="" />
                     <div className="grid gap-[8px]">
-                      <p className="text-[16px] font-[500] text-[#121212]">
+                      <p className="text-[16px] font-[500] text-grey500">
                         {item.title}
                       </p>
-                      <p className="text-[#121212] text-[16px] font-[400]">
+                      <p className="text-grey500 text-[16px] font-[400]">
                         ${item.price}
                       </p>
                     </div>
@@ -112,7 +112,7 @@ const MenuTab: React.FC = () => {
             key={tab.id}
             className={`cursor-pointer text-[16px] leading-[24px] py-4 px-4 ${
               activeTab === tab.id
-                ? "font-[600] text-[#121212] border-b-4 border-[#E16B07]"
+                ? "font-[600] text-grey500 border-b-4 border-[#E16B07]"
                 : "text-[#929292] font-[400]"
             }`}
             onClick={() => handleTabChange(tab.id)}

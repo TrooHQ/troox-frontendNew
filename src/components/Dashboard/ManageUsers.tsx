@@ -4,7 +4,7 @@ import Tabs from "./Tabs";
 import { useState } from "react";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
-import CancelButton from "../buttons/CancelButton";
+import CancelButton from "../Buttons/CancelButton";
 import { useDispatch, useSelector } from "react-redux";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import { RootState } from "../../store/rootReducer";

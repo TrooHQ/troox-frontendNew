@@ -13,6 +13,16 @@ import Reporting from "./Mobile/Components/Reporting";
 import SettingsPage from "./Mobile/SettingsPage";
 import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
 import ManageQrCode from "./Mobile/Components/Settings/QrCodeSettings/ManageQrCode";
+import EmployeeDashboard from "./Mobile/Employee/EmployeeDashboard";
+import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
+import EnterPassword from "./Mobile/authPages/EnterPassword";
+import CreatePassword from "./Mobile/authPages/CreatePassword";
+import EmployeeLogin from "./Mobile/authPages/EmployeeLogin";
+import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
+import StartOrder from "./Mobile/Customers/StartOrder";
+import MenuDetails from "./Mobile/Customers/MenuDetails";
+import { MenuPage } from "./Mobile/Customers/MenuPage";
+import Home from "./LandingPage/Home";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans">
@@ -20,7 +30,14 @@ const MobileLayout = () => {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<EmployeeLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+          <Route path="/restaurants" element={<ListofRestaurants />} />
+          <Route path="/start-order" element={<StartOrder />} />
+          <Route path="/explore-menu" element={<MenuPage />} />
+          <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/ticket" element={<Tickets />} />
           <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />
@@ -28,6 +45,9 @@ const MobileLayout = () => {
           <Route path="/register" element={<RegistrationStepForm />} />
           <Route path="/menu" element={<MenuSetupForm />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/employee-settings" element={<EmployeeSettingsPage />} />
+          <Route path="/password" element={<EnterPassword />} />
+          <Route path="/create-password" element={<CreatePassword />} />
           <Route path="/manage-qr" element={<ManageQrCode />} />
           <Route path="/table" element={<TableSetupForm />} />
           <Route path="/room" element={<RoomSetupForm />} />

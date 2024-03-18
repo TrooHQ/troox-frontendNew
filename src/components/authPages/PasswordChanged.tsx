@@ -1,6 +1,6 @@
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
-import { Button } from "../buttons/Button";
+import { Button } from "../Buttons/Button";
 
 const PasswordChanged = () => {
   return (

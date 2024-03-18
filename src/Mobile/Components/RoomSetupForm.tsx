@@ -26,7 +26,7 @@ const RoomSetupForm = () => {
         </div>
 
         <>
-          <p className=" text-[#121212] text-[14px] my-[24px]">
+          <p className=" text-grey500 text-[14px] my-[24px]">
             Stage 3/ <span className="text-[20px]"> Set Rooms</span>{" "}
           </p>
 
