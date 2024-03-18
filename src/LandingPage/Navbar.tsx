@@ -47,7 +47,7 @@ const Navbar = () => {
             !open ? "block" : "hidden"
           }`}
         >
-          <ul className=" grid md:flex items-center gap-[20px]">
+          <ul className=" hidden md:flex items-center gap-[20px]">
             <li className=" ">
               <button
                 className={`focus:outline-none flex items-center gap-[5px] text-[14px] font-[500] ${
@@ -76,13 +76,6 @@ const Navbar = () => {
               </button>
             </li>
 
-            {/* <li className=" flex items-center gap-[5px] text-[14px] font-[500] text-[#414141]">
-              Troo Products{" "}
-              <span>
-                {" "}
-                <img src={Arrow} alt="" />
-              </span>
-            </li> */}
             <li className=" flex items-center gap-[5px] text-[14px] font-[500] text-[#414141]">
               About us
             </li>
@@ -108,19 +101,12 @@ const Navbar = () => {
             </div>
           </ul>
         </div>
-        {open === true ? (
+        {open === true && (
           <div
             className="absolute top-10 right-4 md:hidden cursor-pointer "
             onClick={() => setopen(false)}
           >
             <Menu1LineIcon />
-          </div>
-        ) : (
-          <div
-            className="absolute top-10 right-4 md:hidden cursor-pointer "
-            onClick={() => setopen(true)}
-          >
-            <CloseLineIcon />
           </div>
         )}
       </div>
@@ -395,6 +381,29 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      {/* {!open && ( */}
+      <div
+        className={`bg-[#E7E7E7] w-[375px] h-screen absolute top-0 px-[21px] py-[29px] ${
+          !open
+            ? "right-0 transition-transform transform translate-x-0 md:translate-x-full"
+            : "right-[calc(100vw - 375px)] transition-transform transform translate-x-full md:translate-x-0"
+        }`}
+      >
+        <div
+          className="flex items-center justify-end mb-[36px] md:hidden cursor-pointer"
+          onClick={() => setopen(true)}
+        >
+          <CloseLineIcon />
+        </div>
+        <div className="">
+          <NavLink to="/request-demo">
+            <li className="text-center gap-[5px] text-[14px] font-[500] py-[10px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+              Schedule A Demo
+            </li>
+          </NavLink>
+        </div>
+      </div>
+      {/* )} */}
     </div>
   );
 };
