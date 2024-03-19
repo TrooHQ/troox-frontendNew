@@ -7,18 +7,6 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { CloseLineIcon, Menu1LineIcon } from "../assets/icons";
 import ArrowDown from "../assets/keyboard_arrow_down.svg";
 
-// interface FAQItem {
-//   question: string;
-// }
-
-// const faqList: FAQItem[] = [
-//   {
-//     question: "Troo for",
-//   },
-//   {
-//     question: "Can I have all my employees on Troo?",
-//   },
-// ];
 const Navbar = () => {
   const [toggle1, setToggle1] = useState(false);
   const [toggle2, setToggle2] = useState(false);
@@ -414,7 +402,7 @@ const Navbar = () => {
       </div>
       {!open && (
         <div
-          className={`bg-[#E7E7E7] z-[100] w-[100%] h-screen md:hidden absolute  top-0 px-[24px] py-[40px] ${
+          className={`bg-[#E7E7E7] z-[100] w-[100%] h-screen md:hidden fixed  top-0 px-[24px] py-[40px] ${
             !open
               ? "right-0 transition-transform transform translate-x-0 md:translate-x-full"
               : "right-[calc(100vw - 375px)] transition-transform transform translate-x-full md:translate-x-0"
