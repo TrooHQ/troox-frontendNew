@@ -6,6 +6,13 @@ import Agile from "../assets/agile.png";
 import Bar from "../assets/bar.png";
 import Hotel from "../assets/hotel.png";
 import { Link } from "react-router-dom";
+import LocalHotel from "../assets/local_hotel.svg";
+import LocalCafe from "../assets/local_cafe.svg";
+import FoodTruck from "../assets/foodtruck.svg";
+import Nightlife from "../assets/nightlife.svg";
+import LocalRestaurant from "../assets/restaurant_FILL0_wght300_GRAD0_opsz24.svg";
+import FastFood from "../assets/Vector.svg";
+import Arrow from "../assets/arrow_forward_FILL0_wght300_GRAD0_opsz24 1.svg";
 const BusinessTabs = () => {
   const tabs = [
     "Restaurants",
@@ -24,14 +31,70 @@ const BusinessTabs = () => {
   };
 
   return (
-    <div className="bg-[#F8F8F8]">
+    <div className="bg-[#F8F8F8] pb-[40px]">
       <div className="  max-w-[1050px] mx-auto">
         <div className="">
-          <p className=" text-[22px] font-[500] text-[#414141] py-[32px] text-center">
+          <p className=" max-w-[287px] mx-auto md:max-w-full text-[18px] md:text-[22px] font-[500] text-[#121212] md:text-[#414141] py-[32px] text-center">
             See How We Work For Businesses Like Yours
           </p>
         </div>
-        <div className=" grid grid-cols-2 gap-[10px] text-center md:flex items-center justify-between md:gap-6 py-[9px] px-[22px]  bg-[#E7E7E7] md:max-w-[1045px] mx-auto rounded-[50px]">
+
+        <div className=" grid grid-cols-2 gap-[32px] md:hidden">
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={LocalRestaurant} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">
+                Restaurants
+              </p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={FoodTruck} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">
+                Food Trucks
+              </p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={LocalHotel} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">Hotels</p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={FastFood} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">
+                Fast Foods
+              </p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={Nightlife} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">
+                Clubs/Lounges
+              </p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+          <div className=" flex flex-col gap-[16px] items-center">
+            <img src={LocalCafe} alt="" />
+            <div className=" flex items-center gap-[8px]">
+              <p className=" font-[500] text-[16px] text-[#5855B3]">
+                Cafes/Bakeries
+              </p>
+              <img src={Arrow} alt="" />
+            </div>
+          </div>
+        </div>
+        <div className="hidden  gap-[10px] text-center md:flex items-center justify-between md:gap-6 py-[9px] px-[22px]  bg-[#E7E7E7] md:max-w-[1045px] mx-auto rounded-[50px]">
           {tabs.map((tab, index) => (
             <p
               key={index}
@@ -46,7 +109,7 @@ const BusinessTabs = () => {
             </p>
           ))}
         </div>
-        <div className="pt-[40px] pb-[84px]">
+        <div className="pt-[40px] pb-[84px] hidden md:block">
           {activeTab === 0 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
               <img src={Restaurant} alt="" />

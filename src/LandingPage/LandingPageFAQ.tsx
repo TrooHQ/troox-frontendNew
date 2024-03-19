@@ -38,8 +38,8 @@ const LandingPageFAQ: React.FC = () => {
   };
 
   return (
-    <div className=" bg-[#F8F8F8] py-[72px]">
-      <div className=" mx-[10px] md:mx-[40px] 2xl:mx-[158px]">
+    <div className=" bg-[#F8F8F8] py-[72px] mt-[80px] md:mt-0">
+      <div className=" mx-[10px] md:mx-[40px] 2xl:mx-[158px] text-center md:text-left">
         <div className="">
           <p className=" text-[18px] font-[400] text-[#414141] mb-[16px]">
             Frequently Asked Questions
@@ -48,15 +48,15 @@ const LandingPageFAQ: React.FC = () => {
             No beer without its owner, <br /> no question without an answer
           </p>
         </div>
-        <div>
+        <div className=" mx-[10px]">
           {faqList.map((faq, index) => (
             <div key={index} className="faq-item">
               <div
-                className=" cursor-pointer py-[24px] border-t border-[#B6B6B6]"
+                className={`cursor-pointer py-[24px] border-t border-[#B6B6B6]`}
                 onClick={() => handleToggle(index)}
               >
-                <div className="flex items-center justify-between">
-                  <p className=" font-[500] text-[18px] text-[#414141]">
+                <div className="flex items-center justify-between text-left">
+                  <p className=" font-[500] text-[14px] md:text-[18px] text-[#414141]">
                     {faq.question}
                   </p>
                   <img
@@ -70,7 +70,9 @@ const LandingPageFAQ: React.FC = () => {
               </div>
               {openIndex === index && (
                 <div className=" py-[16px]">
-                  <p>{faq.answer}</p>
+                  <p className=" text-[14px] md:text-[16px] text-left">
+                    {faq.answer}
+                  </p>
                 </div>
               )}
             </div>

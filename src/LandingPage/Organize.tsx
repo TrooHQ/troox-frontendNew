@@ -6,7 +6,7 @@ import TableOrdering from "../assets/tableOrderingImg.png";
 import { Link } from "react-router-dom";
 const Organize = () => {
   return (
-    <div className=" bg-white mt-[10px] md:mt-[80px]">
+    <div className=" bg-white mt-[10px] md:mt-[80px] hidden md:block">
       <p className=" text-center text-[20px] md:text-[24px] font-[500]">
         Organize All Your Tech in One Place
       </p>

@@ -3,7 +3,7 @@ import Hotel from "../assets/hotel room.png";
 import foodGuy from "../assets/food delivery guy.png";
 const Blog = () => {
   return (
-    <div className=" bg-white py-[72px]">
+    <div className=" bg-white py-[72px] hidden md:block">
       <div className="mx-[10px] md:mx-[40px] 2xl:mx-[158px]">
         <div className="">
           <p className=" text-[18px] font-[400] text-[#414141] mb-[16px]">
