@@ -11,8 +11,14 @@ import LandingPageFAQ from "../LandingPageFAQ";
 import Blog from "../Blog";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const RestaurantsPage = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
     <>
       <div className=" relative">
@@ -33,7 +39,10 @@ const RestaurantsPage = () => {
 
           <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] md:py-[62px]">
             <div className=" flex flex-col justify-center gap-[32px] md:gap-[10px] md:flex items-center md:flex-row md:justify-between md:mt-[100px] ">
-              <div className=" max-w-[278px]  text-center md:mx-0 md:max-w-[409px] md:text-start grid gap-[16px] md:gap-[32px]">
+              <div
+                className=" max-w-[278px]  text-center md:mx-0 md:max-w-[409px] md:text-start grid gap-[16px] md:gap-[32px]"
+                data-aos="fade-down"
+              >
                 <p className=" text-[24px] md:text-[44px] font-[500]  leading-[31px] md:leading-[66px]">
                   Never leave money on the table
                 </p>
@@ -60,7 +69,10 @@ const RestaurantsPage = () => {
                 </div>
               </div>
 
-              <div className=" max-w-[652px] mx-auto md:mx-0">
+              <div
+                className=" max-w-[652px] mx-auto md:mx-0"
+                data-aos="fade-up"
+              >
                 <img src={Restaurant} alt="" className=" hidden md:block" />
                 <img src={RestaurantMobile} alt="" className=" md:hidden" />
               </div>
@@ -69,8 +81,11 @@ const RestaurantsPage = () => {
         </div>
 
         <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] md:py-[88px]">
-          <div className=" flex flex-col items-center justify-center gap-[20px] md:flex md:items-center md:justify-between mt-[100px] ">
-            <div className="max-w-[250px] md:max-w-[409px] mx-auto md:mx-0 text-center md:text-start grid gap-[32px]">
+          <div className=" flex flex-col items-center justify-center gap-[20px] md:flex  md:flex-row md:items-center md:justify-between mt-[100px] ">
+            <div
+              className="max-w-[250px] md:max-w-[409px] mx-auto md:mx-0 text-center md:text-start grid gap-[32px]"
+              data-aos="fade-right"
+            >
               <p className="  text-[18px] md:text-[36px] font-[500] leading-[25px] md:leading-[47px] ">
                 Troo Solutions for Your Restaurant
               </p>
@@ -84,7 +99,7 @@ const RestaurantsPage = () => {
               </div>
             </div>
 
-            <div className=" grid grid-cols-2 gap-[16px]">
+            <div className=" grid grid-cols-2 gap-[16px]" data-aos="fade-left">
               <div className=" md:px-[20px] md:border-l md:border-b">
                 <img src={Restaurant1} alt="" />
                 <p className=" text-[16px] font-[400] text-[#000000] pt-[20px] md:pb-[32px]">

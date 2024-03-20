@@ -13,7 +13,14 @@ import Nightlife from "../assets/nightlife.svg";
 import LocalRestaurant from "../assets/restaurant_FILL0_wght300_GRAD0_opsz24.svg";
 import FastFood from "../assets/Vector.svg";
 import Arrow from "../assets/arrow_forward_FILL0_wght300_GRAD0_opsz24 1.svg";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 const BusinessTabs = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   const tabs = [
     "Restaurants",
     "Food Trucks",
@@ -33,7 +40,7 @@ const BusinessTabs = () => {
   return (
     <div className="bg-[#F8F8F8] pb-[40px]">
       <div className="  max-w-[1050px] mx-auto">
-        <div className="">
+        <div className="" data-aos="fade-up">
           <p className=" max-w-[287px] mx-auto md:max-w-full text-[18px] md:text-[22px] font-[500] text-[#121212] md:text-[#414141] py-[32px] text-center">
             See How We Work For Businesses Like Yours
           </p>
@@ -111,9 +118,9 @@ const BusinessTabs = () => {
         </div>
         <div className="pt-[40px] pb-[84px] hidden md:block">
           {activeTab === 0 && (
-            <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Restaurant} alt="" />
-              <div className=" max-w-[386px]">
+            <div className=" grid md:flex items-center justify-center gap-[56px]">
+              <img src={Restaurant} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Never leave money on the table
                 </p>
@@ -132,8 +139,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 1 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={FoodTrucks} alt="" />
-              <div className=" max-w-[386px]">
+              <img src={FoodTrucks} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Scale your business with Troo
                 </p>
@@ -153,8 +160,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 2 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Cafe} alt="" />
-              <div className=" max-w-[386px]">
+              <img src={Cafe} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Boost profit for your cafe
                 </p>
@@ -174,8 +181,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 3 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Agile} alt="" />
-              <div className=" max-w-[386px]">
+              <img src={Agile} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Agile, fast & efficient
                 </p>
@@ -194,8 +201,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 4 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Bar} alt="" />
-              <div className=" max-w-[386px]">
+              <img src={Bar} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Boost the profit of your bar
                 </p>
@@ -214,8 +221,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 5 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Hotel} alt="" />
-              <div className=" max-w-[386px]">
+              <img src={Hotel} alt="" data-aos="fade-left" />
+              <div className=" max-w-[386px]" data-aos="fade-right">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Optimize revenue at your hotel
                 </p>

@@ -4,7 +4,14 @@ import KDS from "../assets/kdsImg.png";
 import DigitalOrdering from "../assets/digitalOrderingImg.png";
 import TableOrdering from "../assets/tableOrderingImg.png";
 import { Link } from "react-router-dom";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 const Organize = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
     <div className=" bg-white mt-[10px] md:mt-[80px] hidden md:block">
       <p className=" text-center text-[20px] md:text-[24px] font-[500]">
@@ -12,8 +19,8 @@ const Organize = () => {
       </p>
 
       <div className=" md:my-[59px] flex flex-col justify-center items-center md:items-start md:grid md:grid-cols-5 gap-[16px] md:mx-[40px] 2xl:mx-[158px]">
-        <Link to="/pos">
-          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+        <Link to="/pos" data-aos="fade-up">
+          <div className=" w-[224px]  max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={POS}
               alt=""
@@ -30,8 +37,8 @@ const Organize = () => {
             </div>
           </div>
         </Link>
-        <Link to="/kds">
-          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+        <Link to="/kds" data-aos="fade-down">
+          <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={KDS}
               alt=""
@@ -49,8 +56,8 @@ const Organize = () => {
           </div>
         </Link>
 
-        <Link to="/table-ordering">
-          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+        <Link to="/table-ordering" data-aos="fade-up">
+          <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={TableOrdering}
               alt=""
@@ -67,8 +74,8 @@ const Organize = () => {
             </div>
           </div>
         </Link>
-        <Link to="/digital-ordering">
-          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+        <Link to="/digital-ordering" data-aos="fade-down">
+          <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={DigitalOrdering}
               alt=""
@@ -86,8 +93,8 @@ const Organize = () => {
           </div>
         </Link>
 
-        <Link to="/payment">
-          <div className=" w-[224px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
+        <Link to="/payment" data-aos="fade-up">
+          <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={Payment}
               alt=""

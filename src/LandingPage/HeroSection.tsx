@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import Mockup from "../assets/Mockups.svg";
 import PosMockup from "../assets/posmockup.png";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 const HeroSection = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
     <div className=" flex flex-col items-center justify-center gap-[40px] md:gap-0 md:flex md:flex-row md:items-center md:justify-between md:mt-[83px] md:ml-[40px] lg:ml-[230px] max-w-[1440px]">
-      <div className=" max-w-[271px] lg:max-w-[409px]">
+      <div className=" max-w-[271px] lg:max-w-[409px]" data-aos="fade-up">
         <p className=" text-[#121212] text-[24px] lg:text-[44px] font-[500] text-center md:text-start">
           Operating system built for your hospitality business
         </p>
@@ -13,7 +19,7 @@ const HeroSection = () => {
           software.
         </p>
         <Link to="/request-demo">
-          <div className=" flex items-center justify-center md:justify-start">
+          <div className=" flex items-center justify-center md:justify-start md:mt-[10px]">
             <p className="  px-[24px] py-[10px] bg-[#5955B3] text-white rounded-[5px] inline cursor-pointer z-50">
               Learn More
             </p>
@@ -21,7 +27,7 @@ const HeroSection = () => {
         </Link>
       </div>
 
-      <div className="">
+      <div className="" data-aos="fade-down">
         <img src={Mockup} alt="" className=" hidden md:block" />
         <img src={PosMockup} alt="" className=" block md:hidden w-[298px]" />
       </div>

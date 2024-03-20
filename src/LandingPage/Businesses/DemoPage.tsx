@@ -9,6 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import Overlay from "../../assets/GreyOverlay.svg";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 type FormData = {
   firstName: string;
@@ -22,6 +25,9 @@ type FormData = {
 };
 
 const DemoPage = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormData>();
 
@@ -72,7 +78,10 @@ const DemoPage = () => {
 
       <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] py-[62px] mb-[100px]">
         <div className=" grid gap-[10px] md:flex items-center justify-between  ">
-          <div className=" max-w-[296px] mx-[30px] md:mx-0 md:max-w-[491px] text-start grid gap-[16px] md:gap-[32px]">
+          <div
+            className=" max-w-[296px] mx-[30px] md:mx-0 md:max-w-[491px] text-start grid gap-[16px] md:gap-[32px]"
+            data-aos="fade-right"
+          >
             <p className=" text-[24px] md:text-[44px] font-[500] leading-[31px] md:leading-[66px]">
               A single smart platform that supports all your technoloy needs
             </p>
@@ -195,7 +204,10 @@ const DemoPage = () => {
             </form>
           </div> */}
 
-          <div className="w-full md:max-w-[652px] px-4 mt-[32px] md:mt-0">
+          <div
+            className="w-full md:max-w-[652px] px-4 mt-[32px] md:mt-0"
+            data-aos="fade-left"
+          >
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="grid gap-4 md:gap-6"

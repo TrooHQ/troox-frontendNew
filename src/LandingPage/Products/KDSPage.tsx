@@ -13,8 +13,14 @@ import Blog from "../Blog";
 import Footer from "../Footer";
 import Overlay from "../../assets/GreyOverlay.svg";
 import { Link } from "react-router-dom";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const KDSPage = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
     <div className=" relative">
       <Navbar />
@@ -32,7 +38,10 @@ const KDSPage = () => {
       </div>
 
       <div className="">
-        <div className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]">
+        <div
+          className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]"
+          data-aos="fade-down"
+        >
           <p className=" text-[14px] font-[400] text-[#5855B3] hidden md:block">
             PRODUCTS/KDS
           </p>
@@ -55,14 +64,20 @@ const KDSPage = () => {
           </Link>
         </div>
 
-        <div className=" max-w-[298px] md:max-w-[835px] mx-auto mt-[56px]">
+        <div
+          className=" max-w-[298px] md:max-w-[835px] mx-auto mt-[56px]"
+          data-aos="fade-up"
+        >
           <img src={KDSMockup} alt="" />
         </div>
 
         <div className="">
           <div className=" mt-[50px] md:mt-[20px] md:my-[59px]  md:mx-[40px] 2xl:mx-[158px]">
             <div className=" mx-[38px] md:mx-0 mb-[16px] md:mb-0 flex flex-col gap-[16px] md:gap-0 items-center justify-center sm:grid sm:grid-cols-2 lg:grid-cols-3">
-              <div className="w-full max-h-[243px] border md:border-t-0 md:border-l-0  md:border-b md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className="w-full max-h-[243px] border md:border-t-0 md:border-l-0  md:border-b md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-down"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={NoPaper} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -76,7 +91,10 @@ const KDSPage = () => {
                 </p>
               </div>
 
-              <div className="w-full max-h-[243px] border md:border-t-0 md:border-b md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className="w-full max-h-[243px] border md:border-t-0 md:border-b md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-up"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={Synchronize} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -88,7 +106,10 @@ const KDSPage = () => {
                   operations by delivering the right order to the right guests.
                 </p>
               </div>
-              <div className="w-full max-h-[243px] border md:border-t-0 md:border-r-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className="w-full max-h-[243px] border md:border-t-0 md:border-r-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-down"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={SOT} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -103,7 +124,10 @@ const KDSPage = () => {
               </div>
             </div>
             <div className="  flex flex-col mx-[38px] md:mx-0 gap-[16px] md:gap-0 items-center justify-center sm:grid sm:grid-cols-2 lg:grid-cols-4">
-              <div className=" w-full max-h-[243px] border md:border-l-0 md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className=" w-full max-h-[243px] border md:border-l-0 md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-down"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={printer} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -115,7 +139,10 @@ const KDSPage = () => {
                   connected printer directly from KDS.
                 </p>
               </div>
-              <div className=" w-full max-h-[243px] border md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className=" w-full max-h-[243px] border md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-up"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={Order} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -127,8 +154,10 @@ const KDSPage = () => {
                   losing accuracy.
                 </p>
               </div>
-
-              <div className=" w-full max-h-[243px] border md:border-0  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className=" w-full max-h-[243px] border md:border-0  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-right"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={Cloud} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -140,8 +169,10 @@ const KDSPage = () => {
                   with fulfilment reporting.
                 </p>
               </div>
-
-              <div className=" w-full max-h-[243px] border md:border-b-0 md:border-r-0 px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div
+                className=" w-full max-h-[243px] border md:border-b-0 md:border-r-0 px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+                data-aos="fade-left"
+              >
                 <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                   <img src={integration} alt="" />
                   <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">

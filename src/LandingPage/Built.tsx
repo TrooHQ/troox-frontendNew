@@ -13,7 +13,10 @@ const Built = () => {
       </p>
 
       <div className=" mx-[40px] mt-[20px] md:my-[59px] flex flex-col justify-center items-center md:items-start md:grid md:grid-cols-3 gap-[16px] 2xl:mx-[158px]">
-        <div className="md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className="md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-right"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon1} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -26,7 +29,10 @@ const Built = () => {
           </p>
         </div>
 
-        <div className=" md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className=" md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-left"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon2} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -38,7 +44,10 @@ const Built = () => {
             and the right tools to set you up for success.
           </p>
         </div>
-        <div className="md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className="md:h-[243px]  border  px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-up"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon3} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -50,7 +59,10 @@ const Built = () => {
             performance indicators like sales, orders, etc.
           </p>
         </div>
-        <div className="md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className="md:h-[243px]  border  px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-down"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon4} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -62,7 +74,10 @@ const Built = () => {
             schedules and set user roles and privileges.
           </p>
         </div>
-        <div className=" md:h-[243px] border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className=" md:h-[243px] border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-up"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon5} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -74,7 +89,10 @@ const Built = () => {
             without delays.
           </p>
         </div>
-        <div className=" md:h-[243px] border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]">
+        <div
+          className=" md:h-[243px] border  px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
+          data-aos="fade-left"
+        >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon6} alt="" />
             <p className=" text-[16px] md:text-[20px] font-[500] text-[#5855B3]">

@@ -13,8 +13,14 @@ import Footer from "../Footer";
 import Overlay from "../../assets/GreyOverlay.svg";
 import TableOrderingMobile from "../../assets/tableOrderingMobile.png";
 import { Link } from "react-router-dom";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const TableOrderingPage = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
     <div className=" relative">
       <Navbar />
@@ -32,7 +38,10 @@ const TableOrderingPage = () => {
       </div>
 
       <div className="">
-        <div className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]">
+        <div
+          className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]"
+          data-aos="fade-down"
+        >
           <p className=" text-[14px] font-[400] text-[#5855B3] hidden md:block">
             PRODUCTS/TABLE ORDERING
           </p>
@@ -55,14 +64,20 @@ const TableOrderingPage = () => {
           </Link>
         </div>
 
-        <div className=" max-w-[298px] md:max-w-[835px] mx-auto mt-[56px]">
+        <div
+          className=" max-w-[298px] md:max-w-[835px] mx-auto mt-[56px]"
+          data-aos="fade-up"
+        >
           <img src={Phones} alt="" className=" hidden md:block" />
           <img src={TableOrderingMobile} alt="" className=" md:hidden" />
         </div>
 
         <div className="">
           <div className="  mx-[38px] mt-[50px] md:mt-[20px] md:my-[59px] flex flex-col gap-[16px] md:gap-0 justify-center items-start md:items-start md:grid md:grid-cols-3 md:mx-[40px] 2xl:mx-[158px]">
-            <div className="w-full max-h-[243px] md:h-[243px] border md:border-l-0 md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className="w-full max-h-[243px] md:h-[243px] border md:border-l-0 md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-right"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={QRCode} alt="" />
                 <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -75,7 +90,10 @@ const TableOrderingPage = () => {
               </p>
             </div>
 
-            <div className="w-full max-h-[243px] border md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className="w-full max-h-[243px] border md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-down"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Order} alt="" />
                 <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -87,7 +105,10 @@ const TableOrderingPage = () => {
                 products they want to order, without waiting.
               </p>
             </div>
-            <div className="w-full max-h-[243px] md:h-[243px]  border  md:border-t-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className="w-full max-h-[243px] md:h-[243px]  border  md:border-t-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-left"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Synchronize} alt="" />
                 <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -98,7 +119,10 @@ const TableOrderingPage = () => {
                 Orders automatically arrive at printers, POS and order takers.
               </p>
             </div>
-            <div className=" w-full max-h-[243px] border md:border-l-0 md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className=" w-full max-h-[243px] border md:border-l-0 md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-up"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Trending} alt="" />
                 <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -109,7 +133,10 @@ const TableOrderingPage = () => {
                 Ramp up orders
               </p>
             </div>
-            <div className="w-full max-h-[243px] border md:border-b-0  md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className="w-full max-h-[243px] border md:border-b-0  md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-left"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Star} alt="" />
                 <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
@@ -121,7 +148,10 @@ const TableOrderingPage = () => {
               </p>
             </div>
 
-            <div className=" w-full max-h-[243px] border md:border-b-0  md:border-r-0   px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+            <div
+              className=" w-full max-h-[243px] border md:border-b-0  md:border-r-0   px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
+              data-aos="fade-down"
+            >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={optimize} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">
