@@ -22,12 +22,12 @@ const KDSPage = () => {
         <img
           src={Circle}
           alt=""
-          className="hidden md:block absolute top-0 left-0 w-[100%] -z-50"
+          className="hidden md:block fixed top-0 left-0 w-[100%] -z-50"
         />
         <img
           src={Overlay}
           alt=""
-          className=" md:hidden absolute top-0 left-0 w-[100%] -z-50"
+          className=" md:hidden fixed top-0 left-0 w-[100%] -z-50"
         />
       </div>
 
@@ -69,7 +69,7 @@ const KDSPage = () => {
                     No Papers, No Clutters
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Eradicate paper tickets in your kitchen. Connect orders on any
                   device on-premise and online and have them fired straight to
                   the KDS.
@@ -83,7 +83,7 @@ const KDSPage = () => {
                     Synchronized Operations
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Bridge the gap between your front-of-house and back-of-house
                   operations by delivering the right order to the right guests.
                 </p>
@@ -95,7 +95,7 @@ const KDSPage = () => {
                     One source of truth for fulfilment
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Troo KDS organizes all your tickets real-time, from all
                   sources providing kitchen staff with full visibility to
                   deliver excellent fulfillment.
@@ -110,7 +110,7 @@ const KDSPage = () => {
                     Bulk Print
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Bulk print end-of-day and runner tickets on any network
                   connected printer directly from KDS.
                 </p>
@@ -122,7 +122,7 @@ const KDSPage = () => {
                     Process More Orders
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Process more order volumes and increase revenues without
                   losing accuracy.
                 </p>
@@ -135,7 +135,7 @@ const KDSPage = () => {
                     Fulfilment Status
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Help your waiters manage expectations by tracking order status
                   with fulfilment reporting.
                 </p>
@@ -148,7 +148,7 @@ const KDSPage = () => {
                     Integration
                   </p>
                 </div>
-                <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+                <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                   Troo KDS automatically integrates with Troo ePOS and Online
                   Ordering for synchronized communication between front and back
                   of house.

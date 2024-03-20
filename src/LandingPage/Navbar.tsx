@@ -2,7 +2,7 @@ import Logo from "../assets/trooLogo1.svg";
 import Arrow from "../assets/arrow_downward.svg";
 import ArrowRight from "../assets/chevron_right.svg";
 import ArrowRightActive from "../assets/chevron_right_Active.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { CloseLineIcon, Menu1LineIcon } from "../assets/icons";
 import ArrowDown from "../assets/keyboard_arrow_down.svg";
@@ -10,7 +10,8 @@ import ArrowDown from "../assets/keyboard_arrow_down.svg";
 const Navbar = () => {
   const [toggle1, setToggle1] = useState(false);
   const [toggle2, setToggle2] = useState(false);
-
+  const [open, setopen] = useState(true);
+  const [scroll, setScroll] = useState(true);
   const handleToggle1 = () => {
     setToggle2(false);
     setToggle1(!toggle1);
@@ -21,7 +22,19 @@ const Navbar = () => {
     setToggle2(!toggle2);
   };
   const location = useLocation();
-  const [open, setopen] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScroll(false);
+      } else {
+        setScroll(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const [menu, setMenu] = useState(false);
   const [menu2, setMenu2] = useState(false);
   const terms2 = [
@@ -47,12 +60,17 @@ const Navbar = () => {
     setMenu(false);
   };
   return (
-    <div className="">
-      <div className=" relative">
-        {" "}
+    <div className=" pb-[120px]">
+      <div
+        className={`fixed top-0 w-full  z-[99999999999] ${
+          !scroll && "shadow-md bg-slate-50"
+        }`}
+      >
+        {/* </div>  */}
+        {/* <div className=" relative"> */}{" "}
         <div className="  py-[35px] lg:mx-[158px] md:border-b border-[#CBCAE7] grid md:flex items-center justify-between gap-[20px] md:gap-0">
-          <div className="">
-            <Link to="/home">
+          <div className=" mx-[10px] md:mx-0">
+            <Link to="/">
               <img src={Logo} alt="" />
             </Link>
           </div>
@@ -117,7 +135,7 @@ const Navbar = () => {
           </div>
           {open === true && (
             <div
-              className="absolute top-10 right-4 md:hidden cursor-pointer "
+              className="absolute top-10 right-[30px] md:hidden cursor-pointer "
               onClick={() => setopen(false)}
             >
               <Menu1LineIcon />
@@ -402,7 +420,7 @@ const Navbar = () => {
       </div>
       {!open && (
         <div
-          className={`bg-[#E7E7E7] z-[100] w-[100%] h-screen md:hidden fixed  top-0 px-[24px] py-[40px] ${
+          className={`bg-[#E7E7E7] z-[99999999999999999] w-[100%] h-screen md:hidden fixed top-0 px-[24px] py-[40px] ${
             !open
               ? "right-0 transition-transform transform translate-x-0 md:translate-x-full"
               : "right-[calc(100vw - 375px)] transition-transform transform translate-x-full md:translate-x-0"

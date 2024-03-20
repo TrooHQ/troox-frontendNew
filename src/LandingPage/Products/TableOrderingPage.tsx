@@ -22,12 +22,12 @@ const TableOrderingPage = () => {
         <img
           src={Circle}
           alt=""
-          className="hidden md:block absolute top-0 left-0 w-[100%] -z-50"
+          className="hidden md:block fixed top-0 left-0 w-[100%] -z-50"
         />
         <img
           src={Overlay}
           alt=""
-          className=" md:hidden absolute top-0 left-0 w-[100%] -z-50"
+          className=" md:hidden fixed top-0 left-0 w-[100%] -z-50"
         />
       </div>
 
@@ -69,7 +69,7 @@ const TableOrderingPage = () => {
                   Order via QR Code
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 The customer scans the QR and directly sees the menu associated
                 with their table.
               </p>
@@ -82,7 +82,7 @@ const TableOrderingPage = () => {
                   Order From the Menu
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 The customer navigates through your digital menu and chooses the
                 products they want to order, without waiting.
               </p>
@@ -94,7 +94,7 @@ const TableOrderingPage = () => {
                   Synchronized with your System
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Orders automatically arrive at printers, POS and order takers.
               </p>
             </div>
@@ -105,7 +105,7 @@ const TableOrderingPage = () => {
                   Increase Turnover
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Ramp up orders
               </p>
             </div>
@@ -116,7 +116,7 @@ const TableOrderingPage = () => {
                   The Best Experience
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Don’t leave the customer with their hand raised.
               </p>
             </div>
@@ -128,7 +128,7 @@ const TableOrderingPage = () => {
                   Optimize your Business
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Get the most performance and profitability
               </p>
             </div>

@@ -20,12 +20,12 @@ const CafePage = () => {
         <img
           src={Circle}
           alt=""
-          className="hidden md:block absolute top-0 left-0 w-[100%] -z-50"
+          className="hidden md:block fixed top-0 left-0 w-[100%] -z-50"
         />
         <img
           src={Overlay}
           alt=""
-          className=" md:hidden absolute top-0 left-0 w-[100%] -z-50"
+          className=" md:hidden fixed top-0 left-0 w-[100%] -z-50"
         />
       </div>
 

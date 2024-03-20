@@ -21,12 +21,12 @@ const PosPage = () => {
         <img
           src={Circle}
           alt=""
-          className="hidden md:block absolute top-0 left-0 w-[100%] -z-50"
+          className="hidden md:block fixed top-0 left-0 w-[100%] -z-50"
         />
         <img
           src={Overlay}
           alt=""
-          className=" md:hidden absolute top-0 left-0 w-[100%] -z-50"
+          className=" md:hidden fixed top-0 left-0 w-[100%] -z-50"
         />
       </div>
 
@@ -66,7 +66,7 @@ const PosPage = () => {
                   Online & Offline Mode
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Troo ePOS offers a cloud-based cash register that helps you take
                 and manage orders, record sales, receive payment etc
               </p>
@@ -79,7 +79,7 @@ const PosPage = () => {
                   Increase Check Sizes
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Create menu hierarchy that include category, menu and menu items
                 to help waiters accurately place orders and increase bill sizes.
               </p>
@@ -91,7 +91,7 @@ const PosPage = () => {
                   Restaurant-grade Hardware
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Complete with durable hardware to with-stand the rigours of your
                 operations.
               </p>
@@ -103,7 +103,7 @@ const PosPage = () => {
                   Map Tables
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Organize your floor plan and tables to manage tickets and
                 orders.
               </p>
@@ -115,7 +115,7 @@ const PosPage = () => {
                   Built for Guests
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Customize orders by modifying menus, special requests like "less
                 spicy", "extra
               </p>
@@ -128,7 +128,7 @@ const PosPage = () => {
                   Seamless Integration
                 </p>
               </div>
-              <p className=" mt-[8px] md:mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 API integration capabilities with delivery apps like uber eats,
                 glovo, etc.
               </p>

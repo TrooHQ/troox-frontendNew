@@ -11,7 +11,7 @@ import Footer from "./Footer";
 const Home = () => {
   return (
     <div className="relative">
-      <div className="max-w-[1440px] mx-[10px] md:mx-[40px] 2xl:mx-auto">
+      <div className="max-w-[1440px] md:mx-[40px] 2xl:mx-auto 2xl:max-w-full">
         <Navbar />
       </div>
       <HeroSection />

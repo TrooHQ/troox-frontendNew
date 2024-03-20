@@ -10,6 +10,8 @@ import PhoneOrdering from "../../assets/phone ordering.svg";
 import LandingPageFAQ from "../LandingPageFAQ";
 import Blog from "../Blog";
 import Footer from "../Footer";
+import Overlay from "../../assets/GreyOverlay.svg";
+import { Link } from "react-router-dom";
 
 const DigitalOrderingPage = () => {
   return (
@@ -19,107 +21,114 @@ const DigitalOrderingPage = () => {
         <img
           src={Circle}
           alt=""
-          className="hidden md:block absolute top-0 left-0 w-[1132px] -z-50"
+          className="hidden md:block fixed top-0 left-0 w-[100%] -z-50"
+        />
+        <img
+          src={Overlay}
+          alt=""
+          className=" md:hidden fixed top-0 left-0 w-[100%] -z-50"
         />
       </div>
 
       <div className="">
-        <div className=" max-w-[625px] mx-auto text-center mt-[100px]">
-          <p className=" text-[14px] font-[400] text-[#5855B3]">
+        <div className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]">
+          <p className=" text-[14px] font-[400] text-[#5855B3] hidden md:block">
             PRODUCTS/DIGITAL ORDERING
           </p>
-          <p className=" text-[44px] font-[500] mb-[25px]">
+          <p className=" text-[24px] md:text-[44px] font-[500]  leading-[31px] md:leading-[66px]">
             Drive Sales With Online Ordering Workflow
           </p>
-          <p className=" text-[18px] font-[400] text-[#414141] leading-[28px]">
+          <p className=" text-[14px] md:text-[18px] font-[400] text-[#414141] leading-[28px] mt-[16px] md:mt-0">
             Your favorite customers may not be able to make it into your
             facility. Deliver the special delight that keeps them coming back,
             by setting up your Troo account to receive online orders. Never miss
             an order!
           </p>
-          <p className=" text-[18px] font-[400] text-[#414141] my-[32px]">
+          <p className=" text-[14px] md:text-[18px] font-[400] text-[#414141] my-[16px] md:my-[32px]">
             Book a demo TODAY to learn how this works for your business.
           </p>
-          <p className="  inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
-            Schedule A Demo
-          </p>
+          <Link to="/request-demo">
+            <p className="  inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+              Schedule A Demo
+            </p>
+          </Link>
         </div>
 
-        <div className=" max-w-[835px] mx-auto mt-[56px]">
+        <div className=" max-w-[292px] md:max-w-[835px] mx-auto mt-[56px]">
           <img src={Phones} alt="" />
         </div>
 
         <div className="">
-          <div className=" mt-[20px] md:my-[59px] flex flex-col justify-center items-start md:items-start md:grid md:grid-cols-3 md:mx-[40px] 2xl:mx-[158px]">
-            <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+          <div className="  mx-[38px] mt-[50px] md:mt-[20px] md:my-[59px] flex flex-col gap-[16px] md:gap-0 justify-center items-start md:items-start md:grid md:grid-cols-3 md:mx-[40px] 2xl:mx-[158px]">
+            <div className="w-full max-h-[243px] md:h-[243px] border md:border-l-0 md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={PaymentOption} alt="" />
-                <p className=" text-[20px] font-[500] text-[#5855B3]">
+                <p className=" text-[18px] md:text-[20px] font-[500] text-[#5855B3]">
                   Flexible Payment Options
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Give your customers many ways to pay via cash, terminals,
                 contactless NFC, transfer, online, etc.
               </p>
             </div>
 
-            <div className="h-[243px]  md:border-b md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+            <div className="w-full max-h-[243px] md:h-[243px] border md:border-t-0  md:border-b md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Instore} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">
                   In-Store
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Troo in-store smart payment terminals offers more control and
                 convenience over payment, tipping, and receipt op- tions so your
                 waiters can focus more on service delivery.
               </p>
             </div>
-            <div className="h-[243px]  md:border-b  px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+            <div className="w-full max-h-[243px] md:h-[243px] border md:border-t-0 md:border-r-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={OnTheGo} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">
                   On the Go
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Troo Go terminals offer payment process- ing options whether you
                 are on the shop floor or on delivery runs.
               </p>
             </div>
-            <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+            <div className=" w-full max-h-[243px] md:h-[243px] border md:border-b-0 md:border-l-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={online} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">Online</p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Seamless online payment options for your business’ online
                 ordering flows.
               </p>
             </div>
-            <div className=" h-[243px] md:border-r px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+            <div className=" w-full max-h-[243px] md:h-[243px] border md:border-b-0 md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={PhoneOrdering} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">
                   Phone Ordering
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 Troo virtual terminals lets you take orders and card payments on
                 your computer, tablet, or device via a web browser.
               </p>
             </div>
 
-            <div className=" h-[243px]   px-[30px] pt-[51px] pb-[59px]">
-              <div className=" flex items-center gap-[24px] ">
+            <div className=" w-full max-h-[243px] md:h-[243px] border md:border-b-0 md:border-r-0   px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]">
+              <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Consistent} alt="" />
                 <p className=" text-[20px] font-[500] text-[#5855B3]">
                   Consistent Rates
                 </p>
               </div>
-              <p className=" mt-[35px] font-[400] text-[16px] text-[#414141]">
+              <p className=" mt-[8px] lg:mt-[35px] font-[400] text-[16px] text-[#414141]">
                 We offer consistent rates across all cards that won't hurt your
                 business.
               </p>
