@@ -47,59 +47,73 @@ const BusinessTabs = () => {
         </div>
 
         <div className=" grid grid-cols-2 gap-[32px] md:hidden">
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={LocalRestaurant} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">
-                Restaurants
-              </p>
-              <img src={Arrow} alt="" />
+          <Link to="/restaurant">
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={LocalRestaurant} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">
+                  Restaurants
+                </p>
+                <img src={Arrow} alt="" />
+              </div>
             </div>
-          </div>
+          </Link>
+          <Link to="/food-truck">
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={FoodTruck} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">
+                  Food Trucks
+                </p>
+                <img src={Arrow} alt="" />
+              </div>
+            </div>
+          </Link>
 
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={FoodTruck} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">
-                Food Trucks
-              </p>
-              <img src={Arrow} alt="" />
+          <Link to="/hotel">
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={LocalHotel} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">Hotels</p>
+                <img src={Arrow} alt="" />
+              </div>
             </div>
-          </div>
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={LocalHotel} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">Hotels</p>
-              <img src={Arrow} alt="" />
+          </Link>
+          <Link to="/fast-food">
+            {" "}
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={FastFood} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">
+                  Fast Foods
+                </p>
+                <img src={Arrow} alt="" />
+              </div>
             </div>
-          </div>
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={FastFood} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">
-                Fast Foods
-              </p>
-              <img src={Arrow} alt="" />
+          </Link>
+          <Link to="/lounges">
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={Nightlife} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">
+                  Clubs/Lounges
+                </p>
+                <img src={Arrow} alt="" />
+              </div>
             </div>
-          </div>
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={Nightlife} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">
-                Clubs/Lounges
-              </p>
-              <img src={Arrow} alt="" />
+          </Link>
+
+          <Link to="/cafe">
+            <div className=" flex flex-col gap-[16px] items-center">
+              <img src={LocalCafe} alt="" />
+              <div className=" flex items-center gap-[8px]">
+                <p className=" font-[500] text-[16px] text-[#5855B3]">
+                  Cafes/Bakeries
+                </p>
+                <img src={Arrow} alt="" />
+              </div>
             </div>
-          </div>
-          <div className=" flex flex-col gap-[16px] items-center">
-            <img src={LocalCafe} alt="" />
-            <div className=" flex items-center gap-[8px]">
-              <p className=" font-[500] text-[16px] text-[#5855B3]">
-                Cafes/Bakeries
-              </p>
-              <img src={Arrow} alt="" />
-            </div>
-          </div>
+          </Link>
         </div>
         <div className="hidden  gap-[10px] text-center md:flex items-center justify-between md:gap-6 py-[9px] px-[22px]  bg-[#E7E7E7] md:max-w-[1045px] mx-auto rounded-[50px]">
           {tabs.map((tab, index) => (
