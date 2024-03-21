@@ -39,7 +39,7 @@ const FastFoodPage = () => {
         <div className=" flex flex-col justify-center gap-[32px] md:gap-[10px] md:flex items-center md:flex-row md:justify-between md:mt-[100px] ">
           <div
             className=" max-w-[278px]  text-center md:mx-0 md:max-w-[409px] md:text-start grid gap-[16px] md:gap-[32px]"
-            data-aos="fade-down"
+            data-aos="fade-up"
           >
             <p className=" text-[24px] md:text-[44px] font-[500]  leading-[31px] md:leading-[66px]">
               Agile, fast & efficient
@@ -78,7 +78,7 @@ const FastFoodPage = () => {
         <div className=" flex flex-col items-center justify-center gap-[20px] md:flex  md:flex-row md:items-center md:justify-between mt-[100px] ">
           <div
             className="max-w-[250px] md:max-w-[409px] mx-auto md:mx-0 text-center md:text-start grid gap-[32px]"
-            data-aos="fade-right"
+            data-aos="fade-up"
           >
             <p className="  text-[18px] md:text-[36px] font-[500] leading-[25px] md:leading-[47px] ">
               Troo solutions for your fast food business
@@ -93,7 +93,7 @@ const FastFoodPage = () => {
             </div>
           </div>
 
-          <div className=" grid grid-cols-2 gap-[16px]" data-aos="fade-left">
+          <div className=" grid grid-cols-2 gap-[16px]" data-aos="fade-up">
             <div className=" md:px-[20px] md:border-l md:border-b">
               <img src={Restaurant1} alt="" />
               <p className=" text-[16px] font-[400] text-[#000000] pt-[20px] md:pb-[32px]">

@@ -133,8 +133,8 @@ const BusinessTabs = () => {
         <div className="pt-[40px] pb-[84px] hidden md:block">
           {activeTab === 0 && (
             <div className=" grid md:flex items-center justify-center gap-[56px]">
-              <img src={Restaurant} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={Restaurant} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Never leave money on the table
                 </p>
@@ -153,8 +153,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 1 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={FoodTrucks} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={FoodTrucks} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Scale your business with Troo
                 </p>
@@ -174,8 +174,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 2 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Cafe} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={Cafe} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Boost profit for your cafe
                 </p>
@@ -195,8 +195,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 3 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Agile} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={Agile} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Agile, fast & efficient
                 </p>
@@ -215,8 +215,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 4 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Bar} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={Bar} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Boost the profit of your bar
                 </p>
@@ -235,8 +235,8 @@ const BusinessTabs = () => {
           )}
           {activeTab === 5 && (
             <div className=" grid md:flex items-center justify-center gap-[56px] ">
-              <img src={Hotel} alt="" data-aos="fade-left" />
-              <div className=" max-w-[386px]" data-aos="fade-right">
+              <img src={Hotel} alt="" data-aos="fade-up" />
+              <div className=" max-w-[386px]" data-aos="fade-up">
                 <p className=" font-[500] text-[22px] text-[#000000] mb-[24px]">
                   Optimize revenue at your hotel
                 </p>

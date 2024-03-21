@@ -37,7 +37,7 @@ const Organize = () => {
             </div>
           </div>
         </Link>
-        <Link to="/kds" data-aos="fade-down">
+        <Link to="/kds" data-aos="fade-up">
           <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={KDS}
@@ -74,7 +74,7 @@ const Organize = () => {
             </div>
           </div>
         </Link>
-        <Link to="/digital-ordering" data-aos="fade-down">
+        <Link to="/digital-ordering" data-aos="fade-up">
           <div className=" w-[224px] max-h-[416px] bg-[#EEEEF7] rounded-[5px] overflow-hidden hover:bg-purple500 group duration-300">
             <img
               src={DigitalOrdering}

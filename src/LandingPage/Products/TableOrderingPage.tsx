@@ -40,7 +40,7 @@ const TableOrderingPage = () => {
       <div className="">
         <div
           className=" max-w-[271px] md:max-w-[607px] mx-auto text-center md:mt-[100px]"
-          data-aos="fade-down"
+          data-aos="fade-up"
         >
           <p className=" text-[14px] font-[400] text-[#5855B3] hidden md:block">
             PRODUCTS/TABLE ORDERING
@@ -76,7 +76,7 @@ const TableOrderingPage = () => {
           <div className="  mx-[38px] mt-[50px] md:mt-[20px] md:my-[59px] flex flex-col gap-[16px] md:gap-0 justify-center items-start md:items-start md:grid md:grid-cols-3 md:mx-[40px] 2xl:mx-[158px]">
             <div
               className="w-full max-h-[243px] md:h-[243px] border md:border-l-0 md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
-              data-aos="fade-right"
+              data-aos="fade-up"
             >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={QRCode} alt="" />
@@ -92,7 +92,7 @@ const TableOrderingPage = () => {
 
             <div
               className="w-full max-h-[243px] border md:border-t-0  md:border-b md:border-r  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
-              data-aos="fade-down"
+              data-aos="fade-up"
             >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Order} alt="" />
@@ -107,7 +107,7 @@ const TableOrderingPage = () => {
             </div>
             <div
               className="w-full max-h-[243px] md:h-[243px]  border  md:border-t-0 md:border-b  px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
-              data-aos="fade-left"
+              data-aos="fade-up"
             >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Synchronize} alt="" />
@@ -135,7 +135,7 @@ const TableOrderingPage = () => {
             </div>
             <div
               className="w-full max-h-[243px] border md:border-b-0  md:border-r px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
-              data-aos="fade-left"
+              data-aos="fade-up"
             >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={Star} alt="" />
@@ -150,7 +150,7 @@ const TableOrderingPage = () => {
 
             <div
               className=" w-full max-h-[243px] border md:border-b-0  md:border-r-0   px-[16px] text-center md:text-left md:px-[30px] pt-[24px] md:pt-[51px] pb-[24px] md:pb-[59px]"
-              data-aos="fade-down"
+              data-aos="fade-up"
             >
               <div className=" flex flex-col md:flex-row items-center gap-[8px] md:gap-[24px] ">
                 <img src={optimize} alt="" />

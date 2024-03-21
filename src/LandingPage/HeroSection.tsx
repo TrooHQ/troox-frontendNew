@@ -27,7 +27,7 @@ const HeroSection = () => {
         </Link>
       </div>
 
-      <div className="" data-aos="fade-down">
+      <div className="" data-aos="fade-up">
         <img src={Mockup} alt="" className=" hidden md:block" />
         <img src={PosMockup} alt="" className=" block md:hidden w-[298px]" />
       </div>

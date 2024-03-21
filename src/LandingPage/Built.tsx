@@ -15,7 +15,7 @@ const Built = () => {
       <div className=" mx-[40px] mt-[20px] md:my-[59px] flex flex-col justify-center items-center md:items-start md:grid md:grid-cols-3 gap-[16px] 2xl:mx-[158px]">
         <div
           className="md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
-          data-aos="fade-right"
+          data-aos="fade-up"
         >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon1} alt="" />
@@ -31,7 +31,7 @@ const Built = () => {
 
         <div
           className=" md:h-[243px]  border px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
-          data-aos="fade-left"
+          data-aos="fade-up"
         >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon2} alt="" />
@@ -61,7 +61,7 @@ const Built = () => {
         </div>
         <div
           className="md:h-[243px]  border  px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
-          data-aos="fade-down"
+          data-aos="fade-up"
         >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon4} alt="" />
@@ -91,7 +91,7 @@ const Built = () => {
         </div>
         <div
           className=" md:h-[243px] border  px-[10px] md:px-[30px] py-[20px] md:pt-[51px] md:pb-[59px]"
-          data-aos="fade-left"
+          data-aos="fade-up"
         >
           <div className=" flex flex-col md:flex-row items-center gap-[10px] md:gap-[24px] ">
             <img src={Icon6} alt="" />

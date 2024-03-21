@@ -30,6 +30,16 @@ const DemoPage = () => {
   }, []);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset } = useForm<FormData>();
+  const [smallScreen, setSmallScreen] = useState(false);
+
+  const handleResize = () => {
+    setSmallScreen(window.innerWidth < 640);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     console.log(data);
@@ -76,11 +86,11 @@ const DemoPage = () => {
         />
       </div>
 
-      <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] py-[62px] mb-[100px]">
+      <div className="max-w-[1440px] mx-[10px] md:mx-[40px] lg:mx-[158px] md:py-[62px] mb-[100px]">
         <div className=" grid gap-[10px] md:flex items-center justify-between  ">
           <div
             className=" max-w-[296px] mx-[30px] md:mx-0 md:max-w-[491px] text-start grid gap-[16px] md:gap-[32px]"
-            data-aos="fade-right"
+            data-aos="fade-up"
           >
             <p className=" text-[24px] md:text-[44px] font-[500] leading-[31px] md:leading-[66px]">
               A single smart platform that supports all your technoloy needs
@@ -206,7 +216,7 @@ const DemoPage = () => {
 
           <div
             className="w-full md:max-w-[652px] px-4 mt-[32px] md:mt-0"
-            data-aos="fade-left"
+            data-aos="fade-up"
           >
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -273,9 +283,13 @@ const DemoPage = () => {
 
               <input
                 type="text"
-                placeholder="Number of establishments (How many hospitality businesses do you manage?)"
+                placeholder={
+                  !smallScreen
+                    ? "Number of establishments (How many hospitality businesses do you manage?)"
+                    : "Number of establishments"
+                }
                 {...register("NoOfEstablishment", { required: true })}
-                className="border border-[#B6B6B6] rounded-[5px] py-[13px] px-[20px] text-[#606060] text-[13px] font-[400] w-full"
+                className=" border border-[#B6B6B6] rounded-[5px] py-[13px] px-[20px] text-[#606060] text-[13px] font-[400] w-full"
               />
 
               <button
