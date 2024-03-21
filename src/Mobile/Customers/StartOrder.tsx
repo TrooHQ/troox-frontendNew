@@ -6,7 +6,7 @@ const StartOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className=" mx-[22px]">
+    <div className=" mx-[22px] ">
       <div className=" flex flex-col items-center justify-center mt-[64px]">
         <img src={Logo} alt="" />
         <p className=" mt-[24px] text-[16px] font-[400]">

@@ -5,6 +5,7 @@ import Cafe from "../assets/cafe.png";
 import Agile from "../assets/agile.png";
 import Bar from "../assets/bar.png";
 import Hotel from "../assets/hotel.png";
+import { Link } from "react-router-dom";
 const BusinessTabs = () => {
   const tabs = [
     "Restaurants",
@@ -58,9 +59,11 @@ const BusinessTabs = () => {
                   efficiency, improve customer experience, and increase
                   profitability in your business.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/restaurant">
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}
@@ -77,9 +80,11 @@ const BusinessTabs = () => {
                   profitability in your business. Improve customer attention and
                   service speed by letting the customer order directly.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/food-truck">
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}
@@ -95,9 +100,12 @@ const BusinessTabs = () => {
                   efficiency, improve customer experience, and increase
                   profitability in your business.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/cafe">
+                  {" "}
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}
@@ -113,9 +121,11 @@ const BusinessTabs = () => {
                   efficiency, improve customer experience, and increase
                   profitability in your business.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/fast-food">
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}
@@ -131,9 +141,11 @@ const BusinessTabs = () => {
                   efficiency, improve customer experience, and increase
                   profitability in your business.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/lounges">
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}
@@ -148,9 +160,11 @@ const BusinessTabs = () => {
                   Enhance customer service and speed up service by allowing your
                   customers to place orders directly from anywhere.
                 </p>
-                <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
-                  Learn More
-                </p>
+                <Link to="/hotel">
+                  <p className=" px-[24px] py-[10px] font-[500] text-[16px] rounded-[5px] bg-[#504DA3] inline text-white">
+                    Learn More
+                  </p>
+                </Link>
               </div>
             </div>
           )}

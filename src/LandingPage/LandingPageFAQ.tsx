@@ -10,23 +10,23 @@ const faqList: FAQItem[] = [
   {
     question: "Is Troo only for restaurants?",
     answer:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "Restaurants are one of the many businesses that use Troo. Cafes, bars, hotels, lounges, and every business in the hospitality industry has a tailored solution built for them by Troo.",
   },
   {
     question: "Can I have all my employees on Troo?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+      "With Troo, all your employees can be added to the workspace, while you create roles for them. These roles ensures that your employees have access to software and hardware to enable them work effectively.",
   },
   {
     question: "How does the QR code system work on Troo?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+      "The QR code contains your menu and a checkout flow that makes it possible for your customers to place an order on your menu, and make payment for the product. This item is sent to the kitchen through the KDS for the customer’s order to be processed.",
   },
   {
     question:
       "Do I have to Purchase Every Product in the Troo Ecosystem to Onboard on Troo?",
     answer:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+      "Every Troo product is built for you, but you can choose which one best fits your business at every moment. Be it the KDS, POS system etc.",
   },
 ];
 

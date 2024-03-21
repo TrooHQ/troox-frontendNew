@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Mockup from "../assets/Mockups.svg";
 
 const HeroSection = () => {
@@ -11,9 +12,11 @@ const HeroSection = () => {
           Delight your customers and boost your bottom line with our intuitive
           software.
         </p>
-        <p className="  px-[24px] py-[10px] bg-[#5955B3] text-white rounded-[5px] inline cursor-pointer z-50">
-          Learn More
-        </p>
+        <Link to="/request-demo">
+          <p className="  px-[24px] py-[10px] bg-[#5955B3] text-white rounded-[5px] inline cursor-pointer z-50">
+            Learn More
+          </p>
+        </Link>
       </div>
 
       <div className="">

@@ -4,39 +4,70 @@ import AccountIcon from "../assets/AccountSettings.svg";
 import MenuModal from "../Components/MenuModal";
 import CheckCircle from "../assets/check_circle.svg";
 
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import DashboardBackButton from "../Buttons/DashboardBackButton";
-
-interface FormData extends FieldValues {
-  employee_name?: string;
-  employee_email?: string;
-  employee_phone?: string;
-}
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
 
 const EmployeeSettingsPage = () => {
   const [resetSuccessModal, setResetSuccessModal] = useState(false);
-
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [resetPasswordModal, setResetPasswordModal] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handlePasswordResetModal = () => {
     setResetPasswordModal(true);
   };
 
-  const handlePasswordResetSuccessModal = () => {
-    setResetPasswordModal(false);
-    setResetSuccessModal(true);
+  // const handlePasswordResetSuccessModal = () => {
+  //   setResetPasswordModal(false);
+  //   setResetSuccessModal(true);
+  // };
+
+  const token = sessionStorage.getItem("token");
+
+  const updatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    if (!newPassword || !confirmPassword) {
+      setError("All fields are Required");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    const tempPassword = sessionStorage.getItem("tempPassword");
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/updateEmployeePassword`,
+        {
+          password: newPassword,
+          confirm_password: confirmPassword,
+          temp_password: tempPassword,
+        },
+        headers
+      );
+      console.log("Employee Password Reset successfully:", response.data);
+      setLoading(false);
+      setError("");
+      setNewPassword("");
+      setConfirmPassword("");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-  };
-
   return (
     <div>
       <div className="my-[16px] mx-[24px]">
@@ -67,42 +98,34 @@ const EmployeeSettingsPage = () => {
         isOpen={resetPasswordModal}
         onClose={() => setResetPasswordModal(false)}
       >
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <form action="" onSubmit={updatePassword}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
               <p className="text-[20px] font-[400] text-grey500">
                 Reset password
               </p>
               <div className=" mt-[24px] grid gap-[16px]">
-                <p className="text-red-500 text-sm mt-1">
-                  {/* {errors && "All Fields are required"} */}
-                </p>
+                <p className="text-red-500 text-sm mt-1">{error}</p>
                 <input
                   type="password"
                   id="new_password"
-                  {...register("new_password", {
-                    required: "New Password is required",
-                  })}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Create new password"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
-                    errors.new_password ? "border-red-500" : ""
-                  }`}
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full`}
                 />
                 <input
                   type="password"
                   id="confirm_password"
-                  {...register("confirm_password", {
-                    required: "Confirm Password is required",
-                  })}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
-                    errors.confirm_password ? "border-red-500" : ""
-                  }`}
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
                 <button
+                  disabled={loading}
                   type="submit"
-                  onClick={handlePasswordResetSuccessModal}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save

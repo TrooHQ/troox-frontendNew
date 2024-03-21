@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import ScrollToTop from "./components/ScrollToTop.tsx";
+import ScrollToTop from "./components/ScrollToTop.tsx";
 import LoginPage from "./pages/LoginPage.js";
 import NotFound from "./components/NotFound.tsx";
 import CheckMail from "./components/authPages/CheckMail.tsx";
@@ -20,15 +20,43 @@ import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
 import Home from "./LandingPage/Home.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
+import PosPage from "./LandingPage/Products/PosPage.tsx";
+import KDSPage from "./LandingPage/Products/KDSPage.tsx";
+import TableOrderingPage from "./LandingPage/Products/TableOrderingPage.tsx";
+import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage.tsx";
+import PaymentPage from "./LandingPage/Products/PaymentPage.tsx";
+import RestaurantsPage from "./LandingPage/Businesses/RestaurantsPage.tsx";
+import HotelPage from "./LandingPage/Businesses/HotelPage.tsx";
+import LoungesPage from "./LandingPage/Businesses/LoungesPage.tsx";
+import CafePage from "./LandingPage/Businesses/CafePage.tsx";
+import FastFoodPage from "./LandingPage/Businesses/FastFoodPage.tsx";
+import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
+import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export default function App() {
   return (
     <div className=" font-GeneralSans">
       <Router>
-        {/* <ScrollToTop /> */}
+        <ToastContainer />
+        <ScrollToTop />
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/pos" element={<PosPage />} />
+          <Route path="/kds" element={<KDSPage />} />
+          <Route path="/table-ordering" element={<TableOrderingPage />} />
+          <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/restaurant" element={<RestaurantsPage />} />
+          <Route path="/hotel" element={<HotelPage />} />
+          <Route path="/lounges" element={<LoungesPage />} />
+          <Route path="/cafe" element={<CafePage />} />
+          <Route path="/fast-food" element={<FastFoodPage />} />
+          <Route path="/food-truck" element={<FoodTruckPage />} />
+          <Route path="/request-demo" element={<DemoPage />} />
+
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />

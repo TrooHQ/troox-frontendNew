@@ -24,10 +24,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setIsFocused(true);
   };
 
-  const handleBlur = () => {
-    setIsFocused(value !== "");
-  };
+  // const handleBlur = () => {
+  //   setIsFocused(value !== "");
+  // };
 
+  const handleBlur = () => {
+    setIsFocused(value !== "" || isFocused);
+  };
   const handleLabelClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();

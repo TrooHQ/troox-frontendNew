@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import { Button } from "../Buttons/Button.tsx";
 import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
@@ -11,30 +10,71 @@ import {
   selectEmail,
   selectPassword,
 } from "../../slices/authSlice.js";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api.ts";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { Button } from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
   const Password = useSelector(selectPassword);
 
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState<boolean>(false);
   const handlePasswordChange = (newValue: string) => {
     dispatch(setPassword(newValue));
   };
 
   const history = useNavigate();
 
-  const handleButtonClick = () => {
+  const handleLogin = async () => {
     if (!Email || !Password) {
-      setError("Invalid email/password");
+      setError("All Fields are required...");
       return;
-    } else {
-      console.log("Email:", Email);
-      console.log("Password:", Password);
-      setError("");
-
-      history("/dashboard");
     }
+
+    sessionStorage.setItem("email", Email);
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${SERVER_DOMAIN}/login`, {
+        email: Email,
+        password: Password,
+      });
+      setLoading(false);
+      console.log(response.data);
+      sessionStorage.setItem("email_verified", response.data.email_verified);
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("name", response.data.admin_name);
+      sessionStorage.setItem("businessName", response.data.business_name);
+      sessionStorage.setItem("id", response.data.id);
+      sessionStorage.setItem("userType", response.data.user_role);
+      const userType = response.data.user_role;
+      toast.success(response.data.message);
+      if (userType === "employee") {
+        history("/employee-dashboard");
+      } else if (userType === "admin") {
+        history("/menu");
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+          console.log(error.response.data);
+          if (error.response.data.message === "Your Email is not verified") {
+            history("/verify");
+            console.log("Unverified");
+          }
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -51,7 +91,7 @@ const Login = () => {
           <div className=" grid gap-[16px]">
             <CustomInput
               type="text"
-              label="Business name/phone number"
+              label="Business email/phone number"
               value={Email}
               error={error}
               onChange={(newValue) => dispatch(setEmail(newValue))}
@@ -70,8 +110,8 @@ const Login = () => {
               <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
-          <div className="" onClick={handleButtonClick}>
-            <Button text="Login" />
+          <div className="" onClick={handleLogin}>
+            <Button text="Login" loading={loading} />
           </div>
         </div>
         <div className=" mt-[150px]">

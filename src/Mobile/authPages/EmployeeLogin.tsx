@@ -11,12 +11,17 @@ import {
   selectEmail,
   selectPassword,
 } from "../../slices/authSlice.js";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api.js";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const EmployeeLogin = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
   const Password = useSelector(selectPassword);
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handlePasswordChange = (newValue: string) => {
     dispatch(setPassword(newValue));
@@ -24,17 +29,32 @@ const EmployeeLogin = () => {
 
   const history = useNavigate();
 
-  const handleButtonClick = () => {
+  const handleLogin = async () => {
     if (!Email || !Password) {
-      setError("Invalid email/password");
+      setError("All Fields are required...");
       return;
-    } else {
-      console.log("Email:", Email);
-      console.log("Password:", Password);
-      setError("");
-
-      history("/employee-dashboard");
     }
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${SERVER_DOMAIN}/login`, {
+        email: "",
+        password: Password,
+      });
+      setLoading(false);
+      console.log(response.data.account_details);
+      console.log(response.data.message);
+      toast.success(response.data.message);
+      history("/login");
+    } catch (error: any) {
+      console.error("Error occurred:", error);
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -70,8 +90,8 @@ const EmployeeLogin = () => {
               <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
-          <div className="" onClick={handleButtonClick}>
-            <Button text="Login" />
+          <div className="" onClick={handleLogin}>
+            <Button text="Login" loading={loading} />
           </div>
         </div>
         <div className=" mt-[150px]">
