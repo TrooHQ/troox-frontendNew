@@ -45,7 +45,7 @@ import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 const MobileLayout = () => {
   return (
-    <div className=" font-GeneralSans">
+    <div className=" font-GeneralSans overflow-hidden">
       <ToastContainer />
       <Router>
         <ScrollToTop />

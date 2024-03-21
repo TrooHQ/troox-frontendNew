@@ -1,9 +1,16 @@
 import cafeShop from "../assets/cafe shop.png";
 import Hotel from "../assets/hotel room.png";
 import foodGuy from "../assets/food delivery guy.png";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 const Blog = () => {
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
   return (
-    <div className=" bg-white py-[72px]">
+    <div className=" bg-white py-[72px] hidden md:block">
       <div className="mx-[10px] md:mx-[40px] 2xl:mx-[158px]">
         <div className="">
           <p className=" text-[18px] font-[400] text-[#414141] mb-[16px]">
@@ -14,7 +21,7 @@ const Blog = () => {
           </p>
         </div>
 
-        <div className=" grid md:grid-cols-3 gap-[24px]">
+        <div className=" grid md:grid-cols-3 gap-[24px]" data-aos="fade-up">
           <div className=" h-[440px] max-w-[358px] ">
             <div className=" relative">
               <img
