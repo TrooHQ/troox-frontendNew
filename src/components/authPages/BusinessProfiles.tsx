@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
-import BackButton from "../Buttons/BackButton";
+import BackButton from "../Buttons/Button";
 import { Link } from "react-router-dom";
 
 interface FAQItem {
