@@ -18,7 +18,7 @@ const CheckInput: React.FC<ReusableCheckInputProps> = ({ text }) => {
       }`}
       onClick={handleCheckToggle}
     >
-      <p className={`cursor-pointer text-[#121212] text-[16px] font-[400]`}>
+      <p className={`cursor-pointer text-grey500 text-[16px] font-[400]`}>
         {text}
       </p>
 

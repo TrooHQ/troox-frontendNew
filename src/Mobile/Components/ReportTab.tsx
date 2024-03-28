@@ -29,7 +29,7 @@ const ReportTab: React.FC = () => {
             <img src={TotalIcon} alt="" />
             <div className="">
               <p className=" text-[16px] text-[#414141]">Total Orders</p>
-              <p className=" text-[#121212] text-[28px]">150 orders</p>
+              <p className=" text-grey500 text-[28px]">150 orders</p>
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@ const ReportTab: React.FC = () => {
             <img src={AcceptedIcon} alt="" />
             <div className="">
               <p className=" text-[16px] text-[#414141]">Accepted Orders</p>
-              <p className=" text-[#121212] text-[28px]">150 orders</p>
+              <p className=" text-grey500 text-[28px]">150 orders</p>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ const ReportTab: React.FC = () => {
             <img src={ProcessedIcon} alt="" />
             <div className="">
               <p className=" text-[16px] text-[#414141]">Fulfilled Orders</p>
-              <p className=" text-[#121212] text-[28px]">127 orders</p>
+              <p className=" text-grey500 text-[28px]">127 orders</p>
             </div>
           </div>
         </div>
@@ -60,15 +60,15 @@ const ReportTab: React.FC = () => {
       <>
         <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Daily Income</p>
-          <p className=" text-[#121212] text-[28px]">N 85,000</p>
+          <p className=" text-grey500 text-[28px]">N 85,000</p>
         </div>
         <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Weekly Income</p>
-          <p className=" text-[#121212] text-[28px]">N 85,000</p>
+          <p className=" text-grey500 text-[28px]">N 85,000</p>
         </div>
         <div className=" rounded-[10px] px-[1px] py-[16px] border-b grid gap-[17px]">
           <p className=" text-[16px] text-[#414141]">Total Monthly Income</p>
-          <p className=" text-[#121212] text-[28px]">N 85,000</p>
+          <p className=" text-grey500 text-[28px]">N 85,000</p>
         </div>
       </>
     );
@@ -86,7 +86,7 @@ const ReportTab: React.FC = () => {
             <p
               className={`inline text-[16px] leading-[24px] py-[4px] px-[1px] ${
                 activeTab === tab.id
-                  ? "font-[600] text-[#121212] border-b-4 border-[#E16B07] "
+                  ? "font-[600] text-grey500 border-b-4 border-[#E16B07] "
                   : "text-[#929292] font-[400]"
               }`}
             >

@@ -116,7 +116,7 @@ const OrderTab: React.FC = () => {
             <p
               className={` inline text-[16px] leading-[24px] py-4 px-4 ${
                 activeTab === tab.id
-                  ? "font-[600] text-[#121212] border-b-4 border-[#E16B07] "
+                  ? "font-[600] text-grey500 border-b-4 border-[#E16B07] "
                   : "text-[#929292] font-[400]"
               }`}
             >

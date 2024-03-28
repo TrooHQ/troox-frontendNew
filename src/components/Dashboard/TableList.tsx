@@ -3,13 +3,13 @@ import TopMenuNav from "./TopMenuNav";
 import QrCode from "../../assets/qr-code.png";
 import More from "../../assets/more_vert.svg";
 import { useState } from "react";
-import CancelButton from "../Buttons/CancelButton";
 import { Link } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
 import { setUserData } from "../../slices/InviteUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
+import CancelButton from "../../Mobile/Buttons/CancelButton";
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
   const handleItemClick = (action: string) => {

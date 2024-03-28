@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
+import BackButton from "../Buttons/BackButton";
 import { Link } from "react-router-dom";
 import BackButtonMain from "../Buttons/BackButtonMain";
 

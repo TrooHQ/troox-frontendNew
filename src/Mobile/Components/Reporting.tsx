@@ -1,5 +1,5 @@
 import Arrow from "../assets/BackArrow.svg";
-import DashboardBackButton from "../buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton";
 import ReportTab from "./ReportTab";
 
 const Reporting = () => {

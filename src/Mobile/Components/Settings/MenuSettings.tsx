@@ -100,7 +100,7 @@ const MenuSettings = () => {
         <div className="flex items-center justify-between ">
           <div className="flex items-center gap-[16px]">
             <img src={MenuIcon} alt="" />
-            <p className="text-[#121212] text-[20px]">Menu</p>
+            <p className="text-grey500 text-[20px]">Menu</p>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ const MenuSettings = () => {
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
           <div className=" ">
             <div className=" flex relative items-center justify-between mb-[16px]">
-              <p className=" text-[20px]  font-[400] text-[#121212]">
+              <p className=" text-[20px]  font-[400] text-grey500">
                 New menu category
               </p>
               <img
@@ -144,11 +144,11 @@ const MenuSettings = () => {
               />
               {infoModal && (
                 <div className="grid gap-[10px] absolute top-[30px] right-0 shadow-2xl z-[50] w-[300px] py-[32px] px-[16px] bg-white">
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     New Menu allows you create a new menu category where other
                     food items can be added to it.
                   </p>
-                  <p className=" text-[14px] font-[400] text-[#121212]">
+                  <p className=" text-[14px] font-[400] text-grey500">
                     E.g when you create a menu for soup, you have created a
                     category called soup in your database. You can add soups
                     such as Pepper soup e.t.c. when you create a menu item.
@@ -170,7 +170,7 @@ const MenuSettings = () => {
               onChange={(newValue) => setEmail(newValue)}
             />
             <div className=" grid gap-[8px] my-[16px]">
-              <p className=" text-[#121212] text-[16px] font-[400]">
+              <p className=" text-grey500 text-[16px] font-[400]">
                 Setup menu group
               </p>
               <p className=" text-[#606060] text-[14px] font-[400]">
@@ -201,14 +201,14 @@ const MenuSettings = () => {
         onClose={() => setRemoveMenuModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">Remove menu</p>
+          <p className="text-[20px] font-[400] text-grey500">Remove menu</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {menu.map((user) => (
               <div
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={user.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {user.name}
                 </p>
                 <p
@@ -226,7 +226,7 @@ const MenuSettings = () => {
 
       <MenuModal isOpen={editModal} onClose={() => setEditModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">
+          <p className="text-[20px] font-[400] text-grey500">
             Edit menu category
           </p>
           <div className=" mt-[24px] grid gap-[16px]">
@@ -235,7 +235,7 @@ const MenuSettings = () => {
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={menuItem.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {menuItem.name}
                 </p>
                 <p
@@ -253,7 +253,7 @@ const MenuSettings = () => {
       <MenuModal isOpen={editItem} onClose={() => setEditItem(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
-            <h2 className=" mb-[16px] text-[#121212] font-[400] text-[20px]">
+            <h2 className=" mb-[16px] text-grey500 font-[400] text-[20px]">
               Edit Menu Category
             </h2>
             <CustomInput
@@ -263,7 +263,7 @@ const MenuSettings = () => {
               onChange={(newValue) => setEmail(newValue)}
             />
             <div className=" grid gap-[8px] my-[16px]">
-              <p className=" text-[#121212] text-[16px] font-[400]">
+              <p className=" text-grey500 text-[16px] font-[400]">
                 Edit menu group
               </p>
               <p className=" text-[#606060] text-[14px] font-[400]">
@@ -346,7 +346,7 @@ const MenuSettings = () => {
       >
         <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
           <div className=" ">
-            <p className=" text-[20px]  font-[400] text-[#121212] mb-[16px]">
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
               New menu Item
             </p>
 
@@ -358,7 +358,7 @@ const MenuSettings = () => {
             />
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-[#121212]">
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
                   Add image
                 </p>
 

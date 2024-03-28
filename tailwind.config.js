@@ -6,6 +6,9 @@ export default {
       fontFamily: {
         GeneralSans: ["General Sans", "sans-serif"],
       },
+      backgroundImage: {
+        footer: "url('/src/assets/FooterImage.svg')",
+      },
       colors: {
         purple100: "#CBCAE7",
         purple500: "#5955B3",

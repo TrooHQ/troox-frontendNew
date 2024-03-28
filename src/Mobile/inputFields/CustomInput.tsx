@@ -24,10 +24,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setIsFocused(true);
   };
 
-  const handleBlur = () => {
-    setIsFocused(value !== "");
-  };
+  // const handleBlur = () => {
+  //   setIsFocused(value !== "");
+  // };
 
+  const handleBlur = () => {
+    setIsFocused(value !== "" || isFocused);
+  };
   const handleLabelClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -53,7 +56,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           className={`absolute transition-all duration-300 cursor-text ${
             isFocused
               ? "text-[14px] -top-3 left-2 bg-[#EFEFEF] px-2 text-[#000000]"
-              : "top-2 left-4  text-grey200"
+              : "top-2 left-4  text-grey200 text-[14px]"
           } ${error ? "text-red-500" : ""}`}
           onClick={handleLabelClick}
         >

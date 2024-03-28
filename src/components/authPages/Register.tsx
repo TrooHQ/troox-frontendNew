@@ -2,8 +2,8 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Button } from "../Buttons/Button";
 import BackButtonMain from "../Buttons/BackButtonMain";
+import Button from "../Buttons/Button";
 
 const Register = () => {
   const [name, setName] = useState<string>("");

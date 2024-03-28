@@ -1,5 +1,5 @@
-import { useState } from "react";
-import DashboardBackButton from "./buttons/DashboardBackButton";
+import { useEffect, useState } from "react";
+import DashboardBackButton from "./Buttons/DashboardBackButton";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
 import QrIcon from "./assets/QRImage.svg";
@@ -17,6 +17,12 @@ import printIcon from "./assets/printer.svg";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import MenuSettings from "./Components/Settings/MenuSettings";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../Api/Api";
+// import CustomInput from "./inputFields/CustomInput";
+// import CheckInput from "./inputFields/CheckInput";
+// import RadioInput from "./inputFields/RadioInput";
+// import { Link } from "react-router-dom";
 
 interface FormData extends FieldValues {
   employee_name?: string;
@@ -25,6 +31,14 @@ interface FormData extends FieldValues {
 }
 
 const SettingsPage = () => {
+  const [employeeName, setEmployeeName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [tempPassword, setTempPassword] = useState("");
   const users = [
     {
       id: 1,
@@ -52,6 +66,7 @@ const SettingsPage = () => {
   const [resetSuccessModal, setResetSuccessModal] = useState(false);
   const [warningModal, setWarningModal] = useState(false);
   const [deleteSuccessfullModal, setDeleteSuccessfullModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [resetPasswordModal, setResetPasswordModal] = useState(false);
   const [employeeModal, setEmployeeModal] = useState(false);
@@ -117,15 +132,17 @@ const SettingsPage = () => {
     setRemoveEmployeeModal(true);
   };
 
-  const handleSuccessModal = () => {
-    setEmployeeModal(false);
-    setSuccessModal(true);
-  };
+  // const handleSuccessModal = () => {
+  //   setEmployeeModal(false);
+  //   // setAddCategoryModal(false);
+  //   // setEditItem(false);
+  //   setSuccessModal(true);
+  // };
 
-  const handlePasswordResetSuccessModal = () => {
-    setResetPasswordModal(false);
-    setResetSuccessModal(true);
-  };
+  // const handlePasswordResetSuccessModal = () => {
+  //   setResetPasswordModal(false);
+  //   setResetSuccessModal(true);
+  // };
 
   const {
     register,
@@ -133,8 +150,125 @@ const SettingsPage = () => {
     formState: { errors },
   } = useForm();
 
+  const token = sessionStorage.getItem("token");
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
+  };
+
+  const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    if (!employeeName || !phoneNumber || !email) {
+      setError("All fields Are required");
+      return;
+    }
+    sessionStorage.setItem("employeeEmail", email);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/createEmployee`,
+        {
+          employee_name: employeeName,
+          email: email,
+          phone_number: phoneNumber,
+        },
+        headers
+      );
+      console.log("Employee added successfully:", response.data);
+      setLoading(false);
+      setEmployeeName("");
+      setEmail("");
+      setPhoneNumber("");
+      setError("");
+      setEmployeeModal(false);
+      setSuccessModal(true);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchTempPassword = async () => {
+      setLoading(true);
+      const email = sessionStorage.getItem("employeeEmail");
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const response = await axios.post(
+          `${SERVER_DOMAIN}/employee/getEmployeeTempPassword`,
+          {
+            email,
+          },
+          headers
+        );
+        setTempPassword(response.data.password);
+        sessionStorage.setItem("tempPassword", tempPassword);
+        console.log(response.data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching temporary password:", error);
+        setError("An error occurred while fetching temporary password");
+        setLoading(false);
+      }
+    };
+
+    fetchTempPassword();
+  }, []);
+  const updatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    if (!newPassword || !confirmPassword) {
+      setError("All fields are Required");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    const tempPassword = sessionStorage.getItem("tempPassword");
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/updateEmployeePassword`,
+        {
+          password: newPassword,
+          confirm_password: confirmPassword,
+          temp_password: tempPassword,
+        },
+        headers
+      );
+      console.log("Employee Password Reset successfully:", response.data);
+      setLoading(false);
+      setEmployeeName("");
+      setEmail("");
+      setPhoneNumber("");
+      setError("");
+      setEmployeeModal(false);
+      setSuccessModal(true);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -147,7 +281,7 @@ const SettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">Account</p>
+                <p className="text-grey500 text-[20px]">Account</p>
               </div>
             </div>
 
@@ -179,7 +313,7 @@ const SettingsPage = () => {
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={QrIcon} alt="" />
-                <p className="text-[#121212] text-[20px]">QR Code</p>
+                <p className="text-grey500 text-[20px]">QR Code</p>
               </div>
             </div>
 
@@ -204,20 +338,19 @@ const SettingsPage = () => {
         isOpen={resetPasswordModal}
         onClose={() => setResetPasswordModal(false)}
       >
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <form action="" onSubmit={updatePassword}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Reset password
               </p>
               <div className=" mt-[24px] grid gap-[16px]">
-                <p className="text-red-500 text-sm mt-1"></p>
+                <p className="text-red-500 text-sm mt-1">{error}</p>
                 <input
                   type="password"
                   id="new_password"
-                  {...register("new_password", {
-                    required: "New Password is required",
-                  })}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Create new password"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
                     errors.new_password ? "border-red-500" : ""
@@ -226,9 +359,8 @@ const SettingsPage = () => {
                 <input
                   type="password"
                   id="confirm_password"
-                  {...register("confirm_password", {
-                    required: "Confirm Password is required",
-                  })}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm password"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
                     errors.confirm_password ? "border-red-500" : ""
@@ -236,8 +368,8 @@ const SettingsPage = () => {
                 />
 
                 <button
+                  disabled={loading}
                   type="submit"
-                  onClick={handlePasswordResetSuccessModal}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
@@ -251,7 +383,7 @@ const SettingsPage = () => {
       <MenuModal isOpen={QRCodeModal} onClose={() => setQRCodeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
-            <p className="text-[20px] font-[400] text-[#121212]">
+            <p className="text-[20px] font-[400] text-grey500">
               Create QR Code
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -282,7 +414,7 @@ const SettingsPage = () => {
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" max-w-[280px] mx-auto">
-            <p className="text-[16px] font-[400] text-[#121212] text-center">
+            <p className="text-[16px] font-[400] text-grey500 text-center">
               Do you want to create QR Code for rooms at Deluxe Hotel?
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -319,7 +451,7 @@ const SettingsPage = () => {
             >
               <img src={QrCode} alt="" />
             </div>
-            <p className="text-[16px] font-[400] text-[#121212] text-center">
+            <p className="text-[16px] font-[400] text-grey500 text-center">
               QR Code for rooms at Deluxe Hotel has been created successfully
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
@@ -351,7 +483,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 How many tables do you have?
               </p>
               <div className=" mt-[16px] ">
@@ -390,7 +522,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[16px] font-[400] text-[#121212]">
+              <p className="text-[16px] font-[400] text-grey500">
                 Do you want to create these QR Codes for 11 tables at Chicken
                 Express Restaurant?
               </p>
@@ -452,7 +584,7 @@ const SettingsPage = () => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Save Table Group As{" "}
               </p>
               <div className=" mt-[16px] ">
@@ -510,10 +642,10 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <form action="" onSubmit={createEmployee}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
-              <p className="text-[20px] font-[400] text-[#121212]">
+              <p className="text-[20px] font-[400] text-grey500">
                 Add employee
               </p>
               <div className=" mt-[24px] grid gap-[16px]">
@@ -523,9 +655,8 @@ const SettingsPage = () => {
                 <input
                   type="text"
                   id="employee_name"
-                  {...register("employee_name", {
-                    required: "Full Name is required",
-                  })}
+                  value={employeeName}
+                  onChange={(e) => setEmployeeName(e.target.value)}
                   placeholder="Add employee name"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
                     errors.employee_name ? "border-red-500" : ""
@@ -534,31 +665,26 @@ const SettingsPage = () => {
                 <input
                   type="email"
                   id="employee_email"
-                  {...register("employee_email")}
-                  placeholder="Email(optional)"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
-                    errors.employee_email ? "border-red-500" : ""
+                    errors.email ? "border-red-500" : ""
                   }`}
                 />
                 <input
                   type="tel"
                   id="employee_phone"
-                  {...register("employee_phone", {
-                    required: "Phone number is required",
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Invalid phone number",
-                    },
-                  })}
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="Phone number"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full ${
-                    errors.employee_phone ? "border-red-500" : ""
+                    errors.phone_number ? "border-red-500" : ""
                   }`}
                 />
 
                 <button
                   type="submit"
-                  onClick={handleSuccessModal}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
@@ -574,16 +700,14 @@ const SettingsPage = () => {
         onClose={() => setRemoveEmployeeModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <p className="text-[20px] font-[400] text-[#121212]">
-            Remove employee
-          </p>
+          <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {users.map((user) => (
               <div
                 className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
                 key={user.id}
               >
-                <p className=" text-[#121212] text-[14px] font-[400]">
+                <p className=" text-grey500 text-[14px] font-[400]">
                   {user.name}
                 </p>
                 <p
@@ -687,7 +811,7 @@ const SettingsPage = () => {
               onClick={() => setSuccessModal(false)}
             />
             <p className="text-[16px] font-[400] text-grey500">
-              Menu has been Added successfully
+              Employee has been Added successfully
             </p>
           </div>
         </div>
