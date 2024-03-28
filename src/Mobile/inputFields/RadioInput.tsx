@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface RadioInputProps {
   options: string[];
-  onChange?: (newValue: string) => void; // Make onChange optional
+  selectedOption?: string | null;
+  onChange: (value: string) => void;
 }
 
-const RadioInput: React.FC<RadioInputProps> = ({ options, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
-
-  const handleOptionChange = (option: string) => {
-    setSelectedOption(option);
-    if (onChange) {
-      onChange(option);
-    }
-  };
-
+const RadioInput: React.FC<RadioInputProps> = ({
+  options,
+  selectedOption,
+  onChange,
+}) => {
   return (
     <div className="flex items-center gap-[32px]">
       {options.map((option, index) => (
@@ -25,7 +21,7 @@ const RadioInput: React.FC<RadioInputProps> = ({ options, onChange }) => {
             name="radio-option"
             value={option}
             checked={selectedOption === option}
-            onChange={() => handleOptionChange(option)}
+            onChange={() => onChange(option)}
             className="mr-2"
           />
           <label

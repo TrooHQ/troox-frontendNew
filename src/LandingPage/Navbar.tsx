@@ -66,8 +66,6 @@ const Navbar = () => {
           !scroll && "shadow-md bg-slate-50"
         }`}
       >
-        {/* </div>  */}
-        {/* <div className=" relative"> */}{" "}
         <div className="  py-[35px] lg:mx-[158px] md:border-b border-[#CBCAE7] grid md:flex items-center justify-between gap-[20px] md:gap-0">
           <div className=" mx-[10px] md:mx-0">
             <Link to="/">
