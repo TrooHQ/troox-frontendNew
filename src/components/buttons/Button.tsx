@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
 interface ButtonProps {
@@ -5,7 +6,7 @@ interface ButtonProps {
   link?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({ text, link }) => {
+const Button: React.FC<ButtonProps> = ({ text, link }) => {
   return (
     <div>
       {link ? (
@@ -22,3 +23,5 @@ export const Button: React.FC<ButtonProps> = ({ text, link }) => {
     </div>
   );
 };
+
+export default Button;

@@ -6,7 +6,7 @@ interface ButtonProps {
   loading?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({ text, link, loading }) => {
+const Button: React.FC<ButtonProps> = ({ text, link, loading }) => {
   return (
     <div>
       {link ? (
@@ -29,3 +29,4 @@ export const Button: React.FC<ButtonProps> = ({ text, link, loading }) => {
     </div>
   );
 };
+export default Button;

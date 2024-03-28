@@ -1,6 +1,6 @@
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockicon.png";
-import { Button } from "../Buttons/Button";
+import Button from "../Buttons/Button";
 
 const CheckMail = () => {
   return (

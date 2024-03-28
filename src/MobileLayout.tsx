@@ -21,7 +21,7 @@ import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
-import Home from "./LandingPage/Home";
+// import Home from "./LandingPage/Home";
 import PosPage from "./LandingPage/Products/PosPage";
 import KDSPage from "./LandingPage/Products/KDSPage";
 import TableOrderingPage from "./LandingPage/Products/TableOrderingPage";

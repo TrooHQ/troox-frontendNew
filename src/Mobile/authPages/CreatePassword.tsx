@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import { Button } from "../Buttons/Button.js";
+import Button from "../Buttons/Button.js";
 import PasswordInput from "../inputFields/PasswordInput.js";
 // import { Link } from "react-router-dom";
 // import Modal from "../Components/Modal.js";

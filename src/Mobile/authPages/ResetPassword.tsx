@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import { Button } from "../Buttons/Button";
+import Button from "../Buttons/Button";
 import PasswordInput from "../inputFields/PasswordInput";
 
 const ResetPassword = () => {

@@ -14,7 +14,7 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { Button } from "../Buttons/Button.tsx";
+import Button from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
