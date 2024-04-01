@@ -25,14 +25,14 @@ export const GetReceipt = () => {
           </div>
         </div>
         <div className="grid gap-[16px] items-center justify-center">
-          <Link to="/start-order">
-            <div className=" flex items-center justify-center">
-              <p className="bg-[#EFB519] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
-                Get an eReceipt
-              </p>
-            </div>
-          </Link>
-          <Link to="/start-order">
+          {/* <Link to="/"> */}
+          <div className=" flex items-center justify-center">
+            <p className="bg-[#EFB519] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
+              Get an eReceipt
+            </p>
+          </div>
+          {/* </Link> */}
+          <Link to="/">
             <div className=" flex items-center justify-center">
               <p className=" border border-[#E16B07] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
                 Order more

@@ -55,7 +55,8 @@ const Login = () => {
       if (userType === "employee") {
         history("/employee-dashboard");
       } else if (userType === "admin") {
-        history("/menu");
+        history("/dashboard");
+        // history("/menu");
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -114,7 +115,7 @@ const Login = () => {
             <Button text="Login" loading={loading} />
           </div>
         </div>
-        <div className=" mt-[150px]">
+        <div className=" mt-[100px]">
           <Link to="/register">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account

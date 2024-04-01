@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({ text, link, loading }) => {
           className="bg-purple500 w-full text-center text-white py-3 rounded"
           disabled={loading}
         >
-          {text}
+          {loading ? `${text}...` : text}
         </button>
       )}
     </div>

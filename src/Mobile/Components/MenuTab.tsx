@@ -32,12 +32,13 @@ const MenuTab: React.FC = () => {
 
   const menuData: MenuCategory[] = [
     {
-      category: "Soups",
+      category: "Breakfast",
       items: [
-        { title: "Egusi Soup", price: "1200" },
-        { title: "Okra  Soup", price: "300" },
-        { title: "Ogbono Soup", price: "200" },
-        { title: "White Soup", price: "1250" },
+        { title: "Pap and Akara", price: "1200" },
+        { title: "Sandwich", price: "300" },
+        { title: "Yam and Egg Sauce", price: "200" },
+        { title: "Toast and Egg", price: "1250" },
+        { title: "Yam and Tomato Sauce", price: "1250" },
       ],
     },
     {
@@ -52,10 +53,10 @@ const MenuTab: React.FC = () => {
   ];
 
   const tabItems: TabItem[] = [
-    { id: 1, label: "Soups", content: renderMenuCategory(menuData) },
-    { id: 2, label: "Swallow", content: <div>Content for Swallow</div> },
-    { id: 3, label: "Rice", content: <div>Content for Rice</div> },
-    { id: 4, label: "Special", content: <div>Content for Special</div> },
+    { id: 1, label: "Breakfast", content: renderMenuCategory(menuData) },
+    { id: 2, label: "Swallow", content: renderMenuCategory(menuData) },
+    { id: 3, label: "Rice", content: renderMenuCategory(menuData) },
+    { id: 4, label: "Special", content: renderMenuCategory(menuData) },
   ];
 
   const [activeTab, setActiveTab] = useState<number>(1);
