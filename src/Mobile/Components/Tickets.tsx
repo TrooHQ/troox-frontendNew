@@ -21,7 +21,7 @@ interface Ticket {
 }
 
 const Tickets = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
 
   const [ticketModal, setTicketModal] = useState(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -61,7 +61,7 @@ const Tickets = () => {
   // ];
 
   const getTicket = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     const headers = {
       headers: {
@@ -78,7 +78,7 @@ const Tickets = () => {
       setTickets(response.data);
     } catch (error) {
       console.error("Error Retrieving Tickets:", error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 

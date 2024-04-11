@@ -78,22 +78,37 @@ const Tickets = () => {
   const [menuOpenMap, setMenuOpenMap] = useState<{ [key: number]: boolean }>(
     {}
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
+
+  // const toggleMenu = (itemId: number) => {
+  //   setMenuOpenMap((prevMenuOpenMap) => ({
+  //     ...Object.fromEntries(
+  //       Object.entries(prevMenuOpenMap).map(([key, value]) => [
+  //         key,
+  //         key === itemId ? !value : false,
+  //       ])
+  //     ),
+  //     [itemId]: !prevMenuOpenMap[itemId],
+  //   }));
+  // };
 
   const toggleMenu = (itemId: number) => {
-    setMenuOpenMap((prevMenuOpenMap) => ({
-      ...Object.fromEntries(
-        Object.entries(prevMenuOpenMap).map(([key, value]) => [
-          key,
-          key === itemId ? !value : false,
-        ])
-      ),
-      [itemId]: !prevMenuOpenMap[itemId],
-    }));
+    setMenuOpenMap((prevMenuOpenMap) => {
+      const updatedMap: Record<number, boolean> = {};
+
+      Object.entries(prevMenuOpenMap).forEach(([key, value]) => {
+        const numKey = parseInt(key, 10);
+        updatedMap[numKey] = numKey === itemId ? !value : false;
+      });
+
+      updatedMap[itemId] = !prevMenuOpenMap[itemId];
+
+      return updatedMap;
+    });
   };
 
   const createEmployee = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     const headers = {
       headers: {
@@ -109,7 +124,7 @@ const Tickets = () => {
       console.log("Tickets Retrieved successfully:", response.data);
     } catch (error) {
       console.error("Error adding employee:", error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
