@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
-import Button from "../Buttons/Button";
+// import Button from "../Buttons/Button";
 import EmailInput from "../inputFields/CustomInput";
-import BackButton from "../Buttons/BackButton";
+// import BackButton from "../Buttons/BackButton";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -74,10 +74,22 @@ const ForgotPassword = () => {
             />
           </div>
           <div className="" onClick={forgotPassword}>
-            <Button text="Get a reset token" loading={loading} />
+            <button
+              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              disabled={loading}
+            >
+              Get a reset token
+            </button>
           </div>
           <div className=" text-center py-3">
-            <BackButton text="Go Back" loading={loading} />
+            <div onClick={() => history(-1)} className=" ">
+              <button
+                className=" font-[500] text-[16px] text-purple500 cursor-pointer"
+                disabled={loading}
+              >
+                Go Back
+              </button>
+            </div>
           </div>
         </div>
       </div>

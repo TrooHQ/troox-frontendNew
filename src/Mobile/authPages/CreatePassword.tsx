@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button.js";
 import PasswordInput from "../inputFields/PasswordInput.js";
 // import { Link } from "react-router-dom";
 // import Modal from "../Components/Modal.js";
@@ -107,7 +106,13 @@ const CreatePassword = () => {
           </div>
 
           <div className=" mt-[40px]" onClick={handleButtonClick}>
-            <Button text="Create password" loading={loading} />
+            <button
+              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              disabled={loading}
+            >
+              Create password
+            </button>
+            {/* <Button text="Create password" loading={loading} /> */}
           </div>
         </div>
       </div>

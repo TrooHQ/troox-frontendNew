@@ -262,7 +262,14 @@ const RegistrationStepForm = () => {
 
               <div className=" grid mt-[32px] gap-[8px]">
                 <div className="" onClick={createBusinessAccount}>
-                  <Button text="Next" loading={loading} />
+                  {/* <Button text="Next" loading={loading} /> */}
+
+                  <button
+                    className="bg-purple500 w-full text-center text-white py-3 rounded"
+                    disabled={loading}
+                  >
+                    Next
+                  </button>
                 </div>
                 <Link to="/">
                   <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">

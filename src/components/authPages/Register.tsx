@@ -2,10 +2,11 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import BackButtonMain from "../Buttons/BackButtonMain";
-import Button from "../Buttons/Button";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -58,9 +59,17 @@ const Register = () => {
           />
 
           <div className=" ">
-            <Button link="/business-profile" text="Create Account" />
+            <Link to="/business-profile">
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Create Account
+              </button>
+            </Link>
             <div className=" flex items-center justify-center my-5">
-              <BackButtonMain text="Go Back" />
+              <div onClick={() => navigate(-1)}>
+                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+                  Go Back
+                </p>
+              </div>
             </div>
           </div>
         </div>

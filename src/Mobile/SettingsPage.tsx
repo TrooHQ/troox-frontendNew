@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DashboardBackButton from "./Buttons/DashboardBackButton.tsx";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
 import QrIcon from "./assets/QRImage.svg";
@@ -16,7 +15,7 @@ import printIcon from "./assets/printer.svg";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import MenuSettings from "./Components/Settings/MenuSettings";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
 
@@ -255,10 +254,20 @@ const SettingsPage = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="my-[16px] mx-[24px]">
-        <DashboardBackButton text="Settings" img={Arrow} />
+        <div
+          onClick={() => navigate(-1)}
+          className=" inline-flex items-center gap-[20px] cursor-pointer"
+        >
+          <img src={Arrow} alt="" />
+          <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
+            Settings
+          </p>
+        </div>
 
         <div className="mt-[24px]">
           <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">

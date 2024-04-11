@@ -1,5 +1,4 @@
 import Arrow from "../assets/BackArrow.svg";
-import DashboardBackButton from "../Buttons/DashboardBackButton.tsx";
 import More from "../../assets/more_vert.svg";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import Orange from "../assets/orange.svg";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 interface Ticket {
   ordered_by: string;
@@ -21,6 +21,8 @@ interface Ticket {
 }
 
 const Tickets = () => {
+  const navigate = useNavigate();
+
   // const [loading, setLoading] = useState<boolean>(false);
 
   const [ticketModal, setTicketModal] = useState(false);
@@ -87,7 +89,15 @@ const Tickets = () => {
   }, []);
   return (
     <div className="my-[16px] mx-[24px]">
-      <DashboardBackButton text="Tickets" img={Arrow} />
+      <div
+        onClick={() => navigate(-1)}
+        className=" inline-flex items-center gap-[20px] cursor-pointer"
+      >
+        <img src={Arrow} alt="" />
+        <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
+          Tickets
+        </p>
+      </div>
 
       <div className="">
         <div className="my-[32px] text-[14px] font-[400] text-grey500 flex justify-between border-b pb-[12px] px-[8px]">
@@ -104,11 +114,11 @@ const Tickets = () => {
             <p className="">{ticket.ordered_by}</p>
             <p className="">#20</p>
             <div className="w-[90px] flex gap-[14px]">
-              <div className="">
+              {/* <div className="">
                 {ticket.menu_items.map((item, index) => (
                   <div key={index}>{item}</div>
                 ))}
-              </div>
+              </div> */}
               <img
                 src={More}
                 alt=""

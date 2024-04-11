@@ -4,9 +4,9 @@ import AccountIcon from "../assets/AccountSettings.svg";
 import MenuModal from "../Components/MenuModal";
 import CheckCircle from "../assets/check_circle.svg";
 
-import DashboardBackButton from "../Buttons/DashboardBackButton.tsx";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeSettingsPage = () => {
   const [resetSuccessModal, setResetSuccessModal] = useState(false);
@@ -19,11 +19,6 @@ const EmployeeSettingsPage = () => {
   const handlePasswordResetModal = () => {
     setResetPasswordModal(true);
   };
-
-  // const handlePasswordResetSuccessModal = () => {
-  //   setResetPasswordModal(false);
-  //   setResetSuccessModal(true);
-  // };
 
   const token = sessionStorage.getItem("token");
 
@@ -68,10 +63,21 @@ const EmployeeSettingsPage = () => {
       setLoading(false);
     }
   };
+
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="my-[16px] mx-[24px]">
-        <DashboardBackButton text="Settings" img={Arrow} />
+        <div
+          onClick={() => navigate(-1)}
+          className=" inline-flex items-center gap-[20px] cursor-pointer"
+        >
+          <img src={Arrow} alt="" />
+          <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
+            Settings
+          </p>
+        </div>
 
         <div className="mt-[24px]">
           <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">

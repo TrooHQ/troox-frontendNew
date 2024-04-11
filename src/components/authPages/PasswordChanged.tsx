@@ -1,6 +1,6 @@
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
-import Button from "../Buttons/Button";
+import { Link } from "react-router-dom";
 
 const PasswordChanged = () => {
   return (
@@ -23,7 +23,11 @@ const PasswordChanged = () => {
                 </p>
               </div>
             </div>
-            <Button link="/" text="Login to Continue" />
+            <Link to="/">
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Login to Continue
+              </button>
+            </Link>
           </div>
         </div>
       </div>

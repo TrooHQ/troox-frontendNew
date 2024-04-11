@@ -1,6 +1,7 @@
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockicon.png";
-import Button from "../Buttons/Button";
+
+import { Link } from "react-router-dom";
 
 const CheckMail = () => {
   return (
@@ -20,7 +21,11 @@ const CheckMail = () => {
                 We have sent a password recover <br /> instruction to your email
               </p>
             </div>
-            <Button link="/reset-password" text="Check email" />
+            <Link to="/reset-password">
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Check email
+              </button>
+            </Link>
           </div>
         </div>
       </div>
