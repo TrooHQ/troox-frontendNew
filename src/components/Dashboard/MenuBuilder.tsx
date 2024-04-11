@@ -17,7 +17,7 @@ import CustomSelect2 from "../inputFields/CustomSelect2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
-import CancelButton from "../Buttons/CancelButton";
+// import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
   type?: string;
@@ -561,7 +561,10 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setIsModalOpen(false)}
                   >
-                    <CancelButton text="Cancel" />
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      Cancel
+                    </p>
+                    {/* <CancelButton text="Cancel" /> */}
                   </div>
 
                   <div
@@ -703,7 +706,10 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddModifierModal(false)}
                   >
-                    <CancelButton text="Cancel" />
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      Cancel
+                    </p>
+                    {/* <CancelButton text="Cancel" /> */}
                   </div>
 
                   <div
@@ -854,7 +860,10 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuGroup(false)}
                   >
-                    <CancelButton text="Cancel" />
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      Cancel
+                    </p>
+                    {/* <CancelButton text="Cancel" /> */}
                   </div>
 
                   <div
@@ -1134,7 +1143,10 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuItem(false)}
                   >
-                    <CancelButton text="Cancel" />
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      Cancel
+                    </p>
+                    {/* <CancelButton text="Cancel" /> */}
                   </div>
 
                   <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">

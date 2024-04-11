@@ -9,7 +9,7 @@ import Modal from "../Modal";
 import { setUserData } from "../../slices/InviteUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
-import CancelButton from "../../Mobile/Buttons/CancelButton";
+// import CancelButton from "../../Mobile/Buttons/CancelButton";
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
   const handleItemClick = (action: string) => {
@@ -170,7 +170,10 @@ const TableList = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <CancelButton text="Cancel" />
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
+                  {/* <CancelButton text="Cancel" /> */}
                 </div>
 
                 <Link to="/manage-tables">
