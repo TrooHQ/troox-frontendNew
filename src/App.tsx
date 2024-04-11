@@ -34,6 +34,7 @@ import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
 import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Tickets from "./components/Dashboard/Tickets.tsx";
 
 export default function App() {
   return (
@@ -64,6 +65,7 @@ export default function App() {
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/price-list" element={<PriceList />} />
+          <Route path="/tickets" element={<Tickets />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />

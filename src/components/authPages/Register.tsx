@@ -11,7 +11,6 @@ const Register = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [pin, setPin] = useState<string>("");
-  const [ConfirmPin, setConfirmPin] = useState<string>("");
 
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
@@ -57,13 +56,7 @@ const Register = () => {
             maxLength={4}
             onChange={(newValue) => setPin(newValue)}
           />
-          <CustomInput
-            type="text"
-            label="Confirm your pin"
-            value={ConfirmPin}
-            maxLength={4}
-            onChange={(newValue) => setConfirmPin(newValue)}
-          />
+
           <div className=" ">
             <Button link="/business-profile" text="Create Account" />
             <div className=" flex items-center justify-center my-5">
