@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import DashboardBackButton from "./Buttons/DashboardBackButton";
+import DashboardBackButton from "./Buttons/DashboardBackButton.tsx";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
 import QrIcon from "./assets/QRImage.svg";
@@ -19,10 +19,6 @@ import MenuSettings from "./Components/Settings/MenuSettings";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
-// import CustomInput from "./inputFields/CustomInput";
-// import CheckInput from "./inputFields/CheckInput";
-// import RadioInput from "./inputFields/RadioInput";
-// import { Link } from "react-router-dom";
 
 interface FormData extends FieldValues {
   employee_name?: string;
@@ -131,18 +127,6 @@ const SettingsPage = () => {
   const handleRemoveEmployeeModal = () => {
     setRemoveEmployeeModal(true);
   };
-
-  // const handleSuccessModal = () => {
-  //   setEmployeeModal(false);
-  //   // setAddCategoryModal(false);
-  //   // setEditItem(false);
-  //   setSuccessModal(true);
-  // };
-
-  // const handlePasswordResetSuccessModal = () => {
-  //   setResetPasswordModal(false);
-  //   setResetSuccessModal(true);
-  // };
 
   const {
     register,

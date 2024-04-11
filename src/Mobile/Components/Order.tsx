@@ -1,5 +1,5 @@
 import Arrow from "../assets/BackArrow.svg";
-import DashboardBackButton from "../Buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton.tsx";
 import OrderTab from "./OrderTab";
 
 const Order = () => {

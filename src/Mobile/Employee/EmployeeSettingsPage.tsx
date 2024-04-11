@@ -4,7 +4,7 @@ import AccountIcon from "../assets/AccountSettings.svg";
 import MenuModal from "../Components/MenuModal";
 import CheckCircle from "../assets/check_circle.svg";
 
-import DashboardBackButton from "../Buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton.tsx";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 

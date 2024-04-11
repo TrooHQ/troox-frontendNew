@@ -1,5 +1,5 @@
 import Arrow from "../assets/BackArrow.svg";
-import DashboardBackButton from "../Buttons/DashboardBackButton";
+import DashboardBackButton from "../Buttons/DashboardBackButton.tsx";
 import More from "../../assets/more_vert.svg";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
