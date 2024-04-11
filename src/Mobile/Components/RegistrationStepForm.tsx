@@ -4,7 +4,7 @@ import Purple from "../assets/PurpleStroke.svg";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import Button from "../Buttons/Button";
+// import Button from "../Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Back from "../assets/Back.svg";
 import CustomSelect4 from "../inputFields/CustomSelect4";
@@ -409,7 +409,13 @@ const RegistrationStepForm = () => {
 
               <div className=" grid mt-[32px] gap-[8px]">
                 <div className="" onClick={createAccountDetails}>
-                  <Button text="Save and continue" />
+                  <button
+                    className="bg-purple500 w-full text-center text-white py-3 rounded"
+                    disabled={loading}
+                  >
+                    Save and continue
+                  </button>
+                  {/* <Button text="Save and continue" /> */}
                 </div>
                 <Link to="/">
                   <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">

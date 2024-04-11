@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button";
+// import Button from "../Buttons/Button";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
@@ -142,7 +142,14 @@ const VerifyAccount = () => {
           </div>
           {allInputsFilled() ? (
             <div className=" mt-[16px]" onClick={verify}>
-              <Button text="Activate account" loading={loading} />
+              <button
+                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                disabled={loading}
+              >
+                Activate Account
+              </button>
+
+              {/* <Button text="Activate account" loading={loading} /> */}
             </div>
           ) : (
             <div className=" mt-[16px]">

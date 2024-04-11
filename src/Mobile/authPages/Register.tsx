@@ -2,10 +2,13 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import Button from "../Buttons/Button";
-import BackButton from "../Buttons/BackButton";
+// import Button from "../Buttons/Button";
+// import BackButton from "../Buttons/BackButton";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -65,9 +68,25 @@ const Register = () => {
             onChange={(newValue) => setConfirmPin(newValue)}
           />
           <div className=" ">
-            <Button link="/business-profile" text="Create Account" />
+            <Link to="/business-profile">
+              <button
+                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                // disabled={loading}
+              >
+                Create Account
+              </button>
+            </Link>
+            {/* <Button link="/business-profile" text="Create Account" /> */}
             <div className=" flex items-center justify-center my-5">
-              <BackButton text="Go Back" />
+              <div onClick={() => navigate(-1)} className=" ">
+                <button
+                  className=" font-[500] text-[16px] text-purple500 cursor-pointer"
+                  // disabled={loading}
+                >
+                  Go Back
+                </button>
+              </div>
+              {/* <BackButton text="Go Back" /> */}
             </div>
           </div>
         </div>
