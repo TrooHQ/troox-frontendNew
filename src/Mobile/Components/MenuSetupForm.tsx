@@ -69,6 +69,8 @@ const MenuSetupForm: React.FC<Props> = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [base64String, setBase64String] = useState<string | null>(null);
+
   const handleCategoryChange = (option: string) => {
     setSelectedMenuCategory(option);
   };
@@ -82,8 +84,18 @@ const MenuSetupForm: React.FC<Props> = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("Selected file:", file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const base64 = event.target?.result as string;
+        setBase64String(base64);
+
+        console.log("Base64 representation:", base64);
+      };
+      reader.readAsDataURL(file);
+    }
   };
+
   const handleAddMenuCategory = () => {
     setAddModifierModal(true);
   };
@@ -138,8 +150,8 @@ const MenuSetupForm: React.FC<Props> = () => {
           menu_group_name: menuGroupName,
           price_to_all_items: price_to_all_items,
           menu_item_name: menuItem,
-          price: price,
-          image: "wee",
+          price: Number(price),
+          image: base64String,
         },
         headers
       );

@@ -68,11 +68,11 @@ const MobileLayout = () => {
           <Route path="/request-demo" element={<DemoPage />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* <Route path="/" element={<Dashboard />} /> */}
+          <Route path="/" element={<Login />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
-          {/* <Route path="/start-order" element={<StartOrder />} /> */}
-          <Route path="/" element={<StartOrder />} />
+          <Route path="/start-order" element={<StartOrder />} />
+          {/* <Route path="/" element={<StartOrder />} /> */}
           <Route path="/explore-menu" element={<MenuPage />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/basket" element={<Basket />} />

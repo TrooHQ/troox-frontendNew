@@ -35,6 +35,7 @@ import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Tickets from "./components/Dashboard/Tickets.tsx";
+import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
 
 export default function App() {
   return (
@@ -75,6 +76,8 @@ export default function App() {
           <Route path="/password-changed" element={<PasswordChanged />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/till" element={<Till />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

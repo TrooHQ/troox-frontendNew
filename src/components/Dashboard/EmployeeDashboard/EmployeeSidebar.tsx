@@ -26,11 +26,11 @@ interface MenuItem {
   link?: string;
 }
 
-interface SIdeBarProps {
+interface EmployeeSidebarProps {
   userType: "user" | "admin";
 }
 
-const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
+const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
   const location = useLocation();
   // const [open, setOpen] = useState(true);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
@@ -149,7 +149,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div>
       <div
-        className={`p-2 w-[253px] h-full fixed overflow-y-auto left-0 top-0 duration-300 bg-[#F8F8F8]`}
+        className={`p-2 w-[253px] h-full fixed overflow-y-auto left-0 top-0 duration-300`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         // className={` p-2 w-[253px] h-full fixed no-scrollbar overflow-y-auto left-0 top-0  pt-8 duration-300 `}
         // ${
@@ -334,4 +334,4 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   );
 };
 
-export default SideBar;
+export default EmployeeSidebar;
