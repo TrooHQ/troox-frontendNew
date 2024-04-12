@@ -10,12 +10,16 @@ interface TabItem {
 
 interface Ticket {
   ordered_by: string;
-  menu_items: string[];
+  menu_items: MenuItem[];
   orders: string[];
   total_price: number[];
   createdAt: string;
   status: string;
   _id: number;
+}
+
+interface MenuItem {
+  name: string;
 }
 const OrderTab: React.FC = () => {
   const tabItems: TabItem[] = [
@@ -77,7 +81,15 @@ const OrderTab: React.FC = () => {
         headers
       );
       console.log("Ticket status updated successfully:", response.data);
-      setLoader(false);
+
+      if (response.status === 200) {
+        if (status === "accept") {
+          setActiveTab(2);
+        } else if (status === "serve") {
+          setActiveTab(1);
+        }
+        setLoader(false);
+      }
     } catch (error) {
       console.error("Error updating ticket status:", error);
       setLoader(false);
@@ -111,8 +123,8 @@ const OrderTab: React.FC = () => {
                   </div>
                   <div className="font-[400] text-[16px] mt-[8px] capitalize">
                     <div className="">
-                      {Object.values(ticket.menu_items).map((item, index) => (
-                        <div key={index}>{item}</div>
+                      {ticket.menu_items.map((item, index) => (
+                        <div key={index}>{item.name}</div>
                       ))}
                     </div>
                   </div>
@@ -155,8 +167,8 @@ const OrderTab: React.FC = () => {
                     </div>
                     <div className="font-[400] text-[16px] mt-[8px] capitalize">
                       <div className="">
-                        {Object.values(ticket.menu_items).map((item, index) => (
-                          <div key={index}>{item}</div>
+                        {ticket.menu_items.map((item, index) => (
+                          <div key={index}>{item.name}</div>
                         ))}
                       </div>
                     </div>
@@ -164,7 +176,7 @@ const OrderTab: React.FC = () => {
                     <button
                       className="text-white text-center font-[500] text-[14px] bg-[#11AE16] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
                       disabled={loader}
-                      onClick={() => updateStatus(ticket._id, "accept")}
+                      onClick={() => updateStatus(ticket._id, "serve")}
                     >
                       Serve
                     </button>
