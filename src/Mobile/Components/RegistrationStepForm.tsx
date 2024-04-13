@@ -268,7 +268,7 @@ const RegistrationStepForm = () => {
                     className="bg-purple500 w-full text-center text-white py-3 rounded"
                     disabled={loading}
                   >
-                    Next
+                    {loading ? "Next..." : "Next"}
                   </button>
                 </div>
                 <Link to="/">
