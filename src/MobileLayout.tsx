@@ -42,7 +42,6 @@ import { Receipt } from "./Mobile/Customers/Receipt";
 import { GetReceipt } from "./Mobile/Customers/GetReceipt";
 import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
-// import Home from "./LandingPage/Home";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans overflow-hidden">
@@ -50,10 +49,8 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          {/* <Route path="/" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -72,7 +69,6 @@ const MobileLayout = () => {
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
           <Route path="/start-order" element={<StartOrder />} />
-          {/* <Route path="/" element={<StartOrder />} /> */}
           <Route path="/explore-menu" element={<MenuPage />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/basket" element={<Basket />} />

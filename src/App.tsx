@@ -18,7 +18,6 @@ import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
-import Home from "./LandingPage/Home.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
 import PosPage from "./LandingPage/Products/PosPage.tsx";
 import KDSPage from "./LandingPage/Products/KDSPage.tsx";
@@ -44,8 +43,8 @@ export default function App() {
         <ToastContainer />
         <ScrollToTop />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LoginPage />} />
+          {/* <Route path="/" element={<Home />} /> */}
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />

@@ -118,7 +118,26 @@ const OrderTab: React.FC = () => {
                   key={index}
                 >
                   <div className="rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-                    <p className="capitalize">{ticket.ordered_by}</p>
+                    <p className="capitalize">
+                      {ticket.ordered_by
+                        .split(" ")
+                        .map((name, index) =>
+                          index === 0
+                            ? name
+                            : index === 1
+                            ? ` ${name.charAt(0).toUpperCase()}.`
+                            : ""
+                        )}
+                    </p>
+                    {/* {ticket.ordered_by
+                      .split(" ")
+                      .map((name, index) =>
+                        index === 0
+                          ? name
+                          : index === 1
+                          ? ` ${name.charAt(0).toUpperCase()}.`
+                          : ""
+                      )} */}
                     <p>#{ticket.total_price}</p>
                   </div>
                   <div className="font-[400] text-[16px] mt-[8px] capitalize">
@@ -162,7 +181,17 @@ const OrderTab: React.FC = () => {
                     key={index}
                   >
                     <div className="rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-                      <p className="capitalize">{ticket.ordered_by}</p>
+                      <p className="capitalize">
+                        {ticket.ordered_by
+                          .split(" ")
+                          .map((name, index) =>
+                            index === 0
+                              ? name
+                              : index === 1
+                              ? ` ${name.charAt(0).toUpperCase()}.`
+                              : ""
+                          )}
+                      </p>
                       <p>#{ticket.total_price}</p>
                     </div>
                     <div className="font-[400] text-[16px] mt-[8px] capitalize">
