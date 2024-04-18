@@ -7,6 +7,7 @@ interface CustomSelectProps {
   error?: string;
   onChange: (value: string) => void;
   disabledOption?: string;
+  bgColor?: string; // New prop for background color
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -16,6 +17,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   error,
   onChange,
   disabledOption,
+  bgColor,
 }) => {
   const selectRef = useRef<HTMLSelectElement | null>(null);
 
@@ -23,9 +25,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     <div>
       <div className="relative">
         <select
-          className={`border-2 border-gray-300 bg-white p-2 focus:outline-[#5955B3] w-full rounded ${
-            error ? "border-red-500" : ""
-          }`}
+          className={`border-2 border-gray-300 p-2 focus:outline-[#5955B3] w-full rounded ${
+            bgColor ? bgColor : "bg-white"
+          } ${error ? "border-red-500" : ""}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           ref={selectRef}
@@ -44,10 +46,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         <label
           className={`absolute transition-all duration-300 cursor-text ${
             value !== ""
-              ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
-              : "top-2 left-4 bg-white text-gray-400"
+              ? "text-[14px] -top-3 left-2 px-2 text-[#000000]"
+              : "top-2 left-4 text-gray-400"
           } ${error ? "text-red-500" : ""}`}
           onClick={() => selectRef.current?.focus()}
+          style={{ backgroundColor: bgColor }}
         >
           {label}
         </label>

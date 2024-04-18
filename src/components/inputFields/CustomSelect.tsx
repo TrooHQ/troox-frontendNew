@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 
 interface CustomSelectProps {
-  label: string;
+  label?: string;
   options: string[];
   value: string;
   error?: string;

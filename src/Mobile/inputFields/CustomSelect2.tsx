@@ -5,12 +5,14 @@ interface CustomSelect2Props {
   options: (string | { value: string; label: string })[];
   disabledOptions?: string[];
   placeholder?: string;
+  bgColor?: string; // New prop for background color
 }
 
 const CustomSelect2: React.FC<CustomSelect2Props> = ({
   options,
   disabledOptions,
   placeholder = "",
+  bgColor = "bg-white", // Default background color
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(placeholder);
@@ -34,9 +36,9 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
   };
 
   return (
-    <div className="relative z-50">
+    <div className="relative z-[999]">
       <div
-        className="border border-gray-300 bg-white p-2 focus:outline-[#5955B3] w-full rounded flex justify-between items-center"
+        className={`border border-gray-300 p-2 focus:outline-[#5955B3] w-full rounded flex justify-between items-center ${bgColor}`}
         onClick={toggleDropdown}
       >
         <span className="selected-option">{selectedOption}</span>
@@ -45,9 +47,9 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
         </span>
       </div>
       <div
-        className={`options-container absolute top-full left-0 w-full border border-gray-300 bg-white shadow-md rounded-b transition-all ${
+        className={`options-container absolute top-full left-0 w-full border border-gray-300 shadow-md rounded-b transition-all ${
           isOpen ? "block" : "hidden"
-        }`}
+        } ${bgColor}`}
       >
         {options.map((option, index) => (
           <div

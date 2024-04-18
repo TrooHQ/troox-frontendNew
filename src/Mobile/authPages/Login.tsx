@@ -118,7 +118,6 @@ const Login = () => {
             >
               Login
             </button>
-            {/* <Button text="Login" loading={loading} /> */}
           </div>
         </div>
         <div className=" mt-[100px]">

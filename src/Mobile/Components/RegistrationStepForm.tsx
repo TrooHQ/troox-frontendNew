@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grey from "../assets/GreyStroke.svg";
 import Purple from "../assets/PurpleStroke.svg";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-// import Button from "../Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Back from "../assets/Back.svg";
 import CustomSelect4 from "../inputFields/CustomSelect4";
@@ -12,7 +11,10 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-
+import CustomSelect from "../inputFields/CustomSelect";
+interface Country {
+  name: string;
+}
 const RegistrationStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState<string>("");
@@ -26,13 +28,13 @@ const RegistrationStepForm = () => {
   const [bankName, setBankName] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [country, setCountry] = useState<string>("");
+  const [countries, setCountries] = useState<Country[]>([]);
   const [bvn, setBvn] = useState<string>("");
   const [accountName, setAccountName] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   sessionStorage.setItem("businessType", businessType);
   const id = sessionStorage.getItem("id");
-  // console.log(businessType, bank);
   const history = useNavigate();
 
   const handlePasswordChange = (newValue: string) => {
@@ -55,11 +57,21 @@ const RegistrationStepForm = () => {
         !businessType
       ) {
         setError("All fields are required...");
+        toast.error("All fields are required...");
+
+        return;
+      }
+
+      if (!/^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
+        setError("Password must be alphanumeric");
+        toast.error("Password must be alphanumeric");
+
         return;
       }
 
       if (password !== confirmPassword) {
         setError("Passwords do not match");
+        toast.error("Passwords do not match");
         return;
       }
 
@@ -143,6 +155,35 @@ const RegistrationStepForm = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  const getCountries = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://countriesnow.space/api/v0.1/countries/capital`
+      );
+      setLoading(false);
+      setCountries(response.data.data);
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+      setError("");
+    }
+  };
+
+  useEffect(() => {
+    getCountries();
+  }, []);
+
   return (
     <div className=" bg-[#EFEFEF] h-screen">
       <div className=" mx-10">
@@ -152,12 +193,13 @@ const RegistrationStepForm = () => {
 
         {currentStep === 1 && (
           <>
+            <p>{error}</p>
             <div className=" grid grid-cols-2 gap-[10px]">
               <img src={Purple} />
               <img src={Grey} />
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1/{" "}
+              Stage 1:{" "}
               <span className="text-[20px]"> Business information</span>
             </p>
             <p className=" text-red-500">{error}</p>
@@ -236,7 +278,6 @@ const RegistrationStepForm = () => {
                   onChange={handlePasswordChange}
                 />
               </div>
-
               <div
                 className={`${
                   error && " border border-red-500  rounded-[5px]"
@@ -280,78 +321,7 @@ const RegistrationStepForm = () => {
             </div>
           </>
         )}
-        {/* {currentStep === 2 && (
-          <>
-            {businessType === "Hotel & Lodgings" ? (
-              <div className=" grid grid-cols-3 gap-[10px]">
-                <img src={Purple} />
-                <img src={Purple} />
-                <img src={Grey} />
-              </div>
-            ) : (
-              <div className=" grid grid-cols-2 gap-[10px]">
-                <img src={Purple} />
-                <img src={Grey} />
-              </div>
-            )}
-            <div
-              className="  items-center mt-[9px] flex gap-[8px]"
-              onClick={prevStep}
-            >
-              <img src={Back} alt="" />
-              <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
-                Back
-              </p>
-            </div>
-            <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1/{" "}
-              <span className="text-[20px]"> Personal information</span>{" "}
-            </p>
-            <div className=" grid gap-[16px]  my-5 w-full md:w-[530px] ">
-              <CustomInput
-                type="text"
-                label="First name"
-                value={name}
-                onChange={(newValue) => setName(newValue)}
-              />
-              <CustomInput
-                type="text"
-                label="Last name"
-                value={email}
-                onChange={(newValue) => setEmail(newValue)}
-              />
-              <CustomInput
-                type="text"
-                label="Registered home address"
-                value={email}
-                onChange={(newValue) => setEmail(newValue)}
-              />
-              <CustomInput
-                type="text"
-                label="City"
-                value={email}
-                onChange={(newValue) => setEmail(newValue)}
-              />
-              <CustomInput
-                type="text"
-                label="State"
-                value={email}
-                onChange={(newValue) => setEmail(newValue)}
-              />
 
-              <div className=" grid mt-[32px] gap-[8px]">
-                <div className="" onClick={createBusinessAccount}>
-                  <Button text="Next" />
-                </div>
-                <Link to="/">
-                  <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
-                    Cancel
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </>
-        )} */}
         {currentStep === 2 && (
           <>
             <div className=" grid grid-cols-2 gap-[10px]">
@@ -368,17 +338,21 @@ const RegistrationStepForm = () => {
               </p>
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1/{" "}
+              Stage 1:{" "}
               <span className="text-[20px]"> Payout & bank details</span>{" "}
             </p>
             <p className=" text-red-500">{error}</p>
             <div className=" grid gap-[16px]  my-5 w-full md:w-[530px] ">
-              <CustomInput
-                type="text"
-                label="Bank account name"
-                value={accountName}
-                onChange={(newValue) => setAccountName(newValue)}
-              />
+              <div className=" ">
+                <CustomSelect
+                  label=""
+                  options={countries.map((country) => country.name)}
+                  value={country}
+                  onChange={(newValue) => setCountry(newValue)}
+                  disabledOption="Country"
+                  bgColor="bg-[#EFEFEF]"
+                />
+              </div>
 
               <CustomInput
                 type="text"
@@ -386,12 +360,11 @@ const RegistrationStepForm = () => {
                 value={accountNumber}
                 onChange={(newValue) => setAccountNumber(newValue)}
               />
-
               <CustomInput
                 type="text"
-                label="Bank Name"
-                value={bankName}
-                onChange={(newValue) => setBankName(newValue)}
+                label="Bank account name"
+                value={accountName}
+                onChange={(newValue) => setAccountName(newValue)}
               />
 
               <CustomInput
@@ -402,9 +375,9 @@ const RegistrationStepForm = () => {
               />
               <CustomInput
                 type="text"
-                label="Country"
-                value={country}
-                onChange={(newValue) => setCountry(newValue)}
+                label="Bank Name"
+                value={bankName}
+                onChange={(newValue) => setBankName(newValue)}
               />
 
               <div className=" grid mt-[32px] gap-[8px]">
@@ -415,7 +388,6 @@ const RegistrationStepForm = () => {
                   >
                     Save and continue
                   </button>
-                  {/* <Button text="Save and continue" /> */}
                 </div>
                 <Link to="/">
                   <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
