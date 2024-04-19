@@ -35,8 +35,8 @@ const RegistrationStepForm = () => {
   const [countries, setCountries] = useState<Country[]>([]);
   const [bvn, setBvn] = useState<string>("");
   const [bvnError, setBvnError] = useState<string>("");
-  const [accountName, setAccountName] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [errorDuplicate, setErrorDuplicate] = useState<string>("");
   const [fieldsError, setFieldsError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
@@ -67,7 +67,6 @@ const RegistrationStepForm = () => {
       setPasswordError("");
       if (newValue !== confirmPassword) {
         setConfirmPasswordError("Passwords do not match");
-        console.log("Passwords do not match");
       } else {
         setConfirmPasswordError("");
       }
@@ -130,7 +129,6 @@ const RegistrationStepForm = () => {
         business_type: businessType,
       });
       setLoading(false);
-      console.log(response.data);
       toast.success("User created successfully");
       dispatch(setUserData(response.data));
       sessionStorage.setItem("id", response.data.id);
@@ -141,7 +139,8 @@ const RegistrationStepForm = () => {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          setError(error.response.data.message);
+          setErrorDuplicate(error.response.data.message);
+          // toast.error(error.response.data.message);
         } else {
           setError("An error occurred. Please try again later.");
         }
@@ -156,7 +155,7 @@ const RegistrationStepForm = () => {
 
   const createAccountDetails = async () => {
     try {
-      if (!accountName || !accountNumber || !bankName || !bvn || !country) {
+      if (!accountNumber || !bankName || !bvn || !country) {
         setError("All fields are required...");
         return;
       }
@@ -172,7 +171,7 @@ const RegistrationStepForm = () => {
         `${SERVER_DOMAIN}/createAccountDetails`,
         {
           user_id: id,
-          account_name: accountName,
+          account_name: "account Name",
           account_number: accountNumber,
           bank_name: bankName,
           bank_verification_number: bvn,
@@ -180,8 +179,8 @@ const RegistrationStepForm = () => {
         }
       );
       setLoading(false);
-      console.log(response.data.account_details);
-      console.log(response.data.message);
+      // console.log(response.data.account_details);
+      // console.log(response.data.message);
       toast.success(response.data.message);
       history("/verify");
     } catch (error) {
@@ -252,6 +251,7 @@ const RegistrationStepForm = () => {
               <span className="text-[20px]"> Business Information</span>
             </p>
             <p className=" text-red-500">{fieldsError}</p>
+            <p className=" text-red-500">{errorDuplicate}</p>
             <div className=" grid gap-3  my-5 w-full md:w-[530px] ">
               <div
                 className={`${
@@ -306,7 +306,6 @@ const RegistrationStepForm = () => {
                     setEmail(newValue);
                     const isValidEmail = validateEmail(newValue);
                     if (!isValidEmail) {
-                      console.log("Please enter a valid email address");
                       setEmailError("Please enter a valid email address");
                     } else {
                       setEmailError("");
@@ -427,18 +426,17 @@ const RegistrationStepForm = () => {
                   bgColor="bg-[#EFEFEF]"
                 />
               </div>
-
+              <CustomInput
+                type="text"
+                label="Bank Name"
+                value={bankName}
+                onChange={(newValue) => setBankName(newValue)}
+              />
               <CustomInput
                 type="text"
                 label="Bank Account Number"
                 value={accountNumber}
                 onChange={(newValue) => setAccountNumber(newValue)}
-              />
-              <CustomInput
-                type="text"
-                label="Bank Account Name"
-                value={accountName}
-                onChange={(newValue) => setAccountName(newValue)}
               />
 
               <CustomInput
@@ -450,12 +448,6 @@ const RegistrationStepForm = () => {
               {bvnError && (
                 <p className="text-red-500 text-[14px]">{bvnError}</p>
               )}
-              <CustomInput
-                type="text"
-                label="Bank Name"
-                value={bankName}
-                onChange={(newValue) => setBankName(newValue)}
-              />
 
               <div className=" grid mt-[32px] gap-[8px]">
                 {!bvnError && (
