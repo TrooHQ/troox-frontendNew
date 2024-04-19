@@ -12,13 +12,17 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import CustomSelect from "../inputFields/CustomSelect";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../slices/UserSlice";
 interface Country {
   name: string;
 }
+
 const RegistrationStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
   const [contact, setContact] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -30,18 +34,63 @@ const RegistrationStepForm = () => {
   const [country, setCountry] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
   const [bvn, setBvn] = useState<string>("");
+  const [bvnError, setBvnError] = useState<string>("");
   const [accountName, setAccountName] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [fieldsError, setFieldsError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   sessionStorage.setItem("businessType", businessType);
   const id = sessionStorage.getItem("id");
   const history = useNavigate();
 
+  const dispatch = useDispatch();
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
+
+    const alphanumericRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])/;
+    const isValidPassword = alphanumericRegex.test(newValue);
+    const isMinimumLength = newValue.length >= 8;
+
+    if (!isValidPassword || !isMinimumLength) {
+      setPasswordError(
+        "Password must be alphanumeric and have a minimum length of 8 characters"
+      );
+      setConfirmPasswordError("");
+    } else {
+      setPasswordError("");
+      if (newValue !== confirmPassword) {
+        setConfirmPasswordError("Passwords do not match");
+        console.log("Passwords do not match");
+      } else {
+        setConfirmPasswordError("");
+      }
+    }
   };
+
   const handleConfirmPasswordChange = (newValue: string) => {
     setConfirmPassword(newValue);
+    if (newValue !== password) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
+
+  const handleBvnChange = (newValue: string) => {
+    if (newValue.length < 11) {
+      setBvn(newValue);
+      setBvnError("BVN must be at least 11 characters long");
+    } else {
+      setBvn(newValue);
+      setBvnError("");
+    }
   };
 
   const createBusinessAccount = async () => {
@@ -57,16 +106,10 @@ const RegistrationStepForm = () => {
         !businessType
       ) {
         setError("All fields are required...");
-        toast.error("All fields are required...");
-
+        setFieldsError("All fields are required...");
         return;
-      }
-
-      if (!/^(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
-        setError("Password must be alphanumeric");
-        toast.error("Password must be alphanumeric");
-
-        return;
+      } else {
+        setFieldsError("");
       }
 
       if (password !== confirmPassword) {
@@ -89,6 +132,7 @@ const RegistrationStepForm = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("User created successfully");
+      dispatch(setUserData(response.data));
       sessionStorage.setItem("id", response.data.id);
       sessionStorage.setItem("user_role", response.data.user_role);
       sessionStorage.setItem("email_verified", response.data.email_verified);
@@ -115,6 +159,12 @@ const RegistrationStepForm = () => {
       if (!accountName || !accountNumber || !bankName || !bvn || !country) {
         setError("All fields are required...");
         return;
+      }
+      if (bvn.length < 11) {
+        setBvnError("BVN must be at least 11 characters long");
+        return;
+      } else {
+        setBvnError("");
       }
 
       setLoading(true);
@@ -193,23 +243,24 @@ const RegistrationStepForm = () => {
 
         {currentStep === 1 && (
           <>
-            <p>{error}</p>
             <div className=" grid grid-cols-2 gap-[10px]">
               <img src={Purple} />
               <img src={Grey} />
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
               Stage 1:{" "}
-              <span className="text-[20px]"> Business information</span>
+              <span className="text-[20px]"> Business Information</span>
             </p>
-            <p className=" text-red-500">{error}</p>
+            <p className=" text-red-500">{fieldsError}</p>
             <div className=" grid gap-3  my-5 w-full md:w-[530px] ">
               <div
-                className={`${error && " border border-red-500 rounded-[5px]"}`}
+                className={`${
+                  fieldsError && " border border-red-500 rounded-[5px]"
+                }`}
               >
                 <CustomInput
                   type="text"
-                  label="Business name (e.g. Deluxe Restaurant)"
+                  label="Business Name (e.g. Deluxe Restaurant)"
                   value={name}
                   onChange={(newValue) => setName(newValue)}
                 />
@@ -217,12 +268,12 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  fieldsError && " border border-red-500  rounded-[5px]"
                 }`}
               >
                 <CustomInput
                   type="text"
-                  label="Business contact (e.g. Sade Adu)"
+                  label="Business Contact (e.g. Sade Adu)"
                   value={contact}
                   onChange={(newValue) => setContact(newValue)}
                 />
@@ -230,12 +281,12 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  fieldsError && " border border-red-500  rounded-[5px]"
                 }`}
               >
                 <CustomInput
                   type="text"
-                  label="Business address"
+                  label="Business Address"
                   value={address}
                   onChange={(newValue) => setAddress(newValue)}
                 />
@@ -243,25 +294,37 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  emailError ||
+                  (fieldsError && " border border-red-500  rounded-[5px]")
                 }`}
               >
                 <CustomInput
                   type="email"
-                  label="Business email"
+                  label="Business Email"
                   value={email}
-                  onChange={(newValue) => setEmail(newValue)}
+                  onChange={(newValue) => {
+                    setEmail(newValue);
+                    const isValidEmail = validateEmail(newValue);
+                    if (!isValidEmail) {
+                      console.log("Please enter a valid email address");
+                      setEmailError("Please enter a valid email address");
+                    } else {
+                      setEmailError("");
+                    }
+                  }}
                 />
               </div>
-
+              {emailError && (
+                <p className="text-red-500 text-[14px]">{emailError}</p>
+              )}
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  fieldsError && " border border-red-500  rounded-[5px]"
                 }`}
               >
                 <CustomInput
                   type="text"
-                  label="Phone number (e.g. +234 812 345 6789)"
+                  label="Phone Number (e.g. +234 812 345 6789)"
                   value={phone}
                   onChange={(newValue) => setPhone(newValue)}
                 />
@@ -269,7 +332,8 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  passwordError ||
+                  (fieldsError && "border border-red-500 rounded-[5px]")
                 }`}
               >
                 <PasswordInput
@@ -278,20 +342,30 @@ const RegistrationStepForm = () => {
                   onChange={handlePasswordChange}
                 />
               </div>
+              {passwordError && (
+                <p className="text-red-500 text-[14px]">{passwordError}</p>
+              )}
+              {password && !passwordError && (
+                <div
+                  className={`${
+                    fieldsError && "border border-red-500 rounded-[5px]"
+                  }`}
+                >
+                  <PasswordInput
+                    label="Confirm Password"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                  />
+                </div>
+              )}
+              {confirmPasswordError && (
+                <p className="text-red-500 text-[14px]">
+                  {confirmPasswordError}
+                </p>
+              )}
               <div
                 className={`${
-                  error && " border border-red-500  rounded-[5px]"
-                }`}
-              >
-                <PasswordInput
-                  label="Confirm Password"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                />
-              </div>
-              <div
-                className={`${
-                  error && " border border-red-500  rounded-[5px]"
+                  fieldsError && " border border-red-500  rounded-[5px]"
                 }`}
               >
                 <CustomSelect4
@@ -302,16 +376,16 @@ const RegistrationStepForm = () => {
               </div>
 
               <div className=" grid mt-[32px] gap-[8px]">
-                <div className="" onClick={createBusinessAccount}>
-                  {/* <Button text="Next" loading={loading} /> */}
-
-                  <button
-                    className="bg-purple500 w-full text-center text-white py-3 rounded"
-                    disabled={loading}
-                  >
-                    {loading ? "Next..." : "Next"}
-                  </button>
-                </div>
+                {!emailError && !passwordError && !confirmPasswordError && (
+                  <div className="" onClick={createBusinessAccount}>
+                    <button
+                      className="bg-purple500 w-full text-center text-white py-3 rounded"
+                      disabled={loading}
+                    >
+                      {loading ? "Next..." : "Next"}
+                    </button>
+                  </div>
+                )}
                 <Link to="/">
                   <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
                     Cancel
@@ -339,7 +413,7 @@ const RegistrationStepForm = () => {
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
               Stage 1:{" "}
-              <span className="text-[20px]"> Payout & bank details</span>{" "}
+              <span className="text-[20px]"> Payout & Bank Details</span>{" "}
             </p>
             <p className=" text-red-500">{error}</p>
             <div className=" grid gap-[16px]  my-5 w-full md:w-[530px] ">
@@ -356,13 +430,13 @@ const RegistrationStepForm = () => {
 
               <CustomInput
                 type="text"
-                label="Bank account number"
+                label="Bank Account Number"
                 value={accountNumber}
                 onChange={(newValue) => setAccountNumber(newValue)}
               />
               <CustomInput
                 type="text"
-                label="Bank account name"
+                label="Bank Account Name"
                 value={accountName}
                 onChange={(newValue) => setAccountName(newValue)}
               />
@@ -371,8 +445,11 @@ const RegistrationStepForm = () => {
                 type="text"
                 label="Bank Verification Number (BVN)"
                 value={bvn}
-                onChange={(newValue) => setBvn(newValue)}
+                onChange={handleBvnChange}
               />
+              {bvnError && (
+                <p className="text-red-500 text-[14px]">{bvnError}</p>
+              )}
               <CustomInput
                 type="text"
                 label="Bank Name"
@@ -381,14 +458,18 @@ const RegistrationStepForm = () => {
               />
 
               <div className=" grid mt-[32px] gap-[8px]">
-                <div className="" onClick={createAccountDetails}>
-                  <button
-                    className="bg-purple500 w-full text-center text-white py-3 rounded"
-                    disabled={loading}
-                  >
-                    Save and continue
-                  </button>
-                </div>
+                {!bvnError && (
+                  <div className="" onClick={createAccountDetails}>
+                    <button
+                      className={`${
+                        loading ? `bg-gray-400` : `bg-purple500`
+                      } w-full text-center text-white py-3 rounded`}
+                      disabled={loading}
+                    >
+                      {loading ? "Sending..." : "Save and continue"}
+                    </button>
+                  </div>
+                )}
                 <Link to="/">
                   <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
                     Cancel
