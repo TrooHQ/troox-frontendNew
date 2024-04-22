@@ -42,6 +42,7 @@ import { Receipt } from "./Mobile/Customers/Receipt";
 import { GetReceipt } from "./Mobile/Customers/GetReceipt";
 import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
+import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans overflow-hidden">
@@ -51,6 +52,7 @@ const MobileLayout = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/digi-input" element={<VerifyAccount2 />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />

@@ -1,5 +1,5 @@
 import Arrow from "../assets/BackArrow.svg";
-import More from "../../assets/more_vert.svg";
+import More from "../assets/right-arroww.svg";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
 import Close from "../../assets/closeIcon.svg";
@@ -81,8 +81,8 @@ const Tickets = () => {
       <div className="">
         <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between border-b pb-[12px] px-[8px]">
           <p className=" w-[80px]">Name</p>
-          <p className="w-[50px]">Number</p>
-          <p className="">Orders</p>
+          <p className="w-[54px]">Number</p>
+          <p className=" w-[132px]">Orders</p>
         </div>
 
         {tickets.map((ticket, index) => (
@@ -102,21 +102,22 @@ const Tickets = () => {
                 )}
             </p>
 
-            <p className=" ">#20</p>
-            <div className="w-[80px] flex justify-between items-center">
+            <p className=" w-[54px] ">#20</p>
+            <div
+              className="w-[132px] flex justify-between items-center cursor-pointer"
+              onClick={() => handleTicketModal(ticket)}
+            >
               <div className="">
                 {ticket.menu_items.map((item, index) => (
                   <div key={index}>
-                    <p>{item.name}</p>
+                    <p className=" text-[16px] font-[400] text-[#121212]">
+                      1x
+                      <span className=" p-[5px]">{item.name}</span>
+                    </p>
                   </div>
                 ))}
               </div>
-              <img
-                src={More}
-                alt=""
-                className={`cursor-pointer w-[5px]`}
-                onClick={() => handleTicketModal(ticket)}
-              />
+              <img src={More} alt="" className={` `} />
             </div>
           </div>
         ))}
@@ -155,7 +156,9 @@ const Tickets = () => {
             <div className="text-[16px] font-[400] text-grey500">
               {selectedTicket?.menu_items.map((order, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <p>{order.name}</p>
+                  <p className=" text-[16px] font-[400] text-[#121212]">
+                    1x <span className=" p-[5px]">{order.name}</span>
+                  </p>
                   <p>#{order.price}</p>
                 </div>
               ))}
