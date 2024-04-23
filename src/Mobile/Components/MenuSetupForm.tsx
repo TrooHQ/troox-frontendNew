@@ -7,7 +7,7 @@ import { useState } from "react";
 import CustomInput from "../inputFields/CustomInput";
 import imageIcon from "../assets/image.svg";
 import Skip from "../assets/skip.svg";
-import Arrow from "../assets/arrow.png";
+// import Arrow from "../assets/arrow.png";
 import MenuModal from "./MenuModal";
 import RadioCustom from "../inputFields/RadioCustom";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -39,20 +39,20 @@ interface Props {
 }
 
 const MenuSetupForm: React.FC<Props> = () => {
-  const [expandedCategories, setExpandedCategories] = useState<{
-    [key: string]: boolean;
-  }>({});
+  // const [expandedCategories, setExpandedCategories] = useState<{
+  //   [key: string]: boolean;
+  // }>({});
   // const MenuSetupForm: React.FC<Props> = ({ menuData }) => {
   //   const [expandedCategories, setExpandedCategories] = useState<{
   //     [key: string]: boolean;
   //   }>({});
 
-  const toggleCategory = (category: string) => {
-    setExpandedCategories((prevState) => ({
-      ...prevState,
-      [category]: !prevState[category],
-    }));
-  };
+  // const toggleCategory = (category: string) => {
+  //   setExpandedCategories((prevState) => ({
+  //     ...prevState,
+  //     [category]: !prevState[category],
+  //   }));
+  // };
   const [menuCategory, setMenuCategory] = useState<string>("");
   const [menuItem, setMenuItem] = useState<string>("");
   const [menuGroupName, setMenuGroupName] = useState<string>("");
