@@ -24,6 +24,7 @@ interface Ticket {
 interface MenuItem {
   name: string;
   price: string;
+  quantity: string;
 }
 
 const Tickets = () => {
@@ -111,7 +112,7 @@ const Tickets = () => {
                 {ticket.menu_items.map((item, index) => (
                   <div key={index}>
                     <p className=" text-[16px] font-[400] text-[#121212]">
-                      1x
+                      {item.quantity || 1}x{" "}
                       <span className=" p-[5px]">{item.name}</span>
                     </p>
                   </div>
@@ -157,7 +158,8 @@ const Tickets = () => {
               {selectedTicket?.menu_items.map((order, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <p className=" text-[16px] font-[400] text-[#121212]">
-                    1x <span className=" p-[5px]">{order.name}</span>
+                    {order.quantity || 2}x{" "}
+                    <span className=" p-[5px]">{order.name}</span>
                   </p>
                   <p>#{order.price}</p>
                 </div>

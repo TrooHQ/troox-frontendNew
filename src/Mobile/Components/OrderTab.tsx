@@ -21,6 +21,7 @@ interface Ticket {
 
 interface MenuItem {
   name: string;
+  quantity: string;
 }
 const OrderTab: React.FC = () => {
   const tabItems: TabItem[] = [
@@ -118,8 +119,8 @@ const OrderTab: React.FC = () => {
                   className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
                   key={index}
                 >
-                  <div className="rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-                    <div className=" flex gap-[5px] items-center">
+                  <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                    <div className=" flex gap-[1px] items-center">
                       <p className="capitalize">
                         {ticket.ordered_by
                           .split(" ")
@@ -145,7 +146,8 @@ const OrderTab: React.FC = () => {
                       {ticket.menu_items.map((item, index) => (
                         <div key={index}>
                           <p className=" text-[16px] font-[400] text-[#121212]">
-                            1x <span className=" p-[5px]">{item.name}</span>
+                            {item.quantity || 1}x{" "}
+                            <span className=" p-[5px]">{item.name}</span>
                           </p>
                         </div>
                       ))}
@@ -196,18 +198,25 @@ const OrderTab: React.FC = () => {
                     className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
                     key={index}
                   >
-                    <div className="rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-                      <p className="capitalize">
-                        {ticket.ordered_by
-                          .split(" ")
-                          .map((name, index) =>
-                            index === 0
-                              ? name
-                              : index === 1
-                              ? ` ${name.charAt(0).toUpperCase()}.`
-                              : ""
-                          )}
-                      </p>
+                    <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                      <div className=" flex items-center gap-[1px]">
+                        <p className="capitalize">
+                          {ticket.ordered_by
+                            .split(" ")
+                            .map((name, index) =>
+                              index === 0
+                                ? name
+                                : index === 1
+                                ? ` ${name.charAt(0).toUpperCase()}.`
+                                : ""
+                            )}
+                        </p>
+                        <p className="capitalize">
+                          <span className=" px-[4px]">|</span>#20
+                          <span className=" px-[4px]">|</span>
+                        </p>
+                        <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+                      </div>
                       <p>#{ticket.total_price}</p>
                     </div>
                     <div className="font-[400] text-[16px] mt-[8px] capitalize">
@@ -215,7 +224,8 @@ const OrderTab: React.FC = () => {
                         {ticket.menu_items.map((item, index) => (
                           <div key={index}>
                             <p className=" text-[16px] font-[400] text-[#121212]">
-                              1x <span className=" p-[5px]">{item.name}</span>
+                              {item.quantity || 1}x{" "}
+                              <span className=" p-[5px]">{item.name}</span>
                             </p>
                           </div>
                         ))}

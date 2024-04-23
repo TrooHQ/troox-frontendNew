@@ -14,15 +14,15 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 
 const menuData = [
-  {
-    category: "Soups",
-    items: [
-      { title: "Egusi Soup", link: "/egusi" },
-      { title: "Okra  Soup", link: "/okra" },
-      { title: "Ogbono Soup", link: "/ogbono" },
-      { title: "White Soup", link: "/white" },
-    ],
-  },
+  // {
+  //   category: "Soups",
+  //   items: [
+  //     { title: "Egusi Soup", link: "/egusi" },
+  //     { title: "Okra  Soup", link: "/okra" },
+  //     { title: "Ogbono Soup", link: "/ogbono" },
+  //     { title: "White Soup", link: "/white" },
+  //   ],
+  // },
 ];
 
 interface MenuItem {
@@ -185,7 +185,7 @@ const MenuSetupForm: React.FC<Props> = () => {
             Add new menu category
           </p>
 
-          <div>
+          {/* <div>
             {menuData.map((category, index) => (
               <div key={index}>
                 <div
@@ -225,7 +225,7 @@ const MenuSetupForm: React.FC<Props> = () => {
                 )}
               </div>
             ))}
-          </div>
+          </div> */}
           <div className=" grid mt-[32px] gap-[8px]">
             <div
               className={`${
