@@ -55,8 +55,12 @@ const Login = () => {
       if (userType === "employee") {
         history("/employee-dashboard");
       } else if (userType === "admin") {
-        history("/dashboard");
-        // history("/menu");
+        // history("/dashboard");
+        if (response.data.has_created_menu_item == false) {
+          history("/menu");
+        } else {
+          history("/dashboard");
+        }
       }
     } catch (error) {
       console.error("Error occurred:", error);

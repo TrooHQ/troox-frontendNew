@@ -59,7 +59,7 @@ const VerifyAccount = () => {
         email,
       });
       setLoading(false);
-      console.log(response.data);
+      console.log(response);
       toast.success("Token has been resent");
     } catch (error) {
       console.error("Error occurred:", error);
@@ -87,7 +87,7 @@ const VerifyAccount = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("User verified successfully");
-      history("/menu");
+      history("/");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

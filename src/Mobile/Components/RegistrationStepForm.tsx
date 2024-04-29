@@ -131,6 +131,8 @@ const RegistrationStepForm = () => {
       setLoading(false);
       toast.success("User created successfully");
       dispatch(setUserData(response.data));
+      console.log(response.data);
+
       sessionStorage.setItem("id", response.data.id);
       sessionStorage.setItem("user_role", response.data.user_role);
       sessionStorage.setItem("email_verified", response.data.email_verified);
@@ -180,7 +182,7 @@ const RegistrationStepForm = () => {
       );
       setLoading(false);
       // console.log(response.data.account_details);
-      // console.log(response.data.message);
+      console.log(response);
       toast.success(response.data.message);
       history("/verify");
     } catch (error) {

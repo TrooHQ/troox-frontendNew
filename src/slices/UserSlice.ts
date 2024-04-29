@@ -6,6 +6,7 @@ const userSlice = createSlice({
     id: null,
     user_role: null,
     email_verified: null,
+    // token: null,
   },
   reducers: {
     setUserData: (state, action) => {
@@ -13,11 +14,13 @@ const userSlice = createSlice({
       state.id = id;
       state.user_role = user_role;
       state.email_verified = email_verified;
+      // state.token = token;
     },
     clearUserData: (state) => {
       state.id = null;
       state.user_role = null;
       state.email_verified = null;
+      // state.token = null;
     },
   },
 });

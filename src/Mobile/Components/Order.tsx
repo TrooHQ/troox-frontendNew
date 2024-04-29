@@ -13,7 +13,7 @@ const Order = () => {
       >
         <img src={Arrow} alt="" />
         <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
-          Orders
+          KDS(Kitchen Display System)
         </p>
       </div>
       <div className=" mt-[24px]">

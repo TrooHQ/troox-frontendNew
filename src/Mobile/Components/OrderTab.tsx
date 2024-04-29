@@ -89,6 +89,8 @@ const OrderTab: React.FC = () => {
           setActiveTab(2);
         } else if (status === "serve") {
           setActiveTab(1);
+        } else if (status === "cancel") {
+          setActiveTab(1);
         }
         setLoader(false);
       }
@@ -161,7 +163,7 @@ const OrderTab: React.FC = () => {
                     <button
                       className="text-[#B3312A] text-center font-[500] text-[14px] border border-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
                       disabled={loader}
-                      onClick={() => updateStatus(ticket._id, "accept")}
+                      onClick={() => updateStatus(ticket._id, "cancel")}
                     >
                       Reject
                     </button>
