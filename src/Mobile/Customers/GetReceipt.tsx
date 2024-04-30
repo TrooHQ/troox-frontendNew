@@ -1,6 +1,6 @@
 import TopMenuNav from "./TopMenuNav";
 import { Link } from "react-router-dom";
-import Logo from "../assets/chickenExpressLogo.svg";
+import Logo from "../assets/Restaurant_Logo.svg";
 export const GetReceipt = () => {
   return (
     <div className="  ">
@@ -27,14 +27,14 @@ export const GetReceipt = () => {
         <div className="grid gap-[16px] items-center justify-center">
           {/* <Link to="/"> */}
           <div className=" flex items-center justify-center">
-            <p className="bg-[#EFB519] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
+            <p className="bg-[#0B7F7C] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
               Get an eReceipt
             </p>
           </div>
           {/* </Link> */}
           <Link to="/">
             <div className=" flex items-center justify-center">
-              <p className=" border border-[#E16B07] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
+              <p className=" border border-[#0B7F7C] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#0B7F7C]">
                 Order more
               </p>
             </div>

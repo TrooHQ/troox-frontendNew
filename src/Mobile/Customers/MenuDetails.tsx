@@ -139,6 +139,7 @@ const MenuDetails = () => {
   //   sessionStorage.setItem("basketUpdated", "true");
   // };
 
+  const menuid = sessionStorage.getItem("menuId");
   const handleAddToBasket = () => {
     const existingIdsString = sessionStorage.getItem("ids");
     const existingIds = existingIdsString ? JSON.parse(existingIdsString) : [];
@@ -184,7 +185,7 @@ const MenuDetails = () => {
       totalPriceWithSelectedOptions.toString()
     );
 
-    history("/explore-menu");
+    history(`/category-details/${menuid}`);
   };
 
   const handleCheckboxChange = (value: string) => {
@@ -591,7 +592,7 @@ const MenuDetails = () => {
 
             {menuItem && menuItem.options && (
               <div className=" pb-[16px] border-b">
-                <p className=" text-[#E16B07]  mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
+                <p className=" text-[#0B7F7C]  mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
                   Customize
                 </p>
               </div>
@@ -635,7 +636,7 @@ const MenuDetails = () => {
             </div>
 
             <div className="py-[16px] ">
-              <p className=" text-[#E16B07] text-[16px] font-[500]  mx-[24px] mb-[10px]">
+              <p className=" text-[#0B7F7C] text-[16px] font-[500]  mx-[24px] mb-[10px]">
                 Quantity
               </p>
               <hr className="" />
@@ -655,7 +656,7 @@ const MenuDetails = () => {
             </div>
             <div className=" mx-[16px] my-[16px] ">
               <div
-                className="flex justify-between  items-center py-[13px] px-[24px] bg-[#EFB519] rounded-[3px] cursor-pointer"
+                className="flex justify-between  items-center py-[13px] px-[24px] bg-[#0B7F7C] text-white rounded-[3px] cursor-pointer"
                 onClick={handleAddToBasket}
               >
                 <p className="text-[16px] font-[500]">

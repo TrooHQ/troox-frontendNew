@@ -43,6 +43,7 @@ import { GetReceipt } from "./Mobile/Customers/GetReceipt";
 import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
+import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans overflow-hidden">
@@ -72,6 +73,7 @@ const MobileLayout = () => {
           <Route path="/restaurants" element={<ListofRestaurants />} />
           <Route path="/start-order" element={<StartOrder />} />
           <Route path="/explore-menu" element={<MenuPage />} />
+          <Route path="/category-details/:id" element={<CategoryDetails />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/tip" element={<Tip />} />
