@@ -1,19 +1,13 @@
 import { useEffect, useState } from "react";
-import DashboardBackButton from "./Buttons/DashboardBackButton";
 import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
-// import MenuIcon from "./assets/MenuIcon2.svg";
 import QrIcon from "./assets/QRImage.svg";
-// import arrowDown from "./assets/ArrowDown3.svg";
 import MenuModal from "./Components/MenuModal";
 import CheckCircle from "../assets/check_circle.svg";
 import WarningIcon from "./assets/WarningModal.svg";
 import DeleteSuccess from "./assets/DeleteSuccess.svg";
 import Trash from "./assets/delete.svg";
-// import info from "./assets/info.svg";
-// import AddWhite from "./assets/addWhite.svg";
-// import imageIcon from "./assets/image.svg";
-// import EditIcon from "./assets/EditIcon.svg";
+
 import QrCode from "./assets/qr_code_2.svg";
 import downloadIcon from "./assets/downloadIcon.svg";
 import copyIcon from "./assets/copyicon.svg";
@@ -21,13 +15,9 @@ import printIcon from "./assets/printer.svg";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import MenuSettings from "./Components/Settings/MenuSettings";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
-// import CustomInput from "./inputFields/CustomInput";
-// import CheckInput from "./inputFields/CheckInput";
-// import RadioInput from "./inputFields/RadioInput";
-// import { Link } from "react-router-dom";
 
 interface FormData extends FieldValues {
   employee_name?: string;
@@ -109,7 +99,6 @@ const SettingsPage = () => {
   const handleRoomQRCodeContentModal = () => {
     setRoomQRCodeModal(false);
     setRoomQRCodeContentModal(true);
-    // setQRCodeModal(true);
   };
 
   const handleDownloadQRCodeModal = () => {
@@ -117,11 +106,6 @@ const SettingsPage = () => {
     setQRCodeModal(true);
   };
 
-  // const handleAddMenuItem = () => {
-  //   setAddModifierModal(false);
-  //   setEditItem(false);
-  //   setAddCategoryModal(true);
-  // };
   const handlePasswordResetModal = () => {
     setResetPasswordModal(true);
   };
@@ -129,55 +113,19 @@ const SettingsPage = () => {
     setEmployeeModal(true);
   };
 
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   console.log("Selected file:", file);
-  // };
   const handleWarningModal = () => {
-    // setRemoveMenuModal(false);
     setRemoveEmployeeModal(false);
     setWarningModal(true);
   };
-  // const handleWarningModal2 = () => {
-  //   setRemoveMenuModal(false);
-  //   setWarningModal2(true);
-  // };
 
   const handleDeleteSuccessModal = () => {
     setWarningModal(false);
     setDeleteSuccessfullModal(true);
   };
 
-  // const handleDeleteSuccessModal2 = () => {
-  //   setWarningModal2(false);
-  //   setDeleteSuccessfullModal2(true);
-  // };
-  // const handleRemoveMenuModal = () => {
-  //   setRemoveMenuModal(true);
-  // };
-
   const handleRemoveEmployeeModal = () => {
     setRemoveEmployeeModal(true);
   };
-
-  // const handleSuccessModal = () => {
-  //   setEmployeeModal(false);
-  //   // setAddCategoryModal(false);
-  //   // setEditItem(false);
-  //   setSuccessModal(true);
-  // };
-
-  // const handlePasswordResetSuccessModal = () => {
-  //   setResetPasswordModal(false);
-  //   setResetSuccessModal(true);
-  // };
-
-  // const handleEditSuccessModal = () => {
-  //   // setEmployeeModal(false);
-  //   setAddCategoryModal(false);
-  //   setEditItem(false);
-  //   setSuccessModal2(true);
-  // };
 
   const {
     register,
@@ -306,10 +254,20 @@ const SettingsPage = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="my-[16px] mx-[24px]">
-        <DashboardBackButton text="Settings" img={Arrow} />
+        <div
+          onClick={() => navigate(-1)}
+          className=" inline-flex items-center gap-[20px] cursor-pointer"
+        >
+          <img src={Arrow} alt="" />
+          <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
+            Settings
+          </p>
+        </div>
 
         <div className="mt-[24px]">
           <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">
@@ -422,9 +380,7 @@ const SettingsPage = () => {
               Create QR Code
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1">
-                {/* {errors && "All Fields are required"} */}
-              </p>
+              <p className="text-red-500 text-sm mt-1"></p>
 
               <div className=" grid gap-[12px]">
                 <button
@@ -455,9 +411,7 @@ const SettingsPage = () => {
               Do you want to create QR Code for rooms at Deluxe Hotel?
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1">
-                {/* {errors && "All Fields are required"} */}
-              </p>
+              <p className="text-red-500 text-sm mt-1"></p>
 
               <div className=" flex items-center gap-[8px]">
                 <button
@@ -494,29 +448,18 @@ const SettingsPage = () => {
               QR Code for rooms at Deluxe Hotel has been created successfully
             </p>
             <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1">
-                {/* {errors && "All Fields are required"} */}
-              </p>
+              <p className="text-red-500 text-sm mt-1"></p>
 
               <div className=" flex items-center gap-[8px]">
-                <button
-                  // onClick={() => setRoomQRCodeModal(false)}
-                  className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                >
+                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
                   <img src={downloadIcon} alt="" />
                   Download
                 </button>
-                <button
-                  // onClick={() => setRoomQRCodeModal(false)}
-                  className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                >
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
                   <img src={copyIcon} alt="" />
                   Copy
                 </button>
-                <button
-                  // onClick={() => setRoomQRCodeModal(false)}
-                  className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                >
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
                   <img src={printIcon} alt="" />
                   Print
                 </button>
@@ -604,9 +547,7 @@ const SettingsPage = () => {
                 </div>
               </div>
               <div className=" mt-[16px] ">
-                <p className="text-red-500 text-sm mt-1">
-                  {/* {errors && "All Fields are required"} */}
-                </p>
+                <p className="text-red-500 text-sm mt-1"></p>
 
                 <div className=" mt-[32px] flex items-center gap-[16px]">
                   <button
@@ -640,9 +581,7 @@ const SettingsPage = () => {
                 Save Table Group As{" "}
               </p>
               <div className=" mt-[16px] ">
-                <p className="text-red-500 text-sm mt-1">
-                  {/* {errors && "All Fields are required"} */}
-                </p>
+                <p className="text-red-500 text-sm mt-1"></p>
                 <input
                   type="text"
                   id="group_name"

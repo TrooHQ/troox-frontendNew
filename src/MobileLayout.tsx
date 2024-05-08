@@ -21,7 +21,6 @@ import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
-// import Home from "./LandingPage/Home";
 import PosPage from "./LandingPage/Products/PosPage";
 import KDSPage from "./LandingPage/Products/KDSPage";
 import TableOrderingPage from "./LandingPage/Products/TableOrderingPage";
@@ -43,6 +42,8 @@ import { Receipt } from "./Mobile/Customers/Receipt";
 import { GetReceipt } from "./Mobile/Customers/GetReceipt";
 import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
+import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
+import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans overflow-hidden">
@@ -52,7 +53,7 @@ const MobileLayout = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/digi-input" element={<VerifyAccount2 />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -67,11 +68,12 @@ const MobileLayout = () => {
           <Route path="/request-demo" element={<DemoPage />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
-          {/* <Route path="/start-order" element={<StartOrder />} /> */}
           <Route path="/" element={<StartOrder />} />
           <Route path="/explore-menu" element={<MenuPage />} />
+          <Route path="/category-details/:id" element={<CategoryDetails />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/tip" element={<Tip />} />

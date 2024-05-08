@@ -18,7 +18,6 @@ import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
-import Home from "./LandingPage/Home.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
 import PosPage from "./LandingPage/Products/PosPage.tsx";
 import KDSPage from "./LandingPage/Products/KDSPage.tsx";
@@ -34,6 +33,8 @@ import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage.tsx";
 import DemoPage from "./LandingPage/Businesses/DemoPage.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Tickets from "./components/Dashboard/Tickets.tsx";
+import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
 
 export default function App() {
   return (
@@ -42,8 +43,7 @@ export default function App() {
         <ToastContainer />
         <ScrollToTop />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -64,6 +64,7 @@ export default function App() {
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/price-list" element={<PriceList />} />
+          <Route path="/tickets" element={<Tickets />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />
@@ -73,6 +74,8 @@ export default function App() {
           <Route path="/password-changed" element={<PasswordChanged />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/till" element={<Till />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

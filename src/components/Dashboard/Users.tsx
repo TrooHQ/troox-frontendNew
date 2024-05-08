@@ -3,7 +3,7 @@ import Profileimg from "../../assets/Profileimg.svg";
 import Delete from "../../assets/DeleteIcon.svg";
 import Modal from "../Modal";
 import { Link } from "react-router-dom";
-import CancelButton from "../Buttons/CancelButton";
+// import CancelButton from "../Buttons/CancelButton";
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -82,7 +82,10 @@ const Users = () => {
                 className="border cursor-pointer border-purple500 rounded-[5px] px-[24px] py-[10px] font-[600] text-purple500"
                 onClick={() => setIsModalOpen(false)}
               >
-                <CancelButton text="Cancel" />
+                <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                  Cancel
+                </p>
+                {/* <CancelButton text="Cancel" /> */}
               </div>
               <div className="border border-[#ED5048] bg-[#ED5048] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
                 <Link to="/">

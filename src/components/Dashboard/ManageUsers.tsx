@@ -4,7 +4,7 @@ import Tabs from "./Tabs";
 import { useState } from "react";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
-import CancelButton from "../Buttons/CancelButton";
+// import CancelButton from "../Buttons/CancelButton";
 import { useDispatch, useSelector } from "react-redux";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import { RootState } from "../../store/rootReducer";
@@ -135,7 +135,10 @@ const ManageUsers: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setIsModalOpen(false)}
                 >
-                  <CancelButton text="Cancel" />
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
+                  {/* <CancelButton text="Cancel" /> */}
                 </div>
 
                 <div

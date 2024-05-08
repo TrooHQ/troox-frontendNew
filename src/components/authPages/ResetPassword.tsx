@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button";
 import PasswordInput from "../inputFields/PasswordInput";
+import { Link } from "react-router-dom";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState<string>("");
@@ -42,7 +42,11 @@ const ResetPassword = () => {
             onChange={handleConfirmPasswordChange}
           />
           <p className="  text-[14px]">Both passwords must match</p>
-          <Button link="/password-changed" text="Reset password" />
+          <Link to="/password-changed">
+            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              Reset password
+            </button>
+          </Link>
         </div>
       </div>
     </div>

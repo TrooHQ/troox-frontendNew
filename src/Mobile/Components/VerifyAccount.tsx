@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,7 +7,22 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import DigitInput from "../inputFields/DigitInput";
 
+import { useSelector } from "react-redux";
+
+interface RootState {
+  user: {
+    id: string | null;
+    user_role: string | null;
+    email_verified: boolean | null;
+  };
+}
+
 const VerifyAccount = () => {
+  const user = useSelector((state: RootState) => state.user);
+  console.log("user id", user.id);
+  console.log(user.user_role);
+  console.log(user.email_verified);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const history = useNavigate();
@@ -45,7 +59,7 @@ const VerifyAccount = () => {
         email,
       });
       setLoading(false);
-      console.log(response.data);
+      console.log(response);
       toast.success("Token has been resent");
     } catch (error) {
       console.error("Error occurred:", error);
@@ -73,7 +87,7 @@ const VerifyAccount = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("User verified successfully");
-      history("/menu");
+      history("/");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -142,7 +156,14 @@ const VerifyAccount = () => {
           </div>
           {allInputsFilled() ? (
             <div className=" mt-[16px]" onClick={verify}>
-              <Button text="Activate account" loading={loading} />
+              <button
+                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                disabled={loading}
+              >
+                Activate Account
+              </button>
+
+              {/* <Button text="Activate account" loading={loading} /> */}
             </div>
           ) : (
             <div className=" mt-[16px]">

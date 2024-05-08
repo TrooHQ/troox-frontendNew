@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button.js";
 
 const EnterPassword = () => {
   return (
@@ -19,7 +18,9 @@ const EnterPassword = () => {
 
           <Link to="/create-password">
             <div className="">
-              <Button text="Enter password" />
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Enter password
+              </button>
             </div>
           </Link>
         </div>

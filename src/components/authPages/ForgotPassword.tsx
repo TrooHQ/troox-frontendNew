@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
-import Button from "../Buttons/Button";
 import EmailInput from "../inputFields/CustomInput";
-import BackButton from "../Buttons/Button";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
   const [value, setValue] = useState<string>("");
 
   return (
@@ -35,9 +36,17 @@ const ForgotPassword = () => {
               onChange={(newValue) => setValue(newValue)}
             />
           </div>
-          <Button link="/checkmail" text="Get a reset link" />
+          <Link to="/checkmail">
+            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              Get a reset link
+            </button>
+          </Link>
           <div className=" text-center py-3">
-            <BackButton text="Go Back" />
+            <div onClick={() => navigate(-1)}>
+              <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+                Go Back
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -2,16 +2,16 @@ import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import Button from "../Buttons/Button";
-import BackButton from "../Buttons/Button";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [pin, setPin] = useState<string>("");
-  const [ConfirmPin, setConfirmPin] = useState<string>("");
 
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
@@ -57,17 +57,19 @@ const Register = () => {
             maxLength={4}
             onChange={(newValue) => setPin(newValue)}
           />
-          <CustomInput
-            type="text"
-            label="Confirm your pin"
-            value={ConfirmPin}
-            maxLength={4}
-            onChange={(newValue) => setConfirmPin(newValue)}
-          />
+
           <div className=" ">
-            <Button link="/business-profile" text="Create Account" />
+            <Link to="/business-profile">
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Create Account
+              </button>
+            </Link>
             <div className=" flex items-center justify-center my-5">
-              <BackButton text="Go Back" />
+              <div onClick={() => navigate(-1)}>
+                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+                  Go Back
+                </p>
+              </div>
             </div>
           </div>
         </div>

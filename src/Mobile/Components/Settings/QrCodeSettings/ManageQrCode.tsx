@@ -1,9 +1,9 @@
 import { useState } from "react";
-import DashboardBackButton from "../../../Buttons/DashboardBackButton";
 import Arrow from "../../../assets/BackArrow.svg";
 import arrowDown from "../../../assets/ArrowDown3.svg";
 import QrIcon from "../../../assets/qr_code_2.svg";
 import More from "../../../assets/more_vert.svg";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -44,10 +44,19 @@ const ManageQrCode = () => {
   const HandleModal = () => {
     setMenu((prevState) => !prevState);
   };
+  const navigate = useNavigate();
 
   return (
     <div className="mt-[16px] mx-[20px]">
-      <DashboardBackButton text="Manage QR Codes" img={Arrow} />
+      <div
+        onClick={() => navigate(-1)}
+        className=" inline-flex items-center gap-[20px] cursor-pointer"
+      >
+        <img src={Arrow} alt="" />
+        <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
+          Manage QR Codes
+        </p>
+      </div>
       <div className="mt-[16px]">
         {data.map((table) => (
           <div
@@ -81,16 +90,6 @@ const ManageQrCode = () => {
                     onClick={HandleModal}
                   />
                 </div>
-
-                {/* <div className=" absolute right-0 top-10 bg-[#ffffff] p-[24px] shadow-lg">
-                  {menu && (
-                    <div className=" grid gap-[16px]">
-                      <p className="">Download</p>
-                      <p>Print</p>
-                      <p>Delete</p>
-                    </div>
-                  )}
-                </div> */}
 
                 {menu && (
                   <div className=" absolute right-0 top-10 bg-[#ffffff] p-[24px] shadow-lg w-[150px] z-50">

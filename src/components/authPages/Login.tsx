@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Logo from "../../assets/trooLogo.svg";
-import Button from "../Buttons/Button";
 import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
@@ -71,7 +70,9 @@ const Login = () => {
             </Link>
           </div>
           <div className="" onClick={handleButtonClick}>
-            <Button text="Login" />
+            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              Login
+            </button>
           </div>
         </div>
         <div className=" mt-[40px]">

@@ -2,8 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
-import BackButton from "./Buttons/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface FAQItem {
   question: string;
@@ -61,6 +60,8 @@ const FAQSetting: React.FC<FAQProps> = ({
   //   setCheckedInnerCategories(newCheckedInnerCategories);
   //   console.log("Handling inner category change...", newCheckedInnerCategories);
   // };
+
+  const navigate = useNavigate();
 
   return (
     <div className="grid gap-[24px]">
@@ -542,7 +543,11 @@ const FAQSetting: React.FC<FAQProps> = ({
 
       <div className=" flex justify-end items-center gap-2">
         <div className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
-          <BackButton text="Cancel" />
+          <div onClick={() => navigate(-1)}>
+            <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+              Cancel
+            </p>
+          </div>
         </div>
 
         <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff]">

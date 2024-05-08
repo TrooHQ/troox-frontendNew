@@ -1,14 +1,15 @@
 import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
-import BackButton from "../Buttons/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface FAQItem {
   question: string;
   inputValue?: string;
 }
 const BusinessProfiles: React.FC = () => {
+  const navigate = useNavigate();
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqData: FAQItem[] = [
@@ -57,7 +58,11 @@ const BusinessProfiles: React.FC = () => {
 
           <div className=" flex justify-end items-center gap-2 mt-[32px]">
             <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
-              <BackButton text="Cancel" />
+              <div onClick={() => navigate(-1)}>
+                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+                  Cancel
+                </p>
+              </div>
             </div>
 
             <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">

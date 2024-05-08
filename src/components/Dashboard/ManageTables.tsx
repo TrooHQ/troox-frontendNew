@@ -1,7 +1,6 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Add from "../../assets/add.svg";
-import CancelButton from "../Buttons/CancelButton";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
 import { useState } from "react";
@@ -239,7 +238,10 @@ const ManageTables: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <CancelButton text="Cancel" />
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
+                  {/* <CancelButton text="Cancel" /> */}
                 </div>
 
                 <Link to="/table-list">

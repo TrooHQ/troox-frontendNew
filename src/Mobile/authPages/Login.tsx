@@ -14,7 +14,7 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import Button from "../Buttons/Button.tsx";
+// import Button from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
@@ -55,7 +55,12 @@ const Login = () => {
       if (userType === "employee") {
         history("/employee-dashboard");
       } else if (userType === "admin") {
-        history("/menu");
+        // history("/dashboard");
+        if (response.data.has_created_menu_item == false) {
+          history("/menu");
+        } else {
+          history("/dashboard");
+        }
       }
     } catch (error) {
       console.error("Error occurred:", error);
@@ -111,10 +116,15 @@ const Login = () => {
             </Link>
           </div>
           <div className="" onClick={handleLogin}>
-            <Button text="Login" loading={loading} />
+            <button
+              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              disabled={loading}
+            >
+              Login
+            </button>
           </div>
         </div>
-        <div className=" mt-[150px]">
+        <div className=" mt-[100px]">
           <Link to="/register">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account

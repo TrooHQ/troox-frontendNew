@@ -1,109 +1,257 @@
-import React, { useState } from "react";
-
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import chatMessage from "../assets/chat-message.svg";
+import dayjs from "dayjs";
 interface TabItem {
   id: number;
   label: string;
-  content: JSX.Element;
+  content: () => JSX.Element;
 }
 
+interface Ticket {
+  ordered_by: string;
+  menu_items: MenuItem[];
+  orders: string[];
+  total_price: number[];
+  createdAt: string;
+  status: string;
+  _id: number;
+}
+
+interface MenuItem {
+  name: string;
+  quantity: string;
+}
 const OrderTab: React.FC = () => {
   const tabItems: TabItem[] = [
-    { id: 1, label: "Taken", content: renderMenuCategory() },
-    { id: 2, label: "Ready", content: renderMenuCategoryReady() },
+    { id: 1, label: "Taken", content: renderMenuCategory },
+    { id: 2, label: "Ready", content: renderMenuCategoryReady },
   ];
-
+  const token = sessionStorage.getItem("token");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [activeTab, setActiveTab] = useState<number>(1);
-
   const handleTabChange = (tabId: number) => {
     setActiveTab(tabId);
   };
 
+  const getTicket = async (status: string) => {
+    setLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/order/getOrderbyStatus/?status=${status}`,
+        headers
+      );
+      console.log(
+        `Tickets with status "${status}" retrieved successfully:`,
+        response.data
+      );
+      setTickets(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error retrieving tickets by status:", error);
+      setLoading(false);
+    }
+  };
+
+  const updateStatus = async (id: number, status: string) => {
+    setLoader(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const requestData = { order_id: id, status };
+
+    try {
+      const response = await axios.put(
+        `${SERVER_DOMAIN}/order/updateOrder/`,
+        requestData,
+        headers
+      );
+      console.log("Ticket status updated successfully:", response.data);
+
+      if (response.status === 200) {
+        if (status === "accept") {
+          setActiveTab(2);
+        } else if (status === "serve") {
+          setActiveTab(1);
+        } else if (status === "cancel") {
+          setActiveTab(1);
+        }
+        setLoader(false);
+      }
+    } catch (error) {
+      console.error("Error updating ticket status:", error);
+      setLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 1) {
+      getTicket("Pending");
+    } else if (activeTab === 2) {
+      getTicket("Accepted");
+    }
+  }, [activeTab]);
+
   function renderMenuCategory() {
     return (
-      <div className=" grid gap-[16px]">
-        <div className=" rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border">
-          <div className=" rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-            <p>James O.</p>
-            <p>#3,500</p>
-          </div>
-          <div className=" font-[400] text-[16px] mt-[8px]">
-            <p>Jollof rice </p>
-            <p>Titus</p>
-            <p>Spaghetti</p>
-          </div>
+      <>
+        {tickets.length !== 0 ? (
+          loading ? (
+            <p>Loading...</p>
+          ) : (
+            <div className=" grid gap-[16px]">
+              {tickets.map((ticket, index) => (
+                <div
+                  className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
+                  key={index}
+                >
+                  <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                    <div className=" flex gap-[1px] items-center">
+                      <p className="capitalize">
+                        {ticket.ordered_by
+                          .split(" ")
+                          .map((name, index) =>
+                            index === 0
+                              ? name
+                              : index === 1
+                              ? ` ${name.charAt(0).toUpperCase()}.`
+                              : ""
+                          )}
+                      </p>
+                      <p className="capitalize">
+                        <span className=" px-[4px]">|</span>#20
+                        <span className=" px-[4px]">|</span>
+                      </p>
+                      <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+                    </div>
 
-          <div className=" bg-[#ED5048] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
-            <p className=" text-white text-center font-[500] text-[14px]">
-              {" "}
-              Accept
-            </p>
-          </div>
-        </div>
-        <div className=" rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border">
-          <div className=" rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-            <p>James O.</p>
-            <p>#3,500</p>
-          </div>
-          <div className=" font-[400] text-[16px] mt-[8px]">
-            <p>Jollof rice </p>
-            <p>Titus</p>
-            <p>Spaghetti</p>
-          </div>
+                    <p>#{ticket.total_price}</p>
+                  </div>
+                  <div className=" flex items-center justify-between">
+                    <div className="font-[400] text-[16px] mt-[8px] capitalize">
+                      {ticket.menu_items.map((item, index) => (
+                        <div key={index}>
+                          <p className=" text-[16px] font-[400] text-[#121212]">
+                            {item.quantity || 1}x{" "}
+                            <span className=" p-[5px]">{item.name}</span>
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="">
+                      <img src={chatMessage} alt="" />
+                    </div>
+                  </div>
 
-          <div className=" bg-[#ED5048] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
-            <p className=" text-white text-center font-[500] text-[14px]">
-              {" "}
-              Accept
-            </p>
-          </div>
-        </div>
-      </div>
+                  <div className=" grid grid-cols-2 gap-[16px] items-center">
+                    <button
+                      className="text-[#B3312A] text-center font-[500] text-[14px] border border-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
+                      disabled={loader}
+                      onClick={() => updateStatus(ticket._id, "cancel")}
+                    >
+                      Reject
+                    </button>
+                    <button
+                      className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
+                      disabled={loader}
+                      onClick={() => updateStatus(ticket._id, "accept")}
+                    >
+                      Accept
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <p>No Order Available</p>
+        )}
+      </>
     );
   }
 
   function renderMenuCategoryReady() {
     return (
-      <div className=" grid gap-[16px]">
-        <div className=" rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border">
-          <div className=" rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-            <p>James O.</p>
-            <p>#3,500</p>
-          </div>
-          <div className=" font-[400] text-[16px] mt-[8px]">
-            <p>Jollof rice </p>
-            <p>Titus</p>
-            <p>Spaghetti</p>
-          </div>
+      <>
+        <>
+          {tickets.length !== 0 ? (
+            loading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className=" grid gap-[16px]">
+                {tickets.map((ticket, index) => (
+                  <div
+                    className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
+                    key={index}
+                  >
+                    <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                      <div className=" flex items-center gap-[1px]">
+                        <p className="capitalize">
+                          {ticket.ordered_by
+                            .split(" ")
+                            .map((name, index) =>
+                              index === 0
+                                ? name
+                                : index === 1
+                                ? ` ${name.charAt(0).toUpperCase()}.`
+                                : ""
+                            )}
+                        </p>
+                        <p className="capitalize">
+                          <span className=" px-[4px]">|</span>#20
+                          <span className=" px-[4px]">|</span>
+                        </p>
+                        <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+                      </div>
+                      <p>#{ticket.total_price}</p>
+                    </div>
+                    <div className="font-[400] text-[16px] mt-[8px] capitalize">
+                      <div className="">
+                        {ticket.menu_items.map((item, index) => (
+                          <div key={index}>
+                            <p className=" text-[16px] font-[400] text-[#121212]">
+                              {item.quantity || 1}x{" "}
+                              <span className=" p-[5px]">{item.name}</span>
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-          <div className=" bg-[#11AE16] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
-            <p className=" text-white text-center font-[500] text-[14px]">
-              {" "}
-              Serve
-            </p>
-          </div>
-        </div>
-        <div className=" rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border">
-          <div className=" rounded-[5px] flex items-center justify-between font-[500] text-[18px]">
-            <p>James O.</p>
-            <p>#3,500</p>
-          </div>
-          <div className=" font-[400] text-[16px] mt-[8px]">
-            <p>Jollof rice </p>
-            <p>Titus</p>
-            <p>Spaghetti</p>
-          </div>
-
-          <div className=" bg-[#11AE16] py-[8px] w-full rounded-[5px] mt-[16px] cursor-pointer">
-            <p className=" text-white text-center font-[500] text-[14px]">
-              {" "}
-              Serve
-            </p>
-          </div>
-        </div>
-      </div>
+                    <button
+                      className="text-white text-center font-[500] text-[14px] bg-[#11AE16] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
+                      disabled={loader}
+                      onClick={() => updateStatus(ticket._id, "serve")}
+                    >
+                      Serve
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )
+          ) : (
+            <p>No Order Available</p>
+          )}
+        </>
+      </>
     );
   }
-
   return (
     <div>
       <div className="grid grid-cols-2  mb-4 border-b">
@@ -131,45 +279,10 @@ const OrderTab: React.FC = () => {
             key={tab.id}
             className={`${activeTab !== tab.id ? "hidden" : ""}`}
           >
-            {tab.content}
+            {tab.content()}
           </div>
         ))}
       </div>
-
-      {/* <Modal isOpen={editModal}>
-        <div className="bg-white w-[300px]">
-          <div
-            className="cursor-pointer flex items-center justify-end"
-            onClick={() => setEditModal(false)}
-          >
-            <img src={Close} alt="" />
-          </div>
-          <div className="">
-            {editItem && (
-              <>
-                <p className=" text-[18px] font-[500] text-[#000000]">
-                  {" "}
-                  {editItem.title}
-                </p>
-                <div className=" my-[22px] flex items-center gap-[8px]">
-                  <img src={MenuImg} alt="" />
-                  <p className=" text-[14px] font-[400] text-[#5855B3]">
-                    Click to replace image
-                  </p>
-                </div>
-                <div className=" mb-[26px]">
-                  <CustomInput
-                    type="text"
-                    label="Enter new price"
-                    value={email}
-                    onChange={(newValue) => setEmail(newValue)}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </Modal> */}
     </div>
   );
 };

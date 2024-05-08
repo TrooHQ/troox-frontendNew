@@ -149,7 +149,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div>
       <div
-        className={`p-2 w-[253px] h-full fixed overflow-y-auto left-0 top-0 duration-300`}
+        className={`p-2 w-[253px] h-full fixed overflow-y-auto left-0 top-0 duration-300 bg-[#F8F8F8]`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         // className={` p-2 w-[253px] h-full fixed no-scrollbar overflow-y-auto left-0 top-0  pt-8 duration-300 `}
         // ${
