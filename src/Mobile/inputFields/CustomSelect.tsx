@@ -7,7 +7,7 @@ interface CustomSelectProps {
   error?: string;
   onChange: (value: string) => void;
   disabledOption?: string;
-  bgColor?: string; // New prop for background color
+  bgColor?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
