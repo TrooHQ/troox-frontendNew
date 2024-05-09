@@ -752,104 +752,6 @@ export const CategoryDetails = () => {
           ],
         },
       ],
-      // items: [
-      //   {
-      //     id: 33,
-      //     title: "Fried Rice",
-      //     image: `${FriedRice}`,
-      //     price: "2000",
-      //     details: "Fried Rice served with Chicken",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 43,
-      //     title: "Village Jollof Rice",
-      //     image: `${VillageRice}`,
-      //     price: "3000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 44,
-      //     title: "Semo",
-      //     image: `${semo}`,
-      //     price: "1500",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-
-      //   {
-      //     id: 45,
-      //     title: "Ofada Rice",
-      //     image: `${OfadaRice}`,
-      //     price: "1000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 46,
-      //     title: "Poundo Yam",
-      //     image: `${PoundoYam}`,
-      //     price: "2500",
-      //     details: "Pounded yam with Egusi soup",
-      //     options: [
-      //       {
-      //         label: "Add egg (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      // ],
     },
     {
       category: "Grill",
@@ -900,18 +802,7 @@ export const CategoryDetails = () => {
           image: `${Chapman}`,
           price: "1250",
           details: "Chilled Drink",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
+         
         },
         {
           id: 8,
@@ -919,18 +810,7 @@ export const CategoryDetails = () => {
           image: `${orangeJuice}`,
           price: "1250",
           details: "Fresh Orange Juice",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
+          
         },
         {
           id: 81,
