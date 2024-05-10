@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Back from "../SelfCheckout/assets/Back.svg";
-import Transfer from "../SelfCheckout/assets/transfer 1.png";
 import System from "../SelfCheckout/assets/system.png";
 import QRCode from "../SelfCheckout/assets//qrcodeScan.png";
 import Money from "../SelfCheckout/assets/money.png";
@@ -8,7 +7,23 @@ import { useState } from "react";
 
 const PaymentScreen = () => {
   const navigate = useNavigate();
+  const totalPrice = parseFloat(sessionStorage.getItem("totalPrice") || "");
+  const tip = parseFloat(sessionStorage.getItem("tip") || "");
+  const percentage = parseFloat(sessionStorage.getItem("percentage") || "");
+
+  let total = totalPrice;
+  let tipAmount = 0;
+
+  if (tip && tip > 0) {
+    total += tip;
+  } else if (percentage && percentage > 0) {
+    tipAmount = (totalPrice * percentage) / 100;
+    total = total ? total + tipAmount : total;
+  }
+
+  console.log("Total:", total);
   const [selectedOption, setSelectedOption] = useState("");
+
   return (
     <div className=" ">
       <img
@@ -23,13 +38,24 @@ const PaymentScreen = () => {
           Payment Options
         </p>
         <p className=" text-[#929292] text-[32px] font-[500] mt-[56px]">
-          Balance Due: <span className=" text-[#121212]">₦ 2,700</span>
+          Balance Due:{" "}
+          <span className=" text-[#121212]">
+            ₦ {totalPrice ? totalPrice : "0"}
+          </span>
         </p>
 
-        <p className=" text-[#929292] text-[32px] font-[500]">Tip: No Tip</p>
+        {percentage > 0 && (
+          <p className=" text-[#000000] text-[32px] font-[500]">
+            Tip: ₦ {tipAmount}{" "}
+            <span className=" text-[#929292]">({percentage} %)</span>
+          </p>
+        )}
+        {tip > 0 && !percentage && (
+          <p className=" text-[#000000] text-[32px] font-[500]">Tip: ₦ {tip}</p>
+        )}
         <hr className=" border border-[#414141] mb-[16px] mt-[24px]" />
         <p className=" text-[#929292] text-[32px] font-[600] ">
-          Pay:<span className=" text-[#121212]"> ₦ 2,700</span>
+          Pay:<span className=" text-[#121212]">{total}</span>
         </p>
       </div>
 
@@ -91,7 +117,7 @@ const PaymentScreen = () => {
                 </p>
 
                 <div className=" flex justify-center">
-                  <img src={Transfer} alt="" className=" mt-[40px]" />
+                  <img src={QRCode} alt="" className=" mt-[40px]" />
                 </div>
               </div>
             </div>

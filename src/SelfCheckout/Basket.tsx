@@ -1,10 +1,11 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Pap from "../Mobile/assets/pap and akara 1.png";
 import Modal from "../components/Modal";
 import { ChangeEvent, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
 
 export const Basket = () => {
+  const totalPrice = sessionStorage.getItem("totalPrice");
   const navigate = useNavigate();
   const [selectedPercentage, setSelectedPercentage] = useState<number | null>(
     null
@@ -12,6 +13,13 @@ export const Basket = () => {
 
   const handlePercentageClick = (percentage: number) => {
     setSelectedPercentage(percentage);
+
+    sessionStorage.setItem("percentage", percentage.toString());
+    sessionStorage.removeItem("tip");
+
+    setTimeout(() => {
+      navigate("/payment");
+    }, 2000);
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +28,8 @@ export const Basket = () => {
 
   const handleTipChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTip(e.target.value);
+    sessionStorage.setItem("tip", e.target.value);
+    sessionStorage.removeItem("percentage");
     console.log(e.target.value);
   };
 
@@ -28,6 +38,11 @@ export const Basket = () => {
     setTipModal(true);
   };
 
+  const handleNoTip = () => {
+    navigate("/payment");
+    sessionStorage.removeItem("percentage");
+    sessionStorage.removeItem("tip");
+  };
   const handleNext = () => {
     navigate("/payment");
   };
@@ -65,7 +80,7 @@ export const Basket = () => {
 
               <div className="">
                 <p className=" font-[500] text-[44px] text-[#606060]">
-                  &#x20A6;1,200
+                  &#x20A6;{totalPrice ? totalPrice : "0"}
                 </p>
               </div>
             </div>
@@ -106,9 +121,8 @@ export const Basket = () => {
                 Thank you
               </p>
               <p className=" text-[32px] font-[500] text-[#121212]">
-                Your Subtotal: ₦ 2,700
+                Your Subtotal: ₦ {totalPrice ? totalPrice : "0"}
               </p>
-
               <div className=" grid grid-cols-2 items-center gap-[24px] mt-[40px]">
                 <p
                   className={`py-[39px] px-[134px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
@@ -147,15 +161,11 @@ export const Basket = () => {
                   Custom
                 </p>
               </div>
-
-              <Link to="/payment">
-                {" "}
-                <div className=" mt-[24px]">
-                  <p className="text-center py-[39px]  border-2 border-[#606060] rounded-[10px] text-[#121212] text-[36px] font-[500]">
-                    No Tip
-                  </p>
-                </div>
-              </Link>
+              <div className=" mt-[24px] cursor-pointer" onClick={handleNoTip}>
+                <p className="text-center py-[39px]  border-2 border-[#606060] rounded-[10px] text-[#121212] text-[36px] font-[500]">
+                  No Tip
+                </p>
+              </div>
             </div>
           </div>
         </div>
