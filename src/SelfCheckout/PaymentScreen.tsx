@@ -53,6 +53,10 @@ const PaymentScreen = () => {
         {tip > 0 && !percentage && (
           <p className=" text-[#000000] text-[32px] font-[500]">Tip: ₦ {tip}</p>
         )}
+
+        {!tip && !percentage && (
+          <p className=" text-[#000000] text-[32px] font-[500]">Tip: No Tip</p>
+        )}
         <hr className=" border border-[#414141] mb-[16px] mt-[24px]" />
         <p className=" text-[#929292] text-[32px] font-[600] ">
           Pay:<span className=" text-[#121212]">{total}</span>
