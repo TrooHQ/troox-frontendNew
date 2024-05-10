@@ -1,43 +1,37 @@
 import { useEffect, useState } from "react";
 
-import fish1 from "../assets/gilled tilapia fish big.png";
-import fish2 from "../assets/chicken suya big.png";
-import fish3 from "../assets/beef suya big.png";
-import fish4 from "../assets/grilled catfish big.png";
-import fish5 from "../assets/grilled plantain big.png";
-// import FriedRice from "../assets/fried rice big.png";
-import water from "../assets/water big.png";
-import cocktail from "../assets/cocktail big.png";
-import orangeJuice from "../assets/orange juice big.png";
-import Chapman from "../assets/chapman big.png";
-import fruitPunch from "../assets/fruit punch big.png";
-// import PoundoYam from "../assets/poundo yam big.png";
-// import semo from "../assets/semo big.png";
-// import VillageRice from "../assets/village jollof rice.png";
-// import OfadaRice from "../assets/ofada rice big.png";
-import Yam from "../assets/yam and tomato sauce big.png";
-import EggYam from "../assets/yam and egg sauce big.png";
-import ToastEgg from "../assets/toast and egg big.png";
-import Sandwich from "../assets/sandwiich.png";
-import image1 from "../assets/image 39.png";
-import image2 from "../assets/image 40.png";
-// import Edit from "../assets/EditIconn.svg";
-import Pap from "../assets/pap and akara 1.png";
-import Add from "../assets/plusIconRound.svg";
-// import Adds from "../assets/plusIconn.svg";
-import Minus from "../assets/MinusRound.svg";
-// import { Link } from "react-router-dom";
-import TopMenuNav from "./TopMenuNav";
-import { Link, useParams } from "react-router-dom";
+import fish1 from "../Mobile/assets/gilled tilapia fish big.png";
+import fish2 from "../Mobile/assets/chicken suya big.png";
+import fish3 from "../Mobile/assets/beef suya big.png";
+import fish4 from "../Mobile/assets/grilled catfish big.png";
+import fish5 from "../Mobile/assets/grilled plantain big.png";
+import water from "../Mobile/assets/water big.png";
+import cocktail from "../Mobile/assets/cocktail big.png";
+import orangeJuice from "../Mobile/assets/orange juice big.png";
+import Chapman from "../Mobile/assets/chapman big.png";
+import fruitPunch from "../Mobile/assets/fruit punch big.png";
+import Yam from "../Mobile/assets/yam and tomato sauce big.png";
+import EggYam from "../Mobile/assets/yam and egg sauce big.png";
+import ToastEgg from "../Mobile/assets/toast and egg big.png";
+import Sandwich from "../Mobile/assets/sandwiich.png";
+import image1 from "../Mobile/assets/image 39.png";
+import image2 from "../Mobile/assets/image 40.png";
+import Pap from "../Mobile/assets/pap and akara 1.png";
+import Add from "../SelfCheckout/assets/incrementIcon.svg";
+import Minus from "../SelfCheckout/assets/decrementIcon.svg";
+import Back from "../SelfCheckout/assets/Back.svg";
+import MiniLogo from "../SelfCheckout/assets/restaurantHeart.svg";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const CategoryDetails = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
 
   if (id) {
     sessionStorage.setItem("menuId", id);
   }
 
-  // const [activeTab, setActiveTab] = useState(0);
   const [selectedGroup, setSelectedGroup] = useState("");
   const data = [
     {
@@ -758,104 +752,6 @@ export const CategoryDetails = () => {
           ],
         },
       ],
-      // items: [
-      //   {
-      //     id: 33,
-      //     title: "Fried Rice",
-      //     image: `${FriedRice}`,
-      //     price: "2000",
-      //     details: "Fried Rice served with Chicken",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 43,
-      //     title: "Village Jollof Rice",
-      //     image: `${VillageRice}`,
-      //     price: "3000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 44,
-      //     title: "Semo",
-      //     image: `${semo}`,
-      //     price: "1500",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-
-      //   {
-      //     id: 45,
-      //     title: "Ofada Rice",
-      //     image: `${OfadaRice}`,
-      //     price: "1000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 46,
-      //     title: "Poundo Yam",
-      //     image: `${PoundoYam}`,
-      //     price: "2500",
-      //     details: "Pounded yam with Egusi soup",
-      //     options: [
-      //       {
-      //         label: "Add egg (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      // ],
     },
     {
       category: "Grill",
@@ -906,18 +802,7 @@ export const CategoryDetails = () => {
           image: `${Chapman}`,
           price: "1250",
           details: "Chilled Drink",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
+         
         },
         {
           id: 8,
@@ -925,18 +810,7 @@ export const CategoryDetails = () => {
           image: `${orangeJuice}`,
           price: "1250",
           details: "Fresh Orange Juice",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
+          
         },
         {
           id: 81,
@@ -1001,7 +875,7 @@ export const CategoryDetails = () => {
   const ids = sessionStorage.getItem("ids");
   const price = sessionStorage.getItem("totalPrice");
   console.log("Selected Group:", selectedGroup);
-  const [counts, setCounts] = useState<number>(0);
+  const [counts, setCounts] = useState<number>(1);
 
   useEffect(() => {
     const storedCount = sessionStorage.getItem("count");
@@ -1022,24 +896,21 @@ export const CategoryDetails = () => {
     sessionStorage.setItem("count", String(updatedCount));
   };
 
-  // const handleAddToBasket = () => {
-  //   console.log("Selected Item ID:", id);
-  //   if (id) {
-  //     sessionStorage.setItem("id", id);
-  //   }
-  //   console.log("Selected Options:");
-  //   selectedOptions.forEach((option) => {
-  //     const selectedOption = options.find((opt) => opt.value === option);
-  //     if (selectedOption) {
-  //       console.log(selectedOption.label + " - Price: " + selectedOption.price);
-  //     }
-  //   });
-  // };
-
   return (
-    <div className=" relative ">
+    <div className=" relative mt-[83px]">
       <div className="  ">
-        <TopMenuNav />
+        <div className=" px-[8px] flex items-center justify-between">
+          <img
+            src={Back}
+            alt=""
+            onClick={() => navigate(-1)}
+            className=" cursor-pointer"
+          />
+          <img src={MiniLogo} alt="" />
+          <div className="">
+            <img src={MiniLogo} alt="" className=" hidden" />
+          </div>
+        </div>
 
         <div className="mt-[24px] mb-[8px] ">
           {data.map((menu) => (
@@ -1053,11 +924,11 @@ export const CategoryDetails = () => {
                   {menu.group?.map((menuItem, itemIndex) => (
                     <div key={itemIndex} className="">
                       <p
-                        className={`px-[12px] py-[8px] ${
+                        className={`px-[32px] py-[8px] ${
                           selectedGroup === menuItem.groupCategory
-                            ? "bg-[#0B7F7C] text-white font-[600]"
-                            : "border text-[#606060] font-[400]"
-                        }  text-[14px] cursor-pointer`}
+                            ? "text-[#0B7F7C]  font-[600]"
+                            : " text-[#606060] font-[400]"
+                        }  text-[32px] cursor-pointer`}
                         onClick={() => setSelectedGroup(menuItem.groupCategory)}
                       >
                         {menuItem.groupCategory}
@@ -1070,7 +941,7 @@ export const CategoryDetails = () => {
           ))}
         </div>
 
-        <div className=" mx-[24px]">
+        <div className=" mx-[16px]">
           {data.map((menu) => (
             //  ${index !== activeTab ? "hidden" : ""}
             <div key={menu.category} className={``}>
@@ -1079,84 +950,72 @@ export const CategoryDetails = () => {
                   {menu.group?.map((menuItem) => (
                     <div className="">
                       {menuItem.groupCategory === selectedGroup && (
-                        <div className="">
-                          <p className="text-[18px] font-[500] uppercase py-[9px] border-b ">
-                            {menuItem.groupCategory}
+                        <div className=" ">
+                          <p className="text-[56px] font-[600] uppercase bg-[#0B7F7C] text-white border-b px-[115px] py-[63px] mt-[53px]">
+                            {menu.category}
                           </p>
-                          {menuItem.items?.map((menuItem, itemsIndex) => (
-                            <div
-                              className=" py-[11px] border-b border-[#E7E7E7] "
-                              key={itemsIndex}
-                            >
-                              <div className="flex items-center justify-between">
-                                <div className=" w-[180px]">
-                                  <p className=" text-[16px] text-[#121212] font-[500]">
-                                    {menuItem.title}
-                                  </p>
-                                  <p className=" text-[12px] text-[#121212]">
-                                    {menuItem.details}
-                                  </p>
-                                </div>
-
+                          <div className="grid grid-cols-2">
+                            {menuItem.items?.map((menuItem, itemsIndex) => (
+                              <div
+                                className=" pb-[34px] pt-[18px] rounded-[10px] px-[7px] my-[34px] border-2 drop-shadow border-[#E7E7E7] max-w-[500px]"
+                                key={itemsIndex}
+                              >
                                 <div className="">
                                   <Link to={`/menu-details/${menuItem.id}`}>
-                                    <img
-                                      src={menuItem.image}
-                                      alt=""
-                                      className=" w-[100px]"
-                                    />
+                                    <div className="">
+                                      <img
+                                        src={menuItem.image}
+                                        alt=""
+                                        className=" w-full object-cover h-[217px]"
+                                      />
+
+                                      <p className=" text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                                        {menuItem.title}
+                                      </p>
+                                    </div>
                                   </Link>
                                 </div>
-                              </div>
 
-                              <div className="pt-[8px] flex items-center justify-between">
-                                <p className=" text-[16px] text-[#121212] font-[500] ">
-                                  From &#x20A6;{menuItem.price}
-                                </p>
+                                <div className="pt-[8px] flex items-center justify-between px-[24px]">
+                                  <p className=" text-[36px] text-[#0B7F7C] font-[500] ">
+                                    &#x20A6;{menuItem.price}
+                                  </p>
 
-                                <div className="w-[100px]">
-                                  {ids?.includes(menuItem.id.toString()) ? (
-                                    <div className=" flex items-center justify-between">
-                                      <img
-                                        src={Minus}
-                                        alt=""
-                                        onClick={decrementCount}
-                                        className=" cursor-pointer"
-                                      />
-                                      <p className=" text-[16px] font-[500]">
-                                        {counts}
-                                      </p>
-                                      <img
-                                        src={Add}
-                                        alt=""
-                                        onClick={incrementCount}
-                                        className=" cursor-pointer"
-                                      />
-                                    </div>
-                                  ) : (
-                                    // <div className=" px-[16px] py-[8px] bg-[#0B7F7C] flex items-center w-[100px] justify-center rounded-bl-[5px] rounded-br-[5px]">
-                                    //   <p className=" text-[12px] font-[500] text-white">
-                                    //     EDIT
-                                    //   </p>
-                                    //   <img src={Edit} alt="" className=" " />
-                                    // </div>
-                                    <div className="">
-                                      <Link to={`/menu-details/${menuItem.id}`}>
-                                        {/* {!ids?.includes(
-                                          menuItem.id.toString()
-                                        ) &&
-                                          ids && ( */}
-                                        <div className=" flex items-center justify-end">
-                                          <img src={Add} alt="" />
-                                        </div>
-                                        {/* )} */}
-                                      </Link>
-                                    </div>
-                                  )}
+                                  <div className="">
+                                    {ids?.includes(menuItem.id.toString()) ? (
+                                      <div className=" flex items-center justify-between gap-[20px]">
+                                        <img
+                                          src={Minus}
+                                          alt=""
+                                          onClick={decrementCount}
+                                          className=" cursor-pointer"
+                                        />
+                                        <p className=" text-[16px] font-[500]">
+                                          {counts}
+                                        </p>
+                                        <img
+                                          src={Add}
+                                          alt=""
+                                          onClick={incrementCount}
+                                          className=" cursor-pointer"
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className="">
+                                        <Link
+                                          to={`/menu-details/${menuItem.id}`}
+                                        >
+                                          <div className=" flex items-center justify-end">
+                                            <img src={Add} alt="" />
+                                          </div>
+                                        </Link>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1168,14 +1027,17 @@ export const CategoryDetails = () => {
         </div>
         {ids && (
           <div className="px-[16px] sticky bottom-[10px] w-full">
-            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#EFB519] rounded-[3px] cursor-pointer">
+            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#0B7F7C] rounded-[3px] ">
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white py-[12px] px-[10px] text-[16px] font-[500]">
-                  {counts || 1}
+                <p className=" text-[44px] font-[400] text-white">
+                  Total #{price}
                 </p>
-                <p>#{price}</p>
               </div>
-              <p className="text-[16px] font-[500]">Add to basket</p>
+              <Link to="/basket">
+                <p className=" text-white  text-[36px] font-[500] py-[14px] px-[38px] rounded-[5px] bg-[#F38D41]">
+                  Checkout
+                </p>
+              </Link>
             </div>
           </div>
         )}

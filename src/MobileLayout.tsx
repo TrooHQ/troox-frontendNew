@@ -51,7 +51,7 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/digi-input" element={<VerifyAccount2 />} />
           <Route path="/pos" element={<PosPage />} />
@@ -68,10 +68,10 @@ const MobileLayout = () => {
           <Route path="/request-demo" element={<DemoPage />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
-          <Route path="/start-order" element={<StartOrder />} />
+          <Route path="/" element={<StartOrder />} />
           <Route path="/explore-menu" element={<MenuPage />} />
           <Route path="/category-details/:id" element={<CategoryDetails />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />

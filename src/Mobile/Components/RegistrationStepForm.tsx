@@ -16,10 +16,16 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../slices/UserSlice";
 interface Country {
   name: string;
+  code: string;
+  id: string;
+}
+interface VerifyAccountPayload {
+  account_number: string;
+  account_code: string;
 }
 
 const RegistrationStepForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
@@ -30,9 +36,11 @@ const RegistrationStepForm = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [businessType, setBusinessType] = useState<string>("");
   const [bankName, setBankName] = useState<string>("");
+  // const [bankCode, setBankCode] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
+  const [banks, setBanks] = useState<Country[]>([]);
   const [bvn, setBvn] = useState<string>("");
   const [bvnError, setBvnError] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -181,7 +189,6 @@ const RegistrationStepForm = () => {
         }
       );
       setLoading(false);
-      // console.log(response.data.account_details);
       console.log(response);
       toast.success(response.data.message);
       history("/verify");
@@ -199,6 +206,34 @@ const RegistrationStepForm = () => {
     } finally {
       setLoading(false);
       setError("");
+    }
+  };
+
+  const verifyAccountNumber = async (payload: VerifyAccountPayload) => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/verifyUserAccountNumber`,
+        payload
+      );
+      console.log(payload);
+
+      setLoading(false);
+      console.log(response);
+      toast.success(response.data.message);
+      // history.push("/verify"); // Corrected navigation
+    } catch (error) {
+      console.error("Error occurred:", error);
+      setLoading(false);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
     }
   };
 
@@ -231,8 +266,33 @@ const RegistrationStepForm = () => {
     }
   };
 
+  const getBanks = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${SERVER_DOMAIN}/getBanks`);
+      setLoading(false);
+      setBanks(response.data.data);
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+      setError("");
+    }
+  };
+
   useEffect(() => {
     getCountries();
+    getBanks();
   }, []);
 
   return (
@@ -430,16 +490,34 @@ const RegistrationStepForm = () => {
               </div>
               <CustomInput
                 type="text"
-                label="Bank Name"
-                value={bankName}
-                onChange={(newValue) => setBankName(newValue)}
-              />
-              <CustomInput
-                type="text"
                 label="Bank Account Number"
                 value={accountNumber}
                 onChange={(newValue) => setAccountNumber(newValue)}
               />
+
+              <div className=" ">
+                <CustomSelect
+                  label=""
+                  options={banks.map((bank) => bank.name)}
+                  value={bankName}
+                  // onChange={(newValue) => setBankName(newValue)}
+                  onChange={(newValue) => {
+                    setBankName(newValue);
+                    const selectedBank = banks.find(
+                      (bank) => bank.name === newValue
+                    );
+                    if (selectedBank) {
+                      const payload = {
+                        account_number: accountNumber,
+                        account_code: selectedBank.code,
+                      };
+                      verifyAccountNumber(payload);
+                    }
+                  }}
+                  disabledOption="Select Bank"
+                  bgColor="bg-[#EFEFEF]"
+                />
+              </div>
 
               <CustomInput
                 type="text"
