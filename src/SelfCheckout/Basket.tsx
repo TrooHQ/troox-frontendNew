@@ -3,6 +3,7 @@ import Pap from "../Mobile/assets/pap and akara 1.png";
 import Modal from "../components/Modal";
 import { ChangeEvent, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
+import Back from "../SelfCheckout/assets/Back.svg";
 
 export const Basket = () => {
   const totalPrice = sessionStorage.getItem("totalPrice");
@@ -50,6 +51,12 @@ export const Basket = () => {
     <div className=" ">
       <div className=" mt-[68px] ">
         <div className="">
+          <img
+            src={Back}
+            alt=""
+            onClick={() => navigate(-1)}
+            className="p-[40px] cursor-pointer"
+          />
           <p className=" text-[44px] font-[500] text-[#606060] text-center">
             Order Summary
           </p>

@@ -4,12 +4,16 @@ import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import {
   setEmail,
   setPassword,
   selectEmail,
   selectPassword,
 } from "../../slices/authSlice.js";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api.js";
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
@@ -23,17 +27,72 @@ const Login = () => {
 
   const history = useNavigate();
 
-  const handleButtonClick = () => {
-    if (!Email || !Password) {
-      setError("Invalid email/password");
-      return;
-    } else {
-      console.log("Email:", Email);
-      console.log("Password:", Password);
-      setError("");
+  // const handleButtonClick = () => {
+  //   if (!Email || !Password) {
+  //     setError("Invalid email/password");
+  //     return;
+  //   } else {
+  //     console.log("Email:", Email);
+  //     console.log("Password:", Password);
+  //     setError("");
 
-      history("/overview");
+  //     history("/overview");
+  //   }
+  // };
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleLogin = async () => {
+    if (!Email || !Password) {
+      setError("All Fields are required...");
+      return;
     }
+
+    sessionStorage.setItem("email", Email);
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${SERVER_DOMAIN}/login`, {
+        email: Email,
+        password: Password,
+      });
+      setLoading(false);
+      console.log(response.data);
+      sessionStorage.setItem("email_verified", response.data.email_verified);
+      sessionStorage.setItem("token", response.data.token);
+      sessionStorage.setItem("name", response.data.admin_name);
+      sessionStorage.setItem("businessName", response.data.business_name);
+      sessionStorage.setItem("id", response.data.id);
+      sessionStorage.setItem("userType", response.data.user_role);
+      const userType = response.data.user_role;
+      toast.success(response.data.message);
+      if (userType === "employee") {
+        history("/employee-dashboard");
+      } else if (userType === "admin") {
+        // history("/dashboard");
+        if (response.data.has_created_menu_item == false) {
+          history("/overview");
+        } else {
+          history("/dashboard");
+        }
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setError(error.response.data.message);
+          console.log(error.response.data);
+          if (error.response.data.message === "Your Email is not verified") {
+            history("/verify");
+            console.log("Unverified");
+          }
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
   };
 
   return (
@@ -69,7 +128,7 @@ const Login = () => {
               <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
-          <div className="" onClick={handleButtonClick}>
+          <div className="" onClick={handleLogin}>
             <button className="bg-purple500 w-full text-center text-white py-3 rounded">
               Login
             </button>

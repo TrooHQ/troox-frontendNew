@@ -51,7 +51,7 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/digi-input" element={<VerifyAccount2 />} />
           <Route path="/pos" element={<PosPage />} />
