@@ -7,11 +7,11 @@ interface DashboardLayoutProps {
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <div className="bg-purple500">
-      <div className="flex justify-between">
+      <div className=" flex ">
         <Sidebar userType="user" />
 
         <div
-          className={` m-5 w-[980px] 2xl:w-[1293px] h-full overflow-y-auto`}
+          className={` flex-grow m-5 w-[980px] 2xl:w-[1293px] h-full overflow-y-auto`}
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div

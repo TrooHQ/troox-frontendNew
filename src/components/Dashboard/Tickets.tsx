@@ -10,6 +10,22 @@ import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 
+interface Ticket {
+  ordered_by: string;
+  menu_items: MenuItem[];
+  orders: string[];
+  total_price: number;
+  createdAt: string;
+  status: string;
+  name: string;
+  id: number;
+}
+interface MenuItem {
+  name: string;
+  price: string;
+  quantity: string;
+}
+
 const data = [
   {
     id: 1,
@@ -75,9 +91,11 @@ const data = [
 const token = sessionStorage.getItem("token");
 
 const Tickets = () => {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [menuOpenMap, setMenuOpenMap] = useState<{ [key: number]: boolean }>(
     {}
   );
+
   // const [loading, setLoading] = useState<boolean>(false);
 
   // const toggleMenu = (itemId: number) => {
@@ -107,7 +125,7 @@ const Tickets = () => {
     });
   };
 
-  const createEmployee = async () => {
+  const getTickets = async () => {
     // setLoading(true);
 
     const headers = {
@@ -122,6 +140,7 @@ const Tickets = () => {
         headers
       );
       console.log("Tickets Retrieved successfully:", response.data);
+      setTickets(response.data);
     } catch (error) {
       console.error("Error adding employee:", error);
       // setLoading(false);
@@ -129,7 +148,7 @@ const Tickets = () => {
   };
 
   useEffect(() => {
-    createEmployee();
+    getTickets();
   }, []);
 
   return (
@@ -190,7 +209,7 @@ const Tickets = () => {
                   <p className=" text-[14px] text-[#121212]">Bill </p>
                   <p className=" text-[14px] text-[#121212]">Actions </p>
                 </div>
-                {data.map((item, index) => (
+                {tickets.map((item, index) => (
                   <div
                     className={`text-center py-[14px] px-[32px] grid grid-cols-9 items-center font-[500] text-[14px] text-[#414141] ${
                       index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
@@ -198,11 +217,14 @@ const Tickets = () => {
                     key={index}
                   >
                     <p className="items-center">{item.id}</p>
-                    <p>{item.code}</p>
-                    <p>{item.date}</p>
-                    <p>{item.customer}</p>
-                    <p>{item.waiter}</p>
-                    <p>{item.channel}</p>
+                    <p>{item.id}</p>
+                    <p className=" ">
+                      {item.createdAt.slice(0, 10)}-
+                      {item.createdAt.slice(11, 16)}
+                    </p>
+                    <p>{item.ordered_by}</p>
+                    <p>Waiter</p>
+                    <p>Cash</p>
                     <div className="flex items-center justify-center gap-[10px]">
                       {item.status === "Ordered" && (
                         <img src={red} alt="" className="w-[12px] h-[12px]" />
@@ -219,8 +241,8 @@ const Tickets = () => {
                       )}
                       <p>{item.status}</p>
                     </div>
-                    <p>{item.amount}</p>
-                    <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
+                    <p>&#x20A6;{item.total_price}</p>
+                    <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
                       <img
                         src={More}
                         alt=""
@@ -236,7 +258,7 @@ const Tickets = () => {
                           </div>
                         </div>
                       )}
-                    </p>
+                    </div>
                   </div>
                 ))}
               </div>

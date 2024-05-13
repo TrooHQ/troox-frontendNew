@@ -802,7 +802,6 @@ export const CategoryDetails = () => {
           image: `${Chapman}`,
           price: "1250",
           details: "Chilled Drink",
-         
         },
         {
           id: 8,
@@ -810,7 +809,6 @@ export const CategoryDetails = () => {
           image: `${orangeJuice}`,
           price: "1250",
           details: "Fresh Orange Juice",
-          
         },
         {
           id: 81,
@@ -990,7 +988,7 @@ export const CategoryDetails = () => {
                                           onClick={decrementCount}
                                           className=" cursor-pointer"
                                         />
-                                        <p className=" text-[16px] font-[500]">
+                                        <p className=" text-[26px] font-[600]">
                                           {counts}
                                         </p>
                                         <img
