@@ -39,7 +39,7 @@ const Login = () => {
   //     history("/overview");
   //   }
   // };
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async () => {
     if (!Email || !Password) {
@@ -50,12 +50,12 @@ const Login = () => {
     sessionStorage.setItem("email", Email);
 
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/login`, {
         email: Email,
         password: Password,
       });
-      setLoading(false);
+      // setLoading(false);
       console.log(response.data);
       sessionStorage.setItem("email_verified", response.data.email_verified);
       sessionStorage.setItem("token", response.data.token);
@@ -92,7 +92,7 @@ const Login = () => {
         setError("An error occurred. Please try again later.");
       }
     }
-    setLoading(false);
+    // setLoading(false);
   };
 
   return (

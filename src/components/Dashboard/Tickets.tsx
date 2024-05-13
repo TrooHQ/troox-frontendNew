@@ -18,7 +18,7 @@ interface Ticket {
   createdAt: string;
   status: string;
   name: string;
-  id: string;
+  id: number;
 }
 interface MenuItem {
   name: string;
