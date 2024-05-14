@@ -92,7 +92,6 @@ const Login = () => {
         setError("An error occurred. Please try again later.");
       }
     }
-    // setLoading(false);
   };
 
   return (
