@@ -44,6 +44,7 @@ import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
+
 const MobileLayout = () => {
   return (
     <div className=" font-GeneralSans overflow-hidden">
@@ -51,7 +52,6 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          {/* <Route path="/login" element={<Login />} /> */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/digi-input" element={<VerifyAccount2 />} />
           <Route path="/pos" element={<PosPage />} />
@@ -71,9 +71,14 @@ const MobileLayout = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
           <Route path="/restaurants" element={<ListofRestaurants />} />
+
           <Route path="/" element={<StartOrder />} />
-          <Route path="/explore-menu" element={<MenuPage />} />
-          <Route path="/category-details/:id" element={<CategoryDetails />} />
+          <Route path="/:id/explore-menu" element={<MenuPage />} />
+
+          <Route
+            path="/:id/category-details/:id"
+            element={<CategoryDetails />}
+          />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/tip" element={<Tip />} />

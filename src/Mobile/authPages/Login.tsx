@@ -48,6 +48,10 @@ const Login = () => {
       sessionStorage.setItem("token", response.data.token);
       sessionStorage.setItem("name", response.data.admin_name);
       sessionStorage.setItem("businessName", response.data.business_name);
+      sessionStorage.setItem(
+        "businessIdentifier",
+        response.data.business_identifier
+      );
       sessionStorage.setItem("id", response.data.id);
       sessionStorage.setItem("userType", response.data.user_role);
       const userType = response.data.user_role;

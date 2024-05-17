@@ -1,9 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../Components/Modal";
-import Logo from "../assets/Restaurant_Logo.svg";
-import { Link } from "react-router-dom";
+// import Logo from "../assets/Restaurant_Logo.svg";
+import { Link, useLocation } from "react-router-dom";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
 
+interface Details {
+  name: string;
+  id: number;
+  // business_name: string;
+}
 const StartOrder = () => {
+  const location = useLocation();
+  const token = sessionStorage.getItem("token");
+  const queryParams = new URLSearchParams(location.search);
+  const business_name = sessionStorage.getItem("business_name");
+  const [businessDetails, setBusinessDetails] = useState<Details[]>([]);
+  const business_identifier = queryParams.get("business_identifier");
+  const tableNo = queryParams.get("table");
+  const group_name = queryParams.get("group_name") ?? "default_group_name";
+
+  useEffect(() => {
+    if (business_identifier && tableNo) {
+      console.log(`Business Identifier: ${business_identifier}`);
+      sessionStorage.setItem("business_identifier", business_identifier);
+      sessionStorage.setItem("group_name", group_name);
+      sessionStorage.setItem("tableNo", tableNo);
+      console.log(`Table: ${tableNo}`);
+    }
+
+    getBusinessDetails();
+  }, [business_identifier, tableNo, group_name]);
+
+  const getBusinessDetails = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}`,
+        headers
+      );
+      console.log(
+        "Business Details Retrieved successfully:",
+        response.data.data
+      );
+      setBusinessDetails(response.data.data);
+      sessionStorage.setItem("business_name", response.data.data.business_name);
+    } catch (error) {
+      console.error("Error getting Business Details:", error);
+    }
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
@@ -23,7 +74,12 @@ const StartOrder = () => {
   return (
     <div className=" mx-[22px] ">
       <div className=" flex flex-col items-center justify-center mt-[64px]">
-        <img src={Logo} alt="" />
+        {/* <img src={Logo} alt="" /> */}
+        <p>
+          Welcome to{" "}
+          <span className=" font-bold">{businessDetails.business_name}</span>{" "}
+          Page
+        </p>
         <p className=" mt-[24px] text-[16px] font-[400] text-center">
           Food ready in <span className=" font-bold">8-13 minutes</span> after
           placing order
@@ -96,7 +152,7 @@ const StartOrder = () => {
             >
               Cancel
             </p>
-            <Link to="/explore-menu">
+            <Link to={`/${business_name}/explore-menu`}>
               <p
                 className={`px-[24px] py-[10px] ${
                   !table ? " bg-[#85C0BE]" : "bg-[#0B7F7C]"

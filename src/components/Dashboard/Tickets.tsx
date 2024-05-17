@@ -126,8 +126,6 @@ const Tickets = () => {
   };
 
   const getTickets = async () => {
-    // setLoading(true);
-
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -142,8 +140,7 @@ const Tickets = () => {
       console.log("Tickets Retrieved successfully:", response.data);
       setTickets(response.data);
     } catch (error) {
-      console.error("Error adding employee:", error);
-      // setLoading(false);
+      console.error("Error retrieving tickets:", error);
     }
   };
 

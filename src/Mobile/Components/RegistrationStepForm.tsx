@@ -25,7 +25,7 @@ interface VerifyAccountPayload {
 }
 
 const RegistrationStepForm = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
@@ -35,7 +35,7 @@ const RegistrationStepForm = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [businessType, setBusinessType] = useState<string>("");
-  const [bankName, setBankName] = useState<string>("");
+  // const [bankName, setBankName] = useState<string>("");
   // const [bankCode, setBankCode] = useState<string>("");
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [country, setCountry] = useState<string>("");
@@ -165,7 +165,7 @@ const RegistrationStepForm = () => {
 
   const createAccountDetails = async () => {
     try {
-      if (!accountNumber || !bankName || !bvn || !country) {
+      if (!accountNumber || !bvn || !country) {
         setError("All fields are required...");
         return;
       }
@@ -183,7 +183,7 @@ const RegistrationStepForm = () => {
           user_id: id,
           account_name: "account Name",
           account_number: accountNumber,
-          bank_name: bankName,
+          bank_name: "bankName",
           bank_verification_number: bvn,
           country: country,
         }
@@ -209,33 +209,33 @@ const RegistrationStepForm = () => {
     }
   };
 
-  const verifyAccountNumber = async (payload: VerifyAccountPayload) => {
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/verifyUserAccountNumber`,
-        payload
-      );
-      console.log(payload);
+  // const verifyAccountNumber = async (payload: VerifyAccountPayload) => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.post(
+  //       `${SERVER_DOMAIN}/verifyUserAccountNumber`,
+  //       payload
+  //     );
+  //     console.log(payload);
 
-      setLoading(false);
-      console.log(response);
-      toast.success(response.data.message);
-      // history.push("/verify"); // Corrected navigation
-    } catch (error) {
-      console.error("Error occurred:", error);
-      setLoading(false);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data.message);
-        } else {
-          setError("An error occurred. Please try again later.");
-        }
-      } else {
-        setError("An error occurred. Please try again later.");
-      }
-    }
-  };
+  //     setLoading(false);
+  //     console.log(response);
+  //     toast.success(response.data.message);
+  //     // history.push("/verify"); // Corrected navigation
+  //   } catch (error) {
+  //     console.error("Error occurred:", error);
+  //     setLoading(false);
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         setError(error.response.data.message);
+  //       } else {
+  //         setError("An error occurred. Please try again later.");
+  //       }
+  //     } else {
+  //       setError("An error occurred. Please try again later.");
+  //     }
+  //   }
+  // };
 
   const prevStep = () => {
     setCurrentStep(currentStep - 1);
@@ -496,7 +496,7 @@ const RegistrationStepForm = () => {
               />
 
               <div className=" ">
-                <CustomSelect
+                {/* <CustomSelect
                   label=""
                   options={banks.map((bank) => bank.name)}
                   value={bankName}
@@ -516,7 +516,7 @@ const RegistrationStepForm = () => {
                   }}
                   disabledOption="Select Bank"
                   bgColor="bg-[#EFEFEF]"
-                />
+                /> */}
               </div>
 
               <CustomInput

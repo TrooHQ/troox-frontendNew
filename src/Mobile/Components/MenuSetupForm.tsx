@@ -27,6 +27,8 @@ interface MenuCategory {
   menu_category_name: string;
   menu_group_name: string;
   menu_item_name: string;
+  modifier_name: string;
+  modifier_price: string;
 }
 interface Props {
   menuData?: MenuCategory[];
@@ -46,14 +48,24 @@ const MenuSetupForm: React.FC<Props> = () => {
     [key: string]: boolean;
   }>({});
 
+  const [expandedItem, setExpandedItem] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [menuData, setMenuData] = useState<MenuCategory[]>([]);
   const [menuGroup, setMenuGroup] = useState<MenuCategory[]>([]);
   const [items, setItems] = useState<MenuCategory[]>([]);
+  const [modifiers, setModifiers] = useState<MenuCategory[]>([]);
   const [menuCategory, setMenuCategory] = useState<string>("");
   const [openCategory, setOpenCategory] = useState<string>("");
   const [openGroup, setOpenGroup] = useState<string>("");
+  const [openItem, setOpenItem] = useState<string>("");
   const [menuItem, setMenuItem] = useState<string>("");
+  const [menuItemPrice, setMenuItemPrice] = useState<string>("");
+  const [modifierName, setModifierName] = useState<string>("");
+  const [modifierPrice, setModifierPrice] = useState<string>("");
   const [menuItemModal, setMenuItemModal] = useState(false);
+  const [modifierModal, setModifierModal] = useState(false);
+
   const [menuGroupName, setMenuGroupName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [successModal, setSuccessModal] = useState(false);
@@ -68,27 +80,11 @@ const MenuSetupForm: React.FC<Props> = () => {
 
   const [menuGroupError, setMenuGroupError] = useState("");
   const [menuItemError, setMenuItemError] = useState("");
+  const [modifierError, setModifierError] = useState("");
   const [error, setError] = useState("");
 
   const [base64String, setBase64String] = useState<string | null>(null);
 
-  // const toggleCategory = (categoryId: string | number) => {
-  //   setExpandedCategories((prevState) => {
-  //     const newState = { ...prevState };
-  //     Object.keys(newState).forEach((key) => {
-  //       newState[key] = false;
-  //     });
-  //     newState[categoryId] = !prevState[categoryId];
-
-  //     const categoryName = Object.keys(newState).find(
-  //       (key) => newState[key] === true
-  //     );
-  //     setOpenCategory(categoryName);
-  //     console.log("Currently open category:", categoryName);
-
-  //     return newState;
-  //   });
-  // };
   const toggleCategory = (categoryId: string | number) => {
     setExpandedCategories((prevState) => {
       const newState = { ...prevState };
@@ -120,6 +116,41 @@ const MenuSetupForm: React.FC<Props> = () => {
     setOpenGroup(groupName);
     console.log(groupName);
   };
+
+  // const toggleItem = (itemName: string) => {
+  //   const isItemOpen = expandedItem[itemName];
+  //   console.log("Current State:", expandedItem);
+
+  //   setExpandedItem((prevState) => {
+  //     const updatedState: { [key: string]: boolean } = {};
+
+  //     updatedState[itemName] = !isItemOpen;
+
+  //     console.log("Updated State:", updatedState);
+  //     return updatedState;
+  //   });
+
+  //   console.log("Toggled item:", itemName);
+  // };
+  const toggleItem = (itemName: string) => {
+    setExpandedItem((prevState) => {
+      const updatedState: { [key: string]: boolean } = {};
+
+      updatedState[itemName] = !prevState[itemName];
+
+      console.log("Updated State:", updatedState);
+      return updatedState;
+    });
+
+    setOpenItem(itemName);
+    console.log("Toggled item:", openItem);
+  };
+
+  useEffect(() => {
+    if (openItem !== null) {
+      getModifier();
+    }
+  }, [expandedItem, openItem]);
 
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
@@ -212,7 +243,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   };
 
   const createItem = async () => {
-    if (!menuItem) {
+    if (!menuItem || !menuItemPrice) {
       setMenuItemError("Add Menu Item Name");
       return;
     }
@@ -230,14 +261,13 @@ const MenuSetupForm: React.FC<Props> = () => {
         {
           menu_category_name: openCategory,
           menu_group_name: openGroup,
-          // price_to_all_items: pricings === "yes" ? true : false,
           menu_item_name: menuItem,
-          price: price || 0,
+          price: menuItemPrice || price,
           image: base64String,
         },
         headers
       );
-      console.log("menu Category added successfully:", response.data);
+      console.log("menu item added successfully:", response.data);
       toast.success(response.data.message);
       setMenuItemModal(false);
       window.location.reload();
@@ -377,7 +407,7 @@ const MenuSetupForm: React.FC<Props> = () => {
     setLoading(false);
   };
 
-  const getMenuItem = async (menuGroupName: string) => {
+  const getMenuItem = async () => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -388,10 +418,10 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${menuGroupName}`,
+        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${openGroup}`,
         headers
       );
-      console.log("Menu Items retrieved successfully:", response.data.data);
+      console.log("Menu Items retrieved successfully:", response.data);
 
       setItems(response.data.data);
     } catch (error: any) {
@@ -407,10 +437,83 @@ const MenuSetupForm: React.FC<Props> = () => {
     setLoading(false);
   };
 
+  const getModifier = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${openItem}`,
+        headers
+      );
+      console.log("Modifier retrieved successfully:", response.data);
+
+      setModifiers(response.data.data);
+    } catch (error: any) {
+      console.error("Error retrieving Modifiers:", error);
+      console.log(token);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const createModifier = async () => {
+    if (!modifierName || !base64String || !modifierPrice) {
+      setModifierError("All fields are required");
+      return;
+    }
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuModifier`,
+        {
+          attach_to: "item",
+          modifier_name: modifierName,
+          menu_item_name: openItem,
+          price: modifierPrice,
+          image: base64String,
+        },
+        headers
+      );
+      console.log("Modifier added successfully:", response.data);
+      toast.success(response.data.message);
+      setModifierModal(false);
+      // window.location.reload();
+    } catch (error: any) {
+      console.error("Error adding modifier:", error);
+      console.log(token);
+
+      if (error.response) {
+        setError(error.response.data.message);
+        // toast.error(error.response.data.message);
+        setModifierError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
   useEffect(() => {
     getMenuCategory();
     getMenuGroup();
-    getMenuItem(menuGroupName);
+    getMenuItem();
   }, []);
 
   return (
@@ -489,16 +592,74 @@ const MenuSetupForm: React.FC<Props> = () => {
                                 />
                               </div>
                               {expandedGroups[group.name] && (
-                                <div className="">
-                                  {items.map((item, index) => (
-                                    <div className="" key={index}>
-                                      {group.name === item.menu_group_name && (
-                                        <div className="">
-                                          {item.menu_item_name}
-                                        </div>
-                                      )}
-                                    </div>
-                                  ))}
+                                <div className=" ">
+                                  <div className=" pl-[20px]">
+                                    {items.map((item, index) => (
+                                      <div className="" key={index}>
+                                        {group.name ===
+                                          item.menu_group_name && (
+                                          <div
+                                            className="flex items-center justify-between"
+                                            onClick={() =>
+                                              toggleItem(item.menu_item_name)
+                                            }
+                                            style={{ cursor: "pointer" }}
+                                          >
+                                            <p className=" font-[500] py-[8px]">
+                                              {item.menu_item_name}
+                                            </p>
+                                            <img
+                                              src={Arrow}
+                                              alt=""
+                                              style={{
+                                                transform: expandedItem[
+                                                  item.menu_item_name
+                                                ]
+                                                  ? "rotate(180deg)"
+                                                  : "rotate(0deg)",
+                                                transition:
+                                                  "transform 0.3s ease",
+                                              }}
+                                            />
+                                          </div>
+                                        )}
+
+                                        {expandedItem[item.menu_item_name] && (
+                                          <div
+                                            className=" grid gap-[10px]"
+                                            onClick={() =>
+                                              setModifierModal(true)
+                                            }
+                                          >
+                                            {modifiers
+                                              .filter(
+                                                (modifier) =>
+                                                  modifier.menu_item_name ===
+                                                  item.menu_item_name
+                                              )
+                                              .map((modifier, index) => (
+                                                <div
+                                                  key={index}
+                                                  className=" flex items-center justify-between  bg-slate-50 p-[8px]"
+                                                >
+                                                  <p className=" ">
+                                                    {modifier.modifier_name}
+                                                  </p>
+                                                  <p>
+                                                    &#x20A6;
+                                                    {modifier.modifier_price}
+                                                  </p>
+                                                </div>
+                                              ))}
+                                            <p className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer">
+                                              <img src={AddWhite} alt="" />
+                                              Add Modifier
+                                            </p>
+                                          </div>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
                                   <div className="">
                                     <p
                                       className=" text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
@@ -506,13 +667,6 @@ const MenuSetupForm: React.FC<Props> = () => {
                                     >
                                       <img src={AddWhite} alt="" />
                                       Add Menu item
-                                    </p>
-                                    <p
-                                      className=" text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
-                                      onClick={handleAddGroupModal}
-                                    >
-                                      <img src={AddWhite} alt="" />
-                                      Add Modifier
                                     </p>
                                   </div>
                                 </div>
@@ -763,12 +917,21 @@ const MenuSetupForm: React.FC<Props> = () => {
               New menu Item
             </p>
 
-            <CustomInput
-              type="text"
-              label="Menu item name"
-              value={menuItem}
-              onChange={(newValue) => setMenuItem(newValue)}
-            />
+            <div className=" grid gap-[16px] ">
+              <CustomInput
+                type="text"
+                label="Menu item name"
+                value={menuItem}
+                onChange={(newValue) => setMenuItem(newValue)}
+              />
+
+              <CustomInput
+                type="text"
+                label="Menu item price"
+                value={menuItemPrice}
+                onChange={(newValue) => setMenuItemPrice(newValue)}
+              />
+            </div>
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
                 <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
@@ -802,26 +965,95 @@ const MenuSetupForm: React.FC<Props> = () => {
                     <p>{selectedFile?.name}</p>
                   </div>
                 </div>
-
-                <p
-                  className=" text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer mt-[34px]"
-                  onClick={handleAddMenuItem}
-                >
-                  <img src={AddWhite} alt="" />
-                  Add Modifier
-                </p>
               </div>
             </div>
-            <div
-              className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
-              onClick={createItem}
-            >
-              <button className=" text-[16px] ">Save</button>
-            </div>
+            {!loading && (
+              <div
+                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                onClick={createItem}
+              >
+                <button className=" text-[16px] ">Save</button>
+              </div>
+            )}
           </div>
         </div>
       </MenuModal>
 
+      <MenuModal isOpen={modifierModal} onClose={() => setModifierModal(false)}>
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+          <div className=" ">
+            <p className=" text-red-500">{modifierError}</p>
+            <div
+              className=" flex items-center justify-end cursor-pointer"
+              onClick={() => setModifierModal(false)}
+            >
+              <img src={Cancel} alt="" />
+            </div>
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
+              Add Modifier
+            </p>
+
+            <div className=" grid gap-[20px]">
+              <CustomInput
+                type="text"
+                label="Modifier Name"
+                value={modifierName}
+                onChange={(newValue) => setModifierName(newValue)}
+              />
+              <CustomInput
+                type="text"
+                label="Modifier Price"
+                value={modifierPrice}
+                onChange={(newValue) => setModifierPrice(newValue)}
+              />
+            </div>
+            <div className=" grid gap-[8px] my-[16px]">
+              <div className="">
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                  Add image
+                </p>
+
+                <div className="flex items-center gap-[16px]">
+                  <label
+                    htmlFor="fileInput"
+                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                  >
+                    <input
+                      type="file"
+                      id="fileInput"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      required
+                    />
+                    <img src={imageIcon} alt="Upload Icon" />
+                  </label>
+                  <div className="">
+                    <label
+                      htmlFor="fileInput"
+                      className="text-[#5855B3] font-[500] text-[16px] cursor-pointer"
+                    >
+                      Click to upload{" "}
+                    </label>
+                    <p className=" text-[14px] font-[400] mt-[8px] text-grey300">
+                      Max. file size: 2MB
+                    </p>
+                    <p>{selectedFile?.name}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {base64String && (
+              <div
+                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                onClick={createModifier}
+              >
+                <button className=" text-[16px] ">Save</button>
+              </div>
+            )}
+          </div>
+        </div>
+      </MenuModal>
       <MenuModal isOpen={successModal} onClose={() => setSuccessModal(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
@@ -844,7 +1076,8 @@ const MenuSetupForm: React.FC<Props> = () => {
         >
           <div className="flex items-end gap-[5px]">
             <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
-              Skip this part for now
+              Continue
+              {/* Skip this part for now */}
             </p>
             <img src={Skip} alt="" />
           </div>{" "}

@@ -140,15 +140,71 @@ const MenuDetails = () => {
   // };
 
   const menuid = sessionStorage.getItem("menuId");
+  // const handleAddToBasket = () => {
+  //   const existingIdsString = sessionStorage.getItem("ids");
+  //   const existingIds = existingIdsString ? JSON.parse(existingIdsString) : [];
+
+  //   if (id && !existingIds.includes(id)) {
+  //     existingIds.push(id);
+  //     sessionStorage.setItem("ids", JSON.stringify(existingIds));
+  //   }
+
+  //   let totalPrice = menuItem?.price ? parseInt(menuItem.price) * count : 0;
+
+  //   selectedOptions.forEach((option) => {
+  //     if (typeof option === "string") {
+  //       const selectedOption = (
+  //         menuItem?.options as unknown as {
+  //           value: string;
+  //           price: string;
+  //           label: string;
+  //         }[]
+  //       )?.filter((opt) => opt.value === option)[0];
+
+  //       if (selectedOption) {
+  //         totalPrice += parseInt(selectedOption.price, 10);
+  //       }
+  //     }
+  //   });
+
+  //   const selectedOptionPrices = selectedOptions.map((option) => {
+  //     const selectedOption = (
+  //       menuItem?.options as unknown as {
+  //         value: string;
+  //         price: string;
+  //         label: string;
+  //       }[]
+  //     )?.find((opt) => opt.value === option);
+  //     return selectedOption ? parseInt(selectedOption.price) : 0;
+  //   });
+  //   const totalPriceWithSelectedOptions =
+  //     totalPrice + selectedOptionPrices.reduce((acc, curr) => acc + curr, 0);
+
+  //   sessionStorage.setItem(
+  //     "totalPrice",
+  //     totalPriceWithSelectedOptions.toString()
+  //   );
+
+  //   history(`/category-details/${menuid}`);
+  // };
+
   const handleAddToBasket = () => {
-    const existingIdsString = sessionStorage.getItem("ids");
-    const existingIds = existingIdsString ? JSON.parse(existingIdsString) : [];
+    // Retrieve existing basket items from sessionStorage
+    const existingBasketString = sessionStorage.getItem("basketItems");
+    const existingBasket = existingBasketString
+      ? JSON.parse(existingBasketString)
+      : [];
 
-    if (id && !existingIds.includes(id)) {
-      existingIds.push(id);
-      sessionStorage.setItem("ids", JSON.stringify(existingIds));
-    }
+    // Create the new basket item
+    const newItem = {
+      id,
+      count,
+      menuItem,
+      selectedOptions,
+      totalPrice: 0,
+    };
 
+    // Calculate the total price
     let totalPrice = menuItem?.price ? parseInt(menuItem.price) * count : 0;
 
     selectedOptions.forEach((option) => {
@@ -159,7 +215,7 @@ const MenuDetails = () => {
             price: string;
             label: string;
           }[]
-        )?.filter((opt) => opt.value === option)[0];
+        )?.find((opt) => opt.value === option);
 
         if (selectedOption) {
           totalPrice += parseInt(selectedOption.price, 10);
@@ -167,24 +223,25 @@ const MenuDetails = () => {
       }
     });
 
-    const selectedOptionPrices = selectedOptions.map((option) => {
-      const selectedOption = (
-        menuItem?.options as unknown as {
-          value: string;
-          price: string;
-          label: string;
-        }[]
-      )?.find((opt) => opt.value === option);
-      return selectedOption ? parseInt(selectedOption.price) : 0;
-    });
-    const totalPriceWithSelectedOptions =
-      totalPrice + selectedOptionPrices.reduce((acc, curr) => acc + curr, 0);
+    newItem.totalPrice = totalPrice;
 
+    // Add the new item to the existing basket
+    existingBasket.push(newItem);
+
+    // Store the updated basket in sessionStorage
+    sessionStorage.setItem("basketItems", JSON.stringify(existingBasket));
+
+    // Update the total price in sessionStorage
+    const totalPriceWithSelectedOptions = existingBasket.reduce(
+      (acc, item) => acc + item.totalPrice,
+      0
+    );
     sessionStorage.setItem(
       "totalPrice",
       totalPriceWithSelectedOptions.toString()
     );
 
+    // Redirect to the category details page
     history(`/category-details/${menuid}`);
   };
 
