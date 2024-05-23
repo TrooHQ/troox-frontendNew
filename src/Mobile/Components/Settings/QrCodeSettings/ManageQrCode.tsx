@@ -6,6 +6,8 @@ import More from "../../../assets/more_vert.svg";
 import { useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../../../Api/Api";
 import axios from "axios";
+import { RootState } from "../../../../store/store";
+import { useSelector } from "react-redux";
 
 // const data = [
 //   {
@@ -56,7 +58,9 @@ const ManageQrCode = () => {
   };
 
   const navigate = useNavigate();
-  const token = sessionStorage.getItem("token");
+
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
   const type = sessionStorage.getItem("type");
 
   const getTablesGroups = async () => {

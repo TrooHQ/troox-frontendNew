@@ -1,87 +1,48 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Basket = () => {
   const navigate = useNavigate();
+  const backetDetails = useSelector((state: RootState) => state.basket);
+  console.log(backetDetails);
+
   return (
     <div className=" ">
       <TopMenuNav exploreMenuText="Basket" />
 
       <div className=" mt-[68px] ">
-        <div className=" mx-[24px] border-b pb-[16px] border-[#E7E7E7]">
-          <div className=" px-[16px] grid gap-[8px]">
-            <div className=" flex items-center justify-between">
-              <p className=" text-[16px] text-[#121212] font-[500]">Tacos</p>
-              <p className=" text-[16px] text-[#121212] font-[400]">#1,500</p>
-            </div>
-
-            <div className=" pl-[8px]">
+        <div className=" py-[20px] mx-[24px]">
+          <p className="">
+            Hello{" "}
+            <span className=" font-bold">{backetDetails?.customerName}</span>
+          </p>
+          <p>
+            Table Number:{" "}
+            <span className=" font-bold">
+              {backetDetails?.customerTableNumber}
+            </span>
+          </p>
+          <p>Below are the Item's You ordered for</p>
+        </div>
+        {backetDetails?.items.map((item, index) => (
+          <div
+            className=" mx-[24px] border-b pb-[16px] border-[#E7E7E7]"
+            key={index}
+          >
+            <div className=" px-[16px] grid gap-[8px]">
               <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">
-                  Chicken Fillet
+                <p className=" text-[16px] text-[#121212] font-[500]">
+                  {item.name}
                 </p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#500</p>
-              </div>
-
-              <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">Bacon</p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#500</p>
+                <p className=" text-[16px] text-[#121212] font-[400]">
+                  {item.totalPrice}
+                </p>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className=" mx-[24px] border-b py-[16px] border-[#E7E7E7]">
-          <div className=" px-[16px] grid gap-[8px]">
-            <div className=" flex items-center justify-between">
-              <p className=" text-[16px] text-[#121212] font-[500]">Sandwich</p>
-              <p className=" text-[16px] text-[#121212] font-[400]">#1,300</p>
-            </div>
-
-            <div className=" pl-[8px]">
-              <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">
-                  Chicken Fillet
-                </p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#500</p>
-              </div>
-
-              <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">
-                  Extra Tomatoes
-                </p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#500</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className=" mx-[24px] border-b py-[16px] border-[#E7E7E7]">
-          <div className=" px-[16px] grid gap-[8px]">
-            <div className=" flex items-center justify-between">
-              <p className=" text-[16px] text-[#121212] font-[500]">
-                Sausage Muffins
-              </p>
-              <p className=" text-[16px] text-[#121212] font-[400]">#800</p>
-            </div>
-
-            <div className=" pl-[8px]">
-              <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">
-                  Extra Tomatoes
-                </p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#0</p>
-              </div>
-
-              <div className=" flex items-center justify-between">
-                <p className=" text-[16px] text-[#121212] font-[400]">
-                  Extra Tomatoes
-                </p>
-                <p className=" text-[16px] text-[#121212] font-[400]">#500</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
 
         <div className=" py-[16px] mx-[24px] ">
           <div className="flex items-center justify-between">

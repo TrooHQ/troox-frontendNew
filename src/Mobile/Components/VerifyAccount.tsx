@@ -8,27 +8,29 @@ import { useNavigate } from "react-router-dom";
 import DigitInput from "../inputFields/DigitInput";
 
 import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
-interface RootState {
-  user: {
-    id: string | null;
-    user_role: string | null;
-    email_verified: boolean | null;
-  };
-}
+// interface RootState {
+//   user: {
+//     id: string | null;
+//     user_role: string | null;
+//     email_verified: boolean | null;
+//   };
+// }
 
 const VerifyAccount = () => {
-  const user = useSelector((state: RootState) => state.user);
-  console.log("user id", user.id);
-  console.log(user.user_role);
-  console.log(user.email_verified);
+  // const user = useSelector((state: RootState) => state.user);
+  // console.log("user id", user.id);
+  // console.log(user.user_role);
+  // console.log(user.email_verified);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const history = useNavigate();
 
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
-  const email = sessionStorage.getItem("email");
+  const userDetails = useSelector((state: RootState) => state.user);
+  const email = userDetails?.userData?.business_email;
 
   const handleChange = (index: number, newValue: string) => {
     const newDigits = [...digits];

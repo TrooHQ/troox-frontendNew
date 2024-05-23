@@ -14,15 +14,17 @@ import { toast } from "react-toastify";
 import CustomSelect from "../inputFields/CustomSelect";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../slices/UserSlice";
+import imageIcon from "../assets/image.svg";
+
 interface Country {
   name: string;
   code: string;
   id: string;
 }
-interface VerifyAccountPayload {
-  account_number: string;
-  account_code: string;
-}
+// interface VerifyAccountPayload {
+//   account_number: string;
+//   account_code: string;
+// }
 
 const RegistrationStepForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -49,8 +51,12 @@ const RegistrationStepForm = () => {
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [base64String, setBase64String] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   sessionStorage.setItem("businessType", businessType);
   const id = sessionStorage.getItem("id");
+
   const history = useNavigate();
 
   const dispatch = useDispatch();
@@ -110,7 +116,8 @@ const RegistrationStepForm = () => {
         !phone ||
         !password ||
         !confirmPassword ||
-        !businessType
+        !businessType ||
+        !base64String
       ) {
         setError("All fields are required...");
         setFieldsError("All fields are required...");
@@ -135,6 +142,7 @@ const RegistrationStepForm = () => {
         password,
         confirm_password: confirmPassword,
         business_type: businessType,
+        business_logo: base64String,
       });
       setLoading(false);
       toast.success("User created successfully");
@@ -163,6 +171,19 @@ const RegistrationStepForm = () => {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const base64 = event.target?.result as string;
+        setBase64String(base64);
+        console.log("Base64 representation:", base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const createAccountDetails = async () => {
     try {
       if (!accountNumber || !bvn || !country) {
@@ -272,7 +293,7 @@ const RegistrationStepForm = () => {
       const response = await axios.get(`${SERVER_DOMAIN}/getBanks`);
       setLoading(false);
       setBanks(response.data.data);
-      console.log(response.data.data);
+      console.log(banks);
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -436,6 +457,33 @@ const RegistrationStepForm = () => {
                 />
               </div>
 
+              <div className="flex items-center gap-[16px]">
+                <label
+                  htmlFor="fileInput"
+                  className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                >
+                  <input
+                    type="file"
+                    id="fileInput"
+                    className="hidden"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                  <img src={imageIcon} alt="Upload Icon" />
+                </label>
+                <div className="">
+                  <label
+                    htmlFor="fileInput"
+                    className="text-[#5855B3] font-[500] text-[16px] cursor-pointer"
+                  >
+                    Click to upload{" "}
+                  </label>
+                  <p className=" text-[14px] font-[400] mt-[8px] text-grey300">
+                    Max. file size: 2MB
+                  </p>
+                  <p>{selectedFile?.name}</p>
+                </div>
+              </div>
               <div className=" grid mt-[32px] gap-[8px]">
                 {!emailError && !passwordError && !confirmPasswordError && (
                   <div className="" onClick={createBusinessAccount}>

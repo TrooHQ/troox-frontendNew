@@ -14,6 +14,7 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { setUserData } from "../../slices/UserSlice.ts";
 // import Button from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,8 +35,6 @@ const Login = () => {
       return;
     }
 
-    sessionStorage.setItem("email", Email);
-
     try {
       setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/login`, {
@@ -43,17 +42,7 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
-      console.log(response.data);
-      sessionStorage.setItem("email_verified", response.data.email_verified);
-      sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("name", response.data.admin_name);
-      sessionStorage.setItem("businessName", response.data.business_name);
-      sessionStorage.setItem(
-        "businessIdentifier",
-        response.data.business_identifier
-      );
-      sessionStorage.setItem("id", response.data.id);
-      sessionStorage.setItem("userType", response.data.user_role);
+      dispatch(setUserData(response.data));
       const userType = response.data.user_role;
       toast.success(response.data.message);
       if (userType === "employee") {

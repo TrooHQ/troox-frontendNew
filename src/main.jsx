@@ -4,8 +4,11 @@ import App from "./App";
 import MobileLayout from "./MobileLayout";
 import SelfCheckoutLayout from "./SelfCheckoutLayout";
 import "./index.css";
+
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 function Root() {
   const [isMobileScreen, setIsMobileScreen] = useState(
@@ -40,9 +43,12 @@ function Root() {
     rootComponent = <App />;
   }
 
+  let persistor = persistStore(store);
   return (
     <React.StrictMode>
-      <Provider store={store}>{rootComponent}</Provider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>{rootComponent}</PersistGate>
+      </Provider>
     </React.StrictMode>
   );
 }

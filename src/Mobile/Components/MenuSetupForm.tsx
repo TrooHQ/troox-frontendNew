@@ -13,6 +13,8 @@ import MenuModal from "./MenuModal";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface MenuItem {
   title: string;
@@ -117,21 +119,6 @@ const MenuSetupForm: React.FC<Props> = () => {
     console.log(groupName);
   };
 
-  // const toggleItem = (itemName: string) => {
-  //   const isItemOpen = expandedItem[itemName];
-  //   console.log("Current State:", expandedItem);
-
-  //   setExpandedItem((prevState) => {
-  //     const updatedState: { [key: string]: boolean } = {};
-
-  //     updatedState[itemName] = !isItemOpen;
-
-  //     console.log("Updated State:", updatedState);
-  //     return updatedState;
-  //   });
-
-  //   console.log("Toggled item:", itemName);
-  // };
   const toggleItem = (itemName: string) => {
     setExpandedItem((prevState) => {
       const updatedState: { [key: string]: boolean } = {};
@@ -198,9 +185,12 @@ const MenuSetupForm: React.FC<Props> = () => {
     setInfoModal(!infoModal);
   };
 
-  const businessType = sessionStorage.getItem("businessType");
-  const token = sessionStorage.getItem("token");
-  const id = sessionStorage.getItem("id");
+  const userDetails = useSelector((state: RootState) => state.user);
+  const businessType = userDetails?.userData?.business_type;
+  const id = userDetails?.userData?.id;
+  const token = userDetails?.userData?.token;
+
+  console.log(userDetails);
 
   const createCategory = async () => {
     if (!menuCategory) {
@@ -222,6 +212,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         {
           menu_category_name: menuCategory,
           user_id: id,
+          image: base64String,
         },
         headers
       );
@@ -344,13 +335,6 @@ const MenuSetupForm: React.FC<Props> = () => {
         headers
       );
       console.log("menu Category retrieved successfully:", response.data.data);
-      // const menuCategoryName = response.data.data;
-      // for (const category of menuCategoryName) {
-      //   const menuCategoryName = category.name;
-      //   console.log(menuCategoryName);
-
-      //   await getMenuGroup(menuCategoryName);
-      // }
 
       setMenuData(response.data.data);
     } catch (error: any) {
@@ -383,16 +367,10 @@ const MenuSetupForm: React.FC<Props> = () => {
       console.log("Menu Group retrieved successfully:", response.data.data);
       setMenuGroup(response.data.data);
 
-      // response.data.data.forEach(async (menuItem: string) => {
-      //   const menuGroupName = menuItem.name;
-      //   console.log(menuGroupName);
-      //   await getMenuItem(menuGroupName);
-      // });
-
       response.data.data.forEach(async (menuItem: { name: string }) => {
         const menuGroupName = menuItem.name;
         console.log(menuGroupName);
-        await getMenuItem(menuGroupName);
+        await getMenuItem();
       });
     } catch (error: any) {
       console.error("Error retrieving Menu Group:", error);
@@ -722,7 +700,7 @@ const MenuSetupForm: React.FC<Props> = () => {
             >
               <img src={Cancel} alt="" />
             </div>
-            <div className="relative flex items-end gap-[5px] mb-[32px]">
+            <div className="relative flex items-end gap-[5px] mb-[12px]">
               <p className=" text-[20px]  font-[400] text-grey500 ">
                 New menu category
               </p>
@@ -755,16 +733,55 @@ const MenuSetupForm: React.FC<Props> = () => {
                 onChange={(newValue) => setMenuCategory(newValue)}
               />
             </div>
-            <div className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff] mt-[72px]">
-              <button
-                className="text-[16px]"
-                type="submit"
-                disabled={loading}
-                onClick={() => createCategory()}
-              >
-                {loading ? "Creating Menu" : "Save"}
-              </button>
+
+            <div className=" grid gap-[8px] my-[16px]">
+              <div className="">
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                  Add image
+                </p>
+
+                <div className="flex items-center gap-[16px]">
+                  <label
+                    htmlFor="fileInput"
+                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                  >
+                    <input
+                      type="file"
+                      id="fileInput"
+                      className="hidden"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                      required
+                    />
+                    <img src={imageIcon} alt="Upload Icon" />
+                  </label>
+                  <div className="">
+                    <label
+                      htmlFor="fileInput"
+                      className="text-[#5855B3] font-[500] text-[16px] cursor-pointer"
+                    >
+                      Click to upload{" "}
+                    </label>
+                    <p className=" text-[14px] font-[400] mt-[8px] text-grey300">
+                      Max. file size: 2MB
+                    </p>
+                    <p>{selectedFile?.name}</p>
+                  </div>
+                </div>
+              </div>
             </div>
+            {base64String && menuCategory && (
+              <div className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff] mt-[72px]">
+                <button
+                  className="text-[16px]"
+                  type="submit"
+                  disabled={loading}
+                  onClick={() => createCategory()}
+                >
+                  {loading ? "Creating Menu" : "Save"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </MenuModal>

@@ -6,22 +6,13 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-
-// const menuData = [
-//   {
-//     category: "Soups",
-//     items: [
-//       { title: "Egusi Soup", link: "/egusi" },
-//       { title: "Okra  Soup", link: "/okra" },
-//       { title: "Ogbono Soup", link: "/ogbono" },
-//       { title: "White Soup", link: "/white" },
-//     ],
-//   },
-// ];
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const TableSetupForm = () => {
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
   const [number, setNumber] = useState("");
-  const token = sessionStorage.getItem("token");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

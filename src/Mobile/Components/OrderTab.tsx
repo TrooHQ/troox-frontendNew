@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import chatMessage from "../assets/chat-message.svg";
 import dayjs from "dayjs";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 interface TabItem {
   id: number;
   label: string;
@@ -28,7 +30,9 @@ const OrderTab: React.FC = () => {
     { id: 1, label: "Taken", content: renderMenuCategory },
     { id: 2, label: "Ready", content: renderMenuCategoryReady },
   ];
-  const token = sessionStorage.getItem("token");
+
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
   const [loading, setLoading] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);

@@ -1,27 +1,32 @@
-import image1 from "../assets/image 39.png";
-
 import { Link } from "react-router-dom";
 import TopMenuNav from "./TopMenuNav";
 import ArrowRight from "../assets/chevronrightt.svg";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface Details {
   name: string;
   business_name: string;
+  image: string;
 }
 export const MenuPage = () => {
   const [menuCategory, setMenuCategory] = useState<Details[]>([]);
-  const business_name = sessionStorage.getItem("business_name");
-  const business_identifier = sessionStorage.getItem("business_identifier");
-  const token = sessionStorage.getItem("token");
+
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
+  console.log(businessDetails);
+
+  const business_identifier = businessDetails?._id;
+  const business_name = businessDetails?.business_name;
 
   const getCategories = async () => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -29,10 +34,7 @@ export const MenuPage = () => {
         `${SERVER_DOMAIN}/menu/getCustomerMenuCategory/?business_identifier=${business_identifier}`,
         headers
       );
-      console.log(
-        "Business Details Retrieved successfully:",
-        response.data.data
-      );
+      console.log("Business Details Retrieved successfully:", response.data);
       setMenuCategory(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -65,7 +67,7 @@ export const MenuPage = () => {
                 </Link>
               </div>
               <div className=" pt-[16px] pb-[20px] border-b">
-                <img src={image1} alt="" className=" w-full" />
+                <img src={menu?.image} alt="" className=" w-full" />
               </div>
             </div>
           ))}

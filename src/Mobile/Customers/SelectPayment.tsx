@@ -1,18 +1,31 @@
 import TopMenuNav from "./TopMenuNav";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Card from "../assets/Card.svg";
 import Card1 from "../assets/card (1).svg";
 import Card2 from "../assets/cardd.svg";
 import Cash from "../assets/Cash.svg";
+import { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { clearBasket } from "../../slices/BasketSlice";
+import { resetBusinessDetails } from "../../slices/businessSlice";
 
 export const SelectPayment = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handlePaymentMethodChange = (value: string) => {
     setPaymentMethod(value);
   };
 
+  const backetDetails = useSelector((state: RootState) => state);
+  console.log(backetDetails);
+
+  const handlePayment = () => {
+    dispatch(clearBasket());
+    dispatch(resetBusinessDetails());
+    navigate("");
+  };
   return (
     <div className="  ">
       <TopMenuNav exploreMenuText="Select Payment" />
@@ -78,11 +91,12 @@ export const SelectPayment = () => {
           </div>
         </div>
 
-        <Link to="/receipt">
-          <div className=" bg-[#121212] rounded-[10px] py-[13px] text-center mt-[72px] cursor-pointer">
-            <p className=" text-[14px] font-[400] text-white">Pay</p>
-          </div>
-        </Link>
+        <div
+          className=" bg-[#121212] rounded-[10px] py-[13px] text-center mt-[72px] cursor-pointer"
+          onClick={handlePayment}
+        >
+          <p className=" text-[14px] font-[400] text-white">Pay</p>
+        </div>
       </div>
     </div>
   );

@@ -19,6 +19,8 @@ import MenuSettings from "./Components/Settings/MenuSettings";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
 
 // interface FormData extends FieldValues {
 //   employee_name?: string;
@@ -73,6 +75,7 @@ const SettingsPage = () => {
   const [removeEmployeeModal, setRemoveEmployeeModal] = useState(false);
 
   const type = sessionStorage.getItem("type");
+
   const handleQRCodeModal = () => {
     setQRCodeModal(true);
   };
@@ -142,7 +145,9 @@ const SettingsPage = () => {
     setRemoveEmployeeModal(true);
   };
 
-  const token = sessionStorage.getItem("token");
+  const userDetails = useSelector((state: RootState) => state.user);
+
+  const token = userDetails?.userData?.token;
 
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
