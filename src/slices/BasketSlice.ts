@@ -2,15 +2,25 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SelectedOption {
   value: string;
-  price: string;
-  label: string;
+  price: number;
+  label?: string;
+  modifier_name?: string;
+  modifier_price?: number;
 }
 
+interface Option {
+  name: string;
+  price: number;
+  modifier_name: string;
+  modifier_price: number;
+  label?: string;
+  value?: string;
+}
 interface MenuItem {
   _id: string;
   id?: string;
   name: string;
-  price: string;
+  price: number;
   options?: SelectedOption[];
   menu_item_image: string;
   details: string;
@@ -18,14 +28,14 @@ interface MenuItem {
   menu_category_name: string;
   menu_group_name: string;
   menu_item_name: string;
-  menu_item_price: string;
+  menu_item_price: number;
 }
 
 interface BasketItem {
   id: string;
   quantity: number;
   menuItem: MenuItem;
-  selectedOptions: string[];
+  selectedOptions: Option[];
   totalPrice: number;
   name: string;
   tableNumber: string;

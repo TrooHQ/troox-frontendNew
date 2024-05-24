@@ -17,7 +17,7 @@ interface MenuItem {
   _id: string;
   id?: string;
   name: string;
-  price: string;
+  price: number;
   options?: Option[];
   menu_item_image: string;
   details: string;
@@ -25,22 +25,23 @@ interface MenuItem {
   menu_category_name: string;
   menu_group_name: string;
   menu_item_name: string;
-  menu_item_price: string;
+  menu_item_price: number;
 }
 
 interface Option {
   modifier_name: string;
-  modifier_price: string;
-  label: string;
+  modifier_price: number;
   value: string;
-  price: string;
+  price: number;
+  name: string;
+  label?: string;
 }
 
 interface BasketItem {
   id: string;
   quantity: number;
   menuItem: MenuItem;
-  selectedOptions: string[];
+  selectedOptions: Option[];
   totalPrice: number;
   name: string;
   tableNumber: string;
@@ -51,7 +52,9 @@ const MenuDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
   const [menuModifiers, setMenuModifiers] = useState<Option[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+
+  // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [itemCount, setItemCount] = useState<number>(1);
   const dispatch = useDispatch();
 
@@ -65,11 +68,22 @@ const MenuDetails = () => {
 
   const businessIdentifier = userDetails?._id;
 
-  const handleCheckboxChange = (value: string) => {
-    const updatedOptions = selectedOptions.includes(value)
-      ? selectedOptions.filter((option) => option !== value)
-      : [...selectedOptions, value];
-    setSelectedOptions(updatedOptions);
+  const handleCheckboxChange = (option: Option) => {
+    const optionIndex = selectedOptions.findIndex(
+      (selectedOption) => selectedOption.name === option.modifier_name
+    );
+    if (optionIndex !== -1) {
+      const updatedOptions = [
+        ...selectedOptions.slice(0, optionIndex),
+        ...selectedOptions.slice(optionIndex + 1),
+      ];
+      setSelectedOptions(updatedOptions);
+    } else {
+      setSelectedOptions([
+        ...selectedOptions,
+        { name: option.modifier_name, price: option.modifier_price },
+      ]);
+    }
   };
 
   const getItems = async () => {
@@ -109,18 +123,23 @@ const MenuDetails = () => {
   const calculateTotalPrice = () => {
     if (!menuItem) return 0;
 
-    const optionTotalPrice = selectedOptions.reduce((total, option) => {
-      const selectedOption = menuModifiers.find(
-        (opt) => opt.modifier_name === option
-      );
-      if (selectedOption) {
-        total += parseInt(selectedOption.modifier_price, 10);
-      }
-      return total;
-    }, 0);
+    const optionTotalPrice =
+      selectedOptions.reduce((total, option) => {
+        const selectedOption = menuModifiers.find(
+          (opt) => opt.modifier_name === option.name
+        );
+        if (selectedOption) {
+          total += parseInt(selectedOption.modifier_price, 10);
+        }
+        return total;
+      }, 0) * itemCount;
 
-    const itemPrice = parseInt(menuItem.menu_item_price, 10);
-    return (itemPrice + optionTotalPrice) * itemCount;
+    const itemPrice = menuItem.menu_item_price * itemCount;
+
+    const totalPrice = itemPrice + optionTotalPrice;
+
+    console.log(totalPrice);
+    return totalPrice;
   };
 
   const handleAddToBasket = () => {
@@ -194,12 +213,14 @@ const MenuDetails = () => {
                       type="checkbox"
                       id={option.modifier_name}
                       value={option.modifier_name}
-                      checked={selectedOptions.includes(option.modifier_name)}
-                      onChange={() =>
-                        handleCheckboxChange(option.modifier_name)
-                      }
+                      checked={selectedOptions.some(
+                        (opt) => opt.name === option.modifier_name
+                      )}
+                      onChange={() => handleCheckboxChange(option)}
                       className={`h-5 w-5 ${
-                        selectedOptions.includes(option.modifier_name)
+                        selectedOptions.some(
+                          (opt) => opt.name === option.modifier_name
+                        )
                           ? "bg-red-600"
                           : "bg-white"
                       }`}
