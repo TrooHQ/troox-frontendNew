@@ -6,40 +6,23 @@ import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import {
-  setEmail,
-  setPassword,
-  selectEmail,
-  selectPassword,
-} from "../../slices/authSlice.js";
+import { setEmail, setPassword, selectEmail, selectPassword } from "../../slices/authSlice.js";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.js";
+
 const Login = () => {
   const dispatch = useDispatch();
   const Email = useSelector(selectEmail);
   const Password = useSelector(selectPassword);
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handlePasswordChange = (newValue: string) => {
     dispatch(setPassword(newValue));
   };
 
   const history = useNavigate();
-
-  // const handleButtonClick = () => {
-  //   if (!Email || !Password) {
-  //     setError("Invalid email/password");
-  //     return;
-  //   } else {
-  //     console.log("Email:", Email);
-  //     console.log("Password:", Password);
-  //     setError("");
-
-  //     history("/overview");
-  //   }
-  // };
-  // const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async () => {
     if (!Email || !Password) {
@@ -50,12 +33,12 @@ const Login = () => {
     sessionStorage.setItem("email", Email);
 
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/login`, {
         email: Email,
         password: Password,
       });
-      // setLoading(false);
+      setLoading(false);
       console.log(response.data);
       sessionStorage.setItem("email_verified", response.data.email_verified);
       sessionStorage.setItem("token", response.data.token);
@@ -92,6 +75,7 @@ const Login = () => {
         setError("An error occurred. Please try again later.");
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -128,16 +112,17 @@ const Login = () => {
             </Link>
           </div>
           <div className="" onClick={handleLogin}>
-            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+            <button
+              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              disabled={loading}
+            >
               Login
             </button>
           </div>
         </div>
         <div className=" mt-[40px]">
-          <Link to="/register">
-            <p className="font-[500] text-[16px] text-purple500">
-              Create a business account
-            </p>
+          <Link to="/business-profile">
+            <p className="font-[500] text-[16px] text-purple500">Create a business account</p>
           </Link>
         </div>
       </div>
