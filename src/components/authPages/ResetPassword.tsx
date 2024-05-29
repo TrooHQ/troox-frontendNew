@@ -22,12 +22,9 @@ const ResetPassword = () => {
         </div>{" "}
         <div className="bg-white grid gap-5 p-8 my-10 w-full md:w-[530px] rounded shadow-md">
           <div className=" max-w-[387px]">
-            <p className="text-2xl text-grey500 mb-4 font-[600]">
-              Create new password
-            </p>
-            <p>
-              Your new password must be different from previously used
-              passwords.
+            <p className="text-2xl text-grey500 mb-4 font-[400]">Create new password</p>
+            <p className="font-[300]">
+              Your new password must be different from previously used passwords.
             </p>
           </div>
 
@@ -41,7 +38,7 @@ const ResetPassword = () => {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
-          <p className="  text-[14px]">Both passwords must match</p>
+          <p className="font-light text-[14px]">Both passwords must match</p>
           <Link to="/password-changed">
             <button className="bg-purple500 w-full text-center text-white py-3 rounded">
               Reset password

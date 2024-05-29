@@ -14,10 +14,8 @@ const CheckMail = () => {
           <div className="grid items-center gap-5">
             <div className=" flex gap-5 flex-col items-center justify-center text-center">
               <img src={lockIcon} alt="" />
-              <p className=" text-grey500 text-[24px] font-[600]">
-                Check your mail
-              </p>
-              <p className=" text-grey500 text-[16px] font-[500]">
+              <p className=" text-grey500 text-[24px] font-[400]">Check your mail</p>
+              <p className=" text-grey500 text-[16px] font-[300]">
                 We have sent a password recover <br /> instruction to your email
               </p>
             </div>
