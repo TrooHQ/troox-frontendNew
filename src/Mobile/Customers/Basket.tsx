@@ -60,7 +60,7 @@ export const Basket = () => {
           <div className="flex items-center justify-between">
             <p className=" text-[16px] text-[#121212] font-[500]">Total:</p>
             <p className=" text-[16px] text-[#121212] font-[500]">
-              &#x20A6; {backetDetails.totalPrice.toFixed(2)}
+              &#x20A6; {backetDetails?.totalPrice.toFixed(2)}
             </p>
           </div>
 

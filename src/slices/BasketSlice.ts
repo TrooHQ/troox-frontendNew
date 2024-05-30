@@ -47,6 +47,7 @@ interface BasketState {
   customerName: string;
   customerTableNumber: string;
   totalQuantity: number;
+  tip: number | null;
 }
 
 const initialState: BasketState = {
@@ -55,6 +56,7 @@ const initialState: BasketState = {
   customerName: "",
   customerTableNumber: "",
   totalQuantity: 0,
+  tip: null,
 };
 
 const BasketSlice = createSlice({
@@ -110,6 +112,7 @@ const BasketSlice = createSlice({
       state.totalQuantity = 0;
       state.customerName = "";
       state.customerTableNumber = "";
+      state.tip = null;
     },
 
     updateCustomerName(state, action: PayloadAction<string>) {
@@ -170,6 +173,9 @@ const BasketSlice = createSlice({
         );
       }
     },
+    setTip(state, action: PayloadAction<number | null>) {
+      state.tip = action.payload;
+    },
 
     // incrementItemQuantity: (state, action) => {
     //   const item = state.items.find((item) => item.id === action.payload.id);
@@ -212,6 +218,7 @@ export const {
   updateCustomerTableNumber,
   updateItemQuantity,
   updateItemInBasket,
+  setTip,
   // incrementItemQuantity,
   // decrementItemQuantity,
 } = BasketSlice.actions;

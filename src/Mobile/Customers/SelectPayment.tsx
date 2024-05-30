@@ -18,8 +18,11 @@ export const SelectPayment = () => {
     setPaymentMethod(value);
   };
 
-  const backetDetails = useSelector((state: RootState) => state);
-  console.log(backetDetails);
+  const basketDetails = useSelector((state: RootState) => state.basket);
+  const totalPrice = basketDetails?.totalPrice ?? 0;
+  const tip = basketDetails?.tip ?? 0;
+  const finalTotal = totalPrice + tip;
+  console.log(finalTotal);
 
   const handlePayment = () => {
     dispatch(clearBasket());
@@ -33,7 +36,7 @@ export const SelectPayment = () => {
       <div className=" mt-[68px] mx-[16px]">
         <div className="">
           <p className=" text-[18px] font-[600] text-[#121212] text-center">
-            Total: #5,100
+            Total: &#x20A6;{finalTotal}
           </p>
 
           <div className=" py-[23px] px-[17px] bg-[#FFFADC] mt-[16px] mb-[24px]">
