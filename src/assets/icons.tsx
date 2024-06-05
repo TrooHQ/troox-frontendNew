@@ -19,6 +19,7 @@ import SettingsFillIcon from "remixicon-react/SettingsFillIcon";
 import ArrowRightFillIcon from "remixicon-react/ArrowRightFillIcon";
 import EyeFillIcon from "remixicon-react/EyeFillIcon";
 import EyeCloseFillIcon from "remixicon-react/EyeCloseFillIcon";
+import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
 
 export {
   EyeFillIcon,
@@ -42,4 +43,5 @@ export {
   LinkIcon,
   SettingsFillIcon,
   ArrowRightFillIcon,
+  DeleteBin2FillIcon,
 };

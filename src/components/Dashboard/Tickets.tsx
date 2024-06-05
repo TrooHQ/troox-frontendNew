@@ -9,6 +9,8 @@ import Refresh from "../../assets/refresh.svg";
 import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface Ticket {
   ordered_by: string;
@@ -88,13 +90,15 @@ const data = [
     amount: "#3500",
   },
 ];
-const token = sessionStorage.getItem("token");
 
 const Tickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [menuOpenMap, setMenuOpenMap] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const userDetails = useSelector((state: RootState) => state.user);
+
+  const token = userDetails?.userData?.token;
 
   // const [loading, setLoading] = useState<boolean>(false);
 
@@ -126,8 +130,6 @@ const Tickets = () => {
   };
 
   const getTickets = async () => {
-    // setLoading(true);
-
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -142,8 +144,7 @@ const Tickets = () => {
       console.log("Tickets Retrieved successfully:", response.data);
       setTickets(response.data);
     } catch (error) {
-      console.error("Error adding employee:", error);
-      // setLoading(false);
+      console.error("Error retrieving tickets:", error);
     }
   };
 
