@@ -126,17 +126,18 @@ const BeginOrder = () => {
                 label="Enter your first name and last name iniital"
                 value={userName}
                 onChange={handleUserNameChange}
+                textSize="text-[60px]"
               />
             </div>
 
             <div className=" flex items-center justify-center">
               <p
-                className={` px-[120px] py-[37px] font-bold ${
-                  !userName ? " bg-[#85C0BE]" : "bg-[#FF0000] cursor-pointer"
+                className={` px-[120px] py-[37px] text-[32px]  font-bold ${
+                  !userName ? " bg-[#B6B6B6]" : "bg-[#FF0000] cursor-pointer"
                 } rounded-full inline-flex text-white text-center`}
                 onClick={userName ? handleNext : undefined}
               >
-                DONE
+                NEXT
               </p>
             </div>
             <p className=" text-[32px] font-[400] text-black mt-[40px]">
@@ -158,9 +159,9 @@ const BeginOrder = () => {
                 label=""
                 value={number}
                 onChange={(newValue) => setNumber(newValue)}
+                textSize="text-[60px]"
               />
             </div>
-
             <div className=" flex items-center justify-center gap-[24px]">
               {" "}
               <p

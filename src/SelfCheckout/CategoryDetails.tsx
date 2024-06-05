@@ -175,8 +175,9 @@ export const CategoryDetails = () => {
                     </Link>
                     <div className="pt-[8px] flex items-center justify-between px-[24px]">
                       <p className="text-[36px] text-[#FF0000] font-[500]">
-                        &#x20A6;{menu?.menu_item_price}
+                        &#x20A6;{menu?.menu_item_price?.toLocaleString()}
                       </p>
+
                       <div>
                         {ids.find((item) => item.id === menu._id) ? (
                           <div className="flex items-center justify-between gap-[20px]">
@@ -220,7 +221,9 @@ export const CategoryDetails = () => {
                 <p className=" text-[44px] font-[400] text-white">
                   {/* #{totalCount.totalQuantity || 0} */}
                 </p>
-                <p>Total &#x20A6;{totalCount.totalPrice || 0.0}</p>
+                <p>
+                  Total &#x20A6;{totalCount.totalPrice.toLocaleString() || 0.0}
+                </p>
               </div>
               <Link to="/basket">
                 <p className=" text-white  text-[36px] font-[500] py-[14px] px-[38px] rounded-[5px] bg-[#F38D41]">

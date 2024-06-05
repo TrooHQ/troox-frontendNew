@@ -89,28 +89,32 @@ export const Basket = () => {
             className=" drop-shadow border border-[#E7E7E7] max-h-[537px] mt-[10px] max-w-[960px] mx-auto rounded-[10px]"
             key={index}
           >
-            <div className="  grid grid-cols-2 items-center">
-              <img
-                src={item?.menuItem?.menu_item_image}
-                alt=""
-                className=" h-full object-cover"
-              />
+            <div className="  grid items-center">
               <div className=" px-[40px]">
-                <p className=" text-[44px] text-[#606060] font-[500] ">
-                  x{item?.quantity} {item?.name} -{""} &#x20A6;
-                  {item.menuItem.menu_item_price}
-                </p>
+                <div className=" grid grid-cols-3 place-items-center">
+                  <p className=" text-[44px] text-[#606060] font-[500] ">
+                    {item?.name}
+                  </p>
+
+                  <p className=" text-[44px] text-[#606060] font-[500] ">
+                    x{item?.quantity}
+                  </p>
+                  <p className=" text-[44px] text-[#606060] font-[500] ">
+                    &#x20A6;
+                    {item.menuItem.menu_item_price.toLocaleString()}
+                  </p>
+                </div>
 
                 {item.selectedOptions && item.selectedOptions?.length > 0 && (
                   <div className=" my-[32px]">
                     <p className=" text-[24px] font-[400] text-[#606060]">
-                      EXTRAS
+                      MODIFIERS
                     </p>
                     {item.selectedOptions.map((option, optionIndex) => (
                       <div key={optionIndex}>
                         <p className=" text-[32px] font-[500] text-[#606060]">
                           {option.name}- &#x20A6;
-                          {(option.price * item.quantity).toFixed(2)}
+                          {(option.price * item.quantity).toLocaleString()}
                         </p>
                       </div>
                     ))}
@@ -118,9 +122,9 @@ export const Basket = () => {
                 )}
 
                 <div className=" mt-[10px]">
-                  <p className=" font-[500] text-[44px] text-[#606060]">
-                    &#x20A6;
-                    {item.totalPrice.toFixed(2)}
+                  <p className=" font-[500] text-[44px] text-[#000000]">
+                    Sub Total: &#x20A6;
+                    {item.totalPrice.toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -129,8 +133,10 @@ export const Basket = () => {
         ))}
 
         <div className="flex items-center justify-center text-[#121212] font-[600] text-[44px]">
-          <p className="   ">Total:</p>
-          <p className=" ">&#x20A6; {backetDetails?.totalPrice.toFixed(2)}</p>
+          <p className="   ">To Pay:</p>
+          <p className=" ">
+            &#x20A6; {backetDetails?.totalPrice.toLocaleString()}
+          </p>
         </div>
         <div className=" mt-[10px] flex items-center justify-center gap-[16px]">
           <p

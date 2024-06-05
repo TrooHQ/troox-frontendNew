@@ -7,6 +7,7 @@ interface CustomInputProps {
   error?: string | undefined;
   maxLength?: number;
   onChange: (value: string) => void;
+  textSize?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -16,6 +17,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   error,
   maxLength,
   onChange,
+  textSize,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -24,13 +26,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
     setIsFocused(true);
   };
 
-  // const handleBlur = () => {
-  //   setIsFocused(value !== "");
-  // };
-
   const handleBlur = () => {
     setIsFocused(value !== "" || isFocused);
   };
+
   const handleLabelClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -42,9 +41,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="relative">
         <input
           type={type}
-          className={`border bg-transparent border-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
-            error ? "border-red-500" : ""
-          }`}
+          className={`border bg-transparent border-grey200 p-2 text-grey500 focus:outline-purple500 focus:border-none w-full rounded ${
+            textSize ? textSize : "text-[16px]"
+          } ${error ? "border-red-500" : ""}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={handleFocus}
@@ -63,6 +62,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           {label}
         </label>
       </div>
+      {error && <p className="text-red-500 mt-1">{error}</p>}
     </div>
   );
 };
