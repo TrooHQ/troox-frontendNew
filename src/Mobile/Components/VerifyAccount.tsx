@@ -89,7 +89,7 @@ const VerifyAccount = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("User verified successfully");
-      history("/");
+      history("/login");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
