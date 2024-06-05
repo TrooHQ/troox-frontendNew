@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+// import App from "./App";
 import MobileLayout from "./MobileLayout";
 import SelfCheckoutLayout from "./SelfCheckoutLayout";
 import "./index.css";
@@ -40,7 +40,7 @@ function Root() {
   } else if (isLargeScreen) {
     rootComponent = <SelfCheckoutLayout />;
   } else {
-    rootComponent = <App />;
+    rootComponent = <SelfCheckoutLayout />;
   }
 
   let persistor = persistStore(store);

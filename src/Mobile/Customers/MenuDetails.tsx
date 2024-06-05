@@ -81,7 +81,13 @@ const MenuDetails = () => {
     } else {
       setSelectedOptions([
         ...selectedOptions,
-        { name: option.modifier_name, price: option.modifier_price },
+        {
+          name: option.modifier_name,
+          price: option.modifier_price,
+          modifier_name: option.modifier_name,
+          modifier_price: option.modifier_price,
+          value: option.value,
+        },
       ]);
     }
   };
@@ -129,7 +135,7 @@ const MenuDetails = () => {
           (opt) => opt.modifier_name === option.name
         );
         if (selectedOption) {
-          total += parseInt(selectedOption.modifier_price, 10);
+          (total += selectedOption.modifier_price), 10;
         }
         return total;
       }, 0) * itemCount;
@@ -236,10 +242,7 @@ const MenuDetails = () => {
               Quantity
             </p>
             <hr />
-            <div
-              className="flex items
--center justify-center"
-            >
+            <div className="flex items-center justify-center">
               <div className="mt-[24px] mb-[37px] items-center rounded-[5px] justify-center inline-flex bg-[#E7E7E7]">
                 <p className="py-[12px] px-[20px]" onClick={handleDecrement}>
                   <img src={Minus} alt="decrement" />

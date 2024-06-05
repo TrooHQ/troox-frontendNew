@@ -117,6 +117,7 @@ const MenuSetupForm: React.FC<Props> = () => {
 
     setOpenGroup(groupName);
     console.log(groupName);
+    getMenuItem(groupName);
   };
 
   const toggleItem = (itemName: string) => {
@@ -370,7 +371,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       response.data.data.forEach(async (menuItem: { name: string }) => {
         const menuGroupName = menuItem.name;
         console.log(menuGroupName);
-        await getMenuItem();
+        await getMenuItem(menuGroupName);
       });
     } catch (error: any) {
       console.error("Error retrieving Menu Group:", error);
@@ -385,7 +386,7 @@ const MenuSetupForm: React.FC<Props> = () => {
     setLoading(false);
   };
 
-  const getMenuItem = async () => {
+  const getMenuItem = async (openGroup: string) => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -491,7 +492,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   useEffect(() => {
     getMenuCategory();
     getMenuGroup();
-    getMenuItem();
+    getMenuItem(menuGroupName);
   }, []);
 
   return (

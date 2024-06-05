@@ -1,23 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import Pap from "../Mobile/assets/pap and akara 1.png";
 import Modal from "../components/Modal";
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
 import Back from "../SelfCheckout/assets/Back.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { setTip } from "../slices/BasketSlice";
 
 export const Basket = () => {
-  const totalPrice = sessionStorage.getItem("totalPrice");
   const navigate = useNavigate();
+  const backetDetails = useSelector((state: RootState) => state.basket);
+  const tip = useSelector((state: RootState) => state.basket?.tip);
+  const tipPercentages = [0.1, 0.125, 0.15];
+  console.log(backetDetails);
   const [selectedPercentage, setSelectedPercentage] = useState<number | null>(
     null
   );
-
-  const handlePercentageClick = (percentage: number) => {
-    setSelectedPercentage(percentage);
-
-    sessionStorage.setItem("percentage", percentage.toString());
-    sessionStorage.removeItem("tip");
-
+  const [customAmount, setCustomAmount] = useState<number | null>(null);
+  const dispatch = useDispatch();
+  const totalPrice = useSelector(
+    (state: RootState) => state.basket?.totalPrice
+  );
+  const handlePercentageClick = (tip: number) => {
+    setSelectedPercentage(selectedPercentage === tip ? null : tip);
+    setCustomAmount(null);
     setTimeout(() => {
       navigate("/payment");
     }, 2000);
@@ -25,31 +31,48 @@ export const Basket = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [tipModal, setTipModal] = useState(false);
-  const [tip, setTip] = useState("");
-
-  const handleTipChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTip(e.target.value);
-    sessionStorage.setItem("tip", e.target.value);
-    sessionStorage.removeItem("percentage");
-    console.log(e.target.value);
-  };
 
   const handleModal = () => {
     setIsOpen(false);
     setTipModal(true);
   };
 
-  const handleNoTip = () => {
+  useEffect(() => {
+    if (selectedPercentage !== null) {
+      const tipAmount = totalPrice * selectedPercentage;
+      console.log("Selected tip amount:", tipAmount);
+      dispatch(setTip(tipAmount));
+    } else if (customAmount !== null) {
+      console.log("Custom tip amount:", customAmount);
+      dispatch(setTip(customAmount));
+    } else {
+      console.log("Selected tip: None");
+      dispatch(setTip(null));
+    }
+  }, [selectedPercentage, customAmount, totalPrice]);
+
+  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value)) {
+      setCustomAmount(value);
+      setSelectedPercentage(null);
+    } else {
+      setCustomAmount(null);
+    }
+  };
+
+  const handleNoTipClick = () => {
+    setSelectedPercentage(null);
+    setCustomAmount(null);
+    dispatch(setTip(null));
     navigate("/payment");
-    sessionStorage.removeItem("percentage");
-    sessionStorage.removeItem("tip");
   };
   const handleNext = () => {
     navigate("/payment");
   };
   return (
     <div className=" ">
-      <div className=" mt-[68px] ">
+      <div className=" mt-[10px] ">
         <div className="">
           <img
             src={Back}
@@ -57,52 +80,67 @@ export const Basket = () => {
             onClick={() => navigate(-1)}
             className="p-[40px] cursor-pointer"
           />
-          <p className=" text-[44px] font-[500] text-[#606060] text-center">
+          <p className=" text-[44px] font-[500] text-[#FF0000] text-center">
             Order Summary
           </p>
         </div>
-        <div className=" drop-shadow border border-[#E7E7E7] max-h-[537px] mt-[63px] max-w-[960px] mx-auto rounded-[10px]">
-          <div className="  grid grid-cols-2 items-center">
-            <img src={Pap} alt="" className=" h-full object-cover" />
-            <div className=" px-[40px]">
-              <p className=" text-[44px] text-[#606060] font-[500] ">
-                1x Pap Meal
-              </p>
-              <div className=" mt-[16px]">
-                <p className=" text-[24px] font-[400] text-[#606060]">SIDES</p>
-                <p className=" text-[32px] font-[500] text-[#606060]">
-                  4pcs of Akara
+        {backetDetails?.items.map((item, index) => (
+          <div
+            className=" drop-shadow border border-[#E7E7E7] max-h-[537px] mt-[10px] max-w-[960px] mx-auto rounded-[10px]"
+            key={index}
+          >
+            <div className="  grid grid-cols-2 items-center">
+              <img
+                src={item?.menuItem?.menu_item_image}
+                alt=""
+                className=" h-full object-cover"
+              />
+              <div className=" px-[40px]">
+                <p className=" text-[44px] text-[#606060] font-[500] ">
+                  x{item?.quantity} {item?.name} -{""} &#x20A6;
+                  {item.menuItem.menu_item_price}
                 </p>
-              </div>
 
-              <div className=" my-[32px]">
-                <p className=" text-[24px] font-[400] text-[#606060]">EXTRAS</p>
-                <p className=" text-[32px] font-[500] text-[#606060]">
-                  4x Akara
-                </p>
-                <p className=" text-[32px] font-[500] text-[#606060]">
-                  2x Meatballs
-                </p>
-              </div>
+                {item.selectedOptions && item.selectedOptions?.length > 0 && (
+                  <div className=" my-[32px]">
+                    <p className=" text-[24px] font-[400] text-[#606060]">
+                      EXTRAS
+                    </p>
+                    {item.selectedOptions.map((option, optionIndex) => (
+                      <div key={optionIndex}>
+                        <p className=" text-[32px] font-[500] text-[#606060]">
+                          {option.name}- &#x20A6;
+                          {(option.price * item.quantity).toFixed(2)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-              <div className="">
-                <p className=" font-[500] text-[44px] text-[#606060]">
-                  &#x20A6;{totalPrice ? totalPrice : "0"}
-                </p>
+                <div className=" mt-[10px]">
+                  <p className=" font-[500] text-[44px] text-[#606060]">
+                    &#x20A6;
+                    {item.totalPrice.toFixed(2)}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
 
-        <div className=" mt-[60px] flex items-center justify-center gap-[16px]">
+        <div className="flex items-center justify-center text-[#121212] font-[600] text-[44px]">
+          <p className="   ">Total:</p>
+          <p className=" ">&#x20A6; {backetDetails?.totalPrice.toFixed(2)}</p>
+        </div>
+        <div className=" mt-[10px] flex items-center justify-center gap-[16px]">
           <p
-            className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#0B7F7C] py-[37px] px-[99px] border-[3px] border-[#0B7F7C]"
+            className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[11px] px-[20px] border-[3px] border-[#FF0000]"
             onClick={() => navigate(-1)}
           >
             Cancel
           </p>
           <p
-            className=" cursor-pointer inline font-[500] text-[32px] rounded-full border  bg-[#0B7F7C] border-[#0B7F7C] text-white py-[37px] px-[40px]"
+            className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
             onClick={() => setIsOpen(true)}
           >
             Proceed to Pay
@@ -119,7 +157,7 @@ export const Basket = () => {
             <img src={Close} alt="" className="" />
           </div>
 
-          <div className=" w-[854px] flex flex-col items-center justify-center ">
+          <div className=" max-w-[854px] flex flex-col items-center justify-center ">
             <div className=" px-[74px] text-center">
               <p className=" text-[44px] font-[500] text-[#121212] ">
                 Add a Tip
@@ -128,39 +166,23 @@ export const Basket = () => {
                 Thank you
               </p>
               <p className=" text-[32px] font-[500] text-[#121212]">
-                Your Subtotal: ₦ {totalPrice ? totalPrice : "0"}
+                {/* Your Subtotal: ₦ {totalPrice ? totalPrice : "0"} */}
               </p>
               <div className=" grid grid-cols-2 items-center gap-[24px] mt-[40px]">
-                <p
-                  className={`py-[39px] px-[134px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
-                    selectedPercentage === 10
-                      ? "bg-[#0B7F7C] border border-[#0B7F7C] text-white"
-                      : "border-2 border-[#606060]"
-                  }`}
-                  onClick={() => handlePercentageClick(10)}
-                >
-                  10%
-                </p>
-                <p
-                  className={`py-[39px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
-                    selectedPercentage === 15
-                      ? "bg-[#0B7F7C] border border-[#0B7F7C] text-white"
-                      : "border-2 border-[#606060]"
-                  }`}
-                  onClick={() => handlePercentageClick(15)}
-                >
-                  15%
-                </p>
-                <p
-                  className={`py-[39px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
-                    selectedPercentage === 20
-                      ? "bg-[#0B7F7C] border border-[#0B7F7C] text-white"
-                      : "border-2 border-[#606060]"
-                  }`}
-                  onClick={() => handlePercentageClick(20)}
-                >
-                  20%
-                </p>
+                {tipPercentages.map((tip, index) => (
+                  <p
+                    key={index}
+                    className={`py-[39px] px-[134px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
+                      selectedPercentage === tip
+                        ? "bg-[#FF0000] border border-[#FF0000] text-white"
+                        : "border-2 border-[#606060]"
+                    }`}
+                    onClick={() => handlePercentageClick(tip)}
+                  >
+                    {(tip * 100).toFixed(1)}%
+                  </p>
+                ))}
+
                 <p
                   className=" cursor-pointer text-center py-[39px]  border-2 border-[#606060] rounded-[10px] text-[#121212] text-[36px] font-[500]"
                   onClick={handleModal}
@@ -168,7 +190,10 @@ export const Basket = () => {
                   Custom
                 </p>
               </div>
-              <div className=" mt-[24px] cursor-pointer" onClick={handleNoTip}>
+              <div
+                className=" mt-[24px] cursor-pointer"
+                onClick={handleNoTipClick}
+              >
                 <p className="text-center py-[39px]  border-2 border-[#606060] rounded-[10px] text-[#121212] text-[36px] font-[500]">
                   No Tip
                 </p>
@@ -197,20 +222,20 @@ export const Basket = () => {
                 className="  border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
                 type="number"
                 placeholder="Enter Tip"
-                value={tip}
-                onChange={handleTipChange}
+                value={customAmount !== null ? customAmount.toString() : ""}
+                onChange={handleCustomAmountChange}
               />
 
               <div className=" mt-[25px]">
                 <p
-                  className=" px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#0B7F7C] text-[16px] font-[500] cursor-pointer"
+                  className=" px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
                   onClick={() => setTipModal(false)}
                 >
                   Cancel
                 </p>
                 <p
                   className={`px-[24px] py-[10px] ${
-                    !tip ? " bg-[#85C0BE]" : "bg-[#0B7F7C] cursor-pointer"
+                    !tip ? " bg-[#85C0BE]" : "bg-[#FF0000] cursor-pointer"
                   } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] `}
                   onClick={tip ? handleNext : undefined}
                 >

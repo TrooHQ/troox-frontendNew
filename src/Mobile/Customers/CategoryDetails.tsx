@@ -213,7 +213,7 @@ export const CategoryDetails = () => {
                 <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
               </div>
               <Link to="/basket">
-                <p className="text-[16px] font-[500]">Add to basket</p>
+                <p className="text-[16px] font-[500]">View Basket</p>
               </Link>
             </div>
           </div>

@@ -7,19 +7,24 @@ interface BusinessDetails {
   _id: number;
   business_logo: string;
   tableNumber: string;
+  URL: string;
 }
 
 interface BusinessState {
+  _id: string | null;
   businessIdentifier: string | null;
   groupName: string;
   tableNo: string;
+  URL: string;
   businessDetails: BusinessDetails | null;
 }
 
 const initialState: BusinessState = {
+  _id: null,
   businessIdentifier: null,
   groupName: "default_group_name",
   tableNo: "",
+  URL: "",
   businessDetails: null,
 };
 
@@ -35,6 +40,9 @@ const businessSlice = createSlice({
     },
     setTableNo(state, action: PayloadAction<string>) {
       state.tableNo = action.payload;
+    },
+    setURL(state, action: PayloadAction<string>) {
+      state.URL = action.payload;
     },
     setBusinessDetails(state, action: PayloadAction<BusinessDetails>) {
       state.businessDetails = action.payload;
@@ -52,6 +60,7 @@ export const {
   setBusinessIdentifier,
   setGroupName,
   setTableNo,
+  setURL,
   setBusinessDetails,
   resetBusinessDetails,
 } = businessSlice.actions;

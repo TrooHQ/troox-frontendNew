@@ -8,10 +8,15 @@ import Cash from "../assets/Cash.svg";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { clearBasket } from "../../slices/BasketSlice";
-import { resetBusinessDetails } from "../../slices/businessSlice";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export const SelectPayment = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handlePaymentMethodChange = (value: string) => {
@@ -19,15 +24,84 @@ export const SelectPayment = () => {
   };
 
   const basketDetails = useSelector((state: RootState) => state.basket);
+  const details = useSelector((state: RootState) => state);
+  console.log(details);
+
+  const business = useSelector((state: RootState) => state.business);
+
   const totalPrice = basketDetails?.totalPrice ?? 0;
   const tip = basketDetails?.tip ?? 0;
   const finalTotal = totalPrice + tip;
   console.log(finalTotal);
+  console.log(basketDetails);
 
-  const handlePayment = () => {
-    dispatch(clearBasket());
-    dispatch(resetBusinessDetails());
-    navigate("");
+  const userDetails = useSelector((state: RootState) => state.user);
+
+  const items = basketDetails.items.map((item) => ({
+    id: item.id,
+    quantity: item.quantity,
+    totalPrice: item.totalPrice,
+    menuItem: {
+      _id: item.menuItem._id,
+      menu_category_name: item.menuItem.menu_category_name,
+      menu_group_name: item.menuItem.menu_group_name,
+      menu_item_name: item.menuItem.menu_item_name,
+      menu_item_price: item.menuItem.menu_item_price,
+      menu_item_image: item.menuItem.menu_item_image,
+    },
+    name: item.name,
+    selectedOptions: item.selectedOptions.map((option) => ({
+      name: option.name,
+      price: option.price,
+    })),
+    tableNumber: item.tableNumber,
+  }));
+  const payload = {
+    businessIdentifier: business?.businessIdentifier,
+    customerName: basketDetails.customerName,
+    customerTableNumber: business?.tableNo,
+    items: items,
+    totalPrice: basketDetails.totalPrice,
+    totalQuantity: basketDetails.totalQuantity,
+  };
+  const token = userDetails?.userData?.token;
+  const handlePayment = async () => {
+    try {
+      // if (!password || !confirmPassword || !token) {
+      //   setError("All fields are required!");
+      //   return;
+      // }
+
+      setLoading(true);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoading(false);
+      console.log(response.data);
+      toast.success("Order has been Made successfully");
+      dispatch(clearBasket());
+      // dispatch(resetBusinessDetails());
+      navigate("/receipt");
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="  ">
@@ -94,12 +168,14 @@ export const SelectPayment = () => {
           </div>
         </div>
 
-        <div
-          className=" bg-[#121212] rounded-[10px] py-[13px] text-center mt-[72px] cursor-pointer"
-          onClick={handlePayment}
-        >
-          <p className=" text-[14px] font-[400] text-white">Pay</p>
-        </div>
+        {!loading && (
+          <div
+            className=" bg-[#121212] rounded-[10px] py-[13px] text-center mt-[72px] cursor-pointer"
+            onClick={handlePayment}
+          >
+            <p className=" text-[14px] font-[400] text-white">Pay</p>
+          </div>
+        )}
       </div>
     </div>
   );

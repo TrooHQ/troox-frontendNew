@@ -13,6 +13,7 @@ import {
   setBusinessDetails,
   setGroupName,
   setTableNo,
+  setURL,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
 
@@ -21,15 +22,20 @@ const StartOrder = () => {
 
   const userDetails = useSelector((state: RootState) => state.user);
 
+  const dispatch = useDispatch();
   const token = userDetails?.userData?.token;
 
   const queryParams = new URLSearchParams(location.search);
+  const fullUrl =
+    window.location.origin +
+    location.pathname +
+    location.search +
+    location.hash;
+  sessionStorage.setItem("url", fullUrl);
 
   const business_identifier = queryParams.get("business_identifier");
   const tableNo = queryParams.get("table");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (business_identifier && tableNo) {
@@ -37,6 +43,7 @@ const StartOrder = () => {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
       dispatch(setTableNo(tableNo));
+      dispatch(setURL(fullUrl));
       console.log(`Table: ${tableNo}`);
     }
 
