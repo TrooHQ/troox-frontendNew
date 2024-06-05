@@ -89,64 +89,68 @@ export const Basket = () => {
             className=" drop-shadow border border-[#E7E7E7] max-h-[537px] mt-[10px] max-w-[960px] mx-auto rounded-[10px]"
             key={index}
           >
-            <div className="  grid items-center">
-              <div className=" px-[40px]">
-                <div className=" grid grid-cols-3 place-items-center">
-                  <p className=" text-[44px] text-[#606060] font-[500] ">
-                    {item?.name}
-                  </p>
+            <div className="  grid items-center px-[40px] ">
+              <div className=" grid grid-cols-4 place-items-start text-start">
+                <p className=" text-[44px] text-[#000000] font-[500]  col-span-2 ">
+                  {item?.name}
+                </p>
 
-                  <p className=" text-[44px] text-[#606060] font-[500] ">
-                    x{item?.quantity}
+                <p className=" text-[44px] text-[#000000] font-[500] ">
+                  x{item?.quantity}
+                </p>
+                <p className=" text-[44px] text-[#000000] font-[500] ">
+                  &#x20A6;
+                  {item.menuItem.menu_item_price.toLocaleString()}
+                </p>
+              </div>
+
+              {item.selectedOptions && item.selectedOptions?.length > 0 && (
+                <div className=" my-[32px]">
+                  <p className=" text-[30px] font-[400] text-[#000000] font-bold">
+                    Modifiers:
                   </p>
-                  <p className=" text-[44px] text-[#606060] font-[500] ">
-                    &#x20A6;
-                    {item.menuItem.menu_item_price.toLocaleString()}
-                  </p>
+                  {item.selectedOptions.map((option, optionIndex) => (
+                    <div
+                      key={optionIndex}
+                      className=" flex items-center gap-[20px]"
+                    >
+                      <p className=" text-[32px] font-[500] text-[#606060]">
+                        {option.name} -
+                      </p>
+                      <p className="text-[32px] font-[500] text-[#606060]">
+                        &#x20A6;
+                        {(option.price * item.quantity).toLocaleString()}
+                      </p>
+                    </div>
+                  ))}
                 </div>
+              )}
 
-                {item.selectedOptions && item.selectedOptions?.length > 0 && (
-                  <div className=" my-[32px]">
-                    <p className=" text-[24px] font-[400] text-[#606060]">
-                      MODIFIERS
-                    </p>
-                    {item.selectedOptions.map((option, optionIndex) => (
-                      <div key={optionIndex}>
-                        <p className=" text-[32px] font-[500] text-[#606060]">
-                          {option.name}- &#x20A6;
-                          {(option.price * item.quantity).toLocaleString()}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className=" mt-[10px]">
-                  <p className=" font-[500] text-[44px] text-[#000000]">
-                    Sub Total: &#x20A6;
-                    {item.totalPrice.toLocaleString()}
-                  </p>
-                </div>
+              <div className=" mt-[10px]">
+                <p className=" text-[40px] text-[#000000] font-[500]">
+                  Sub Total: &#x20A6;
+                  {item.totalPrice.toLocaleString()}
+                </p>
               </div>
             </div>
           </div>
         ))}
 
-        <div className="flex items-center justify-center text-[#121212] font-[600] text-[44px]">
+        <div className="flex items-center justify-center text-[#000000] font-[600] text-[44px] my-[20px]">
           <p className="   ">To Pay:</p>
           <p className=" ">
-            &#x20A6; {backetDetails?.totalPrice.toLocaleString()}
+            &#x20A6;{backetDetails?.totalPrice.toLocaleString()}
           </p>
         </div>
         <div className=" mt-[10px] flex items-center justify-center gap-[16px]">
           <p
-            className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[11px] px-[20px] border-[3px] border-[#FF0000]"
+            className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[20px] px-[40px] border-[3px] border-[#FF0000]"
             onClick={() => navigate(-1)}
           >
             Cancel
           </p>
           <p
-            className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+            className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[20px] px-[40px]"
             onClick={() => setIsOpen(true)}
           >
             Proceed to Pay
@@ -176,17 +180,17 @@ export const Basket = () => {
               </p>
               <div className=" grid grid-cols-2 items-center gap-[24px] mt-[40px]">
                 {tipPercentages.map((tip, index) => (
-                  <p
+                  <div
                     key={index}
-                    className={`py-[39px] px-[134px] text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
+                    className={`py-[39px] px-[134px] flex items-center  justify-center text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
                       selectedPercentage === tip
                         ? "bg-[#FF0000] border border-[#FF0000] text-white"
                         : "border-2 border-[#606060]"
                     }`}
                     onClick={() => handlePercentageClick(tip)}
                   >
-                    {(tip * 100).toFixed(1)}%
-                  </p>
+                    <p className=" text-center"> {(tip * 100).toFixed(1)}%</p>
+                  </div>
                 ))}
 
                 <p
