@@ -42,7 +42,9 @@ const BeginOrder = () => {
     location.hash;
   sessionStorage.setItem("url", fullUrl);
 
-  const business_identifier = queryParams.get("business_identifier");
+  const id = "666085ea91669b9c7e838c22";
+  const business_identifier = id;
+  // const business_identifier = queryParams.get("business_identifier");
   const tableNo = queryParams.get("table");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
