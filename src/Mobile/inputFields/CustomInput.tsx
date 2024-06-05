@@ -8,6 +8,7 @@ interface CustomInputProps {
   maxLength?: number;
   onChange: (value: string) => void;
   textSize?: string;
+  labelSize?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -18,6 +19,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   maxLength,
   onChange,
   textSize,
+  labelSize,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -41,7 +43,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="relative">
         <input
           type={type}
-          className={`border bg-transparent border-grey200 p-2 text-grey500 focus:outline-purple500 focus:border-none w-full rounded ${
+          className={`border bg-transparent border-grey200 p-2 text-grey500 focus:outline-[#FF0000] focus:border-none w-full rounded ${
             textSize ? textSize : "text-[16px]"
           } ${error ? "border-red-500" : ""}`}
           value={value}
@@ -53,8 +55,10 @@ const CustomInput: React.FC<CustomInputProps> = ({
         />
         <label
           className={`absolute transition-all duration-300 cursor-text ${
+            labelSize ? labelSize : "text-[14px]"
+          } ${
             isFocused
-              ? "text-[14px] -top-3 left-2 bg-[#EFEFEF] px-2 text-[#000000]"
+              ? " -top-3 left-2 bg-[#EFEFEF] px-2 text-[#000000]"
               : "top-2 left-4  text-grey200 text-[14px]"
           } ${error ? "text-red-500" : ""}`}
           onClick={handleLabelClick}
