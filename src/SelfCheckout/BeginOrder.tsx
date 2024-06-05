@@ -1,4 +1,4 @@
-import HeroImage from "./assets/rice_.png";
+import HeroImage from "./assets/selfCheckDisplayImg.png";
 import Visa from "./assets/visa.png";
 import Mastercard from "./assets/mastercard.png";
 import Header from "./Header";
@@ -116,17 +116,18 @@ const BeginOrder = () => {
 
       {isOpen && (
         <div className="">
-          <div className=" max-w-[818px]  mx-auto mt-[50px]">
-            <label htmlFor="" className=" font-[500] text-[40px]">
+          <div className=" max-w-[818px]  mx-auto mt-[50px] ">
+            <label htmlFor="" className=" font-[500] text-[40px] mx-[20px]">
               Enter your first name and last name initial.
             </label>
-            <div className="mt-[10px] mb-[50px] font-bold">
+            <div className="mt-[10px] mb-[50px] font-bold mx-[20px]">
               <CustomInput
                 type="text"
                 label="Enter your first name and last name iniital"
                 value={userName}
                 onChange={handleUserNameChange}
                 textSize="text-[60px]"
+                labelSize="text-[20px]"
               />
             </div>
 
@@ -140,7 +141,7 @@ const BeginOrder = () => {
                 NEXT
               </p>
             </div>
-            <p className=" text-[32px] font-[400] text-black mt-[40px]">
+            <p className=" text-[32px] font-[400] text-black mt-[40px] px-[10px]">
               You will receive a text message when your order is ready
             </p>
           </div>
@@ -150,10 +151,10 @@ const BeginOrder = () => {
       {isTableOpen && (
         <div className="">
           <div className=" max-w-[818px]  mx-auto mt-[50px]">
-            <label htmlFor="" className=" font-[500] text-[40px]">
+            <label htmlFor="" className=" font-[500] text-[40px] mx-[20px]">
               Enter your phone number
             </label>
-            <div className="mt-[50px] mb-[100px]">
+            <div className="mt-[50px] mb-[100px] mx-[20px]">
               <CustomInput
                 type="number"
                 label=""
@@ -180,7 +181,7 @@ const BeginOrder = () => {
                 </p>
               </Link>
             </div>
-            <p className=" text-[32px] font-[400] text-black mt-[40px]">
+            <p className=" text-[32px] font-[400] text-black mt-[40px] px-[10px]">
               You will receive a text message when your order is ready
             </p>
           </div>
