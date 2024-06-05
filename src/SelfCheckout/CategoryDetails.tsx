@@ -26,15 +26,14 @@ export const CategoryDetails = () => {
   const [selectedGroup, setSelectedGroup] = useState("");
   const { id } = useParams();
 
-  console.log("Selected Group:", selectedGroup);
   const [counts, setCounts] = useState<number>(1);
 
-  useEffect(() => {
-    const storedCount = sessionStorage.getItem("count");
-    if (storedCount !== null) {
-      setCounts(Number(storedCount));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedCount = sessionStorage.getItem("count");
+  //   if (storedCount !== null) {
+  //     setCounts(Number(storedCount));
+  //   }
+  // }, []);
 
   const incrementCount = () => {
     const updatedCount = counts + 1;
@@ -79,9 +78,9 @@ export const CategoryDetails = () => {
         response.data.data
       );
       setMenuGroup(response.data.data);
-      if (response.data.data && response.data.data.length > 0) {
-        setSelectedGroup(response.data.data[0].name);
-      }
+      // if (response.data.data && response.data.data.length > 0) {
+      //   setSelectedGroup(response.data.data[0].name);
+      // }
     } catch (error) {
       console.error("Error getting Business Details:", error);
     }

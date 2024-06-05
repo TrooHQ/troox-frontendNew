@@ -120,7 +120,7 @@ const BeginOrder = () => {
             <label htmlFor="" className=" font-[500] text-[40px] mx-[20px]">
               Enter your first name and last name initial.
             </label>
-            <div className="mt-[10px] mb-[50px] font-bold mx-[20px]">
+            <div className="mt-[10px] mb-[50px]  mx-[20px]">
               <CustomInput
                 type="text"
                 label="Enter your first name and last name iniital"

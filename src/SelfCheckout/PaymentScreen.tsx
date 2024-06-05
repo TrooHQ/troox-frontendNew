@@ -118,7 +118,7 @@ const PaymentScreen = () => {
         <p className=" text-[#121212] text-[44px] font-[500]">
           Payment Options
         </p>
-        <p className=" text-[#929292] text-[32px] font-[500] mt-[56px]">
+        <p className=" text-[#000000] text-[32px] font-[500] mt-[56px]">
           Balance Due:{" "}
           <span className=" text-[#121212]">
             ₦ {totalPrice ? totalPrice.toLocaleString() : "0"}
@@ -126,11 +126,11 @@ const PaymentScreen = () => {
         </p>
         <p className=" text-[#000000] text-[32px] font-[500]">
           Tip: ₦ {}{" "}
-          <span className=" text-[#929292]">{tip.toLocaleString() || 0} </span>
+          <span className=" text-[#000000]">{tip.toLocaleString() || 0} </span>
         </p>
 
         <hr className=" border border-[#414141] mb-[16px] mt-[24px]" />
-        <p className="text-[#929292] text-[32px] font-[600]">
+        <p className="text-[#000000] text-[32px] font-[600]">
           Pay:{" "}
           <span className="text-[#121212]">
             ₦{(totalPrice + (tip ?? 0)).toLocaleString()}
