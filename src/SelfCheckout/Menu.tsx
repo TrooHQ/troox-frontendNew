@@ -63,21 +63,22 @@ const Menu = () => {
             Menu Category
           </p>
         </div>
-        <div className=" px-[21px] items-center place-items-center">
+        <div className=" px-[21px] items-center place-items-center grid grid-cols-3 gap-[24px] mt-[10px]">
           {menuCategory.map((menu) => (
             <Link to={`/category-details/${menu?.name}`}>
-              <div className="mt-[24px] max-w-[400px] text-center border-2 border-[#B6B6B6] rounded-[10px] drop-shadow-md">
-                <p className=" text-[32px] font-[500] text-[#121212]  uppercase py-[22px]">
+              <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
+                <div className=" h-[200px] w-[200px] text-center bg-[#FF0000] border-[8px] border-[#FFE100] rounded-full drop-shadow-md">
+                  <div className="overflow-hidden h-full w-full rounded-full">
+                    <img
+                      src={menu.image}
+                      alt=""
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                </div>
+                <p className=" text-center text-[20px] font-[500] text-[#414141]  uppercase py-[22px] font-GeneralSans">
                   {menu.name}
                 </p>
-
-                <div className="rounded-b-[10px] overflow-hidden">
-                  <img
-                    src={menu.image}
-                    alt=""
-                    className="object-cover w-full"
-                  />
-                </div>
               </div>
             </Link>
           ))}
