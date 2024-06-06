@@ -496,7 +496,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className=" bg-[#EFEFEF] h-screen relative">
+    <div className=" bg-[#EFEFEF]  relative">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
