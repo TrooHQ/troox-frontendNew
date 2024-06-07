@@ -9,7 +9,6 @@ interface FAQItem {
 }
 const BusinessProfiles: React.FC = () => {
   const navigate = useNavigate();
-
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqData: FAQItem[] = [

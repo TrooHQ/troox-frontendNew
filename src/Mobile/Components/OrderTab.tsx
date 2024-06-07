@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import chatMessage from "../assets/chat-message.svg";
 import dayjs from "dayjs";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 interface TabItem {
   id: number;
   label: string;
@@ -10,7 +12,7 @@ interface TabItem {
 }
 
 interface Ticket {
-  ordered_by: string;
+  customer_name: string;
   menu_items: MenuItem[];
   orders: string[];
   total_price: number[];
@@ -19,16 +21,27 @@ interface Ticket {
   _id: number;
 }
 
+interface SelectedOption {
+  name: string;
+  price: number;
+}
 interface MenuItem {
   name: string;
   quantity: string;
+  selectedOptions: SelectedOption[];
 }
 const OrderTab: React.FC = () => {
   const tabItems: TabItem[] = [
     { id: 1, label: "Taken", content: renderMenuCategory },
     { id: 2, label: "Ready", content: renderMenuCategoryReady },
   ];
-  const token = sessionStorage.getItem("token");
+
+  // const sortedTickets = [...tickets].sort(
+  //   (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+  // );
+
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
   const [loading, setLoading] = useState<boolean>(false);
   const [loader, setLoader] = useState<boolean>(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -115,68 +128,87 @@ const OrderTab: React.FC = () => {
           loading ? (
             <p>Loading...</p>
           ) : (
-            <div className=" grid gap-[16px]">
-              {tickets.map((ticket, index) => (
-                <div
-                  className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
-                  key={index}
-                >
-                  <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
-                    <div className=" flex gap-[1px] items-center">
-                      <p className="capitalize">
-                        {ticket.ordered_by
-                          .split(" ")
-                          .map((name, index) =>
-                            index === 0
-                              ? name
-                              : index === 1
-                              ? ` ${name.charAt(0).toUpperCase()}.`
-                              : ""
-                          )}
-                      </p>
-                      <p className="capitalize">
-                        <span className=" px-[4px]">|</span>#20
-                        <span className=" px-[4px]">|</span>
-                      </p>
-                      <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+            <div className="grid gap-[16px]">
+              {tickets
+                .sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                )
+                .map((ticket, index) => (
+                  <div
+                    className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
+                    key={index}
+                  >
+                    <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                      <div className="flex gap-[1px] items-center">
+                        <p className="capitalize">
+                          {ticket.customer_name
+                            .split(" ")
+                            .map((name, nameIndex) =>
+                              nameIndex === 0
+                                ? name
+                                : nameIndex === 1
+                                ? ` ${name.charAt(0).toUpperCase()}.`
+                                : ""
+                            )}
+                        </p>
+                        <p className="capitalize">
+                          <span className="px-[4px]">|</span>#20
+                          <span className="px-[4px]">|</span>
+                        </p>
+                        <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+                      </div>
+
+                      <p> &#x20A6;{ticket.total_price}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="font-[400] text-[16px] mt-[8px] capitalize">
+                        {ticket.menu_items.map((item, itemIndex) => (
+                          <>
+                            {" "}
+                            <div key={itemIndex}>
+                              <p className="text-[16px] font-[400] text-[#121212]">
+                                {item.quantity || 1}x{" "}
+                                <span className="p-[5px]">{item.name}</span>
+                              </p>
+                            </div>
+                            <div className="">
+                              {item?.selectedOptions?.map((item, index) => (
+                                <div
+                                  key={index}
+                                  className=" flex items-center justify-between"
+                                >
+                                  <p>{item?.name}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        ))}
+                      </div>
+                      <div>
+                        <img src={chatMessage} alt="" />
+                      </div>
                     </div>
 
-                    <p>#{ticket.total_price}</p>
-                  </div>
-                  <div className=" flex items-center justify-between">
-                    <div className="font-[400] text-[16px] mt-[8px] capitalize">
-                      {ticket.menu_items.map((item, index) => (
-                        <div key={index}>
-                          <p className=" text-[16px] font-[400] text-[#121212]">
-                            {item.quantity || 1}x{" "}
-                            <span className=" p-[5px]">{item.name}</span>
-                          </p>
-                        </div>
-                      ))}
+                    <div className="grid grid-cols-2 gap-[16px] items-center">
+                      <button
+                        className="text-[#B3312A] text-center font-[500] text-[14px] border border-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px]"
+                        disabled={loader}
+                        onClick={() => updateStatus(ticket._id, "cancel")}
+                      >
+                        Reject
+                      </button>
+                      <button
+                        className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px]"
+                        disabled={loader}
+                        onClick={() => updateStatus(ticket._id, "accept")}
+                      >
+                        Accept
+                      </button>
                     </div>
-                    <div className="">
-                      <img src={chatMessage} alt="" />
-                    </div>
                   </div>
-
-                  <div className=" grid grid-cols-2 gap-[16px] items-center">
-                    <button
-                      className="text-[#B3312A] text-center font-[500] text-[14px] border border-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
-                      disabled={loader}
-                      onClick={() => updateStatus(ticket._id, "cancel")}
-                    >
-                      Reject
-                    </button>
-                    <button
-                      className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
-                      disabled={loader}
-                      onClick={() => updateStatus(ticket._id, "accept")}
-                    >
-                      Accept
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           )
         ) : (
@@ -195,54 +227,69 @@ const OrderTab: React.FC = () => {
               <p>Loading...</p>
             ) : (
               <div className=" grid gap-[16px]">
-                {tickets.map((ticket, index) => (
-                  <div
-                    className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
-                    key={index}
-                  >
-                    <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
-                      <div className=" flex items-center gap-[1px]">
-                        <p className="capitalize">
-                          {ticket.ordered_by
-                            .split(" ")
-                            .map((name, index) =>
-                              index === 0
-                                ? name
-                                : index === 1
-                                ? ` ${name.charAt(0).toUpperCase()}.`
-                                : ""
-                            )}
-                        </p>
-                        <p className="capitalize">
-                          <span className=" px-[4px]">|</span>#20
-                          <span className=" px-[4px]">|</span>
-                        </p>
-                        <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
-                      </div>
-                      <p>#{ticket.total_price}</p>
-                    </div>
-                    <div className="font-[400] text-[16px] mt-[8px] capitalize">
-                      <div className="">
-                        {ticket.menu_items.map((item, index) => (
-                          <div key={index}>
-                            <p className=" text-[16px] font-[400] text-[#121212]">
-                              {item.quantity || 1}x{" "}
-                              <span className=" p-[5px]">{item.name}</span>
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      className="text-white text-center font-[500] text-[14px] bg-[#11AE16] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
-                      disabled={loader}
-                      onClick={() => updateStatus(ticket._id, "serve")}
+                {tickets
+                  .sort(
+                    (a, b) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
+                  .map((ticket, index) => (
+                    <div
+                      className="rounded-[5px] px-[24px] py-[16px] bg-[#E7E7E7] border"
+                      key={index}
                     >
-                      Serve
-                    </button>
-                  </div>
-                ))}
+                      <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
+                        <div className=" flex items-center gap-[1px]">
+                          <p className="capitalize">
+                            {ticket?.customer_name
+                              .split(" ")
+                              .map((name, index) =>
+                                index === 0
+                                  ? name
+                                  : index === 1
+                                  ? ` ${name.charAt(0).toUpperCase()}.`
+                                  : ""
+                              )}
+                          </p>
+                          <p className="capitalize">
+                            <span className=" px-[4px]">|</span>#20
+                            <span className=" px-[4px]">|</span>
+                          </p>
+                          <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
+                        </div>
+                        <p>#{ticket.total_price}</p>
+                      </div>
+                      <div className="font-[400] text-[16px] mt-[8px] capitalize">
+                        <div className="">
+                          {ticket.menu_items.map((item, index) => (
+                            <>
+                              <div key={index}>
+                                <p className=" text-[16px] font-[400] text-[#121212]">
+                                  {item.quantity || 1}x{" "}
+                                  <span className=" p-[5px]">{item.name}</span>
+                                </p>
+                              </div>
+                              <div className="">
+                                {item?.selectedOptions?.map((item, index) => (
+                                  <div key={index}>
+                                    <p>{item.name}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          ))}
+                        </div>
+                      </div>
+
+                      <button
+                        className="text-white text-center font-[500] text-[14px] bg-[#11AE16] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px] "
+                        disabled={loader}
+                        onClick={() => updateStatus(ticket._id, "serve")}
+                      >
+                        Serve
+                      </button>
+                    </div>
+                  ))}
               </div>
             )
           ) : (

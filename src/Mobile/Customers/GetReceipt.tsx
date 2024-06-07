@@ -2,6 +2,8 @@ import TopMenuNav from "./TopMenuNav";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Restaurant_Logo.svg";
 export const GetReceipt = () => {
+  const url = sessionStorage.getItem("url");
+
   return (
     <div className="  ">
       <TopMenuNav exploreMenuText="Select Payment" />
@@ -32,7 +34,7 @@ export const GetReceipt = () => {
             </p>
           </div>
           {/* </Link> */}
-          <Link to="/">
+          <Link to={`${url}`}>
             <div className=" flex items-center justify-center">
               <p className=" border border-[#0B7F7C] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#0B7F7C]">
                 Order more

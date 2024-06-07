@@ -1,9 +1,9 @@
-import Logo from "./assets/GreenLogo.svg";
+import Logo from "./assets/chickenRepublic.png";
 
 const Header = () => {
   return (
     <div className="">
-      <div className=" h-[448px] bg-[#0B7F7C] flex items-center justify-center">
+      <div className=" h-[236px] bg-[#FF0000] flex items-center justify-center">
         <img src={Logo} alt="" />
       </div>
     </div>

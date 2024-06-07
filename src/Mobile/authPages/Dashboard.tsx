@@ -4,13 +4,20 @@ import setting from "../assets/settings.svg";
 import orderIcon from "../assets/order2.svg";
 import restaurantIcon from "../assets/restaurant_FILL0_wght300_GRAD0_opsz24.svg";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const Dashboard = () => {
+  const userDetails = useSelector((state: RootState) => state.user);
+  console.log(userDetails?.userData);
+
   return (
     <div className=" my-[10px] mx-[10px]">
       <div className=" flex items-center gap-[8px] py-[16px] border-b">
         <img src={logo} alt="" />
-        <p className=" text-20px font-[400] text-grey500">Restaurant Name</p>
+        <p className=" text-20px font-[400] text-grey500">
+          {userDetails?.userData?.business_name}
+        </p>
       </div>
 
       <Link to="/report">

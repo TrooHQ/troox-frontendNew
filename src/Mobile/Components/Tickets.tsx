@@ -10,6 +10,8 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface Ticket {
   ordered_by: string;
@@ -40,7 +42,8 @@ const Tickets = () => {
     setTicketModal(true);
   };
 
-  const token = sessionStorage.getItem("token");
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
 
   const getTicket = async () => {
     // setLoading(true);

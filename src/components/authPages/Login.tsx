@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { setEmail, setPassword, selectEmail, selectPassword } from "../../slices/authSlice.js";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.js";
+import { setUserData } from "../../slices/UserSlice.js";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -40,18 +41,12 @@ const Login = () => {
       });
       setLoading(false);
       console.log(response.data);
-      sessionStorage.setItem("email_verified", response.data.email_verified);
-      sessionStorage.setItem("token", response.data.token);
-      sessionStorage.setItem("name", response.data.admin_name);
-      sessionStorage.setItem("businessName", response.data.business_name);
-      sessionStorage.setItem("id", response.data.id);
-      sessionStorage.setItem("userType", response.data.user_role);
+      dispatch(setUserData(response.data));
       const userType = response.data.user_role;
       toast.success(response.data.message);
       if (userType === "employee") {
         history("/employee-dashboard");
       } else if (userType === "admin") {
-        // history("/dashboard");
         if (response.data.has_created_menu_item == false) {
           history("/overview");
         } else {
