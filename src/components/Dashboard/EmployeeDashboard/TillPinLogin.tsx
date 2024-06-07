@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TillOnboardingMobile from "../../till/onboarding/mobile";
 
 const TillPinLogin = () => {
-  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
   const [pin, setPin] = useState<string[]>(["", "", "", ""]);
 
   const [activeIndex, setActiveIndex] = useState(0);

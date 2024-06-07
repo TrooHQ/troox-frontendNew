@@ -1,4 +1,3 @@
-import React from "react";
 import Logo from "../../assets/trooLogo.svg";
 import { CheckCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";

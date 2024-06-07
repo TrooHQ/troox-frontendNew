@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ChangeEvent } from "react";
+import React, { useRef, useEffect, ChangeEvent } from "react";
 import { PinInputProps } from "../comp/common.types";
 import SetupHeader from "../comp/SetupHeader";
 import { ArrowBack } from "@mui/icons-material";
@@ -8,12 +8,7 @@ interface TillOnboardingMobileProps extends PinInputProps {
   onNavigate: (path: string) => void;
 }
 
-const TillOnboardingMobile: React.FC<TillOnboardingMobileProps> = ({
-  pin,
-  setPin,
-  setActiveIndex,
-  onNavigate,
-}) => {
+const TillOnboardingMobile: React.FC<TillOnboardingMobileProps> = ({ pin, setPin, onNavigate }) => {
   const inputRefs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import TopMenuNav from "../TopMenuNav";
-import EmployeeDashboardLayout from "./EmployeeDashboardLayout";
 
 const Till: React.FC = () => {
   return (
