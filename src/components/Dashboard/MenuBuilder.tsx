@@ -33,13 +33,7 @@ interface MenuItem {
 }
 
 const MenuBuilder = () => {
-  const Menu: string[] = [
-    "coffee",
-    "soups",
-    "specials",
-    "desert",
-    "happy meal",
-  ];
+  const Menu: string[] = ["coffee", "soups", "specials", "desert", "happy meal", "drinks"];
   const arrayDummy: MenuItem[] = [
     {
       title: "coffee",
@@ -47,21 +41,21 @@ const MenuBuilder = () => {
         {
           type: "coffee",
           data: [
-            { img: "", price: "200-300", name: "brown coffee" },
+            { img: "", price: "N1800 - N2000", name: "brown coffee" },
             {
               img: "",
-              price: "100-500",
-              name: "brown coffee1",
+              price: "N1800 - N2000",
+              name: "Cappuccino",
             },
             {
               img: "",
-              price: "800-900",
-              name: "brown coffee2",
+              price: "N1800 - N2000",
+              name: "latte",
             },
             {
               img: "",
-              price: "200-400",
-              name: "brown coffee3",
+              price: "N1800 - N2000",
+              name: "Macchiato",
             },
           ],
         },
@@ -70,22 +64,22 @@ const MenuBuilder = () => {
           data: [
             {
               img: "",
-              price: "100-200",
+              price: "N1800 - N2000",
               name: "spanish coffee",
             },
             {
               img: "",
-              price: "200-500",
+              price: "N1800 - N2000",
               name: "spanish coffee1",
             },
             {
               img: "",
-              price: "300-500",
+              price: "N1800 - N2000",
               name: "spanish coffee1",
             },
             {
               img: "",
-              price: "400-500",
+              price: "N1800 - N2000",
               name: "spanish coffee1",
             },
           ],
@@ -93,19 +87,19 @@ const MenuBuilder = () => {
         {
           type: "latte",
           data: [
-            { img: "", price: "100-550", name: "latte special" },
-            { img: "", price: "150-750", name: "latte special1" },
-            { img: "", price: "200-550", name: "latte special2" },
-            { img: "", price: "200-450", name: "latte special3" },
+            { img: "", price: "N1800 - N2000", name: "latte special" },
+            { img: "", price: "N1800 - N2000", name: "latte special1" },
+            { img: "", price: "N1800 - N2000", name: "latte special2" },
+            { img: "", price: "N1800 - N2000", name: "latte special3" },
           ],
         },
         {
           type: "expreso",
           data: [
-            { img: "", price: "450-500", name: "espreso Chocolate" },
-            { img: "", price: "300-500", name: "espreso Chocolate1" },
-            { img: "", price: "200-500", name: "espreso Chocolate2" },
-            { img: "", price: "100-500", name: "espreso Chocolate3" },
+            { img: "", price: "N1800 - N2000", name: "espreso Chocolate" },
+            { img: "", price: "N1800 - N2000", name: "espreso Chocolate1" },
+            { img: "", price: "N1800 - N2000", name: "espreso Chocolate2" },
+            { img: "", price: "N1800 - N2000", name: "espreso Chocolate3" },
           ],
         },
       ],
@@ -116,18 +110,18 @@ const MenuBuilder = () => {
         {
           type: "Egusi",
           data: [
-            { img: "", price: "1000-2000", name: "Fried Egusi" },
-            { img: "", price: "1500-2000", name: "Boiled Egusi" },
-            { img: "", price: "1300-2000", name: "Fried Egusi2" },
-            { img: "", price: "1700-2000", name: "Fried Egusi3" },
+            { img: "", price: "N1800 - N2000", name: "Fried Egusi" },
+            { img: "", price: "N1800 - N2000", name: "Boiled Egusi" },
+            { img: "", price: "N1800 - N2000", name: "Fried Egusi2" },
+            { img: "", price: "N1800 - N2000", name: "Fried Egusi3" },
           ],
         },
         {
           type: "Vegitable",
           data: [
-            { img: "", price: "1000-2000", name: "Boiled Vegitable" },
-            { img: "", price: "1500-2000", name: "fried Vegitable" },
-            { img: "", price: "1300-2000", name: "Stewed Vegitable2" },
+            { img: "", price: "N1800 - N2000", name: "Boiled Vegitable" },
+            { img: "", price: "N1800 - N2000", name: "fried Vegitable" },
+            { img: "", price: "N1800 - N2000", name: "Stewed Vegitable2" },
           ],
         },
       ],
@@ -138,9 +132,9 @@ const MenuBuilder = () => {
         {
           type: " chinese special",
           data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Vegitabele Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Chicken Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Beef Pizza" },
           ],
         },
       ],
@@ -151,9 +145,9 @@ const MenuBuilder = () => {
         {
           type: "desert Pizza",
           data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Vegitabele Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Chicken Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Beef Pizza" },
           ],
         },
       ],
@@ -164,22 +158,22 @@ const MenuBuilder = () => {
         {
           type: "happy meal Pizza",
           data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Vegitabele Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Chicken Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Beef Pizza" },
           ],
         },
       ],
     },
     {
-      title: "Drinks",
+      title: "drinks",
       data: [
         {
           type: "red wine",
           data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Vegitabele Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Chicken Pizza" },
+            { img: "", price: "N1800 - N2000", name: "Beef Pizza" },
           ],
         },
       ],
@@ -280,10 +274,7 @@ const MenuBuilder = () => {
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
-                <button
-                  className="text-[16px] flex items-center gap-[8px]"
-                  onClick={handleAddMenu}
-                >
+                <button className="text-[16px] flex items-center gap-[8px]" onClick={handleAddMenu}>
                   <img src={Add} alt="" /> Add new menu
                 </button>
               </div>
@@ -304,8 +295,7 @@ const MenuBuilder = () => {
                       onClick={() => getSubmenu(data)}
                       key={index}
                       className={`${
-                        activeMainMenu === data &&
-                        " bg-purple100 text-purple600 font-[500]"
+                        activeMainMenu === data && " bg-purple100 text-purple600 font-[500]"
                       }  text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
                       {data}{" "}
@@ -322,9 +312,7 @@ const MenuBuilder = () => {
                 <div className="mt-[24px] w-full border p-[16px]">
                   <div className=" flex gap-[16px] items-start">
                     <div className=" w-[204px]">
-                      <p className=" font-[400] text-[12px] text-[#606060]">
-                        Menu Group
-                      </p>
+                      <p className=" font-[400] text-[12px] text-[#606060]">Menu Group</p>
                       <div className="">
                         {subMenu.map((data, index) => (
                           <p
@@ -336,8 +324,7 @@ const MenuBuilder = () => {
                             key={index}
                             onClick={() => {
                               // @ts-ignore
-                              setSubmenuContent(data.data),
-                                setActiveSubMenu(data.type || null);
+                              setSubmenuContent(data.data), setActiveSubMenu(data.type || null);
                               // @ts-ignore
                               setMenuType(data.type);
                             }}
@@ -356,15 +343,13 @@ const MenuBuilder = () => {
                           onClick={handleAddMenuGroup}
                         >
                           <button className="text-[16px] flex items-center gap-[8px]">
-                            <img src={AddWhite} alt="" /> Add Menu Group
+                            <img src={AddWhite} alt="" /> Add menu group
                           </button>
                         </div>
                       </div>
                     </div>
                     <div className=" flex-grow space-y-[16px]">
-                      <p className=" font-[400] text-[12px] text-[#606060]">
-                        Menu Item
-                      </p>
+                      <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
                       <div className=" flex items-start justify-between ">
                         <p className=" text-[16px] font-[500] text-[#5855B3]">
                           {menuType || "Type"}
@@ -374,7 +359,7 @@ const MenuBuilder = () => {
                             className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
                             onClick={handleAddMenuItem}
                           >
-                            <img src={AddWhite} alt="" /> Add Menu Item
+                            <img src={AddWhite} alt="" /> Add menu item
                           </button>
                         </div>
                       </div>
@@ -386,9 +371,7 @@ const MenuBuilder = () => {
                                 <img src={CoffeeImg} alt="" />
 
                                 <div className="">
-                                  <p className=" text-[12px] font-[400] text-grey300">
-                                    Item
-                                  </p>
+                                  <p className=" text-[12px] font-[400] text-grey300">Item</p>
                                   <p className=" leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
                                     {data.name}
                                   </p>
@@ -398,9 +381,7 @@ const MenuBuilder = () => {
                                 </div>
                               </div>
                               <div className=" flex">
-                                <p className=" text-[16px] font-[500] text-grey500">
-                                  {data.price}
-                                </p>
+                                <p className=" text-[16px] font-[500] text-grey500">{data.price}</p>
                               </div>
                             </div>
                           </div>
@@ -412,7 +393,7 @@ const MenuBuilder = () => {
                             className="w-[196px] border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
                             onClick={handleAddMenuItem}
                           >
-                            <img src={AddWhite} alt="" /> Add Menu Item
+                            <img src={AddWhite} alt="" /> Add menu item
                           </button>
                         </div>
                       )}
@@ -485,9 +466,7 @@ const MenuBuilder = () => {
                             className="cursor-pointer inline border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
                             onClick={handleConfirmSaveModal}
                           >
-                            <button className=" text-[16px]">
-                              Save Modifier
-                            </button>
+                            <button className=" text-[16px]">Save Modifier</button>
                           </div>
                         </div>
                       </div>
@@ -511,9 +490,7 @@ const MenuBuilder = () => {
                       label="Enter menu name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     <CustomSelect2
@@ -525,15 +502,11 @@ const MenuBuilder = () => {
                       label="Menu code"
                       value=""
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("lastName", newValue)}
                     />
 
-                    <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
-                        Tags
-                      </p>
+                    {/* <div className="">
+                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">Tags</p>
                       <div className=" flex items-center gap-[8px] justify-center">
                         <img src={AddWhite} alt="" />
                         <div className=" flex-grow  ">
@@ -542,16 +515,14 @@ const MenuBuilder = () => {
                             label="Enter Tag Name"
                             value={userData.department}
                             error=""
-                            onChange={(newValue) =>
-                              handleInputChange("department", newValue)
-                            }
+                            onChange={(newValue) => handleInputChange("department", newValue)}
                           />
                         </div>
                         <p className=" hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[16px] px-[24px] py-[10px] rounded">
                           Create Tag
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -561,9 +532,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setIsModalOpen(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -588,9 +557,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={CheckCircle} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Changes Saved!
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Changes Saved!</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Changes have been saved successfully
                 </p>
@@ -598,10 +565,7 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={confirmSaveModal}
-            onClose={() => setConfirmSaveModal(false)}
-          >
+          <Modal isOpen={confirmSaveModal} onClose={() => setConfirmSaveModal(false)}>
             <div className=" w-[443px] px-[32px] py-[32px]">
               <div
                 className="flex items-center justify-end cursor-pointer"
@@ -610,9 +574,7 @@ const MenuBuilder = () => {
                 <img src={Close} alt="" className=" " />
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Save changes
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Save changes</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Do you want to save changes made to this menu?
                 </p>
@@ -636,9 +598,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={CheckCircle} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Changes Published!
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Changes Published!</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Changes have been published successfully
                 </p>
@@ -646,10 +606,7 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={confirmPublishModal}
-            onClose={() => setConfirmPublishModal(false)}
-          >
+          <Modal isOpen={confirmPublishModal} onClose={() => setConfirmPublishModal(false)}>
             <div className=" w-[443px] px-[32px] py-[32px]">
               <div
                 className="flex items-center justify-end cursor-pointer"
@@ -659,9 +616,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={PublishIcon} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Publish changes
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Publish changes</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Do you want to publish changes made to this menu?
                 </p>
@@ -675,15 +630,10 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={addModifierModar}
-            onClose={() => setAddModifierModal(false)}
-          >
+          <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
             <div className=" w-[539px] py-[32px] px-[52px]">
               <div className="">
-                <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
-                  Add modifier
-                </p>
+                <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Add modifier</p>
                 <hr className="border my-[24px] border-[#E7E7E7]" />
                 <div className=" flex items-center gap-[8px] justify-center">
                   <img src={AddWhite} alt="" />
@@ -693,9 +643,7 @@ const MenuBuilder = () => {
                       label="Enter modifier Name"
                       value={userData.department}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("department", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("department", newValue)}
                     />
                   </div>
                 </div>
@@ -706,9 +654,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddModifierModal(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -725,7 +671,7 @@ const MenuBuilder = () => {
 
           <Modal isOpen={addMenuGroup} onClose={() => setAddMenuGroup(false)}>
             <div
-              className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px] md:h-[600px] lg:h-screen overflow-y-scroll"
+              className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px] md:h-[600px] lg:h-[90vh] overflow-y-scroll"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               <div className=" ">
@@ -741,9 +687,7 @@ const MenuBuilder = () => {
                       label="Enter menu name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     <CustomSelect2
@@ -751,13 +695,10 @@ const MenuBuilder = () => {
                       placeholder="Channels"
                     />
 
-                    <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
+                    {/* <div className="">
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
                       <p className=" text-[14px] font-[400] text-grey500">
-                        Do you want this price to apply to all the items in this
-                        menu group?
+                        Do you want this price to apply to all the items in this menu group?
                       </p>
                       <div className="flex items-center mt-[8px]">
                         <input
@@ -767,14 +708,9 @@ const MenuBuilder = () => {
                           value="yes"
                           checked={selectedOption === "yes"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "yes" ? " bg-purple500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "yes" ? " bg-purple500" : ""}`}
                         />
-                        <label
-                          htmlFor="yes"
-                          className="mr-4  text-grey500 text-[16px] font-[400]"
-                        >
+                        <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
                         </label>
 
@@ -785,42 +721,31 @@ const MenuBuilder = () => {
                           value="no"
                           checked={selectedOption === "no"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "no" ? " bg-purple500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "no" ? " bg-purple500" : ""}`}
                         />
-                        <label
-                          htmlFor="no"
-                          className=" text-grey500 text-[16px] font-[400]"
-                        >
+                        <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
                         </label>
                       </div>
-                    </div>
+                    </div> */}
 
                     <CustomInput
                       type="text"
                       label="Enter price"
                       value=""
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("lastName", newValue)}
                     />
                     <CustomInput
                       type="text"
                       label="Menu code"
                       value=""
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("lastName", newValue)}
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Add image
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
                         <label
@@ -842,9 +767,7 @@ const MenuBuilder = () => {
                             className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
                           >
                             Click to upload{" "}
-                            <span className=" font-[400] text-grey300">
-                              or drag and drop
-                            </span>
+                            <span className=" font-[400] text-grey300">or drag and drop</span>
                           </label>
                           <p className=" text-[14px] font-[400] text-grey300">
                             Max. file size: 2MB
@@ -860,9 +783,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuGroup(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -879,12 +800,12 @@ const MenuBuilder = () => {
 
           <Modal isOpen={addMenuItem} onClose={() => setAddMenuItem(false)}>
             <div
-              className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px] md:h-[600px] lg:h-screen overflow-y-scroll"
+              className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px] md:h-[600px] lg:h-[90vh] overflow-y-scroll"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               <div className=" ">
                 <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-                  Add menu Item
+                  Add menu item
                 </p>
                 <hr className="border border-[#E7E7E7] mb-[24px]" />
 
@@ -895,20 +816,16 @@ const MenuBuilder = () => {
                       label="Enter menu item name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
-                    <CustomSelect2
+                    {/* <CustomSelect2
                       options={["Channel1", "Channel2", "Channel3"]}
                       placeholder="Channels"
-                    />
+                    /> */}
 
-                    <div className="">
-                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
+                    {/* <div className="">
+                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
                       <p className="text-[14px] font-[400] text-grey500">
                         Choose a pricing option.
                       </p>
@@ -920,14 +837,9 @@ const MenuBuilder = () => {
                           value="base"
                           checked={selectedOption === "base"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "base" ? "bg-purple-500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "base" ? "bg-purple-500" : ""}`}
                         />
-                        <label
-                          htmlFor="base"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
+                        <label htmlFor="base" className="mr-4 text-grey500 text-[14px] font-[400]">
                           Base Price
                         </label>
 
@@ -938,14 +850,9 @@ const MenuBuilder = () => {
                           value="range"
                           checked={selectedOption === "range"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "range" ? "bg-purple-500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "range" ? "bg-purple-500" : ""}`}
                         />
-                        <label
-                          htmlFor="range"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
+                        <label htmlFor="range" className="mr-4 text-grey500 text-[14px] font-[400]">
                           Range Price
                         </label>
 
@@ -956,14 +863,9 @@ const MenuBuilder = () => {
                           value="time"
                           checked={selectedOption === "time"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "time" ? "bg-purple-500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "time" ? "bg-purple-500" : ""}`}
                         />
-                        <label
-                          htmlFor="time"
-                          className="text-grey500 text-[14px] font-[400]"
-                        >
+                        <label htmlFor="time" className="text-grey500 text-[14px] font-[400]">
                           Time Specific Price
                         </label>
                       </div>
@@ -976,9 +878,7 @@ const MenuBuilder = () => {
                               label="Enter price"
                               value=""
                               error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
+                              onChange={(newValue) => handleInputChange("lastName", newValue)}
                             />
                           </div>
                         </>
@@ -992,9 +892,7 @@ const MenuBuilder = () => {
                                 label="Pricing name"
                                 value=""
                                 error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
+                                onChange={(newValue) => handleInputChange("lastName", newValue)}
                               />
                             </div>
                             <div className=" flex-1">
@@ -1003,9 +901,7 @@ const MenuBuilder = () => {
                                 label="Enter price"
                                 value=""
                                 error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
+                                onChange={(newValue) => handleInputChange("lastName", newValue)}
                               />
                             </div>
                             <p className=" flex hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[13px] px-[4px] py-[10px] rounded">
@@ -1023,9 +919,7 @@ const MenuBuilder = () => {
                               label="Base Price"
                               value=""
                               error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
+                              onChange={(newValue) => handleInputChange("lastName", newValue)}
                             />
 
                             <div className=" flex items-center gap-[8px] ">
@@ -1035,9 +929,7 @@ const MenuBuilder = () => {
                                   label="Enter Price"
                                   value=""
                                   error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
+                                  onChange={(newValue) => handleInputChange("lastName", newValue)}
                                 />
                               </div>
                               <div className="w-[100px]">
@@ -1046,9 +938,7 @@ const MenuBuilder = () => {
                                   label="From:"
                                   value=""
                                   error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
+                                  onChange={(newValue) => handleInputChange("lastName", newValue)}
                                 />
                               </div>
                               <div className=" w-[100px]">
@@ -1057,31 +947,33 @@ const MenuBuilder = () => {
                                   label="To:"
                                   value=""
                                   error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
+                                  onChange={(newValue) => handleInputChange("lastName", newValue)}
                                 />
                               </div>
                             </div>
                           </div>
                         </>
                       )}
-                    </div>
+                    </div> */}
 
                     <CustomInput
                       type="text"
                       label="Menu item code"
                       value=""
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("lastName", newValue)}
+                    />
+
+                    <CustomInput
+                      type="number"
+                      label="Enter price"
+                      value={userData.firstName}
+                      error=""
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Add image
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
                         <label
@@ -1103,9 +995,7 @@ const MenuBuilder = () => {
                             className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
                           >
                             Click to upload{" "}
-                            <span className=" font-[400] text-grey300">
-                              or drag and drop
-                            </span>
+                            <span className=" font-[400] text-grey300">or drag and drop</span>
                           </label>
                           <p className=" text-[14px] font-[400] text-grey300">
                             Max. file size: 2MB
@@ -1114,10 +1004,8 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
-                        Tags
-                      </p>
+                    {/* <div className="">
+                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">Tags</p>
                       <div className=" flex items-center gap-[8px] justify-center">
                         <div className=" flex-grow  ">
                           <CustomInput
@@ -1125,16 +1013,14 @@ const MenuBuilder = () => {
                             label="Enter Tag Name"
                             value={userData.department}
                             error=""
-                            onChange={(newValue) =>
-                              handleInputChange("department", newValue)
-                            }
+                            onChange={(newValue) => handleInputChange("department", newValue)}
                           />
                         </div>
                         <p className=" hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[16px] px-[24px] py-[10px] rounded">
                           Create Tag
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -1143,14 +1029,12 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuItem(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
                   <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
-                    <button className=" text-[16px]">Save Menu Item</button>
+                    <button className=" text-[16px]">Save item</button>
                   </div>
                 </div>
               </div>

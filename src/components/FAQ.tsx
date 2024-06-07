@@ -4,6 +4,7 @@ import { ChangeEvent } from "react";
 import CustomInput from "./inputFields/CustomInput";
 import CustomSelect from "./inputFields/CustomSelect";
 import PasswordInput from "./inputFields/PasswordInput";
+import pics from "../assets/pics.svg";
 
 interface FAQItem {
   question: string;
@@ -211,111 +212,59 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-4">
                           Add Business Logo
                         </p>
-                        <div className=" grid items-center gap-5"></div>
-                      </div>
-                    </div>
-
-                    {/* <div className=" my-8">
-                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
-                        Web page: Website, Social media page, Business listing, Google map location,
-                        etc
-                      </p>
-
-                      <div className=" grid gap-5">
-                        <CustomInput
-                          type="text"
-                          label="http://www.example.com"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
-                        />
-
-                        <div className=" mb-5 flex items-center justify-between">
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              id="rememberMe"
-                              className="h-6 w-6 mr-2"
-                              checked={auth.rememberMe}
-                              onChange={handleRememberMeToggle}
-                            />
-                            <label htmlFor="rememberMe" className="text-[14px] text-grey500">
-                              I don't have a web page
-                            </label>
+                        <div className="flex gap-4 items-center justify-start">
+                          <div className="p-5 border border-dashed border-[#5855B3] w-fit cursor-pointer">
+                            <img
+                              src={pics}
+                              alt="imageLogo"
+                              id="logoPreview"
+                              onClick={() => {
+                                const logoInput = document.getElementById("logoInput");
+                                if (logoInput) {
+                                  logoInput.click();
+                                }
+                              }}
+                            />{" "}
+                          </div>
+                          <input
+                            type="file"
+                            id="logoInput"
+                            style={{ display: "none" }}
+                            onChange={(e) => {
+                              if (e.target.files) {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = function (event) {
+                                    const logoPreview = document.getElementById("logoPreview");
+                                    if (logoPreview instanceof HTMLImageElement && event.target) {
+                                      logoPreview.src = event.target.result as string;
+                                    }
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }
+                            }}
+                          />
+                          <div
+                            className="flex flex-col gap-2 cursor-pointer"
+                            onClick={() => {
+                              const logoInput = document.getElementById("logoInput");
+                              if (logoInput) {
+                                logoInput.click();
+                              }
+                            }}
+                          >
+                            <h5 className="text-[#5855B3] text-sm font-medium">
+                              Click to upload image
+                            </h5>
+                            <p className="text-[#606060] text-sm font-normal">
+                              Max. file size: 2MB
+                            </p>
                           </div>
                         </div>
                       </div>
-                    </div> */}
-
-                    {/* <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-8">
-                        Business address
-                      </p>
-                      <div className=" grid gap-5">
-                        <div className="grid gap-2">
-                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
-                            Address (Line 1)
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="Street address"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className=" grid gap-2">
-                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
-                            Address (Line 2) <span className=" text-grey200">(optional)</span>
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="Apartment, suite, unitv, building, floor"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
-                            City
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="City or town"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-4">
-                        Business fiscal year
-                      </p>
-                      <div className=" grid md:grid-cols-2 items-center gap-5">
-                        <div className="grid gap-2">
-                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
-                            From:
-                          </label>
-                          <CustomInput
-                            type="date"
-                            label=""
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className=" grid gap-2">
-                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
-                            To:
-                          </label>
-                          <CustomInput
-                            type="date"
-                            label=""
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                      </div>
-                    </div> */}
+                    </div>
                   </div>
                 )}
                 {openIndex === 1 && (

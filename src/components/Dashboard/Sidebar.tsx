@@ -117,9 +117,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     },
   ];
 
-  const adminMenu: MenuItem[] = [
-    { title: "AdminHome", gap: false, icon: HomeIcon },
-  ];
+  const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
 
   const userMenu = [...commonMenu];
 
@@ -128,10 +126,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   const handleSubmenuToggle = (index: number) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
-  const isMenuItemActive = (
-    menuLink: string,
-    subMenu?: MenuItem[]
-  ): boolean => {
+  const isMenuItemActive = (menuLink: string, subMenu?: MenuItem[]): boolean => {
     if (location.pathname === menuLink) {
       return true;
     }
@@ -147,7 +142,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
     <div
       className={`p-2 ${
         open ? "w-[253px]" : "w-20"
-      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#5855B3]`}
+      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#EBEBEB]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       {/* <img
@@ -161,25 +156,19 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
         <div className="flex gap-x-4  items-center justify-center">
           <img
             src={Logo}
-            className={`cursor-pointer duration-500 ${
-              !open ? "hidden" : "block"
-            } `}
+            className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"} `}
             onClick={() => setOpen(!open)}
           />
           <img
             src={LogoMini}
-            className={`cursor-pointer duration-500 ${
-              !open ? "block" : "hidden"
-            } `}
+            className={`cursor-pointer duration-500 ${!open ? "block" : "hidden"} `}
             onClick={() => setOpen(!open)}
           />
         </div>
         <div className="flex gap-x-4 items-center justify-center">
           <img
             src={RestaurantLogo}
-            className={`cursor-pointer duration-500 ${
-              !open ? "hidden" : "block"
-            }`}
+            className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"}`}
           />
         </div>
       </div>
@@ -191,15 +180,12 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                 <p
                   className={`flex relative ${
                     menu.title && " px-[14px] cursor-pointer py-[8px]  "
-                  }  ${
-                    menu.subTitle && "text-[12px]"
-                  } text-purple200  items-center gap-x-2
+                  }  ${menu.subTitle && "text-[12px]"} text-[#606060]  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                     isMenuItemActive(menu.link || "", menu.subMenu)
-                      ? "  bg-selectedState font-[600] text-[16px] text-white "
-                      : !isMenuItemActive(menu.link || "", menu.subMenu) &&
-                        !menu.subTitle
-                      ? " hover:bg-[#504EA3] "
+                      ? "  bg-[#D3D3D3] font-[600] text-[16px] text-[#121212]"
+                      : !isMenuItemActive(menu.link || "", menu.subMenu) && !menu.subTitle
+                      ? " "
                       : ""
                   }`}
                   onClick={() => menu.subMenu && handleSubmenuToggle(index)}
@@ -211,9 +197,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                       style={{ width: "20px", marginRight: "8px" }}
                     />
                   )}
-                  <span
-                    className={`${!open && "hidden"} origin-left duration-200 `}
-                  >
+                  <span className={`${!open && "hidden"} origin-left duration-200 `}>
                     {menu.title}
                     {menu.subTitle}
                   </span>
@@ -238,8 +222,8 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
                             key={subIndex}
                             className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
                               isMenuItemActive(subMenuItem.link || "")
-                                ? "text-white"
-                                : ""
+                                ? "text-[#414141]"
+                                : "font-normal text-[#414141]"
                             }`}
                           >
                             {subMenuItem.title}
