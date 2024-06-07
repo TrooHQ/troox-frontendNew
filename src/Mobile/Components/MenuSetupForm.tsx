@@ -37,11 +37,6 @@ interface Props {
 }
 
 const MenuSetupForm: React.FC<Props> = () => {
-  // const userData = useSelector((state) => state.userData);
-  // useEffect(() => {
-  //   console.log(userData);
-  // }, []);
-
   const [expandedCategories, setExpandedCategories] = useState<{
     [key: string]: boolean;
   }>({});
