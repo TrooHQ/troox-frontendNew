@@ -44,6 +44,7 @@ import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
+import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
 
 const MobileLayout = () => {
   return (
@@ -74,12 +75,14 @@ const MobileLayout = () => {
 
           <Route path="/" element={<StartOrder />} />
           <Route path="/:id/explore-menu" element={<MenuPage />} />
+          <Route path="/admin-menu" element={<AdminMenuPage />} />
 
           <Route
             path="/:id/category-details/:id"
             element={<CategoryDetails />}
           />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
+          <Route path="/:id/menu-page/:id" element={<Menu />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/tip" element={<Tip />} />
           <Route path="/payment-type" element={<SelectPayment />} />
@@ -87,7 +90,6 @@ const MobileLayout = () => {
           <Route path="/get-receipt" element={<GetReceipt />} />
 
           <Route path="/ticket" element={<Tickets />} />
-          <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />
           <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />

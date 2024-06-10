@@ -54,7 +54,7 @@ const Dashboard = () => {
           </div>
         </Link>
 
-        <Link to="/menu-page">
+        <Link to="/admin-menu">
           <div className=" px-[28px] py-[47px] bg-[#E5BFD0] rounded-[5px]">
             <div className=" flex flex-col gap-[8px] items-center justify-center">
               <img src={restaurantIcon} alt="" />
