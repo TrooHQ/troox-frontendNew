@@ -5,7 +5,7 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import TopMenuNav from "../Customers/TopMenuNav";
+import TopMenuNav from "./TopMenuNav";
 
 interface Details {
   name: string;
@@ -49,30 +49,30 @@ export const AdminMenuPage = () => {
   }, []);
 
   return (
-    <div className=" relative ">
+    <div className=" relative mx-[16px]">
       <div className="  ">
-        <TopMenuNav />
+        <TopMenuNav title="Menu" />
 
         <div className=" px-[21px] ">
           {menuCategory.map((menu) => (
-            <div className="mt-[24px]">
-              <div className=" flex items-center justify-between ">
-                <p className=" text-[16px] font-[500] text-[#121212]  uppercase">
-                  {menu.name}
-                </p>
-                <Link to={`/${business_name}/menu-page/${menu.name}`}>
+            <Link to={`/${business_name}/menu-page/${menu.name}`}>
+              <div className="mt-[24px]">
+                <div className=" flex items-center justify-between ">
+                  <p className=" text-[16px] font-[500] text-[#121212]  uppercase">
+                    {menu.name}
+                  </p>
                   <div className=" flex items-center">
                     <p className=" text-[14px] text-[#0B7F7C] font-[400] leading-[21px]">
                       Explore Menu
                     </p>
                     <img src={ArrowRight} alt="" />
                   </div>
-                </Link>
+                </div>
+                <div className=" pt-[16px] pb-[20px] border-b">
+                  <img src={menu?.image} alt="" className=" w-full" />
+                </div>
               </div>
-              <div className=" pt-[16px] pb-[20px] border-b">
-                <img src={menu?.image} alt="" className=" w-full" />
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
