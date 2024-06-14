@@ -3,8 +3,9 @@ import closeIcon from "../assets/closeGrey.svg";
 import Logo from "../assets/trooLogo.svg";
 import LogoutIcon from "../assets/logout1.svg";
 import { clearUserData } from "../../slices/UserSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../store/store";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -19,12 +20,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     navigate("/login");
   };
 
+  const userDetails = useSelector((state: RootState) => state.user?.userData);
+
   return (
     <>
       <div
         className={`fixed inset-0 bg-[#606060] transition-opacity duration-300 ${
           isOpen ? " pointer-events-auto" : "opacity-0 pointer-events-none"
-        } z-40`}
+        } z-50`}
         onClick={toggleSidebar}
       ></div>
 
@@ -42,8 +45,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             className="cursor-pointer"
           />
         </div>
-        <div className="p-4">
-          <h2 className="text-xl">Sidebar Content</h2>
+        <div className="p-4  border-b border-[#E7E7E7] grid gap-[8px]">
+          <p className="text-[16px] font-[500] text-[#121212]">
+            {userDetails?.business_name}
+          </p>
+          <p className="text-[14px] font-[400] text-[#606060]">
+            {userDetails?.business_type}
+          </p>
         </div>
         <div className="absolute bottom-4 left-4 right-4">
           <div
