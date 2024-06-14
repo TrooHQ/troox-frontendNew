@@ -54,7 +54,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
   };
 
   return (
-    <div className="relative z-50">
+    <div className="relative">
       <div
         className={`border border-gray-300 ${
           BG ? BG : "bg-white"
