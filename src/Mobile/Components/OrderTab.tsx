@@ -5,6 +5,7 @@ import chatMessage from "../assets/chat-message.svg";
 import dayjs from "dayjs";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import Loader from "../../components/Loader";
 interface TabItem {
   id: number;
   label: string;
@@ -126,7 +127,7 @@ const OrderTab: React.FC = () => {
       <>
         {tickets.length !== 0 ? (
           loading ? (
-            <p>Loading...</p>
+            <Loader />
           ) : (
             <div className="grid gap-[16px]">
               {tickets
@@ -224,7 +225,7 @@ const OrderTab: React.FC = () => {
         <>
           {tickets.length !== 0 ? (
             loading ? (
-              <p>Loading...</p>
+              <Loader />
             ) : (
               <div className=" grid gap-[16px]">
                 {tickets

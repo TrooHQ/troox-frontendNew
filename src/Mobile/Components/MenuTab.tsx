@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { useParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 interface MenuItem {
   name: string;
@@ -42,6 +43,8 @@ const MenuTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
   const [menuGroup, setMenuGroup] = useState<Details[]>([]);
   const [menuItems, setMenuItems] = useState<Details[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const totalCount = useSelector((state: RootState) => state.basket);
@@ -57,6 +60,7 @@ const MenuTab: React.FC = () => {
   };
 
   const getGroups = async () => {
+    setLoading(true);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -78,10 +82,13 @@ const MenuTab: React.FC = () => {
       }
     } catch (error) {
       console.error("Error getting Business Details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getItems = async () => {
+    setLoading(true);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -97,6 +104,8 @@ const MenuTab: React.FC = () => {
       setMenuItems(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,10 +132,9 @@ const MenuTab: React.FC = () => {
     }
   };
 
-  console.log("Selected Group:", selectedGroup);
-
   return (
-    <div>
+    <div className=" relative">
+      {loading && <Loader />}
       <div>
         <div className="flex gap-[38px] text-center mx-[13px] items-center border-b border-grey100 mt-[24px] w-full overflow-x-scroll">
           {menuGroup.map((menu, index) => (
@@ -158,11 +166,15 @@ const MenuTab: React.FC = () => {
                       className="flex items-center justify-between border-b py-[8px]"
                     >
                       <div className="flex items-center gap-[16px]">
-                        <img
-                          src={menu.menu_item_image}
-                          alt=""
-                          className="w-32 h-32"
-                        />
+                        <div className="">
+                          <div className="w-[130px] rounded-[8px] overflow-hidden h-[130px]">
+                            <img
+                              src={menu.menu_item_image}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        </div>
                         <div className="grid gap-[8px]">
                           <p className="text-[16px] font-[500] text-grey500">
                             {menu.menu_item_name}
@@ -196,31 +208,38 @@ const MenuTab: React.FC = () => {
           </div>
           <div className="pt-[16px]">
             {editItem && (
-              <>
+              <div className=" ">
                 <p className="text-[18px] font-[500] text-[#000000]">
                   {editItem.menu_item_name}
                 </p>
-                <div className="my-[22px] flex items-center gap-[8px]">
+                <div className="   my-[22px] flex items-center gap-[8px] ">
                   <img
                     src={selectedImage || editItem.menu_item_image}
                     alt=""
-                    className="w-32 h-32"
+                    className=" w-[120px] h-[120px] object-cover"
                   />
+
                   <input
                     type="file"
                     onChange={handleFileChange}
                     className="text-[14px] font-[400] text-[#5855B3]"
                   />
                 </div>
-                <div className="mb-[26px]">
+                <div className="mb-[26px] grid gap-[16px]">
                   <CustomInput
                     type="text"
-                    label="Enter new price"
+                    label="Enter New Name"
+                    value={email}
+                    onChange={(newValue) => setEmail(newValue)}
+                  />
+                  <CustomInput
+                    type="text"
+                    label="Enter New price"
                     value={email}
                     onChange={(newValue) => setEmail(newValue)}
                   />
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

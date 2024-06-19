@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
+import Loader from "../../components/Loader";
 
 interface Ticket {
   customer_name: string;
@@ -26,10 +27,12 @@ interface MenuItem {
   name: string;
   price: string;
   quantity: string;
+  totalPrice: number;
 }
 
 const Tickets = () => {
   const [ticketModal, setTicketModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const handleTicketModal = (ticket: Ticket) => {
@@ -41,8 +44,7 @@ const Tickets = () => {
   const token = userDetails?.userData?.token;
 
   const getTicket = async () => {
-    // setLoading(true);
-
+    setLoading(true);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +60,8 @@ const Tickets = () => {
       setTickets(response.data);
     } catch (error) {
       console.error("Error Retrieving Tickets:", error);
-      // setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +69,8 @@ const Tickets = () => {
     getTicket();
   }, []);
   return (
-    <div className="my-[16px] mx-[24px]">
+    <div className="my-[16px] mx-[24px] relative">
+      {loading && <Loader />}
       <TopMenuNav title="Tickets" />
 
       <div className="">
@@ -151,7 +155,7 @@ const Tickets = () => {
                     {order.quantity || 2}x{" "}
                     <span className=" p-[5px]">{order.name}</span>
                   </p>
-                  <p>#{order.price}</p>
+                  <p> &#x20A6;{order.totalPrice || 1}</p>
                 </div>
               ))}
             </div>

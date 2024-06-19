@@ -185,7 +185,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   const businessType = userDetails?.userData?.business_type;
   const id = userDetails?.userData?.id;
   const token = userDetails?.userData?.token;
-
+  const hasMenu = userDetails?.userData?.has_created_menu_item;
   console.log(userDetails);
 
   const createCategory = async () => {
@@ -491,16 +491,18 @@ const MenuSetupForm: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className=" bg-[#EFEFEF]  relative">
+    <div className=" bg-[#EFEFEF]  relative h-full">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
         </div>
 
         <div className=" ">
-          <p className=" text-grey500 text-[14px] my-[24px]">
-            Stage 2/ <span className="text-[20px]"> Menu Setup</span>{" "}
-          </p>
+          {hasMenu === false && (
+            <p className=" text-grey500 text-[14px] my-[24px]">
+              Stage 2/ <span className="text-[20px]"> Menu Setup</span>{" "}
+            </p>
+          )}
           <p
             className=" text-[#5855B3] text-[14px] font-[400] flex items-center cursor-pointer"
             onClick={handleAddCategoryModal}
@@ -655,28 +657,30 @@ const MenuSetupForm: React.FC<Props> = () => {
               </div>
             ))}
           </div>
-          <div className=" grid mt-[32px] gap-[8px]">
-            <div
-              className={`${
-                menuData?.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
-              } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
-            >
-              {menuData?.length > 0 ? (
-                <Link
-                  to={`${
-                    businessType === "Hotel & Lodgings" ? "/room" : "/table"
-                  }`}
-                >
+          <div className=" grid py-[32px] gap-[8px]">
+            {hasMenu === false && (
+              <div
+                className={`${
+                  menuData?.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
+                } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
+              >
+                {menuData?.length > 0 ? (
+                  <Link
+                    to={`${
+                      businessType === "Hotel & Lodgings" ? "/room" : "/table"
+                    }`}
+                  >
+                    <p>Save and continue</p>
+                  </Link>
+                ) : (
                   <p>Save and continue</p>
-                </Link>
-              ) : (
-                <p>Save and continue</p>
-              )}
-            </div>
+                )}
+              </div>
+            )}
 
-            <Link to="/">
+            <Link to={`${hasMenu === false ? "/" : "/dashboard"}`}>
               <button className=" text-[16px] font-[500] text-[#929292] border border-[#B6B6B6] w-full text-center py-3 rounded">
-                Cancel
+                {hasMenu === false ? "Cancel" : "Back"}
               </button>
             </Link>
           </div>
@@ -1083,19 +1087,21 @@ const MenuSetupForm: React.FC<Props> = () => {
         </div>
       </MenuModal>
 
-      <div className=" absolute bottom-10 right-10 ">
-        <Link
-          to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}
-        >
-          <div className="flex items-end gap-[5px]">
-            <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
-              Continue
-              {/* Skip this part for now */}
-            </p>
-            <img src={Skip} alt="" />
-          </div>{" "}
-        </Link>
-      </div>
+      {hasMenu === false && (
+        <div className=" absolute bottom-10 right-10 ">
+          <Link
+            to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}
+          >
+            <div className="flex items-end gap-[5px]">
+              <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
+                Continue
+                {/* Skip this part for now */}
+              </p>
+              <img src={Skip} alt="" />
+            </div>{" "}
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
