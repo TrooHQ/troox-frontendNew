@@ -56,7 +56,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "",
+      link: "/menu-home",
       subMenu: [
         {
           title: "Menu Builder",
