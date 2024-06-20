@@ -1,47 +1,71 @@
 import React, { useState } from "react";
 import Arrow from "../assets/ArrowDown3.svg";
+import { useNavigate } from "react-router-dom";
+
+interface Option {
+  value: string;
+  label: string;
+  link?: string;
+}
 
 interface CustomSelect3Props {
-  options: (string | { value: string; label: string })[];
+  options: (string | Option)[];
   disabledOptions?: string[];
   placeholder?: string;
+  BG?: string;
+  text?: string;
 }
 
 const CustomSelect3: React.FC<CustomSelect3Props> = ({
   options,
   disabledOptions,
   placeholder = "",
+  BG,
+  text,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(placeholder);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const selectOption = (option: string) => {
+  const selectOption = (option: string, link?: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    if (link) {
+      navigate(link);
+    }
   };
 
-  const getOptionLabel = (
-    option: string | { value: string; label: string }
-  ) => {
+  const getOptionLabel = (option: string | Option) => {
     if (typeof option === "string") {
       return option;
     }
     return option.label;
   };
 
+  const getOptionValue = (option: string | Option) => {
+    if (typeof option === "string") {
+      return option;
+    }
+    return option.value;
+  };
+
   return (
-    <div className="relative z-50">
+    <div className="relative">
       <div
-        className="border border-gray-300 bg-white p-2 focus:outline-[#5955B3] w-full rounded flex justify-between items-center gap-[8px] cursor-pointer"
+        className={`border border-gray-300 ${
+          BG ? BG : "bg-white"
+        } p-2 focus:outline-[#5955B3] ${
+          text ? text : "text-black"
+        } w-full rounded flex justify-between items-center gap-[8px] cursor-pointer`}
         onClick={toggleDropdown}
       >
         <span className="selected-option">{selectedOption}</span>
         <span className={`arrow ${isOpen ? "transform rotate-180" : ""}`}>
-          <img src={Arrow} alt="" />
+          <img src={Arrow} alt="Arrow" />
         </span>
       </div>
       <div
@@ -54,19 +78,16 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
             key={index}
             className={`option p-2 cursor-pointer transition-colors hover:bg-gray-100 ${
               disabledOptions &&
-              disabledOptions.includes(
-                typeof option === "string" ? option : option.value
-              )
+              disabledOptions.includes(getOptionValue(option))
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
             onClick={() =>
               !disabledOptions ||
-              !disabledOptions.includes(
-                typeof option === "string" ? option : option.value
-              )
+              !disabledOptions.includes(getOptionValue(option))
                 ? selectOption(
-                    typeof option === "string" ? option : option.value
+                    getOptionValue(option),
+                    typeof option === "string" ? undefined : option.link
                   )
                 : null
             }

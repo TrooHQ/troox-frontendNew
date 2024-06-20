@@ -1,21 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import Arrow from "../assets/BackArrow.svg";
 import OrderTab from "./OrderTab";
+import TopMenuNav from "./TopMenuNav";
 
 const Order = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="my-[16px] mx-[24px]">
-      <div
-        onClick={() => navigate(-1)}
-        className=" inline-flex items-center gap-[20px] cursor-pointer"
-      >
-        <img src={Arrow} alt="" />
-        <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
-          KDS(Kitchen Display System)
-        </p>
-      </div>
+    <div className="my-[16px] mx-[16px]">
+      <TopMenuNav title="KDS(Kitchen Display System)" />
       <div className=" mt-[24px]">
         <OrderTab />
       </div>

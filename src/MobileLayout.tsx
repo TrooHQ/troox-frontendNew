@@ -49,6 +49,7 @@ import Till from "./components/Dashboard/EmployeeDashboard/Till";
 import SelectModule from "./pages/Till/SelectModule";
 import CashRegisterPage from "./pages/Till/cash-register/CashRegisterPage";
 import TillKDSPage from "./pages/Till/kds/TillKDSPage";
+import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
 
 const MobileLayout = () => {
   return (
@@ -79,12 +80,14 @@ const MobileLayout = () => {
 
           <Route path="/" element={<StartOrder />} />
           <Route path="/:id/explore-menu" element={<MenuPage />} />
+          <Route path="/admin-menu" element={<AdminMenuPage />} />
 
           <Route
             path="/:id/category-details/:id"
             element={<CategoryDetails />}
           />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
+          <Route path="/:id/menu-page/:id" element={<Menu />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/tip" element={<Tip />} />
           <Route path="/payment-type" element={<SelectPayment />} />
@@ -92,7 +95,6 @@ const MobileLayout = () => {
           <Route path="/get-receipt" element={<GetReceipt />} />
 
           <Route path="/ticket" element={<Tickets />} />
-          <Route path="/menu-page" element={<Menu />} />
           <Route path="/order" element={<Order />} />
           <Route path="/report" element={<Reporting />} />
           <Route path="/register" element={<RegistrationStepForm />} />

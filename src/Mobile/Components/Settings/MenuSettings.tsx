@@ -13,6 +13,8 @@ import Trash from "../../assets/delete.svg";
 import { Link } from "react-router-dom";
 import CustomInput from "../../inputFields/CustomInput";
 import MenuModal from "../MenuModal";
+import Back from "../../assets/Cancel.svg";
+
 const MenuSettings = () => {
   const menu = [
     {
@@ -50,9 +52,9 @@ const MenuSettings = () => {
   const handleOptionChange = (option: string) => {
     setSelectedOption(option);
   };
-  const handleAddMenuCategory = () => {
-    setAddModifierModal(true);
-  };
+  // const handleAddMenuCategory = () => {
+  //   setAddModifierModal(true);
+  // };
 
   const handleWarningModal2 = () => {
     setRemoveMenuModal(false);
@@ -105,12 +107,9 @@ const MenuSettings = () => {
         </div>
 
         <div className="ml-[36px] grid gap-[24px] my-[24px]">
-          <p
-            className="text-grey300 text-[16px] cursor-pointer"
-            onClick={handleAddMenuCategory}
-          >
-            Add Menu
-          </p>
+          <Link to="/menu">
+            <p className="text-grey300 text-[16px] cursor-pointer">Add Menu</p>
+          </Link>
           <p
             className="text-grey300 text-[16px] cursor-pointer"
             onClick={handleRemoveMenuModal}
@@ -201,6 +200,12 @@ const MenuSettings = () => {
         onClose={() => setRemoveMenuModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div
+            className=" cursor-pointer flex items-center justify-end"
+            onClick={() => setRemoveMenuModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
           <p className="text-[20px] font-[400] text-grey500">Remove menu</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {menu.map((user) => (
@@ -226,6 +231,12 @@ const MenuSettings = () => {
 
       <MenuModal isOpen={editModal} onClose={() => setEditModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div
+            className=" cursor-pointer flex items-center justify-end"
+            onClick={() => setEditModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
           <p className="text-[20px] font-[400] text-grey500">
             Edit menu category
           </p>

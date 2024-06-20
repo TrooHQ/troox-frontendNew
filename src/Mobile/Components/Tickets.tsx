@@ -1,4 +1,3 @@
-import Arrow from "../assets/BackArrow.svg";
 import More from "../assets/right-arroww.svg";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
@@ -9,12 +8,13 @@ import Orange from "../assets/orange.svg";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import TopMenuNav from "./TopMenuNav";
+import Loader from "../../components/Loader";
 
 interface Ticket {
-  ordered_by: string;
+  customer_name: string;
   menu_items: MenuItem[];
   orders: string[];
   total_price: number;
@@ -27,14 +27,12 @@ interface MenuItem {
   name: string;
   price: string;
   quantity: string;
+  totalPrice: number;
 }
 
 const Tickets = () => {
-  const navigate = useNavigate();
-
-  // const [loading, setLoading] = useState<boolean>(false);
-
   const [ticketModal, setTicketModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const handleTicketModal = (ticket: Ticket) => {
@@ -46,8 +44,7 @@ const Tickets = () => {
   const token = userDetails?.userData?.token;
 
   const getTicket = async () => {
-    // setLoading(true);
-
+    setLoading(true);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +60,8 @@ const Tickets = () => {
       setTickets(response.data);
     } catch (error) {
       console.error("Error Retrieving Tickets:", error);
-      // setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,16 +69,9 @@ const Tickets = () => {
     getTicket();
   }, []);
   return (
-    <div className="my-[16px] mx-[24px]">
-      <div
-        onClick={() => navigate(-1)}
-        className=" inline-flex items-center gap-[20px] cursor-pointer"
-      >
-        <img src={Arrow} alt="" />
-        <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
-          Tickets
-        </p>
-      </div>
+    <div className="my-[16px] mx-[24px] relative">
+      {loading && <Loader />}
+      <TopMenuNav title="Tickets" />
 
       <div className="">
         <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between border-b pb-[12px] px-[8px]">
@@ -95,7 +86,7 @@ const Tickets = () => {
             className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex items-center justify-between"
           >
             <p className="capitalize w-[80px]">
-              {ticket.ordered_by
+              {ticket.customer_name
                 .split(" ")
                 .map((name, index) =>
                   index === 0
@@ -134,7 +125,7 @@ const Tickets = () => {
               <p className=" text-[16px] font-[500] text-grey500 ">Name</p>
               <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
                 <p>
-                  {selectedTicket?.ordered_by
+                  {selectedTicket?.customer_name
                     .split(" ")
                     .map((name, index) =>
                       index === 0
@@ -164,7 +155,7 @@ const Tickets = () => {
                     {order.quantity || 2}x{" "}
                     <span className=" p-[5px]">{order.name}</span>
                   </p>
-                  <p>#{order.price}</p>
+                  <p> &#x20A6;{order.totalPrice || 1}</p>
                 </div>
               ))}
             </div>

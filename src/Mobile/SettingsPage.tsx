@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Arrow from "../Mobile/assets/BackArrow.svg";
 import AccountIcon from "./assets/AccountSettings.svg";
 import QrIcon from "./assets/QRImage.svg";
 import MenuModal from "./Components/MenuModal";
@@ -14,13 +13,13 @@ import downloadIcon from "./assets/downloadIcon.svg";
 import copyIcon from "./assets/copyicon.svg";
 import printIcon from "./assets/printer.svg";
 
-// import { FieldValues } from "react-hook-form";
 import MenuSettings from "./Components/Settings/MenuSettings";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
+import TopMenuNav from "./Components/TopMenuNav";
 
 // interface FormData extends FieldValues {
 //   employee_name?: string;
@@ -303,15 +302,7 @@ const SettingsPage = () => {
   return (
     <div>
       <div className="my-[16px] mx-[24px]">
-        <div
-          onClick={() => navigate(-1)}
-          className=" inline-flex items-center gap-[20px] cursor-pointer"
-        >
-          <img src={Arrow} alt="" />
-          <p className=" font-[500] text-[20px] text-grey500 cursor-pointer">
-            Settings
-          </p>
-        </div>
+        <TopMenuNav title="Settings" />
 
         <div className="mt-[24px]">
           <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">
@@ -383,6 +374,12 @@ const SettingsPage = () => {
         <form action="" onSubmit={updatePassword}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
+              <div
+                className=" cursor-pointer flex items-center justify-end"
+                onClick={() => setResetPasswordModal(false)}
+              >
+                <img src={Back} alt="" />
+              </div>
               <p className="text-[20px] font-[400] text-grey500">
                 Reset password
               </p>
@@ -722,6 +719,12 @@ const SettingsPage = () => {
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
         <form action="" onSubmit={createEmployee}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div
+              className=" cursor-pointer flex items-center justify-end"
+              onClick={() => setEmployeeModal(false)}
+            >
+              <img src={Back} alt="" />
+            </div>
             <div>
               <p className="text-[20px] font-[400] text-grey500">
                 Add employee
@@ -769,6 +772,12 @@ const SettingsPage = () => {
         onClose={() => setRemoveEmployeeModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div
+            className=" cursor-pointer flex items-center justify-end"
+            onClick={() => setRemoveEmployeeModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
           <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
           <div className=" mt-[24px] grid gap-[16px]">
             {users.map((user) => (
