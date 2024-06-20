@@ -15,7 +15,7 @@ const MenuHome = () => {
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
                 <button className="text-[16px] flex items-center gap-[8px]">
-                  <img src={Print} alt="" /> Print price list
+                  <img src={Print} alt="" /> Print menu list
                 </button>
               </div>
               <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">

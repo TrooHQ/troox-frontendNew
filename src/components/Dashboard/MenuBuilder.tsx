@@ -17,6 +17,7 @@ import CustomSelect2 from "../inputFields/CustomSelect2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
+import Modifiers from "./components/Modifiers";
 // import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
@@ -419,81 +420,12 @@ const MenuBuilder = () => {
                     </div>
                   </div>
                 </div>
-                <div className="">
-                  <div className=" mt-[32px] max-w-[628px]">
-                    <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-                      Modifier Coffee
-                    </p>
-                    <hr className=" border-[#B6B6B6]" />
-                  </div>
-                  <div className=" grid gap-[56px]">
-                    <div className="grid gap-[16px]">
-                      <div className=" mt-[32px]  flex items-center gap-[8px]">
-                        <input
-                          type="text"
-                          className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
-                          placeholder=" Enter modifier name "
-                        />
-                        <input
-                          type="text"
-                          className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[127px] px-[20px]"
-                          placeholder=" Enter price "
-                        />
-                        <div className="">
-                          <button
-                            className="  px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
-                            onClick={handleAddModifier}
-                          >
-                            <img src={Add} alt="" /> Add - edit modifier item
-                          </button>
-                        </div>
-                      </div>
-                      <div className=" flex items-center gap-[8px]">
-                        <button className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]">
-                          Add
-                        </button>
-                        <button className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]">
-                          Edit
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="">
-                      <div className=" mt-[32px] max-w-[628px]">
-                        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-                          Modifier Rules
-                        </p>
-                        <hr className=" border-[#B6B6B6]" />
-                        <div className="">
-                          <div className="flex items-center gap-[16px] my-[16px]">
-                            <input
-                              type="checkbox"
-                              id="rememberMe"
-                              className="h-6 w-6 border-[#87878780]"
-                            />
-                            <label
-                              htmlFor="rememberMe"
-                              className="text-[16px] font-[400] text-[#000000]"
-                            >
-                              Servers must make a selection for this group
-                            </label>
-                          </div>
-                        </div>
-                        <hr className=" border-[#B6B6B6]" />
-                        <div className="flex items-center justify-end py-[16px]">
-                          <div
-                            className="cursor-pointer inline border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                            onClick={handleConfirmSaveModal}
-                          >
-                            <button className=" text-[16px]">
-                              Save Modifier
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Modifiers
+                  activeMainMenu={activeMainMenu}
+                  handleAddModifier={handleAddModifier}
+                  Add={Add}
+                  handleConfirmSaveModal={handleConfirmSaveModal}
+                />
               </div>
             </div>
           </div>
