@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 interface CustomSelectProps {
   label?: string;
-  options: string[];
+  options: string[] | { label: string; value: string }[];
   value: string;
   error?: string;
   onChange: (value: string) => void;
@@ -35,11 +35,21 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               {disabledOption}
             </option>
           )}
-          {options.map((option, index) => (
-            <option key={index} value={option} className=" ">
-              {option}
-            </option>
-          ))}
+          {options.map((option, index) => {
+            if (typeof option === "string") {
+              return (
+                <option key={index} value={option} className=" ">
+                  {option}
+                </option>
+              );
+            } else {
+              return (
+                <option key={index} value={option.value} className=" ">
+                  {option.label}
+                </option>
+              );
+            }
+          })}
         </select>
         <label
           className={`absolute transition-all duration-300 cursor-text ${

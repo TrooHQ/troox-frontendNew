@@ -3,6 +3,8 @@ import Arrow from "../assets/arrow.png";
 import { ChangeEvent } from "react";
 import CustomInput from "./inputFields/CustomInput";
 import CustomSelect from "./inputFields/CustomSelect";
+import PasswordInput from "./inputFields/PasswordInput";
+import pics from "../assets/pics.svg";
 
 interface FAQItem {
   question: string;
@@ -13,23 +15,38 @@ interface FAQProps {
   faqData: FAQItem[];
   openIndex: number | null;
   toggleAnswer: (index: number) => void;
-  handleInputChange: (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleInputChange: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
-  const [checkedLegalType, setCheckedLegalType] = useState<string>("");
+  // const [checkedLegalType, setCheckedLegalType] = useState<string>("");
+  // const handleLegalTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCheckedLegalType(event.target.value);
+  //   console.log(event.target.value, "checked");
+  // };
 
-  const handleLegalTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setCheckedLegalType(event.target.value);
-    console.log(event.target.value, "checked");
-  };
   const [name, setName] = useState<string>("");
+  const [contact, setContact] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [selectedValue, setSelectedValue] = useState<string>("");
+
+  const handlePasswordChange = (newValue: string) => {
+    setPassword(newValue);
+  };
+  const handleConfirmPasswordChange = (newValue: string) => {
+    setConfirmPassword(newValue);
+  };
+
+  const banks = [
+    { label: "Bank 1", value: "bank1" },
+    { label: "Bank 2", value: "bank2" },
+    { label: "Bank 3", value: "bank3" },
+    { label: "Bank 4", value: "bank4" },
+  ];
 
   return (
     <div className="grid gap-3">
@@ -68,16 +85,15 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 0 && (
                   <div className=" ">
                     <p className=" text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      This information is required in order to verify your
-                      business. It will show up on your payout report, invoices
-                      and receipts.
+                      This information is required in order to verify your business. It will show up
+                      on your payout report, invoices and receipts.
                     </p>
                     <div className="">
-                      <p className=" text-[16px] font-[500] leading-[24px] text-grey500">
+                      {/* <p className=" text-[16px] font-[500] leading-[24px] text-grey500">
                         What is the legal type of your business?
-                      </p>
+                      </p> */}
 
-                      <div className="grid md:grid-cols-2 gap-4 my-5">
+                      {/* <div className="grid md:grid-cols-2 gap-4 my-5">
                         <label
                           htmlFor="soleTrader"
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
@@ -131,155 +147,121 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             e.g. Ltd, LP, LLP, etc
                           </p>
                         </label>
-                      </div>
+                      </div> */}
 
                       <div className=" grid gap-5">
                         <CustomInput
                           type="text"
-                          label="Company name"
+                          label="Business name (e.g Deluxe Restaurant)"
                           value={name}
                           onChange={(newValue) => setName(newValue)}
                         />
+                        <CustomInput
+                          type="text"
+                          label="Business contact (e.g Sade Adu)"
+                          value={contact}
+                          onChange={(newValue) => setContact(newValue)}
+                        />
+                        <CustomInput
+                          type="text"
+                          label="Business address"
+                          value={address}
+                          onChange={(newValue) => setAddress(newValue)}
+                        />
+                        <CustomInput
+                          type="text"
+                          label="Business email"
+                          value={email}
+                          onChange={(newValue) => setEmail(newValue)}
+                        />
+                        <CustomInput
+                          type="text"
+                          label="Phone number (e.g +234 123 456 7890)"
+                          value={phone}
+                          onChange={(newValue) => setPhone(newValue)}
+                        />
+                        <PasswordInput
+                          label="Enter your password"
+                          value={password}
+                          onChange={handlePasswordChange}
+                        />
+                        <PasswordInput
+                          label="Confirm your password"
+                          value={confirmPassword}
+                          onChange={handleConfirmPasswordChange}
+                        />
+
                         <CustomSelect
                           label=""
-                          options={["Option 1", "Option 2", "Option 3"]}
+                          options={[
+                            "Sole proprietorship",
+                            "Partnership",
+                            "Limited Liability Company",
+                            "Corporation",
+                            "Nonprofit",
+                            "Cooperative",
+                            "Others",
+                          ]}
                           value={selectedValue}
                           onChange={(value) => setSelectedValue(value)}
-                          disabledOption="How would you categorize your business?"
-                        />
-
-                        <CustomInput
-                          type="text"
-                          label="VAT number (optional)"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
-                        />
-                        <CustomInput
-                          type="text"
-                          label="Business phone number (mobile or landline)"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
+                          disabledOption="Business type"
                         />
                       </div>
-                    </div>
 
-                    <div className=" my-8">
-                      <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
-                        Web page: Website, Social media page, Business listing,
-                        Google map location, etc
-                      </p>
-
-                      <div className=" grid gap-5">
-                        <CustomInput
-                          type="text"
-                          label="http://www.example.com"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
-                        />
-
-                        <div className=" mb-5 flex items-center justify-between">
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              id="rememberMe"
-                              className="h-6 w-6 mr-2"
-                              // checked={auth.rememberMe}
-                              // onChange={handleRememberMeToggle}
-                            />
-                            <label
-                              htmlFor="rememberMe"
-                              className="text-[14px] text-grey500"
-                            >
-                              I don't have a web page
-                            </label>
+                      <div className=" my-8">
+                        <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-4">
+                          Add Business Logo
+                        </p>
+                        <div className="flex gap-4 items-center justify-start">
+                          <div className="p-5 border border-dashed border-[#5855B3] w-fit cursor-pointer">
+                            <img
+                              src={pics}
+                              alt="imageLogo"
+                              id="logoPreview"
+                              onClick={() => {
+                                const logoInput = document.getElementById("logoInput");
+                                if (logoInput) {
+                                  logoInput.click();
+                                }
+                              }}
+                            />{" "}
                           </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-8">
-                        Business address
-                      </p>
-                      <div className=" grid gap-5">
-                        <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            Address (Line 1)
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="Street address"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
+                          <input
+                            type="file"
+                            id="logoInput"
+                            style={{ display: "none" }}
+                            onChange={(e) => {
+                              if (e.target.files) {
+                                const file = e.target.files[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = function (event) {
+                                    const logoPreview = document.getElementById("logoPreview");
+                                    if (logoPreview instanceof HTMLImageElement && event.target) {
+                                      logoPreview.src = event.target.result as string;
+                                    }
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }
+                            }}
                           />
-                        </div>
-                        <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
+                          <div
+                            className="flex flex-col gap-2 cursor-pointer"
+                            onClick={() => {
+                              const logoInput = document.getElementById("logoInput");
+                              if (logoInput) {
+                                logoInput.click();
+                              }
+                            }}
                           >
-                            Address (Line 2){" "}
-                            <span className=" text-grey200">(optional)</span>
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="Apartment, suite, unitv, building, floor"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            City
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="City or town"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-4">
-                        Business fiscal year
-                      </p>
-                      <div className=" grid md:grid-cols-2 items-center gap-5">
-                        <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            From:
-                          </label>
-                          <CustomInput
-                            type="date"
-                            label=""
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            To:
-                          </label>
-                          <CustomInput
-                            type="date"
-                            label=""
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
+                            <h5 className="text-[#5855B3] text-sm font-medium">
+                              Click to upload image
+                            </h5>
+                            <p className="text-[#606060] text-sm font-normal">
+                              Max. file size: 2MB
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -288,10 +270,9 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 1 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please make sure that your personal details remain
-                      up-to-date. Because this information is used to verify
-                      your identity. You will need to send our Support Team a
-                      message if you need to change it.
+                      Please make sure that your personal details remain up-to-date. Because this
+                      information is used to verify your identity. You will need to send our Support
+                      Team a message if you need to change it.
                     </p>
 
                     <div className=" grid gap-5">
@@ -340,18 +321,30 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 2 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please enter your bank account information. You’ll receive
-                      a four-digit verification code via text message. Once you
-                      enter the code Troo will direct all payouts to the
-                      account.
+                      Please enter your bank account information. You&#39;ll receive a four-digit
+                      verification code via text message. Once you enter the code Troo will direct
+                      all payouts to the account.
                     </p>
 
                     <div className=" grid gap-5">
                       <CustomInput
                         type="text"
-                        label="Account holder or business name"
+                        label="Bank account name"
                         value=""
                         onChange={(newValue) => setName(newValue)}
+                      />
+                      <CustomInput
+                        type="text"
+                        label="Bank account number"
+                        value=""
+                        onChange={(newValue) => setName(newValue)}
+                      />
+                      <CustomSelect
+                        label=""
+                        options={banks}
+                        value={selectedValue}
+                        onChange={(value) => setSelectedValue(value)}
+                        disabledOption="Bank"
                       />
                       <CustomInput
                         type="text"

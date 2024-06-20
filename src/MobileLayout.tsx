@@ -44,6 +44,11 @@ import VerifyAccount from "./Mobile/Components/VerifyAccount";
 import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
+import TillPinLogin from "./pages/Till/TillPinLogin";
+import Till from "./components/Dashboard/EmployeeDashboard/Till";
+import SelectModule from "./pages/Till/SelectModule";
+import CashRegisterPage from "./pages/Till/cash-register/CashRegisterPage";
+import TillKDSPage from "./pages/Till/kds/TillKDSPage";
 import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
 
 const MobileLayout = () => {
@@ -102,6 +107,13 @@ const MobileLayout = () => {
           <Route path="/manage-qr" element={<ManageQrCode />} />
           <Route path="/table" element={<TableSetupForm />} />
           <Route path="/room" element={<RoomSetupForm />} />
+
+          {/* Till */}
+          <Route path="/till-pin" element={<TillPinLogin />} />
+          <Route path="/select-till-module" element={<SelectModule />} />
+          <Route path="/till/cash-register" element={<CashRegisterPage />} />
+          <Route path="/till/kds" element={<TillKDSPage />} />
+          <Route path="/till" element={<Till />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,0 +1,38 @@
+.sidebar {
+  /* position: fixed; */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 0;
+}
+
+.storeName {
+  color: #121212;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 46px;
+  margin-left: 24px;
+}
+
+.list {
+  list-style: none;
+  margin-top: 30px;
+}
+
+.cat {
+  color: #121212;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 29px;
+  margin-left: 24px;
+  margin-bottom: 16px;
+}
