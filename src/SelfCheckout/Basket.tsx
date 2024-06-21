@@ -100,7 +100,7 @@ export const Basket = () => {
                 </p>
                 <p className=" text-[44px] text-[#000000] font-[500] ">
                   &#x20A6;
-                  {item.menuItem.menu_item_price.toLocaleString()}
+                  {item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
               </div>
 

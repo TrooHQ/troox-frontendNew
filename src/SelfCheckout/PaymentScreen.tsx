@@ -41,14 +41,16 @@ const PaymentScreen = () => {
     id: item.id,
     quantity: item.quantity,
     totalPrice: item.totalPrice,
-    menuItem: {
-      _id: item.menuItem._id,
-      menu_category_name: item.menuItem.menu_category_name,
-      menu_group_name: item.menuItem.menu_group_name,
-      menu_item_name: item.menuItem.menu_item_name,
-      menu_item_price: item.menuItem.menu_item_price,
-      menu_item_image: item.menuItem.menu_item_image,
-    },
+    menuItem: item.menuItem
+      ? {
+          _id: item.menuItem._id,
+          menu_category_name: item.menuItem.menu_category_name,
+          menu_group_name: item.menuItem.menu_group_name,
+          menu_item_name: item.menuItem.menu_item_name,
+          menu_item_price: item.menuItem.menu_item_price,
+          menu_item_image: item.menuItem.menu_item_image,
+        }
+      : undefined,
     name: item.name,
     selectedOptions: item.selectedOptions.map((option) => ({
       name: option.name,
@@ -56,6 +58,7 @@ const PaymentScreen = () => {
     })),
     tableNumber: item.tableNumber,
   }));
+
   const payload = {
     businessIdentifier: business?.businessDetails?._id,
     customerName: basketDetails.customerName,
@@ -68,11 +71,6 @@ const PaymentScreen = () => {
   const handlePayment = async () => {
     if (loading) return;
     try {
-      // if (!password || !confirmPassword || !token) {
-      //   setError("All fields are required!");
-      //   return;
-      // }
-
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadUserOrder`,

@@ -6,19 +6,26 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "../../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
-// import { updateItemQuantity } from "../../slices/BasketSlice";
+import {
+  addItemToBasket,
+  removeItemFromBasket,
+  updateItemQuantity,
+} from "../../slices/BasketSlice";
 
-interface Details {
-  name: string;
+interface MenuItem {
   _id: string;
+  menu_item_name: string;
+  menu_item_price: number;
+}
+
+interface Details extends MenuItem {
+  name: string;
   business_name: string;
   menu_category_name: string;
   menu_group_name: string;
-  menu_item_name: string;
   menu_item_image: string;
-  menu_item_price: string;
 }
 
 export const CategoryDetails = () => {
@@ -91,20 +98,46 @@ export const CategoryDetails = () => {
 
   const [selectedGroup, setSelectedGroup] = useState("");
 
-  console.log("Selected Group:", selectedGroup);
+  const dispatch = useDispatch();
 
-  // const dispatch = useDispatch();
+  const increment = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      dispatch(
+        updateItemQuantity({
+          id: menuItem._id,
+          quantity: itemInBasket.quantity + 1,
+        })
+      );
+    } else {
+      dispatch(
+        addItemToBasket({
+          id: menuItem._id,
+          quantity: 1,
+          selectedOptions: [],
+          totalPrice: menuItem.menu_item_price,
+          name: menuItem.menu_item_name,
+          tableNumber: 1,
+        })
+      );
+    }
+  };
 
-  // const decrement = () => {
-  //   if (count > 1) {
-  //     dispatch(updateItemQuantity(count - 1));
-  //   }
-  // };
-
-  // const increment = () => {
-  //   dispatch(updateItemQuantity(count + 1));
-  // };
-
+  const decrement = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      if (itemInBasket.quantity > 1) {
+        dispatch(
+          updateItemQuantity({
+            id: menuItem._id,
+            quantity: itemInBasket.quantity - 1,
+          })
+        );
+      } else {
+        dispatch(removeItemFromBasket({ id: menuItem._id }));
+      }
+    }
+  };
   return (
     <div className=" relative ">
       {loading && <Loader />}
@@ -180,7 +213,7 @@ export const CategoryDetails = () => {
                               <img
                                 src={Minus}
                                 alt="decrement"
-                                // onClick={decrement}
+                                onClick={() => decrement(menu)}
                                 className="cursor-pointer"
                               />
                               <p className="text-[16px] font-[500]">
@@ -190,7 +223,7 @@ export const CategoryDetails = () => {
                               <img
                                 src={Add}
                                 alt="increment"
-                                // onClick={increment}
+                                onClick={() => increment(menu)}
                                 className="cursor-pointer"
                               />
                             </div>
