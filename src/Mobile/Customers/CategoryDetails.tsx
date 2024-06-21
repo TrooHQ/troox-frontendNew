@@ -7,6 +7,7 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import Loader from "../../components/Loader";
 // import { updateItemQuantity } from "../../slices/BasketSlice";
 
 interface Details {
@@ -23,6 +24,7 @@ interface Details {
 export const CategoryDetails = () => {
   const [menuGroup, setMenuGroup] = useState<Details[]>([]);
   const [menuItems, setMenuItems] = useState<Details[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const ids = useSelector((state: RootState) => state.basket.items);
   const totalCount = useSelector((state: RootState) => state.basket);
@@ -33,6 +35,8 @@ export const CategoryDetails = () => {
   );
   const business_identifier = businessDetails?._id;
   const getGroups = async () => {
+    setLoading(true);
+
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -53,10 +57,13 @@ export const CategoryDetails = () => {
       }
     } catch (error) {
       console.error("Error getting Business Details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getItems = async () => {
+    setLoading(true);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -71,6 +78,8 @@ export const CategoryDetails = () => {
       setMenuItems(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +107,7 @@ export const CategoryDetails = () => {
 
   return (
     <div className=" relative ">
+      {loading && <Loader />}
       <div className="  ">
         <TopMenuNav />
 
