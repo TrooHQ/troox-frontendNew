@@ -38,7 +38,7 @@ interface Option {
   label?: string;
 }
 
-interface BasketItem {
+export interface BasketItem {
   id: string;
   quantity: number;
   menuItem: MenuItem;
