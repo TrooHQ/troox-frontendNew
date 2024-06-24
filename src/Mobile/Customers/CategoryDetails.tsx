@@ -193,7 +193,7 @@ export const CategoryDetails = () => {
                             <img
                               src={menu.menu_item_image}
                               alt=""
-                              className=" h-[80px] w-[80px] object-cover"
+                              className=" h-[80px] w-[80px] object-cover rounded-[8px]"
                             />
                           </Link>
                         </div>

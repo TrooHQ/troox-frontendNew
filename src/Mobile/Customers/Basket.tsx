@@ -4,6 +4,24 @@ import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 import { GiShoppingCart } from "react-icons/gi";
 // import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
+import Add from "../assets/plusIconRound.svg";
+import Image from "../assets/FriedRice.png";
+import Minus from "../assets/MinusRound.svg";
+
+const menuItems = [
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+];
 
 export const Basket = () => {
   const navigate = useNavigate();
@@ -14,26 +32,26 @@ export const Basket = () => {
       <TopMenuNav exploreMenuText="Basket" />
 
       <div className="mt-[68px]">
+        {basketDetails?.items && (
+          <div className="py-[20px] mx-[24px] grid gap-[10px]">
+            <p className="">
+              Hello{" "}
+              <span className="font-bold">{basketDetails?.customerName}</span>
+            </p>
+            <p>
+              Table Number:{" "}
+              <span className="font-bold">
+                {basketDetails?.customerTableNumber}
+              </span>
+            </p>
+            <p>Below are the items you ordered:</p>
+          </div>
+        )}
         {basketDetails?.items.length > 0 ? (
           basketDetails.items.map((item, index) => (
             <>
-              <div className="py-[20px] mx-[24px] grid gap-[10px]">
-                <p className="">
-                  Hello{" "}
-                  <span className="font-bold">
-                    {basketDetails?.customerName}
-                  </span>
-                </p>
-                <p>
-                  Table Number:{" "}
-                  <span className="font-bold">
-                    {basketDetails?.customerTableNumber}
-                  </span>
-                </p>
-                <p>Below are the items you ordered:</p>
-              </div>
               <div key={index}>
-                <div className="mx-[24px] border-b pb-[16px] border-[#E7E7E7]">
+                <div className="mx-[24px] border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
                   <div className="grid gap-[8px]">
                     <div className="flex items-center justify-between">
                       <p className="text-[16px] text-[#121212] font-[500]">
@@ -108,6 +126,106 @@ export const Basket = () => {
                   Proceed to Pay
                 </p>
               </Link>
+            </div>
+
+            <div className=" ">
+              <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
+                People also ordered for
+              </p>
+
+              <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
+                {menuItems.map((menu, index) => (
+                  <div key={index} className="flex-shrink-0 w-[280px]">
+                    <div className="flex items-center justify-between">
+                      <div className="w-[180px]">
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          {menu.name}
+                        </p>
+                        <p className="text-[12px] text-[#121212]">
+                          {menu.details}
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src={menu.image}
+                          alt={menu.name}
+                          className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-[8px] flex items-center justify-between">
+                      <p className="text-[16px] text-[#121212] font-[500]">
+                        {menu.price}
+                      </p>
+                      <div className="w-[100px]">
+                        <div className="flex items-center justify-between">
+                          <img
+                            src={Minus}
+                            alt="decrement"
+                            className="cursor-pointer"
+                          />
+                          <p className="text-[16px] font-[500]">1</p>
+                          <img
+                            src={Add}
+                            alt="increment"
+                            className="cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className=" ">
+              <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
+                Recommended Items
+              </p>
+
+              <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
+                {menuItems.map((menu, index) => (
+                  <div key={index} className="flex-shrink-0 w-[280px]">
+                    <div className="flex items-center justify-between">
+                      <div className="w-[180px]">
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          {menu.name}
+                        </p>
+                        <p className="text-[12px] text-[#121212]">
+                          {menu.details}
+                        </p>
+                      </div>
+                      <div>
+                        <img
+                          src={menu.image}
+                          alt={menu.name}
+                          className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-[8px] flex items-center justify-between">
+                      <p className="text-[16px] text-[#121212] font-[500]">
+                        {menu.price}
+                      </p>
+                      <div className="w-[100px]">
+                        <div className="flex items-center justify-between">
+                          <img
+                            src={Minus}
+                            alt="decrement"
+                            className="cursor-pointer"
+                          />
+                          <p className="text-[16px] font-[500]">1</p>
+                          <img
+                            src={Add}
+                            alt="increment"
+                            className="cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
