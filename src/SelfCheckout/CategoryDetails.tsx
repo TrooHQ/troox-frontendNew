@@ -8,6 +8,7 @@ import { SERVER_DOMAIN } from "../Api/Api";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import MenuDetailsModal from "./MenuDetails";
 
 interface Details {
   name: string;
@@ -27,6 +28,17 @@ export const CategoryDetails = () => {
   const { id } = useParams();
 
   const [counts, setCounts] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
+
+  const openModal = (menuItemId: string) => {
+    setSelectedMenuItemId(menuItemId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   // useEffect(() => {
   //   const storedCount = sessionStorage.getItem("count");
@@ -138,7 +150,7 @@ export const CategoryDetails = () => {
                   <p
                     className={`px-[32px] py-[8px] ${
                       selectedGroup === menu?.name
-                        ? "text-[#FF0000]  font-[600]"
+                        ? "text-[#C5291E]  font-[600]"
                         : " text-[#606060] font-[400]"
                     }  text-[32px] cursor-pointer`}
                     onClick={() => setSelectedGroup(menu?.name)}
@@ -151,6 +163,11 @@ export const CategoryDetails = () => {
           ))}
         </div>
 
+        {selectedGroup && (
+          <p className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] bg-red-900">
+            {selectedGroup}
+          </p>
+        )}
         <div className="mx-[16px]">
           <div className="grid grid-cols-2 items-center gap-4">
             {menuItems.map(
@@ -159,21 +176,22 @@ export const CategoryDetails = () => {
                   <div
                     className="pb-[34px] pt-[18px] rounded-[10px] px-[7px] my-[34px] border-2 drop-shadow border-[#E7E7E7] max-w-[500px]"
                     key={index}
+                    onClick={() => openModal(menu._id)}
                   >
-                    <Link to={`/menu-details/${menu._id}`}>
-                      <div>
-                        <img
-                          src={menu?.menu_item_image}
-                          alt=""
-                          className="w-full object-cover h-[217px]"
-                        />
-                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
-                          {menu?.menu_item_name}
-                        </p>
-                      </div>
-                    </Link>
+                    {/* <Link to={`/menu-details/${menu._id}`}> */}
+                    <div>
+                      <img
+                        src={menu?.menu_item_image}
+                        alt=""
+                        className="w-full object-cover h-[217px]"
+                      />
+                      <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                        {menu?.menu_item_name}
+                      </p>
+                    </div>
+                    {/* </Link> */}
                     <div className="pt-[8px] flex items-center justify-between px-[24px]">
-                      <p className="text-[36px] text-[#FF0000] font-[500]">
+                      <p className="text-[36px] text-[#C5291E] font-[500]">
                         &#x20A6;{menu?.menu_item_price?.toLocaleString()}
                       </p>
 
@@ -199,11 +217,14 @@ export const CategoryDetails = () => {
                           </div>
                         ) : (
                           <div>
-                            <Link to={`/menu-details/${menu._id}`}>
-                              <div className="flex items-center justify-end">
-                                <img src={Add} alt="" />
-                              </div>
-                            </Link>
+                            {/* <Link to={`/menu-details/${menu._id}`}> */}
+                            <div
+                              className="flex items-center justify-end"
+                              onClick={() => openModal(menu._id)}
+                            >
+                              <img src={Add} alt="" />
+                            </div>
+                            {/* </Link> */}
                           </div>
                         )}
                       </div>
@@ -215,7 +236,7 @@ export const CategoryDetails = () => {
         </div>
         {ids && (
           <div className="px-[16px] sticky bottom-[10px] w-full">
-            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#FF0000] rounded-[3px] ">
+            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#C5291E] rounded-[3px] ">
               <div className="flex items-center gap-[16px] text-[44px] font-[500] text-white">
                 <p className=" text-[44px] font-[400] text-white">
                   {/* #{totalCount.totalQuantity || 0} */}
@@ -233,6 +254,12 @@ export const CategoryDetails = () => {
           </div>
         )}
       </div>
+
+      <MenuDetailsModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        menuItemId={selectedMenuItemId}
+      />
     </div>
   );
 };
