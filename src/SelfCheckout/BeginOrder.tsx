@@ -5,7 +5,7 @@ import Header from "./Header";
 import CustomInput from "../Mobile/inputFields/CustomInput";
 
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateCustomerName } from "../slices/BasketSlice";
 import {
@@ -17,12 +17,11 @@ import {
 } from "../slices/businessSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
-// import InputButton from "./InputButton";
 const BeginOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
-
+  const { id } = useParams();
   const [number, setNumber] = useState("");
 
   const handleNext = () => {
@@ -35,6 +34,8 @@ const BeginOrder = () => {
   const dispatch = useDispatch();
 
   const queryParams = new URLSearchParams(location.search);
+  console.log(queryParams);
+
   const fullUrl =
     window.location.origin +
     location.pathname +
@@ -42,9 +43,7 @@ const BeginOrder = () => {
     location.hash;
   sessionStorage.setItem("url", fullUrl);
 
-  const id = "666085ea91669b9c7e838c22";
   const business_identifier = id;
-  // const business_identifier = queryParams.get("business_identifier");
   const tableNo = queryParams.get("table");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
