@@ -145,7 +145,38 @@ const SettingsPage = () => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user);
+  console.log(userDetails);
 
+  const attachBusinessIdToHost = (businessId: string) => {
+    const currentHost = window.location.origin;
+
+    const newUrl = `${currentHost}/${businessId}`;
+
+    return newUrl;
+  };
+
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 3000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
+  const handleClick = () => {
+    const urlToCopy = attachBusinessIdToHost(businessId);
+    copyToClipboard(urlToCopy);
+  };
+
+  const businessId = userDetails?.userData?.business_identifier;
+  const attachedUrl = attachBusinessIdToHost(businessId);
+  console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -331,6 +362,14 @@ const SettingsPage = () => {
                 onClick={handleRemoveEmployeeModal}
               >
                 Remove Employee
+              </p>
+
+              <p
+                className="text-grey300 text-[16px] cursor-pointer"
+                onClick={handleClick}
+              >
+                {" "}
+                {copySuccess ? "Copied!" : "Get Self-Checkout link"}
               </p>
             </div>
           </div>

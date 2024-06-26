@@ -18,7 +18,7 @@ const SelfCheckoutLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/" element={<BeginOrder />} />
+          <Route path="/:id" element={<BeginOrder />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/category-details/:id" element={<CategoryDetails />} />
           {/* <Route path="/menu-details/:id" element={<MenuDetails />} /> */}
