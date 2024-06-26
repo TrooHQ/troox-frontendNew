@@ -252,7 +252,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                         {option.modifier_name}
                         <span className="text-[16px] font-[400] text-[#000000]">
                           {" "}
-                          ({option.modifier_price})
+                          (&#x20A6;{option.modifier_price?.toLocaleString()})
                         </span>
                       </label>
                       <input
@@ -273,7 +273,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
               <div className="mx-[16px] my-[16px]">
                 <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#C5291E] text-white rounded-[10px]">
                   <p className="text-[36px] font-[500]">
-                    &#x20A6; {calculateTotalPrice()}
+                    &#x20A6; {calculateTotalPrice().toLocaleString()}
                   </p>
 
                   <div className="flex items-center justify-between gap-[20px]">

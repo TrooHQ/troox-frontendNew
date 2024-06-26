@@ -3,6 +3,8 @@ import Add from "../SelfCheckout/assets/incrementIcon.svg";
 import Minus from "../SelfCheckout/assets/decrementIcon.svg";
 import Back from "../SelfCheckout/assets/Back.svg";
 import MiniLogo from "../SelfCheckout/assets/restaurantHeart.svg";
+import Scroll from "../SelfCheckout/assets/scroll.svg";
+import Counter from "../SelfCheckout/assets/counter.svg";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { SERVER_DOMAIN } from "../Api/Api";
 import axios from "axios";
@@ -164,10 +166,54 @@ export const CategoryDetails = () => {
         </div>
 
         {selectedGroup && (
-          <p className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] bg-red-900">
+          <p className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] bg-[#FF0000]">
             {selectedGroup}
           </p>
         )}
+
+        <div className=" ">
+          <div className=" flex items-center justify-between py-[32px] px-[24px]">
+            <p className=" text-[32px] font-[500]">Most Popular</p>
+            <div className="">
+              <img src={Scroll} alt="" />
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <div className="flex items-center gap-4">
+              {menuItems.map(
+                (menu, index) =>
+                  menu.menu_group_name === selectedGroup && (
+                    <div
+                      className="max-w-[406px] pb-[34px] pt-[18px] rounded-[10px] px-[7px] mb-[34px] border-2 drop-shadow border-[#E7E7E7] flex-shrink-0"
+                      key={index}
+                      onClick={() => openModal(menu._id)}
+                    >
+                      <div>
+                        <div className=" relative">
+                          <img
+                            src={menu?.menu_item_image}
+                            alt=""
+                            className="w-full object-cover h-[300px]"
+                          />
+                          <img
+                            src={Counter}
+                            alt=""
+                            className=" absolute bottom-2 right-2"
+                          />
+                        </div>
+                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                          {menu?.menu_item_name?.length > 18
+                            ? `${menu?.menu_item_name.substring(0, 18)}...`
+                            : menu?.menu_item_name}
+                        </p>
+                      </div>
+                    </div>
+                  )
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="mx-[16px]">
           <div className="grid grid-cols-2 items-center gap-4">
             {menuItems.map(
