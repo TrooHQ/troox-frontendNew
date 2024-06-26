@@ -232,7 +232,9 @@ export const CategoryDetails = () => {
                         className="w-full object-cover h-[217px]"
                       />
                       <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
-                        {menu?.menu_item_name}
+                        {menu?.menu_item_name?.length > 18
+                          ? `${menu?.menu_item_name.substring(0, 18)}...`
+                          : menu?.menu_item_name}
                       </p>
                     </div>
                     {/* </Link> */}
