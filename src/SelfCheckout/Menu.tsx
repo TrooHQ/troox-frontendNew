@@ -77,7 +77,9 @@ const Menu = () => {
                   </div>
                 </div>
                 <p className=" text-center text-[20px] font-[500] text-[#414141]  uppercase py-[22px] font-GeneralSans">
-                  {menu.name}
+                  {menu?.name?.length > 18
+                    ? `${menu?.name.substring(0, 18)}...`
+                    : menu?.name}
                 </p>
               </div>
             </Link>
