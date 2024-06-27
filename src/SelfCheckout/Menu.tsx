@@ -63,7 +63,7 @@ const Menu = () => {
             Menu Category
           </p>
         </div>
-        <div className=" px-[21px] items-center place-items-center grid grid-cols-3 gap-[24px] mt-[10px]">
+        <div className=" px-[21px] items-center place-items-center grid grid-cols-2 gap-[24px] mt-[10px]">
           {menuCategory.map((menu) => (
             <Link to={`/category-details/${menu?.name}`}>
               <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
