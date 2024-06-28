@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import DaysTab from "./DaysTab";
 import PieCharts from "./PieChart";
 import img1 from "../../assets/image1.png";
 import img2 from "../../assets/image2.png";
