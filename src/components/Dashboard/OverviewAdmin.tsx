@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import BBB from "../overview-comps/BBB";
 import BalanceComp from "../overview-comps/Balance";
 import KPI from "../overview-comps/KPI";
@@ -5,7 +6,16 @@ import SalesActivities from "../overview-comps/SalesActivities";
 import SalesRevenue from "../overview-comps/SalesRevenue";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Button,
+  Box,
+  Popper,
+  Paper,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { ArrowDropDown, Search } from "@mui/icons-material";
 
 export const storeData = {
   id: 1,
@@ -19,7 +29,68 @@ export const storeData = {
   noOfReturns: "24",
 };
 
+const allOutlets = [
+  { label: "All outlets" },
+  { label: "Abuja outlet" },
+  { label: "Agege outlet" },
+  { label: "Ajah outlet" },
+  { label: "Ikeja outlet" },
+  { label: "Lekki outlet" },
+];
+
+const CustomAutocomplete = styled(Autocomplete)({
+  "& .MuiOutlinedInput-root": {
+    padding: "0.375rem 1rem",
+    borderRadius: "5px",
+    color: "white",
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+    "&:hover fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "transparent",
+    },
+    "& .MuiInputBase-input": {
+      color: "black",
+    },
+  },
+  "& .MuiAutocomplete-popupIndicator": {
+    color: "#5955B3",
+  },
+  "& .MuiAutocomplete-clearIndicator": {
+    color: "#5955B3",
+  },
+  "& .MuiAutocomplete-endAdornment": {
+    right: "8px",
+  },
+  "& .MuiAutocomplete-listbox": {
+    padding: "0",
+  },
+  "& .MuiAutocomplete-option": {
+    padding: "10px 16px",
+    "&:hover": {
+      backgroundColor: "#f5f5f5",
+    },
+  },
+});
+
 const OverviewAdmin: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedOutlet, setSelectedOutlet] = useState(allOutlets[0]);
+
+  const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen((prev) => !prev);
+  };
+
+  const handleSelect = (event: any, value: any) => {
+    setSelectedOutlet(value ?? allOutlets[0]);
+    setOpen(false);
+  };
+
   return (
     <div className="">
       <DashboardLayout>
@@ -33,38 +104,54 @@ const OverviewAdmin: React.FC = () => {
               {storeData.name}
             </span>
           </h3>
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={allOutlets}
-            value={allOutlets[0]}
+          <Button
+            variant="contained"
+            onClick={handleButtonClick}
             sx={{
-              width: 200,
-              "& .MuiOutlinedInput-root": {
-                bgcolor: "#5955B3", // Background color similar to bg-[#5955B3]
-                py: "0.375rem", // Padding Y similar to py-1.5
-                px: "1rem", // Padding X similar to px-4
-                borderRadius: "5px", // Rounded similar to rounded-[5px]
-                ml: "0.5rem", // Margin left similar to ml-2
-                color: "white", // Text color similar to text-white
-                "& fieldset": {
-                  borderColor: "transparent", // Remove border
-                },
-                "&:hover fieldset": {
-                  borderColor: "transparent", // Remove border on hover
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "transparent", // Remove border on focus
-                },
-                "& .MuiInputBase-input": {
-                  color: "white", // Ensure input text is white
-                },
+              backgroundColor: "#5955B3",
+              color: "white",
+              ml: 2,
+              "&:hover": {
+                backgroundColor: "#4842a3",
               },
             }}
-            renderInput={(params) => (
-              <TextField {...params} label="" sx={{ color: "white" }} />
-            )}
-          />
+          >
+            {selectedOutlet.label} <ArrowDropDown />
+          </Button>
+          <Popper
+            open={open}
+            anchorEl={anchorEl}
+            placement="bottom-start"
+            sx={{ zIndex: 10, boxShadow: 3 }} // Added boxShadow
+          >
+            <Paper sx={{ boxShadow: 3 }}>
+              <CustomAutocomplete
+                disablePortal
+                options={allOutlets}
+                value={selectedOutlet}
+                onChange={handleSelect}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Search outlet"
+                    variant="outlined"
+                    style={{ width: "220px", marginLeft: "0px" }} // Adjust width as needed
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: (
+                        <>
+                          <Search
+                            style={{ color: "gray", marginRight: "4px" }}
+                          />
+                          {params.InputProps.startAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                )}
+              />
+            </Paper>
+          </Popper>
         </div>
 
         {/* Second div */}
@@ -96,12 +183,3 @@ const OverviewAdmin: React.FC = () => {
 };
 
 export default OverviewAdmin;
-
-const allOutlets = [
-  { label: "All outlets" },
-  { label: "Abuja outlets" },
-  { label: "Agege outlets" },
-  { label: "Ajah outlets" },
-  { label: "Ikeja outlets" },
-  { label: "Lekki outlets" },
-];
