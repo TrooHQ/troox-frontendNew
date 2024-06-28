@@ -155,7 +155,7 @@ export const Basket = () => {
 
               {item.selectedOptions && item.selectedOptions?.length > 0 && (
                 <div className=" my-[32px]">
-                  <p className=" text-[30px] font-[400] text-[#000000] font-bold">
+                  <p className=" text-[30px] text-[#000000] font-bold">
                     Modifiers:
                   </p>
                   {item.selectedOptions.map((option, optionIndex) => (
