@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
-import Back from "../SelfCheckout/assets/Back.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { setTip } from "../slices/BasketSlice";
@@ -121,52 +120,52 @@ export const Basket = () => {
   };
   return (
     <div className=" ">
-      <div className=" mt-[10px] ">
+      <div className=" mt-[50px] ">
         <div className="">
-          <img
+          {/* <img
             src={Back}
             alt=""
             onClick={() => navigate(-1)}
             className="p-[40px] cursor-pointer"
-          />
-          <p className=" text-[44px] font-[500] text-[#FF0000] text-center">
+          /> */}
+          <p className=" text-[44px] font-[500] text-[#606060] text-center">
             Order Summary
           </p>
         </div>
-        {backetDetails?.items.map((item, index) => (
-          <div
-            className=" drop-shadow border border-[#E7E7E7] max-h-[537px] my-[40px] py-[10px] max-w-[960px] mx-auto rounded-[10px]"
-            key={index}
-          >
-            <div className="  grid items-center px-[40px] ">
-              <div className=" grid grid-cols-4 place-items-start text-start">
-                <p className=" text-[44px] text-[#000000] font-[500]  col-span-2 ">
+        <div className=" shadow-xl shadow-[#E7E7E7] border border-[#E7E7E7] my-[40px]  max-w-[960px] mx-[5%] rounded-[10px]">
+          {backetDetails?.items.map((item, index) => (
+            <div
+              className={`border-[#E7E7E7] grid items-center px-[40px] py-[36px] ${
+                index % 2 === 0 ? "bg-[#f0f0f0]" : ""
+              }`}
+              key={index}
+            >
+              <div className="grid grid-cols-4 place-items-start text-start">
+                <p className="text-[30px] text-[#121212] font-[500] col-span-2">
                   {item?.name}
                 </p>
-
-                <p className=" text-[44px] text-[#000000] font-[500] ">
+                <p className="text-[30px] text-[#000000] font-[500]">
                   x{item?.quantity}
                 </p>
-                <p className=" text-[44px] text-[#000000] font-[500] ">
-                  &#x20A6;
-                  {item.menuItem?.menu_item_price.toLocaleString()}
+                <p className="text-[20px] text-[#000000] font-[500]">
+                  &#x20A6;{item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
               </div>
 
               {item.selectedOptions && item.selectedOptions?.length > 0 && (
-                <div className=" my-[32px]">
-                  <p className=" text-[30px] font-[400] text-[#000000] font-bold">
-                    Modifiers:
+                <div className="my-[32px]">
+                  <p className="text-[20px] font-[400] text-[#606060]">
+                    SIDES:
                   </p>
                   {item.selectedOptions.map((option, optionIndex) => (
                     <div
                       key={optionIndex}
-                      className=" flex items-center gap-[20px]"
+                      className="flex items-center gap-[20px]"
                     >
-                      <p className=" text-[32px] font-[500] text-[#606060]">
+                      <p className="text-[20px] font-[500] text-[#606060]">
                         {option.name} -
                       </p>
-                      <p className="text-[32px] font-[500] text-[#606060]">
+                      <p className="text-[20px] font-[500] text-[#606060]">
                         &#x20A6;
                         {(option.price * item.quantity).toLocaleString()}
                       </p>
@@ -175,15 +174,14 @@ export const Basket = () => {
                 </div>
               )}
 
-              <div className=" mt-[10px]">
-                <p className=" text-[40px] text-[#000000] font-[500]">
-                  Sub Total: &#x20A6;
-                  {item.totalPrice.toLocaleString()}
+              <div className="mt-[10px]">
+                <p className="text-[30px] text-[#000000] font-[500]">
+                  Sub Total: &#x20A6;{item.totalPrice.toLocaleString()}
                 </p>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
 
         <div className="flex items-center justify-center text-[#000000] font-[600] text-[44px] my-[20px]">
           <p className="   ">To Pay:</p>
