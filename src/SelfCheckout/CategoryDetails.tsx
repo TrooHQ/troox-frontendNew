@@ -11,6 +11,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import MenuDetailsModal from "./MenuDetails";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+import { RiArrowUpDoubleLine } from "react-icons/ri";
 
 interface Details {
   name: string;
@@ -32,6 +36,30 @@ export const CategoryDetails = () => {
   const [counts, setCounts] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const toggleVisibility = () => {
+    if (window.pageYOffset > 100) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
 
   const openModal = (menuItemId: string) => {
     setSelectedMenuItemId(menuItemId);
@@ -133,39 +161,44 @@ export const CategoryDetails = () => {
   return (
     <div className=" relative ">
       <div className="  ">
-        <div className="grid grid-cols-3 items-center">
-          <div className="justify-self-start">
-            <img
-              src={Back}
-              alt=""
-              onClick={() => navigate(-1)}
-              className="cursor-pointer"
-            />
+        <div className="">
+          <div className="grid grid-cols-3 items-center">
+            <div className="justify-self-start">
+              <img
+                src={Back}
+                alt=""
+                onClick={() => navigate(-1)}
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="col-span-1 justify-self-center">
+              <img src={MiniLogo} alt="" />
+            </div>
+            <div className="justify-self-end"></div>
           </div>
-          <div className="col-span-1 justify-self-center">
-            <img src={MiniLogo} alt="" />
-          </div>
-          <div className="justify-self-end"></div>
-        </div>
 
-        <div className="mt-[24px] mb-[8px] ">
-          <div className="flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap">
-            {menuGroup.map((menu) => (
-              <div key={menu._id} className="">
-                {menu.menu_category_name === id && (
-                  <p
-                    className={`px-[24px] py-[8px] ${
-                      selectedGroup === menu?.name
-                        ? "text-[#C5291E]  font-[600]"
-                        : "text-[#606060] font-[400]"
-                    } text-[32px] cursor-pointer`}
-                    onClick={() => setSelectedGroup(menu?.name)}
-                  >
-                    {menu?.name}
-                  </p>
-                )}
-              </div>
-            ))}
+          <div className="mt-[24px] mb-[8px] ">
+            <div
+              className="flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {menuGroup.map((menu) => (
+                <div key={menu._id} className="">
+                  {menu.menu_category_name === id && (
+                    <p
+                      className={`px-[24px] py-[8px] ${
+                        selectedGroup === menu?.name
+                          ? "text-[#C5291E]  font-[600]"
+                          : "text-[#606060] font-[400]"
+                      } text-[32px] cursor-pointer`}
+                      onClick={() => setSelectedGroup(menu?.name)}
+                    >
+                      {menu?.name}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -302,6 +335,15 @@ export const CategoryDetails = () => {
               </Link>
             </div>
           </div>
+        )}
+
+        {isVisible && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-4 right-4 bg-[#ffffff] text-[#000000] px-4 py-4 rounded-full shadow-lg hover:bg-[#000000] hover:text-white transition-all duration-300 animate-bounce hover:animate-none"
+          >
+            <RiArrowUpDoubleLine className="text-2xl" />
+          </button>
         )}
       </div>
 
