@@ -7,7 +7,6 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import DaysTab from "./DaysTab";
-import DaysTab2 from "./DaysTab2";
 // import SalesActivities from "./home/SalesActivities";
 // import SalesRevenue from "./home/SalesRevenue";
 // import KPI from "./home/KPI";

@@ -8,7 +8,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { DateRangeCalendar } from "@mui/x-date-pickers-pro/DateRangeCalendar";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 const days = ["Today", "7 Days", "30 Days", "60 Days", "90 Days"];
 
@@ -36,17 +36,13 @@ function DaysTab({
     null,
   ]);
 
-  const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    event.preventDefault();
     setValue(newValue);
   };
 
   const handleOpen = () => {
     setOpen(!open);
-  };
-
-  const handleDateChange = (newValue: [Dayjs | null, Dayjs | null]) => {
-    setDateRange(newValue);
-    setOpen(false);
   };
 
   return (

@@ -1,4 +1,3 @@
-import React from "react";
 import clsx from "clsx";
 import {
   ResponsiveContainer,
@@ -9,8 +8,6 @@ import {
   Tooltip,
   Rectangle,
   CartesianGrid,
-  Legend,
-  Label,
 } from "recharts";
 import ArrowDown from "../../assets/ArrowDown.svg";
 import styles from "./Header.module.css";

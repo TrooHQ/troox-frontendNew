@@ -1,6 +1,4 @@
 import { ArrowOutwardDownIcon } from "../../components/svgs";
-import { ArrowOutward } from "@mui/icons-material";
-import React from "react";
 import {
   ResponsiveContainer,
   BarChart,

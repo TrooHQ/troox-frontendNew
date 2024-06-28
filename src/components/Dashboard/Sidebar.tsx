@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation, NavLink } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
-import RestaurantLogo from "../../assets/restaurant_name.png";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
 import TicketIcon from "../../assets/Tickets.svg";
 import MenuIcon from "../../assets/menuIcon.svg";

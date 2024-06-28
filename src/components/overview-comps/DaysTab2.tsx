@@ -35,6 +35,7 @@ const DaysTab2 = ({
   ]);
 
   const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
+    event.preventDefault();
     setValue(newValue);
   };
 
@@ -43,8 +44,10 @@ const DaysTab2 = ({
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
+    console.log(dates);
     setDateRange(dateStrings);
-    setOpen(false);
+    // setOpen(false);
+    console.log(dateRange);
   };
 
   return (

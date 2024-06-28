@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { ArrowDropDown, ArrowDropUp } from "@mui/icons-material";
 import BBB from "../overview-comps/BBB";
 import BalanceComp from "../overview-comps/Balance";
 import KPI from "../overview-comps/KPI";
@@ -22,7 +20,6 @@ export const storeData = {
 };
 
 const OverviewAdmin: React.FC = () => {
-  const [openDropdown, setOpenDropdown] = useState(false);
   return (
     <div className="">
       <DashboardLayout>
