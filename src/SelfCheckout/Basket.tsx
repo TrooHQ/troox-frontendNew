@@ -6,6 +6,55 @@ import Back from "../SelfCheckout/assets/Back.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { setTip } from "../slices/BasketSlice";
+import Counter from "../SelfCheckout/assets/counter.svg";
+
+import Image from "../SelfCheckout/assets/FriedRice.png";
+import Scroll from "../SelfCheckout/assets/scroll.svg";
+
+const menuItems = [
+  {
+    name: "Rice",
+    price: "₦3,000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "₦3,000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "₦3,000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "₦3,000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+];
 
 export const Basket = () => {
   const navigate = useNavigate();
@@ -86,7 +135,7 @@ export const Basket = () => {
         </div>
         {backetDetails?.items.map((item, index) => (
           <div
-            className=" drop-shadow border border-[#E7E7E7] max-h-[537px] mt-[10px] max-w-[960px] mx-auto rounded-[10px]"
+            className=" drop-shadow border border-[#E7E7E7] max-h-[537px] my-[40px] py-[10px] max-w-[960px] mx-auto rounded-[10px]"
             key={index}
           >
             <div className="  grid items-center px-[40px] ">
@@ -100,7 +149,7 @@ export const Basket = () => {
                 </p>
                 <p className=" text-[44px] text-[#000000] font-[500] ">
                   &#x20A6;
-                  {item.menuItem.menu_item_price.toLocaleString()}
+                  {item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
               </div>
 
@@ -155,6 +204,106 @@ export const Basket = () => {
           >
             Proceed to Pay
           </p>
+        </div>
+
+        <div className=" mx-[24px] my-[80px]">
+          <div className=" flex items-center justify-between py-[32px] px-[24px]">
+            <p className=" text-[32px] font-[500] text-[#121212]">
+              Recommended Beverages
+            </p>
+            <div className="">
+              <img src={Scroll} alt="" />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
+            {menuItems.map((menu, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
+              >
+                <div className="flex items-center justify-between px-[24px]">
+                  <div className="w-[180px] grid gap-[40px]">
+                    <p className="text-[28px] text-[#121212] font-[500] ">
+                      {menu.name}
+                    </p>
+                    <p className="text-[28px] text-[#606060]">{menu.price}</p>
+                  </div>
+                  <div className=" relative">
+                    <img
+                      src={menu.image}
+                      alt={menu.name}
+                      className=" h-auto w-[224px] object-cover rounded-[8px]"
+                    />
+                    <div className=" absolute bottom-2 right-2">
+                      <img src={Counter} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className=" mx-[24px] my-[80px]">
+          <div className=" flex items-center justify-between py-[32px] px-[24px]">
+            <p className=" text-[32px] font-[500] text-[#121212]">
+              You Might Also Like
+            </p>
+            <div className="">
+              <img src={Scroll} alt="" />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
+            {menuItems.map((menu, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
+              >
+                <div className="flex items-center justify-between px-[24px]">
+                  <div className="w-[180px] grid gap-[40px]">
+                    <p className="text-[28px] text-[#414141] font-[500] ">
+                      {menu.name}
+                    </p>
+                    <p className="text-[28px] text-[#606060]">{menu.price}</p>
+                  </div>
+                  <div className=" relative">
+                    <img
+                      src={menu.image}
+                      alt={menu.name}
+                      className=" h-auto w-[224px] object-cover rounded-[8px]"
+                    />
+                    <div className=" absolute bottom-2 right-2">
+                      <img src={Counter} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className=" mx-[24px] my-[80px]">
+          <div className=" flex items-center justify-between py-[32px] px-[24px]">
+            <p className=" text-[32px] font-[500] text-[#121212]">
+              Add Special Instructions
+            </p>
+          </div>
+
+          <div className=" ">
+            <div className="">
+              <textarea
+                className=" w-full h-[153px] border text-[24px] font-[400] text-[#929292] border-gray-300 rounded-md p-2 shadow-md"
+                placeholder="Enter message"
+              />
+            </div>
+            <div className=" mt-[10px] flex items-center justify-end">
+              <button className="bg-[#11AE16] text-white px-4 py-2 rounded-md font-[500] text-[36px]">
+                Send
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

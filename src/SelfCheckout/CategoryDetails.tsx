@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import Add from "../SelfCheckout/assets/incrementIcon.svg";
 import Minus from "../SelfCheckout/assets/decrementIcon.svg";
 import Back from "../SelfCheckout/assets/Back.svg";
-import MiniLogo from "../SelfCheckout/assets/restaurantHeart.svg";
+import MiniLogo from "../SelfCheckout/assets/image121.png";
+import Scroll from "../SelfCheckout/assets/scroll.svg";
+import Counter from "../SelfCheckout/assets/counter.svg";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { SERVER_DOMAIN } from "../Api/Api";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import MenuDetailsModal from "./MenuDetails";
 
 interface Details {
   name: string;
@@ -27,13 +30,17 @@ export const CategoryDetails = () => {
   const { id } = useParams();
 
   const [counts, setCounts] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
 
-  // useEffect(() => {
-  //   const storedCount = sessionStorage.getItem("count");
-  //   if (storedCount !== null) {
-  //     setCounts(Number(storedCount));
-  //   }
-  // }, []);
+  const openModal = (menuItemId: string) => {
+    setSelectedMenuItemId(menuItemId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const incrementCount = () => {
     const updatedCount = counts + 1;
@@ -62,29 +69,43 @@ export const CategoryDetails = () => {
   const business_identifier = businessDetails?._id;
   console.log(business_identifier);
 
-  const getGroups = async () => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-      },
+  useEffect(() => {
+    const getGroups = async () => {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      try {
+        const response = await axios.get<{ data: Details[] }>(
+          `${SERVER_DOMAIN}/menu/getCustomerMenuGroup/?business_identifier=${business_identifier}`,
+          headers
+        );
+        console.log(
+          "Business groups retrieved successfully:",
+          response.data.data
+        );
+        setMenuGroup(response.data.data);
+
+        if (response.data.data && response.data.data.length > 0) {
+          const firstMatch = response.data.data.find(
+            (group) => group.menu_category_name === id
+          );
+          console.log("First match found:", firstMatch);
+
+          if (firstMatch) {
+            setSelectedGroup(firstMatch.name);
+          } else {
+            setSelectedGroup(response.data.data[0].name);
+          }
+        }
+      } catch (error) {
+        console.error("Error getting business details:", error);
+      }
     };
-    try {
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getCustomerMenuGroup/?business_identifier=${business_identifier}`,
-        headers
-      );
-      console.log(
-        "Business groups Retrieved successfully:",
-        response.data.data
-      );
-      setMenuGroup(response.data.data);
-      // if (response.data.data && response.data.data.length > 0) {
-      //   setSelectedGroup(response.data.data[0].name);
-      // }
-    } catch (error) {
-      console.error("Error getting Business Details:", error);
-    }
-  };
+
+    getGroups();
+  }, [id]);
 
   const getItems = async () => {
     const headers = {
@@ -105,75 +126,122 @@ export const CategoryDetails = () => {
   };
 
   useEffect(() => {
-    getGroups();
     getItems();
   }, []);
 
   console.log("Selected Group:", selectedGroup);
   return (
-    <div className=" relative mt-[83px]">
+    <div className=" relative ">
       <div className="  ">
-        <div className=" px-[8px] flex items-center justify-between">
-          <img
-            src={Back}
-            alt=""
-            onClick={() => navigate(-1)}
-            className=" cursor-pointer"
-          />
-          <img src={MiniLogo} alt="" />
-          <div className="">
-            <img src={MiniLogo} alt="" className=" hidden" />
+        <div className="grid grid-cols-3 items-center">
+          <div className="justify-self-start">
+            <img
+              src={Back}
+              alt=""
+              onClick={() => navigate(-1)}
+              className="cursor-pointer"
+            />
           </div>
+          <div className="col-span-1 justify-self-center">
+            <img src={MiniLogo} alt="" />
+          </div>
+          <div className="justify-self-end"></div>
         </div>
 
         <div className="mt-[24px] mb-[8px] ">
-          {menuGroup.map((menu) => (
-            <div
-              key={menu._id}
-              className="flex items-center gap-[8px] text-center  "
-              style={{ overflowX: "auto", whiteSpace: "nowrap" }}
-            >
-              {menu.menu_category_name === id && (
-                <div className="">
+          <div className="flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap">
+            {menuGroup.map((menu) => (
+              <div key={menu._id} className="">
+                {menu.menu_category_name === id && (
                   <p
-                    className={`px-[32px] py-[8px] ${
+                    className={`px-[24px] py-[8px] ${
                       selectedGroup === menu?.name
-                        ? "text-[#FF0000]  font-[600]"
-                        : " text-[#606060] font-[400]"
-                    }  text-[32px] cursor-pointer`}
+                        ? "text-[#C5291E]  font-[600]"
+                        : "text-[#606060] font-[400]"
+                    } text-[32px] cursor-pointer`}
                     onClick={() => setSelectedGroup(menu?.name)}
                   >
                     {menu?.name}
                   </p>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="mx-[16px]">
-          <div className="grid grid-cols-2 items-center gap-4">
+        {selectedGroup && (
+          <p className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] bg-[#FF0000]">
+            {selectedGroup}
+          </p>
+        )}
+
+        <div className=" ">
+          <div className=" flex items-center justify-between py-[32px] px-[24px]">
+            <p className=" text-[32px] font-[500]">Most Popular</p>
+            <div className="">
+              <img src={Scroll} alt="" />
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <div className="flex items-center gap-4">
+              {menuItems.map(
+                (menu, index) =>
+                  menu.menu_group_name === selectedGroup && (
+                    <div
+                      className="max-w-[406px] pb-[34px] pt-[18px] rounded-[10px] px-[7px] mb-[34px] border-2 drop-shadow border-[#E7E7E7] flex-shrink-0"
+                      key={index}
+                      onClick={() => openModal(menu._id)}
+                    >
+                      <div>
+                        <div className=" relative">
+                          <img
+                            src={menu?.menu_item_image}
+                            alt=""
+                            className="w-full object-cover h-[300px]"
+                          />
+                          <img
+                            src={Counter}
+                            alt=""
+                            className=" absolute bottom-2 right-2"
+                          />
+                        </div>
+                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                          {menu?.menu_item_name?.length > 18
+                            ? `${menu?.menu_item_name.substring(0, 18)}...`
+                            : menu?.menu_item_name}
+                        </p>
+                      </div>
+                    </div>
+                  )
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-[16px] ">
+          <div className="grid grid-cols-2 items-center gap-4 mb-[100px]">
             {menuItems.map(
               (menu, index) =>
                 menu.menu_group_name === selectedGroup && (
                   <div
                     className="pb-[34px] pt-[18px] rounded-[10px] px-[7px] my-[34px] border-2 drop-shadow border-[#E7E7E7] max-w-[500px]"
                     key={index}
+                    onClick={() => openModal(menu._id)}
                   >
-                    <Link to={`/menu-details/${menu._id}`}>
-                      <div>
-                        <img
-                          src={menu?.menu_item_image}
-                          alt=""
-                          className="w-full object-cover h-[217px]"
-                        />
-                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
-                          {menu?.menu_item_name}
-                        </p>
-                      </div>
-                    </Link>
+                    <div>
+                      <img
+                        src={menu?.menu_item_image}
+                        alt=""
+                        className="w-full object-cover h-[217px]"
+                      />
+                      <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                        {menu?.menu_item_name?.length > 18
+                          ? `${menu?.menu_item_name.substring(0, 18)}...`
+                          : menu?.menu_item_name}
+                      </p>
+                    </div>
                     <div className="pt-[8px] flex items-center justify-between px-[24px]">
-                      <p className="text-[36px] text-[#FF0000] font-[500]">
+                      <p className="text-[36px] text-[#C5291E] font-[500]">
                         &#x20A6;{menu?.menu_item_price?.toLocaleString()}
                       </p>
 
@@ -199,11 +267,14 @@ export const CategoryDetails = () => {
                           </div>
                         ) : (
                           <div>
-                            <Link to={`/menu-details/${menu._id}`}>
-                              <div className="flex items-center justify-end">
-                                <img src={Add} alt="" />
-                              </div>
-                            </Link>
+                            {/* <Link to={`/menu-details/${menu._id}`}> */}
+                            <div
+                              className="flex items-center justify-end"
+                              onClick={() => openModal(menu._id)}
+                            >
+                              <img src={Add} alt="" />
+                            </div>
+                            {/* </Link> */}
                           </div>
                         )}
                       </div>
@@ -214,8 +285,8 @@ export const CategoryDetails = () => {
           </div>
         </div>
         {ids && (
-          <div className="px-[16px] sticky bottom-[10px] w-full">
-            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#FF0000] rounded-[3px] ">
+          <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto my-[16px]">
+            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#C5291E] rounded-[3px] ">
               <div className="flex items-center gap-[16px] text-[44px] font-[500] text-white">
                 <p className=" text-[44px] font-[400] text-white">
                   {/* #{totalCount.totalQuantity || 0} */}
@@ -233,6 +304,12 @@ export const CategoryDetails = () => {
           </div>
         )}
       </div>
+
+      <MenuDetailsModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        menuItemId={selectedMenuItemId}
+      />
     </div>
   );
 };

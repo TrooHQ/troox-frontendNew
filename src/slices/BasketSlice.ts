@@ -8,7 +8,7 @@ interface SelectedOption {
   modifier_price?: number;
 }
 
-interface Option {
+export interface Option {
   name: string;
   price: number;
   modifier_name: string;
@@ -31,14 +31,14 @@ interface MenuItem {
   menu_item_price: number;
 }
 
-interface BasketItem {
+export interface BasketItem {
   id: string;
   quantity: number;
-  menuItem: MenuItem;
+  menuItem?: MenuItem;
   selectedOptions: Option[];
   totalPrice: number;
   name: string;
-  tableNumber: string;
+  tableNumber: string | number;
 }
 
 interface BasketState {
@@ -143,20 +143,6 @@ const BasketSlice = createSlice({
         );
       }
     },
-    // updateItemQuantity: (state, action) => {
-    //   const { id, quantity, price } = action.payload;
-    //   const item = state.items.find((item) => item.id === id);
-
-    //   if (item) {
-    //     state.totalQuantity += quantity - item.quantity;
-    //     state.totalPrice += (quantity - item.quantity) * price;
-    //     item.quantity = quantity;
-    //   } else {
-    //     state.items.push({ id, quantity, price });
-    //     state.totalQuantity += quantity;
-    //     state.totalPrice += quantity * price;
-    //   }
-    // },
 
     updateItemInBasket(state, action: PayloadAction<BasketItem>) {
       const updatedItem = action.payload;
@@ -176,37 +162,6 @@ const BasketSlice = createSlice({
     setTip(state, action: PayloadAction<number | null>) {
       state.tip = action.payload;
     },
-
-    // incrementItemQuantity: (state, action) => {
-    //   const item = state.items.find((item) => item.id === action.payload.id);
-    //   if (item) {
-    //     item.quantity += 1;
-    //     state.totalQuantity += 1;
-    //     state.totalPrice += action.payload.price;
-    //   } else {
-    //     state.items.push({
-    //       id: action.payload.id,
-    //       quantity: 1,
-    //       price: action.payload.price,
-    //     });
-    //     state.totalQuantity += 1;
-    //     state.totalPrice += action.payload.price;
-    //   }
-    // },
-    // decrementItemQuantity: (state, action) => {
-    //   const item = state.items.find((item) => item.id === action.payload.id);
-    //   if (item && item.quantity > 1) {
-    //     item.quantity -= 1;
-    //     state.totalQuantity -= 1;
-    //     state.totalPrice -= action.payload.price;
-    //   } else {
-    //     state.items = state.items.filter(
-    //       (item) => item.id !== action.payload.id
-    //     );
-    //     state.totalQuantity -= 1;
-    //     state.totalPrice -= action.payload.price;
-    //   }
-    // },
   },
 });
 
@@ -219,8 +174,6 @@ export const {
   updateItemQuantity,
   updateItemInBasket,
   setTip,
-  // incrementItemQuantity,
-  // decrementItemQuantity,
 } = BasketSlice.actions;
 
 export default BasketSlice.reducer;

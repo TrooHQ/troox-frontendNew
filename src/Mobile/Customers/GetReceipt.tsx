@@ -6,7 +6,7 @@ export const GetReceipt = () => {
 
   return (
     <div className="  ">
-      <TopMenuNav exploreMenuText="Select Payment" />
+      <TopMenuNav exploreMenuText="Get Receipt" />
 
       <div className=" mt-[68px] mx-[16px] ">
         <div className="flex items-center justify-center">

@@ -63,7 +63,7 @@ const Menu = () => {
             Menu Category
           </p>
         </div>
-        <div className=" px-[21px] items-center place-items-center grid grid-cols-3 gap-[24px] mt-[10px]">
+        <div className=" px-[21px] items-center place-items-center grid grid-cols-2 gap-[24px] mt-[10px]">
           {menuCategory.map((menu) => (
             <Link to={`/category-details/${menu?.name}`}>
               <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
@@ -77,7 +77,9 @@ const Menu = () => {
                   </div>
                 </div>
                 <p className=" text-center text-[20px] font-[500] text-[#414141]  uppercase py-[22px] font-GeneralSans">
-                  {menu.name}
+                  {menu?.name?.length > 18
+                    ? `${menu?.name.substring(0, 18)}...`
+                    : menu?.name}
                 </p>
               </div>
             </Link>

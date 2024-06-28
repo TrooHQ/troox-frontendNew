@@ -12,6 +12,7 @@ import {
   removeItemFromBasket,
   updateItemInBasket,
 } from "../../slices/BasketSlice";
+import Loader from "../../components/Loader";
 
 interface MenuItem {
   _id: string;
@@ -37,7 +38,7 @@ interface Option {
   label?: string;
 }
 
-interface BasketItem {
+export interface BasketItem {
   id: string;
   quantity: number;
   menuItem: MenuItem;
@@ -91,8 +92,10 @@ const MenuDetails = () => {
       ]);
     }
   };
+  const [loading, setLoading] = useState(false);
 
   const getItems = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${id}`
@@ -101,6 +104,8 @@ const MenuDetails = () => {
       setMenuModifiers(response.data.modifiers);
     } catch (error) {
       console.error("Error getting Business Details:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -181,7 +186,9 @@ const MenuDetails = () => {
   };
 
   return (
-    <div className="menu-details">
+    <div className="menu-details relative">
+      {loading && <Loader />}
+
       <TopMenuNav />
       {menuItem && (
         <div>

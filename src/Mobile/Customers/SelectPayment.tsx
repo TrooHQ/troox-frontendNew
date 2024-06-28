@@ -42,12 +42,12 @@ export const SelectPayment = () => {
     quantity: item.quantity,
     totalPrice: item.totalPrice,
     menuItem: {
-      _id: item.menuItem._id,
-      menu_category_name: item.menuItem.menu_category_name,
-      menu_group_name: item.menuItem.menu_group_name,
-      menu_item_name: item.menuItem.menu_item_name,
-      menu_item_price: item.menuItem.menu_item_price,
-      menu_item_image: item.menuItem.menu_item_image,
+      _id: item.menuItem?._id,
+      menu_category_name: item.menuItem?.menu_category_name,
+      menu_group_name: item.menuItem?.menu_group_name,
+      menu_item_name: item.menuItem?.menu_item_name,
+      menu_item_price: item.menuItem?.menu_item_price,
+      menu_item_image: item.menuItem?.menu_item_image,
     },
     name: item.name,
     selectedOptions: item.selectedOptions.map((option) => ({
