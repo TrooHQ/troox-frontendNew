@@ -17,6 +17,7 @@ import CustomSelect2 from "../inputFields/CustomSelect2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
+import Modifiers from "./components/Modifiers";
 // import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
@@ -279,12 +280,12 @@ const MenuBuilder = () => {
         <div className="">
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
-              <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
+              <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
                 <button
                   className="text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddMenu}
                 >
-                  <img src={Add} alt="" /> Add new menu
+                  <img src={Add} alt="" /> Add new menu category
                 </button>
               </div>
               <div
@@ -419,81 +420,12 @@ const MenuBuilder = () => {
                     </div>
                   </div>
                 </div>
-                <div className="">
-                  <div className=" mt-[32px] max-w-[628px]">
-                    <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-                      Modifier Coffee
-                    </p>
-                    <hr className=" border-[#B6B6B6]" />
-                  </div>
-                  <div className=" grid gap-[56px]">
-                    <div className="grid gap-[16px]">
-                      <div className=" mt-[32px]  flex items-center gap-[8px]">
-                        <input
-                          type="text"
-                          className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
-                          placeholder=" Enter modifier name "
-                        />
-                        <input
-                          type="text"
-                          className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[127px] px-[20px]"
-                          placeholder=" Enter price "
-                        />
-                        <div className="">
-                          <button
-                            className="  px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
-                            onClick={handleAddModifier}
-                          >
-                            <img src={Add} alt="" /> Add - edit modifier item
-                          </button>
-                        </div>
-                      </div>
-                      <div className=" flex items-center gap-[8px]">
-                        <button className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]">
-                          Add
-                        </button>
-                        <button className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]">
-                          Edit
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="">
-                      <div className=" mt-[32px] max-w-[628px]">
-                        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-                          Modifier Rules
-                        </p>
-                        <hr className=" border-[#B6B6B6]" />
-                        <div className="">
-                          <div className="flex items-center gap-[16px] my-[16px]">
-                            <input
-                              type="checkbox"
-                              id="rememberMe"
-                              className="h-6 w-6 border-[#87878780]"
-                            />
-                            <label
-                              htmlFor="rememberMe"
-                              className="text-[16px] font-[400] text-[#000000]"
-                            >
-                              Servers must make a selection for this group
-                            </label>
-                          </div>
-                        </div>
-                        <hr className=" border-[#B6B6B6]" />
-                        <div className="flex items-center justify-end py-[16px]">
-                          <div
-                            className="cursor-pointer inline border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                            onClick={handleConfirmSaveModal}
-                          >
-                            <button className=" text-[16px]">
-                              Save Modifier
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Modifiers
+                  activeMainMenu={activeMainMenu}
+                  handleAddModifier={handleAddModifier}
+                  Add={Add}
+                  handleConfirmSaveModal={handleConfirmSaveModal}
+                />
               </div>
             </div>
           </div>
@@ -501,7 +433,7 @@ const MenuBuilder = () => {
             <div className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px]">
               <div className=" ">
                 <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-                  Add menu
+                  Add menu category
                 </p>
 
                 <div className=" lg:mb-[24px]">
@@ -516,11 +448,47 @@ const MenuBuilder = () => {
                       }
                     />
 
-                    <CustomSelect2
+                    <div className="">
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                        Add image
+                      </p>
+
+                      <div className="flex items-center gap-[16px]">
+                        <label
+                          htmlFor="fileInput"
+                          className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                        >
+                          <input
+                            type="file"
+                            id="fileInput"
+                            className="hidden"
+                            onChange={handleFileChange}
+                            accept="image/*"
+                          />
+                          <img src={imageIcon} alt="Upload Icon" />
+                        </label>
+                        <div className="">
+                          <label
+                            htmlFor="fileInput"
+                            className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
+                          >
+                            Click to upload{" "}
+                            <span className=" font-[400] text-grey300">
+                              or drag and drop
+                            </span>
+                          </label>
+                          <p className=" text-[14px] font-[400] text-grey300">
+                            Max. file size: 2MB
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <CustomSelect2
                       options={["Channel1", "Channel2", "Channel3"]}
                       placeholder="Channels"
-                    />
-                    <CustomInput
+                    /> */}
+                    {/* <CustomInput
                       type="text"
                       label="Menu code"
                       value=""
@@ -528,9 +496,9 @@ const MenuBuilder = () => {
                       onChange={(newValue) =>
                         handleInputChange("lastName", newValue)
                       }
-                    />
+                    /> */}
 
-                    <div className="">
+                    {/* <div className="">
                       <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
                         Tags
                       </p>
@@ -551,11 +519,10 @@ const MenuBuilder = () => {
                           Create Tag
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
-                <hr className=" border border-grey100" />
                 <div className=" flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
                   <div
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
@@ -746,10 +713,10 @@ const MenuBuilder = () => {
                       }
                     />
 
-                    <CustomSelect2
+                    {/* <CustomSelect2
                       options={["Channel1", "Channel2", "Channel3"]}
                       placeholder="Channels"
-                    />
+                    /> */}
 
                     <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
@@ -798,16 +765,18 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    <CustomInput
-                      type="text"
-                      label="Enter price"
-                      value=""
-                      error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
-                    />
-                    <CustomInput
+                    {selectedOption === "yes" && (
+                      <CustomInput
+                        type="text"
+                        label="Enter price"
+                        value=""
+                        error=""
+                        onChange={(newValue) =>
+                          handleInputChange("lastName", newValue)
+                        }
+                      />
+                    )}
+                    {/* <CustomInput
                       type="text"
                       label="Menu code"
                       value=""
@@ -815,7 +784,7 @@ const MenuBuilder = () => {
                       onChange={(newValue) =>
                         handleInputChange("lastName", newValue)
                       }
-                    />
+                    /> */}
 
                     <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
@@ -900,12 +869,26 @@ const MenuBuilder = () => {
                       }
                     />
 
-                    <CustomSelect2
+                    {/* <CustomSelect2
                       options={["Channel1", "Channel2", "Channel3"]}
                       placeholder="Channels"
-                    />
+                    /> */}
 
                     <div className="">
+                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
+                        Pricing
+                      </p>
+                      <CustomInput
+                        type="text"
+                        label="Enter price"
+                        value=""
+                        error=""
+                        onChange={(newValue) =>
+                          handleInputChange("lastName", newValue)
+                        }
+                      />
+                    </div>
+                    {/* <div className="">
                       <p className="text-[18px] mb-[8px] font-[500] text-grey500">
                         Pricing
                       </p>
@@ -1066,17 +1049,7 @@ const MenuBuilder = () => {
                           </div>
                         </>
                       )}
-                    </div>
-
-                    <CustomInput
-                      type="text"
-                      label="Menu item code"
-                      value=""
-                      error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
-                    />
+                    </div> */}
 
                     <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
@@ -1114,7 +1087,7 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    <div className="">
+                    {/* <div className="">
                       <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
                         Tags
                       </p>
@@ -1134,7 +1107,7 @@ const MenuBuilder = () => {
                           Create Tag
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 

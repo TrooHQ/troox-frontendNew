@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import Logo from "../../assets/troo-logo-white.png";
+import React, { useState, useEffect } from "react";
+import { useLocation, NavLink } from "react-router-dom";
+import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
 import RestaurantLogo from "../../assets/restaurant_name.png";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
@@ -15,7 +15,6 @@ import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
-import { NavLink } from "react-router-dom";
 
 interface MenuItem {
   subTitle?: string;
@@ -27,14 +26,28 @@ interface MenuItem {
   link?: string;
 }
 
-interface SIdeBarProps {
+interface SideBarProps {
   userType: "user" | "admin";
 }
 
-const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
+const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const [open, setOpen] = useState(true);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Open the submenu if the current location is within its links
+    selectedMenu.forEach((menu, index) => {
+      if (
+        menu.subMenu &&
+        menu.subMenu.some(
+          (subMenuItem) => subMenuItem.link === location.pathname
+        )
+      ) {
+        setOpenSubmenuIndex(index);
+      }
+    });
+  }, [location.pathname]);
 
   const commonMenu: MenuItem[] = [
     {
@@ -53,11 +66,10 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
       icon: TicketIcon,
       link: "/tickets",
     },
-
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "",
+      link: "/menu-home",
       subMenu: [
         {
           title: "Menu Builder",
@@ -82,7 +94,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
       link: "/account",
     },
     {
-      subTitle: "CONFIGURATIONS",
+      subTitle: "SETTINGS",
       Subgap: true,
     },
     {
@@ -128,6 +140,7 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   const handleSubmenuToggle = (index: number) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
+
   const isMenuItemActive = (
     menuLink: string,
     subMenu?: MenuItem[]
@@ -146,22 +159,15 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
   return (
     <div
       className={`p-2 ${
-        open ? "w-[253px]" : "w-20"
-      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#5855B3]`}
+        open ? "w-[203px]" : "w-20"
+      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      {/* <img
-        src="./src/assets/Arrow2.png"
-        className={`absolute cursor-pointer -right-3 top-9 w-7 
-       ${!open && "rotate-180"}`}
-        onClick={() => setOpen(!open)}
-      /> */}
-
-      <div className=" grid gap-10 items-center">
-        <div className="flex gap-x-4  items-center justify-center">
+      <div className="grid gap-10 items-center">
+        <div className="flex gap-x-4 mt-4 items-center justify-start">
           <img
             src={Logo}
-            className={`cursor-pointer duration-500 ${
+            className={`cursor-pointer duration-500 w-[200px] ${
               !open ? "hidden" : "block"
             } `}
             onClick={() => setOpen(!open)}
@@ -174,83 +180,92 @@ const SideBar: React.FC<SIdeBarProps> = ({ userType }) => {
             onClick={() => setOpen(!open)}
           />
         </div>
-        <div className="flex gap-x-4 items-center justify-center">
-          <img
-            src={RestaurantLogo}
-            className={`cursor-pointer duration-500 ${
-              !open ? "hidden" : "block"
-            }`}
-          />
+
+        <div
+          className={`cursor-pointer duration-500 ${
+            !open ? "hidden" : "block"
+          } `}
+        >
+          <hr className="h-[1px] text-[#929292] mb-2" />
+          <div className="ml-[5px]">
+            <h4 className="text-base font-medium mb-2">Chicken Republic</h4>
+            <p className="text-[#606060] text-xs font-normal">Restaurant</p>
+          </div>
+          <hr className="h-[1px] bg-[#929292] mt-2" />
         </div>
       </div>
       <ul className="pt-6 pl-[15px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
-            <NavLink to={menu.link || "#"}>
-              <li>
-                <p
-                  className={`flex relative ${
-                    menu.title && " px-[14px] cursor-pointer py-[8px]  "
-                  }  ${
-                    menu.subTitle && "text-[12px]"
-                  } text-purple200  items-center gap-x-2
+            <li>
+              <div
+                className={`flex relative ${
+                  menu.title && " px-[14px] cursor-pointer py-[8px]  "
+                }  ${
+                  menu.subTitle && "text-[12px] font-normal text-[#121212]"
+                } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
-                    isMenuItemActive(menu.link || "", menu.subMenu)
-                      ? "  bg-selectedState font-[600] text-[16px] text-white "
-                      : !isMenuItemActive(menu.link || "", menu.subMenu) &&
-                        !menu.subTitle
-                      ? " hover:bg-[#504EA3] "
-                      : ""
-                  }`}
-                  onClick={() => menu.subMenu && handleSubmenuToggle(index)}
-                >
-                  {menu.title && (
-                    <img
-                      src={menu.icon}
-                      alt={menu.title}
-                      style={{ width: "20px", marginRight: "8px" }}
-                    />
-                  )}
+                  isMenuItemActive(menu.link || "", menu.subMenu)
+                    ? "  bg-[#d3d3d3] font-[600] text-[16px] text-[#414141] "
+                    : !isMenuItemActive(menu.link || "", menu.subMenu) &&
+                      !menu.subTitle
+                    ? " "
+                    : ""
+                }`}
+                onClick={() => menu.subMenu && handleSubmenuToggle(index)}
+              >
+                {menu.title && (
+                  <img
+                    src={menu.icon}
+                    alt={menu.title}
+                    style={{ width: "20px", marginRight: "8px" }}
+                  />
+                )}
+                <NavLink to={menu.link || "#"} className="flex-grow">
                   <span
-                    className={`${!open && "hidden"} origin-left duration-200 `}
+                    className={`${
+                      !open && "hidden"
+                    } origin-left duration-200 text-[#000]`}
                   >
                     {menu.title}
                     {menu.subTitle}
                   </span>
-                  {menu.subMenu && (
-                    <img
-                      src={ArrowToggle}
-                      alt=""
-                      className={`text-white absolute right-[10px]  transition-transform ${
-                        openSubmenuIndex === index ? "rotate-180" : ""
-                      }`}
-                    />
-                  )}
-                </p>
-
-                <div className="">
-                  {menu.subMenu && openSubmenuIndex === index && (
-                    <ul className="pl-8">
-                      {" "}
-                      {menu.subMenu.map((subMenuItem, subIndex) => (
-                        <NavLink to={subMenuItem.link || "#"}>
-                          <li
-                            key={subIndex}
-                            className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
-                              isMenuItemActive(subMenuItem.link || "")
-                                ? "text-white"
-                                : ""
-                            }`}
-                          >
-                            {subMenuItem.title}
-                          </li>
-                        </NavLink>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </li>
-            </NavLink>
+                </NavLink>
+                {menu.subMenu && (
+                  <img
+                    src={ArrowToggle}
+                    alt=""
+                    className={`text-[#414141] absolute right-[10px]  transition-transform ${
+                      openSubmenuIndex === index ? "rotate-180" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSubmenuToggle(index);
+                    }}
+                  />
+                )}
+              </div>
+              <div className="">
+                {menu.subMenu && openSubmenuIndex === index && (
+                  <ul className="pl-8">
+                    {" "}
+                    {menu.subMenu.map((subMenuItem, subIndex) => (
+                      <NavLink to={subMenuItem.link || "#"} key={subIndex}>
+                        <li
+                          className={`flex  p-2 cursor-pointer py-2  text-purple200 text-sm items-center gap-x-4 ${
+                            isMenuItemActive(subMenuItem.link || "")
+                              ? "text-[#000] font-semibold"
+                              : ""
+                          }`}
+                        >
+                          {subMenuItem.title}
+                        </li>
+                      </NavLink>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </li>
           </div>
         ))}
       </ul>
