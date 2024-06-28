@@ -1,12 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import {
-  ArrowForwardIos,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
-import DaysTab from "./DaysTab";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import confirmation_number from "../../assets/confirmation_number.svg";
 import restaurant_menu from "../../assets/restaurant_menu.svg";
 import DaysTab2 from "./DaysTab2";

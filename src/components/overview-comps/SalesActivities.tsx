@@ -1,13 +1,11 @@
 import ArrowDown from "../../assets/ArrowDown.svg";
 import ArrowUp from "../../assets/ArrowUp.svg";
-import { useState } from "react";
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import DaysTab from "./DaysTab";
 import DaysTab2 from "./DaysTab2";
 
 const SalesActivities = () => {
-  const [state, setState] = useState({
+  const state = {
     salesActivities: [
       {
         icon: ArrowDown,
@@ -42,7 +40,7 @@ const SalesActivities = () => {
         status: "10% from yesterday",
       },
     ],
-  });
+  };
   return (
     <div className="border border-[#C7C6CF] p-6 rounded-2xl mb-12">
       <div className={clsx("flex justify-between items-center w-full mb-9")}>

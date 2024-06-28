@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
-import { GiShoppingCart } from "react-icons/gi";
+// import { GiShoppingCart } from "react-icons/gi";
 // import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
 import Add from "../assets/plusIconRound.svg";
 import Image from "../assets/FriedRice.png";
@@ -94,7 +94,7 @@ export const Basket = () => {
         ) : (
           <div className="py-[20px] mx-[24px] text-center text-[16px] text-[#121212] font-[500] grid place-items-center items-center">
             <p className=" text-7xl font-bold text-black">
-              <GiShoppingCart />
+              {/* <GiShoppingCart /> */}
             </p>
             <p>Your cart is empty.</p>
             <p

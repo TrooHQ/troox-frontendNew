@@ -1,5 +1,5 @@
 import { Close } from "@mui/icons-material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Modifiers = ({
   activeMainMenu,
@@ -45,7 +45,7 @@ const Modifiers = ({
       </div>
       <div className=" grid gap-[56px]">
         <div>
-          {modifiers.map((modifier, index) => (
+          {modifiers.map((modifier) => (
             <div key={modifier.id} className="grid gap-[16px]">
               <div className=" mt-[32px]  flex items-center gap-[8px]">
                 <input

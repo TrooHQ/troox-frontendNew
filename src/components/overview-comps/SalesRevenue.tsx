@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import DaysTab from "./DaysTab";
 import Recharts from "./Recharts";
 import DaysTab2 from "./DaysTab2";
 

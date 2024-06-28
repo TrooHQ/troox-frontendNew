@@ -1,4 +1,3 @@
-import BBB from "../overview-comps/BBB";
 import BalanceComp from "../overview-comps/Balance";
 import KPI from "../overview-comps/KPI";
 import SalesActivities from "../overview-comps/SalesActivities";
