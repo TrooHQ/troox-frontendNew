@@ -6,14 +6,7 @@ import SalesActivities from "../overview-comps/SalesActivities";
 import SalesRevenue from "../overview-comps/SalesRevenue";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import {
-  Autocomplete,
-  TextField,
-  Button,
-  Box,
-  Popper,
-  Paper,
-} from "@mui/material";
+import { Autocomplete, TextField, Button, Popper, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 
@@ -87,6 +80,7 @@ const OverviewAdmin: React.FC = () => {
   };
 
   const handleSelect = (event: any, value: any) => {
+    event.preventDefault();
     setSelectedOutlet(value ?? allOutlets[0]);
     setOpen(false);
   };
