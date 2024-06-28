@@ -35,7 +35,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Tickets from "./components/Dashboard/Tickets.tsx";
 import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
-import MenuHome from "./components/Dashboard/MenuHome.tsx";
+import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 
 export default function App() {
   return (
@@ -63,11 +63,11 @@ export default function App() {
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/manage-tables" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
-          <Route path="/menu-home" element={<MenuHome />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
           <Route path="/overview" element={<Overview />} />
+          <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />
           <Route path="/register" element={<Register />} />

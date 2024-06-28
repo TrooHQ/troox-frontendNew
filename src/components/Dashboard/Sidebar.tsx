@@ -94,7 +94,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       link: "/account",
     },
     {
-      subTitle: "CONFIGURATIONS",
+      subTitle: "SETTINGS",
       Subgap: true,
     },
     {
@@ -159,7 +159,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   return (
     <div
       className={`p-2 ${
-        open ? "w-[253px]" : "w-20"
+        open ? "w-[203px]" : "w-20"
       }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
@@ -206,10 +206,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
-                    ? "  bg-selectedState font-[600] text-[16px] text-[#414141] "
+                    ? "  bg-[#d3d3d3] font-[600] text-[16px] text-[#414141] "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) &&
                       !menu.subTitle
-                    ? " hover:bg-[#504EA3] "
+                    ? " "
                     : ""
                 }`}
                 onClick={() => menu.subMenu && handleSubmenuToggle(index)}
@@ -252,9 +252,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                     {menu.subMenu.map((subMenuItem, subIndex) => (
                       <NavLink to={subMenuItem.link || "#"} key={subIndex}>
                         <li
-                          className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
+                          className={`flex  p-2 cursor-pointer py-2  text-purple200 text-sm items-center gap-x-4 ${
                             isMenuItemActive(subMenuItem.link || "")
-                              ? "text-[#000]"
+                              ? "text-[#000] font-semibold"
                               : ""
                           }`}
                         >
