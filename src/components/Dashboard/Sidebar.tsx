@@ -14,7 +14,10 @@ import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
-
+import { Autocomplete, TextField, Button, Popper, Paper } from "@mui/material";
+import { ArrowDropDown, Search } from "@mui/icons-material";
+import { CustomAutocomplete } from "./Overview";
+import { allOutlets } from "./OverviewAdmin";
 interface MenuItem {
   subTitle?: string;
   title?: string;
@@ -32,16 +35,28 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const [open, setOpen] = useState(true);
+  const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedOutlet, setSelectedOutlet] = useState(allOutlets[0]);
+
+  const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsAutoOpen((prev) => !prev);
+  };
+
+  const handleSelect = (event: any, value: any) => {
+    event.preventDefault();
+    setSelectedOutlet(value ?? allOutlets[0]);
+    setIsAutoOpen(false);
+  };
 
   useEffect(() => {
     // Open the submenu if the current location is within its links
     selectedMenu.forEach((menu, index) => {
       if (
         menu.subMenu &&
-        menu.subMenu.some(
-          (subMenuItem) => subMenuItem.link === location.pathname
-        )
+        menu.subMenu.some((subMenuItem) => subMenuItem.link === location.pathname)
       ) {
         setOpenSubmenuIndex(index);
       }
@@ -128,9 +143,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     },
   ];
 
-  const adminMenu: MenuItem[] = [
-    { title: "AdminHome", gap: false, icon: HomeIcon },
-  ];
+  const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
 
   const userMenu = [...commonMenu];
 
@@ -140,10 +153,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const isMenuItemActive = (
-    menuLink: string,
-    subMenu?: MenuItem[]
-  ): boolean => {
+  const isMenuItemActive = (menuLink: string, subMenu?: MenuItem[]): boolean => {
     if (location.pathname === menuLink) {
       return true;
     }
@@ -166,28 +176,71 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <div className="flex gap-x-4 mt-4 items-center justify-start">
           <img
             src={Logo}
-            className={`cursor-pointer duration-500 w-[200px] ${
-              !open ? "hidden" : "block"
-            } `}
+            alt="logo"
+            className={`cursor-pointer duration-500 w-[200px] ${!open ? "hidden" : "block"} `}
             onClick={() => setOpen(!open)}
           />
           <img
+            alt="logo-mini"
             src={LogoMini}
-            className={`cursor-pointer duration-500 ${
-              !open ? "block" : "hidden"
-            } `}
+            className={`cursor-pointer duration-500 ${!open ? "block" : "hidden"} `}
             onClick={() => setOpen(!open)}
           />
         </div>
 
-        <div
-          className={`cursor-pointer duration-500 ${
-            !open ? "hidden" : "block"
-          } `}
-        >
+        <div className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"} `}>
           <hr className="h-[1px] text-[#929292] mb-2" />
           <div className="ml-[5px]">
-            <h4 className="text-base font-medium mb-2">Chicken Republic</h4>
+            <h4 className="text-base font-medium mb-0">Chicken Republic</h4>
+
+            {/* Insert Button and Popper components here */}
+            <Button
+              variant="contained"
+              onClick={handleButtonClick}
+              sx={{
+                backgroundColor: "#5955B3",
+                color: "white",
+                ml: 0,
+                "&:hover": {
+                  backgroundColor: "#4842a3",
+                },
+              }}
+            >
+              {selectedOutlet.label} <ArrowDropDown />
+            </Button>
+            <Popper
+              open={isAutoOpen}
+              anchorEl={anchorEl}
+              placement="bottom-start"
+              sx={{ zIndex: 10, boxShadow: 3 }}
+            >
+              <Paper sx={{ boxShadow: 3 }}>
+                <CustomAutocomplete
+                  disablePortal
+                  options={allOutlets}
+                  value={selectedOutlet}
+                  onChange={handleSelect}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Search outlet"
+                      variant="outlined"
+                      style={{ width: "220px", marginLeft: "0px" }}
+                      InputProps={{
+                        ...params.InputProps,
+                        startAdornment: (
+                          <>
+                            <Search style={{ color: "gray", marginRight: "4px" }} />
+                            {params.InputProps.startAdornment}
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              </Paper>
+            </Popper>
+
             <p className="text-[#606060] text-xs font-normal">Restaurant</p>
           </div>
           <hr className="h-[1px] bg-[#929292] mt-2" />
@@ -206,8 +259,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
                     ? "  bg-[#d3d3d3] font-[600] text-[16px] text-[#414141] "
-                    : !isMenuItemActive(menu.link || "", menu.subMenu) &&
-                      !menu.subTitle
+                    : !isMenuItemActive(menu.link || "", menu.subMenu) && !menu.subTitle
                     ? " "
                     : ""
                 }`}
@@ -221,11 +273,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   />
                 )}
                 <NavLink to={menu.link || "#"} className="flex-grow">
-                  <span
-                    className={`${
-                      !open && "hidden"
-                    } origin-left duration-200 text-[#000]`}
-                  >
+                  <span className={`${!open && "hidden"} origin-left duration-200 text-[#000]`}>
                     {menu.title}
                     {menu.subTitle}
                   </span>

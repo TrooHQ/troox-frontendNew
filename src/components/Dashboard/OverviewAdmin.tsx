@@ -22,7 +22,7 @@ export const storeData = {
   noOfReturns: "24",
 };
 
-const allOutlets = [
+export const allOutlets = [
   { label: "All outlets" },
   { label: "Abuja outlet" },
   { label: "Agege outlet" },
@@ -93,10 +93,7 @@ const OverviewAdmin: React.FC = () => {
         {/* First div */}
         <div className="flex items-center my-10">
           <h3 className="text-[#606060] text-[20px] font-normal">
-            Hello,{" "}
-            <span className="text-[#121212] text-[24px] font-medium">
-              {storeData.name}
-            </span>
+            Hello, <span className="text-[#121212] text-[24px] font-medium">{storeData.name}</span>
           </h3>
           <Button
             variant="contained"
@@ -134,9 +131,7 @@ const OverviewAdmin: React.FC = () => {
                       ...params.InputProps,
                       startAdornment: (
                         <>
-                          <Search
-                            style={{ color: "gray", marginRight: "4px" }}
-                          />
+                          <Search style={{ color: "gray", marginRight: "4px" }} />
                           {params.InputProps.startAdornment}
                         </>
                       ),
@@ -166,9 +161,7 @@ const OverviewAdmin: React.FC = () => {
         </div>
         {/* 5th div */}
         <div className="mt-9">
-          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">
-            Sales Trend
-          </h3>
+          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">Sales Trend</h3>
           <KPI />
         </div>
       </DashboardLayout>

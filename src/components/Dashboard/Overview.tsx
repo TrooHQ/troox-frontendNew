@@ -24,7 +24,7 @@ export const storeData = {
 
 const allOutlets = [{ label: "Ajah outlets" }];
 
-const CustomAutocomplete = styled(Autocomplete)({
+export const CustomAutocomplete = styled(Autocomplete)({
   "& .MuiOutlinedInput-root": {
     padding: "0.375rem 1rem",
     borderRadius: "5px",
@@ -82,7 +82,7 @@ const Overview: React.FC = () => {
     <div className="">
       <DashboardLayout>
         <TopMenuNav pathName="Overview" />
-        /* First div */
+        {/* First div */}
         <div className="flex items-end my-10">
           <h3 className="text-[#606060] text-[20px] font-normal">
             Hello,{" "}
