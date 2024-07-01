@@ -4,57 +4,16 @@ import { useEffect, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { setTip } from "../slices/BasketSlice";
-import Counter from "../SelfCheckout/assets/counter.svg";
+import Add from "../SelfCheckout/assets/incrementIcon.svg";
+import Minus from "../SelfCheckout/assets/decrementIcon.svg";
 
-import Image from "../SelfCheckout/assets/FriedRice.png";
-import Scroll from "../SelfCheckout/assets/scroll.svg";
-
-const menuItems = [
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-];
-
+import {
+  removeItemFromBasket,
+  setTip,
+  updateItemQuantity,
+} from "../slices/BasketSlice";
+import Header2 from "./Header2";
+import { TiDelete } from "react-icons/ti";
 export const Basket = () => {
   const navigate = useNavigate();
   const backetDetails = useSelector((state: RootState) => state.basket);
@@ -118,16 +77,22 @@ export const Basket = () => {
   const handleNext = () => {
     navigate("/payment");
   };
+
+  const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
+    dispatch(updateItemQuantity({ id, quantity: currentQuantity + 1 }));
+  };
+
+  const handleDecreaseQuantity = (id: string, currentQuantity: number) => {
+    if (currentQuantity > 1) {
+      dispatch(updateItemQuantity({ id, quantity: currentQuantity - 1 }));
+    }
+  };
+
   return (
     <div className=" ">
       <div className=" mt-[50px] ">
         <div className="">
-          {/* <img
-            src={Back}
-            alt=""
-            onClick={() => navigate(-1)}
-            className="p-[40px] cursor-pointer"
-          /> */}
+          <Header2 />
           <p className=" text-[44px] font-[500] text-[#606060] text-center">
             Order Summary
           </p>
@@ -140,15 +105,39 @@ export const Basket = () => {
               }`}
               key={index}
             >
-              <div className="grid grid-cols-4 place-items-start text-start">
+              <div className="grid grid-cols-5 place-items-center text-start items-center">
                 <p className="text-[30px] text-[#121212] font-[500] col-span-2">
                   {item?.name}
                 </p>
-                <p className="text-[30px] text-[#000000] font-[500]">
-                  x{item?.quantity}
-                </p>
+                <div className="flex items-center ">
+                  <img
+                    src={Minus}
+                    alt=""
+                    onClick={() =>
+                      handleDecreaseQuantity(item.id, item.quantity)
+                    }
+                  />
+                  <p className="text-[30px] text-[#000000] font-[500] mx-[10px]">
+                    x{item?.quantity}
+                  </p>
+                  <img
+                    src={Add}
+                    alt=""
+                    onClick={() =>
+                      handleIncreaseQuantity(item.id, item.quantity)
+                    }
+                  />
+                </div>
                 <p className="text-[20px] text-[#000000] font-[500]">
                   &#x20A6;{item.menuItem?.menu_item_price.toLocaleString()}
+                </p>
+                <p
+                  className=" text-[50px] text-[#ff0000]"
+                  onClick={() =>
+                    dispatch(removeItemFromBasket({ id: item.id }))
+                  }
+                >
+                  <TiDelete />
                 </p>
               </div>
 
@@ -175,7 +164,7 @@ export const Basket = () => {
               )}
 
               <div className="mt-[10px]">
-                <p className="text-[30px] text-[#000000] font-[500]">
+                <p className="text-[20px] text-[#000000] font-[500]">
                   Sub Total: &#x20A6;{item.totalPrice.toLocaleString()}
                 </p>
               </div>
@@ -183,126 +172,32 @@ export const Basket = () => {
           ))}
         </div>
 
-        <div className="flex items-center justify-center text-[#000000] font-[600] text-[44px] my-[20px]">
-          <p className="   ">To Pay:</p>
-          <p className=" ">
-            &#x20A6;{backetDetails?.totalPrice.toLocaleString()}
-          </p>
-        </div>
-        <div className=" mt-[10px] flex items-center justify-center gap-[16px]">
-          <p
-            className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[20px] px-[40px] border-[3px] border-[#FF0000]"
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </p>
-          <p
-            className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[20px] px-[40px]"
-            onClick={() => setIsOpen(true)}
-          >
-            Proceed to Pay
-          </p>
-        </div>
-
-        <div className=" mx-[24px] my-[80px]">
-          <div className=" flex items-center justify-between py-[32px] px-[24px]">
-            <p className=" text-[32px] font-[500] text-[#121212]">
-              Recommended Beverages
-            </p>
-            <div className="">
-              <img src={Scroll} alt="" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
-            {menuItems.map((menu, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
-              >
-                <div className="flex items-center justify-between px-[24px]">
-                  <div className="w-[180px] grid gap-[40px]">
-                    <p className="text-[28px] text-[#121212] font-[500] ">
-                      {menu.name}
-                    </p>
-                    <p className="text-[28px] text-[#606060]">{menu.price}</p>
-                  </div>
-                  <div className=" relative">
-                    <img
-                      src={menu.image}
-                      alt={menu.name}
-                      className=" h-auto w-[224px] object-cover rounded-[8px]"
-                    />
-                    <div className=" absolute bottom-2 right-2">
-                      <img src={Counter} alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className=" mx-[24px] my-[80px]">
-          <div className=" flex items-center justify-between py-[32px] px-[24px]">
-            <p className=" text-[32px] font-[500] text-[#121212]">
-              You Might Also Like
-            </p>
-            <div className="">
-              <img src={Scroll} alt="" />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
-            {menuItems.map((menu, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
-              >
-                <div className="flex items-center justify-between px-[24px]">
-                  <div className="w-[180px] grid gap-[40px]">
-                    <p className="text-[28px] text-[#414141] font-[500] ">
-                      {menu.name}
-                    </p>
-                    <p className="text-[28px] text-[#606060]">{menu.price}</p>
-                  </div>
-                  <div className=" relative">
-                    <img
-                      src={menu.image}
-                      alt={menu.name}
-                      className=" h-auto w-[224px] object-cover rounded-[8px]"
-                    />
-                    <div className=" absolute bottom-2 right-2">
-                      <img src={Counter} alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className=" mx-[24px] my-[80px]">
-          <div className=" flex items-center justify-between py-[32px] px-[24px]">
-            <p className=" text-[32px] font-[500] text-[#121212]">
-              Add Special Instructions
+        {backetDetails?.items.length > 0 ? (
+          <div className="flex items-center justify-center text-[#000000] font-[600] text-[44px] my-[20px]">
+            <p className="   ">To Pay:</p>
+            <p className=" ">
+              &#x20A6;{backetDetails?.totalPrice?.toLocaleString()}
             </p>
           </div>
-
-          <div className=" ">
-            <div className="">
-              <textarea
-                className=" w-full h-[153px] border text-[24px] font-[400] text-[#929292] border-gray-300 rounded-md p-2 shadow-md"
-                placeholder="Enter message"
-              />
-            </div>
-            <div className=" mt-[10px] flex items-center justify-end">
-              <button className="bg-[#11AE16] text-white px-4 py-2 rounded-md font-[500] text-[36px]">
-                Send
-              </button>
-            </div>
+        ) : (
+          <p className=" text-[30px] text-center">No Items Selected</p>
+        )}
+        {backetDetails?.items.length > 0 && (
+          <div className=" mt-[10px] flex items-center justify-center gap-[16px] mb-[40px]">
+            <p
+              className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[20px] px-[40px] border-[3px] border-[#FF0000]"
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </p>
+            <p
+              className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[20px] px-[40px]"
+              onClick={() => setIsOpen(true)}
+            >
+              Proceed to Pay
+            </p>
           </div>
-        </div>
+        )}
       </div>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
