@@ -1,6 +1,5 @@
 import TakeAway from "../SelfCheckout/assets/take-away.svg";
 import DineIn from "../SelfCheckout/assets/dine-in.svg";
-import Header from "./Header";
 import { Link } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
+import Header2 from "./Header2";
 interface Details {
   name: string;
   business_name: string;
@@ -55,7 +55,7 @@ const Menu = () => {
 
   return (
     <div>
-      <Header />
+      <Header2 BG="#ff0000" />
 
       <div className=" mt-[53px]">
         <div className=" px-[21px]">
