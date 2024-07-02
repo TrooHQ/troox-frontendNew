@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -158,11 +157,17 @@ export default function InformationAccordion() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium md:font-normal text-blackish">
-            Business Information
+          <div>
+            <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium md:font-normal text-blackish">
+              Business Information
+            </div>
           </div>
         </AccordionSummary>
         <AccordionDetails className="sm:text-lg flex flex-col gap-4">
+          <p className="mb-2">
+            This information is required in order to verify your business. It will show up on your
+            payout report, invoices and receipts.
+          </p>
           <div className="flex items-center gap-2">
             <TextField
               fullWidth
@@ -417,11 +422,18 @@ export default function InformationAccordion() {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium md:font-normal text-blackish">
-            Personal Information
+          <div>
+            <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium md:font-normal text-blackish">
+              Personal Information
+            </div>
           </div>
         </AccordionSummary>
         <AccordionDetails className="sm:text-lg flex flex-col gap-4">
+          <p className="mb-2">
+            Please make sure that your personal details remain up-to-date. Because this information
+            is used to verify your identity. You will need to send our Support Team a message if you
+            need to change it.
+          </p>
           <div className="flex items-center gap-2 mb-2">
             <TextField
               fullWidth
@@ -602,6 +614,11 @@ export default function InformationAccordion() {
           </div>
         </AccordionSummary>
         <AccordionDetails className="sm:text-lg flex flex-col gap-4">
+          <p className="mb-2">
+            Please enter your bank account information. You will receive a four-digit verification
+            code via text message. Once you enter the code Troo will direct all payouts to the
+            account.
+          </p>
           <div className="flex items-center gap-2 mb-2">
             <TextField
               fullWidth

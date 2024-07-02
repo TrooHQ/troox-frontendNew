@@ -12,6 +12,7 @@ import ManageTablesIcon from "../../assets/manageTableIcon.svg";
 import PointOfSalesIcon from "../../assets/posIcon.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
+import HubIcon from "../../assets/hub.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
 import { TextField, Button, Popper, Paper } from "@mui/material";
@@ -56,9 +57,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     selectedMenu.forEach((menu, index) => {
       if (
         menu.subMenu &&
-        menu.subMenu.some(
-          (subMenuItem) => subMenuItem.link === location.pathname
-        )
+        menu.subMenu.some((subMenuItem) => subMenuItem.link === location.pathname)
       ) {
         setOpenSubmenuIndex(index);
       }
@@ -141,6 +140,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       link: "/manage-users",
     },
     {
+      title: "Tenant Settings",
+      gap: false,
+      icon: HubIcon,
+      link: "/tenant-settings",
+    },
+    {
       title: "Point of Sales",
       gap: false,
       icon: PointOfSalesIcon,
@@ -154,9 +159,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     },
   ];
 
-  const adminMenu: MenuItem[] = [
-    { title: "AdminHome", gap: false, icon: HomeIcon },
-  ];
+  const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
 
   const userMenu = [...commonMenu];
 
@@ -166,10 +169,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const isMenuItemActive = (
-    menuLink: string,
-    subMenu?: MenuItem[]
-  ): boolean => {
+  const isMenuItemActive = (menuLink: string, subMenu?: MenuItem[]): boolean => {
     if (location.pathname === menuLink) {
       return true;
     }
@@ -193,26 +193,18 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <img
             src={Logo}
             alt="logo"
-            className={`cursor-pointer duration-500 w-[200px] ${
-              !open ? "hidden" : "block"
-            } `}
+            className={`cursor-pointer duration-500 w-[200px] ${!open ? "hidden" : "block"} `}
             onClick={() => setOpen(!open)}
           />
           <img
             alt="logo-mini"
             src={LogoMini}
-            className={`cursor-pointer duration-500 ${
-              !open ? "block" : "hidden"
-            } `}
+            className={`cursor-pointer duration-500 ${!open ? "block" : "hidden"} `}
             onClick={() => setOpen(!open)}
           />
         </div>
 
-        <div
-          className={`cursor-pointer duration-500 ${
-            !open ? "hidden" : "block"
-          } `}
-        >
+        <div className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"} `}>
           <hr className="h-[1px] text-[#929292] mb-2" />
           <div className="ml-[5px]">
             <h4 className="text-base font-medium mb-0">Chicken Republic</h4>
@@ -254,9 +246,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                         ...params.InputProps,
                         startAdornment: (
                           <>
-                            <Search
-                              style={{ color: "gray", marginRight: "4px" }}
-                            />
+                            <Search style={{ color: "gray", marginRight: "4px" }} />
                             {params.InputProps.startAdornment}
                           </>
                         ),
@@ -283,8 +273,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
                     ? "  bg-[#d3d3d3] font-[600] text-[16px] text-[#414141] "
-                    : !isMenuItemActive(menu.link || "", menu.subMenu) &&
-                      !menu.subTitle
+                    : !isMenuItemActive(menu.link || "", menu.subMenu) && !menu.subTitle
                     ? " "
                     : ""
                 }`}
@@ -298,11 +287,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   />
                 )}
                 <NavLink to={menu.link || "#"} className="flex-grow">
-                  <span
-                    className={`${
-                      !open && "hidden"
-                    } origin-left duration-200 text-[#000]`}
-                  >
+                  <span className={`${!open && "hidden"} origin-left duration-200 text-[#000]`}>
                     {menu.title}
                     {menu.subTitle}
                   </span>

@@ -38,6 +38,7 @@ import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
 import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
+import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/tenant-settings" element={<TenantSettings />} />
           <Route path="/manage-tables" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
