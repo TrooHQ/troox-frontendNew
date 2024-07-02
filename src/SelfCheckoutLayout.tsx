@@ -21,7 +21,6 @@ const SelfCheckoutLayout = () => {
           <Route path="/:id" element={<BeginOrder />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/category-details/:id" element={<CategoryDetails />} />
-          {/* <Route path="/menu-details/:id" element={<MenuDetails />} /> */}
           <Route path="/basket" element={<Basket />} />
           <Route path="/payment" element={<PaymentScreen />} />
           <Route path="*" element={<NotFound />} />

@@ -17,6 +17,7 @@ import {
 } from "../slices/businessSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
+import Header2 from "./Header2";
 const BeginOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
@@ -87,9 +88,9 @@ const BeginOrder = () => {
   };
   return (
     <div>
-      <Header />
       {!isOpen && !isTableOpen && (
         <>
+          <Header />
           <div className="">
             <img
               src={HeroImage}
@@ -115,6 +116,11 @@ const BeginOrder = () => {
 
       {isOpen && (
         <div className="">
+          <Header2
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          />
           <div className=" max-w-[818px]  mx-auto mt-[50px] ">
             <label htmlFor="" className=" font-[500] text-[40px] mx-[20px]">
               Enter your first name and last name initial.
@@ -149,6 +155,11 @@ const BeginOrder = () => {
 
       {isTableOpen && (
         <div className="">
+          <Header2
+            onClick={() => {
+              setTableIsOpen(false);
+            }}
+          />
           <div className=" max-w-[818px]  mx-auto mt-[50px]">
             <label htmlFor="" className=" font-[500] text-[40px] mx-[20px]">
               Enter your phone number

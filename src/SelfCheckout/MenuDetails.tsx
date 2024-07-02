@@ -15,9 +15,8 @@ import Modal from "../components/Modal";
 import Counter from "../SelfCheckout/assets/counter.svg";
 
 import Image from "../SelfCheckout/assets/FriedRice.png";
-import Scroll from "../SelfCheckout/assets/scroll.svg";
 import Loader from "../components/Loader";
-
+import { MdKeyboardArrowRight } from "react-icons/md";
 const menuItems = [
   {
     name: "Rice",
@@ -264,7 +263,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                           {menuItem.menu_item_name}
                         </p>
                         <p className="text-[##121212] text-[36px] font-[500] mx-[24px]">
-                          &#x20A6; {menuItem.menu_item_price.toLocaleString()}
+                          &#x20A6; {menuItem?.menu_item_price?.toLocaleString()}
                         </p>
                       </div>
                       <div className="flex items-center justify-between">
@@ -335,8 +334,8 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                       <p className=" text-[32px] font-[500] text-[#121212]">
                         Recommended Beverages
                       </p>
-                      <div className="">
-                        <img src={Scroll} alt="" />
+                      <div className=" text-[50px]">
+                        <MdKeyboardArrowRight />
                       </div>
                     </div>
 
@@ -352,7 +351,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                                 {menu.name}
                               </p>
                               <p className="text-[28px] text-[#606060]">
-                                {menu.price.toLocaleString()}
+                                {menu.price?.toLocaleString()}
                               </p>
                             </div>
                             <div className=" relative">
@@ -376,8 +375,8 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                       <p className=" text-[32px] font-[500] text-[#121212]">
                         You Might Also Like
                       </p>
-                      <div className="">
-                        <img src={Scroll} alt="" />
+                      <div className=" text-[50px]">
+                        <MdKeyboardArrowRight />
                       </div>
                     </div>
 
