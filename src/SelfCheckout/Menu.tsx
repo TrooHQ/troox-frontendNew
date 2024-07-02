@@ -55,7 +55,7 @@ const Menu = () => {
 
   return (
     <div>
-      <Header2 BG="#ff0000" />
+      <Header2 bgColor="#ff0000" textColor="#ffffff" borderColor="#ffffff" />
 
       <div className=" mt-[53px]">
         <div className=" px-[21px]">

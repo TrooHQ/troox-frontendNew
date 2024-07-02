@@ -1,18 +1,22 @@
 import { useEffect, useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import Back from "../SelfCheckout/assets/Back.svg";
 import MiniLogo from "../SelfCheckout/assets/image121.png";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 interface Header2Props {
   children?: ReactNode;
   onClick?: (navigate: (path: number) => void) => void;
-  BG?: string;
+  bgColor?: string;
+  textColor?: string;
+  borderColor?: string;
 }
 
 const Header2: React.FC<Header2Props> = ({
   children,
   onClick = (navigate) => navigate(-1),
-  BG = "#ffffff",
+  bgColor = "#ffffff",
+  textColor = "#000000",
+  borderColor = "#606060",
 }) => {
   const navigate = useNavigate();
   const [isSticky, setSticky] = useState(false);
@@ -34,33 +38,37 @@ const Header2: React.FC<Header2Props> = ({
     };
   }, []);
 
-  const containerStyle = {
-    backgroundColor: BG,
-  };
-
   return (
     <div>
       <div
         className={`${
           isSticky ? "fixed top-0 left-0 right-0 shadow-md" : ""
         } z-10 transition-all duration-300 ease-in-out`}
-        style={containerStyle}
+        style={{ backgroundColor: bgColor }}
       >
         <div className="grid grid-cols-3 items-center py-4 shadow">
-          <div className="justify-self-start px-4">
-            <img
-              src={Back}
-              alt="Back"
+          <div className="justify-self-start">
+            <p
+              className="text-[28px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
+              style={{
+                color: textColor,
+                borderColor: borderColor,
+                borderStyle: "solid",
+              }}
               onClick={() => onClick(navigate)}
-              className="cursor-pointer"
-            />
+            >
+              <span className="text-6xl" style={{ color: textColor }}>
+                <MdKeyboardArrowLeft />
+              </span>
+              Back
+            </p>
           </div>
           <div className="col-span-1 justify-self-center">
             <img src={MiniLogo} alt="Logo" />
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
-        {children && <div className=" ">{children}</div>}
+        {children && <div>{children}</div>}
       </div>
     </div>
   );
