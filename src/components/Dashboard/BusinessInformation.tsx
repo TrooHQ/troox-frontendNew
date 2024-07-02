@@ -2,8 +2,18 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import add from "../../assets/add.svg";
 import InformationAccordion from "./components/InformationAccordion";
+import { SetStateAction, useState } from "react";
+import Modal from "../Modal";
+import CustomInput from "../inputFields/CustomInput";
+import BranchModal from "./components/BranchModal";
 
 const BusinessInformation = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddMenu = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <DashboardLayout>
       {" "}
@@ -11,12 +21,13 @@ const BusinessInformation = () => {
       <div className="flex items-center justify-between mt-10">
         <div></div>
         <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[16px] py-[10px] font-[500] text-[#ffffff]">
-          <button className="text-[16px] font-medium flex items-center gap-[8px]">
+          <button className="text-[14px] flex items-center gap-[8px]" onClick={handleAddMenu}>
             <img src={add} alt="" /> Create New Branch
           </button>
         </div>
       </div>
       <InformationAccordion />
+      <BranchModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </DashboardLayout>
   );
 };
