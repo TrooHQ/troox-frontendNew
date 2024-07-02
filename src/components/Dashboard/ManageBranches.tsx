@@ -1,33 +1,9 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import red from "../../assets/red.svg";
-import orange from "../../assets/orange.svg";
-import green from "../../assets/green.svg";
-import More from "../../assets/more_vert.svg";
-import { useEffect, useState } from "react";
-import { SERVER_DOMAIN } from "../../Api/Api";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useState } from "react";
 import add from "../../assets/add.svg";
-import { Delete, DeleteForeverOutlined } from "@mui/icons-material";
+import { DeleteForeverOutlined } from "@mui/icons-material";
 import BranchModal from "./components/BranchModal";
-
-interface Ticket {
-  ordered_by: string;
-  menu_items: MenuItem[];
-  orders: string[];
-  total_price: number;
-  createdAt: string;
-  status: string;
-  name: string;
-  id: number;
-}
-interface MenuItem {
-  name: string;
-  price: string;
-  quantity: string;
-}
 
 const data = [
   {

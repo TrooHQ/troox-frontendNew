@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -146,6 +145,7 @@ export const AccordionItem = ({
                 )}
                 value={allOutlets.filter((outlet) => selectedOutlets.includes(outlet.label))}
                 onChange={(event, newValue) => {
+                  event.preventDefault();
                   setSelectedOutlets(newValue.map((item) => item.label));
                 }}
               />

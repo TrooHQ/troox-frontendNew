@@ -2,9 +2,7 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import add from "../../assets/add.svg";
 import InformationAccordion from "./components/InformationAccordion";
-import { SetStateAction, useState } from "react";
-import Modal from "../Modal";
-import CustomInput from "../inputFields/CustomInput";
+import { useState } from "react";
 import BranchModal from "./components/BranchModal";
 
 const BusinessInformation = () => {

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import { SetStateAction, useState } from "react";
 import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
 import { toast } from "react-toastify";
