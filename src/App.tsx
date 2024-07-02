@@ -36,6 +36,8 @@ import { ToastContainer } from "react-toastify";
 import Tickets from "./components/Dashboard/Tickets.tsx";
 import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
 import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
+import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
+import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 
 export default function App() {
   return (
@@ -79,6 +81,9 @@ export default function App() {
 
           <Route path="/till" element={<Till />} />
           <Route path="*" element={<NotFound />} />
+
+          <Route path="/business-information" element={<BusinessInformation />} />
+          <Route path="/manage-branches" element={<ManageBranches />} />
         </Routes>
       </Router>
     </div>

@@ -83,7 +83,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "/menu-home",
+      link: "/menu-builder",
       subMenu: [
         {
           title: "Menu Builder",
@@ -113,9 +113,18 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     },
     {
       title: "Restaurant Details",
-      gap: false,
       icon: RestaurantDetailsIcon,
-      link: "/restaurant-details",
+      link: "/business-information",
+      subMenu: [
+        {
+          title: "Business Information",
+          link: "/business-information",
+        },
+        {
+          title: "Manage Branches",
+          link: "/manage-branches",
+        },
+      ],
     },
     {
       title: "Manage Tables",
@@ -168,7 +177,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   return (
     <div
       className={`p-2 ${
-        open ? "w-[203px]" : "w-20"
+        open ? "w-[230px]" : "w-20"
       }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
@@ -246,14 +255,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <hr className="h-[1px] bg-[#929292] mt-2" />
         </div>
       </div>
-      <ul className="pt-6 pl-[15px] grid gap-[10px]">
+      <ul className="pt-6 pl-[1px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
             <li>
               <div
-                className={`flex relative ${
-                  menu.title && " px-[14px] cursor-pointer py-[8px]  "
-                }  ${
+                className={`flex relative ${menu.title && "px-[4px] cursor-pointer py-[8px]"}  ${
                   menu.subTitle && "text-[12px] font-normal text-[#121212]"
                 } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
