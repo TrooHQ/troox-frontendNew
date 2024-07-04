@@ -116,13 +116,13 @@ export const Basket = () => {
 
             <div className="mt-[60px] flex items-center justify-center gap-[16px]">
               <p
-                className="cursor-pointer font-[500] text-[16px] text-[#0B7F7C] py-[10px] px-[24px]"
+                className="cursor-pointer font-[500] text-[16px] text-[#FF0000] py-[10px] px-[24px]"
                 onClick={() => navigate(-1)}
               >
                 Cancel
               </p>
               <Link to="/tip">
-                <p className="inline font-[500] text-[16px] rounded-[5px] bg-[#0B7F7C] text-white py-[10px] px-[24px]">
+                <p className="inline font-[500] text-[16px] rounded-[5px] bg-[#FF0000] text-white py-[10px] px-[24px]">
                   Proceed to Pay
                 </p>
               </Link>
