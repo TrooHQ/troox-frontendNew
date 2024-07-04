@@ -34,13 +34,7 @@ interface MenuItem {
 }
 
 const MenuBuilder = () => {
-  const Menu: string[] = [
-    "coffee",
-    "soups",
-    "specials",
-    "desert",
-    "happy meal",
-  ];
+  const Menu: string[] = ["coffee", "soups", "specials", "desert", "happy meal"];
   const arrayDummy: MenuItem[] = [
     {
       title: "coffee",
@@ -281,10 +275,7 @@ const MenuBuilder = () => {
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
-                <button
-                  className="text-[16px] flex items-center gap-[8px]"
-                  onClick={handleAddMenu}
-                >
+                <button className="text-[16px] flex items-center gap-[8px]" onClick={handleAddMenu}>
                   <img src={Add} alt="" /> Add new menu category
                 </button>
               </div>
@@ -305,13 +296,12 @@ const MenuBuilder = () => {
                       onClick={() => getSubmenu(data)}
                       key={index}
                       className={`${
-                        activeMainMenu === data &&
-                        " bg-purple100 text-purple600 font-[500]"
+                        activeMainMenu === data && " bg-purple100 text-purple600 font-[500]"
                       }  text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
                       {data}{" "}
                       {activeMainMenu === data ? (
-                        <img src={activeArrow} />
+                        <img src={activeArrow} alt="activearrow" />
                       ) : (
                         <img src={chevron_right} alt="" />
                       )}
@@ -323,9 +313,7 @@ const MenuBuilder = () => {
                 <div className="mt-[24px] w-full border p-[16px]">
                   <div className=" flex gap-[16px] items-start">
                     <div className=" w-[204px]">
-                      <p className=" font-[400] text-[12px] text-[#606060]">
-                        Menu Group
-                      </p>
+                      <p className=" font-[400] text-[12px] text-[#606060]">Menu Group</p>
                       <div className="">
                         {subMenu.map((data, index) => (
                           <p
@@ -337,15 +325,14 @@ const MenuBuilder = () => {
                             key={index}
                             onClick={() => {
                               // @ts-ignore
-                              setSubmenuContent(data.data),
-                                setActiveSubMenu(data.type || null);
+                              setSubmenuContent(data.data), setActiveSubMenu(data.type || null);
                               // @ts-ignore
                               setMenuType(data.type);
                             }}
                           >
                             {data.type}
                             {activeSubMenu === data.type ? (
-                              <img src={activeArrow} />
+                              <img src={activeArrow} alt="activearrow" />
                             ) : (
                               <img src={chevron_right} alt="" />
                             )}
@@ -363,9 +350,7 @@ const MenuBuilder = () => {
                       </div>
                     </div>
                     <div className=" flex-grow space-y-[16px]">
-                      <p className=" font-[400] text-[12px] text-[#606060]">
-                        Menu Item
-                      </p>
+                      <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
                       <div className=" flex items-start justify-between ">
                         <p className=" text-[16px] font-[500] text-[#5855B3]">
                           {menuType || "Type"}
@@ -387,9 +372,7 @@ const MenuBuilder = () => {
                                 <img src={CoffeeImg} alt="" />
 
                                 <div className="">
-                                  <p className=" text-[12px] font-[400] text-grey300">
-                                    Item
-                                  </p>
+                                  <p className=" text-[12px] font-[400] text-grey300">Item</p>
                                   <p className=" leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
                                     {data.name}
                                   </p>
@@ -399,9 +382,7 @@ const MenuBuilder = () => {
                                 </div>
                               </div>
                               <div className=" flex">
-                                <p className=" text-[16px] font-[500] text-grey500">
-                                  {data.price}
-                                </p>
+                                <p className=" text-[16px] font-[500] text-grey500">{data.price}</p>
                               </div>
                             </div>
                           </div>
@@ -443,15 +424,11 @@ const MenuBuilder = () => {
                       label="Enter menu name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Add image
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
                         <label
@@ -473,9 +450,7 @@ const MenuBuilder = () => {
                             className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
                           >
                             Click to upload{" "}
-                            <span className=" font-[400] text-grey300">
-                              or drag and drop
-                            </span>
+                            <span className=" font-[400] text-grey300">or drag and drop</span>
                           </label>
                           <p className=" text-[14px] font-[400] text-grey300">
                             Max. file size: 2MB
@@ -528,9 +503,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setIsModalOpen(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -555,9 +528,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={CheckCircle} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Changes Saved!
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Changes Saved!</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Changes have been saved successfully
                 </p>
@@ -565,10 +536,7 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={confirmSaveModal}
-            onClose={() => setConfirmSaveModal(false)}
-          >
+          <Modal isOpen={confirmSaveModal} onClose={() => setConfirmSaveModal(false)}>
             <div className=" w-[443px] px-[32px] py-[32px]">
               <div
                 className="flex items-center justify-end cursor-pointer"
@@ -577,9 +545,7 @@ const MenuBuilder = () => {
                 <img src={Close} alt="" className=" " />
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Save changes
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Save changes</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Do you want to save changes made to this menu?
                 </p>
@@ -603,9 +569,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={CheckCircle} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Changes Published!
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Changes Published!</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Changes have been published successfully
                 </p>
@@ -613,10 +577,7 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={confirmPublishModal}
-            onClose={() => setConfirmPublishModal(false)}
-          >
+          <Modal isOpen={confirmPublishModal} onClose={() => setConfirmPublishModal(false)}>
             <div className=" w-[443px] px-[32px] py-[32px]">
               <div
                 className="flex items-center justify-end cursor-pointer"
@@ -626,9 +587,7 @@ const MenuBuilder = () => {
               </div>
               <div className=" flex flex-col gap-[24px] items-center justify-center">
                 <img src={PublishIcon} alt="" />
-                <p className="text-grey500 text-[22px] font-[500]">
-                  Publish changes
-                </p>
+                <p className="text-grey500 text-[22px] font-[500]">Publish changes</p>
                 <p className="text-[16px] font-[400] text-grey500">
                   Do you want to publish changes made to this menu?
                 </p>
@@ -642,15 +601,10 @@ const MenuBuilder = () => {
             </div>
           </Modal>
 
-          <Modal
-            isOpen={addModifierModar}
-            onClose={() => setAddModifierModal(false)}
-          >
+          <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
             <div className=" w-[539px] py-[32px] px-[52px]">
               <div className="">
-                <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
-                  Add modifier
-                </p>
+                <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Add modifier</p>
                 <hr className="border my-[24px] border-[#E7E7E7]" />
                 <div className=" flex items-center gap-[8px] justify-center">
                   <img src={AddWhite} alt="" />
@@ -660,9 +614,7 @@ const MenuBuilder = () => {
                       label="Enter modifier Name"
                       value={userData.department}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("department", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("department", newValue)}
                     />
                   </div>
                 </div>
@@ -673,9 +625,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddModifierModal(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -708,9 +658,7 @@ const MenuBuilder = () => {
                       label="Enter menu name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     {/* <CustomSelect2
@@ -719,12 +667,9 @@ const MenuBuilder = () => {
                     /> */}
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
                       <p className=" text-[14px] font-[400] text-grey500">
-                        Do you want this price to apply to all the items in this
-                        menu group?
+                        Do you want this price to apply to all the items in this menu group?
                       </p>
                       <div className="flex items-center mt-[8px]">
                         <input
@@ -734,14 +679,9 @@ const MenuBuilder = () => {
                           value="yes"
                           checked={selectedOption === "yes"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "yes" ? " bg-purple500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "yes" ? " bg-purple500" : ""}`}
                         />
-                        <label
-                          htmlFor="yes"
-                          className="mr-4  text-grey500 text-[16px] font-[400]"
-                        >
+                        <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
                         </label>
 
@@ -752,14 +692,9 @@ const MenuBuilder = () => {
                           value="no"
                           checked={selectedOption === "no"}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "no" ? " bg-purple500" : ""
-                          }`}
+                          className={`mr-2 ${selectedOption === "no" ? " bg-purple500" : ""}`}
                         />
-                        <label
-                          htmlFor="no"
-                          className=" text-grey500 text-[16px] font-[400]"
-                        >
+                        <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
                         </label>
                       </div>
@@ -771,9 +706,7 @@ const MenuBuilder = () => {
                         label="Enter price"
                         value=""
                         error=""
-                        onChange={(newValue) =>
-                          handleInputChange("lastName", newValue)
-                        }
+                        onChange={(newValue) => handleInputChange("lastName", newValue)}
                       />
                     )}
                     {/* <CustomInput
@@ -787,9 +720,7 @@ const MenuBuilder = () => {
                     /> */}
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Add image
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
                         <label
@@ -811,9 +742,7 @@ const MenuBuilder = () => {
                             className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
                           >
                             Click to upload{" "}
-                            <span className=" font-[400] text-grey300">
-                              or drag and drop
-                            </span>
+                            <span className=" font-[400] text-grey300">or drag and drop</span>
                           </label>
                           <p className=" text-[14px] font-[400] text-grey300">
                             Max. file size: 2MB
@@ -829,9 +758,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuGroup(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
@@ -864,9 +791,7 @@ const MenuBuilder = () => {
                       label="Enter menu item name"
                       value={userData.firstName}
                       error=""
-                      onChange={(newValue) =>
-                        handleInputChange("firstName", newValue)
-                      }
+                      onChange={(newValue) => handleInputChange("firstName", newValue)}
                     />
 
                     {/* <CustomSelect2
@@ -875,17 +800,13 @@ const MenuBuilder = () => {
                     /> */}
 
                     <div className="">
-                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
+                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
                       <CustomInput
                         type="text"
                         label="Enter price"
                         value=""
                         error=""
-                        onChange={(newValue) =>
-                          handleInputChange("lastName", newValue)
-                        }
+                        onChange={(newValue) => handleInputChange("lastName", newValue)}
                       />
                     </div>
                     {/* <div className="">
@@ -1052,9 +973,7 @@ const MenuBuilder = () => {
                     </div> */}
 
                     <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
-                        Add image
-                      </p>
+                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
                         <label
@@ -1076,9 +995,7 @@ const MenuBuilder = () => {
                             className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
                           >
                             Click to upload{" "}
-                            <span className=" font-[400] text-grey300">
-                              or drag and drop
-                            </span>
+                            <span className=" font-[400] text-grey300">or drag and drop</span>
                           </label>
                           <p className=" text-[14px] font-[400] text-grey300">
                             Max. file size: 2MB
@@ -1116,9 +1033,7 @@ const MenuBuilder = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                     onClick={() => setAddMenuItem(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                      Cancel
-                    </p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                     {/* <CancelButton text="Cancel" /> */}
                   </div>
 
