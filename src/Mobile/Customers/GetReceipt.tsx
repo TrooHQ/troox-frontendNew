@@ -29,14 +29,14 @@ export const GetReceipt = () => {
         <div className="grid gap-[16px] items-center justify-center">
           {/* <Link to="/"> */}
           <div className=" flex items-center justify-center">
-            <p className="bg-[#0B7F7C] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
+            <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
               Get an eReceipt
             </p>
           </div>
           {/* </Link> */}
           <Link to={`${url}`}>
             <div className=" flex items-center justify-center">
-              <p className=" border border-[#0B7F7C] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#0B7F7C]">
+              <p className=" border border-[#FF0000] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#FF0000]">
                 Order more
               </p>
             </div>

@@ -118,13 +118,13 @@ const StartOrder = () => {
 
         <div className="mt-[40px] flex flex-col items-center justify-center">
           <p
-            className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] bg-[#0B7F7C] rounded-[5px] font-[500] inline"
+            className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] bg-[#FF0000] rounded-[5px] font-[500] inline"
             onClick={() => setIsOpen(true)}
           >
             Start Your Order
           </p>
           <a href="">
-            <p className="text-center text-[#0B7F7C] underline text-[16px] mt-[24px]">
+            <p className="text-center text-[#FF0000] underline text-[16px] mt-[24px]">
               Click here for menu and nutrition information
             </p>
           </a>
@@ -132,7 +132,7 @@ const StartOrder = () => {
           <p className="italic text-center text-[16px] mt-[32px]">
             By clicking “Start Your Order” you agree to our{" "}
             <a href="">
-              <span className="text-[#0B7F7C] underline">
+              <span className="text-[#FF0000] underline">
                 Terms & Conditions
               </span>
             </a>
@@ -151,14 +151,14 @@ const StartOrder = () => {
           />
           <div className="mt-[25px]">
             <p
-              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#0B7F7C] text-[16px] font-[500] cursor-pointer"
+              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
               onClick={() => setIsOpen(false)}
             >
               Cancel
             </p>
             <p
               className={`px-[24px] py-[10px] ${
-                !userName ? "bg-[#85C0BE]" : "bg-[#0B7F7C] cursor-pointer"
+                !userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
               } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
               onClick={userName ? handleNext : undefined}
             >
@@ -179,7 +179,7 @@ const StartOrder = () => {
           />
           <div className="mt-[25px]">
             <p
-              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#0B7F7C] text-[16px] font-[500] cursor-pointer"
+              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
               onClick={() => setTableIsOpen(false)}
             >
               Cancel
@@ -187,7 +187,7 @@ const StartOrder = () => {
             <Link to={`/${businessDetails?.business_name}/explore-menu`}>
               <p
                 className={`px-[24px] py-[10px] ${
-                  !table ? "bg-[#85C0BE]" : "bg-[#0B7F7C] cursor-pointer"
+                  !table ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
                 } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
               >
                 Submit
