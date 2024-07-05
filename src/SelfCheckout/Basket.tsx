@@ -163,7 +163,7 @@ export const Basket = () => {
                 </div>
               )}
 
-              <div className="mt-[10px]">
+              <div className="mt-[10px] hidden">
                 <p className="text-[20px] text-[#000000] font-[500]">
                   Sub Total: &#x20A6;{item.totalPrice.toLocaleString()}
                 </p>

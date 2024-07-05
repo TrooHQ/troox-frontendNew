@@ -24,7 +24,13 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
   const id = sessionStorage.getItem("ids");
   const [isSticky, setSticky] = useState(false);
 
-  const hideCartOnPaths = ["/receipt", "/get-receipt", "/path3"];
+  const hideCartOnPaths = [
+    "/receipt",
+    "/get-receipt",
+    "/basket",
+    "/payment-type",
+    "/tip",
+  ];
   const hideCart = hideCartOnPaths.includes(location.pathname);
 
   useEffect(() => {
@@ -68,7 +74,6 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
             <span className="text-4xl" style={{ color: textColor }}>
               <img src={BackArrow} alt="Go back" />
             </span>
-            Back
           </p>
         </div>
         <div className="col-span-1 justify-self-center">
