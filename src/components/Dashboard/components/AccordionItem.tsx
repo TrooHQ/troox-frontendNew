@@ -26,6 +26,7 @@ export const allOutlets = [
 
 export const AccordionItem = ({
   title,
+  subText,
   expanded,
   setExpanded,
   isEnabled,
@@ -68,7 +69,7 @@ export const AccordionItem = ({
         <p className="text-xs font-normal text-[#606060]">
           {isEnabled ? "Enabled for entire organization" : "Disabled"}
         </p>
-        <p className="text-base font-normal text-[#606060]">QR Code Order & Pay enables...</p>
+        <p className="text-base font-normal text-[#606060] w-full md:w-[50%]">QR {subText}</p>
         <div>
           <IconButton onClick={handleToggleChange} color="default">
             {isEnabled ? (

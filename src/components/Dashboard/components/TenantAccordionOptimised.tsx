@@ -4,16 +4,42 @@ import { AccordionItem } from "./AccordionItem";
 const TenantAccordion = () => {
   const initialAccordionState = {
     expanded: false,
-    isEnabled: false,
+    isEnabled: true,
     selectedOption: "entireOrg",
     selectedOutlets: [],
   };
 
   const [accordionState, setAccordionState] = useState([
-    { ...initialAccordionState, title: "QR Code Order & Pay" },
-    { ...initialAccordionState, title: "Order-At-Table" },
-    { ...initialAccordionState, title: "In-Room Dining" },
-    { ...initialAccordionState, title: "Self Checkout" },
+    {
+      ...initialAccordionState,
+      title: "QR Pay at Table",
+      subText:
+        "Customers scan a QR code at their table to view the menu, place orders, and pay directly from their mobile device.",
+    },
+    {
+      ...initialAccordionState,
+      title: "QR In-Room Dining",
+      subText:
+        "Guests scan a QR code in their hotel room to order food and beverages, which are delivered to their room.",
+    },
+    {
+      ...initialAccordionState,
+      title: "Self Ordering",
+      subText:
+        "Customers place orders using a self-service kiosk or their mobile device, with orders sent directly to the kitchen.",
+    },
+    {
+      ...initialAccordionState,
+      title: "Digital Signage",
+      subText:
+        "Display dynamic menus, promotions, and order status updates in real-time on digital screens.",
+    },
+    {
+      ...initialAccordionState,
+      title: "Troo Till",
+      subText:
+        "Description: Comprehensive POS system for managing transactions, inventory, and sales reporting.",
+    },
   ]);
 
   const handleAccordionChange = (index: number, field: string, value: any) => {
@@ -32,6 +58,7 @@ const TenantAccordion = () => {
         <AccordionItem
           key={index}
           title={accordion.title}
+          subText={accordion.subText}
           expanded={accordion.expanded}
           setExpanded={(value: any) => handleAccordionChange(index, "expanded", value)}
           isEnabled={accordion.isEnabled}
