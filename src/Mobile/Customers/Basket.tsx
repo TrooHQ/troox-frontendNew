@@ -1,41 +1,59 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 // import { GiShoppingCart } from "react-icons/gi";
 // import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
 // import Add from "../assets/plusIconRound.svg";
-import Image from "../assets/FriedRice.png";
+// import Image from "../assets/FriedRice.png";
 // import Minus from "../assets/MinusRound.svg";
 
 import Minus from "../assets/Minus.svg";
 import Add from "../assets/add.svg";
+import {
+  removeItemFromBasket,
+  updateItemQuantity,
+} from "../../slices/BasketSlice";
+import { TiDelete } from "react-icons/ti";
 
-const menuItems = [
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    details: "Crispy fried ankara straight from the oven",
-  },
-];
+// const menuItems = [
+//   {
+//     name: "Rice",
+//     price: "From ₦3000",
+//     image: Image,
+//     details: "Crispy fried ankara straight from the oven",
+//   },
+//   {
+//     name: "Rice",
+//     price: "From ₦3000",
+//     image: Image,
+//     details: "Crispy fried ankara straight from the oven",
+//   },
+// ];
 
 export const Basket = () => {
   const navigate = useNavigate();
   const basketDetails = useSelector((state: RootState) => state.basket);
+  const dispatch = useDispatch();
+
   console.log(basketDetails);
+
+  const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
+    dispatch(updateItemQuantity({ id, quantity: currentQuantity + 1 }));
+  };
+
+  const handleDecreaseQuantity = (id: string, currentQuantity: number) => {
+    if (currentQuantity > 1) {
+      dispatch(updateItemQuantity({ id, quantity: currentQuantity - 1 }));
+    }
+  };
+
   return (
     <div className=" ">
       <TopMenuNav exploreMenuText="Basket" />
 
       <div className="mt-[68px]">
-        {/* {basketDetails?.items && (
+        {basketDetails?.items && (
           <div className="py-[20px] mx-[24px] grid gap-[10px]">
             <p className="">
               Hello{" "}
@@ -49,18 +67,39 @@ export const Basket = () => {
             </p>
             <p>Below are the items you ordered:</p>
           </div>
-        )} */}
+        )}
         {basketDetails?.items.length > 0 ? (
           basketDetails.items.map((item, index) => (
             <>
               <div key={index}>
-                <div className="mx-[24px] border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
+                <div className="mx-[24px]  border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
                   <div className="grid gap-[8px]">
-                    <div className="flex items-center justify-between">
+                    <div className=" grid grid-cols-4 items-center gap-[20px] place-items-center">
                       <p className="text-[16px] text-[#121212] font-[500]">
                         <span className="pr-2">{item.quantity}x</span>
                         {item.name}
                       </p>
+                      <div className="flex items-center ">
+                        <img
+                          className=" w-[20px]"
+                          src={Minus}
+                          alt=""
+                          onClick={() =>
+                            handleDecreaseQuantity(item.id, item.quantity)
+                          }
+                        />
+                        <p className="text-[18px] text-[#000000] font-[500] mx-[10px]">
+                          x{item?.quantity}
+                        </p>
+                        <img
+                          className=" w-[20px]"
+                          src={Add}
+                          alt=""
+                          onClick={() =>
+                            handleIncreaseQuantity(item.id, item.quantity)
+                          }
+                        />
+                      </div>
                       {item.menuItem && (
                         <p className="text-[#121212]">
                           &#x20A6;
@@ -69,6 +108,15 @@ export const Basket = () => {
                           ).toFixed(2)}
                         </p>
                       )}
+
+                      <p
+                        className=" text-[30px] text-[#ff0000]"
+                        onClick={() =>
+                          dispatch(removeItemFromBasket({ id: item.id }))
+                        }
+                      >
+                        <TiDelete />
+                      </p>
                     </div>
                     {item.selectedOptions &&
                       item.selectedOptions.length > 0 && (
@@ -131,7 +179,7 @@ export const Basket = () => {
               </Link>
             </div>
 
-            <div className=" ">
+            {/* <div className=" ">
               <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
                 People also ordered for
               </p>
@@ -229,7 +277,7 @@ export const Basket = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

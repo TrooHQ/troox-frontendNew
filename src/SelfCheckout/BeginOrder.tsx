@@ -1,6 +1,7 @@
 import HeroImage from "./assets/selfCheckDisplayImg.png";
 import Visa from "./assets/visa.png";
 import Mastercard from "./assets/mastercard.png";
+import Verve from "./assets/verve.png";
 import Header from "./Header";
 import CustomInput from "../Mobile/inputFields/CustomInput";
 
@@ -107,8 +108,9 @@ const BeginOrder = () => {
               START ORDER
             </p>
             <div className=" flex items-center justify-between mt-[61px]">
-              <img src={Mastercard} alt="" />
-              <img src={Visa} alt="" />
+              <img src={Mastercard} alt="" className=" w-[20%] " />
+              <img src={Verve} alt="" className="w-[20%] " />
+              <img src={Visa} alt="" className="w-[20%] " />
             </div>
           </div>
         </>
