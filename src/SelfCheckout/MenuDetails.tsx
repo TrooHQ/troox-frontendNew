@@ -17,6 +17,7 @@ import Counter from "../SelfCheckout/assets/counter.svg";
 import Image from "../SelfCheckout/assets/FriedRice.png";
 import Loader from "../components/Loader";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { FaCircleCheck } from "react-icons/fa6";
 const menuItems = [
   {
     name: "Rice",
@@ -426,8 +427,8 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                         />
                       </div>
                       <div className=" mt-[10px] flex items-center justify-end">
-                        <button className="bg-[#11AE16] text-white px-4 py-2 rounded-md font-[500] text-[36px]">
-                          Send
+                        <button className=" text-[#ff0000]  font-[500] text-[80px]">
+                          <FaCircleCheck />
                         </button>
                       </div>
                     </div>

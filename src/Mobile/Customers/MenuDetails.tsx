@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TopMenuNav from "./TopMenuNav";
 import Add from "../assets/Plus.svg";
-import Minus from "../assets/Minus.svg";
+import MinusMain from "../assets/MinusCounter.svg";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCircleCheck } from "react-icons/fa6";
-// import Add from "../assets/plusIconRound.svg";
 
 import {
   addItemToBasket,
@@ -269,7 +268,7 @@ const MenuDetails = () => {
             <div className="flex items-center justify-center">
               <div className="mt-[24px] mb-[37px] items-center rounded-[5px] justify-center inline-flex bg-[#E7E7E7]">
                 <p className="py-[12px] px-[20px]" onClick={handleDecrement}>
-                  <img src={Minus} alt="decrement" />
+                  <img src={MinusMain} alt="decrement" />
                 </p>
                 <p className="bg-white py-[12px] px-[25px] text-[16px] font-[500]">
                   {itemCount}
@@ -313,7 +312,7 @@ const MenuDetails = () => {
                     <div className="w-[100px]">
                       <div className="flex items-center justify-between">
                         <img
-                          src={Minus}
+                          src={MinusMain}
                           alt="decrement"
                           className="cursor-pointer"
                         />
@@ -363,7 +362,7 @@ const MenuDetails = () => {
                     <div className="w-[100px]">
                       <div className="flex items-center justify-between">
                         <img
-                          src={Minus}
+                          src={MinusMain}
                           alt="decrement"
                           className="cursor-pointer"
                         />

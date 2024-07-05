@@ -4,9 +4,12 @@ import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 // import { GiShoppingCart } from "react-icons/gi";
 // import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
-import Add from "../assets/plusIconRound.svg";
+// import Add from "../assets/plusIconRound.svg";
 import Image from "../assets/FriedRice.png";
-import Minus from "../assets/MinusRound.svg";
+// import Minus from "../assets/MinusRound.svg";
+
+import Minus from "../assets/Minus.svg";
+import Add from "../assets/add.svg";
 
 const menuItems = [
   {
@@ -32,7 +35,7 @@ export const Basket = () => {
       <TopMenuNav exploreMenuText="Basket" />
 
       <div className="mt-[68px]">
-        {basketDetails?.items && (
+        {/* {basketDetails?.items && (
           <div className="py-[20px] mx-[24px] grid gap-[10px]">
             <p className="">
               Hello{" "}
@@ -46,7 +49,7 @@ export const Basket = () => {
             </p>
             <p>Below are the items you ordered:</p>
           </div>
-        )}
+        )} */}
         {basketDetails?.items.length > 0 ? (
           basketDetails.items.map((item, index) => (
             <>
@@ -59,7 +62,7 @@ export const Basket = () => {
                         {item.name}
                       </p>
                       {item.menuItem && (
-                        <p>
+                        <p className="text-[#121212]">
                           &#x20A6;
                           {(
                             item.menuItem.menu_item_price * item.quantity
