@@ -74,12 +74,14 @@ export const Basket = () => {
               <div key={index}>
                 <div className="mx-[24px]  border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
                   <div className="grid gap-[8px]">
-                    <div className=" grid grid-cols-4 items-center gap-[20px] place-items-center">
-                      <p className="text-[16px] text-[#121212] font-[500]">
-                        <span className="pr-2">{item.quantity}x</span>
-                        {item.name}
-                      </p>
-                      <div className="flex items-center ">
+                    <div className="  flex items-start justify-between gap-[20px] place-items-center">
+                      <Link to={`/menu-details/${item.id}`}>
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          <span className="pr-2">{item.quantity}x</span>
+                          {item.name}
+                        </p>
+                      </Link>
+                      <div className="flex items-center mr-[10px]">
                         <img
                           className=" w-[20px]"
                           src={Minus}
