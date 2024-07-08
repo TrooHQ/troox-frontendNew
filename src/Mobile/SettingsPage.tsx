@@ -55,12 +55,17 @@ const SettingsPage = () => {
   ];
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
+
   const [ManageQRCodeModal, setManageQRCodeModal] = useState(false);
+
   const [roomQRCodeModal, setRoomQRCodeModal] = useState(false);
   const [tableQRCodeModal, setTableQRCodeModal] = useState(false);
+
   const [tableListModal, setTableListModal] = useState(false);
   const [roomQRCodeContentModal, setRoomQRCodeContentModal] = useState(false);
+
   const [saveTableGroupModal, setSaveTableGroupModal] = useState(false);
+
   const [tableGroupSuccessModal, setTableGroupSuccessModal] = useState(false);
 
   const [successModal, setSuccessModal] = useState(false);
@@ -109,13 +114,9 @@ const SettingsPage = () => {
 
   const handleSaveTableGroupModal = () => {
     setTableListModal(false);
+    setRoomQRCodeModal(false);
     setSaveTableGroupModal(true);
     setTableQRCodeModal(false);
-  };
-
-  const handleRoomQRCodeContentModal = () => {
-    setRoomQRCodeModal(false);
-    setRoomQRCodeContentModal(true);
   };
 
   const handleDownloadQRCodeModal = () => {
@@ -145,7 +146,6 @@ const SettingsPage = () => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user);
-  console.log(userDetails);
 
   const attachBusinessIdToHost = (businessId: string) => {
     const currentHost = window.location.origin;
@@ -299,10 +299,7 @@ const SettingsPage = () => {
   const generateQr = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    // if (!employeeName || !phoneNumber || !email) {
-    //   setError("All fields Are required");
-    //   return;
-    // }
+
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -526,64 +523,35 @@ const SettingsPage = () => {
         onClose={() => setRoomQRCodeModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <div className=" max-w-[280px] mx-auto">
-            <p className="text-[16px] font-[400] text-grey500 text-center">
-              Do you want to create QR Code for rooms at Deluxe Hotel?
-            </p>
-            <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1"></p>
-
-              <div className=" flex items-center gap-[8px]">
-                <button
-                  onClick={() => setRoomQRCodeModal(false)}
-                  className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                >
-                  No
-                </button>
-                <button
-                  onClick={handleRoomQRCodeContentModal}
-                  className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
+          <div
+            className=" cursor-pointer flex items-center justify-end"
+            onClick={() => setRoomQRCodeModal(false)}
+          >
+            <img src={Back} alt="" />
           </div>
-        </div>
-      </MenuModal>
 
-      <MenuModal
-        isOpen={roomQRCodeContentModal}
-        onClose={() => setRoomQRCodeContentModal(false)}
-      >
-        <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
-            <div
-              className=" cursor-pointer flex items-center justify-center"
-              onClick={handleDownloadQRCodeModal}
-            >
-              <img src={QrCode} alt="" />
-            </div>
             <p className="text-[16px] font-[400] text-grey500 text-center">
-              QR Code for rooms at Deluxe Hotel has been created successfully
+              How many rooms do you have?
             </p>
-            <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1"></p>
+            <div className=" mt-[16px] ">
+              <input
+                type="text"
+                id="number"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+                placeholder="Number of Rooms"
+                className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+              />
 
-              <div className=" flex items-center gap-[8px]">
-                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={downloadIcon} alt="" />
-                  Download
+              {number && (
+                <button
+                  onClick={handleSaveTableGroupModal}
+                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                >
+                  Next
                 </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={copyIcon} alt="" />
-                  Copy
-                </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={printIcon} alt="" />
-                  Print
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -622,6 +590,94 @@ const SettingsPage = () => {
                   Next
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={saveTableGroupModal}
+        onClose={() => setSaveTableGroupModal(false)}
+      >
+        <form onSubmit={generateQr}>
+          <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div
+              className=" cursor-pointer flex items-center justify-end"
+              onClick={() => setSaveTableGroupModal(false)}
+            >
+              <img src={Back} alt="" />
+            </div>
+            <div>
+              <p className="text-[20px] font-[400] text-grey500">
+                Save Group As{" "}
+              </p>
+              <div className=" mt-[16px] ">
+                <p className="text-red-500 text-sm mt-1"></p>
+                <input
+                  type="text"
+                  id="group_name"
+                  value={group_name}
+                  onChange={(e) => setGroup_name(e.target.value)}
+                  placeholder="Enter group name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+
+                {!loading && (
+                  <div className=" flex items-center gap-[8px] mt-[16px]">
+                    <button
+                      className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={!group_name}
+                      className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={roomQRCodeContentModal}
+        onClose={() => setRoomQRCodeContentModal(false)}
+      >
+        <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div className=" ">
+            <div
+              className=" cursor-pointer flex items-center justify-center"
+              onClick={handleDownloadQRCodeModal}
+            >
+              <img src={QrCode} alt="" />
+            </div>
+            <p className="text-[16px] font-[400] text-grey500 text-center">
+              QR Code for rooms at Deluxe Hotel has been created successfully
+            </p>
+            <div className=" mt-[24px] grid gap-[16px]">
+              <p className="text-red-500 text-sm mt-1"></p>
+
+              <div className=" flex items-center gap-[8px]">
+                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={downloadIcon} alt="" />
+                  Download
+                </button>
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={copyIcon} alt="" />
+                  Copy
+                </button>
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={printIcon} alt="" />
+                  Print
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -688,55 +744,6 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal
-        isOpen={saveTableGroupModal}
-        onClose={() => setSaveTableGroupModal(false)}
-      >
-        <form onSubmit={generateQr}>
-          <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-            <div
-              className=" cursor-pointer flex items-center justify-end"
-              onClick={() => setSaveTableGroupModal(false)}
-            >
-              <img src={Back} alt="" />
-            </div>
-            <div>
-              <p className="text-[20px] font-[400] text-grey500">
-                Save Table Group As{" "}
-              </p>
-              <div className=" mt-[16px] ">
-                <p className="text-red-500 text-sm mt-1"></p>
-                <input
-                  type="text"
-                  id="group_name"
-                  value={group_name}
-                  onChange={(e) => setGroup_name(e.target.value)}
-                  placeholder="Enter table group name"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
-
-                <div className=" flex items-center gap-[8px] mt-[16px]">
-                  <button
-                    className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={!group_name}
-                    className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </MenuModal>
-
-      <MenuModal
         isOpen={tableGroupSuccessModal}
         onClose={() => setTableGroupSuccessModal(false)}
       >
@@ -746,10 +753,10 @@ const SettingsPage = () => {
               className=" cursor-pointer"
               src={CheckCircle}
               alt=""
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/manage-qr")}
             />
             <p className="text-[16px] font-[400] text-grey500 text-center">
-              QR Codes successfully created for tables
+              QR Codes successfully created for {type}s
             </p>
           </div>
         </div>
