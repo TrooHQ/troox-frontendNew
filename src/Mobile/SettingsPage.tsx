@@ -238,7 +238,6 @@ const SettingsPage = () => {
         );
         setTempPassword(response.data.password);
         sessionStorage.setItem("tempPassword", tempPassword);
-        console.log(response.data);
 
         setLoading(false);
       } catch (error) {
