@@ -16,6 +16,7 @@ import {
   setURL,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
+import NotFound from "../NotFound";
 
 const StartOrder = () => {
   const location = useLocation();
@@ -97,6 +98,10 @@ const StartOrder = () => {
     setIsOpen(false);
     setTableIsOpen(true);
   };
+
+  if (!business_identifier || !tableNo) {
+    return <NotFound />;
+  }
 
   return (
     <div className="mx-[22px]">

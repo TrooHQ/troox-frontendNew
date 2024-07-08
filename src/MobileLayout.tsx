@@ -11,7 +11,6 @@ import Menu from "./Mobile/Components/Menu";
 import Order from "./Mobile/Components/Order";
 import Reporting from "./Mobile/Components/Reporting";
 import SettingsPage from "./Mobile/SettingsPage";
-import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
 import ManageQrCode from "./Mobile/Components/Settings/QrCodeSettings/ManageQrCode";
 import EmployeeDashboard from "./Mobile/Employee/EmployeeDashboard";
 import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
@@ -45,6 +44,7 @@ import ForgotPassword from "./Mobile/authPages/ForgotPassword";
 import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
 import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
+import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
 
 const MobileLayout = () => {
   return (
