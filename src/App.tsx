@@ -39,6 +39,7 @@ import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
+import MenuList from "./components/Dashboard/MenuList.tsx";
 
 export default function App() {
   return (
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/manage-tables" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
+          <Route path="/menu-list" element={<MenuList />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
           <Route path="/overview" element={<Overview />} />

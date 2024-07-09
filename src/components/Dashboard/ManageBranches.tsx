@@ -112,7 +112,7 @@ const ManageBranches = () => {
                   </tr>
                 </thead>
 
-                <hr className="mb-2 text-[##E7E7E7]" />
+                <hr className="mb-2 text-[#E7E7E7]" />
 
                 <tbody>
                   {data.map((item, index) => (

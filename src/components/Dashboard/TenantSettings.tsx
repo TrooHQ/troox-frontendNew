@@ -13,7 +13,14 @@ const TenantSettings = () => {
         <TenantAccordion />
 
         <div>
-          <h3 className="text-xl font-medium text-[#121212] mt-[40px]">Operations Apps Settings</h3>
+          <h3 className="text-xl font-medium text-[#121212] mt-[40px] mb-[32px]">
+            Operations Apps Settings
+          </h3>
+          <ul className="flex flex-col gap-4">
+            <li className="text-lg font-normal">Waiter App</li>
+            <li className="text-lg font-normal">KDS(Kitchen Display System)</li>
+            <li className="text-lg font-normal">Tickets</li>
+          </ul>
         </div>
       </div>
     </DashboardLayout>
