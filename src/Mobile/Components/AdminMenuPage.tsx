@@ -18,7 +18,6 @@ export const AdminMenuPage = () => {
   const [menuCategory, setMenuCategory] = useState<Details[]>([]);
   const [loading, setLoading] = useState(false);
   const userDetails = useSelector((state: RootState) => state.user);
-  console.log(userDetails);
   const token = userDetails?.userData?.token;
 
   const business_name = userDetails?.userData?.business_name;
@@ -37,7 +36,6 @@ export const AdminMenuPage = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuCategory`,
         headers
       );
-      console.log("Business Details Retrieved successfully:", response.data);
       setMenuCategory(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);

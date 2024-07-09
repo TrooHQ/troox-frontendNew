@@ -26,7 +26,6 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setCheckedLegalType(event.target.value);
-    console.log(event.target.value, "checked");
   };
   const [name, setName] = useState<string>("");
   const [selectedValue, setSelectedValue] = useState<string>("");

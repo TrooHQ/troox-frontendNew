@@ -37,18 +37,16 @@ const MenuTab: React.FC = () => {
   const userDetails = useSelector((state: RootState) => state.user);
   const token = userDetails?.userData?.token;
 
-  const [email, setEmail] = useState<string>("");
+  const [price, setPrice] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [editModal, setEditModal] = useState(false);
   const [editItem, setEditItem] = useState<MenuItem | null>(null);
-  const [activeTab, setActiveTab] = useState<number>(1);
   const [menuGroup, setMenuGroup] = useState<Details[]>([]);
   const [menuItems, setMenuItems] = useState<Details[]>([]);
   const [loading, setLoading] = useState(false);
 
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const totalCount = useSelector((state: RootState) => state.basket);
-  console.log(totalCount);
 
   const handleEditModal = (item: Details) => {
     setEditItem(item);
@@ -72,10 +70,7 @@ const MenuTab: React.FC = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuGroup/?menu_category_name=${id}`,
         headers
       );
-      console.log(
-        "Business groups Retrieved successfully:",
-        response.data.data
-      );
+
       setMenuGroup(response.data.data);
       if (response.data.data && response.data.data.length > 0) {
         setSelectedGroup(response.data.data[0].name);
@@ -100,7 +95,6 @@ const MenuTab: React.FC = () => {
         `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${selectedGroup}`,
         headers
       );
-      console.log("Business items Retrieved successfully:", response.data.data);
       setMenuItems(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -133,20 +127,19 @@ const MenuTab: React.FC = () => {
   };
 
   return (
-    <div className=" relative">
+    <div className="relative">
       {loading && <Loader />}
       <div>
-        <div className="flex gap-[38px] text-center mx-[13px] items-center border-b border-grey100 mt-[24px] w-full overflow-x-scroll">
-          {menuGroup.map((menu, index) => (
+        <div className="flex gap-[38px] text-center mx-[13px] items-center border-b border-grey100 mt-[24px] w-full overflow-x-auto whitespace-nowrap">
+          {menuGroup.map((menu) => (
             <button
               key={menu.name}
               className={`pb-[8px] ${
-                index === activeTab
+                selectedGroup === menu.name
                   ? "border-b-[4px] border-b-[#E16B07] text-[#121212] text-[16px] flex items-center justify-center font-[500]"
                   : "text-grey100 font-[400]"
               }`}
               onClick={() => {
-                setActiveTab(index);
                 setSelectedGroup(menu.name);
               }}
             >
@@ -180,7 +173,7 @@ const MenuTab: React.FC = () => {
                             {menu.menu_item_name}
                           </p>
                           <p className="text-grey500 text-[16px] font-[400]">
-                            ${menu.menu_item_price}
+                            &#x20A6;{menu.menu_item_price.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -212,11 +205,11 @@ const MenuTab: React.FC = () => {
                 <p className="text-[18px] font-[500] text-[#000000]">
                   {editItem.menu_item_name}
                 </p>
-                <div className="   my-[22px] flex items-center gap-[8px] ">
+                <div className="my-[22px] flex items-center gap-[8px]">
                   <img
                     src={selectedImage || editItem.menu_item_image}
                     alt=""
-                    className=" w-[120px] h-[120px] object-cover"
+                    className="w-[120px] h-[120px] object-cover"
                   />
 
                   <input
@@ -229,16 +222,26 @@ const MenuTab: React.FC = () => {
                   <CustomInput
                     type="text"
                     label="Enter New Name"
-                    value={email}
-                    onChange={(newValue) => setEmail(newValue)}
+                    value={name}
+                    onChange={(newValue) => setName(newValue)}
                   />
                   <CustomInput
                     type="text"
                     label="Enter New price"
-                    value={email}
-                    onChange={(newValue) => setEmail(newValue)}
+                    value={price}
+                    onChange={(newValue) => setPrice(newValue)}
                   />
                 </div>
+
+                {price && name && (
+                  <div
+                    className={`${
+                      loading ? "bg-[#B6B6B6] " : "bg-purple500"
+                    } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded cursor-pointer`}
+                  >
+                    <p>Save Table</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
