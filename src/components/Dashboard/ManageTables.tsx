@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import QrCode from "../../assets/qr-code.png";
 import More from "../../assets/more_vert.svg";
 import ArrowToggle from "../../assets/chevron-down2.svg";
+import { ToggleOff, ToggleOn } from "@mui/icons-material";
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -33,9 +34,14 @@ const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
       </li>
       <li
         onClick={() => handleItemClick("Enable Table")}
-        className={`font-[400] cursor-pointer ${isEnabled ? "  text-slate-300" : " text-black"}`}
+        className={`font-[400] cursor-pointer ${!isEnabled ? "  text-slate-300" : " text-black"}`}
       >
-        {isEnabled ? "Disable Table" : "Enable Table"}
+        {isEnabled ? (
+          <ToggleOn className="mr-2 text-[#5955eb]" />
+        ) : (
+          <ToggleOff className="mr-2 text-slate-300" />
+        )}
+        {isEnabled ? "Table enabled" : "Table disabled"}
       </li>
       {/* {isEnabled && <li className="font-[400]">Additional Option</li>} */}
     </ul>
@@ -175,18 +181,18 @@ const ManageTables: React.FC = () => {
                             <img src={QrCode} alt="" />
                           </p>
                           <div className=" flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                            <p
+                            <div
                               className={`${
                                 activeMenuIndex === index ? " bg-slate-200" : ""
                               } py-[10px] px-[20px] rounded-full `}
                             >
-                              <img
-                                src={More}
-                                alt=""
+                              <div
+                                className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                                 onClick={() => toggleMenu(index)}
-                                className={`cursor-pointer w-[5px] `}
-                              />
-                            </p>
+                              >
+                                <img src={More} alt="" className={`cursor-pointer w-[5px] `} />
+                              </div>
+                            </div>
                             {activeMenuIndex === index && (
                               <DropdownMenu onClose={() => toggleMenu(index)} />
                             )}
