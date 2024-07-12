@@ -25,11 +25,11 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
   const [isSticky, setSticky] = useState(false);
 
   const hideCartOnPaths = [
-    "/receipt",
-    "/get-receipt",
-    "/basket",
-    "/payment-type",
-    "/tip",
+    "/demo/receipt/orderandpay",
+    "/demo/get-receipt/orderandpay",
+    "/demo/basket/orderandpay",
+    "/demo/payment-type/orderandpay",
+    "/demo/tip/orderandpay",
   ];
   const hideCart = hideCartOnPaths.includes(location.pathname);
 
@@ -83,7 +83,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
         </div>
         <div className="justify-self-end px-4">
           {!hideCart && (
-            <Link to="/basket">
+            <Link to="/demo/basket/orderandpay">
               {id && id.length !== 0 ? (
                 <img src={CartFill} alt="Cart" />
               ) : (

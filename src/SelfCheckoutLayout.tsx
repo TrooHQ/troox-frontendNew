@@ -7,7 +7,6 @@ import ScrollToTop from "./components/ScrollToTop";
 import BeginOrder from "./SelfCheckout/BeginOrder";
 import Menu from "./SelfCheckout/Menu";
 import { CategoryDetails } from "./SelfCheckout/CategoryDetails";
-// import MenuDetails from "./SelfCheckout/MenuDetails";
 import { Basket } from "./SelfCheckout/Basket";
 import PaymentScreen from "./SelfCheckout/PaymentScreen";
 
@@ -18,11 +17,17 @@ const SelfCheckoutLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/:id" element={<BeginOrder />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/category-details/:id" element={<CategoryDetails />} />
-          <Route path="/basket" element={<Basket />} />
-          <Route path="/payment" element={<PaymentScreen />} />
+          <Route path="/demo/selfcheckout/:id" element={<BeginOrder />} />
+          <Route path="/demo/menu/selfcheckout" element={<Menu />} />
+          <Route
+            path="/demo/category-details/:id/selfcheckout"
+            element={<CategoryDetails />}
+          />
+          <Route path="/demo/basket/selfcheckout" element={<Basket />} />
+          <Route
+            path="/demo/payment/selfcheckout"
+            element={<PaymentScreen />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

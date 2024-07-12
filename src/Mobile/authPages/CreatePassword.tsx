@@ -53,7 +53,7 @@ const CreatePassword = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("Password reset successfully");
-      history("/login");
+      history("/demo/login/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

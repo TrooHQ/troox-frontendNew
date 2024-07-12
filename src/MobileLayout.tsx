@@ -20,18 +20,6 @@ import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
-import PosPage from "./LandingPage/Products/PosPage";
-import KDSPage from "./LandingPage/Products/KDSPage";
-import TableOrderingPage from "./LandingPage/Products/TableOrderingPage";
-import DigitalOrderingPage from "./LandingPage/Products/DigitalOrderingPage";
-import PaymentPage from "./LandingPage/Products/PaymentPage";
-import RestaurantsPage from "./LandingPage/Businesses/RestaurantsPage";
-import HotelPage from "./LandingPage/Businesses/HotelPage";
-import LoungesPage from "./LandingPage/Businesses/LoungesPage";
-import CafePage from "./LandingPage/Businesses/CafePage";
-import FastFoodPage from "./LandingPage/Businesses/FastFoodPage";
-import FoodTruckPage from "./LandingPage/Businesses/FoodTruckPage";
-import DemoPage from "./LandingPage/Businesses/DemoPage";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Basket } from "./Mobile/Customers/Basket";
@@ -53,55 +41,84 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route
+            path="/demo/forgot-password/troo-portal"
+            element={<ForgotPassword />}
+          />
           <Route path="/digi-input" element={<VerifyAccount2 />} />
-          <Route path="/pos" element={<PosPage />} />
-          <Route path="/kds" element={<KDSPage />} />
-          <Route path="/table-ordering" element={<TableOrderingPage />} />
-          <Route path="/digital-ordering" element={<DigitalOrderingPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/restaurant" element={<RestaurantsPage />} />
-          <Route path="/hotel" element={<HotelPage />} />
-          <Route path="/lounges" element={<LoungesPage />} />
-          <Route path="/cafe" element={<CafePage />} />
-          <Route path="/fast-food" element={<FastFoodPage />} />
-          <Route path="/food-truck" element={<FoodTruckPage />} />
-          <Route path="/request-demo" element={<DemoPage />} />
 
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
+          <Route path="/demo/dashboard/troo-portal" element={<Dashboard />} />
+          <Route path={`/demo/login/troo-portal`} element={<Login />} />
+          <Route
+            path="/demo/employee-dashboard/troo-portal"
+            element={<EmployeeDashboard />}
+          />
           <Route path="/restaurants" element={<ListofRestaurants />} />
 
-          <Route path="/" element={<StartOrder />} />
-          <Route path="/:id/explore-menu" element={<MenuPage />} />
-          <Route path="/admin-menu" element={<AdminMenuPage />} />
+          <Route path="demo/orderandpay/" element={<StartOrder />} />
+          <Route
+            path="/demo/:id/explore-menu/orderandpay"
+            element={<MenuPage />}
+          />
+          <Route
+            path="demo/admin-menu/troo-portal"
+            element={<AdminMenuPage />}
+          />
 
           <Route
-            path="/:id/category-details/:id"
+            path="demo/:id/category-details/:id/orderandpay"
             element={<CategoryDetails />}
           />
-          <Route path="/menu-details/:id" element={<MenuDetails />} />
-          <Route path="/:id/menu-page/:id" element={<Menu />} />
-          <Route path="/basket" element={<Basket />} />
-          <Route path="/tip" element={<Tip />} />
-          <Route path="/payment-type" element={<SelectPayment />} />
-          <Route path="/receipt" element={<Receipt />} />
-          <Route path="/get-receipt" element={<GetReceipt />} />
+          <Route
+            path="/demo/menu-details/:id/orderandpay"
+            element={<MenuDetails />}
+          />
+          <Route
+            path="/demo/:id/menu-page/:id/troo-portal"
+            element={<Menu />}
+          />
+          <Route path="/demo/basket/orderandpay" element={<Basket />} />
+          <Route path="/demo/tip/orderandpay" element={<Tip />} />
+          <Route
+            path="/demo/payment-type/orderandpay"
+            element={<SelectPayment />}
+          />
+          <Route path="/demo/receipt/orderandpay" element={<Receipt />} />
+          <Route
+            path="/demo/get-receipt/orderandpay"
+            element={<GetReceipt />}
+          />
 
-          <Route path="/ticket" element={<Tickets />} />
-          <Route path="/order" element={<Order />} />
-          <Route path="/report" element={<Reporting />} />
-          <Route path="/register" element={<RegistrationStepForm />} />
-          <Route path="/verify" element={<VerifyAccount />} />
-          <Route path="/menu" element={<MenuSetupForm />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/employee-settings" element={<EmployeeSettingsPage />} />
-          <Route path="/password" element={<EnterPassword />} />
-          <Route path="/create-password" element={<CreatePassword />} />
-          <Route path="/manage-qr" element={<ManageQrCode />} />
-          <Route path="/table" element={<TableSetupForm />} />
-          <Route path="/room" element={<RoomSetupForm />} />
+          <Route path="/demo/ticket/troo-portal" element={<Tickets />} />
+
+          <Route path="/demo/order/troo-portal" element={<Order />} />
+
+          <Route path="/demo/report/troo-portal" element={<Reporting />} />
+          <Route
+            path="/demo/register/troo-portal"
+            element={<RegistrationStepForm />}
+          />
+          <Route path="/demo/verify/troo-portal" element={<VerifyAccount />} />
+          <Route path="/demo/menu/troo-portal" element={<MenuSetupForm />} />
+          <Route path="/demo/settings/troo-portal" element={<SettingsPage />} />
+          <Route
+            path="/demo/employee-settings/troo-portal"
+            element={<EmployeeSettingsPage />}
+          />
+          <Route
+            path="/demo/password/troo-portal"
+            element={<EnterPassword />}
+          />
+          <Route
+            path="/demo/create-password/troo-portal"
+            element={<CreatePassword />}
+          />
+          <Route
+            path="/demo/manage-qr/troo-portal"
+            element={<ManageQrCode />}
+          />
+          <Route path="/demo/table/troo-portal" element={<TableSetupForm />} />
+          <Route path="/demo/room/troo-portal" element={<RoomSetupForm />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

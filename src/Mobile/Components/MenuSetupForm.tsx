@@ -667,7 +667,9 @@ const MenuSetupForm: React.FC<Props> = () => {
                 {menuData?.length > 0 ? (
                   <Link
                     to={`${
-                      businessType === "Hotel & Lodgings" ? "/room" : "/table"
+                      businessType === "Hotel & Lodgings"
+                        ? "/demo/room/troo-portal"
+                        : "/demo/table/troo-portal"
                     }`}
                   >
                     <p>Save and continue</p>
@@ -678,7 +680,9 @@ const MenuSetupForm: React.FC<Props> = () => {
               </div>
             )}
 
-            <Link to={`${hasMenu === false ? "/" : "/dashboard"}`}>
+            <Link
+              to={`${hasMenu === false ? "/" : "/demo/dashboard/troo-portal"}`}
+            >
               <button className=" text-[16px] font-[500] text-[#929292] border border-[#B6B6B6] w-full text-center py-3 rounded">
                 {hasMenu === false ? "Cancel" : "Back"}
               </button>
