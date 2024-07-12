@@ -16,7 +16,7 @@ const EnterPassword = () => {
             </p>
           </div>
 
-          <Link to="/create-password">
+          <Link to="/demo/create-password/troo-portal">
             <div className="">
               <button className="bg-purple500 w-full text-center text-white py-3 rounded">
                 Enter password

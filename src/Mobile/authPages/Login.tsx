@@ -46,13 +46,13 @@ const Login = () => {
       const userType = response.data.user_role;
       toast.success(response.data.message);
       if (userType === "employee") {
-        history("/employee-dashboard");
+        history("/demo/employee-dashboard/troo-portal");
       } else if (userType === "admin") {
         // history("/dashboard");
         if (response.data.has_created_menu_item == false) {
-          history("/menu");
+          history("/demo/menu/troo-portal");
         } else {
-          history("/dashboard");
+          history("/demo/dashboard/troo-portal");
         }
       }
     } catch (error) {
@@ -62,7 +62,7 @@ const Login = () => {
           setError(error.response.data.message);
           console.log(error.response.data);
           if (error.response.data.message === "Your Email is not verified") {
-            history("/verify");
+            history("/demo/verify/troo-portal");
             console.log("Unverified");
           }
         } else {
@@ -104,7 +104,7 @@ const Login = () => {
           </div>
 
           <div className="flex justify-end mt-[16px] mb-[32px]">
-            <Link to="/forgot-password">
+            <Link to="/demo/forgot-password/troo-portal">
               <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
@@ -118,7 +118,7 @@ const Login = () => {
           </div>
         </div>
         <div className=" mt-[100px]">
-          <Link to="/register">
+          <Link to="/demo/register/troo-portal">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account
             </p>

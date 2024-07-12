@@ -13,9 +13,9 @@ import CustomSelect3 from "../inputFields/CustomSelect3";
 
 const Dashboard = () => {
   const options = [
-    { value: "daily", label: "Daily", link: "/report" },
-    { value: "weekly", label: "Weekly", link: "/report" },
-    { value: "monthly", label: "Monthly", link: "/report" },
+    { value: "daily", label: "Daily", link: "demo/report/troo-portal" },
+    { value: "weekly", label: "Weekly", link: "demo/report/troo-portal" },
+    { value: "monthly", label: "Monthly", link: "demo/report/troo-portal" },
   ];
   const userDetails = useSelector((state: RootState) => state.user);
   console.log(userDetails?.userData);
@@ -69,7 +69,7 @@ const Dashboard = () => {
         </div>
 
         <div className=" mt-[16px] grid grid-cols-2 gap-[16px]">
-          <Link to="/ticket">
+          <Link to="/demo/ticket/troo-portal">
             <div className=" px-[28px] py-[47px] bg-[#AEE1D8] rounded-[5px]">
               <div className=" flex flex-col gap-[8px] items-center justify-center">
                 <img src={Confirmation} alt="" />
@@ -78,7 +78,7 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          <Link to="/admin-menu">
+          <Link to="/demo/admin-menu/troo-portal">
             <div className=" px-[28px] py-[47px] bg-[#E5BFD0] rounded-[5px]">
               <div className=" flex flex-col gap-[8px] items-center justify-center">
                 <img src={restaurantIcon} alt="" />
@@ -87,7 +87,7 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          <Link to="/order">
+          <Link to="/demo/order/troo-portal">
             <div className=" px-[28px] py-[47px] bg-[#E8DEB4] rounded-[5px]">
               <div className=" flex flex-col gap-[8px] items-center justify-center">
                 <img src={orderIcon} alt="" />
@@ -96,7 +96,7 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          <Link to="/settings">
+          <Link to="/demo/settings/troo-portal">
             <div className=" px-[28px] py-[47px] bg-[#F9D9CA] rounded-[5px]">
               <div className=" flex flex-col gap-[8px] items-center justify-center">
                 <img src={setting} alt="" />

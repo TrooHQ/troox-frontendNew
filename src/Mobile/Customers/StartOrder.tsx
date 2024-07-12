@@ -189,7 +189,9 @@ const StartOrder = () => {
             >
               Cancel
             </p>
-            <Link to={`/${businessDetails?.business_name}/explore-menu`}>
+            <Link
+              to={`/demo/${businessDetails?.business_name}/explore-menu/orderandpay`}
+            >
               <p
                 className={`px-[24px] py-[10px] ${
                   !table ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"

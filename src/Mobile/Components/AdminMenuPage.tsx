@@ -64,7 +64,10 @@ export const AdminMenuPage = () => {
 
         <div className="px-[21px]">
           {menuCategory.map((menu, index) => (
-            <Link key={index} to={`/${business_name}/menu-page/${menu.name}`}>
+            <Link
+              key={index}
+              to={`/demo/${business_name}/menu-page/${menu.name}/troo-portal`}
+            >
               <div className="mt-[24px]">
                 <div className="flex items-center justify-between">
                   <p className="text-[16px] font-[500] text-[#121212] uppercase">

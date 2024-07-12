@@ -70,7 +70,9 @@ export const MenuPage = () => {
 
         <div className=" px-[21px] grid grid-cols-2 gap-[24px]">
           {menuCategory.map((menu) => (
-            <Link to={`/${business_name}/category-details/${menu.name}`}>
+            <Link
+              to={`/demo/${business_name}/category-details/${menu.name}/orderandpay`}
+            >
               <div className="mt-[24px]">
                 <div className="pt-[16px] pb-[20px] border-b max-w-[104px] mx-auto">
                   <img src={menu?.image} alt="" className="w-full" />

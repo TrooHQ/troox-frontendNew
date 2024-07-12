@@ -83,7 +83,7 @@ export const SelectPayment = () => {
       toast.success("Order has been Made successfully");
       dispatch(clearBasket());
       // dispatch(resetBusinessDetails());
-      navigate("/receipt");
+      navigate("/demo/receipt/orderandpay");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

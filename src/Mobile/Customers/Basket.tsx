@@ -75,7 +75,7 @@ export const Basket = () => {
                 <div className="mx-[24px]  border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
                   <div className="grid gap-[8px]">
                     <div className="  flex items-start justify-between gap-[20px] place-items-center">
-                      <Link to={`/menu-details/${item.id}`}>
+                      <Link to={`/demo/menu-details/${item.id}/orderandpay`}>
                         <p className="text-[16px] text-[#121212] font-[500]">
                           <span className="pr-2">{item.quantity}x</span>
                           {item.name}
@@ -174,7 +174,7 @@ export const Basket = () => {
               >
                 Cancel
               </p>
-              <Link to="/tip">
+              <Link to="/demo/tip/orderandpay">
                 <p className="inline font-[500] text-[16px] rounded-[5px] bg-[#FF0000] text-white py-[10px] px-[24px]">
                   Proceed to Pay
                 </p>

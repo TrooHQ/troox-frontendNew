@@ -91,12 +91,12 @@ const SettingsPage = () => {
   const handleManageRoomQRCodeModal = () => {
     sessionStorage.setItem("type", "room");
     setManageQRCodeModal(false);
-    navigate("/manage-qr");
+    navigate("/demo/manage-qr/troo-portal");
   };
 
   const handleManageTableQRCodeModal = () => {
     setManageQRCodeModal(false);
-    navigate("/manage-qr");
+    navigate("/demo/manage-qr/troo-portal");
     sessionStorage.setItem("type", "table");
   };
 
@@ -150,7 +150,7 @@ const SettingsPage = () => {
   const attachBusinessIdToHost = (businessId: string) => {
     const currentHost = window.location.origin;
 
-    const newUrl = `${currentHost}/${businessId}`;
+    const newUrl = `${currentHost}/demo/selfcheckout/${businessId}`;
 
     return newUrl;
   };
@@ -388,7 +388,7 @@ const SettingsPage = () => {
                 {" "}
                 Create QR Code
               </p>
-              {/* <Link to="/manage-qr"> */}
+              {/* <Link to="/demo/manage-qr/troo-portal"> */}
               <p
                 className=" cursor-pointer text-grey300 text-[16px]"
                 onClick={handleManageQRCodeModal}
@@ -752,7 +752,7 @@ const SettingsPage = () => {
               className=" cursor-pointer"
               src={CheckCircle}
               alt=""
-              onClick={() => navigate("/manage-qr")}
+              onClick={() => navigate("/demo/manage-qr/troo-portal")}
             />
             <p className="text-[16px] font-[400] text-grey500 text-center">
               QR Codes successfully created for {type}s

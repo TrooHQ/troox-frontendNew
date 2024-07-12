@@ -182,7 +182,7 @@ const BeginOrder = () => {
               >
                 CANCEL
               </p>
-              <Link to="/menu">
+              <Link to="/demo/menu/selfcheckout">
                 <p
                   className={` px-[99px] py-[37px] text-[32px] font-[500] ${
                     !number ? " bg-[#B6B6B6]" : "bg-[#FF0000] cursor-pointer"

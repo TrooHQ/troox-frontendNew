@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(clearUserData());
-    navigate("/login");
+    navigate("/demo/login/troo-portal");
   };
 
   const userDetails = useSelector((state: RootState) => state.user?.userData);

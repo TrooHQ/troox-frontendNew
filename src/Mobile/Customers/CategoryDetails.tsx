@@ -243,7 +243,7 @@ export const CategoryDetails = () => {
                         key={index}
                         // onClick={() => openModal(menu._id)}
                       >
-                        <Link to={`/menu-details/${menu._id}`}>
+                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
                           <div>
                             <div className="relative">
                               <img
@@ -291,7 +291,9 @@ export const CategoryDetails = () => {
                         </div>
 
                         <div className="">
-                          <Link to={`/menu-details/${menu._id}`}>
+                          <Link
+                            to={`/demo/menu-details/${menu._id}/orderandpay`}
+                          >
                             <img
                               src={menu.menu_item_image}
                               alt=""
@@ -331,7 +333,9 @@ export const CategoryDetails = () => {
                             </div>
                           ) : (
                             <div className="">
-                              <Link to={`/menu-details/${menu._id}`}>
+                              <Link
+                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                              >
                                 <div className="flex items-center justify-end">
                                   <img src={Add} alt="add" />
                                 </div>
@@ -357,7 +361,7 @@ export const CategoryDetails = () => {
 
                 <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
               </div>
-              <Link to="/basket">
+              <Link to="/demo/basket/orderandpay">
                 <p className="text-[16px] font-[500]">View Basket</p>
               </Link>
             </div>

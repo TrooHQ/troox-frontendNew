@@ -32,7 +32,7 @@ export const Basket = () => {
     setSelectedPercentage(selectedPercentage === tip ? null : tip);
     setCustomAmount(null);
     setTimeout(() => {
-      navigate("/payment");
+      navigate("/demo/payment/selfcheckout");
     }, 2000);
   };
 
@@ -72,10 +72,10 @@ export const Basket = () => {
     setSelectedPercentage(null);
     setCustomAmount(null);
     dispatch(setTip(null));
-    navigate("/payment");
+    navigate("/demo/payment/selfcheckout");
   };
   const handleNext = () => {
-    navigate("/payment");
+    navigate("/demo/payment/selfcheckout");
   };
 
   const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
@@ -105,7 +105,7 @@ export const Basket = () => {
               }`}
               key={index}
             >
-              <div className=" flex items-center justify-between place-items-center text-start items-center">
+              <div className=" flex  justify-between place-items-center text-start items-center">
                 <Link to={`/menu-details/${item.id}`}>
                   {" "}
                   <p className="text-[30px] text-[#121212] font-[500] col-span-2">
