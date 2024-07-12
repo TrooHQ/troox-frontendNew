@@ -33,9 +33,7 @@ const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
       </li>
       <li
         onClick={() => handleItemClick("Enable Table")}
-        className={`font-[400] cursor-pointer ${
-          isEnabled ? "  text-slate-300" : " text-black"
-        }`}
+        className={`font-[400] cursor-pointer ${isEnabled ? "  text-slate-300" : " text-black"}`}
       >
         {isEnabled ? "Disable Table" : "Enable Table"}
       </li>
@@ -142,9 +140,7 @@ const ManageTables: React.FC = () => {
           {Object.entries(data.tables).map(([owner, tables]) => (
             <div key={owner}>
               <div className=" cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
-                <h2 className="  text-[#5855B3]  text-[20px] font-[400] ">
-                  {owner}
-                </h2>
+                <h2 className="  text-[#5855B3]  text-[20px] font-[400] ">{owner}</h2>
                 <div className="">
                   <img
                     onClick={() => toggleOwner(owner)}
@@ -173,10 +169,7 @@ const ManageTables: React.FC = () => {
                             index % 2 === 0 ? "bg-[#F8F8F8]" : ""
                           }`}
                         >
-                          <p className="col-span-2 px-3 py-2 ">
-                            {" "}
-                            {table.tableNo}
-                          </p>
+                          <p className="col-span-2 px-3 py-2 "> {table.tableNo}</p>
                           <p className="col-span-2 px-3 py-2 "> {table.id}</p>
                           <p className="px-3 py-2">
                             <img src={QrCode} alt="" />
@@ -208,15 +201,10 @@ const ManageTables: React.FC = () => {
           ))}
         </div>
 
-        <Modal
-          isOpen={addModifierModar}
-          onClose={() => setAddModifierModal(false)}
-        >
+        <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
           <div className=" w-[539px] py-[32px] px-[52px]">
             <div className="">
-              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
-                Table Arrangement
-              </p>
+              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Table Arrangement</p>
               <hr className="border my-[24px] border-[#E7E7E7]" />
               <div className=" flex items-center gap-[8px] justify-center">
                 <div className=" flex-grow  ">
@@ -225,9 +213,7 @@ const ManageTables: React.FC = () => {
                     label="How many tables do you have?"
                     value={userData.department}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("department", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("department", newValue)}
                   />
                 </div>
               </div>
@@ -238,9 +224,7 @@ const ManageTables: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                    Cancel
-                  </p>
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 

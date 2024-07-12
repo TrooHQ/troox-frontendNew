@@ -9,24 +9,49 @@ import Modal from "../Modal";
 import { setUserData } from "../../slices/InviteUserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
-// import CancelButton from "../../Mobile/Buttons/CancelButton";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import { FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
-  const handleItemClick = (action: string) => {
+  const [isEnabled, setIsEnabled] = useState(false);
+
+  const handleItemClick = (event: React.MouseEvent, action: string) => {
+    event.stopPropagation(); // Prevent event from bubbling up
     console.log("Clicked:", action);
-    onClose();
+    if (action === "Enable Table") {
+      setIsEnabled((prevEnabled) => !prevEnabled);
+    } else {
+      onClose();
+    }
   };
 
   return (
-    <ul className="dropdown-menu absolute bg-white p-[24px] left-10 top-[50px] z-10">
+    <ul className="dropdown-menu absolute bg-white p-[12px]  top-[50px] z-10 w-fit">
       <li
-        onClick={() => handleItemClick("Edit")}
-        className="font-[400] pb-[24px]"
+        onClick={(event) => handleItemClick(event, "Edit")}
+        className="font-[400] pb-[16px] text-sm"
       >
         Edit
       </li>
-      <li onClick={() => handleItemClick("Download")} className="font-[400]">
+      <li
+        onClick={(event) => handleItemClick(event, "Download")}
+        className="font-[400] pb-[16px] text-sm"
+      >
         Print Label
+      </li>
+      <li
+        onClick={(event) => handleItemClick(event, "Enable Table")}
+        className={`font-[400] text-sm cursor-pointer flex items-center ${
+          isEnabled ? "text-[#5955eb]" : "text-slate-300"
+        }`}
+      >
+        {isEnabled ? (
+          <ToggleOnIcon className="mr-2 text-[#5955eb]" />
+        ) : (
+          <ToggleOffIcon className="mr-2 text-slate-300" />
+        )}
+        {isEnabled ? "Table enabled" : "Table disabled"}
       </li>
     </ul>
   );
@@ -78,6 +103,21 @@ const TableList = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.inviteUser);
 
+  const [tableData, setTableData] = useState({
+    tableName: "",
+    applyChanges: "",
+  });
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleTableData = (fieldName: string, value: string) => {
+    setTableData({ ...tableData, [fieldName]: value });
+  };
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedOption(value); // Update the selected option state
+    handleTableData("applyChanges", value); // Update the tableData state
+  };
+
   const [addModifierModar, setAddModifierModal] = useState(false);
   const handleAddModifier = () => {
     setAddModifierModal(true);
@@ -112,13 +152,13 @@ const TableList = () => {
                       <p className="px-3 py-2">
                         <img src={QrCode} alt="" />
                       </p>
-                      <div className="flex items-center justify-center gap-[16px] relative px-3 py-2">
-                        <img
-                          src={More}
-                          alt=""
+                      <div className="flex items-center justify-end gap-[16px] relative px-3 py-2">
+                        <div
+                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                           onClick={() => toggleMenu(index)}
-                          className="cursor-pointer w-[5px]"
-                        />
+                        >
+                          <img src={More} alt="" className="cursor-pointer w-[5px]" />
+                        </div>
                         {activeMenuIndex === index && (
                           <DropdownMenu onClose={() => toggleMenu(index)} />
                         )}
@@ -140,27 +180,82 @@ const TableList = () => {
           </div>
         </div>
 
-        <Modal
-          isOpen={addModifierModar}
-          onClose={() => setAddModifierModal(false)}
-        >
+        <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
           <div className=" w-[539px] py-[32px] px-[52px]">
             <div className="">
-              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
-                Save Table As
-              </p>
+              <p className=" text-[24px] mb-[11px] font-[500] text-[#121212]">Save Table As</p>
               <hr className="border my-[24px] border-[#E7E7E7]" />
               <div className=" flex items-center gap-[8px] justify-center">
                 <div className=" flex-grow  ">
                   <CustomInput
                     type="text"
                     label="Enter table Name"
-                    value={userData.department}
+                    value={tableData.tableName}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("department", newValue)
-                    }
+                    onChange={(newValue) => handleTableData("tableName", newValue)}
                   />
+
+                  <div className="mt-3">
+                    <RadioGroup
+                      aria-label="apply-to"
+                      name="apply-to-group"
+                      value={selectedOption}
+                      onChange={handleRadioChange}
+                    >
+                      <FormControlLabel
+                        value="Apply these changes to all outlets"
+                        control={
+                          <Radio
+                            sx={{
+                              color: "#5855B3",
+                              "&.Mui-checked": {
+                                color: "#5855B3",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              fontFamily: "General Sans",
+                              fontSize: "16px",
+                              fontWeight: 500,
+                              lineHeight: "24px",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            Apply these changes to all outlets
+                          </Typography>
+                        }
+                      />
+                      <FormControlLabel
+                        value="Apply these changes to selected outlets"
+                        control={
+                          <Radio
+                            sx={{
+                              color: "#5855B3",
+                              "&.Mui-checked": {
+                                color: "#5855B3",
+                              },
+                            }}
+                          />
+                        }
+                        label={
+                          <Typography
+                            sx={{
+                              fontFamily: "General Sans",
+                              fontSize: "16px",
+                              fontWeight: 500,
+                              lineHeight: "24px",
+                              letterSpacing: "0.5px",
+                            }}
+                          >
+                            Apply these changes to selected outlets
+                          </Typography>
+                        }
+                      />
+                    </RadioGroup>
+                  </div>
                 </div>
               </div>
               <hr className="border mb-[16px] mt-[24px] border-[#E7E7E7]" />
@@ -170,9 +265,7 @@ const TableList = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                    Cancel
-                  </p>
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 

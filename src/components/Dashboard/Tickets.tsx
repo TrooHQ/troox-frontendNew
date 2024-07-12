@@ -145,20 +145,6 @@ const Tickets = () => {
     setOpenTicket(!openTicket);
   };
 
-  // const [loading, setLoading] = useState<boolean>(false);
-
-  // const toggleMenu = (itemId: number) => {
-  //   setMenuOpenMap((prevMenuOpenMap) => ({
-  //     ...Object.fromEntries(
-  //       Object.entries(prevMenuOpenMap).map(([key, value]) => [
-  //         key,
-  //         key === itemId ? !value : false,
-  //       ])
-  //     ),
-  //     [itemId]: !prevMenuOpenMap[itemId],
-  //   }));
-  // };
-
   const toggleMenu = (itemId: number) => {
     setMenuOpenMap((prevMenuOpenMap) => {
       const updatedMap: Record<number, boolean> = {};
@@ -277,8 +263,8 @@ const Tickets = () => {
                     <p onClick={handleTicketMenu} className="items-center">
                       {item.outlet}
                     </p>
-                    <p>{item.id}</p>
-                    <p>{item.code}</p>
+                    <p onClick={handleTicketMenu}>{item.id}</p>
+                    <p onClick={handleTicketMenu}>{item.code}</p>
                     {/* <p className=" ">
                       {item.createdAt.slice(0, 10)}-{item.createdAt.slice(11, 16)}
                     </p> */}
@@ -301,16 +287,25 @@ const Tickets = () => {
                     </div>
                     <p>&#x20A6;{item.amount}</p>
                     <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                      <img
-                        src={More}
-                        alt=""
-                        className="w-[5px] cursor-pointer"
+                      <div
+                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                         onClick={() => toggleMenu(item.id)}
-                      />
+                      >
+                        <img src={More} alt="" className="w-[5px]" />
+                      </div>
                       {menuOpenMap[item.id] && (
                         <div className="absolute top-4 -left-[100px] mt-2 ml-5 bg-white border border-[#E7E7E7] rounded shadow p-[16px] drop-shadow">
                           <div className=" grid gap-[16px] items-start text-left  text-[14px] font-[400] text-[#000000]">
-                            <p onClick={handleVoidOrderMenu} className="cursor-pointer">
+                            <p
+                              onClick={() => {
+                                handleVoidOrderMenu();
+                                setMenuOpenMap((prevMenuOpenMap) => ({
+                                  ...prevMenuOpenMap,
+                                  [item.id]: false,
+                                }));
+                              }}
+                              className="cursor-pointer"
+                            >
                               Void Order
                             </p>
                           </div>
@@ -399,22 +394,49 @@ const Tickets = () => {
                     </div>
                     <p>&#x20A6;{item.amount}</p>
                     <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                      <img
-                        src={More}
-                        alt=""
-                        className="w-[5px] cursor-pointer"
+                      <div
+                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                         onClick={() => toggleMenu2(item.id)}
-                      />
+                      >
+                        <img src={More} alt="" className="w-[5px]" />
+                      </div>
                       {menuOpenMap2[item.id] && (
                         <div className="absolute top-0 -left-[100px] mt-2 ml-2 bg-white border border-[#E7E7E7] rounded shadow p-[16px] drop-shadow">
                           <div className=" grid gap-[16px] items-start text-left  text-[14px] font-[400] text-[#000000]">
-                            <p onClick={handleRefundMenu} className="cursor-pointer">
+                            <p
+                              onClick={() => {
+                                handleRefundMenu();
+                                setMenuOpenMap2((prevMenuOpenMap) => ({
+                                  ...prevMenuOpenMap,
+                                  [item.id]: false,
+                                }));
+                              }}
+                              className="cursor-pointer"
+                            >
                               Request Refund
                             </p>
-                            <p onClick={handleVoidOrderMenu} className="cursor-pointer">
+                            <p
+                              onClick={() => {
+                                handleVoidOrderMenu();
+                                setMenuOpenMap2((prevMenuOpenMap) => ({
+                                  ...prevMenuOpenMap,
+                                  [item.id]: false,
+                                }));
+                              }}
+                              className="cursor-pointer"
+                            >
                               Void Order
                             </p>
-                            <p onClick={handleVacateTableMenu} className="cursor-pointer">
+                            <p
+                              onClick={() => {
+                                handleVacateTableMenu();
+                                setMenuOpenMap2((prevMenuOpenMap) => ({
+                                  ...prevMenuOpenMap,
+                                  [item.id]: false,
+                                }));
+                              }}
+                              className="cursor-pointer"
+                            >
                               Vacate Table
                             </p>
                           </div>
@@ -604,7 +626,7 @@ const Tickets = () => {
                         {" "}
                         <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-3 border-b">
                           <p className="text-start text-[14px] text-[#121212]">Item</p>
-                          <p className="text-end text-[14px] text-[#121212]">Pizza</p>
+                          <p className="text-end text-[14px] text-[#121212]">Price</p>
                           <p className=" text-[14px] text-[#121212]"></p>
                         </div>
                         {data.slice(0, 3).map((item, index) => (

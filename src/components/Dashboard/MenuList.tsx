@@ -214,8 +214,28 @@ const MenuList = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
 
-  const handleToggleChange = () => {
-    setIsEnabled(!isEnabled);
+  const [toggleStates, setToggleStates] = useState<{ [key: number]: boolean }>(() => {
+    const initialState: { [key: number]: boolean } = {};
+    data.forEach((item) => {
+      initialState[item.id] = true; // Default all items to enabled
+    });
+    return initialState;
+  });
+
+  const handleToggleChange = (id) => {
+    // Check if the item is currently unfrozen and prompt for confirmation
+    if (
+      toggleStates[id] &&
+      !window.confirm("Are you sure you want to do this? This item will become unavailable.")
+    ) {
+      return; // Early return if the user cancels the action
+    }
+
+    // Proceed to toggle the state as before
+    setToggleStates((prevStates) => ({
+      ...prevStates,
+      [id]: !prevStates[id],
+    }));
   };
 
   const getStatusBgColor = (status: string) => {
@@ -259,7 +279,7 @@ const MenuList = () => {
                   <button className="text-[12px] ">Menu Name</button>
                 </div>
                 <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                  <button className="text-[12px] ">Qty Status</button>
+                  <button className="text-[12px] ">Quantity</button>
                 </div>
                 <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
                   <button className="text-[12px] ">Price</button>
@@ -273,7 +293,7 @@ const MenuList = () => {
               <thead>
                 <tr className="bg-[#606060] text-white text-center text-base font-normal">
                   <th className="py-2 px-4 text-base font-normal">Menu Name</th>
-                  <th className="py-2 px-4 text-base font-normal">Qty Status</th>
+                  <th className="py-2 px-4 text-base font-normal">Quantity</th>
                   <th className="py-2 px-4 text-base font-normal">Price</th>
                   <th className="py-2 px-4 text-base font-normal">Modifiers</th>
                   <th className="py-2 px-4 text-base font-normal">Actions</th>
@@ -290,15 +310,17 @@ const MenuList = () => {
                   >
                     <td className="text-base font-medium py-2 px-4">{item.menuName}</td>
                     <td className="text-base font-medium text-center py-2 px-4 break-words">
-                      <div className="flex justify-start gap-2 items-center pl-[60px]">
-                        <span className="w-[60px] ml-0">{item.qty} left</span>
-                        <span
-                          className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
-                            item.status
-                          )}`}
-                        >
-                          {item.status}
-                        </span>
+                      <div className="flex justify-start gap-0 items-center pl-[60px]">
+                        <span className="w-[60px] ml-0">{item.qty}</span>
+                        {item.status !== "Restocked" && (
+                          <span
+                            className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
+                              item.status
+                            )}`}
+                          >
+                            {item.status}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="text-base font-medium text-center py-2 px-4 break-words">
@@ -314,8 +336,8 @@ const MenuList = () => {
                     </td>
 
                     <td className="flex items-center text-center">
-                      <IconButton onClick={handleToggleChange} color="default">
-                        {isEnabled ? (
+                      <IconButton onClick={() => handleToggleChange(item.id)} color="default">
+                        {toggleStates[item.id] ? (
                           <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
                         ) : (
                           <ToggleOffIcon style={{ fontSize: "40px" }} />
@@ -323,11 +345,11 @@ const MenuList = () => {
                       </IconButton>
                       <span
                         className={clsx(
-                          isEnabled ? "text-[#5855b3]" : "text-gray-700",
+                          toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
                           "text-base font-medium"
                         )}
                       >
-                        {isEnabled ? "Unfreeze" : "Freeze"}
+                        {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
                       </span>
                       <DeleteForeverOutlined className="text-red-700 ml-3" />
                     </td>
