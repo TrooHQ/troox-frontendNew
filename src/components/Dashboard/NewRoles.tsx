@@ -3,6 +3,7 @@ import { useState, ChangeEvent } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import FAQSetting from "../FAQSetting";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 interface FAQItem {
   question: string;
@@ -50,23 +51,17 @@ const NewRoles = () => {
     setOpenIndexInner(openIndexInner === index2 ? null : index2);
   };
 
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);
   };
-  const handleInputChange2 = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange2 = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData2 = [...faqDataInner];
     newFAQData2[index].inputValue = event.target.value;
     console.log(newFAQData2);
   };
-
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (
     <DashboardLayout>
       <TopMenuNav pathName="Manage Users" />
@@ -110,9 +105,23 @@ const NewRoles = () => {
         </div>
 
         <div className="my-10 ">
-          <p className="text-[24px] font-[500] text-purple500">
-            Permissions setting
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-[24px] font-[500] text-purple500">New Roles</p>
+            <div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...label}
+                    sx={{
+                      "& .MuiSvgIcon-root": { fontSize: 32 },
+                      "&.Mui-checked": { color: "#5855B3" },
+                    }}
+                  />
+                }
+                label="Grant this role general access"
+              />
+            </div>
+          </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
               <FAQSetting

@@ -13,7 +13,6 @@ import CustomSelect2 from "../inputFields/CustomSelect2";
 const ManageUsers: React.FC = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.inviteUser);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleNewRoleClick = () => {
@@ -57,38 +56,30 @@ const ManageUsers: React.FC = () => {
                     label="First Name"
                     value={userData.firstName}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("firstName", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("firstName", newValue)}
                   />
                   <CustomInput
                     type="text"
                     label="Last Name"
                     value={userData.lastName}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("lastName", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("lastName", newValue)}
                   />
                   <CustomInput
                     type="email"
                     label="Email address"
                     value={userData.email}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("email", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("email", newValue)}
                   />
                   <CustomInput
                     type="text"
                     label="Mobile number"
                     value={userData.mobileNumber}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("mobileNumber", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("mobileNumber", newValue)}
                   />
-                  <CustomInput
+                  {/* <CustomInput
                     type="text"
                     label="Pin code"
                     value={userData.pinCode}
@@ -106,9 +97,9 @@ const ManageUsers: React.FC = () => {
                     onChange={(newValue) =>
                       handleInputChange("password", newValue)
                     }
-                  />
+                  /> */}
                   <CustomSelect2
-                    options={["Manager", "Kitchen", "Admin"]}
+                    options={["Admin", "Operations", "General Users"]}
                     placeholder="User Role"
                   />
 
@@ -119,12 +110,10 @@ const ManageUsers: React.FC = () => {
 
                   <CustomInput
                     type="text"
-                    label="Department"
-                    value={userData.department}
+                    label="Branch"
+                    value={userData.userRole}
                     error=""
-                    onChange={(newValue) =>
-                      handleInputChange("department", newValue)
-                    }
+                    onChange={(newValue) => handleInputChange("department", newValue)}
                   />
                 </div>
               </div>
@@ -135,9 +124,7 @@ const ManageUsers: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setIsModalOpen(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
-                    Cancel
-                  </p>
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 

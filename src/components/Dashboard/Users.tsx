@@ -22,7 +22,7 @@ const Users = () => {
             <img src={Profileimg} alt="" />
             <div className="">
               <p className=" text-[20px] "> Admin</p>
-              <p className="   "> samdoe@restaurant.com</p>
+              <p className="   "> samdoe@rest.com</p>
             </div>
           </div>
           <p className=" px-3 py-2">Admin</p>
@@ -46,7 +46,7 @@ const Users = () => {
             <img src={Profileimg} alt="" />
             <div className="">
               <p className=" text-[20px] "> Admin</p>
-              <p className="   "> samdoe@restaurant.com</p>
+              <p className="   "> samdoe@rest.com</p>
             </div>
           </div>
           <p className=" px-3 py-2">Admin</p>
