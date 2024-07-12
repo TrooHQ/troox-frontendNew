@@ -222,7 +222,7 @@ const MenuList = () => {
     return initialState;
   });
 
-  const handleToggleChange = (id) => {
+  const handleToggleChange = (id: any) => {
     // Check if the item is currently unfrozen and prompt for confirmation
     if (
       toggleStates[id] &&
