@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "../Components/Modal";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import {
@@ -18,17 +18,15 @@ import {
 import { RootState } from "../../store/store";
 import NotFound from "../NotFound";
 
-const StartOrder = () => {
+const InRoomStartOrder = () => {
   const location = useLocation();
-  const navigate = useNavigate();
+
   const userDetails = useSelector((state: RootState) => state.user);
 
   const dispatch = useDispatch();
   const token = userDetails?.userData?.token;
 
   const queryParams = new URLSearchParams(location.search);
-  console.log(queryParams);
-
   const fullUrl =
     window.location.origin +
     location.pathname +
@@ -37,21 +35,21 @@ const StartOrder = () => {
   sessionStorage.setItem("url", fullUrl);
 
   const business_identifier = queryParams.get("business_identifier");
-  const tableNo = queryParams.get("table");
   const roomNo = queryParams.get("room");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
   useEffect(() => {
-    if (business_identifier && tableNo) {
+    if (business_identifier && roomNo) {
       console.log(`Business Identifier: ${business_identifier}`);
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
-      dispatch(setTableNo(tableNo));
+      dispatch(setTableNo(roomNo));
       dispatch(setURL(fullUrl));
-      console.log(`Table: ${tableNo}`);
+      console.log(`Room: ${roomNo}`);
     }
+
     getBusinessDetails();
-  }, [business_identifier, tableNo, group_name, navigate]);
+  }, [business_identifier, roomNo, group_name]);
 
   const getBusinessDetails = async () => {
     const headers = {
@@ -76,9 +74,9 @@ const StartOrder = () => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isTableOpen, setTableIsOpen] = useState(false);
+  const [isRoomOpen, setRoomIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  const [table, setTable] = useState("");
+  const [room, setRoom] = useState("");
 
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
@@ -91,23 +89,17 @@ const StartOrder = () => {
   };
 
   const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const tableNumber = event.target.value;
-    setTable(tableNumber);
-    dispatch(updateCustomerTableNumber(tableNumber));
+    const roomNumber = event.target.value;
+    setRoom(roomNumber);
+    dispatch(updateCustomerTableNumber(roomNumber));
   };
 
   const handleNext = () => {
     setIsOpen(false);
-    setTableIsOpen(true);
+    setRoomIsOpen(true);
   };
 
-  if (roomNo) {
-    navigate(
-      `demo/in_room_dining${
-        location.pathname + location.search + location.hash
-      }`
-    );
-  } else if (!business_identifier || !tableNo) {
+  if (!business_identifier || !roomNo) {
     return <NotFound />;
   }
 
@@ -181,28 +173,28 @@ const StartOrder = () => {
         </div>
       </Modal>
 
-      <Modal isOpen={isTableOpen}>
+      <Modal isOpen={isRoomOpen}>
         <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
           <input
             className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
             type="text"
-            placeholder="Enter your table number"
-            value={table}
+            placeholder="Enter your room number"
+            value={room}
             onChange={handleTableChange}
           />
           <div className="mt-[25px]">
             <p
               className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
-              onClick={() => setTableIsOpen(false)}
+              onClick={() => setRoomIsOpen(false)}
             >
               Cancel
             </p>
             <Link
-              to={`/demo/${businessDetails?.business_name}/explore-menu/orderandpay`}
+              to={`/demo/${businessDetails?.business_name}/explore-menu/in_room_dining`}
             >
               <p
                 className={`px-[24px] py-[10px] ${
-                  !table ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                  !room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
                 } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
               >
                 Submit
@@ -215,4 +207,4 @@ const StartOrder = () => {
   );
 };
 
-export default StartOrder;
+export default InRoomStartOrder;
