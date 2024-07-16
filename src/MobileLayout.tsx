@@ -33,6 +33,15 @@ import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
 import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
 import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
+import InRoomStartOrder from "./Mobile/InRoomDining/InRoomStartOrder";
+import { InRoomMenuPage } from "./Mobile/InRoomDining/InRoomMenuPage";
+import { InRoomCategoryDetails } from "./Mobile/InRoomDining/InRoomCategoryDetails";
+import InRoomMenuDetails from "./Mobile/InRoomDining/InRoomMenuDetails";
+import { InRoomBasket } from "./Mobile/InRoomDining/InRoomBasket";
+import { InRoomTip } from "./Mobile/InRoomDining/InRoomTip";
+import { InRoomSelectPayment } from "./Mobile/InRoomDining/InRoomSelectPayment";
+import { InRoomGetReceipt } from "./Mobile/InRoomDining/InRoomGetReceipt";
+import { InRoomReceipt } from "./Mobile/InRoomDining/InRoomReceipt";
 
 const MobileLayout = () => {
   return (
@@ -41,30 +50,16 @@ const MobileLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route
-            path="/demo/forgot-password/troo-portal"
-            element={<ForgotPassword />}
-          />
           <Route path="/digi-input" element={<VerifyAccount2 />} />
 
-          <Route path="/demo/dashboard/troo-portal" element={<Dashboard />} />
-          <Route path={`/demo/login/troo-portal`} element={<Login />} />
-          <Route
-            path="/demo/employee-dashboard/troo-portal"
-            element={<EmployeeDashboard />}
-          />
           <Route path="/restaurants" element={<ListofRestaurants />} />
 
-          <Route path="demo/orderandpay/" element={<StartOrder />} />
+          <Route path="/" element={<StartOrder />} />
+          <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
           <Route
             path="/demo/:id/explore-menu/orderandpay"
             element={<MenuPage />}
           />
-          <Route
-            path="demo/admin-menu/troo-portal"
-            element={<AdminMenuPage />}
-          />
-
           <Route
             path="demo/:id/category-details/:id/orderandpay"
             element={<CategoryDetails />}
@@ -72,10 +67,6 @@ const MobileLayout = () => {
           <Route
             path="/demo/menu-details/:id/orderandpay"
             element={<MenuDetails />}
-          />
-          <Route
-            path="/demo/:id/menu-page/:id/troo-portal"
-            element={<Menu />}
           />
           <Route path="/demo/basket/orderandpay" element={<Basket />} />
           <Route path="/demo/tip/orderandpay" element={<Tip />} />
@@ -87,6 +78,57 @@ const MobileLayout = () => {
           <Route
             path="/demo/get-receipt/orderandpay"
             element={<GetReceipt />}
+          />
+
+          <Route path="demo/in_room_dining" element={<InRoomStartOrder />} />
+          <Route
+            path="/demo/:id/explore-menu/in_room_dining"
+            element={<InRoomMenuPage />}
+          />
+          <Route
+            path="demo/:id/category-details/:id/in_room_dining"
+            element={<InRoomCategoryDetails />}
+          />
+          <Route
+            path="/demo/menu-details/:id/in_room_dining"
+            element={<InRoomMenuDetails />}
+          />
+          <Route
+            path="/demo/basket/in_room_dining"
+            element={<InRoomBasket />}
+          />
+          <Route path="/demo/tip/in_room_dining" element={<InRoomTip />} />
+          <Route
+            path="/demo/payment-type/in_room_dining"
+            element={<InRoomSelectPayment />}
+          />
+          <Route
+            path="/demo/receipt/in_room_dining"
+            element={<InRoomReceipt />}
+          />
+          <Route
+            path="/demo/get-receipt/in_room_dining"
+            element={<InRoomGetReceipt />}
+          />
+
+          <Route
+            path="/demo/forgot-password/troo-portal"
+            element={<ForgotPassword />}
+          />
+          <Route path="/demo/dashboard/troo-portal" element={<Dashboard />} />
+          <Route path={`/demo/login/troo-portal`} element={<Login />} />
+          <Route
+            path="/demo/employee-dashboard/troo-portal"
+            element={<EmployeeDashboard />}
+          />
+          <Route
+            path="demo/admin-menu/troo-portal"
+            element={<AdminMenuPage />}
+          />
+
+          <Route
+            path="/demo/:id/menu-page/:id/troo-portal"
+            element={<Menu />}
           />
 
           <Route path="/demo/ticket/troo-portal" element={<Tickets />} />
