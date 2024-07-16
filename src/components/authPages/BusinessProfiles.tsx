@@ -29,10 +29,7 @@ const BusinessProfiles: React.FC = () => {
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);
@@ -58,9 +55,7 @@ const BusinessProfiles: React.FC = () => {
           <div className=" flex justify-end items-center gap-2 mt-[32px]">
             <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
               <div onClick={() => navigate(-1)}>
-                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
-                  Cancel
-                </p>
+                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
               </div>
             </div>
 

@@ -13,20 +13,14 @@ interface FAQProps {
   faqData: FAQItem[];
   openIndex: number | null;
   toggleAnswer: (index: number) => void;
-  handleInputChange: (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleInputChange: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
   const [checkedLegalType, setCheckedLegalType] = useState<string>("");
 
-  const handleLegalTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleLegalTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedLegalType(event.target.value);
-    console.log(event.target.value, "checked");
   };
   const [name, setName] = useState<string>("");
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -68,9 +62,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 0 && (
                   <div className=" ">
                     <p className=" text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      This information is required in order to verify your
-                      business. It will show up on your payout report, invoices
-                      and receipts.
+                      This information is required in order to verify your business. It will show up
+                      on your payout report, invoices and receipts.
                     </p>
                     <div className="">
                       <p className=" text-[16px] font-[500] leading-[24px] text-grey500">
@@ -81,8 +74,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <label
                           htmlFor="soleTrader"
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
-                            checkedLegalType ===
-                            "Sole trader/Private Individual"
+                            checkedLegalType === "Sole trader/Private Individual"
                               ? "bg-purple500 text-white"
                               : "bg-[#E7E7E7] text-grey500"
                           }`}
@@ -92,10 +84,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             id="soleTrader"
                             name="legalType"
                             value="Sole trader/Private Individual"
-                            checked={
-                              checkedLegalType ===
-                              "Sole trader/Private Individual"
-                            }
+                            checked={checkedLegalType === "Sole trader/Private Individual"}
                             onChange={handleLegalTypeChange}
                             className="hidden"
                           />
@@ -165,8 +154,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
 
                     <div className=" my-8">
                       <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
-                        Web page: Website, Social media page, Business listing,
-                        Google map location, etc
+                        Web page: Website, Social media page, Business listing, Google map location,
+                        etc
                       </p>
 
                       <div className=" grid gap-5">
@@ -186,10 +175,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                               // checked={auth.rememberMe}
                               // onChange={handleRememberMeToggle}
                             />
-                            <label
-                              htmlFor="rememberMe"
-                              className="text-[14px] text-grey500"
-                            >
+                            <label htmlFor="rememberMe" className="text-[14px] text-grey500">
                               I don't have a web page
                             </label>
                           </div>
@@ -203,10 +189,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                       </p>
                       <div className=" grid gap-5">
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             Address (Line 1)
                           </label>
                           <CustomInput
@@ -217,12 +200,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           />
                         </div>
                         <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            Address (Line 2){" "}
-                            <span className=" text-grey200">(optional)</span>
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
+                            Address (Line 2) <span className=" text-grey200">(optional)</span>
                           </label>
                           <CustomInput
                             type="text"
@@ -232,10 +211,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           />
                         </div>
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             City
                           </label>
                           <CustomInput
@@ -254,10 +230,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                       </p>
                       <div className=" grid md:grid-cols-2 items-center gap-5">
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             From:
                           </label>
                           <CustomInput
@@ -268,10 +241,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           />
                         </div>
                         <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             To:
                           </label>
                           <CustomInput
@@ -288,10 +258,9 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 1 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please make sure that your personal details remain
-                      up-to-date. Because this information is used to verify
-                      your identity. You will need to send our Support Team a
-                      message if you need to change it.
+                      Please make sure that your personal details remain up-to-date. Because this
+                      information is used to verify your identity. You will need to send our Support
+                      Team a message if you need to change it.
                     </p>
 
                     <div className=" grid gap-5">
@@ -340,10 +309,9 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 2 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please enter your bank account information. You’ll receive
-                      a four-digit verification code via text message. Once you
-                      enter the code Troo will direct all payouts to the
-                      account.
+                      Please enter your bank account information. You’ll receive a four-digit
+                      verification code via text message. Once you enter the code Troo will direct
+                      all payouts to the account.
                     </p>
 
                     <div className=" grid gap-5">
