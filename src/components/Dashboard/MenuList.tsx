@@ -6,6 +6,8 @@ import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import clsx from "clsx";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { Tooltip } from "@mui/material";
 
 interface Modifier {
   name: string;
@@ -209,6 +211,11 @@ const data = [
   },
 ];
 
+interface ConfirmationDialogState {
+  open: boolean;
+  id: string | null;
+}
+
 const MenuList = () => {
   const [isEnabled, setIsEnabled] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -222,20 +229,24 @@ const MenuList = () => {
     return initialState;
   });
 
-  const handleToggleChange = (id: any) => {
-    // Check if the item is currently unfrozen and prompt for confirmation
-    if (
-      toggleStates[id] &&
-      !window.confirm("Are you sure you want to do this? This item will become unavailable.")
-    ) {
-      return; // Early return if the user cancels the action
-    }
+  const [confirmationDialog, setConfirmationDialog] = useState<ConfirmationDialogState>({
+    open: false,
+    id: null,
+  });
 
-    // Proceed to toggle the state as before
-    setToggleStates((prevStates) => ({
-      ...prevStates,
-      [id]: !prevStates[id],
-    }));
+  const handleToggleChange = (id: any) => {
+    setConfirmationDialog({ open: true, id });
+  };
+
+  const handleConfirmToggleChange = () => {
+    const { id } = confirmationDialog;
+    if (id !== null) {
+      setToggleStates((prevStates) => ({
+        ...prevStates,
+        [id]: !prevStates[id as any],
+      }));
+    }
+    setConfirmationDialog({ open: false, id: null });
   };
 
   const getStatusBgColor = (status: string) => {
@@ -336,13 +347,18 @@ const MenuList = () => {
                     </td>
 
                     <td className="flex items-center text-center">
-                      <IconButton onClick={() => handleToggleChange(item.id)} color="default">
-                        {toggleStates[item.id] ? (
-                          <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
-                        ) : (
-                          <ToggleOffIcon style={{ fontSize: "40px" }} />
-                        )}
-                      </IconButton>
+                      <Tooltip
+                        title="Freezing this menu list will remove it from all your product channels"
+                        arrow
+                      >
+                        <IconButton onClick={() => handleToggleChange(item.id)} color="default">
+                          {toggleStates[item.id] ? (
+                            <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                          ) : (
+                            <ToggleOffIcon style={{ fontSize: "40px" }} />
+                          )}
+                        </IconButton>
+                      </Tooltip>
                       <span
                         className={clsx(
                           toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
@@ -406,6 +422,20 @@ const MenuList = () => {
           </div>
         )}
       </div>
+      <ConfirmationDialog
+        open={confirmationDialog.open}
+        onClose={() => setConfirmationDialog({ open: false, id: null })}
+        onConfirm={handleConfirmToggleChange}
+        message={`Are you sure you want to ${
+          confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
+            ? "freeze"
+            : "unfreeze"
+        } this menu item? ${
+          confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
+            ? "Freezing it will remove it from all your product channels."
+            : ""
+        }`}
+      />
     </DashboardLayout>
   );
 };

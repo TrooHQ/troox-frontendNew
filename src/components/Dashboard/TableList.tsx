@@ -11,7 +11,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
-import { FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
+
+interface Table {
+  tableNo: string;
+  id: string;
+  qrCode: string;
+}
+
+interface TablesData {
+  tables: {
+    [owner: string]: Table[];
+  };
+}
+
+interface Outlet {
+  label: string;
+}
+
+const allOutlets: Outlet[] = [
+  { label: "Abuja outlet" },
+  { label: "Agege outlet" },
+  { label: "Ajah outlet" },
+  { label: "Ikeja outlet" },
+  { label: "Lekki outlet" },
+  { label: "V/Island outlet" },
+];
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -67,18 +101,6 @@ const TableList = () => {
     );
   };
 
-  interface Table {
-    tableNo: string;
-    id: string;
-    qrCode: string;
-  }
-
-  interface TablesData {
-    tables: {
-      [owner: string]: Table[];
-    };
-  }
-
   const data: TablesData = {
     tables: {
       Akate: [
@@ -100,6 +122,7 @@ const TableList = () => {
       ],
     },
   };
+
   const dispatch = useDispatch();
   const userData = useSelector((state: RootState) => state.inviteUser);
 
@@ -108,6 +131,7 @@ const TableList = () => {
     applyChanges: "",
   });
   const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOutlets, setSelectedOutlets] = useState<Outlet[]>([]);
 
   const handleTableData = (fieldName: string, value: string) => {
     setTableData({ ...tableData, [fieldName]: value });
@@ -258,6 +282,33 @@ const TableList = () => {
                   </div>
                 </div>
               </div>
+              {selectedOption === "Apply these changes to selected outlets" && (
+                <Autocomplete
+                  multiple
+                  id="checkboxes-tags-demo"
+                  options={allOutlets}
+                  disableCloseOnSelect
+                  getOptionLabel={(option: Outlet) => option.label}
+                  renderOption={(props, option: Outlet, { selected }) => (
+                    <li {...props}>
+                      <Checkbox
+                        icon={<CheckBoxOutlineBlank style={{ marginRight: 8 }} />}
+                        checkedIcon={<CheckBox style={{ marginRight: 8 }} />}
+                        checked={selected}
+                      />
+                      {option.label}
+                    </li>
+                  )}
+                  style={{ width: 350 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Outlets" placeholder="Outlets" />
+                  )}
+                  value={selectedOutlets}
+                  onChange={(event, newValue: Outlet[]) => {
+                    setSelectedOutlets(newValue);
+                  }}
+                />
+              )}
               <hr className="border mb-[16px] mt-[24px] border-[#E7E7E7]" />
 
               <div className=" flex justify-end items-center  gap-2">

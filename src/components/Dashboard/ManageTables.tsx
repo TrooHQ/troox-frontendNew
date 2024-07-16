@@ -12,6 +12,7 @@ import QrCode from "../../assets/qr-code.png";
 import More from "../../assets/more_vert.svg";
 import ArrowToggle from "../../assets/chevron-down2.svg";
 import { ToggleOff, ToggleOn } from "@mui/icons-material";
+import CustomSelect2 from "../inputFields/CustomSelect2";
 
 const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -212,7 +213,11 @@ const ManageTables: React.FC = () => {
             <div className="">
               <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Table Arrangement</p>
               <hr className="border my-[24px] border-[#E7E7E7]" />
-              <div className=" flex items-center gap-[8px] justify-center">
+              <div className=" flex flex-col gap-[8px] justify-center">
+                <CustomSelect2
+                  options={["In-room dining", "QR Scanner Table"]}
+                  placeholder="Select Type"
+                />
                 <div className=" flex-grow  ">
                   <CustomInput
                     type="text"

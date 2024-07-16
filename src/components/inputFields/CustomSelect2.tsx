@@ -24,9 +24,7 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
     setIsOpen(false);
   };
 
-  const getOptionLabel = (
-    option: string | { value: string; label: string }
-  ) => {
+  const getOptionLabel = (option: string | { value: string; label: string }) => {
     if (typeof option === "string") {
       return option;
     }
@@ -39,7 +37,7 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
         className="border border-gray-300 bg-white p-2 focus:outline-[#5955B3] w-full rounded flex justify-between items-center"
         onClick={toggleDropdown}
       >
-        <span className="selected-option">{selectedOption}</span>
+        <span className="selected-option text-[#a29795]">{selectedOption}</span>
         <span className={`arrow ${isOpen ? "transform rotate-180" : ""}`}>
           <img src={Arrow} alt="" />
         </span>
@@ -54,20 +52,14 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
             key={index}
             className={`option p-2 cursor-pointer transition-colors hover:bg-gray-100 ${
               disabledOptions &&
-              disabledOptions.includes(
-                typeof option === "string" ? option : option.value
-              )
+              disabledOptions.includes(typeof option === "string" ? option : option.value)
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
             onClick={() =>
               !disabledOptions ||
-              !disabledOptions.includes(
-                typeof option === "string" ? option : option.value
-              )
-                ? selectOption(
-                    typeof option === "string" ? option : option.value
-                  )
+              !disabledOptions.includes(typeof option === "string" ? option : option.value)
+                ? selectOption(typeof option === "string" ? option : option.value)
                 : null
             }
           >
