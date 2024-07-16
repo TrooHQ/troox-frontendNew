@@ -7,6 +7,7 @@ import inviteUserReducer from "../slices/InviteUserSlice";
 import faqSettingReducer from "../slices/FaqSettingSlice";
 import userReducer from "../slices/UserSlice";
 import businessReducer from "../slices/businessSlice";
+import registerReducer from "../slices/registerSlice";
 import basketReducer from "../slices/BasketSlice";
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   faqSetting: faqSettingReducer,
   user: userReducer,
   business: businessReducer,
+  register: registerReducer,
   basket: basketReducer,
 });
 

@@ -2,6 +2,10 @@ import { useState, ChangeEvent } from "react";
 import Logo from "../../assets/trooLogo.svg";
 import FAQ from "../FAQ";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectTransformedRegisterState } from "../../slices/registerSlice";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
 
 interface FAQItem {
   question: string;
@@ -10,7 +14,8 @@ interface FAQItem {
 const BusinessProfiles: React.FC = () => {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
+  const transformedState = useSelector(selectTransformedRegisterState);
+  console.log(transformedState, "qwert");
   const faqData: FAQItem[] = [
     {
       question: "Business information",
@@ -34,6 +39,22 @@ const BusinessProfiles: React.FC = () => {
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);
   };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(`${SERVER_DOMAIN}/onboardBusiness`, transformedState);
+
+      if (response.status === 200) {
+        console.log("Data submitted successfully");
+        navigate("/");
+      } else {
+        console.log("Submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
   return (
     <div className="bg-[#EFEFEF] ">
       <div className="flex flex-col items-center justify-center h-screen my-auto">
@@ -60,9 +81,11 @@ const BusinessProfiles: React.FC = () => {
             </div>
 
             <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
-              <Link to="/">
-                <button className="">Save and continue</button>
-              </Link>
+              {/* <Link to="/"> */}
+              <button onClick={handleSubmit} className="">
+                Save and submit
+              </button>
+              {/* </Link> */}
             </div>
           </div>
         </div>
