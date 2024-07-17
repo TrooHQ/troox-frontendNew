@@ -13,9 +13,9 @@ import CustomSelect3 from "../inputFields/CustomSelect3";
 
 const Dashboard = () => {
   const options = [
-    { value: "daily", label: "Daily", link: "demo/report/troo-portal" },
-    { value: "weekly", label: "Weekly", link: "demo/report/troo-portal" },
-    { value: "monthly", label: "Monthly", link: "demo/report/troo-portal" },
+    { value: "daily", label: "Daily", link: "/demo/report/troo-portal" },
+    { value: "weekly", label: "Weekly", link: "/demo/report/troo-portal" },
+    { value: "monthly", label: "Monthly", link: "/demo/report/troo-portal" },
   ];
   const userDetails = useSelector((state: RootState) => state.user);
   console.log(userDetails?.userData);
