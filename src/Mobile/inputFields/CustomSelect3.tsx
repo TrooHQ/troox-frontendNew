@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import Arrow from "../assets/ArrowDown3.svg";
 import { useNavigate } from "react-router-dom";
-
+import { IoIosArrowDown } from "react-icons/io";
 interface Option {
   value: string;
   label: string;
@@ -14,6 +13,7 @@ interface CustomSelect3Props {
   placeholder?: string;
   BG?: string;
   text?: string;
+  hover?: string;
 }
 
 const CustomSelect3: React.FC<CustomSelect3Props> = ({
@@ -22,6 +22,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
   placeholder = "",
   BG,
   text,
+  hover = "hover:bg-gray-100",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(placeholder);
@@ -50,7 +51,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
     if (typeof option === "string") {
       return option;
     }
-    return option.value;
+    return option.label;
   };
 
   return (
@@ -65,7 +66,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
       >
         <span className="selected-option">{selectedOption}</span>
         <span className={`arrow ${isOpen ? "transform rotate-180" : ""}`}>
-          <img src={Arrow} alt="Arrow" />
+          <IoIosArrowDown />
         </span>
       </div>
       <div
@@ -76,7 +77,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
         {options.map((option, index) => (
           <div
             key={index}
-            className={`option p-2 cursor-pointer transition-colors hover:bg-gray-100 ${
+            className={`option p-2 cursor-pointer transition-colors ${hover} ${
               disabledOptions &&
               disabledOptions.includes(getOptionValue(option))
                 ? "opacity-50 cursor-not-allowed"
