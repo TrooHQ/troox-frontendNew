@@ -9,6 +9,7 @@ import userReducer from "../slices/UserSlice";
 import businessReducer from "../slices/businessSlice";
 import registerReducer from "../slices/registerSlice";
 import basketReducer from "../slices/BasketSlice";
+import branchReducer from "../slices/branchSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   business: businessReducer,
   register: registerReducer,
   basket: basketReducer,
+  branches: branchReducer,
 });
 
 const persistConfig = {

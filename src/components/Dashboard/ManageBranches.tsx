@@ -1,66 +1,32 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import add from "../../assets/add.svg";
 import { DeleteForeverOutlined } from "@mui/icons-material";
 import BranchModal from "./components/BranchModal";
-
-const data = [
-  {
-    id: 1,
-    branchName: "Agege branch",
-    address: "123 Agege Motor Road, Agege",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "agege@chickenrepublic.com",
-  },
-  {
-    id: 2,
-    branchName: "Alimosho branch",
-    address: "18 Alimosho Busstop, Alimosho",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "alimosho@chickenrepublic.com",
-  },
-  {
-    id: 3,
-    branchName: "Ajah branch",
-    address: "23 Ajah Busstop, Ajah",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "ajah@chickenrepublic.com",
-  },
-  {
-    id: 4,
-    branchName: "Egbeda branch",
-    address: "Egbeda Rounabout Busstop, Egdeda",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "egbeda@chickenrepublic.com",
-  },
-  {
-    id: 5,
-    branchName: "Ikeja branch",
-    address: "123 Ikeja GRA, Ikeja",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "ikeja@chickenrepublic.com",
-  },
-  {
-    id: 6,
-    branchName: "Ikoyi branch",
-    address: "12 Falomo Busstop, Ikoyi",
-    manager: "Samuel Oni",
-    city: "Lagos",
-    email: "ikoyi@chickenrepublic.com",
-  },
-];
+import { deleteBranch, fetchBranches } from "../../slices/branchSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/src/store/store";
 
 const ManageBranches = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { branches, loading, error } = useSelector((state: RootState) => state.branches);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
 
   const handleAddMenu = () => {
     setIsModalOpen(true);
+  };
+
+  const handleDeleteBranch = (branchId: any) => {
+    const reason = prompt("Please provide a reason for deleting this branch:");
+    if (reason) {
+      dispatch(deleteBranch({ branchId, reason }));
+    }
   };
 
   return (
@@ -115,24 +81,31 @@ const ManageBranches = () => {
                 <hr className="mb-2 text-[#E7E7E7]" />
 
                 <tbody>
-                  {data.map((item, index) => (
+                  {branches.map((branch) => (
                     <tr
-                      key={item.id}
-                      className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
+                      key={branch._id}
+                      className={`${
+                        branches.indexOf(branch) % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                      }`}
                     >
-                      <td className="text-base font-medium py-2 px-4">{item.branchName}</td>
+                      <td className="text-base font-medium py-2 px-4">{branch.branch_name}</td>
                       <td className="text-base font-medium py-2 px-4 break-words">
-                        {item.address}
+                        {branch.branch_address}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 break-words">
-                        {item.manager}
-                      </td>
-                      <td className="text-base font-medium py-2 px-4 break-words">{item.city}</td>
                       <td className="text-base font-medium py-2 px-4 break-words text-center">
-                        {item.email}
+                        {branch.branch_email}
+                      </td>
+                      <td className="text-base font-medium py-2 px-4 break-words text-center">
+                        {branch.branch_phone_number}
+                      </td>
+                      <td className="text-base font-medium py-2 px-4 break-words text-center">
+                        {branch.branch_email}
                       </td>
                       <td className=" text-center">
-                        <DeleteForeverOutlined className="text-red-700" />
+                        <DeleteForeverOutlined
+                          className="text-red-700 cursor-pointer"
+                          onClick={() => handleDeleteBranch(branch._id)}
+                        />
                       </td>
                     </tr>
                   ))}

@@ -41,6 +41,7 @@ const Login = () => {
       setLoading(false);
       console.log(response.data);
       dispatch(setUserData(response.data));
+      localStorage.setItem("token", response.data.token);
       const userType = response.data.user_role;
       toast.success(response.data.message);
       if (userType === "employee") {

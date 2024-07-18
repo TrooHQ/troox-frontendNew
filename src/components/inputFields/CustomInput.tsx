@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, ChangeEvent } from "react";
 
 interface CustomInputProps {
   label: string;
@@ -43,7 +43,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             error ? "border-red-500" : ""
           }`}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           maxLength={maxLength}

@@ -369,7 +369,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
         }}
       >
-        <NavLink to="/logout">
+        <NavLink to="/">
           <div className="flex items-center gap-x-2 cursor-pointer py-2">
             <img
               src={LogoutIcon}

@@ -46,12 +46,14 @@ const BusinessProfiles: React.FC = () => {
 
       if (response.status === 200) {
         console.log("Data submitted successfully");
-        navigate("/");
+        navigate("/verify-account");
       } else {
         console.log("Submission failed");
       }
     } catch (error) {
       console.error("Error submitting data:", error);
+    } finally {
+      navigate("/verify-account");
     }
   };
 
@@ -83,7 +85,7 @@ const BusinessProfiles: React.FC = () => {
             <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
               {/* <Link to="/"> */}
               <button onClick={handleSubmit} className="">
-                Save and submit
+                Save and continue
               </button>
               {/* </Link> */}
             </div>
