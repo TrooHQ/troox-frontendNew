@@ -17,6 +17,13 @@ const Dashboard = () => {
     { value: "weekly", label: "Weekly", link: "/demo/report/troo-portal" },
     { value: "monthly", label: "Monthly", link: "/demo/report/troo-portal" },
   ];
+
+  const options2 = [
+    { value: "Abuja", label: "Abuja outlet", link: "#" },
+    { value: "Owerri", label: "Owerri outlet", link: "#" },
+    { value: "Ketu", label: "Ketu outlet", link: "#" },
+  ];
+
   const userDetails = useSelector((state: RootState) => state.user);
   console.log(userDetails?.userData);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -26,7 +33,7 @@ const Dashboard = () => {
     <>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className=" my-[10px] mx-[10px]">
-        <div className=" flex items-center gap-[8px] py-[16px] border-b">
+        <div className=" flex items-center gap-[8px] py-[16px] border-b ">
           <div className=" cursor-pointer" onClick={toggleSidebar}>
             <img src={Menu} alt="" />
           </div>
@@ -40,6 +47,16 @@ const Dashboard = () => {
           <p className=" text-20px font-[400] text-grey500">
             {userDetails?.userData?.business_name}
           </p>
+
+          <div className=" z-10">
+            <CustomSelect3
+              options={options2}
+              placeholder="All outlets"
+              BG=" bg-[#5855B3]"
+              text=" text-white"
+              hover="hover:bg-[#5855B3] hover:text-white"
+            />
+          </div>
         </div>
 
         <div className=" py-[16px] px-[24px] bg-[#DB7F3B] rounded-[5px] mt-[16px]">
