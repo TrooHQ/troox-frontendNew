@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import CustomSelect3 from "../inputFields/CustomSelect3";
+import { setSelectedOutlet } from "../../slices/OutletSlice";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -22,6 +23,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user?.userData);
+  const selectedOutlet = useSelector(
+    (state: RootState) => state.outlet.selectedOutlet
+  );
+
+  const handleSelectOutlet = (selectedOutlet: string) => {
+    dispatch(setSelectedOutlet(selectedOutlet));
+  };
 
   const options = [
     { value: "Abuja", label: "Abuja outlet", link: "#" },
@@ -59,9 +67,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           <CustomSelect3
             options={options}
             placeholder="All outlets"
-            BG=" bg-[#5855B3]"
-            text=" text-white"
+            BG="bg-[#5855B3]"
+            text="text-white"
             hover="hover:bg-[#5855B3] hover:text-white"
+            searchable={true}
+            onSelect={handleSelectOutlet}
+            value={selectedOutlet}
           />
           <p className="text-[14px] font-[400] text-[#606060]">
             {userDetails?.business_type}

@@ -4,12 +4,13 @@ import setting from "../assets/settings.svg";
 import orderIcon from "../assets/order2.svg";
 import restaurantIcon from "../assets/restaurant_FILL0_wght300_GRAD0_opsz24.svg";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Menu from "../assets/menu.svg";
 import CustomSelect3 from "../inputFields/CustomSelect3";
+import { setSelectedOutlet } from "../../slices/OutletSlice";
 
 const Dashboard = () => {
   const options = [
@@ -24,8 +25,17 @@ const Dashboard = () => {
     { value: "Ketu", label: "Ketu outlet", link: "#" },
   ];
 
+  const dispatch = useDispatch();
+
+  const handleSelectOutlet = (selectedOutlet: string) => {
+    dispatch(setSelectedOutlet(selectedOutlet));
+  };
   const userDetails = useSelector((state: RootState) => state.user);
   console.log(userDetails?.userData);
+  const selectedOutlet = useSelector(
+    (state: RootState) => state.outlet.selectedOutlet
+  );
+
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -48,13 +58,16 @@ const Dashboard = () => {
             {userDetails?.userData?.business_name}
           </p>
 
-          <div className=" z-10">
+          <div className=" z-10 flex-grow">
             <CustomSelect3
               options={options2}
               placeholder="All outlets"
               BG=" bg-[#5855B3]"
               text=" text-white"
               hover="hover:bg-[#5855B3] hover:text-white"
+              searchable={false}
+              onSelect={handleSelectOutlet}
+              value={selectedOutlet}
             />
           </div>
         </div>

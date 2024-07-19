@@ -8,6 +8,7 @@ import faqSettingReducer from "../slices/FaqSettingSlice";
 import userReducer from "../slices/UserSlice";
 import businessReducer from "../slices/businessSlice";
 import basketReducer from "../slices/BasketSlice";
+import outletReducer from "../slices/OutletSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,12 +17,21 @@ const rootReducer = combineReducers({
   user: userReducer,
   business: businessReducer,
   basket: basketReducer,
+  outlet: outletReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "inviteUser", "faqSetting", "user", "business", "basket"],
+  whitelist: [
+    "auth",
+    "inviteUser",
+    "faqSetting",
+    "user",
+    "business",
+    "basket",
+    "outlet",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

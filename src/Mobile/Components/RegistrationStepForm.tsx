@@ -106,6 +106,26 @@ const RegistrationStepForm = () => {
     }
   };
 
+  const handleNext = () => {
+    if (
+      !name ||
+      !email ||
+      !contact ||
+      !address ||
+      !phone ||
+      !password ||
+      !confirmPassword ||
+      !businessType ||
+      !base64String
+    ) {
+      setError("All fields are required...");
+      setFieldsError("All fields are required...");
+      return;
+    } else {
+      setFieldsError("");
+      setCurrentStep(currentStep + 1);
+    }
+  };
   const createBusinessAccount = async () => {
     try {
       if (
@@ -132,23 +152,46 @@ const RegistrationStepForm = () => {
         return;
       }
 
+      if (!accountNumber || !bvn || !country) {
+        setError("All fields are required...");
+        return;
+      }
+      if (bvn.length < 11) {
+        setBvnError("BVN must be at least 11 characters long");
+        return;
+      } else {
+        setBvnError("");
+      }
+
       setLoading(true);
-      const response = await axios.post(`${SERVER_DOMAIN}/createBusiness`, {
+      const response = await axios.post(`${SERVER_DOMAIN}/onboardBusiness`, {
         business_name: name,
         business_email: email,
         personal_name: contact,
         business_address: address,
-        phone_number: phone,
+        business_phone_number: phone,
         password,
         confirm_password: confirmPassword,
         business_type: businessType,
         business_logo: base64String,
+        business_document: base64String,
+        user_id: id,
+        bank_account_name: "account Name",
+        bank_account_number: accountNumber,
+        bank_name: "bankName",
+        bank_verification_number: bvn,
+        country: country,
+        first_name: "First Name",
+        last_name: "First Name",
+        personal_address: "Address",
+        city: "City",
+        state: "State",
       });
       setLoading(false);
       toast.success("User created successfully");
       dispatch(setUserData(response.data));
       console.log(response.data);
-
+      history("/demo/verify/troo-portal");
       sessionStorage.setItem("id", response.data.id);
       sessionStorage.setItem("user_role", response.data.user_role);
       sessionStorage.setItem("email_verified", response.data.email_verified);
@@ -158,7 +201,6 @@ const RegistrationStepForm = () => {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setErrorDuplicate(error.response.data.message);
-          // toast.error(error.response.data.message);
         } else {
           setError("An error occurred. Please try again later.");
         }
@@ -184,51 +226,52 @@ const RegistrationStepForm = () => {
       reader.readAsDataURL(file);
     }
   };
-  const createAccountDetails = async () => {
-    try {
-      if (!accountNumber || !bvn || !country) {
-        setError("All fields are required...");
-        return;
-      }
-      if (bvn.length < 11) {
-        setBvnError("BVN must be at least 11 characters long");
-        return;
-      } else {
-        setBvnError("");
-      }
 
-      setLoading(true);
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/createAccountDetails`,
-        {
-          user_id: id,
-          account_name: "account Name",
-          account_number: accountNumber,
-          bank_name: "bankName",
-          bank_verification_number: bvn,
-          country: country,
-        }
-      );
-      setLoading(false);
-      console.log(response);
-      toast.success(response.data.message);
-      history("/demo/verify/troo-portal");
-    } catch (error) {
-      console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data.message);
-        } else {
-          setError("An error occurred. Please try again later.");
-        }
-      } else {
-        setError("An error occurred. Please try again later.");
-      }
-    } finally {
-      setLoading(false);
-      setError("");
-    }
-  };
+  // const createAccountDetails = async () => {
+  //   try {
+  //     if (!accountNumber || !bvn || !country) {
+  //       setError("All fields are required...");
+  //       return;
+  //     }
+  //     if (bvn.length < 11) {
+  //       setBvnError("BVN must be at least 11 characters long");
+  //       return;
+  //     } else {
+  //       setBvnError("");
+  //     }
+
+  //     setLoading(true);
+  //     const response = await axios.post(
+  //       `${SERVER_DOMAIN}/createAccountDetails`,
+  //       {
+  //         user_id: id,
+  //         account_name: "account Name",
+  //         account_number: accountNumber,
+  //         bank_name: "bankName",
+  //         bank_verification_number: bvn,
+  //         country: country,
+  //       }
+  //     );
+  //     setLoading(false);
+  //     console.log(response);
+  //     toast.success(response.data.message);
+  //     history("/demo/verify/troo-portal");
+  //   } catch (error) {
+  //     console.error("Error occurred:", error);
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         setError(error.response.data.message);
+  //       } else {
+  //         setError("An error occurred. Please try again later.");
+  //       }
+  //     } else {
+  //       setError("An error occurred. Please try again later.");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //     setError("");
+  //   }
+  // };
 
   // const verifyAccountNumber = async (payload: VerifyAccountPayload) => {
   //   try {
@@ -317,7 +360,7 @@ const RegistrationStepForm = () => {
   }, []);
 
   return (
-    <div className=" bg-[#EFEFEF] h-screen">
+    <div className=" bg-[#EFEFEF] h-screen overflow-auto">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
@@ -476,7 +519,7 @@ const RegistrationStepForm = () => {
                     htmlFor="fileInput"
                     className="text-[#5855B3] font-[500] text-[16px] cursor-pointer"
                   >
-                    Click to upload{" "}
+                    Add Business Logo{" "}
                   </label>
                   <p className=" text-[14px] font-[400] mt-[8px] text-grey300">
                     Max. file size: 2MB
@@ -486,7 +529,7 @@ const RegistrationStepForm = () => {
               </div>
               <div className=" grid mt-[32px] gap-[8px]">
                 {!emailError && !passwordError && !confirmPasswordError && (
-                  <div className="" onClick={createBusinessAccount}>
+                  <div className="" onClick={handleNext}>
                     <button
                       className="bg-purple500 w-full text-center text-white py-3 rounded"
                       disabled={loading}
@@ -508,8 +551,8 @@ const RegistrationStepForm = () => {
         {currentStep === 2 && (
           <>
             <div className=" grid grid-cols-2 gap-[10px]">
-              <img src={Purple} />
               <img src={Grey} />
+              <img src={Purple} />
             </div>
             <div
               className="  items-center mt-[9px] flex gap-[8px]"
@@ -521,7 +564,7 @@ const RegistrationStepForm = () => {
               </p>
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1:{" "}
+              Stage 2:{" "}
               <span className="text-[20px]"> Payout & Bank Details</span>{" "}
             </p>
             <p className=" text-red-500">{error}</p>
@@ -579,7 +622,7 @@ const RegistrationStepForm = () => {
 
               <div className=" grid mt-[32px] gap-[8px]">
                 {!bvnError && (
-                  <div className="" onClick={createAccountDetails}>
+                  <div className="" onClick={createBusinessAccount}>
                     <button
                       className={`${
                         loading ? `bg-gray-400` : `bg-purple500`
