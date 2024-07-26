@@ -183,7 +183,7 @@ const MenuSetupForm: React.FC<Props> = () => {
 
   const userDetails = useSelector((state: RootState) => state.user);
   const businessType = userDetails?.userData?.business_type;
-  const id = userDetails?.userData?.id;
+  const id = userDetails?.userData?.user_id;
   const token = userDetails?.userData?.token;
   const hasMenu = userDetails?.userData?.has_created_menu_item;
   console.log(userDetails);

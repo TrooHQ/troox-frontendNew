@@ -6,13 +6,20 @@ import restaurantIcon from "../assets/restaurant_FILL0_wght300_GRAD0_opsz24.svg"
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Menu from "../assets/menu.svg";
 import CustomSelect3 from "../inputFields/CustomSelect3";
 import { setSelectedOutlet } from "../../slices/OutletSlice";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
 
 const Dashboard = () => {
+  const [branch, setBranch] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const options = [
     { value: "daily", label: "Daily", link: "/demo/report/troo-portal" },
     { value: "weekly", label: "Weekly", link: "/demo/report/troo-portal" },
@@ -25,13 +32,48 @@ const Dashboard = () => {
     { value: "Ketu", label: "Ketu outlet", link: "#" },
   ];
 
+  const getMenuCategory = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/branch/getBranch`,
+        headers
+      );
+      console.log("Branch retrieved successfully:", response.data.data);
+
+      setBranch(response.data.data);
+      console.log(branch);
+    } catch (error: any) {
+      console.error("Error Retrieving Branch:", error);
+
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getMenuCategory();
+  }, []);
+
   const dispatch = useDispatch();
 
   const handleSelectOutlet = (selectedOutlet: string) => {
     dispatch(setSelectedOutlet(selectedOutlet));
   };
   const userDetails = useSelector((state: RootState) => state.user);
-  console.log(userDetails?.userData);
+  const token = userDetails?.userData?.token;
+
   const selectedOutlet = useSelector(
     (state: RootState) => state.outlet.selectedOutlet
   );
@@ -39,10 +81,12 @@ const Dashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
   return (
     <>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <div className=" my-[10px] mx-[10px]">
+        {loading && <Loader />}
         <div className=" flex items-center gap-[8px] py-[16px] border-b ">
           <div className=" cursor-pointer" onClick={toggleSidebar}>
             <img src={Menu} alt="" />
