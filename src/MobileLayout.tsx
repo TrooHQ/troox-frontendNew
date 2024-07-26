@@ -137,7 +137,7 @@ const MobileLayout = () => {
 
           <Route path="/demo/report/troo-portal" element={<Reporting />} />
           <Route
-            path="/demo/register/troo-portal"
+            path="/demo/register/troo-portal?/:id"
             element={<RegistrationStepForm />}
           />
           <Route path="/demo/verify/troo-portal" element={<VerifyAccount />} />

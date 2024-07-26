@@ -16,7 +16,7 @@ import {
   setURL,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
-import NotFound from "../NotFound";
+// import NotFound from "../NotFound";
 
 const StartOrder = () => {
   const location = useLocation();
@@ -108,7 +108,8 @@ const StartOrder = () => {
       }`
     );
   } else if (!business_identifier || !tableNo) {
-    return <NotFound />;
+    navigate("/demo/login/troo-portal");
+    // return <NotFound />;
   }
 
   return (
