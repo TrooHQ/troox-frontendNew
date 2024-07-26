@@ -16,8 +16,14 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 const Dashboard = () => {
-  const [branch, setBranch] = useState("");
+  const [branch, setBranch] = useState<Option[]>([]);
+
   const [loading, setLoading] = useState(false);
 
   const options = [
@@ -26,13 +32,13 @@ const Dashboard = () => {
     { value: "monthly", label: "Monthly", link: "/demo/report/troo-portal" },
   ];
 
-  const options2 = [
-    { value: "Abuja", label: "Abuja outlet", link: "#" },
-    { value: "Owerri", label: "Owerri outlet", link: "#" },
-    { value: "Ketu", label: "Ketu outlet", link: "#" },
-  ];
+  // const options2 = [
+  //   { value: "Abuja", label: "Abuja outlet", link: "#" },
+  //   { value: "Owerri", label: "Owerri outlet", link: "#" },
+  //   { value: "Ketu", label: "Ketu outlet", link: "#" },
+  // ];
 
-  const getMenuCategory = async () => {
+  const getBranch = async () => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -48,22 +54,30 @@ const Dashboard = () => {
       );
       console.log("Branch retrieved successfully:", response.data.data);
 
-      setBranch(response.data.data);
-      console.log(branch);
-    } catch (error: any) {
+      const branchOptions = response.data.data.map((branch: any) => ({
+        value: branch.branch_name,
+        label: branch.branch_name,
+      }));
+      setBranch(branchOptions);
+    } catch (error) {
       console.error("Error Retrieving Branch:", error);
 
-      if (error.response) {
-        toast.error(error.response.data.message);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
       } else {
         toast.error("An error occurred. Please try again later.");
       }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    getMenuCategory();
+    getBranch();
   }, []);
 
   const dispatch = useDispatch();
@@ -104,7 +118,7 @@ const Dashboard = () => {
 
           <div className=" z-10 flex-grow">
             <CustomSelect3
-              options={options2}
+              options={branch}
               placeholder="All outlets"
               BG=" bg-[#5855B3]"
               text=" text-white"

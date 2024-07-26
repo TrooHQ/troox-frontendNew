@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import closeIcon from "../assets/closeGrey.svg";
 import Logo from "../assets/trooLogo.svg";
 import LogoutIcon from "../assets/logout1.svg";
@@ -8,10 +8,18 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import CustomSelect3 from "../inputFields/CustomSelect3";
 import { setSelectedOutlet } from "../../slices/OutletSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { SERVER_DOMAIN } from "../../Api/Api";
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+}
+
+interface Option {
+  value: string;
+  label: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
@@ -27,15 +35,53 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     (state: RootState) => state.outlet.selectedOutlet
   );
 
+  const token = userDetails?.token;
+
+  console.log(token);
+
   const handleSelectOutlet = (selectedOutlet: string) => {
     dispatch(setSelectedOutlet(selectedOutlet));
   };
 
-  const options = [
-    { value: "Abuja", label: "Abuja outlet", link: "#" },
-    { value: "Owerri", label: "Owerri outlet", link: "#" },
-    { value: "Ketu", label: "Ketu outlet", link: "#" },
-  ];
+  const [branch, setBranch] = useState<Option[]>([]);
+
+  const getBranch = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/branch/getBranch`,
+        headers
+      );
+      console.log("Branch retrieved successfully:", response.data.data);
+
+      const branchOptions = response.data.data.map((branch: any) => ({
+        value: branch.branch_name,
+        label: branch.branch_name,
+      }));
+      setBranch(branchOptions);
+    } catch (error) {
+      console.error("Error Retrieving Branch:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getBranch();
+  }, []);
 
   return (
     <>
@@ -65,7 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             {userDetails?.business_name}
           </p>
           <CustomSelect3
-            options={options}
+            options={branch}
             placeholder="All outlets"
             BG="bg-[#5855B3]"
             text="text-white"
