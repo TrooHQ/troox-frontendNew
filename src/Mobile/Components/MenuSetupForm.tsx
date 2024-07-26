@@ -184,7 +184,11 @@ const MenuSetupForm: React.FC<Props> = () => {
   const userDetails = useSelector((state: RootState) => state.user);
   const businessType = userDetails?.userData?.business_type;
   const id = userDetails?.userData?.user_id;
+  const id2 = userDetails?.userData?.id;
+  console.log(id, id2);
+
   const token = userDetails?.userData?.token;
+
   const hasMenu = userDetails?.userData?.has_created_menu_item;
   console.log(userDetails);
 
@@ -206,8 +210,8 @@ const MenuSetupForm: React.FC<Props> = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/menu/addMenuCategory`,
         {
+          user_id: id || id2,
           menu_category_name: menuCategory,
-          user_id: id,
           image: base64String,
         },
         headers
@@ -221,7 +225,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       console.log(token);
 
       if (error.response) {
-        setError(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");
       }
@@ -491,7 +495,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className=" bg-[#EFEFEF]  relative h-full">
+    <div className=" bg-[#EFEFEF]  relative h-screen overflow-auto">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
