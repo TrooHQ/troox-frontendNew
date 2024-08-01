@@ -31,16 +31,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user?.userData);
+
   const selectedOutlet = useSelector(
     (state: RootState) => state.outlet.selectedOutlet
   );
 
   const token = userDetails?.token;
 
-  console.log(token);
-
   const handleSelectOutlet = (selectedOutlet: string) => {
-    dispatch(setSelectedOutlet(selectedOutlet));
+    const selectedOption = branch.find(
+      (option) => option.value === selectedOutlet
+    );
+    if (selectedOption) {
+      dispatch(setSelectedOutlet(selectedOption.label));
+    }
   };
 
   const [branch, setBranch] = useState<Option[]>([]);

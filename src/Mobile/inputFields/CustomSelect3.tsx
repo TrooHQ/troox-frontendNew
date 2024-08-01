@@ -62,7 +62,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
     if (typeof option === "string") {
       return option;
     }
-    return option.label;
+    return option.value;
   };
 
   const getOptionValue = (option: string | Option) => {
