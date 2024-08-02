@@ -15,6 +15,7 @@ import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { setUserData } from "../../slices/UserSlice.ts";
+import Loader from "../../components/Loader.tsx";
 // import Button from "../Buttons/Button.tsx";
 const Login = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ const Login = () => {
 
   return (
     <div className="bg-[#EFEFEF] h-screen overflow-auto">
+      {loading && <Loader />}
       <div className="flex flex-col items-center justify-center h-screen my-auto">
         <div className="">
           <img src={Logo} alt="" />

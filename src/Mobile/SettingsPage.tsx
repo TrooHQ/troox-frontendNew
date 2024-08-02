@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import TopMenuNav from "./Components/TopMenuNav";
 import { toast } from "react-toastify";
 import CustomSelect3 from "./inputFields/CustomSelect3";
+import Loader from "../components/Loader";
 
 // interface FormData extends FieldValues {
 //   employee_name?: string;
@@ -37,6 +38,7 @@ interface EmployeeData {
   id: number;
   first_name: string;
   last_name: string;
+  personal_email: string;
 }
 
 const SettingsPage = () => {
@@ -45,6 +47,8 @@ const SettingsPage = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+
+  const [selectedEmail, setSelectedEmail] = useState("");
 
   const [branch, setBranch] = useState<Option[]>([]);
   const [employee, setEmployee] = useState<EmployeeData[]>([]);
@@ -148,14 +152,41 @@ const SettingsPage = () => {
     setEmployeeModal(true);
   };
 
-  const handleWarningModal = () => {
+  const handleWarningModal = (email: string) => {
+    setSelectedEmail(email);
     setRemoveEmployeeModal(false);
     setWarningModal(true);
   };
 
-  const handleDeleteSuccessModal = () => {
-    setWarningModal(false);
-    setDeleteSuccessfullModal(true);
+  // const handleDeleteSuccessModal = () => {
+  // setWarningModal(false);
+  // setDeleteSuccessfullModal(true);
+  // };
+
+  const handleDeleteSuccessModal = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/removeEmployee`,
+        { employee_email: selectedEmail },
+        headers
+      );
+      console.log("Employee removed successfully:", response.data);
+      setRemoveEmployeeModal(false);
+      setLoading(false);
+      setWarningModal(false);
+      setDeleteSuccessfullModal(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error removing employee:", error);
+      setLoading(false);
+    }
   };
 
   const handleRemoveEmployeeModal = () => {
@@ -215,7 +246,8 @@ const SettingsPage = () => {
       !email ||
       !selectedBranch
     ) {
-      setError("All fields Are required");
+      setError("All fields are required");
+      setLoading(false);
       return;
     }
     sessionStorage.setItem("employeeEmail", email);
@@ -245,9 +277,21 @@ const SettingsPage = () => {
       setError("");
       setEmployeeModal(false);
       setSuccessModal(true);
-      setLoading(false);
+      window.location.reload();
     } catch (error) {
       console.error("Error adding employee:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 400) {
+          toast.error(error.response.data.message);
+          setError(
+            error.response.data.message || "Bad request. Please try again."
+          );
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
       setLoading(false);
     }
   };
@@ -909,6 +953,7 @@ const SettingsPage = () => {
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
         <form action="" onSubmit={createEmployee}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            {loading && <Loader />}
             <div
               className=" cursor-pointer flex items-center justify-end"
               onClick={() => setEmployeeModal(false)}
@@ -966,6 +1011,7 @@ const SettingsPage = () => {
 
                 <button
                   type="submit"
+                  disabled={loading}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
@@ -980,7 +1026,7 @@ const SettingsPage = () => {
         isOpen={removeEmployeeModal}
         onClose={() => setRemoveEmployeeModal(false)}
       >
-        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px] h-[300px] overflow-y-auto">
           <div
             className=" cursor-pointer flex items-center justify-end"
             onClick={() => setRemoveEmployeeModal(false)}
@@ -988,26 +1034,32 @@ const SettingsPage = () => {
             <img src={Back} alt="" />
           </div>
           <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
-          <div className=" mt-[24px] grid gap-[16px]">
-            {employee.map((user) => (
-              <div
-                className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
-                key={user.id}
-              >
-                <p className=" text-grey500 text-[14px] font-[400]">
-                  {user?.first_name}
-                  {" - "}
-                  {user?.last_name}
-                </p>
-                <p
-                  className=" text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
-                  onClick={handleWarningModal}
+          <div className="mt-[24px] grid gap-[16px]">
+            {employee.length > 0 ? (
+              employee.map((user) => (
+                <div
+                  className="py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
+                  key={user.id}
                 >
-                  <img src={Trash} alt="" />
-                  Remove
-                </p>
-              </div>
-            ))}
+                  <p className="text-grey500 text-[14px] font-[400]">
+                    {user?.first_name}
+                    {" - "}
+                    {user?.last_name}
+                  </p>
+                  <p
+                    className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                    onClick={() => handleWarningModal(user?.personal_email)}
+                  >
+                    <img src={Trash} alt="" />
+                    Remove
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-grey500 text-[14px] font-[400] text-center">
+                No employees to display.
+              </p>
+            )}
           </div>
         </div>
       </MenuModal>
@@ -1029,25 +1081,33 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal isOpen={warningModal} onClose={() => setWarningModal(false)}>
-        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
-          <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
-            <img
-              className=" cursor-pointer"
-              src={WarningIcon}
-              alt=""
-              onClick={() => setSuccessModal(false)}
-            />
-            <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
-              Are you sure you want to remove this employee?
-            </p>
+        <div className=" absolute bg-white w-full bottom-0">
+          <div
+            className=" cursor-pointer flex items-center justify-end p-[15px]"
+            onClick={() => setWarningModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
+          <div className="flex items-center justify-center">
+            <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
+              <img
+                className=" cursor-pointer"
+                src={WarningIcon}
+                alt=""
+                onClick={() => setSuccessModal(false)}
+              />
+              <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
+                Are you sure you want to remove this employee?
+              </p>
 
-            <button
-              type="submit"
-              onClick={handleDeleteSuccessModal}
-              className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
-            >
-              Proceed
-            </button>
+              <button
+                type="submit"
+                onClick={handleDeleteSuccessModal}
+                className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
+              >
+                Proceed
+              </button>
+            </div>
           </div>
         </div>
       </MenuModal>
