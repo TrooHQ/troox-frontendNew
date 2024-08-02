@@ -107,7 +107,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
         }`}
         onClick={toggleDropdown}
       >
-        <span className="selected-option">{selectedOption}</span>
+        <span className="selected-option text-[14px]">{selectedOption}</span>
         <span className={`arrow ${isOpen ? "transform rotate-180" : ""}`}>
           <IoIosArrowDown />
         </span>
