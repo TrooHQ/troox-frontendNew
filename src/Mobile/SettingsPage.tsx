@@ -20,17 +20,38 @@ import { SERVER_DOMAIN } from "../Api/Api";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import TopMenuNav from "./Components/TopMenuNav";
+import { toast } from "react-toastify";
+import CustomSelect3 from "./inputFields/CustomSelect3";
+import Loader from "../components/Loader";
 
 // interface FormData extends FieldValues {
 //   employee_name?: string;
 //   employee_email?: string;
 //   employee_phone?: string;
 // }
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface EmployeeData {
+  id: number;
+  first_name: string;
+  last_name: string;
+  personal_email: string;
+}
 
 const SettingsPage = () => {
-  const [employeeName, setEmployeeName] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+
+  const [selectedEmail, setSelectedEmail] = useState("");
+
+  const [branch, setBranch] = useState<Option[]>([]);
+  const [employee, setEmployee] = useState<EmployeeData[]>([]);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -39,20 +60,20 @@ const SettingsPage = () => {
   const [group_name, setGroup_name] = useState("");
   const [number, setNumber] = useState("");
 
-  const users = [
-    {
-      id: 1,
-      name: "John Doe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-    },
-  ];
+  // const users = [
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Jane Smith",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Alice Johnson",
+  //   },
+  // ];
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
 
@@ -131,14 +152,41 @@ const SettingsPage = () => {
     setEmployeeModal(true);
   };
 
-  const handleWarningModal = () => {
+  const handleWarningModal = (email: string) => {
+    setSelectedEmail(email);
     setRemoveEmployeeModal(false);
     setWarningModal(true);
   };
 
-  const handleDeleteSuccessModal = () => {
-    setWarningModal(false);
-    setDeleteSuccessfullModal(true);
+  // const handleDeleteSuccessModal = () => {
+  // setWarningModal(false);
+  // setDeleteSuccessfullModal(true);
+  // };
+
+  const handleDeleteSuccessModal = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/removeEmployee`,
+        { employee_email: selectedEmail },
+        headers
+      );
+      console.log("Employee removed successfully:", response.data);
+      setRemoveEmployeeModal(false);
+      setLoading(false);
+      setWarningModal(false);
+      setDeleteSuccessfullModal(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error removing employee:", error);
+      setLoading(false);
+    }
   };
 
   const handleRemoveEmployeeModal = () => {
@@ -179,11 +227,27 @@ const SettingsPage = () => {
   console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 
+  const handleSelect = (selectedOutlet: string) => {
+    const selectedOption = branch.find(
+      (option) => option.value === selectedOutlet
+    );
+    if (selectedOption) {
+      setSelectedBranch(selectedOption.label);
+    }
+  };
+
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    if (!employeeName || !phoneNumber || !email) {
-      setError("All fields Are required");
+    if (
+      !first_name ||
+      !last_name ||
+      !phoneNumber ||
+      !email ||
+      !selectedBranch
+    ) {
+      setError("All fields are required");
+      setLoading(false);
       return;
     }
     sessionStorage.setItem("employeeEmail", email);
@@ -197,26 +261,151 @@ const SettingsPage = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/employee/createEmployee`,
         {
-          employee_name: employeeName,
+          first_name: first_name,
+          last_name: last_name,
           email: email,
+          branch_id: selectedBranch,
           phone_number: phoneNumber,
         },
         headers
       );
       console.log("Employee added successfully:", response.data);
       setLoading(false);
-      setEmployeeName("");
+      setFirstName("");
       setEmail("");
       setPhoneNumber("");
       setError("");
       setEmployeeModal(false);
       setSuccessModal(true);
-      setLoading(false);
+      window.location.reload();
     } catch (error) {
       console.error("Error adding employee:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 400) {
+          toast.error(error.response.data.message);
+          setError(
+            error.response.data.message || "Bad request. Please try again."
+          );
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
       setLoading(false);
     }
   };
+
+  // const deleteEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   setLoading(true);
+  //   if (!employee_email) {
+  //     setError("All fields Are required");
+  //     return;
+  //   }
+  //   const headers = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   try {
+  //     const response = await axios.post(
+  //       `${SERVER_DOMAIN}/employee/removeEmployee`,
+  //       {
+  //         employee_email: employee_email,
+  //       },
+  //       headers
+  //     );
+  //     console.log("Employee deleted successfully:", response.data);
+  //     setLoading(false);
+  //     setFirstName("");
+  //     setEmail("");
+  //     setPhoneNumber("");
+  //     setError("");
+  //     setEmployeeModal(false);
+  //     setSuccessModal(true);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error adding employee:", error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  const getBranch = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/branch/getBranch`,
+        headers
+      );
+
+      const branchOptions = response.data.data.map((branch: any) => ({
+        value: branch.branch_name,
+        label: branch._id,
+      }));
+      setBranch(branchOptions);
+    } catch (error) {
+      console.error("Error Retrieving Branch:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getEmployees = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/employee/getAllEmployee`,
+        headers
+      );
+
+      setEmployee(response.data.data);
+    } catch (error) {
+      console.error("Error Retrieving Employee:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getBranch();
+    getEmployees();
+  }, []);
 
   useEffect(() => {
     const fetchTempPassword = async () => {
@@ -280,7 +469,7 @@ const SettingsPage = () => {
       );
       console.log("Employee Password Reset successfully:", response.data);
       setLoading(false);
-      setEmployeeName("");
+      setFirstName("");
       setEmail("");
       setPhoneNumber("");
       setError("");
@@ -764,6 +953,7 @@ const SettingsPage = () => {
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
         <form action="" onSubmit={createEmployee}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            {loading && <Loader />}
             <div
               className=" cursor-pointer flex items-center justify-end"
               onClick={() => setEmployeeModal(false)}
@@ -777,10 +967,19 @@ const SettingsPage = () => {
               <div className=" mt-[24px] grid gap-[16px]">
                 <input
                   type="text"
-                  id="employee_name"
-                  value={employeeName}
-                  onChange={(e) => setEmployeeName(e.target.value)}
-                  placeholder="Add employee name"
+                  id="first_name"
+                  value={first_name}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Employee First name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+
+                <input
+                  type="text"
+                  id="last_name"
+                  value={last_name}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Employee Last name"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
                 <input
@@ -800,8 +999,19 @@ const SettingsPage = () => {
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
+                <CustomSelect3
+                  options={branch}
+                  placeholder="All outlets"
+                  BG=" bg-[#5855B3]"
+                  text=" text-white"
+                  hover="hover:bg-[#5855B3] hover:text-white"
+                  searchable={false}
+                  onSelect={handleSelect}
+                />
+
                 <button
                   type="submit"
+                  disabled={loading}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
@@ -816,7 +1026,7 @@ const SettingsPage = () => {
         isOpen={removeEmployeeModal}
         onClose={() => setRemoveEmployeeModal(false)}
       >
-        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px] h-[300px] overflow-y-auto">
           <div
             className=" cursor-pointer flex items-center justify-end"
             onClick={() => setRemoveEmployeeModal(false)}
@@ -824,24 +1034,32 @@ const SettingsPage = () => {
             <img src={Back} alt="" />
           </div>
           <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
-          <div className=" mt-[24px] grid gap-[16px]">
-            {users.map((user) => (
-              <div
-                className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
-                key={user.id}
-              >
-                <p className=" text-grey500 text-[14px] font-[400]">
-                  {user.name}
-                </p>
-                <p
-                  className=" text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
-                  onClick={handleWarningModal}
+          <div className="mt-[24px] grid gap-[16px]">
+            {employee.length > 0 ? (
+              employee.map((user) => (
+                <div
+                  className="py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
+                  key={user.id}
                 >
-                  <img src={Trash} alt="" />
-                  Remove
-                </p>
-              </div>
-            ))}
+                  <p className="text-grey500 text-[14px] font-[400]">
+                    {user?.first_name}
+                    {" - "}
+                    {user?.last_name}
+                  </p>
+                  <p
+                    className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                    onClick={() => handleWarningModal(user?.personal_email)}
+                  >
+                    <img src={Trash} alt="" />
+                    Remove
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-grey500 text-[14px] font-[400] text-center">
+                No employees to display.
+              </p>
+            )}
           </div>
         </div>
       </MenuModal>
@@ -863,25 +1081,33 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal isOpen={warningModal} onClose={() => setWarningModal(false)}>
-        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
-          <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
-            <img
-              className=" cursor-pointer"
-              src={WarningIcon}
-              alt=""
-              onClick={() => setSuccessModal(false)}
-            />
-            <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
-              Are you sure you want to remove this employee?
-            </p>
+        <div className=" absolute bg-white w-full bottom-0">
+          <div
+            className=" cursor-pointer flex items-center justify-end p-[15px]"
+            onClick={() => setWarningModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
+          <div className="flex items-center justify-center">
+            <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
+              <img
+                className=" cursor-pointer"
+                src={WarningIcon}
+                alt=""
+                onClick={() => setSuccessModal(false)}
+              />
+              <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
+                Are you sure you want to remove this employee?
+              </p>
 
-            <button
-              type="submit"
-              onClick={handleDeleteSuccessModal}
-              className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
-            >
-              Proceed
-            </button>
+              <button
+                type="submit"
+                onClick={handleDeleteSuccessModal}
+                className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
+              >
+                Proceed
+              </button>
+            </div>
           </div>
         </div>
       </MenuModal>
