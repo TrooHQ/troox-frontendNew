@@ -536,17 +536,19 @@ const SettingsPage = () => {
               >
                 Reset Password
               </p>
+
               <p
                 className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleEmployeeModal}
               >
                 Add Employee
               </p>
+
               <p
                 className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleRemoveEmployeeModal}
               >
-                Remove Employee
+                View Employees
               </p>
 
               <p
@@ -1033,7 +1035,7 @@ const SettingsPage = () => {
           >
             <img src={Back} alt="" />
           </div>
-          <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
+          <p className="text-[20px] font-[400] text-grey500">Employees</p>
           <div className="mt-[24px] grid gap-[16px]">
             {employee.length > 0 ? (
               employee.map((user) => (
