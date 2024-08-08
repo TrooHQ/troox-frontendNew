@@ -63,7 +63,7 @@ const Login = () => {
           console.log(error.response?.data?.data?.business);
           if (
             error.response?.data?.data?.has_account === false &&
-            error.response.data.message === "Your Email is not verified"
+            error.response.data.message === "Account details not verified"
           ) {
             const business = error.response.data.data.business;
             const userId = error.response.data.data.user_id;
@@ -73,7 +73,7 @@ const Login = () => {
               { state: { step: 3 } }
             );
           } else if (
-            error.response.data.message === "Your Email is not verified"
+            error.response.data.message === "Account details not verified"
           ) {
             navigate("/demo/verify/troo-portal");
             console.log("Unverified");

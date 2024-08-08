@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import CustomSelect3 from "../inputFields/CustomSelect3";
-import { setSelectedOutlet } from "../../slices/OutletSlice";
+import {
+  setSelectedOutlet,
+  setSelectedOutletID,
+} from "../../slices/OutletSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -38,12 +41,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
   const token = userDetails?.token;
 
-  const handleSelectOutlet = (selectedOutlet: string) => {
-    const selectedOption = branch.find(
-      (option) => option.value === selectedOutlet
-    );
+  const handleSelectOutlet = (Outlet: string) => {
+    const selectedOption = branch.find((option) => option.label === Outlet);
     if (selectedOption) {
       dispatch(setSelectedOutlet(selectedOption.label));
+      dispatch(setSelectedOutletID(selectedOption.value));
+    } else {
+      console.log("No matching option found for:", Outlet);
     }
   };
 
@@ -61,10 +65,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         `${SERVER_DOMAIN}/branch/getBranch`,
         headers
       );
-      console.log("Branch retrieved successfully:", response.data.data);
 
       const branchOptions = response.data.data.map((branch: any) => ({
-        value: branch.branch_name,
+        value: branch._id,
         label: branch.branch_name,
       }));
       setBranch(branchOptions);
@@ -114,6 +117,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           <p className="text-[16px] font-[500] text-[#121212]">
             {userDetails?.business_name}
           </p>
+
           <CustomSelect3
             options={branch}
             placeholder="All outlets"
