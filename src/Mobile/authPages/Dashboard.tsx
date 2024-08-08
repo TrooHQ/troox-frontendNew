@@ -10,10 +10,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Menu from "../assets/menu.svg";
 import CustomSelect3 from "../inputFields/CustomSelect3";
-import {
-  setSelectedOutlet,
-  setSelectedOutletID,
-} from "../../slices/OutletSlice";
+import { setSelectedOutlet, setSelectedOutletID } from "../../slices/OutletSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
@@ -44,10 +41,7 @@ const Dashboard = () => {
     try {
       setLoading(true);
 
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/branch/getBranch`,
-        headers
-      );
+      const response = await axios.get(`${SERVER_DOMAIN}/branch/getBranch`, headers);
 
       const branchOptions = response.data.data.map((branch: any) => ({
         value: branch._id,
@@ -78,9 +72,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   const handleSelectOutlet = (selectedOutlet: string) => {
-    const selectedOption = branch.find(
-      (option) => option.label === selectedOutlet
-    );
+    const selectedOption = branch.find((option) => option.label === selectedOutlet);
     if (selectedOption) {
       dispatch(setSelectedOutlet(selectedOption.label));
       dispatch(setSelectedOutletID(selectedOption.value));
@@ -92,9 +84,7 @@ const Dashboard = () => {
   const userDetails = useSelector((state: RootState) => state.user);
   const token = userDetails?.userData?.token;
 
-  const selectedOutlet = useSelector(
-    (state: RootState) => state.outlet.selectedOutlet
-  );
+  const selectedOutlet = useSelector((state: any) => state.outlet.selectedOutlet);
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -146,17 +136,11 @@ const Dashboard = () => {
             />
           </div>
 
-          <p className="text-[28px] font-[500] text-white leading-[36px]">
-            N250,000.00
-          </p>
+          <p className="text-[28px] font-[500] text-white leading-[36px]">N250,000.00</p>
 
           <div className="grid gap-[5px] mt-[16px]">
-            <p className="text-[14px] font-[400] text-white leading-[21px]">
-              30 Processed orders
-            </p>
-            <p className="text-[14px] font-[400] text-white leading-[21px]">
-              30 Processed orders
-            </p>
+            <p className="text-[14px] font-[400] text-white leading-[21px]">30 Processed orders</p>
+            <p className="text-[14px] font-[400] text-white leading-[21px]">30 Processed orders</p>
           </div>
         </div>
 
