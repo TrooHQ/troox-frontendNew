@@ -73,9 +73,7 @@ const RegistrationStepForm = () => {
     const isMinimumLength = newValue.length >= 8;
 
     if (!isValidPassword || !isMinimumLength) {
-      setPasswordError(
-        "Password must be alphanumeric and have a minimum length of 8 characters"
-      );
+      setPasswordError("Password must be alphanumeric and have a minimum length of 8 characters");
       setConfirmPasswordError("");
     } else {
       setPasswordError("");
@@ -184,6 +182,7 @@ const RegistrationStepForm = () => {
       reader.readAsDataURL(file);
     }
   };
+
   const createAccountDetails = async () => {
     try {
       if (!accountNumber || !bvn || !country) {
@@ -198,17 +197,14 @@ const RegistrationStepForm = () => {
       }
 
       setLoading(true);
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/createAccountDetails`,
-        {
-          user_id: id,
-          account_name: "account Name",
-          account_number: accountNumber,
-          bank_name: "bankName",
-          bank_verification_number: bvn,
-          country: country,
-        }
-      );
+      const response = await axios.post(`${SERVER_DOMAIN}/createAccountDetails`, {
+        user_id: id,
+        account_name: "account Name",
+        account_number: accountNumber,
+        bank_name: "bankName",
+        bank_verification_number: bvn,
+        country: country,
+      });
       setLoading(false);
       console.log(response);
       toast.success(response.data.message);
@@ -265,9 +261,7 @@ const RegistrationStepForm = () => {
   const getCountries = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://countriesnow.space/api/v0.1/countries/capital`
-      );
+      const response = await axios.get(`https://countriesnow.space/api/v0.1/countries/capital`);
       setLoading(false);
       setCountries(response.data.data);
     } catch (error) {
@@ -330,17 +324,12 @@ const RegistrationStepForm = () => {
               <img src={Grey} />
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1:{" "}
-              <span className="text-[20px]"> Business Information</span>
+              Stage 1: <span className="text-[20px]"> Business Information</span>
             </p>
             <p className=" text-red-500">{fieldsError}</p>
             <p className=" text-red-500">{errorDuplicate}</p>
             <div className=" grid gap-3  my-5 w-full md:w-[530px] ">
-              <div
-                className={`${
-                  fieldsError && " border border-red-500 rounded-[5px]"
-                }`}
-              >
+              <div className={`${fieldsError && " border border-red-500 rounded-[5px]"}`}>
                 <CustomInput
                   type="text"
                   label="Business Name (e.g. Deluxe Restaurant)"
@@ -349,11 +338,7 @@ const RegistrationStepForm = () => {
                 />
               </div>
 
-              <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
-              >
+              <div className={`${fieldsError && " border border-red-500  rounded-[5px]"}`}>
                 <CustomInput
                   type="text"
                   label="Business Contact (e.g. Sade Adu)"
@@ -362,11 +347,7 @@ const RegistrationStepForm = () => {
                 />
               </div>
 
-              <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
-              >
+              <div className={`${fieldsError && " border border-red-500  rounded-[5px]"}`}>
                 <CustomInput
                   type="text"
                   label="Business Address"
@@ -377,8 +358,7 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  emailError ||
-                  (fieldsError && " border border-red-500  rounded-[5px]")
+                  emailError || (fieldsError && " border border-red-500  rounded-[5px]")
                 }`}
               >
                 <CustomInput
@@ -396,14 +376,8 @@ const RegistrationStepForm = () => {
                   }}
                 />
               </div>
-              {emailError && (
-                <p className="text-red-500 text-[14px]">{emailError}</p>
-              )}
-              <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
-              >
+              {emailError && <p className="text-red-500 text-[14px]">{emailError}</p>}
+              <div className={`${fieldsError && " border border-red-500  rounded-[5px]"}`}>
                 <CustomInput
                   type="text"
                   label="Phone Number (e.g. +234 812 345 6789)"
@@ -414,25 +388,14 @@ const RegistrationStepForm = () => {
 
               <div
                 className={`${
-                  passwordError ||
-                  (fieldsError && "border border-red-500 rounded-[5px]")
+                  passwordError || (fieldsError && "border border-red-500 rounded-[5px]")
                 }`}
               >
-                <PasswordInput
-                  label="Password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
+                <PasswordInput label="Password" value={password} onChange={handlePasswordChange} />
               </div>
-              {passwordError && (
-                <p className="text-red-500 text-[14px]">{passwordError}</p>
-              )}
+              {passwordError && <p className="text-red-500 text-[14px]">{passwordError}</p>}
               {password && !passwordError && (
-                <div
-                  className={`${
-                    fieldsError && "border border-red-500 rounded-[5px]"
-                  }`}
-                >
+                <div className={`${fieldsError && "border border-red-500 rounded-[5px]"}`}>
                   <PasswordInput
                     label="Confirm Password"
                     value={confirmPassword}
@@ -441,15 +404,9 @@ const RegistrationStepForm = () => {
                 </div>
               )}
               {confirmPasswordError && (
-                <p className="text-red-500 text-[14px]">
-                  {confirmPasswordError}
-                </p>
+                <p className="text-red-500 text-[14px]">{confirmPasswordError}</p>
               )}
-              <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
-              >
+              <div className={`${fieldsError && " border border-red-500  rounded-[5px]"}`}>
                 <CustomSelect4
                   options={["Restaurant", "Hotel & Lodgings", "Bar & Lounge"]}
                   placeholder="Business Type"
@@ -511,18 +468,12 @@ const RegistrationStepForm = () => {
               <img src={Purple} />
               <img src={Grey} />
             </div>
-            <div
-              className="  items-center mt-[9px] flex gap-[8px]"
-              onClick={prevStep}
-            >
+            <div className="  items-center mt-[9px] flex gap-[8px]" onClick={prevStep}>
               <img src={Back} alt="" />
-              <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
-                Back
-              </p>
+              <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">Back</p>
             </div>
             <p className=" text-grey500 text-[14px] my-[24px]">
-              Stage 1:{" "}
-              <span className="text-[20px]"> Payout & Bank Details</span>{" "}
+              Stage 1: <span className="text-[20px]"> Payout & Bank Details</span>{" "}
             </p>
             <p className=" text-red-500">{error}</p>
             <div className=" grid gap-[16px]  my-5 w-full md:w-[530px] ">
@@ -573,9 +524,7 @@ const RegistrationStepForm = () => {
                 value={bvn}
                 onChange={handleBvnChange}
               />
-              {bvnError && (
-                <p className="text-red-500 text-[14px]">{bvnError}</p>
-              )}
+              {bvnError && <p className="text-red-500 text-[14px]">{bvnError}</p>}
 
               <div className=" grid mt-[32px] gap-[8px]">
                 {!bvnError && (

@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomInput from "../inputFields/CustomInput";
 import imageIcon from "../../assets/image.svg";
 import { convertToBase64 } from "../../utils/imageToBase64";
 import { SERVER_DOMAIN } from "../../Api/Api";
+import { useDispatch, useSelector } from "react-redux";
+import CustomSelect5 from "../inputFields/CustomSelect5";
+import { AppDispatch } from "../../store/store";
+import { fetchBranches } from "../../slices/branchSlice";
+import { toast } from "react-toastify";
 
 const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const branches = useSelector((state: any) => state.branches.branches);
+
   const [menuName, setMenuName] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [imageName, setImageName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [selectedBranch, setSelectedBranch] = useState<string>("");
+  const [selectedBranchId, setSelectedBranchId] = useState<string>("");
 
   const handleInputChange = (key: string, value: string) => {
     if (key === "menuName") {
@@ -29,37 +39,76 @@ const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  const handleBranchSelect = (branchId: string) => {
+    setSelectedBranch(branchId);
+
+    const selectedBranchObj = branches.find((branch: any) => branch._id === branchId);
+    if (selectedBranchObj) {
+      setSelectedBranchId(selectedBranchObj._id);
+    }
+  };
+
+  const branchOptions = branches.map((branch: any) => ({
+    label: branch.branch_name,
+    value: branch._id,
+  }));
+
+  const loggedInUser = useSelector((state: any) => state.user.userData);
+  console.log(loggedInUser);
+
   const handleSubmit = async () => {
     if (!menuName || !image) {
       setError("Please fill all the fields and upload an image.");
       return;
     }
 
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
     setLoading(true);
     setError("");
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/addMenuCategory`, {
-        menu_category_name: menuName,
-        user_id: userData.id,
-        image,
-      });
-
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuCategory`,
+        {
+          menu_category_name: menuName,
+          branch_id: selectedBranchId,
+          image,
+        },
+        headers
+      );
+      console.log(response);
       if (response.status === 200) {
+        toast.success(response.data.message || "Menu category added successfully.");
         setIsModalOpen(false);
       } else {
         setError("Something went wrong. Please try again.");
+        toast.error(response.data.message || "Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
+          toast.error(error.response.data.message);
         } else {
-          setError("An error occurred. Please try again later.");
+          const errorMessage = "An error occurred. Please try again later.";
+          setError(errorMessage);
+          toast.error(errorMessage);
         }
       } else {
-        setError("An error occurred. Please try again later.");
+        const errorMessage = "An error occurred. Please try again later.";
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
     } finally {
       setLoading(false);
@@ -81,6 +130,13 @@ const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
               value={menuName}
               error=""
               onChange={(newValue) => handleInputChange("menuName", newValue)}
+            />
+
+            <CustomSelect5
+              options={branchOptions}
+              label="Branch"
+              value={selectedBranch}
+              onChange={handleBranchSelect}
             />
 
             <div>
