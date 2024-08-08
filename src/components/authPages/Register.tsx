@@ -1,25 +1,26 @@
-import { useState } from "react";
+// src/components/Register.tsx
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setField } from "../../slices/registerSlice";
+import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const Register = () => {
+const Register: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [pin, setPin] = useState<string>("");
+  // Select the current values from the Redux state
+  const { name, email, password, confirmPassword, pin } = useSelector(
+    (state: RootState) => state.register
+  );
 
-  const handlePasswordChange = (newValue: string) => {
-    setPassword(newValue);
+  const handleChange = (field: keyof RootState["register"], value: string) => {
+    dispatch(setField({ field, value }));
   };
-  const handleConfirmPasswordChange = (newValue: string) => {
-    setConfirmPassword(newValue);
-  };
-
   return (
     <div className="bg-[#EFEFEF] ">
       <div className="flex flex-col items-center justify-center h-screen  my-auto">
@@ -32,32 +33,31 @@ const Register = () => {
             type="text"
             label="Business Name"
             value={name}
-            onChange={(newValue) => setName(newValue)}
+            onChange={(newValue) => handleChange("name", newValue)}
           />
           <CustomInput
             type="email"
             label="Business Email"
             value={email}
-            onChange={(newValue) => setEmail(newValue)}
+            onChange={(newValue) => handleChange("email", newValue)}
           />
           <PasswordInput
             label="Enter your password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={(newValue) => handleChange("password", newValue)}
           />
           <PasswordInput
             label="Confirm your password"
             value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
+            onChange={(newValue) => handleChange("confirmPassword", newValue)}
           />
           <CustomInput
             type="text"
             label="Create pin (Create a four-digit pin)"
             value={pin}
             maxLength={4}
-            onChange={(newValue) => setPin(newValue)}
+            onChange={(newValue) => handleChange("pin", newValue)}
           />
-
           <div className=" ">
             <Link to="/business-profile">
               <button className="bg-purple500 w-full text-center text-white py-3 rounded">
@@ -66,9 +66,7 @@ const Register = () => {
             </Link>
             <div className=" flex items-center justify-center my-5">
               <div onClick={() => navigate(-1)}>
-                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
-                  Go Back
-                </p>
+                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">Go Back</p>
               </div>
             </div>
           </div>

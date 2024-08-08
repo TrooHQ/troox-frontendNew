@@ -33,15 +33,6 @@ import VerifyAccount2 from "./Mobile/Components/VerifyAccount2";
 import { CategoryDetails } from "./Mobile/Customers/CategoryDetails";
 import { AdminMenuPage } from "./Mobile/Components/AdminMenuPage";
 import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
-import InRoomStartOrder from "./Mobile/InRoomDining/InRoomStartOrder";
-import { InRoomMenuPage } from "./Mobile/InRoomDining/InRoomMenuPage";
-import { InRoomCategoryDetails } from "./Mobile/InRoomDining/InRoomCategoryDetails";
-import InRoomMenuDetails from "./Mobile/InRoomDining/InRoomMenuDetails";
-import { InRoomBasket } from "./Mobile/InRoomDining/InRoomBasket";
-import { InRoomTip } from "./Mobile/InRoomDining/InRoomTip";
-import { InRoomSelectPayment } from "./Mobile/InRoomDining/InRoomSelectPayment";
-import { InRoomGetReceipt } from "./Mobile/InRoomDining/InRoomGetReceipt";
-import { InRoomReceipt } from "./Mobile/InRoomDining/InRoomReceipt";
 
 const MobileLayout = () => {
   return (
@@ -55,110 +46,39 @@ const MobileLayout = () => {
           <Route path="/restaurants" element={<ListofRestaurants />} />
 
           <Route path="/" element={<StartOrder />} />
-          <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
-          <Route
-            path="/demo/:id/explore-menu/orderandpay"
-            element={<MenuPage />}
-          />
-          <Route
-            path="demo/:id/category-details/:id/orderandpay"
-            element={<CategoryDetails />}
-          />
-          <Route
-            path="/demo/menu-details/:id/orderandpay"
-            element={<MenuDetails />}
-          />
-          <Route path="/demo/basket/orderandpay" element={<Basket />} />
-          <Route path="/demo/tip/orderandpay" element={<Tip />} />
-          <Route
-            path="/demo/payment-type/orderandpay"
-            element={<SelectPayment />}
-          />
-          <Route path="/demo/receipt/orderandpay" element={<Receipt />} />
-          <Route
-            path="/demo/get-receipt/orderandpay"
-            element={<GetReceipt />}
-          />
+          <Route path="/:id/explore-menu" element={<MenuPage />} />
+          <Route path="/admin-menu" element={<AdminMenuPage />} />
 
-          <Route path="demo/in_room_dining" element={<InRoomStartOrder />} />
-          <Route
-            path="/demo/:id/explore-menu/in_room_dining"
-            element={<InRoomMenuPage />}
-          />
-          <Route
-            path="demo/:id/category-details/:id/in_room_dining"
-            element={<InRoomCategoryDetails />}
-          />
-          <Route
-            path="/demo/menu-details/:id/in_room_dining"
-            element={<InRoomMenuDetails />}
-          />
-          <Route
-            path="/demo/basket/in_room_dining"
-            element={<InRoomBasket />}
-          />
-          <Route path="/demo/tip/in_room_dining" element={<InRoomTip />} />
-          <Route
-            path="/demo/payment-type/in_room_dining"
-            element={<InRoomSelectPayment />}
-          />
-          <Route
-            path="/demo/receipt/in_room_dining"
-            element={<InRoomReceipt />}
-          />
-          <Route
-            path="/demo/get-receipt/in_room_dining"
-            element={<InRoomGetReceipt />}
-          />
+          <Route path="/:id/category-details/:id" element={<CategoryDetails />} />
+          <Route path="/menu-details/:id" element={<MenuDetails />} />
+          <Route path="/:id/menu-page/:id" element={<Menu />} />
+          <Route path="/basket" element={<Basket />} />
+          <Route path="/tip" element={<Tip />} />
+          <Route path="/payment-type" element={<SelectPayment />} />
+          <Route path="/receipt" element={<Receipt />} />
+          <Route path="/get-receipt" element={<GetReceipt />} />
 
-          <Route
-            path="/demo/forgot-password/troo-portal"
-            element={<ForgotPassword />}
-          />
+          <Route path="/demo/forgot-password/troo-portal" element={<ForgotPassword />} />
           <Route path="/demo/dashboard/troo-portal" element={<Dashboard />} />
           <Route path={`/demo/login/troo-portal`} element={<Login />} />
-          <Route
-            path="/demo/employee-dashboard/troo-portal"
-            element={<EmployeeDashboard />}
-          />
-          <Route
-            path="demo/admin-menu/troo-portal"
-            element={<AdminMenuPage />}
-          />
+          <Route path="/demo/employee-dashboard/troo-portal" element={<EmployeeDashboard />} />
+          <Route path="demo/admin-menu/troo-portal" element={<AdminMenuPage />} />
 
-          <Route
-            path="/demo/:id/menu-page/:id/troo-portal"
-            element={<Menu />}
-          />
+          <Route path="/demo/:id/menu-page/:id/troo-portal" element={<Menu />} />
 
           <Route path="/demo/ticket/troo-portal" element={<Tickets />} />
 
           <Route path="/demo/order/troo-portal" element={<Order />} />
 
           <Route path="/demo/report/troo-portal" element={<Reporting />} />
-          <Route
-            path="/demo/register/troo-portal?/:id"
-            element={<RegistrationStepForm />}
-          />
+          <Route path="/demo/register/troo-portal?/:id" element={<RegistrationStepForm />} />
           <Route path="/demo/verify/troo-portal" element={<VerifyAccount />} />
           <Route path="/demo/menu/troo-portal" element={<MenuSetupForm />} />
           <Route path="/demo/settings/troo-portal" element={<SettingsPage />} />
-          <Route
-            path="/demo/employee-settings/troo-portal"
-            element={<EmployeeSettingsPage />}
-          />
-          <Route
-            path="/demo/password/troo-portal"
-            element={<EnterPassword />}
-          />
-          <Route
-            path="/demo/create-password/troo-portal"
-            element={<CreatePassword />}
-          />
-          <Route
-            path="/demo/manage-qr/troo-portal"
-            element={<ManageQrCode />}
-          />
+          <Route path="/demo/employee-settings/troo-portal" element={<EmployeeSettingsPage />} />
+          <Route path="/demo/password/troo-portal" element={<EnterPassword />} />
+          <Route path="/demo/create-password/troo-portal" element={<CreatePassword />} />
+          <Route path="/demo/manage-qr/troo-portal" element={<ManageQrCode />} />
           <Route path="/demo/table/troo-portal" element={<TableSetupForm />} />
           <Route path="/demo/room/troo-portal" element={<RoomSetupForm />} />
 

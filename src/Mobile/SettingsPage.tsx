@@ -195,9 +195,7 @@ const SettingsPage = () => {
 
   const userDetails = useSelector((state: RootState) => state.user);
 
-  const selectedOutletID = useSelector(
-    (state: RootState) => state.outlet.selectedOutletID
-  );
+  const selectedOutletID = useSelector((state: any) => state.outlet.selectedOutletID);
 
   const attachBusinessIdToHost = (businessId: string) => {
     const currentHost = window.location.origin;
@@ -281,9 +279,7 @@ const SettingsPage = () => {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 400) {
           toast.error(error.response.data.message);
-          setError(
-            error.response.data.message || "Bad request. Please try again."
-          );
+          setError(error.response.data.message || "Bad request. Please try again.");
         } else {
           setError("An error occurred. Please try again later.");
         }
@@ -304,10 +300,7 @@ const SettingsPage = () => {
     try {
       setLoading(true);
 
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/employee/getAllEmployee`,
-        headers
-      );
+      const response = await axios.get(`${SERVER_DOMAIN}/employee/getAllEmployee`, headers);
 
       setEmployee(response.data.data);
     } catch (error) {
@@ -461,10 +454,7 @@ const SettingsPage = () => {
                 Reset Password
               </p>
 
-              <p
-                className="text-grey300 text-[16px] cursor-pointer"
-                onClick={handleEmployeeModal}
-              >
+              <p className="text-grey300 text-[16px] cursor-pointer" onClick={handleEmployeeModal}>
                 Add Employee
               </p>
 
@@ -475,10 +465,7 @@ const SettingsPage = () => {
                 View Employees
               </p>
 
-              <p
-                className="text-grey300 text-[16px] cursor-pointer"
-                onClick={handleClick}
-              >
+              <p className="text-grey300 text-[16px] cursor-pointer" onClick={handleClick}>
                 {" "}
                 {copySuccess ? "Copied!" : "Get Self-Checkout link"}
               </p>
@@ -496,10 +483,7 @@ const SettingsPage = () => {
             </div>
 
             <div className="ml-[36px] grid gap-[24px] my-[24px]">
-              <p
-                className=" cursor-pointer text-grey300 text-[16px]"
-                onClick={handleQRCodeModal}
-              >
+              <p className=" cursor-pointer text-grey300 text-[16px]" onClick={handleQRCodeModal}>
                 {" "}
                 Create QR Code
               </p>
@@ -517,10 +501,7 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      <MenuModal
-        isOpen={resetPasswordModal}
-        onClose={() => setResetPasswordModal(false)}
-      >
+      <MenuModal isOpen={resetPasswordModal} onClose={() => setResetPasswordModal(false)}>
         <form action="" onSubmit={updatePassword}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div>
@@ -530,9 +511,7 @@ const SettingsPage = () => {
               >
                 <img src={Back} alt="" />
               </div>
-              <p className="text-[20px] font-[400] text-grey500">
-                Reset password
-              </p>
+              <p className="text-[20px] font-[400] text-grey500">Reset password</p>
               <div className=" mt-[24px] grid gap-[16px]">
                 <p className="text-red-500 text-sm mt-1">{error}</p>
                 <input
@@ -576,9 +555,7 @@ const SettingsPage = () => {
             </div>
 
             <div className="">
-              <p className="text-[20px] font-[400] text-grey500">
-                Create QR Code
-              </p>
+              <p className="text-[20px] font-[400] text-grey500">Create QR Code</p>
             </div>
             <div className=" mt-[24px] grid gap-[16px]">
               <div className=" grid gap-[12px]">
@@ -600,10 +577,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={ManageQRCodeModal}
-        onClose={() => setManageQRCodeModal(false)}
-      >
+      <MenuModal isOpen={ManageQRCodeModal} onClose={() => setManageQRCodeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
             <div
@@ -632,10 +606,7 @@ const SettingsPage = () => {
           </div>
         </div>
       </MenuModal>
-      <MenuModal
-        isOpen={roomQRCodeModal}
-        onClose={() => setRoomQRCodeModal(false)}
-      >
+      <MenuModal isOpen={roomQRCodeModal} onClose={() => setRoomQRCodeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div
             className=" cursor-pointer flex items-center justify-end"
@@ -671,10 +642,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={tableQRCodeModal}
-        onClose={() => setTableQRCodeModal(false)}
-      >
+      <MenuModal isOpen={tableQRCodeModal} onClose={() => setTableQRCodeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div
             className=" cursor-pointer flex items-center justify-end"
@@ -683,9 +651,7 @@ const SettingsPage = () => {
             <img src={Back} alt="" />
           </div>
           <div>
-            <p className="text-[20px] font-[400] text-grey500">
-              How many tables do you have?
-            </p>
+            <p className="text-[20px] font-[400] text-grey500">How many tables do you have?</p>
             <div className=" mt-[16px] ">
               <input
                 type="text"
@@ -709,10 +675,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={saveTableGroupModal}
-        onClose={() => setSaveTableGroupModal(false)}
-      >
+      <MenuModal isOpen={saveTableGroupModal} onClose={() => setSaveTableGroupModal(false)}>
         <form onSubmit={generateQr}>
           <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
             <div
@@ -722,9 +685,7 @@ const SettingsPage = () => {
               <img src={Back} alt="" />
             </div>
             <div>
-              <p className="text-[20px] font-[400] text-grey500">
-                Save Group As{" "}
-              </p>
+              <p className="text-[20px] font-[400] text-grey500">Save Group As </p>
               <div className=" mt-[16px] ">
                 <p className="text-red-500 text-sm mt-1"></p>
                 <input
@@ -760,10 +721,7 @@ const SettingsPage = () => {
         </form>
       </MenuModal>
 
-      <MenuModal
-        isOpen={roomQRCodeContentModal}
-        onClose={() => setRoomQRCodeContentModal(false)}
-      >
+      <MenuModal isOpen={roomQRCodeContentModal} onClose={() => setRoomQRCodeContentModal(false)}>
         <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
             <div
@@ -797,15 +755,11 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={tableListModal}
-        onClose={() => setTableListModal(false)}
-      >
+      <MenuModal isOpen={tableListModal} onClose={() => setTableListModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div>
             <p className="text-[16px] font-[400] text-grey500">
-              Do you want to create these QR Codes for 11 tables at Chicken
-              Express Restaurant?
+              Do you want to create these QR Codes for 11 tables at Chicken Express Restaurant?
             </p>
 
             <div className=" mt-[32px] grid gap-[16px]">
@@ -857,10 +811,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={tableGroupSuccessModal}
-        onClose={() => setTableGroupSuccessModal(false)}
-      >
+      <MenuModal isOpen={tableGroupSuccessModal} onClose={() => setTableGroupSuccessModal(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
             <img
@@ -887,9 +838,7 @@ const SettingsPage = () => {
               <img src={Back} alt="" />
             </div>
             <div>
-              <p className="text-[20px] font-[400] text-grey500">
-                Add employee
-              </p>
+              <p className="text-[20px] font-[400] text-grey500">Add employee</p>
               <div className=" mt-[24px] grid gap-[16px]">
                 <input
                   type="text"
@@ -948,10 +897,7 @@ const SettingsPage = () => {
         </form>
       </MenuModal>
 
-      <MenuModal
-        isOpen={removeEmployeeModal}
-        onClose={() => setRemoveEmployeeModal(false)}
-      >
+      <MenuModal isOpen={removeEmployeeModal} onClose={() => setRemoveEmployeeModal(false)}>
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px] h-[300px] overflow-y-auto">
           <div
             className=" cursor-pointer flex items-center justify-end"
@@ -1038,10 +984,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={deleteSuccessfullModal}
-        onClose={() => setDeleteSuccessfullModal(false)}
-      >
+      <MenuModal isOpen={deleteSuccessfullModal} onClose={() => setDeleteSuccessfullModal(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
             <img
@@ -1057,10 +1000,7 @@ const SettingsPage = () => {
         </div>
       </MenuModal>
 
-      <MenuModal
-        isOpen={resetSuccessModal}
-        onClose={() => setResetSuccessModal(false)}
-      >
+      <MenuModal isOpen={resetSuccessModal} onClose={() => setResetSuccessModal(false)}>
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[380px] flex flex-col items-center justify-center">
             <img

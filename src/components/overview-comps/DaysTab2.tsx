@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Tab, Tabs, Box, IconButton } from "@mui/material";
-import {
-  DateRangeOutlined,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material";
+import { DateRangeOutlined, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { DatePicker, Space } from "antd";
 // import "antd/dist/antd.css";
 const { RangePicker } = DatePicker;
@@ -29,10 +25,7 @@ const DaysTab2 = ({
 }: DaysTabProps) => {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<[string | null, string | null]>([
-    null,
-    null,
-  ]);
+  const [dateRange, setDateRange] = useState<[string | null, string | null]>([null, null]);
 
   const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
     event.preventDefault();
@@ -44,11 +37,11 @@ const DaysTab2 = ({
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
-    console.log(dates);
     setDateRange(dateStrings);
     // setOpen(false);
-    console.log(dateRange);
+    console.log(dates);
   };
+  console.log(dateRange);
 
   return (
     <Box sx={{ position: "relative" }}>

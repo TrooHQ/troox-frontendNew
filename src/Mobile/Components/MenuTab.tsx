@@ -57,9 +57,7 @@ const MenuTab: React.FC = () => {
     setSelectedImage(null);
   };
 
-  const selectedOutletID = useSelector(
-    (state: RootState) => state.outlet.selectedOutletID
-  );
+  const selectedOutletID = useSelector((state: any) => state.outlet.selectedOutletID);
 
   const getGroups = async () => {
     setLoading(true);
@@ -166,7 +164,7 @@ const MenuTab: React.FC = () => {
               .filter((menu) => selectedGroup === menu.menu_group_name)
               .map((menu, index) => (
                 <div key={index}>
-                  <ul className="grid gap-[8px] px-[16px]">
+                  <div className="grid gap-[8px] px-[16px]">
                     <div className="flex items-center justify-between border-b py-[8px]">
                       <div className="flex items-center gap-[16px]">
                         <div className="w-[130px] rounded-[8px] overflow-hidden h-[130px]">
@@ -185,14 +183,11 @@ const MenuTab: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div
-                        className="cursor-pointer"
-                        onClick={() => handleEditModal(menu)}
-                      >
+                      <div className="cursor-pointer" onClick={() => handleEditModal(menu)}>
                         <img src={EditIcon} alt="Edit" />
                       </div>
                     </div>
-                  </ul>
+                  </div>
                 </div>
               ))
           )}
@@ -200,18 +195,13 @@ const MenuTab: React.FC = () => {
       </div>
       <Modal isOpen={editModal}>
         <div className="bg-white w-[300px] relative">
-          <div
-            className="cursor-pointer absolute top-0 right-0"
-            onClick={closeEditModal}
-          >
+          <div className="cursor-pointer absolute top-0 right-0" onClick={closeEditModal}>
             <img src={Close} alt="" />
           </div>
           <div className="pt-[16px]">
             {editItem && (
               <div className=" ">
-                <p className="text-[18px] font-[500] text-[#000000]">
-                  {editItem.menu_item_name}
-                </p>
+                <p className="text-[18px] font-[500] text-[#000000]">{editItem.menu_item_name}</p>
                 <div className="my-[22px] flex items-center gap-[8px]">
                   <img
                     src={selectedImage || editItem.menu_item_image}

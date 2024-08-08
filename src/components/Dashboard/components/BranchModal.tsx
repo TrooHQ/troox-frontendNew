@@ -1,16 +1,25 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
-import { toast } from "react-toastify";
+import { createBranch } from "../../../slices/branchSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "@/src/store/store";
 
-const BranchModal = ({ isModalOpen, setIsModalOpen }: any) => {
+interface BranchModalProps {
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: any) => state.branches);
+
   const [branchName, setBranchName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const handleInputChange = (field: string, value: SetStateAction<string>) => {
+  const handleInputChange = (field: string, value: string) => {
     switch (field) {
       case "branchName":
         setBranchName(value);
@@ -21,9 +30,6 @@ const BranchModal = ({ isModalOpen, setIsModalOpen }: any) => {
       case "email":
         setEmail(value);
         break;
-      case "city":
-        setCity(value);
-        break;
       case "phoneNumber":
         setPhoneNumber(value);
         break;
@@ -31,6 +37,28 @@ const BranchModal = ({ isModalOpen, setIsModalOpen }: any) => {
         break;
     }
   };
+
+  const handleCreateBranch = () => {
+    const branchData = {
+      branch_name: branchName,
+      branch_email: email,
+      branch_phone_number: phoneNumber,
+      branch_address: address,
+    };
+    dispatch(createBranch(branchData))
+      .unwrap()
+      .then(() => {
+        setIsModalOpen(false); // Close the modal only on successful response
+        setBranchName("");
+        setAddress("");
+        setEmail("");
+        setPhoneNumber("");
+      })
+      .catch(() => {
+        // Optionally handle the error here
+      });
+  };
+
   return (
     <div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -75,31 +103,31 @@ const BranchModal = ({ isModalOpen, setIsModalOpen }: any) => {
               label="Branch Name"
               type="text"
               value={branchName}
-              onChange={(value) => handleInputChange("branchName", value)}
+              onChange={(value: string) => handleInputChange("branchName", value)}
             />
             <CustomInput
               label="Address"
               type="text"
               value={address}
-              onChange={(value) => handleInputChange("address", value)}
+              onChange={(value: string) => handleInputChange("address", value)}
             />
             <CustomInput
               label="Email"
               type="email"
               value={email}
-              onChange={(value) => handleInputChange("email", value)}
+              onChange={(value: string) => handleInputChange("email", value)}
             />
-            <CustomInput
+            {/* <CustomInput
               label="City"
               type="text"
               value={city}
-              onChange={(value) => handleInputChange("city", value)}
-            />
+              onChange={(value: string) => handleInputChange("city", value)}
+            /> */}
             <CustomInput
               label="Phone Number"
               type="tel"
               value={phoneNumber}
-              onChange={(value) => handleInputChange("phoneNumber", value)}
+              onChange={(value: string) => handleInputChange("phoneNumber", value)}
             />
           </div>
           <button
@@ -111,13 +139,12 @@ const BranchModal = ({ isModalOpen, setIsModalOpen }: any) => {
               marginTop: "32px",
               borderRadius: "5px",
             }}
-            onClick={() => {
-              setIsModalOpen(false);
-              toast.success("Modal created successfully");
-            }}
+            onClick={handleCreateBranch}
+            disabled={loading}
           >
-            Create New Branch
+            {loading ? "Creating..." : "Create New Branch"}
           </button>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
         </div>
       </Modal>
     </div>
