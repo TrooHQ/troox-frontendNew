@@ -209,7 +209,7 @@ const ManageTables: React.FC = () => {
   return (
     <div className="">
       <DashboardLayout>
-        <TopMenuNav pathName="Manage Tables" />
+        <TopMenuNav pathName="Manage Branch Assets" />
         <div className=" mt-[40px]">
           <div
             className="border inline-block border-purple500 bg-purple500  rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
