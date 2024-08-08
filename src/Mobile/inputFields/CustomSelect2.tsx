@@ -5,14 +5,14 @@ interface CustomSelect2Props {
   options: (string | { value: string; label: string })[];
   disabledOptions?: string[];
   placeholder?: string;
-  bgColor?: string; // New prop for background color
+  bgColor?: string;
 }
 
 const CustomSelect2: React.FC<CustomSelect2Props> = ({
   options,
   disabledOptions,
   placeholder = "",
-  bgColor = "bg-white", // Default background color
+  bgColor = "bg-white",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(placeholder);

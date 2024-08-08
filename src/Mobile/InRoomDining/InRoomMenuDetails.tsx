@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import Add from "../assets/Plus.svg";
 import MinusMain from "../assets/MinusCounter.svg";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -65,7 +65,7 @@ const menuItems = [
     details: "Crispy fried ankara straight from the oven",
   },
 ];
-const MenuDetails = () => {
+const InRoomMenuDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
@@ -419,4 +419,4 @@ const MenuDetails = () => {
   );
 };
 
-export default MenuDetails;
+export default InRoomMenuDetails;

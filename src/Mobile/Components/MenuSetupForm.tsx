@@ -15,6 +15,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+// import CustomSelect3 from "../inputFields/CustomSelect3";
 
 interface MenuItem {
   title: string;
@@ -35,6 +36,11 @@ interface MenuCategory {
 interface Props {
   menuData?: MenuCategory[];
 }
+
+// interface Option {
+//   value: string;
+//   label: string;
+// }
 
 const MenuSetupForm: React.FC<Props> = () => {
   const [expandedCategories, setExpandedCategories] = useState<{
@@ -80,6 +86,9 @@ const MenuSetupForm: React.FC<Props> = () => {
   const [modifierError, setModifierError] = useState("");
   const [error, setError] = useState("");
 
+  console.log(error);
+  const [menuItemDescription, setMenuItemDescription] = useState("");
+
   const [base64String, setBase64String] = useState<string | null>(null);
 
   const toggleCategory = (categoryId: string | number) => {
@@ -101,6 +110,58 @@ const MenuSetupForm: React.FC<Props> = () => {
       return newState;
     });
   };
+
+  // const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+  // const [branch, setBranch] = useState<Option[]>([]);
+
+  // const handleSelect = (Outlet: string) => {
+  //   const selectedOption = branch.find((option) => option.label === Outlet);
+  //   console.log(selectedOption);
+  //   if (selectedOption) {
+  //     setSelectedBranch(selectedOption.value);
+  //   }
+  // };
+
+  // const getBranch = async () => {
+  //   const headers = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   try {
+  //     setLoading(true);
+
+  //     const response = await axios.get(
+  //       `${SERVER_DOMAIN}/branch/getBranch`,
+  //       headers
+  //     );
+
+  //     const branchOptions = response.data.data.map((branch: any) => ({
+  //       label: branch.branch_name,
+  //       value: branch._id,
+  //     }));
+  //     setBranch(branchOptions);
+  //   } catch (error) {
+  //     console.error("Error Retrieving Branch:", error);
+
+  //     if (axios.isAxiosError(error)) {
+  //       if (error.response) {
+  //         toast.error(error.response.data.message);
+  //       } else {
+  //         toast.error("An error occurred. Please try again later.");
+  //       }
+  //     } else {
+  //       toast.error("An error occurred. Please try again later.");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getBranch();
+  // }, []);
 
   const toggleGroup = (groupName: string) => {
     setExpandedGroups((prevState) => {
@@ -182,9 +243,18 @@ const MenuSetupForm: React.FC<Props> = () => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user);
+
+  const selectedOutletID = useSelector(
+    (state: RootState) => state.outlet.selectedOutletID
+  );
+
   const businessType = userDetails?.userData?.business_type;
-  const id = userDetails?.userData?.id;
+  const id = userDetails?.userData?.user_id;
+  const id2 = userDetails?.userData?.id;
+  console.log(id, id2);
+
   const token = userDetails?.userData?.token;
+
   const hasMenu = userDetails?.userData?.has_created_menu_item;
   console.log(userDetails);
 
@@ -206,9 +276,10 @@ const MenuSetupForm: React.FC<Props> = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/menu/addMenuCategory`,
         {
+          user_id: id || id2,
           menu_category_name: menuCategory,
-          user_id: id,
           image: base64String,
+          branch_id: selectedOutletID,
         },
         headers
       );
@@ -221,7 +292,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       console.log(token);
 
       if (error.response) {
-        setError(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");
       }
@@ -230,7 +301,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   };
 
   const createItem = async () => {
-    if (!menuItem || !menuItemPrice) {
+    if (!menuItem || !menuItemPrice || !menuItemDescription) {
       setMenuItemError("Add Menu Item Name");
       return;
     }
@@ -250,6 +321,8 @@ const MenuSetupForm: React.FC<Props> = () => {
           menu_group_name: openGroup,
           menu_item_name: menuItem,
           price: menuItemPrice || price,
+          description: menuItemDescription,
+          branch_id: selectedOutletID,
           image: base64String,
         },
         headers
@@ -292,6 +365,7 @@ const MenuSetupForm: React.FC<Props> = () => {
         {
           category_name: openCategory,
           group_name: menuGroupName,
+          branch_id: selectedOutletID,
           price_to_all_items: pricings === "yes" ? true : false,
           price: price || 0,
         },
@@ -327,7 +401,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getAllMenuCategory`,
+        `${SERVER_DOMAIN}/menu/getAllMenuCategory/?branch_id=${selectedOutletID}`,
         headers
       );
       console.log("menu Category retrieved successfully:", response.data.data);
@@ -357,7 +431,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getAllMenuGroup`,
+        `${SERVER_DOMAIN}/menu/getAllMenuGroup/?branch_id=${selectedOutletID}`,
         headers
       );
       console.log("Menu Group retrieved successfully:", response.data.data);
@@ -392,7 +466,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${openGroup}`,
+        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${openGroup}&branch_id=${selectedOutletID}`,
         headers
       );
       console.log("Menu Items retrieved successfully:", response.data);
@@ -491,7 +565,7 @@ const MenuSetupForm: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className=" bg-[#EFEFEF]  relative h-full">
+    <div className=" bg-[#EFEFEF]  relative h-screen overflow-auto">
       <div className=" mx-10">
         <div className=" py-[48px] flex items-center justify-center">
           <img src={Logo} alt="" />
@@ -667,7 +741,9 @@ const MenuSetupForm: React.FC<Props> = () => {
                 {menuData?.length > 0 ? (
                   <Link
                     to={`${
-                      businessType === "Hotel & Lodgings" ? "/room" : "/table"
+                      businessType === "Hotel & Lodgings"
+                        ? "/demo/room/troo-portal"
+                        : "/demo/table/troo-portal"
                     }`}
                   >
                     <p>Save and continue</p>
@@ -678,7 +754,9 @@ const MenuSetupForm: React.FC<Props> = () => {
               </div>
             )}
 
-            <Link to={`${hasMenu === false ? "/" : "/dashboard"}`}>
+            <Link
+              to={`${hasMenu === false ? "/" : "/demo/dashboard/troo-portal"}`}
+            >
               <button className=" text-[16px] font-[500] text-[#929292] border border-[#B6B6B6] w-full text-center py-3 rounded">
                 {hasMenu === false ? "Cancel" : "Back"}
               </button>
@@ -693,7 +771,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       >
         <div className=" fixed top-1/3  left-0 w-full  z-50 py-[32px] px-[21px] bg-white rounded-tl-[20px] rounded-tr-[20px]">
           <div className=" ">
-            <p className=" text-red-500">{error}</p>
+            {/* <p className=" text-red-500">{error ? error : ""}</p> */}
             <div
               className=" flex items-center justify-end cursor-pointer"
               onClick={handleCloseAddCategoryModal}
@@ -732,6 +810,16 @@ const MenuSetupForm: React.FC<Props> = () => {
                 value={menuCategory}
                 onChange={(newValue) => setMenuCategory(newValue)}
               />
+
+              {/* <CustomSelect3
+                options={branch}
+                placeholder="All outlets"
+                BG=" bg-[#5855B3]"
+                text=" text-white"
+                hover="hover:bg-[#5855B3] hover:text-white"
+                searchable={false}
+                onSelect={handleSelect}
+              /> */}
             </div>
 
             <div className=" grid gap-[8px] my-[16px]">
@@ -821,12 +909,23 @@ const MenuSetupForm: React.FC<Props> = () => {
               )}
             </div>
 
-            <CustomInput
-              type="text"
-              label="Menu Group Name"
-              value={menuGroupName}
-              onChange={(newValue) => setMenuGroupName(newValue)}
-            />
+            <div className=" w-full grid gap-[16px]">
+              <CustomInput
+                type="text"
+                label="Menu Group Name"
+                value={menuGroupName}
+                onChange={(newValue) => setMenuGroupName(newValue)}
+              />
+              {/* <CustomSelect3
+                options={branch}
+                placeholder="All outlets"
+                BG=" bg-[#5855B3]"
+                text=" text-white"
+                hover="hover:bg-[#5855B3] hover:text-white"
+                searchable={false}
+                onSelect={handleSelect}
+              /> */}
+            </div>
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
                 <p className=" text-[#606060] text-[14px] font-[400]">
@@ -948,6 +1047,15 @@ const MenuSetupForm: React.FC<Props> = () => {
                 value={menuItemPrice}
                 onChange={(newValue) => setMenuItemPrice(newValue)}
               />
+
+              <div className="">
+                <textarea
+                  className="text-[16px] w-full h-[153px] border font-[400] text-[#929292] border-gray-300 rounded-md p-2 shadow-md"
+                  placeholder="Enter message here"
+                  value={menuItemDescription}
+                  onChange={(e) => setMenuItemDescription(e.target.value)}
+                />
+              </div>
             </div>
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">

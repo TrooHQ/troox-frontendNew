@@ -20,17 +20,38 @@ import { SERVER_DOMAIN } from "../Api/Api";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import TopMenuNav from "./Components/TopMenuNav";
+import { toast } from "react-toastify";
+// import CustomSelect3 from "./inputFields/CustomSelect3";
+import Loader from "../components/Loader";
 
 // interface FormData extends FieldValues {
 //   employee_name?: string;
 //   employee_email?: string;
 //   employee_phone?: string;
 // }
+// interface Option {
+//   value: string;
+//   label: string;
+// }
+
+interface EmployeeData {
+  id: number;
+  first_name: string;
+  last_name: string;
+  personal_email: string;
+}
 
 const SettingsPage = () => {
-  const [employeeName, setEmployeeName] = useState("");
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  // const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+
+  const [selectedEmail, setSelectedEmail] = useState("");
+
+  // const [branch, setBranch] = useState<Option[]>([]);
+  const [employee, setEmployee] = useState<EmployeeData[]>([]);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -39,28 +60,33 @@ const SettingsPage = () => {
   const [group_name, setGroup_name] = useState("");
   const [number, setNumber] = useState("");
 
-  const users = [
-    {
-      id: 1,
-      name: "John Doe",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-    },
-    {
-      id: 3,
-      name: "Alice Johnson",
-    },
-  ];
+  // const users = [
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Jane Smith",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Alice Johnson",
+  //   },
+  // ];
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
+
   const [ManageQRCodeModal, setManageQRCodeModal] = useState(false);
+
   const [roomQRCodeModal, setRoomQRCodeModal] = useState(false);
   const [tableQRCodeModal, setTableQRCodeModal] = useState(false);
+
   const [tableListModal, setTableListModal] = useState(false);
   const [roomQRCodeContentModal, setRoomQRCodeContentModal] = useState(false);
+
   const [saveTableGroupModal, setSaveTableGroupModal] = useState(false);
+
   const [tableGroupSuccessModal, setTableGroupSuccessModal] = useState(false);
 
   const [successModal, setSuccessModal] = useState(false);
@@ -86,12 +112,12 @@ const SettingsPage = () => {
   const handleManageRoomQRCodeModal = () => {
     sessionStorage.setItem("type", "room");
     setManageQRCodeModal(false);
-    navigate("/manage-qr");
+    navigate("/demo/manage-qr/troo-portal");
   };
 
   const handleManageTableQRCodeModal = () => {
     setManageQRCodeModal(false);
-    navigate("/manage-qr");
+    navigate("/demo/manage-qr/troo-portal");
     sessionStorage.setItem("type", "table");
   };
 
@@ -109,13 +135,9 @@ const SettingsPage = () => {
 
   const handleSaveTableGroupModal = () => {
     setTableListModal(false);
+    setRoomQRCodeModal(false);
     setSaveTableGroupModal(true);
     setTableQRCodeModal(false);
-  };
-
-  const handleRoomQRCodeContentModal = () => {
-    setRoomQRCodeModal(false);
-    setRoomQRCodeContentModal(true);
   };
 
   const handleDownloadQRCodeModal = () => {
@@ -130,14 +152,41 @@ const SettingsPage = () => {
     setEmployeeModal(true);
   };
 
-  const handleWarningModal = () => {
+  const handleWarningModal = (email: string) => {
+    setSelectedEmail(email);
     setRemoveEmployeeModal(false);
     setWarningModal(true);
   };
 
-  const handleDeleteSuccessModal = () => {
-    setWarningModal(false);
-    setDeleteSuccessfullModal(true);
+  // const handleDeleteSuccessModal = () => {
+  // setWarningModal(false);
+  // setDeleteSuccessfullModal(true);
+  // };
+
+  const handleDeleteSuccessModal = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/employee/removeEmployee`,
+        { employee_email: selectedEmail },
+        headers
+      );
+      console.log("Employee removed successfully:", response.data);
+      setRemoveEmployeeModal(false);
+      setLoading(false);
+      setWarningModal(false);
+      setDeleteSuccessfullModal(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error removing employee:", error);
+      setLoading(false);
+    }
   };
 
   const handleRemoveEmployeeModal = () => {
@@ -145,12 +194,15 @@ const SettingsPage = () => {
   };
 
   const userDetails = useSelector((state: RootState) => state.user);
-  console.log(userDetails);
+
+  const selectedOutletID = useSelector(
+    (state: RootState) => state.outlet.selectedOutletID
+  );
 
   const attachBusinessIdToHost = (businessId: string) => {
     const currentHost = window.location.origin;
 
-    const newUrl = `${currentHost}/${businessId}`;
+    const newUrl = `${currentHost}/demo/selfcheckout/${businessId}`;
 
     return newUrl;
   };
@@ -179,11 +231,21 @@ const SettingsPage = () => {
   console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 
+  // const handleSelect = (selectedOutlet: string) => {
+  //   const selectedOption = branch.find(
+  //     (option) => option.value === selectedOutlet
+  //   );
+  //   if (selectedOption) {
+  //     setSelectedBranch(selectedOption.label);
+  //   }
+  // };
+
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    if (!employeeName || !phoneNumber || !email) {
-      setError("All fields Are required");
+    if (!first_name || !last_name || !phoneNumber || !email) {
+      setError("All fields are required");
+      setLoading(false);
       return;
     }
     sessionStorage.setItem("employeeEmail", email);
@@ -197,26 +259,77 @@ const SettingsPage = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/employee/createEmployee`,
         {
-          employee_name: employeeName,
+          first_name: first_name,
+          last_name: last_name,
           email: email,
+          branch_id: selectedOutletID,
           phone_number: phoneNumber,
         },
         headers
       );
       console.log("Employee added successfully:", response.data);
       setLoading(false);
-      setEmployeeName("");
+      setFirstName("");
       setEmail("");
       setPhoneNumber("");
       setError("");
       setEmployeeModal(false);
       setSuccessModal(true);
-      setLoading(false);
+      window.location.reload();
     } catch (error) {
       console.error("Error adding employee:", error);
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 400) {
+          toast.error(error.response.data.message);
+          setError(
+            error.response.data.message || "Bad request. Please try again."
+          );
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
       setLoading(false);
     }
   };
+
+  const getEmployees = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/employee/getAllEmployee`,
+        headers
+      );
+
+      setEmployee(response.data.data);
+    } catch (error) {
+      console.error("Error Retrieving Employee:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
   useEffect(() => {
     const fetchTempPassword = async () => {
@@ -238,7 +351,6 @@ const SettingsPage = () => {
         );
         setTempPassword(response.data.password);
         sessionStorage.setItem("tempPassword", tempPassword);
-        console.log(response.data);
 
         setLoading(false);
       } catch (error) {
@@ -281,7 +393,7 @@ const SettingsPage = () => {
       );
       console.log("Employee Password Reset successfully:", response.data);
       setLoading(false);
-      setEmployeeName("");
+      setFirstName("");
       setEmail("");
       setPhoneNumber("");
       setError("");
@@ -299,10 +411,7 @@ const SettingsPage = () => {
   const generateQr = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    // if (!employeeName || !phoneNumber || !email) {
-    //   setError("All fields Are required");
-    //   return;
-    // }
+
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -351,17 +460,19 @@ const SettingsPage = () => {
               >
                 Reset Password
               </p>
+
               <p
                 className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleEmployeeModal}
               >
                 Add Employee
               </p>
+
               <p
                 className="text-grey300 text-[16px] cursor-pointer"
                 onClick={handleRemoveEmployeeModal}
               >
-                Remove Employee
+                View Employees
               </p>
 
               <p
@@ -392,7 +503,7 @@ const SettingsPage = () => {
                 {" "}
                 Create QR Code
               </p>
-              {/* <Link to="/manage-qr"> */}
+              {/* <Link to="/demo/manage-qr/troo-portal"> */}
               <p
                 className=" cursor-pointer text-grey300 text-[16px]"
                 onClick={handleManageQRCodeModal}
@@ -526,64 +637,35 @@ const SettingsPage = () => {
         onClose={() => setRoomQRCodeModal(false)}
       >
         <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <div className=" max-w-[280px] mx-auto">
-            <p className="text-[16px] font-[400] text-grey500 text-center">
-              Do you want to create QR Code for rooms at Deluxe Hotel?
-            </p>
-            <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1"></p>
-
-              <div className=" flex items-center gap-[8px]">
-                <button
-                  onClick={() => setRoomQRCodeModal(false)}
-                  className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                >
-                  No
-                </button>
-                <button
-                  onClick={handleRoomQRCodeContentModal}
-                  className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
-                >
-                  Yes
-                </button>
-              </div>
-            </div>
+          <div
+            className=" cursor-pointer flex items-center justify-end"
+            onClick={() => setRoomQRCodeModal(false)}
+          >
+            <img src={Back} alt="" />
           </div>
-        </div>
-      </MenuModal>
 
-      <MenuModal
-        isOpen={roomQRCodeContentModal}
-        onClose={() => setRoomQRCodeContentModal(false)}
-      >
-        <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
           <div className=" ">
-            <div
-              className=" cursor-pointer flex items-center justify-center"
-              onClick={handleDownloadQRCodeModal}
-            >
-              <img src={QrCode} alt="" />
-            </div>
             <p className="text-[16px] font-[400] text-grey500 text-center">
-              QR Code for rooms at Deluxe Hotel has been created successfully
+              How many rooms do you have?
             </p>
-            <div className=" mt-[24px] grid gap-[16px]">
-              <p className="text-red-500 text-sm mt-1"></p>
+            <div className=" mt-[16px] ">
+              <input
+                type="text"
+                id="number"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+                placeholder="Number of Rooms"
+                className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+              />
 
-              <div className=" flex items-center gap-[8px]">
-                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={downloadIcon} alt="" />
-                  Download
+              {number && (
+                <button
+                  onClick={handleSaveTableGroupModal}
+                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                >
+                  Next
                 </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={copyIcon} alt="" />
-                  Copy
-                </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
-                  <img src={printIcon} alt="" />
-                  Print
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -622,6 +704,94 @@ const SettingsPage = () => {
                   Next
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={saveTableGroupModal}
+        onClose={() => setSaveTableGroupModal(false)}
+      >
+        <form onSubmit={generateQr}>
+          <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div
+              className=" cursor-pointer flex items-center justify-end"
+              onClick={() => setSaveTableGroupModal(false)}
+            >
+              <img src={Back} alt="" />
+            </div>
+            <div>
+              <p className="text-[20px] font-[400] text-grey500">
+                Save Group As{" "}
+              </p>
+              <div className=" mt-[16px] ">
+                <p className="text-red-500 text-sm mt-1"></p>
+                <input
+                  type="text"
+                  id="group_name"
+                  value={group_name}
+                  onChange={(e) => setGroup_name(e.target.value)}
+                  placeholder="Enter group name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+
+                {!loading && (
+                  <div className=" flex items-center gap-[8px] mt-[16px]">
+                    <button
+                      className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="submit"
+                      disabled={!group_name}
+                      className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={roomQRCodeContentModal}
+        onClose={() => setRoomQRCodeContentModal(false)}
+      >
+        <div className="w-full py-[40px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div className=" ">
+            <div
+              className=" cursor-pointer flex items-center justify-center"
+              onClick={handleDownloadQRCodeModal}
+            >
+              <img src={QrCode} alt="" />
+            </div>
+            <p className="text-[16px] font-[400] text-grey500 text-center">
+              QR Code for rooms at Deluxe Hotel has been created successfully
+            </p>
+            <div className=" mt-[24px] grid gap-[16px]">
+              <p className="text-red-500 text-sm mt-1"></p>
+
+              <div className=" flex items-center gap-[8px]">
+                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={downloadIcon} alt="" />
+                  Download
+                </button>
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={copyIcon} alt="" />
+                  Copy
+                </button>
+                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                  <img src={printIcon} alt="" />
+                  Print
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -688,55 +858,6 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal
-        isOpen={saveTableGroupModal}
-        onClose={() => setSaveTableGroupModal(false)}
-      >
-        <form onSubmit={generateQr}>
-          <div className="w-full py-[32px] px-[32px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-            <div
-              className=" cursor-pointer flex items-center justify-end"
-              onClick={() => setSaveTableGroupModal(false)}
-            >
-              <img src={Back} alt="" />
-            </div>
-            <div>
-              <p className="text-[20px] font-[400] text-grey500">
-                Save Table Group As{" "}
-              </p>
-              <div className=" mt-[16px] ">
-                <p className="text-red-500 text-sm mt-1"></p>
-                <input
-                  type="text"
-                  id="group_name"
-                  value={group_name}
-                  onChange={(e) => setGroup_name(e.target.value)}
-                  placeholder="Enter table group name"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
-
-                <div className=" flex items-center gap-[8px] mt-[16px]">
-                  <button
-                    className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={!group_name}
-                    className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </MenuModal>
-
-      <MenuModal
         isOpen={tableGroupSuccessModal}
         onClose={() => setTableGroupSuccessModal(false)}
       >
@@ -746,10 +867,10 @@ const SettingsPage = () => {
               className=" cursor-pointer"
               src={CheckCircle}
               alt=""
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/demo/manage-qr/troo-portal")}
             />
             <p className="text-[16px] font-[400] text-grey500 text-center">
-              QR Codes successfully created for tables
+              QR Codes successfully created for {type}s
             </p>
           </div>
         </div>
@@ -758,6 +879,7 @@ const SettingsPage = () => {
       <MenuModal isOpen={employeeModal} onClose={() => setEmployeeModal(false)}>
         <form action="" onSubmit={createEmployee}>
           <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            {loading && <Loader />}
             <div
               className=" cursor-pointer flex items-center justify-end"
               onClick={() => setEmployeeModal(false)}
@@ -771,10 +893,19 @@ const SettingsPage = () => {
               <div className=" mt-[24px] grid gap-[16px]">
                 <input
                   type="text"
-                  id="employee_name"
-                  value={employeeName}
-                  onChange={(e) => setEmployeeName(e.target.value)}
-                  placeholder="Add employee name"
+                  id="first_name"
+                  value={first_name}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Employee First name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+
+                <input
+                  type="text"
+                  id="last_name"
+                  value={last_name}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Employee Last name"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
                 <input
@@ -794,8 +925,19 @@ const SettingsPage = () => {
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
+                {/* <CustomSelect3
+                  options={branch}
+                  placeholder="All outlets"
+                  BG=" bg-[#5855B3]"
+                  text=" text-white"
+                  hover="hover:bg-[#5855B3] hover:text-white"
+                  searchable={false}
+                  onSelect={handleSelect}
+                /> */}
+
                 <button
                   type="submit"
+                  disabled={loading}
                   className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
@@ -810,32 +952,40 @@ const SettingsPage = () => {
         isOpen={removeEmployeeModal}
         onClose={() => setRemoveEmployeeModal(false)}
       >
-        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px] h-[300px] overflow-y-auto">
           <div
             className=" cursor-pointer flex items-center justify-end"
             onClick={() => setRemoveEmployeeModal(false)}
           >
             <img src={Back} alt="" />
           </div>
-          <p className="text-[20px] font-[400] text-grey500">Remove employee</p>
-          <div className=" mt-[24px] grid gap-[16px]">
-            {users.map((user) => (
-              <div
-                className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
-                key={user.id}
-              >
-                <p className=" text-grey500 text-[14px] font-[400]">
-                  {user.name}
-                </p>
-                <p
-                  className=" text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
-                  onClick={handleWarningModal}
+          <p className="text-[20px] font-[400] text-grey500">Employees</p>
+          <div className="mt-[24px] grid gap-[16px]">
+            {employee.length > 0 ? (
+              employee.map((user) => (
+                <div
+                  className="py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
+                  key={user.id}
                 >
-                  <img src={Trash} alt="" />
-                  Remove
-                </p>
-              </div>
-            ))}
+                  <p className="text-grey500 text-[14px] font-[400]">
+                    {user?.first_name}
+                    {" - "}
+                    {user?.last_name}
+                  </p>
+                  <p
+                    className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                    onClick={() => handleWarningModal(user?.personal_email)}
+                  >
+                    <img src={Trash} alt="" />
+                    Remove
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p className="text-grey500 text-[14px] font-[400] text-center">
+                No employees to display.
+              </p>
+            )}
           </div>
         </div>
       </MenuModal>
@@ -857,25 +1007,33 @@ const SettingsPage = () => {
       </MenuModal>
 
       <MenuModal isOpen={warningModal} onClose={() => setWarningModal(false)}>
-        <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
-          <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
-            <img
-              className=" cursor-pointer"
-              src={WarningIcon}
-              alt=""
-              onClick={() => setSuccessModal(false)}
-            />
-            <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
-              Are you sure you want to remove this employee?
-            </p>
+        <div className=" absolute bg-white w-full bottom-0">
+          <div
+            className=" cursor-pointer flex items-center justify-end p-[15px]"
+            onClick={() => setWarningModal(false)}
+          >
+            <img src={Back} alt="" />
+          </div>
+          <div className="flex items-center justify-center">
+            <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
+              <img
+                className=" cursor-pointer"
+                src={WarningIcon}
+                alt=""
+                onClick={() => setSuccessModal(false)}
+              />
+              <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
+                Are you sure you want to remove this employee?
+              </p>
 
-            <button
-              type="submit"
-              onClick={handleDeleteSuccessModal}
-              className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
-            >
-              Proceed
-            </button>
+              <button
+                type="submit"
+                onClick={handleDeleteSuccessModal}
+                className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
+              >
+                Proceed
+              </button>
+            </div>
           </div>
         </div>
       </MenuModal>

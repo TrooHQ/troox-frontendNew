@@ -376,7 +376,7 @@ export const CategoryDetails = () => {
                   {totalCount.totalPrice?.toLocaleString() || 0.0}
                 </p>
               </div>
-              <Link to="/basket">
+              <Link to="/demo/basket/selfcheckout">
                 <p className=" text-white  text-[36px] font-[500] py-[14px] px-[38px] rounded-[5px] bg-[#F38D41]">
                   Checkout
                 </p>

@@ -1,12 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
-// import { GiShoppingCart } from "react-icons/gi";
-// import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
-// import Add from "../assets/plusIconRound.svg";
-// import Image from "../assets/FriedRice.png";
-// import Minus from "../assets/MinusRound.svg";
 
 import Minus from "../assets/Minus.svg";
 import Add from "../assets/add.svg";
@@ -16,22 +11,7 @@ import {
 } from "../../slices/BasketSlice";
 import { TiDelete } from "react-icons/ti";
 
-// const menuItems = [
-//   {
-//     name: "Rice",
-//     price: "From ₦3000",
-//     image: Image,
-//     details: "Crispy fried ankara straight from the oven",
-//   },
-//   {
-//     name: "Rice",
-//     price: "From ₦3000",
-//     image: Image,
-//     details: "Crispy fried ankara straight from the oven",
-//   },
-// ];
-
-export const Basket = () => {
+export const InRoomBasket = () => {
   const navigate = useNavigate();
   const basketDetails = useSelector((state: RootState) => state.basket);
   const dispatch = useDispatch();
@@ -60,7 +40,7 @@ export const Basket = () => {
               <span className="font-bold">{basketDetails?.customerName}</span>
             </p>
             <p>
-              Table Number:{" "}
+              Room Number:{" "}
               <span className="font-bold">
                 {basketDetails?.customerTableNumber}
               </span>
@@ -75,7 +55,7 @@ export const Basket = () => {
                 <div className="mx-[24px]  border-b pb-[16px] border-[#E7E7E7] mt-[16px]">
                   <div className="grid gap-[8px]">
                     <div className="  flex items-start justify-between gap-[20px] place-items-center">
-                      <Link to={`/demo/menu-details/${item.id}/orderandpay`}>
+                      <Link to={`/demo/menu-details/${item.id}/in_room_dining`}>
                         <p className="text-[16px] text-[#121212] font-[500]">
                           <span className="pr-2">{item.quantity}x</span>
                           {item.name}
@@ -174,112 +154,12 @@ export const Basket = () => {
               >
                 Cancel
               </p>
-              <Link to="/demo/tip/orderandpay">
+              <Link to="/demo/tip/in_room_dining">
                 <p className="inline font-[500] text-[16px] rounded-[5px] bg-[#FF0000] text-white py-[10px] px-[24px]">
                   Proceed to Pay
                 </p>
               </Link>
             </div>
-
-            {/* <div className=" ">
-              <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
-                People also ordered for
-              </p>
-
-              <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
-                {menuItems.map((menu, index) => (
-                  <div key={index} className="flex-shrink-0 w-[280px]">
-                    <div className="flex items-center justify-between">
-                      <div className="w-[180px]">
-                        <p className="text-[16px] text-[#121212] font-[500]">
-                          {menu.name}
-                        </p>
-                        <p className="text-[12px] text-[#121212]">
-                          {menu.details}
-                        </p>
-                      </div>
-                      <div>
-                        <img
-                          src={menu.image}
-                          alt={menu.name}
-                          className="h-[80px] w-[80px] object-cover rounded-[8px]"
-                        />
-                      </div>
-                    </div>
-                    <div className="pt-[8px] flex items-center justify-between">
-                      <p className="text-[16px] text-[#121212] font-[500]">
-                        {menu.price}
-                      </p>
-                      <div className="w-[100px]">
-                        <div className="flex items-center justify-between">
-                          <img
-                            src={Minus}
-                            alt="decrement"
-                            className="cursor-pointer"
-                          />
-                          <p className="text-[16px] font-[500]">1</p>
-                          <img
-                            src={Add}
-                            alt="increment"
-                            className="cursor-pointer"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className=" ">
-              <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
-                Recommended Items
-              </p>
-
-              <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
-                {menuItems.map((menu, index) => (
-                  <div key={index} className="flex-shrink-0 w-[280px]">
-                    <div className="flex items-center justify-between">
-                      <div className="w-[180px]">
-                        <p className="text-[16px] text-[#121212] font-[500]">
-                          {menu.name}
-                        </p>
-                        <p className="text-[12px] text-[#121212]">
-                          {menu.details}
-                        </p>
-                      </div>
-                      <div>
-                        <img
-                          src={menu.image}
-                          alt={menu.name}
-                          className="h-[80px] w-[80px] object-cover rounded-[8px]"
-                        />
-                      </div>
-                    </div>
-                    <div className="pt-[8px] flex items-center justify-between">
-                      <p className="text-[16px] text-[#121212] font-[500]">
-                        {menu.price}
-                      </p>
-                      <div className="w-[100px]">
-                        <div className="flex items-center justify-between">
-                          <img
-                            src={Minus}
-                            alt="decrement"
-                            className="cursor-pointer"
-                          />
-                          <p className="text-[16px] font-[500]">1</p>
-                          <img
-                            src={Add}
-                            alt="increment"
-                            className="cursor-pointer"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
           </div>
         )}
       </div>

@@ -12,7 +12,7 @@ interface TopMenuNavProps {
   children?: ReactNode;
 }
 
-const TopMenuNav: React.FC<TopMenuNavProps> = ({
+const InRoomTopMenuNav: React.FC<TopMenuNavProps> = ({
   exploreMenuText = "Explore Menu",
   bgColor = "#FF0000",
   textColor = "#FFFFFF",
@@ -25,11 +25,11 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
   const [isSticky, setSticky] = useState(false);
 
   const hideCartOnPaths = [
-    "/demo/receipt/orderandpay",
-    "/demo/get-receipt/orderandpay",
-    "/demo/basket/orderandpay",
-    "/demo/payment-type/orderandpay",
-    "/demo/tip/orderandpay",
+    "/demo/receipt/in_room_dining",
+    "/demo/get-receipt/in_room_dining",
+    "/demo/basket/in_room_dining",
+    "/demo/payment-type/in_room_dining",
+    "/demo/tip/in_room_dining",
   ];
   const hideCart = hideCartOnPaths.includes(location.pathname);
 
@@ -83,7 +83,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
         </div>
         <div className="justify-self-end px-4">
           {!hideCart && (
-            <Link to="/demo/basket/orderandpay">
+            <Link to="/demo/basket/in_room_dining">
               {id && id.length !== 0 ? (
                 <img src={CartFill} alt="Cart" />
               ) : (
@@ -98,4 +98,4 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
   );
 };
 
-export default TopMenuNav;
+export default InRoomTopMenuNav;

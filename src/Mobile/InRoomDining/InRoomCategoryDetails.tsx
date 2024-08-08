@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Minus from "../assets/Minus.svg";
 import Add from "../assets/add.svg";
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -34,18 +34,9 @@ interface Details extends MenuItem {
   menu_group_name: string;
   menu_item_name: string;
   menu_item_image: string;
-
-  // name: string;
-  // business_name: string;
-  // menu_category_name: string;
-  // menu_group_name: string;
-  // menu_item_image: string;
 }
-// interface Group {
-//   menu_category_name: string;
-//   name: string;
-// }
-export const CategoryDetails = () => {
+
+export const InRoomCategoryDetails = () => {
   const [menuGroup, setMenuGroup] = useState<Details[]>([]);
   const [menuItems, setMenuItems] = useState<Details[]>([]);
   const [loading, setLoading] = useState(false);
@@ -243,7 +234,7 @@ export const CategoryDetails = () => {
                         key={index}
                         // onClick={() => openModal(menu._id)}
                       >
-                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                        <Link to={`/demo/menu-details/${menu._id}/in_room_dining`}>
                           <div>
                             <div className="relative">
                               <img
@@ -292,7 +283,7 @@ export const CategoryDetails = () => {
 
                         <div className="">
                           <Link
-                            to={`/demo/menu-details/${menu._id}/orderandpay`}
+                            to={`/demo/menu-details/${menu._id}/in_room_dining`}
                           >
                             <img
                               src={menu.menu_item_image}
@@ -334,7 +325,7 @@ export const CategoryDetails = () => {
                           ) : (
                             <div className="">
                               <Link
-                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                                to={`/demo/menu-details/${menu._id}/in_room_dining`}
                               >
                                 <div className="flex items-center justify-end">
                                   <img src={Add} alt="add" />
@@ -361,7 +352,7 @@ export const CategoryDetails = () => {
 
                 <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
               </div>
-              <Link to="/demo/basket/orderandpay">
+              <Link to="/demo/basket/in_room_dining">
                 <p className="text-[16px] font-[500]">View Basket</p>
               </Link>
             </div>

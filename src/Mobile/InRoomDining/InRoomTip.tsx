@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { setTip } from "../../slices/BasketSlice";
 
-export const Tip = () => {
+export const InRoomTip = () => {
   const navigate = useNavigate();
   const totalPrice = useSelector(
     (state: RootState) => state.basket?.totalPrice
@@ -65,7 +65,7 @@ export const Tip = () => {
     setSelectedTip(null);
     setCustomAmount(null);
     dispatch(setTip(null));
-    navigate("/demo/payment-type/orderandpay");
+    navigate("/demo/payment-type/in_room_dining");
   };
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export const Tip = () => {
           >
             No Tip
           </p>
-          <Link to="/demo/payment-type/orderandpay">
+          <Link to="/demo/payment-type/in_room_dining">
             <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#FF0000] py-[10px] px-[56px]">
               Add Tip
             </p>

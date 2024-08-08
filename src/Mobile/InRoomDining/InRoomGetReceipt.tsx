@@ -1,7 +1,7 @@
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Restaurant_Logo.svg";
-export const GetReceipt = () => {
+export const InRoomGetReceipt = () => {
   const url = sessionStorage.getItem("url");
 
   return (

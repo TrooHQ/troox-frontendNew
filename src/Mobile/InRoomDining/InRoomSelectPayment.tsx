@@ -1,4 +1,4 @@
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import System from "../../SelfCheckout/assets/system.png";
@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
-export const SelectPayment = () => {
+export const InRoomSelectPayment = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -63,11 +63,6 @@ export const SelectPayment = () => {
   const token = userDetails?.userData?.token;
   const handlePayment = async () => {
     try {
-      // if (!password || !confirmPassword || !token) {
-      //   setError("All fields are required!");
-      //   return;
-      // }
-
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadUserOrder`,
@@ -83,7 +78,7 @@ export const SelectPayment = () => {
       toast.success("Order has been Made successfully");
       dispatch(clearBasket());
       // dispatch(resetBusinessDetails());
-      navigate("/demo/receipt/orderandpay");
+      navigate("/demo/receipt/in_room_dining");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -241,31 +236,6 @@ export const SelectPayment = () => {
               </div>
             </div>
           )}
-          {/* {selectedOption === "Cash" && (
-            <div className="">
-              <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
-                Cash
-              </p>
-              <hr className=" border-[#929292] border" />
-              <div className=" my-[40px] max-w-[566px] mx-auto text-center">
-                <p className=" text-[14px]  font-[400] text-[#121212]">
-                  Make your cash payment with the cashier
-                </p>
-
-                <div className=" flex justify-center">
-                  <img src={Money} alt="" className=" mt-[40px]" />
-                </div>
-              </div>
-              <div className=" flex items-center  justify-center">
-                <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[18px] px-[16px]"
-                  onClick={handlePayment}
-                >
-                  {loading ? "Making Payment..." : "Proceed to Pay"}
-                </p>
-              </div>
-            </div>
-          )} */}
         </div>
       )}
     </div>

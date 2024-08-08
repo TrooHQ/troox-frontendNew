@@ -1,7 +1,7 @@
-import TopMenuNav from "./TopMenuNav";
+import TopMenuNav from "./InRoomTopMenuNav";
 import { Link } from "react-router-dom";
 
-export const Receipt = () => {
+export const InRoomReceipt = () => {
   return (
     <div className="  ">
       <TopMenuNav exploreMenuText="Select Payment" />
@@ -20,7 +20,7 @@ export const Receipt = () => {
           </div>
         </div>
 
-        <Link to="/demo/get-receipt/orderandpay">
+        <Link to="/demo/get-receipt/in_room_dining">
           <div className=" flex items-center justify-center">
             <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
               Email

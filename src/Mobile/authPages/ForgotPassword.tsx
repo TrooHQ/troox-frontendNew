@@ -27,7 +27,7 @@ const ForgotPassword = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("Password reset token sent successfully");
-      history("/create-password");
+      history("/demo/create-password/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
