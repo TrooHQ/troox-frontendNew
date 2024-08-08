@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
-import { toast } from "react-toastify";
 
 interface MenuCategory {
   _id: string;

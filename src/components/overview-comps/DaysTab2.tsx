@@ -39,7 +39,9 @@ const DaysTab2 = ({
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
     setDateRange(dateStrings);
     // setOpen(false);
+    console.log(dates);
   };
+  console.log(dateRange);
 
   return (
     <Box sx={{ position: "relative" }}>

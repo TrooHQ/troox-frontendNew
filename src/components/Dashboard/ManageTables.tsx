@@ -82,7 +82,6 @@ const ManageTables: React.FC = () => {
   const [location, setLocation] = useState("");
   const [tableNumber, setTableNumber] = useState("1");
   const [loading, setLoading] = useState(false);
-  const [deletingItem, setDeletingItem] = useState(true);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -129,11 +128,7 @@ const ManageTables: React.FC = () => {
     };
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/asset/generateBusinessAsset/`,
-        payload,
-        headers
-      );
+      await axios.post(`${SERVER_DOMAIN}/asset/generateBusinessAsset/`, payload, headers);
       setAddModifierModal(false);
       dispatch(getRooms());
       dispatch(getTables());

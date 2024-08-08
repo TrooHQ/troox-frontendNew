@@ -41,7 +41,7 @@ const VerifyAccount = () => {
   const resendOTP = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
+      await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
         email,
       });
       setLoading(false);
@@ -66,7 +66,7 @@ const VerifyAccount = () => {
     try {
       setLoading(true);
       const token = parseInt(digits.join(""));
-      const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
+      await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
         token,
       });
       setLoading(false);
