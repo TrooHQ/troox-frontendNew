@@ -22,6 +22,9 @@ import AddMenuCategory from "./AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
 import { fetchMenuCategories } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
+import { toast } from "react-toastify";
 // import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
@@ -43,8 +46,6 @@ const MenuBuilder = () => {
   const categories = useSelector((state: any) => state.menu.categories);
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
-  console.log(categories, "aaa", selectedBranch);
-
   useEffect(() => {
     dispatch(fetchMenuCategories(selectedBranch.id));
   }, [selectedBranch]);
@@ -61,10 +62,21 @@ const MenuBuilder = () => {
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
 
+  const [groupName, setGroupName] = useState("");
+  const [applyPriceToAll, setApplyPriceToAll] = useState(false);
+
+  const handleGroupName = (value: string) => {
+    setGroupName(value);
+  };
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setApplyPriceToAll(event.target.value === "yes");
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
   };
-  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOptionChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
   };
   const handleAddMenu = () => {
@@ -116,7 +128,7 @@ const MenuBuilder = () => {
       }[];
     }[]
   >([]);
-  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(null);
+  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0].name || null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [menuType, setMenuType] = useState<string>("");
 
@@ -128,6 +140,42 @@ const MenuBuilder = () => {
       // Set submenu content with type included
       setSubmenuContent([{ type: category.name, data: [] }]);
       setActiveSubMenu(category.name);
+    }
+  };
+
+  const [menuGroupLoading, setMenuGroupLoading] = useState(false);
+  console.log(activeMainMenu);
+  const handleSaveMenuGroup = async () => {
+    setMenuGroupLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuGroup`,
+        {
+          category_name: activeMainMenu,
+          group_name: groupName,
+          branch_id: selectedBranch.id,
+          price_to_all_items: applyPriceToAll,
+        },
+        headers
+      );
+      console.log(response);
+      toast.success(response.data.message || "Menu group added successfully.");
+      setGroupName("");
+      setApplyPriceToAll(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || "An error occurred. Please try again.");
+    } finally {
+      setMenuGroupLoading(false);
+      setAddMenuGroup(false);
     }
   };
 
@@ -420,10 +468,10 @@ const MenuBuilder = () => {
                   <div className=" grid gap-[32px] lg:gap-[32px] text-[16px] font-[400] text-grey200">
                     <CustomInput
                       type="text"
-                      label="Enter menu name"
-                      value={userData.firstName}
+                      label="Enter group name"
+                      value={groupName}
                       error=""
-                      onChange={(newValue) => handleInputChange("firstName", newValue)}
+                      onChange={(newValue) => handleGroupName(newValue)}
                     />
 
                     {/* <CustomSelect2
@@ -442,9 +490,9 @@ const MenuBuilder = () => {
                           id="yes"
                           name="options"
                           value="yes"
-                          checked={selectedOption === "yes"}
+                          checked={applyPriceToAll === true}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${selectedOption === "yes" ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === true ? " bg-purple500" : ""}`}
                         />
                         <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
@@ -455,9 +503,9 @@ const MenuBuilder = () => {
                           id="no"
                           name="options"
                           value="no"
-                          checked={selectedOption === "no"}
+                          checked={applyPriceToAll === false}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${selectedOption === "no" ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === false ? " bg-purple500" : ""}`}
                         />
                         <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
@@ -474,17 +522,8 @@ const MenuBuilder = () => {
                         onChange={(newValue) => handleInputChange("lastName", newValue)}
                       />
                     )}
-                    {/* <CustomInput
-                      type="text"
-                      label="Menu code"
-                      value=""
-                      error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
-                    /> */}
 
-                    <div className="">
+                    {/* <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
@@ -514,7 +553,7 @@ const MenuBuilder = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -529,9 +568,11 @@ const MenuBuilder = () => {
 
                   <div
                     className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                    onClick={handleSendInvite}
+                    onClick={handleSaveMenuGroup}
                   >
-                    <button className=" text-[16px]">Save Menu</button>
+                    <button className=" text-[16px]">
+                      {menuGroupLoading ? "Saving..." : "Save Menu"}
+                    </button>
                   </div>
                 </div>
               </div>
