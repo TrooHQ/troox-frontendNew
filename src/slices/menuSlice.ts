@@ -74,29 +74,30 @@ export const fetchMenuCategories = createAsyncThunk<
   }
 });
 
-export const fetchMenuGroups = createAsyncThunk<MenuGroup[], string, { rejectValue: string }>(
-  "menu/fetchMenuGroups",
-  async (branch_id: string, { rejectWithValue }) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get<MenuGroupResponse>(
-        `${SERVER_DOMAIN}/menu/getAllMenuGroup/?branch_id=${branch_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      return response.data.data;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue("An error occurred. Please try again later.");
+export const fetchMenuGroups = createAsyncThunk<
+  MenuGroup[],
+  { branch_id: string; menu_category_name: any },
+  { rejectValue: string }
+>("menu/fetchMenuGroups", async ({ branch_id, menu_category_name }, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get<MenuGroupResponse>(
+      `${SERVER_DOMAIN}/menu/getAllMenuGroup/?branch_id=${branch_id}&menu_category_name=${menu_category_name}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(error.response.data.message);
+    } else {
+      return rejectWithValue("An error occurred. Please try again later.");
     }
   }
-);
+});
 
 const menuSlice = createSlice({
   name: "menu",

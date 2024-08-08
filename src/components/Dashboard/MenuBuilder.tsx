@@ -25,6 +25,7 @@ import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { convertToBase64 } from "../../utils/imageToBase64";
 // import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
@@ -46,10 +47,6 @@ const MenuBuilder = () => {
   const { categories, menuGroups } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
   console.log(menuGroups);
-  useEffect(() => {
-    dispatch(fetchMenuCategories(selectedBranch.id));
-    dispatch(fetchMenuGroups(selectedBranch.id));
-  }, [selectedBranch]);
 
   const userData = useSelector((state: RootState) => state.inviteUser);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -64,19 +61,43 @@ const MenuBuilder = () => {
   const [addModifierModar, setAddModifierModal] = useState(false);
 
   const [groupName, setGroupName] = useState("");
+  const [menuName, setMenuName] = useState("");
+  const [menuDescription, setMenuDescription] = useState("");
+  const [menuPrice, setMenuPrice] = useState("");
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
 
   const handleGroupName = (value: string) => {
     setGroupName(value);
+  };
+  const handleMenuName = (value: string) => {
+    setMenuName(value);
+  };
+  const handleMenuDescription = (value: any) => {
+    console.log(value);
+    setMenuDescription(value);
+  };
+  const handleMenuPrice = (value: string) => {
+    setMenuPrice(value);
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApplyPriceToAll(event.target.value === "yes");
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const [imageName, setImageName] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+
+  const handleFileChange = async (e: any) => {
+    const file = e.target.files[0];
+    setImageName(file.name);
+    try {
+      const base64 = await convertToBase64(file);
+      setImage(base64 as string);
+    } catch (error) {
+      console.error("Error converting file to base64:", error);
+    }
   };
+
   const handleOptionChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
   };
@@ -140,12 +161,20 @@ const MenuBuilder = () => {
       setActiveMainMenu(category.name);
       // Set submenu content with type included
       setSubmenuContent([{ type: category.name, data: [] }]);
-      setActiveSubMenu(category.name);
     }
   };
+  useEffect(() => {
+    setActiveSubMenu(menuGroups[0].name);
+  }, [dispatch, menuGroups]);
 
   const [menuGroupLoading, setMenuGroupLoading] = useState(false);
-  console.log(activeMainMenu);
+  console.log(activeMainMenu, activeSubMenu);
+
+  useEffect(() => {
+    dispatch(fetchMenuCategories(selectedBranch.id));
+    dispatch(fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu }));
+  }, [selectedBranch, activeMainMenu]);
+
   const handleSaveMenuGroup = async () => {
     setMenuGroupLoading(true);
 
@@ -168,9 +197,53 @@ const MenuBuilder = () => {
         headers
       );
       console.log(response);
+      dispatch(
+        fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
+      );
       toast.success(response.data.message || "Menu group added successfully.");
+
       setGroupName("");
       setApplyPriceToAll(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || "An error occurred. Please try again.");
+    } finally {
+      setMenuGroupLoading(false);
+      setAddMenuGroup(false);
+    }
+  };
+
+  const handleSaveMenuItem = async () => {
+    setMenuGroupLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuItem`,
+        {
+          menu_category_name: activeMainMenu,
+          branch_id: selectedBranch.id,
+          menu_group_name: activeSubMenu,
+          menu_item_name: menuName,
+          description: menuDescription,
+          price: Number(menuPrice),
+          image,
+        },
+        headers
+      );
+      console.log(response);
+      toast.success(response.data.message || "Menu group added successfully.");
+      setMenuName("");
+      setMenuDescription("");
+      setMenuPrice("");
+      setImage("");
+      setAddMenuItem(false);
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message || "An error occurred. Please try again.");
@@ -212,7 +285,7 @@ const MenuBuilder = () => {
                         activeMainMenu === category.name && "bg-purple100 text-purple600 font-[500]"
                       } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
-                      {truncateText(category.name, 15)}
+                      {truncateText(category.name, 13)}
                       {activeMainMenu === category.name ? (
                         <img src={activeArrow} alt="activearrow" />
                       ) : (
@@ -262,6 +335,7 @@ const MenuBuilder = () => {
                         </div>
                       </div>
                     </div>
+
                     <div className=" flex-grow space-y-[16px]">
                       <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
                       <div className=" flex items-start justify-between ">
@@ -596,188 +670,30 @@ const MenuBuilder = () => {
                     <CustomInput
                       type="text"
                       label="Enter menu item name"
-                      value={userData.firstName}
+                      value={menuName}
                       error=""
-                      onChange={(newValue) => handleInputChange("firstName", newValue)}
+                      onChange={(newValue) => handleMenuName(newValue)}
                     />
-
-                    {/* <CustomSelect2
-                      options={["Channel1", "Channel2", "Channel3"]}
-                      placeholder="Channels"
-                    /> */}
+                    <div className="">
+                      <textarea
+                        className=" w-full h-[153px] border text-[16px] font-[400] text-[#929292] border-gray-300 rounded-md p-2 outline-none"
+                        value={menuDescription}
+                        placeholder="Enter description of the menu item"
+                        onChange={(e) => handleMenuDescription(e.target.value)}
+                      />
+                    </div>
 
                     <div className="">
                       <p className="text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
+
                       <CustomInput
                         type="text"
                         label="Enter price"
-                        value=""
+                        value={menuPrice}
                         error=""
-                        onChange={(newValue) => handleInputChange("lastName", newValue)}
+                        onChange={(newValue) => handleMenuPrice(newValue)}
                       />
                     </div>
-                    {/* <div className="">
-                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
-                      <p className="text-[14px] font-[400] text-grey500">
-                        Choose a pricing option.
-                      </p>
-                      <div className="flex items-center my-[8px]">
-                        <input
-                          type="radio"
-                          id="base"
-                          name="options"
-                          value="base"
-                          checked={selectedOption === "base"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "base" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="base"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
-                          Base Price
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="range"
-                          name="options"
-                          value="range"
-                          checked={selectedOption === "range"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "range" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="range"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
-                          Range Price
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="time"
-                          name="options"
-                          value="time"
-                          checked={selectedOption === "time"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "time" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="time"
-                          className="text-grey500 text-[14px] font-[400]"
-                        >
-                          Time Specific Price
-                        </label>
-                      </div>
-
-                      {selectedOption === "base" && (
-                        <>
-                          <div className=" ">
-                            <CustomInput
-                              type="text"
-                              label="Enter price"
-                              value=""
-                              error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
-                            />
-                          </div>
-                        </>
-                      )}
-                      {selectedOption === "range" && (
-                        <>
-                          <div className=" flex items-center gap-[8px] ">
-                            <div className=" w-[180px]">
-                              <CustomInput
-                                type="text"
-                                label="Pricing name"
-                                value=""
-                                error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
-                              />
-                            </div>
-                            <div className=" flex-1">
-                              <CustomInput
-                                type="text"
-                                label="Enter price"
-                                value=""
-                                error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
-                              />
-                            </div>
-                            <p className=" flex hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[13px] px-[4px] py-[10px] rounded">
-                              <img src={AddWhite} alt="" />
-                              New Pricing
-                            </p>
-                          </div>
-                        </>
-                      )}
-                      {selectedOption === "time" && (
-                        <>
-                          <div className=" grid gap-[8px]">
-                            <CustomInput
-                              type="text"
-                              label="Base Price"
-                              value=""
-                              error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
-                            />
-
-                            <div className=" flex items-center gap-[8px] ">
-                              <div className="  flex-1">
-                                <CustomInput
-                                  type="text"
-                                  label="Enter Price"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                              <div className="w-[100px]">
-                                <CustomInput
-                                  type="date"
-                                  label="From:"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                              <div className=" w-[100px]">
-                                <CustomInput
-                                  type="date"
-                                  label="To:"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div> */}
 
                     <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
@@ -809,29 +725,13 @@ const MenuBuilder = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
-
-                    {/* <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
-                        Tags
-                      </p>
-                      <div className=" flex items-center gap-[8px] justify-center">
-                        <div className=" flex-grow  ">
-                          <CustomInput
-                            type="text"
-                            label="Enter Tag Name"
-                            value={userData.department}
-                            error=""
-                            onChange={(newValue) =>
-                              handleInputChange("department", newValue)
-                            }
-                          />
+                      {image && (
+                        <div className="mt-4">
+                          <p className="text-[14px] text-grey500">Image: {imageName}</p>
+                          <img src={image} alt="Uploaded Preview" className="mt-2 w-full h-auto" />
                         </div>
-                        <p className=" hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[16px] px-[24px] py-[10px] rounded">
-                          Create Tag
-                        </p>
-                      </div>
-                    </div> */}
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -845,7 +745,9 @@ const MenuBuilder = () => {
                   </div>
 
                   <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
-                    <button className=" text-[16px]">Save Menu Item</button>
+                    <button onClick={handleSaveMenuItem} className=" text-[16px]">
+                      {menuGroupLoading ? "Saving..." : "Save Menu Item"}
+                    </button>
                   </div>
                 </div>
               </div>
