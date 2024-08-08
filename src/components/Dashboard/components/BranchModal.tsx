@@ -117,12 +117,7 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
               value={email}
               onChange={(value: string) => handleInputChange("email", value)}
             />
-            {/* <CustomInput
-              label="City"
-              type="text"
-              value={city}
-              onChange={(value: string) => handleInputChange("city", value)}
-            /> */}
+
             <CustomInput
               label="Phone Number"
               type="tel"
