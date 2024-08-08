@@ -150,7 +150,7 @@ const MenuBuilder = () => {
       }[];
     }[]
   >([]);
-  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0].name || null);
+  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0]?.name || null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [menuType, setMenuType] = useState<string>("");
 
@@ -172,9 +172,13 @@ const MenuBuilder = () => {
 
   // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
   useEffect(() => {
-    dispatch(fetchMenuCategories(selectedBranch.id));
-    dispatch(fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu }));
-    dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
+    selectedBranch && dispatch(fetchMenuCategories(selectedBranch.id));
+    selectedBranch &&
+      dispatch(
+        fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
+      );
+    selectedBranch &&
+      dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
   }, [selectedBranch, activeMainMenu, activeSubMenu]);
 
   // Update submenuContent when menuItems change
