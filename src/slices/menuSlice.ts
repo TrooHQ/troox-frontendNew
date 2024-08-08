@@ -34,9 +34,28 @@ interface MenuGroupResponse {
   data: MenuGroup[];
 }
 
+interface MenuItem {
+  _id: string;
+  created_by: string;
+  branch: string;
+  menu_category_name: string;
+  menu_group_name: string;
+  menu_item_name: string;
+  menu_item_price: number;
+  menu_item_image: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface MenuItemResponse {
+  data: MenuItem[];
+}
+
 interface MenuState {
   categories: MenuCategory[];
   menuGroups: MenuGroup[];
+  menuItems: MenuItem[];
   loading: boolean;
   error: string | null;
 }
@@ -44,6 +63,7 @@ interface MenuState {
 const initialState: MenuState = {
   categories: [],
   menuGroups: [],
+  menuItems: [],
   loading: false,
   error: null,
 };
@@ -99,6 +119,31 @@ export const fetchMenuGroups = createAsyncThunk<
   }
 });
 
+export const fetchMenuItems = createAsyncThunk<
+  MenuItem[],
+  { branch_id: string; menu_group_name: any },
+  { rejectValue: string }
+>("menu/fetchMenuItems", async ({ branch_id, menu_group_name }, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get<MenuItemResponse>(
+      `${SERVER_DOMAIN}/menu/filterMenuItems/?branch_id=${branch_id}&menu_group_name=${menu_group_name}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue(error.response.data.message);
+    } else {
+      return rejectWithValue("An error occurred. Please try again later.");
+    }
+  }
+});
+
 const menuSlice = createSlice({
   name: "menu",
   initialState,
@@ -126,6 +171,18 @@ const menuSlice = createSlice({
         state.menuGroups = action.payload;
       })
       .addCase(fetchMenuGroups.rejected, (state, action: PayloadAction<string | undefined>) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch menu categories";
+      })
+      .addCase(fetchMenuItems.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMenuItems.fulfilled, (state, action: PayloadAction<MenuItem[]>) => {
+        state.loading = false;
+        state.menuItems = action.payload;
+      })
+      .addCase(fetchMenuItems.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch menu categories";
       });

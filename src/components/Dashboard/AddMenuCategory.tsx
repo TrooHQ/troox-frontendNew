@@ -9,6 +9,7 @@ import CustomSelect5 from "../inputFields/CustomSelect5";
 import { AppDispatch } from "../../store/store";
 import { fetchBranches } from "../../slices/branchSlice";
 import { toast } from "react-toastify";
+import { fetchMenuCategories } from "../../slices/menuSlice";
 
 const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -88,6 +89,8 @@ const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
       );
       console.log(response);
       if (response.status === 200) {
+        dispatch(fetchMenuCategories(selectedBranchId));
+
         toast.success(response.data.message || "Menu category added successfully.");
         setIsModalOpen(false);
       } else {

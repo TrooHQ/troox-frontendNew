@@ -20,7 +20,7 @@ import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import Modifiers from "./components/Modifiers";
 import AddMenuCategory from "./AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
-import { fetchMenuCategories, fetchMenuGroups } from "../../slices/menuSlice";
+import { fetchMenuCategories, fetchMenuGroups, fetchMenuItems } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
@@ -44,9 +44,9 @@ interface MenuItem {
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { categories, menuGroups } = useSelector((state: any) => state.menu);
+  const { categories, menuGroups, menuItems } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-  console.log(menuGroups);
+  console.log(menuItems, "wwww");
 
   const userData = useSelector((state: RootState) => state.inviteUser);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -163,17 +163,37 @@ const MenuBuilder = () => {
       setSubmenuContent([{ type: category.name, data: [] }]);
     }
   };
-  useEffect(() => {
-    setActiveSubMenu(menuGroups[0].name);
-  }, [dispatch, menuGroups]);
+  // useEffect(() => {
+  //   setActiveSubMenu(menuGroups[0].name);
+  // }, [dispatch, menuGroups]);
 
   const [menuGroupLoading, setMenuGroupLoading] = useState(false);
   console.log(activeMainMenu, activeSubMenu);
 
+  // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
   useEffect(() => {
     dispatch(fetchMenuCategories(selectedBranch.id));
     dispatch(fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu }));
-  }, [selectedBranch, activeMainMenu]);
+    dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
+  }, [selectedBranch, activeMainMenu, activeSubMenu]);
+
+  // Update submenuContent when menuItems change
+  useEffect(() => {
+    if (menuItems.length > 0) {
+      setSubmenuContent([
+        {
+          type: activeSubMenu as any,
+          data: menuItems.map((item: any) => ({
+            img: item.menu_item_image,
+            price: item.menu_item_price.toString(),
+            name: item.menu_item_name,
+          })),
+        },
+      ]);
+    } else {
+      setSubmenuContent([{ type: activeSubMenu as any, data: [] }]);
+    }
+  }, [menuItems, activeSubMenu]);
 
   const handleSaveMenuGroup = async () => {
     setMenuGroupLoading(true);
@@ -238,6 +258,7 @@ const MenuBuilder = () => {
         headers
       );
       console.log(response);
+      dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
       toast.success(response.data.message || "Menu group added successfully.");
       setMenuName("");
       setMenuDescription("");
@@ -252,7 +273,7 @@ const MenuBuilder = () => {
       setAddMenuGroup(false);
     }
   };
-
+  console.log(subMenuContent, "ffff");
   return (
     <div>
       <DashboardLayout>
@@ -352,31 +373,37 @@ const MenuBuilder = () => {
                         </div>
                       </div>
                       {subMenuContent.map((menuItem, index) => (
-                        <div className="" key={index}>
-                          <div className="grid gap-[8px]">
-                            <div className="flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
-                              <div className="flex gap-[8px]">
-                                {/* Assuming you want to display the image here, update with the correct image source */}
-                                <img src={CoffeeImg} alt="" />
-                                <div className="">
-                                  <p className="text-[12px] font-[400] text-grey300">Item</p>
-                                  {menuItem.data.map((item, itemIndex) => (
-                                    <div key={itemIndex}>
-                                      <p className="leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
-                                        {item.name}
-                                      </p>
-                                      <p className="text-[12px] font-[400] text-grey300">
-                                        Modifier groups (6)
-                                      </p>
-                                      <p className="text-[16px] font-[500] text-grey500">
-                                        {item.price}
-                                      </p>
+                        <div>
+                          {menuItem.data.map((item, itemIndex) => (
+                            <div className="" key={index}>
+                              <div className=" grid gap-[8px]">
+                                <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+                                  <div className="flex gap-[8px] items-center">
+                                    <img src={item.img || CoffeeImg} alt="" />
+
+                                    <div className="">
+                                      <p className="text-[12px] font-[400] text-grey300">Item</p>
+                                      <div key={itemIndex}>
+                                        <p className="leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
+                                          {item.name}
+                                        </p>
+                                        <p className="text-[12px] font-[400] text-grey300">
+                                          Modifier groups (6){" "}
+                                          {/* This is static; you may want to make this dynamic */}
+                                        </p>
+                                      </div>
                                     </div>
-                                  ))}
+                                  </div>
+                                  <div className=" flex">
+                                    <p className="text-[16px] font-[500] text-grey500">
+                                      &#8358;
+                                      {item.price}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
                       ))}
 
