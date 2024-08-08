@@ -67,7 +67,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
-          <Route path="/manage-tables" element={<ManageTables />} />
+          <Route path="/manage-assets" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/menu-list" element={<MenuList />} />

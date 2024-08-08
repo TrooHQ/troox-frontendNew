@@ -144,7 +144,7 @@ const TableList = () => {
   return (
     <div>
       <DashboardLayout>
-        <TopMenuNav pathName="Manage Tables" />
+        <TopMenuNav pathName="Manage Assets" />
         <div className="mt-[40px]">
           {Object.values(data.tables).map((tables, ownerIndex) => (
             <div key={ownerIndex}>
@@ -313,7 +313,7 @@ const TableList = () => {
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 
-                <Link to="/manage-tables">
+                <Link to="/manage-assets">
                   <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                     <button className=" text-[16px]">Save</button>
                   </div>

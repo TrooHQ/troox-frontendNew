@@ -185,7 +185,7 @@ const ManageTables: React.FC = () => {
     };
     try {
       setLoading(true);
-      await axios.delete(
+      const res = await axios.delete(
         `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${group_name}&branch_id=${branch}`,
         headers
       );
@@ -194,6 +194,7 @@ const ManageTables: React.FC = () => {
       setItemToDelete(null);
       setIsDeleteModalOpen(false);
       setActiveMenuIndex(null);
+      toast.success(res.data.message || "Business Asset removed successfully");
     } catch (error) {
       console.error("Error deleting item:", error);
     } finally {

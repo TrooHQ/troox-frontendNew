@@ -145,10 +145,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       ],
     },
     {
-      title: "Manage Tables",
+      title: "Manage Assets",
       gap: false,
       icon: ManageTablesIcon,
-      link: "/manage-tables",
+      link: "/manage-assets",
     },
     {
       title: "Manage Users",
