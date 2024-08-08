@@ -120,7 +120,7 @@ const menuSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMenuGroups.fulfilled, (state, action: PayloadAction<MenuCategory[]>) => {
+      .addCase(fetchMenuGroups.fulfilled, (state, action: PayloadAction<MenuGroup[]>) => {
         state.loading = false;
         state.menuGroups = action.payload;
       })
