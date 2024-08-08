@@ -28,19 +28,6 @@ import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
 // import CancelButton from "../Buttons/CancelButton";
 
-interface MenuItem {
-  type?: string;
-  title: string;
-  data: {
-    type: string;
-    data: {
-      img: string;
-      price: string;
-      name: string;
-    }[];
-  }[];
-}
-
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,7 +36,7 @@ const MenuBuilder = () => {
   console.log(menuItems, "wwww");
 
   const userData = useSelector((state: RootState) => state.inviteUser);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  // const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
@@ -98,9 +85,6 @@ const MenuBuilder = () => {
     }
   };
 
-  const handleOptionChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
-  };
   const handleAddMenu = () => {
     setIsModalOpen(true);
   };
@@ -138,7 +122,6 @@ const MenuBuilder = () => {
     dispatch(sendInvite());
     setIsModalOpen(false);
   };
-  const [subMenu, setSubmenu] = useState<MenuItem[]>([]);
 
   const [subMenuContent, setSubmenuContent] = useState<
     {
@@ -431,7 +414,7 @@ const MenuBuilder = () => {
             </div>
           </div>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <AddMenuCategory userData={userData} setIsModalOpen={setIsModalOpen} />
+            <AddMenuCategory setIsModalOpen={setIsModalOpen} />
           </Modal>
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>
@@ -616,7 +599,7 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    {selectedOption === "yes" && (
+                    {/* {selectedOption === "yes" && (
                       <CustomInput
                         type="text"
                         label="Enter price"
@@ -624,7 +607,7 @@ const MenuBuilder = () => {
                         error=""
                         onChange={(newValue) => handleInputChange("lastName", newValue)}
                       />
-                    )}
+                    )} */}
 
                     {/* <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>

@@ -19,11 +19,6 @@ import { RootState } from "../../store/store";
 // }
 
 const VerifyAccount = () => {
-  // const user = useSelector((state: RootState) => state.user);
-  // console.log("user id", user.id);
-  // console.log(user.user_role);
-  // console.log(user.email_verified);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const history = useNavigate();
@@ -89,7 +84,7 @@ const VerifyAccount = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("User verified successfully");
-      history("/login");
+      history("/demo/login/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -164,8 +159,6 @@ const VerifyAccount = () => {
               >
                 Activate Account
               </button>
-
-              {/* <Button text="Activate account" loading={loading} /> */}
             </div>
           ) : (
             <div className=" mt-[16px]">

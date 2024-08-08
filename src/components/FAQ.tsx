@@ -32,10 +32,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
     personalAddress,
     state,
     country,
-    bankName,
     bankVerificationNumber,
     bankAccountName,
-    bankAccountNumber,
   } = useSelector((state: RootState) => state.register);
 
   const handleInputChange = (field: keyof RootState["register"], value: string) => {
@@ -45,11 +43,11 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
   const [checkedLegalType, setCheckedLegalType] = useState<string>(businessType);
 
   const handleLegalTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setCheckedLegalType(value);
-    handleInputChange("businessType", value);
+    setCheckedLegalType(event.target.value);
+    console.log(event.target.value, "checked");
   };
   const [selectedValue, setSelectedValue] = useState<string>("");
+  console.log(selectedValue);
 
   return (
     <div className="grid gap-3">

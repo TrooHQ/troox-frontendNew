@@ -10,7 +10,7 @@ import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { fetchBranches } from "../../slices/branchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { AppDispatch } from "../../store/store";
 
 export const storeData = {
   id: 1,
@@ -65,7 +65,7 @@ export const CustomAutocomplete = styled(Autocomplete)({
 
 const Overview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: RootState) => state.branches);
+  const { branches } = useSelector((state: any) => state.branches);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
@@ -74,7 +74,7 @@ const Overview: React.FC = () => {
     dispatch(fetchBranches());
   }, [dispatch]);
 
-  const transformedBranches = branches.map((branch) => ({
+  const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,
   }));
 

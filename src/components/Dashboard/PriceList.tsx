@@ -2,7 +2,6 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
-import download from "../../assets/download.png";
 
 import Publish from "../../assets/publish.svg";
 const PriceList = () => {

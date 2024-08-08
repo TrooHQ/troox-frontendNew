@@ -32,10 +32,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
     personalAddress,
     state,
     country,
-    bankName,
     bankVerificationNumber,
     bankAccountName,
-    bankAccountNumber,
   } = useSelector((state: RootState) => state.register);
 
   const handleInputChange = (field: keyof RootState["register"], value: string) => {
@@ -50,6 +48,9 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
     handleInputChange("businessType", value);
   };
   const [selectedValue, setSelectedValue] = useState<string>("");
+
+  console.log(selectedValue);
+
   return (
     <div className="grid gap-3">
       {faqData.map((faq, index) => (

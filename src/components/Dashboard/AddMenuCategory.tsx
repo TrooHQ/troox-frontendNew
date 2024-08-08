@@ -11,7 +11,7 @@ import { fetchBranches } from "../../slices/branchSlice";
 import { toast } from "react-toastify";
 import { fetchMenuCategories } from "../../slices/menuSlice";
 
-const AddMenuCategory = ({ userData, setIsModalOpen }: any) => {
+const AddMenuCategory = ({ setIsModalOpen }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
 

@@ -3,7 +3,7 @@ import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
 import { createBranch } from "../../../slices/branchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/src/store/store";
+import { AppDispatch } from "@/src/store/store";
 
 interface BranchModalProps {
   isModalOpen: boolean;
@@ -12,7 +12,7 @@ interface BranchModalProps {
 
 const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.branches);
+  const { loading, error } = useSelector((state: any) => state.branches);
 
   const [branchName, setBranchName] = useState("");
   const [address, setAddress] = useState("");
@@ -117,12 +117,7 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
               value={email}
               onChange={(value: string) => handleInputChange("email", value)}
             />
-            {/* <CustomInput
-              label="City"
-              type="text"
-              value={city}
-              onChange={(value: string) => handleInputChange("city", value)}
-            /> */}
+
             <CustomInput
               label="Phone Number"
               type="tel"

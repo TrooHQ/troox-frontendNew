@@ -65,7 +65,7 @@ export const Tip = () => {
     setSelectedTip(null);
     setCustomAmount(null);
     dispatch(setTip(null));
-    navigate("/payment-type");
+    navigate("/demo/payment-type/orderandpay");
   };
 
   useEffect(() => {
@@ -114,13 +114,13 @@ export const Tip = () => {
 
         <div className=" mt-[60px] flex items-center justify-center gap-[16px]">
           <p
-            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] text-[#0B7F7C]"
+            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] text-[#FF0000]"
             onClick={handleNoTipClick}
           >
             No Tip
           </p>
-          <Link to="/payment-type">
-            <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#0B7F7C] py-[10px] px-[56px]">
+          <Link to="/demo/payment-type/orderandpay">
+            <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#FF0000] py-[10px] px-[56px]">
               Add Tip
             </p>
           </Link>
