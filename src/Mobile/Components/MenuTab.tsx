@@ -57,6 +57,10 @@ const MenuTab: React.FC = () => {
     setSelectedImage(null);
   };
 
+  const selectedOutletID = useSelector(
+    (state: RootState) => state.outlet.selectedOutletID
+  );
+
   const getGroups = async () => {
     setLoading(true);
     const headers = {
@@ -67,7 +71,7 @@ const MenuTab: React.FC = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getAllMenuGroup/?menu_category_name=${id}`,
+        `${SERVER_DOMAIN}/menu/getAllMenuGroup/?menu_category_name=${id}&branch_id=${selectedOutletID}`,
         headers
       );
 
@@ -92,7 +96,7 @@ const MenuTab: React.FC = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${selectedGroup}`,
+        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${selectedGroup}&branch_id=${selectedOutletID}`,
         headers
       );
       setMenuItems(response.data.data);
@@ -131,42 +135,46 @@ const MenuTab: React.FC = () => {
       {loading && <Loader />}
       <div>
         <div className="flex gap-[38px] text-center mx-[13px] items-center border-b border-grey100 mt-[24px] w-full overflow-x-auto whitespace-nowrap">
-          {menuGroup.map((menu) => (
-            <button
-              key={menu.name}
-              className={`pb-[8px] ${
-                selectedGroup === menu.name
-                  ? "border-b-[4px] border-b-[#E16B07] text-[#121212] text-[16px] flex items-center justify-center font-[500]"
-                  : "text-grey100 font-[400]"
-              }`}
-              onClick={() => {
-                setSelectedGroup(menu.name);
-              }}
-            >
-              {menu.name}
-            </button>
-          ))}
+          {menuGroup.length === 0 ? (
+            <p className="text-center text-[16px] font-[400] text-grey500 mx-auto w-full py-[16px]">
+              No items found
+            </p>
+          ) : (
+            menuGroup.map((menu) => (
+              <button
+                key={menu.name}
+                className={`pb-[8px] ${
+                  selectedGroup === menu.name
+                    ? "border-b-[4px] border-b-[#E16B07] text-[#121212] text-[16px] flex items-center justify-center font-[500]"
+                    : "text-grey100 font-[400]"
+                }`}
+                onClick={() => setSelectedGroup(menu.name)}
+              >
+                {menu.name}
+              </button>
+            ))
+          )}
         </div>
 
         <div>
-          {menuItems.map((menu, index) => (
-            <div key={index}>
-              {selectedGroup === menu.menu_group_name && (
-                <div>
+          {menuItems.length === 0 ? (
+            <p className="text-center text-[16px] font-[400] text-grey500 mx-auto w-full py-[16px]">
+              No items found
+            </p>
+          ) : (
+            menuItems
+              .filter((menu) => selectedGroup === menu.menu_group_name)
+              .map((menu, index) => (
+                <div key={index}>
                   <ul className="grid gap-[8px] px-[16px]">
-                    <div
-                      key={index}
-                      className="flex items-center justify-between border-b py-[8px]"
-                    >
+                    <div className="flex items-center justify-between border-b py-[8px]">
                       <div className="flex items-center gap-[16px]">
-                        <div className="">
-                          <div className="w-[130px] rounded-[8px] overflow-hidden h-[130px]">
-                            <img
-                              src={menu.menu_item_image}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                        <div className="w-[130px] rounded-[8px] overflow-hidden h-[130px]">
+                          <img
+                            src={menu.menu_item_image}
+                            alt={menu.menu_item_name}
+                            className="w-full h-full object-cover"
+                          />
                         </div>
                         <div className="grid gap-[8px]">
                           <p className="text-[16px] font-[500] text-grey500">
@@ -181,14 +189,13 @@ const MenuTab: React.FC = () => {
                         className="cursor-pointer"
                         onClick={() => handleEditModal(menu)}
                       >
-                        <img src={EditIcon} alt="" />
+                        <img src={EditIcon} alt="Edit" />
                       </div>
                     </div>
                   </ul>
                 </div>
-              )}
-            </div>
-          ))}
+              ))
+          )}
         </div>
       </div>
       <Modal isOpen={editModal}>
