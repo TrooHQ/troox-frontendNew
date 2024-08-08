@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 
 interface CustomInputProps {
   label: string;
@@ -19,6 +19,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    // Update isFocused based on the value to ensure the label position is correct
+    setIsFocused(value !== "");
+  }, [value]);
 
   const handleFocus = () => {
     setIsFocused(true);

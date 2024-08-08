@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import PasswordInput from "../inputFields/PasswordInput";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 
 const ResetPassword = () => {

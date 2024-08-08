@@ -1,15 +1,20 @@
 import React, { useRef, useEffect, useState } from "react";
 
+interface Option {
+  label: string;
+  value: string;
+}
+
 interface CustomSelectProps {
   label?: string;
-  options: string[];
+  options: Option[];
   value: string;
   error?: string;
   onChange: (value: string) => void;
   disabledOption?: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({
+const CustomSelect5: React.FC<CustomSelectProps> = ({
   label,
   options,
   value,
@@ -55,8 +60,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             {label}
           </option>
           {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
+            <option key={index} value={option.value}>
+              {option.label}
             </option>
           ))}
         </select>
@@ -79,4 +84,4 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   );
 };
 
-export default CustomSelect;
+export default CustomSelect5;

@@ -1,7 +1,7 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { Close, DeleteForeverOutlined, X } from "@mui/icons-material";
+import { Close, DeleteForeverOutlined } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
@@ -217,7 +217,6 @@ interface ConfirmationDialogState {
 }
 
 const MenuList = () => {
-  const [isEnabled, setIsEnabled] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
 

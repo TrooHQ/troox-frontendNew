@@ -6,9 +6,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
-import { setUserData } from "../../slices/InviteUserSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/rootReducer";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import {
@@ -123,9 +120,6 @@ const TableList = () => {
     },
   };
 
-  const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.inviteUser);
-
   const [tableData, setTableData] = useState({
     tableName: "",
     applyChanges: "",
@@ -146,9 +140,7 @@ const TableList = () => {
   const handleAddModifier = () => {
     setAddModifierModal(true);
   };
-  const handleInputChange = (fieldName: string, value: string) => {
-    dispatch(setUserData({ [fieldName]: value }));
-  };
+
   return (
     <div>
       <DashboardLayout>
@@ -305,6 +297,7 @@ const TableList = () => {
                   )}
                   value={selectedOutlets}
                   onChange={(event, newValue: Outlet[]) => {
+                    event.preventDefault();
                     setSelectedOutlets(newValue);
                   }}
                 />

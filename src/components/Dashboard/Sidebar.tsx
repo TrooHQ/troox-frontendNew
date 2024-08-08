@@ -16,14 +16,11 @@ import HubIcon from "../../assets/hub.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
 import { TextField, Button, Popper, Paper } from "@mui/material";
-import {
-  ArrowCircleRight,
-  ArrowCircleRightOutlined,
-  ArrowDropDown,
-  Search,
-} from "@mui/icons-material";
+import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-material";
 import { CustomAutocomplete } from "./Overview";
-import { allOutlets } from "./OverviewAdmin";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { fetchBranches } from "../../slices/branchSlice";
 interface MenuItem {
   subTitle?: string;
   title?: string;
@@ -40,11 +37,22 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
+  const { branches } = useSelector((state: RootState) => state.branches);
+
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState(allOutlets[0]);
+  const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  const transformedBranches = branches.map((branch) => ({
+    label: branch.branch_name,
+  }));
 
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,7 +61,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
-    setSelectedOutlet(value ?? allOutlets[0]);
+    setSelectedOutlet(value ?? { label: "All outlets" });
     setIsAutoOpen(false);
   };
 
@@ -242,7 +250,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <Paper sx={{ boxShadow: 3 }}>
                 <CustomAutocomplete
                   disablePortal
-                  options={allOutlets}
+                  options={transformedBranches}
                   value={selectedOutlet}
                   onChange={handleSelect}
                   renderInput={(params) => (

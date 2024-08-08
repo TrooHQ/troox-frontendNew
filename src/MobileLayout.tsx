@@ -77,10 +77,7 @@ const MobileLayout = () => {
           <Route path="/:id/explore-menu" element={<MenuPage />} />
           <Route path="/admin-menu" element={<AdminMenuPage />} />
 
-          <Route
-            path="/:id/category-details/:id"
-            element={<CategoryDetails />}
-          />
+          <Route path="/:id/category-details/:id" element={<CategoryDetails />} />
           <Route path="/menu-details/:id" element={<MenuDetails />} />
           <Route path="/:id/menu-page/:id" element={<Menu />} />
           <Route path="/basket" element={<Basket />} />

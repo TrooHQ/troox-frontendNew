@@ -8,8 +8,10 @@ import faqSettingReducer from "../slices/FaqSettingSlice";
 import userReducer from "../slices/UserSlice";
 import businessReducer from "../slices/businessSlice";
 import registerReducer from "../slices/registerSlice";
+import bankRegisterReducer from "../slices/bankRegisterSlice";
 import basketReducer from "../slices/BasketSlice";
 import branchReducer from "../slices/branchSlice";
+import tableReducer from "../slices/TableSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -18,14 +20,25 @@ const rootReducer = combineReducers({
   user: userReducer,
   business: businessReducer,
   register: registerReducer,
+  bankRegister: bankRegisterReducer,
   basket: basketReducer,
   branches: branchReducer,
+  tables: tableReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "inviteUser", "faqSetting", "user", "business", "basket"],
+  whitelist: [
+    "auth",
+    "inviteUser",
+    "branches",
+    "faqSetting",
+    "user",
+    "business",
+    "basket",
+    "tables",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

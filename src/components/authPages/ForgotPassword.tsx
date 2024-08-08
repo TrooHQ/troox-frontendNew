@@ -3,7 +3,7 @@ import axios from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
 import EmailInput from "../inputFields/CustomInput";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api"; // Make sure to import SERVER_DOMAIN
 
 const ForgotPassword = () => {

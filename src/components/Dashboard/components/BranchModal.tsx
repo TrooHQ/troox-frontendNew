@@ -1,7 +1,6 @@
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
-import { toast } from "react-toastify";
 import { createBranch } from "../../../slices/branchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/src/store/store";
@@ -18,7 +17,6 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
   const [branchName, setBranchName] = useState("");
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleInputChange = (field: string, value: string) => {
@@ -31,9 +29,6 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
         break;
       case "email":
         setEmail(value);
-        break;
-      case "city":
-        setCity(value);
         break;
       case "phoneNumber":
         setPhoneNumber(value);
@@ -57,7 +52,6 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
         setBranchName("");
         setAddress("");
         setEmail("");
-        setCity("");
         setPhoneNumber("");
       })
       .catch(() => {

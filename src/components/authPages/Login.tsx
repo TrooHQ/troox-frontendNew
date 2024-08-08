@@ -45,12 +45,12 @@ const Login = () => {
       const userType = response.data.user_role;
       toast.success(response.data.message);
       if (userType === "employee") {
-        history("/employee-dashboard");
+        history("/overview");
       } else if (userType === "admin") {
         if (response.data.has_created_menu_item == false) {
           history("/overview");
         } else {
-          history("/dashboard");
+          history("/overview");
         }
       }
     } catch (error) {
@@ -114,7 +114,7 @@ const Login = () => {
           </div>
         </div>
         <div className=" mt-[40px]">
-          <Link to="/register">
+          <Link to="/business-profile">
             <p className="font-[500] text-[16px] text-purple500">Create a business account</p>
           </Link>
         </div>

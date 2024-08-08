@@ -1,16 +1,14 @@
-import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
 
 const ConfirmationDialog = ({ open, onClose, onConfirm, message }: any) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <div className="flex flex-col justify-center items-center gap-6">
         <DialogTitle>
-          <p className="text-[24px] font-[500] text-purple500">Void Order</p>
+          <p className="text-[24px] font-[500] text-purple500">Delete Branch</p>
         </DialogTitle>
         <DialogContent>
           <p className="text-[16px] font-[400] text-center text-grey500">{message}</p>

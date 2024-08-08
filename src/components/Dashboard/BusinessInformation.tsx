@@ -1,16 +1,11 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import add from "../../assets/add.svg";
 import InformationAccordion from "./components/InformationAccordion";
 import { useState } from "react";
 import BranchModal from "./components/BranchModal";
 
 const BusinessInformation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleAddMenu = () => {
-    setIsModalOpen(true);
-  };
 
   return (
     <DashboardLayout>

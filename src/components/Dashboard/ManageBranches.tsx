@@ -1,18 +1,36 @@
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { useEffect, useState } from "react";
 import add from "../../assets/add.svg";
-import { DeleteForeverOutlined } from "@mui/icons-material";
-import BranchModal from "./components/BranchModal";
-import { deleteBranch, fetchBranches } from "../../slices/branchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/src/store/store";
+import { createBranch, deleteBranch, fetchBranches } from "../../slices/branchSlice";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import MoreVert from "@mui/icons-material/MoreVert";
+import BranchModal from "./components/BranchModal";
+import ConfirmationDialog from "./ConfirmationDialog";
+import EditBranchModal from "./components/EditBranchModal";
+import { toast } from "react-toastify";
 
 const ManageBranches = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches, loading, error } = useSelector((state: RootState) => state.branches);
+  const { branches } = useSelector((state: RootState) => state.branches);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({
+    open: false,
+    id: null,
+  });
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
+  const openMenu = Boolean(anchorEl);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editBranchId, setEditBranchId] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -22,11 +40,64 @@ const ManageBranches = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteBranch = (branchId: any) => {
-    const reason = prompt("Please provide a reason for deleting this branch:");
-    if (reason) {
-      dispatch(deleteBranch({ branchId, reason }));
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>, branchId: string) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedBranchId(branchId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedBranchId(null);
+  };
+
+  const handleDeleteBranch = () => {
+    if (selectedBranchId) {
+      setConfirmationDialog({ open: true, id: selectedBranchId });
     }
+    handleMenuClose();
+  };
+
+  const handleConfirmDeleteBranch = () => {
+    const { id } = confirmationDialog;
+    if (id !== null) {
+      const reason = "User provided reason"; // You can handle this as needed
+      dispatch(deleteBranch({ branchId: id, reason }));
+    }
+    setConfirmationDialog({ open: false, id: null });
+  };
+
+  const handleEditBranch = (branchId: string) => {
+    setEditBranchId(branchId);
+    setIsEditModalOpen(true);
+    handleMenuClose();
+  };
+
+  const handleDuplicateBranch = () => {
+    if (selectedBranchId) {
+      const branchToDuplicate = branches.find((branch) => branch._id === selectedBranchId);
+      if (branchToDuplicate) {
+        // Split the email into local part and domain
+        const emailParts = branchToDuplicate.branch_email.split("@");
+        const modifiedEmail = `${emailParts[0]}(Copy)@${emailParts[1]}`;
+
+        const newBranchData = {
+          ...branchToDuplicate,
+          _id: undefined,
+          branch_name: `${branchToDuplicate.branch_name} (Copy)`,
+          branch_email: modifiedEmail, // Use the modified email
+        };
+        dispatch(createBranch(newBranchData))
+          .unwrap()
+          .then(() => {
+            toast.success("Branch duplicated successfully");
+          })
+          .catch((err) => {
+            console.error(err);
+            toast.error(err);
+          });
+      }
+    }
+    handleMenuClose();
   };
 
   return (
@@ -36,25 +107,25 @@ const ManageBranches = () => {
         <div className="">
           <div className="my-[40px]">
             <div className="flex items-center justify-between">
-              <div className=" flex items-center gap-[32px]">
+              <div className="flex items-center gap-[32px]">
                 <div className="">
-                  <p className=" font-[500] text-[16px] text-[#121212]">Filter by:</p>
+                  <p className="font-[500] text-[16px] text-[#121212]">Filter by:</p>
                 </div>
-                <div className=" flex items-center gap-[8px]">
-                  <div className="border border-purple500 bg-purple500  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
-                    <button className="text-[12px] ">Add</button>
+                <div className="flex items-center gap-[8px]">
+                  <div className="border border-purple500 bg-purple500 rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
+                    <button className="text-[12px]">Add</button>
                   </div>
-                  <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[121212]">
-                    <button className="text-[12px] ">Branch Name</button>
+                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[121212]">
+                    <button className="text-[12px]">Branch Name</button>
                   </div>
-                  <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px] ">Address</button>
+                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
+                    <button className="text-[12px]">Address</button>
                   </div>
-                  <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px] ">Manager</button>
+                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
+                    <button className="text-[12px]">Manager</button>
                   </div>
-                  <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px] ">City</button>
+                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
+                    <button className="text-[12px]">City</button>
                   </div>
                 </div>
               </div>
@@ -101,11 +172,29 @@ const ManageBranches = () => {
                       <td className="text-base font-medium py-2 px-4 break-words text-center">
                         {branch.branch_email}
                       </td>
-                      <td className=" text-center">
-                        <DeleteForeverOutlined
-                          className="text-red-700 cursor-pointer"
-                          onClick={() => handleDeleteBranch(branch._id)}
-                        />
+                      <td className="text-center">
+                        <IconButton
+                          aria-label="more"
+                          aria-controls="long-menu"
+                          aria-haspopup="true"
+                          onClick={(event) => branch._id && handleMenuClick(event, branch._id)}
+                        >
+                          <MoreVert />
+                        </IconButton>
+                        <Menu
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={openMenu}
+                          onClose={handleMenuClose}
+                        >
+                          <MenuItem onClick={handleDeleteBranch}>Delete</MenuItem>
+                          <MenuItem
+                            onClick={() => selectedBranchId && handleEditBranch(selectedBranchId)}
+                          >
+                            Edit
+                          </MenuItem>
+                          <MenuItem onClick={handleDuplicateBranch}>Duplicate</MenuItem>
+                        </Menu>
                       </td>
                     </tr>
                   ))}
@@ -114,6 +203,17 @@ const ManageBranches = () => {
             </div>
           </div>
           <BranchModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+          <EditBranchModal
+            isModalOpen={isEditModalOpen}
+            setIsModalOpen={setIsEditModalOpen}
+            branchId={editBranchId}
+          />
+          <ConfirmationDialog
+            open={confirmationDialog.open}
+            onClose={() => setConfirmationDialog({ open: false, id: null })}
+            onConfirm={handleConfirmDeleteBranch}
+            message="Are you sure you want to delete this branch?"
+          />
         </div>
       </DashboardLayout>
     </div>
