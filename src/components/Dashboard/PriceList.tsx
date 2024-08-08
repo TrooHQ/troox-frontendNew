@@ -36,26 +36,22 @@ const PriceList = () => {
                 <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
                   <p className=" text-[#5855B3]"> Coffee</p>
                 </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
+                <p className="col-span-2 px-3 py-2 text-[#5855B3]">Cappuccino</p>
                 <p className=" px-3 py-2 ">N1800 - N2000 </p>
                 <p className=" flex items-center justify-end gap-[16px]">
                   <img src={edit} alt="" />
-                  <img src={download} alt="" />
+                  {/* <img src={download} alt="" /> */}
                 </p>
               </div>
               <div className=" grid grid-cols-6 items-center px-5 py-4 font-[500] bg-[#ffffff] text-[16px] text-grey500  ">
                 <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
                   <p className=" text-[#5855B3]"> Coffee</p>
                 </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
+                <p className="col-span-2 px-3 py-2 text-[#5855B3]">Cappuccino</p>
                 <p className=" px-3 py-2 ">N1800 - N2000 </p>
                 <p className=" flex items-center justify-end gap-[16px]">
                   <img src={edit} alt="" />
-                  <img src={download} alt="" />
+                  {/* <img src={download} alt="" /> */}
                 </p>
               </div>
 
@@ -63,13 +59,11 @@ const PriceList = () => {
                 <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
                   <p className=" text-[#5855B3]"> Coffee</p>
                 </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
+                <p className="col-span-2 px-3 py-2 text-[#5855B3]">Cappuccino</p>
                 <p className=" px-3 py-2 ">N1800 - N2000 </p>
                 <p className=" flex items-center justify-end gap-[16px]">
                   <img src={edit} alt="" />
-                  <img src={download} alt="" />
+                  {/* <img src={download} alt="" /> */}
                 </p>
               </div>
             </div>

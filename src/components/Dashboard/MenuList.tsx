@@ -8,6 +8,7 @@ import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import clsx from "clsx";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Tooltip } from "@mui/material";
+import SearchIcon from "../../assets/searchIcon.svg";
 
 interface Modifier {
   name: string;
@@ -277,7 +278,15 @@ const MenuList = () => {
       <div className="">
         <div className="my-[40px]">
           <div className="flex items-center justify-between">
-            <div className=" flex items-center gap-[32px]">
+            <div className="relative">
+              <input
+                type="text"
+                className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
+                placeholder="Search"
+              />
+              <img src={SearchIcon} alt="" className="absolute left-6 top-3 pointer-events-none" />
+            </div>
+            {/* <div className=" flex items-center gap-[32px]">
               <div className="">
                 <p className=" font-[500] text-[16px] text-[#121212]">Filter by:</p>
               </div>
@@ -295,7 +304,7 @@ const MenuList = () => {
                   <button className="text-[12px] ">Price</button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="overflow-x-auto mt-6">
