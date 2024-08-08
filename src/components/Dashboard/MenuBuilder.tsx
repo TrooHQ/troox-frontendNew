@@ -20,7 +20,7 @@ import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import Modifiers from "./components/Modifiers";
 import AddMenuCategory from "./AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
-import { fetchMenuCategories } from "../../slices/menuSlice";
+import { fetchMenuCategories, fetchMenuGroups } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
@@ -43,11 +43,12 @@ interface MenuItem {
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const categories = useSelector((state: any) => state.menu.categories);
+  const { categories, menuGroups } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-
+  console.log(menuGroups);
   useEffect(() => {
     dispatch(fetchMenuCategories(selectedBranch.id));
+    dispatch(fetchMenuGroups(selectedBranch.id));
   }, [selectedBranch]);
 
   const userData = useSelector((state: RootState) => state.inviteUser);
@@ -227,23 +228,23 @@ const MenuBuilder = () => {
                     <div className=" w-[204px]">
                       <p className=" font-[400] text-[12px] text-[#606060]">Menu Group</p>
                       <div className="">
-                        {subMenu.map((data, index) => (
+                        {menuGroups.map((group: any) => (
                           <p
                             className={`${
-                              activeSubMenu === data.type
-                                ? " font-[500] text-[#5855B3] "
-                                : " text-grey200"
-                            }  hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px]  text-[16px] font-[400] py-[12px] px-[8px]`}
-                            key={index}
+                              activeSubMenu === group.name
+                                ? "font-[500] text-[#5855B3]"
+                                : "text-grey200"
+                            } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                            key={group._id}
                             onClick={() => {
-                              // @ts-ignore
-                              setSubmenuContent(data.data), setActiveSubMenu(data.type || null);
-                              // @ts-ignore
-                              setMenuType(data.type);
+                              // Update submenu content and active submenu
+                              setSubmenuContent([{ type: group.name, data: [] }]); // Adjust this line as needed
+                              setActiveSubMenu(group.name);
+                              setMenuType(group.menu_category_name); // Update based on your logic
                             }}
                           >
-                            {data.type}
-                            {activeSubMenu === data.type ? (
+                            {truncateText(group.name, 15)}
+                            {activeSubMenu === group.name ? (
                               <img src={activeArrow} alt="activearrow" />
                             ) : (
                               <img src={chevron_right} alt="" />
