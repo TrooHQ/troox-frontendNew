@@ -20,7 +20,7 @@ import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-mate
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchBranches } from "../../slices/branchSlice";
+import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
 interface MenuItem {
   subTitle?: string;
   title?: string;
@@ -38,20 +38,24 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: RootState) => state.branches);
+  const { branches } = useSelector((state: any) => state.branches);
 
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
+  const [selectedOutlet, setSelectedOutlet] = useState({
+    label: "All outlets",
+    id: "66a378962f635fa54a390478",
+  });
 
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
 
-  const transformedBranches = branches.map((branch) => ({
+  const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,
+    id: branch._id,
   }));
 
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -61,7 +65,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
+    console.log(value, "qqqq");
     setSelectedOutlet(value ?? { label: "All outlets" });
+    dispatch(userSelectedBranch(value));
     setIsAutoOpen(false);
   };
 

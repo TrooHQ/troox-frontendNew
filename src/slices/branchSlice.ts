@@ -142,6 +142,9 @@ const branchSlice = createSlice({
     resetBranchNotFound: (state) => {
       state.branchNotFound = false;
     },
+    userSelectedBranch: (state, action: PayloadAction<Branch>) => {
+      state.selectedBranch = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -216,5 +219,5 @@ const branchSlice = createSlice({
   },
 });
 
-export const { resetBranchNotFound } = branchSlice.actions;
+export const { resetBranchNotFound, userSelectedBranch } = branchSlice.actions;
 export default branchSlice.reducer;

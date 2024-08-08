@@ -9,7 +9,7 @@ import Publish from "../../assets/publish.svg";
 import chevron_right from "../../assets/chevron_right.svg";
 import imageIcon from "../../assets/image.svg";
 import activeArrow from "../../assets/activeArrow.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CoffeeImg from "../../assets/coffeeImg.png";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
@@ -19,6 +19,9 @@ import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import Modifiers from "./components/Modifiers";
 import AddMenuCategory from "./AddMenuCategory";
+import { AppDispatch } from "@/src/store/store";
+import { fetchMenuCategories } from "../../slices/menuSlice";
+import { truncateText } from "../../utils/truncateText";
 // import CancelButton from "../Buttons/CancelButton";
 
 interface MenuItem {
@@ -35,154 +38,17 @@ interface MenuItem {
 }
 
 const MenuBuilder = () => {
-  const Menu: string[] = ["coffee", "soups", "specials", "desert", "happy meal"];
-  const arrayDummy: MenuItem[] = [
-    {
-      title: "coffee",
-      data: [
-        {
-          type: "coffee",
-          data: [
-            { img: "", price: "200-300", name: "brown coffee" },
-            {
-              img: "",
-              price: "100-500",
-              name: "brown coffee1",
-            },
-            {
-              img: "",
-              price: "800-900",
-              name: "brown coffee2",
-            },
-            {
-              img: "",
-              price: "200-400",
-              name: "brown coffee3",
-            },
-          ],
-        },
-        {
-          type: "black coffee",
-          data: [
-            {
-              img: "",
-              price: "100-200",
-              name: "spanish coffee",
-            },
-            {
-              img: "",
-              price: "200-500",
-              name: "spanish coffee1",
-            },
-            {
-              img: "",
-              price: "300-500",
-              name: "spanish coffee1",
-            },
-            {
-              img: "",
-              price: "400-500",
-              name: "spanish coffee1",
-            },
-          ],
-        },
-        {
-          type: "latte",
-          data: [
-            { img: "", price: "100-550", name: "latte special" },
-            { img: "", price: "150-750", name: "latte special1" },
-            { img: "", price: "200-550", name: "latte special2" },
-            { img: "", price: "200-450", name: "latte special3" },
-          ],
-        },
-        {
-          type: "expreso",
-          data: [
-            { img: "", price: "450-500", name: "espreso Chocolate" },
-            { img: "", price: "300-500", name: "espreso Chocolate1" },
-            { img: "", price: "200-500", name: "espreso Chocolate2" },
-            { img: "", price: "100-500", name: "espreso Chocolate3" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "soups",
-      data: [
-        {
-          type: "Egusi",
-          data: [
-            { img: "", price: "1000-2000", name: "Fried Egusi" },
-            { img: "", price: "1500-2000", name: "Boiled Egusi" },
-            { img: "", price: "1300-2000", name: "Fried Egusi2" },
-            { img: "", price: "1700-2000", name: "Fried Egusi3" },
-          ],
-        },
-        {
-          type: "Vegitable",
-          data: [
-            { img: "", price: "1000-2000", name: "Boiled Vegitable" },
-            { img: "", price: "1500-2000", name: "fried Vegitable" },
-            { img: "", price: "1300-2000", name: "Stewed Vegitable2" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "specials",
-      data: [
-        {
-          type: " chinese special",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "desert",
-      data: [
-        {
-          type: "desert Pizza",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "happy meal",
-      data: [
-        {
-          type: "happy meal Pizza",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Drinks",
-      data: [
-        {
-          type: "red wine",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-  ];
+  const dispatch = useDispatch<AppDispatch>();
 
-  const dispatch = useDispatch();
+  const categories = useSelector((state: any) => state.menu.categories);
+  const { selectedBranch } = useSelector((state: any) => state.branches);
+
+  console.log(categories, "aaa", selectedBranch);
+
+  useEffect(() => {
+    dispatch(fetchMenuCategories(selectedBranch.id));
+  }, [selectedBranch]);
+
   const userData = useSelector((state: RootState) => state.inviteUser);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
@@ -242,27 +108,26 @@ const MenuBuilder = () => {
 
   const [subMenuContent, setSubmenuContent] = useState<
     {
-      img: string;
-      price: string;
-      name: string;
+      type: string;
+      data: {
+        img: string;
+        price: string;
+        name: string;
+      }[];
     }[]
   >([]);
   const [activeMainMenu, setActiveMainMenu] = useState<string | null>(null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [menuType, setMenuType] = useState<string>("");
 
-  const getSubmenu = (data: string) => {
-    const array = arrayDummy.filter((e) => e.title === data);
+  const getSubmenu = (categoryName: string) => {
+    const category = categories.find((cat: any) => cat.name === categoryName);
 
-    if (array.length > 0) {
-      const firstData = array[0].data[0];
-      if (firstData) {
-        // @ts-ignore
-        setSubmenu(array[0].data);
-        setActiveSubMenu(firstData.type || null);
-        setSubmenuContent(firstData.data);
-        setActiveMainMenu(array[0].title);
-      }
+    if (category) {
+      setActiveMainMenu(category.name);
+      // Set submenu content with type included
+      setSubmenuContent([{ type: category.name, data: [] }]);
+      setActiveSubMenu(category.name);
     }
   };
 
@@ -290,16 +155,16 @@ const MenuBuilder = () => {
             <div className=" flex ">
               <div className="mt-[24px]">
                 <nav className="flex flex-col gap-[8px]">
-                  {Menu.map((data, index) => (
+                  {categories.map((category: any) => (
                     <button
-                      onClick={() => getSubmenu(data)}
-                      key={index}
+                      onClick={() => getSubmenu(category.name)}
+                      key={category._id}
                       className={`${
-                        activeMainMenu === data && " bg-purple100 text-purple600 font-[500]"
-                      }  text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                        activeMainMenu === category.name && "bg-purple100 text-purple600 font-[500]"
+                      } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
-                      {data}{" "}
-                      {activeMainMenu === data ? (
+                      {truncateText(category.name, 15)}
+                      {activeMainMenu === category.name ? (
                         <img src={activeArrow} alt="activearrow" />
                       ) : (
                         <img src={chevron_right} alt="" />
@@ -363,30 +228,35 @@ const MenuBuilder = () => {
                           </button>
                         </div>
                       </div>
-                      {subMenuContent.map((data, index) => (
+                      {subMenuContent.map((menuItem, index) => (
                         <div className="" key={index}>
-                          <div className=" grid gap-[8px]">
-                            <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
-                              <div className=" flex gap-[8px]">
+                          <div className="grid gap-[8px]">
+                            <div className="flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+                              <div className="flex gap-[8px]">
+                                {/* Assuming you want to display the image here, update with the correct image source */}
                                 <img src={CoffeeImg} alt="" />
-
                                 <div className="">
-                                  <p className=" text-[12px] font-[400] text-grey300">Item</p>
-                                  <p className=" leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
-                                    {data.name}
-                                  </p>
-                                  <p className=" text-[12px] font-[400] text-grey300">
-                                    Modifier groups (6)
-                                  </p>
+                                  <p className="text-[12px] font-[400] text-grey300">Item</p>
+                                  {menuItem.data.map((item, itemIndex) => (
+                                    <div key={itemIndex}>
+                                      <p className="leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
+                                        {item.name}
+                                      </p>
+                                      <p className="text-[12px] font-[400] text-grey300">
+                                        Modifier groups (6)
+                                      </p>
+                                      <p className="text-[16px] font-[500] text-grey500">
+                                        {item.price}
+                                      </p>
+                                    </div>
+                                  ))}
                                 </div>
-                              </div>
-                              <div className=" flex">
-                                <p className=" text-[16px] font-[500] text-grey500">{data.price}</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       ))}
+
                       {subMenuContent.length > 1 && (
                         <div className=" flex items-center justify-end">
                           <button
