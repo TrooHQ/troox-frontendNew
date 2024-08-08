@@ -21,7 +21,7 @@ import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import TopMenuNav from "./Components/TopMenuNav";
 import { toast } from "react-toastify";
-import CustomSelect3 from "./inputFields/CustomSelect3";
+// import CustomSelect3 from "./inputFields/CustomSelect3";
 import Loader from "../components/Loader";
 
 // interface FormData extends FieldValues {
@@ -29,10 +29,10 @@ import Loader from "../components/Loader";
 //   employee_email?: string;
 //   employee_phone?: string;
 // }
-interface Option {
-  value: string;
-  label: string;
-}
+// interface Option {
+//   value: string;
+//   label: string;
+// }
 
 interface EmployeeData {
   id: number;
@@ -46,11 +46,11 @@ const SettingsPage = () => {
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+  // const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
 
   const [selectedEmail, setSelectedEmail] = useState("");
 
-  const [branch, setBranch] = useState<Option[]>([]);
+  // const [branch, setBranch] = useState<Option[]>([]);
   const [employee, setEmployee] = useState<EmployeeData[]>([]);
 
   const [newPassword, setNewPassword] = useState("");
@@ -195,6 +195,10 @@ const SettingsPage = () => {
 
   const userDetails = useSelector((state: RootState) => state.user);
 
+  const selectedOutletID = useSelector(
+    (state: RootState) => state.outlet.selectedOutletID
+  );
+
   const attachBusinessIdToHost = (businessId: string) => {
     const currentHost = window.location.origin;
 
@@ -227,25 +231,19 @@ const SettingsPage = () => {
   console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 
-  const handleSelect = (selectedOutlet: string) => {
-    const selectedOption = branch.find(
-      (option) => option.value === selectedOutlet
-    );
-    if (selectedOption) {
-      setSelectedBranch(selectedOption.label);
-    }
-  };
+  // const handleSelect = (selectedOutlet: string) => {
+  //   const selectedOption = branch.find(
+  //     (option) => option.value === selectedOutlet
+  //   );
+  //   if (selectedOption) {
+  //     setSelectedBranch(selectedOption.label);
+  //   }
+  // };
 
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    if (
-      !first_name ||
-      !last_name ||
-      !phoneNumber ||
-      !email ||
-      !selectedBranch
-    ) {
+    if (!first_name || !last_name || !phoneNumber || !email) {
       setError("All fields are required");
       setLoading(false);
       return;
@@ -264,7 +262,7 @@ const SettingsPage = () => {
           first_name: first_name,
           last_name: last_name,
           email: email,
-          branch_id: selectedBranch,
+          branch_id: selectedOutletID,
           phone_number: phoneNumber,
         },
         headers
@@ -292,79 +290,6 @@ const SettingsPage = () => {
       } else {
         setError("An error occurred. Please try again later.");
       }
-      setLoading(false);
-    }
-  };
-
-  // const deleteEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setLoading(true);
-  //   if (!employee_email) {
-  //     setError("All fields Are required");
-  //     return;
-  //   }
-  //   const headers = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-  //   try {
-  //     const response = await axios.post(
-  //       `${SERVER_DOMAIN}/employee/removeEmployee`,
-  //       {
-  //         employee_email: employee_email,
-  //       },
-  //       headers
-  //     );
-  //     console.log("Employee deleted successfully:", response.data);
-  //     setLoading(false);
-  //     setFirstName("");
-  //     setEmail("");
-  //     setPhoneNumber("");
-  //     setError("");
-  //     setEmployeeModal(false);
-  //     setSuccessModal(true);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error adding employee:", error);
-  //     setLoading(false);
-  //   }
-  // };
-
-  const getBranch = async () => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      setLoading(true);
-
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/branch/getBranch`,
-        headers
-      );
-
-      const branchOptions = response.data.data.map((branch: any) => ({
-        value: branch.branch_name,
-        label: branch._id,
-      }));
-      setBranch(branchOptions);
-    } catch (error) {
-      console.error("Error Retrieving Branch:", error);
-
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("An error occurred. Please try again later.");
-        }
-      } else {
-        toast.error("An error occurred. Please try again later.");
-      }
-    } finally {
       setLoading(false);
     }
   };
@@ -403,7 +328,6 @@ const SettingsPage = () => {
   };
 
   useEffect(() => {
-    getBranch();
     getEmployees();
   }, []);
 
@@ -1001,7 +925,7 @@ const SettingsPage = () => {
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
-                <CustomSelect3
+                {/* <CustomSelect3
                   options={branch}
                   placeholder="All outlets"
                   BG=" bg-[#5855B3]"
@@ -1009,7 +933,7 @@ const SettingsPage = () => {
                   hover="hover:bg-[#5855B3] hover:text-white"
                   searchable={false}
                   onSelect={handleSelect}
-                />
+                /> */}
 
                 <button
                   type="submit"

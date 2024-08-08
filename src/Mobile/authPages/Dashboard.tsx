@@ -10,7 +10,10 @@ import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Menu from "../assets/menu.svg";
 import CustomSelect3 from "../inputFields/CustomSelect3";
-import { setSelectedOutlet } from "../../slices/OutletSlice";
+import {
+  setSelectedOutlet,
+  setSelectedOutletID,
+} from "../../slices/OutletSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
@@ -45,10 +48,9 @@ const Dashboard = () => {
         `${SERVER_DOMAIN}/branch/getBranch`,
         headers
       );
-      console.log("Branch retrieved successfully:", response.data.data);
 
       const branchOptions = response.data.data.map((branch: any) => ({
-        value: branch.branch_name,
+        value: branch._id,
         label: branch.branch_name,
       }));
       setBranch(branchOptions);
@@ -77,10 +79,13 @@ const Dashboard = () => {
 
   const handleSelectOutlet = (selectedOutlet: string) => {
     const selectedOption = branch.find(
-      (option) => option.value === selectedOutlet
+      (option) => option.label === selectedOutlet
     );
     if (selectedOption) {
       dispatch(setSelectedOutlet(selectedOption.label));
+      dispatch(setSelectedOutletID(selectedOption.value));
+    } else {
+      console.log("No matching option found for:", selectedOutlet);
     }
   };
 
