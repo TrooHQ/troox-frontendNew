@@ -58,7 +58,6 @@ const TenantAccordion = () => {
     });
     setAccordionState(newState);
   };
-  console.log(accordionState);
   return (
     <div className="app-width mt-4 mb-4 text-blackish">
       {accordionState.map((accordion, index) => (

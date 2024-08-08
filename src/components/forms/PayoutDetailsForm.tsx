@@ -28,7 +28,6 @@ const PayoutDetailsForm: React.FC = () => {
     axios
       .get(`${SERVER_DOMAIN}/getBanks`)
       .then((response) => {
-        console.log(response, "banks");
         // Extract the bank names from the response
         const bankNames = response.data.data.map((bank: { name: string }) => bank.name);
         setBanks(bankNames);

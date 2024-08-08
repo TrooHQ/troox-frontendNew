@@ -71,11 +71,9 @@ const ManageUsers: React.FC = () => {
     };
     try {
       const response = await axios.get(`${SERVER_DOMAIN}/employee/getAllEmployee`, headers);
-      console.log(response, "fetched users");
       setUsers(response.data.data);
       setLoading(false);
     } catch (error) {
-      console.log(error, "error users");
       setLoading(false);
       toast.error("Failed to fetch users");
     }
@@ -97,12 +95,10 @@ const ManageUsers: React.FC = () => {
         },
         headers
       );
-      console.log(response, "deleted user");
       toast.success(response.data.message);
       setIsModalOpen2(false);
       fetchUsers(); // Re-fetch users after successful deletion
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message || "Unsuccessful");
     } finally {
       setLoading(false);
@@ -131,7 +127,6 @@ const ManageUsers: React.FC = () => {
         },
         headers
       );
-      console.log(response, "rrr");
       toast.success(response.data.message);
       fetchUsers(); // Update user list
       setIsModalOpen(false);
@@ -171,7 +166,6 @@ const ManageUsers: React.FC = () => {
         clonedUser,
         headers
       );
-      console.log(response, "cloned user");
       toast.success(response.data.message);
       fetchUsers(); // Re-fetch users after successful cloning
     } catch (error: any) {
@@ -181,7 +175,6 @@ const ManageUsers: React.FC = () => {
   };
 
   const handleEditUser = async () => {
-    console.log(editingUser, "");
     const payload = {
       ...editingUser,
       user_id: selectedUser._id,
@@ -201,7 +194,6 @@ const ManageUsers: React.FC = () => {
         payload,
         headers
       );
-      console.log(response, "edited user");
       setIsModalOpen3(false);
       toast.success(response.data.message);
       fetchUsers();

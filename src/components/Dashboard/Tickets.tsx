@@ -17,6 +17,7 @@ import Modal from "../Modal";
 import Close from "../../assets/closeIcon.svg";
 import CreditCard from "../../assets/creditCard.svg";
 import { RestartAlt } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 interface Ticket {
   ordered_by: string;
@@ -184,10 +185,9 @@ const Tickets = () => {
     };
     try {
       const response = await axios.get(`${SERVER_DOMAIN}/order/getOrder`, headers);
-      console.log("Tickets Retrieved successfully:", response.data);
       setTickets(response.data);
     } catch (error) {
-      console.error("Error retrieving tickets:", error);
+      toast.error("Error retrieving tickets");
     }
   };
 

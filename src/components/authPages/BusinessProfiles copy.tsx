@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectTransformedRegisterState } from "../../slices/registerSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
 
 interface FAQItem {
   question: string;
@@ -15,7 +16,6 @@ const BusinessProfiles: React.FC = () => {
   const navigate = useNavigate();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const transformedState = useSelector(selectTransformedRegisterState);
-  console.log(transformedState, "qwert");
   const faqData: FAQItem[] = [
     {
       question: "Business information",
@@ -37,7 +37,6 @@ const BusinessProfiles: React.FC = () => {
   const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
-    console.log(newFAQData);
   };
 
   const handleSubmit = async () => {
@@ -45,10 +44,9 @@ const BusinessProfiles: React.FC = () => {
       const response = await axios.post(`${SERVER_DOMAIN}/onboardBusiness`, transformedState);
 
       if (response.status === 200) {
-        console.log("Data submitted successfully");
         navigate("/verify-account");
       } else {
-        console.log("Submission failed");
+        toast.error("Submission failed");
       }
     } catch (error) {
       console.error("Error submitting data:", error);

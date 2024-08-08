@@ -197,7 +197,6 @@ const MenuBuilder = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("Selected file:", file);
   };
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -263,7 +262,6 @@ const MenuBuilder = () => {
         setActiveSubMenu(firstData.type || null);
         setSubmenuContent(firstData.data);
         setActiveMainMenu(array[0].title);
-        console.log(array[0].data);
       }
     }
   };

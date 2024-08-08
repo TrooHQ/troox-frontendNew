@@ -39,7 +39,6 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
-      console.log(response.data);
       dispatch(setUserData(response.data));
       localStorage.setItem("token", response.data.token);
       const userType = response.data.user_role;
@@ -58,10 +57,8 @@ const Login = () => {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
-          console.log(error.response.data);
           if (error.response.data.message === "Your Email is not verified") {
             history("/verify");
-            console.log("Unverified");
           }
         } else {
           setError("An error occurred. Please try again later.");

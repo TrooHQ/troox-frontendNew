@@ -27,15 +27,13 @@ const BusinessProfiles: React.FC = () => {
           `${SERVER_DOMAIN}/onboardBusiness/`,
           transformedState
         );
-        console.log("Sample data:", sampleResponse);
 
         if (sampleResponse.status === 200) {
-          console.log("Sample data submitted successfully");
           localStorage.setItem("businessId", sampleResponse.data.business_id);
           localStorage.setItem("userId", sampleResponse.data.user_id);
           toast.success("Business information saved successfully");
         } else {
-          console.log("Sample submission failed");
+          toast.error("Error submitting business information");
         }
       } catch (error: any) {
         console.error("Error submitting sample data:", error);
@@ -53,13 +51,11 @@ const BusinessProfiles: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${SERVER_DOMAIN}/createAccountDetails`, transformedState2);
-      console.log(response, "qqq");
       if (response.status === 200) {
         toast.success(response.data.message || "Data submitted successfully");
-        console.log("Data submitted successfully");
         navigate("/verify-account");
       } else {
-        console.log("Submission failed");
+        toast.error(response.data.message || "Error submitting business information");
       }
     } catch (error: any) {
       console.error("Error submitting data:", error);

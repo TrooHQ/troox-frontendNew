@@ -49,7 +49,6 @@ const DropdownMenu = ({ onClose }: { onClose: () => void }) => {
 
   const handleItemClick = (event: React.MouseEvent, action: string) => {
     event.stopPropagation(); // Prevent event from bubbling up
-    console.log("Clicked:", action);
     if (action === "Enable Table") {
       setIsEnabled((prevEnabled) => !prevEnabled);
     } else {

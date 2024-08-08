@@ -54,12 +54,10 @@ const NewRoles = () => {
   const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
-    console.log(newFAQData);
   };
   const handleInputChange2 = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData2 = [...faqDataInner];
     newFAQData2[index].inputValue = event.target.value;
-    console.log(newFAQData2);
   };
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (

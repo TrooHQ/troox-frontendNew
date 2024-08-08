@@ -21,7 +21,6 @@ const Register: React.FC = () => {
   const handleChange = (field: keyof RootState["register"], value: string) => {
     dispatch(setField({ field, value }));
   };
-  console.log(name, email, password, confirmPassword, pin, "robb");
   return (
     <div className="bg-[#EFEFEF] ">
       <div className="flex flex-col items-center justify-center h-screen  my-auto">

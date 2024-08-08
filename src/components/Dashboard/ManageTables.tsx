@@ -134,7 +134,6 @@ const ManageTables: React.FC = () => {
         payload,
         headers
       );
-      console.log(response.data, "llll");
       setAddModifierModal(false);
       dispatch(getRooms());
       dispatch(getTables());
@@ -144,7 +143,6 @@ const ManageTables: React.FC = () => {
       setTableNumber("1");
       toast.success("Created successfully");
     } catch (error: any) {
-      console.log(error, "jjj");
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);

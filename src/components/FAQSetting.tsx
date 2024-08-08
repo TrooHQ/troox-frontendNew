@@ -37,23 +37,12 @@ const FAQSetting: React.FC<FAQProps> = ({
   const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
     Array(faqData.length).fill(false)
   );
-  // const [checkedInnerCategories, setCheckedInnerCategories] = useState<
-  //   boolean[]
-  // >(Array(faqDataInner.length).fill(false));
 
   const handleCategoryChange = (index: number) => {
     const newCheckedCategories = [...checkedCategories];
     newCheckedCategories[index] = !newCheckedCategories[index];
     setCheckedCategories(newCheckedCategories);
-    console.log("Handling category change...", newCheckedCategories);
   };
-
-  // const handleInnerCategoryChange = (index: number) => {
-  //   const newCheckedInnerCategories = [...checkedInnerCategories];
-  //   newCheckedInnerCategories[index] = !newCheckedInnerCategories[index];
-  //   setCheckedInnerCategories(newCheckedInnerCategories);
-  //   console.log("Handling inner category change...", newCheckedInnerCategories);
-  // };
 
   const navigate = useNavigate();
 
