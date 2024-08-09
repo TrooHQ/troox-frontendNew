@@ -117,7 +117,6 @@ const data = [
 ];
 
 const Tickets = () => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [menuOpenMap, setMenuOpenMap] = useState<{ [key: number]: boolean }>({});
   const [menuOpenMap2, setMenuOpenMap2] = useState<{ [key: number]: boolean }>({});
   const [voidOrderMenu, setVoidOrderMenu] = useState<boolean>(false);
@@ -185,7 +184,7 @@ const Tickets = () => {
     };
     try {
       const response = await axios.get(`${SERVER_DOMAIN}/order/getOrder`, headers);
-      setTickets(response.data);
+      toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
     }

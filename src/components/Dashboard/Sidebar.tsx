@@ -38,7 +38,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: any) => state.branches);
+  const { branches } = useSelector((state: RootState) => state.branches);
 
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);

@@ -26,6 +26,7 @@ const DaysTab2 = ({
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<[string | null, string | null]>([null, null]);
+  console.log(dateRange);
 
   const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
     event.preventDefault();
@@ -37,6 +38,7 @@ const DaysTab2 = ({
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
+    console.log(dates, dateStrings);
     setDateRange(dateStrings);
     // setOpen(false);
   };

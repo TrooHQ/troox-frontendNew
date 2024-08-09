@@ -418,7 +418,7 @@ const MenuBuilder = () => {
             </div>
           </div>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <AddMenuCategory userData={userData} setIsModalOpen={setIsModalOpen} />
+            <AddMenuCategory setIsModalOpen={setIsModalOpen} />
           </Modal>
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>

@@ -82,7 +82,6 @@ const ManageTables: React.FC = () => {
   const [location, setLocation] = useState("");
   const [tableNumber, setTableNumber] = useState("1");
   const [loading, setLoading] = useState(false);
-  const [deletingItem, setDeletingItem] = useState(true);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -141,7 +140,7 @@ const ManageTables: React.FC = () => {
       setSelectedBranch("");
       setSelectedType("");
       setTableNumber("1");
-      toast.success("Created successfully");
+      toast.success(response.data.message || "Created successfully");
     } catch (error: any) {
       toast.error(error.response.data.message);
     } finally {
