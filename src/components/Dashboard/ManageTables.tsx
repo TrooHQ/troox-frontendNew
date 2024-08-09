@@ -128,7 +128,7 @@ const ManageTables: React.FC = () => {
     };
     try {
       setLoading(true);
-      await axios.post(`${SERVER_DOMAIN}/asset/generateBusinessAsset/`, payload, headers);
+      const response = await axios.post(`${SERVER_DOMAIN}/asset/generateBusinessAsset/`, payload, headers);
       setAddModifierModal(false);
       dispatch(getRooms());
       dispatch(getTables());
