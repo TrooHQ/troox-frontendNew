@@ -18,11 +18,6 @@ import Close from "../../assets/closeIcon.svg";
 import CreditCard from "../../assets/creditCard.svg";
 import { RestartAlt } from "@mui/icons-material";
 import { toast } from "react-toastify";
-interface MenuItem {
-  name: string;
-  price: string;
-  quantity: string;
-}
 
 const data = [
   {
