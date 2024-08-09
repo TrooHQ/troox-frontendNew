@@ -26,20 +26,6 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
-// import CancelButton from "../Buttons/CancelButton";
-
-interface MenuItem {
-  type?: string;
-  title: string;
-  data: {
-    type: string;
-    data: {
-      img: string;
-      price: string;
-      name: string;
-    }[];
-  }[];
-}
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,7 +35,6 @@ const MenuBuilder = () => {
   console.log(menuItems, "wwww");
 
   const userData = useSelector((state: RootState) => state.inviteUser);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
@@ -102,9 +87,6 @@ const MenuBuilder = () => {
     }
   };
 
-  const handleOptionChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
-  };
   const handleAddMenu = () => {
     setIsModalOpen(true);
   };
