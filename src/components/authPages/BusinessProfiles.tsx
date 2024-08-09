@@ -98,9 +98,9 @@ const BusinessProfiles: React.FC = () => {
               {index + 1}
             </div>
             {index < stepTitles.length - 1 && (
-              <div className={`flex-1 h-1 ${currentStep > index ? "bg-purple500" : "bg-gray-300"}`}>
-                {title}
-              </div>
+              <div
+                className={`flex-1 h-1 ${currentStep > index ? "bg-purple500" : "bg-gray-300"}`}
+              ></div>
             )}
           </div>
         ))}

@@ -611,7 +611,7 @@ const MenuBuilder = () => {
                         error=""
                         onChange={(newValue) => handlePrice(newValue)}
                       />
-                    )} */}
+                    )}
 
                     {/* <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
