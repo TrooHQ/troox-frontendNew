@@ -65,6 +65,7 @@ const MenuBuilder = () => {
   const [menuDescription, setMenuDescription] = useState("");
   const [menuPrice, setMenuPrice] = useState("");
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
+  const [price, setPrice] = useState("");
 
   const handleGroupName = (value: string) => {
     setGroupName(value);
@@ -78,6 +79,9 @@ const MenuBuilder = () => {
   };
   const handleMenuPrice = (value: string) => {
     setMenuPrice(value);
+  };
+  const handlePrice = (value: string) => {
+    setPrice(value);
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,7 +142,6 @@ const MenuBuilder = () => {
     dispatch(sendInvite());
     setIsModalOpen(false);
   };
-  const [subMenu, setSubmenu] = useState<MenuItem[]>([]);
 
   const [subMenuContent, setSubmenuContent] = useState<
     {
@@ -209,17 +212,16 @@ const MenuBuilder = () => {
       },
     };
 
+    let payload = {
+      category_name: activeMainMenu,
+      group_name: groupName,
+      branch_id: selectedBranch.id,
+      price_to_all_items: applyPriceToAll,
+      ...(applyPriceToAll && { price: Number(price) }),
+    };
+
     try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addMenuGroup`,
-        {
-          category_name: activeMainMenu,
-          group_name: groupName,
-          branch_id: selectedBranch.id,
-          price_to_all_items: applyPriceToAll,
-        },
-        headers
-      );
+      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
       console.log(response);
       dispatch(
         fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
@@ -598,7 +600,7 @@ const MenuBuilder = () => {
                           value="yes"
                           checked={applyPriceToAll === true}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${applyPriceToAll === true ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === true ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
@@ -611,7 +613,7 @@ const MenuBuilder = () => {
                           value="no"
                           checked={applyPriceToAll === false}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${applyPriceToAll === false ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === false ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
@@ -619,13 +621,13 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    {selectedOption === "yes" && (
+                    {applyPriceToAll && (
                       <CustomInput
                         type="text"
                         label="Enter price"
-                        value=""
+                        value={price}
                         error=""
-                        onChange={(newValue) => handleInputChange("lastName", newValue)}
+                        onChange={(newValue) => handlePrice(newValue)}
                       />
                     )}
 
