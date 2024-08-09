@@ -392,6 +392,11 @@ const MenuBuilder = () => {
                               </div>
                             </div>
                           ))}
+                          {menuItem.data.length === 0 && (
+                            <div className=" flex justify-center items-center h-[200px]">
+                              <p className="text-[16px] font-[400] text-grey500">No menu items</p>
+                            </div>
+                          )}
                         </div>
                       ))}
 
