@@ -63,11 +63,6 @@ export const SelectPayment = () => {
   const token = userDetails?.userData?.token;
   const handlePayment = async () => {
     try {
-      // if (!password || !confirmPassword || !token) {
-      //   setError("All fields are required!");
-      //   return;
-      // }
-
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadUserOrder`,
