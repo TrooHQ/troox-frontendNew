@@ -42,6 +42,15 @@ import { InRoomTip } from "./Mobile/InRoomDining/InRoomTip";
 import { InRoomSelectPayment } from "./Mobile/InRoomDining/InRoomSelectPayment";
 import { InRoomGetReceipt } from "./Mobile/InRoomDining/InRoomGetReceipt";
 import { InRoomReceipt } from "./Mobile/InRoomDining/InRoomReceipt";
+import OnlineOrderingStartOrder from "./Mobile/OnlineOrdering/OnlineOrderingStartOrder";
+import { OnlineOrderingMenuPage } from "./Mobile/OnlineOrdering/OnlineOrderingMenuPage";
+import { OnlineOrderingCategoryDetails } from "./Mobile/OnlineOrdering/OnlineOrderingCategoryDetails";
+import OnlineOrderingMenuDetails from "./Mobile/OnlineOrdering/OnlineOrderingMenuDetails";
+import { OnlineOrderingBasket } from "./Mobile/OnlineOrdering/OnlineOrderingBasket";
+import { OnlineOrderingTip } from "./Mobile/OnlineOrdering/OnlineOrderingTip";
+import { OnlineOrderingSelectPayment } from "./Mobile/OnlineOrdering/OnlineOrderingSelectPayment";
+import { OnlineOrderingReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingReceipt";
+import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingGetReceipt";
 
 const MobileLayout = () => {
   return (
@@ -109,6 +118,44 @@ const MobileLayout = () => {
           <Route
             path="/demo/get-receipt/in_room_dining"
             element={<InRoomGetReceipt />}
+          />
+
+          <Route
+            path="demo/online_ordering/:id"
+            element={<OnlineOrderingStartOrder />}
+          />
+
+          <Route
+            path="/demo/:id/explore-menu/online_ordering"
+            element={<OnlineOrderingMenuPage />}
+          />
+          <Route
+            path="demo/:id/category-details/:id/online_ordering"
+            element={<OnlineOrderingCategoryDetails />}
+          />
+          <Route
+            path="/demo/menu-details/:id/online_ordering"
+            element={<OnlineOrderingMenuDetails />}
+          />
+          <Route
+            path="/demo/basket/online_ordering"
+            element={<OnlineOrderingBasket />}
+          />
+          <Route
+            path="/demo/tip/online_ordering"
+            element={<OnlineOrderingTip />}
+          />
+          <Route
+            path="/demo/payment-type/online_ordering"
+            element={<OnlineOrderingSelectPayment />}
+          />
+          <Route
+            path="/demo/receipt/online_ordering"
+            element={<OnlineOrderingReceipt />}
+          />
+          <Route
+            path="/demo/get-receipt/online_ordering"
+            element={<OnlineOrderingGetReceipt />}
           />
 
           <Route

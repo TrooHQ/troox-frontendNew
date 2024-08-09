@@ -207,7 +207,16 @@ const SettingsPage = () => {
     return newUrl;
   };
 
+  const attachBusinessIdToHost2 = (businessId: string) => {
+    const currentHost = window.location.origin;
+
+    const newUrl = `${currentHost}/demo/online_ordering/${businessId}`;
+
+    return newUrl;
+  };
+
   const [copySuccess, setCopySuccess] = useState(false);
+  const [copySuccess2, setCopySuccess2] = useState(false);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard
@@ -221,9 +230,26 @@ const SettingsPage = () => {
       });
   };
 
+  const copyToClipboard2 = (text: string) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopySuccess2(true);
+        setTimeout(() => setCopySuccess2(false), 3000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
+
   const handleClick = () => {
     const urlToCopy = attachBusinessIdToHost(businessId);
     copyToClipboard(urlToCopy);
+  };
+
+  const handleClick2 = () => {
+    const urlToCopy = attachBusinessIdToHost2(businessId);
+    copyToClipboard2(urlToCopy);
   };
 
   const businessId = userDetails?.userData?.business_identifier;
@@ -361,6 +387,7 @@ const SettingsPage = () => {
     };
     fetchTempPassword();
   }, []);
+
   const updatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -481,6 +508,14 @@ const SettingsPage = () => {
               >
                 {" "}
                 {copySuccess ? "Copied!" : "Get Self-Checkout link"}
+              </p>
+
+              <p
+                className="text-grey300 text-[16px] cursor-pointer"
+                onClick={handleClick2}
+              >
+                {" "}
+                {copySuccess2 ? "Copied!" : "Get Online-Ordering link"}
               </p>
             </div>
           </div>
