@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BBB from "../overview-comps/BBB";
 import BalanceComp from "../overview-comps/Balance";
 import KPI from "../overview-comps/KPI";
@@ -9,6 +9,9 @@ import TopMenuNav from "./TopMenuNav";
 import { Autocomplete, TextField, Button, Popper, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import { ArrowDropDown, Search } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { fetchBranches } from "../../slices/branchSlice";
 
 export const storeData = {
   id: 1,
@@ -70,9 +73,19 @@ const CustomAutocomplete = styled(Autocomplete)({
 });
 
 const OverviewAdmin: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { branches } = useSelector((state: any) => state.branches);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState(allOutlets[0]);
+  const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  const transformedBranches = branches.map((branch: any) => ({
+    label: branch.branch_name,
+  }));
 
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -81,7 +94,7 @@ const OverviewAdmin: React.FC = () => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
-    setSelectedOutlet(value ?? allOutlets[0]);
+    setSelectedOutlet(value ?? { label: "All outlets" });
     setOpen(false);
   };
 
@@ -118,7 +131,7 @@ const OverviewAdmin: React.FC = () => {
             <Paper sx={{ boxShadow: 3 }}>
               <CustomAutocomplete
                 disablePortal
-                options={allOutlets}
+                options={transformedBranches}
                 value={selectedOutlet}
                 onChange={handleSelect}
                 renderInput={(params) => (

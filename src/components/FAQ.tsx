@@ -3,6 +3,9 @@ import Arrow from "../assets/arrow.png";
 import { ChangeEvent } from "react";
 import CustomInput from "./inputFields/CustomInput";
 import CustomSelect from "./inputFields/CustomSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { setField } from "../slices/registerSlice";
 
 interface FAQItem {
   question: string;
@@ -13,22 +16,38 @@ interface FAQProps {
   faqData: FAQItem[];
   openIndex: number | null;
   toggleAnswer: (index: number) => void;
-  handleInputChange: (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleInputChange: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
-  const [checkedLegalType, setCheckedLegalType] = useState<string>("");
+  const dispatch = useDispatch();
+  const {
+    businessType,
+    name,
+    businessPhoneNumber,
+    city,
+    businessAddress,
+    firstName,
+    lastName,
+    personalAddress,
+    state,
+    country,
+    bankVerificationNumber,
+    bankAccountName,
+  } = useSelector((state: RootState) => state.register);
 
-  const handleLegalTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setCheckedLegalType(event.target.value);
+  const handleInputChange = (field: keyof RootState["register"], value: string) => {
+    dispatch(setField({ field, value }));
   };
-  const [name, setName] = useState<string>("");
+
+  const [checkedLegalType, setCheckedLegalType] = useState<string>(businessType);
+
+  const handleLegalTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckedLegalType(event.target.value);
+    console.log(event.target.value, "checked");
+  };
   const [selectedValue, setSelectedValue] = useState<string>("");
+  console.log(selectedValue);
 
   return (
     <div className="grid gap-3">
@@ -67,21 +86,18 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 0 && (
                   <div className=" ">
                     <p className=" text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      This information is required in order to verify your
-                      business. It will show up on your payout report, invoices
-                      and receipts.
+                      This information is required in order to verify your business. It will show up
+                      on your payout report, invoices and receipts.
                     </p>
                     <div className="">
                       <p className=" text-[16px] font-[500] leading-[24px] text-grey500">
                         What is the legal type of your business?
                       </p>
-
                       <div className="grid md:grid-cols-2 gap-4 my-5">
                         <label
                           htmlFor="soleTrader"
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
-                            checkedLegalType ===
-                            "Sole trader/Private Individual"
+                            checkedLegalType === "Sole trader/Private Individual"
                               ? "bg-purple500 text-white"
                               : "bg-[#E7E7E7] text-grey500"
                           }`}
@@ -91,10 +107,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             id="soleTrader"
                             name="legalType"
                             value="Sole trader/Private Individual"
-                            checked={
-                              checkedLegalType ===
-                              "Sole trader/Private Individual"
-                            }
+                            checked={checkedLegalType === "Sole trader/Private Individual"}
                             onChange={handleLegalTypeChange}
                             className="hidden"
                           />
@@ -105,7 +118,6 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                             e.g. self-employed
                           </p>
                         </label>
-
                         <label
                           htmlFor="otherLegalType"
                           className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
@@ -131,41 +143,41 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           </p>
                         </label>
                       </div>
-
-                      <div className=" grid gap-5">
+                      <div className="grid gap-5">
                         <CustomInput
                           type="text"
                           label="Company name"
                           value={name}
-                          onChange={(newValue) => setName(newValue)}
+                          onChange={(newValue) => handleInputChange("name", newValue)}
                         />
                         <CustomSelect
                           label=""
                           options={["Option 1", "Option 2", "Option 3"]}
-                          value={selectedValue}
-                          onChange={(value) => setSelectedValue(value)}
+                          value={businessType}
+                          onChange={(value) => handleInputChange("businessType", value)}
                           disabledOption="How would you categorize your business?"
                         />
-
                         <CustomInput
                           type="text"
                           label="VAT number (optional)"
                           value=""
-                          onChange={(newValue) => setName(newValue)}
+                          onChange={(newValue) => setSelectedValue(newValue)}
                         />
                         <CustomInput
                           type="text"
                           label="Business phone number (mobile or landline)"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
+                          value={businessPhoneNumber}
+                          onChange={(newValue) =>
+                            handleInputChange("businessPhoneNumber", newValue)
+                          }
                         />
                       </div>
                     </div>
 
                     <div className=" my-8">
                       <p className=" text-[14px] font-[500] font-sans leading-[24px] text-grey500">
-                        Web page: Website, Social media page, Business listing,
-                        Google map location, etc
+                        Web page: Website, Social media page, Business listing, Google map location,
+                        etc
                       </p>
 
                       <div className=" grid gap-5">
@@ -173,7 +185,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                           type="text"
                           label="http://www.example.com"
                           value=""
-                          onChange={(newValue) => setName(newValue)}
+                          onChange={(newValue) => setSelectedValue(newValue)}
                         />
 
                         <div className=" mb-5 flex items-center justify-between">
@@ -185,10 +197,7 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                               // checked={auth.rememberMe}
                               // onChange={handleRememberMeToggle}
                             />
-                            <label
-                              htmlFor="rememberMe"
-                              className="text-[14px] text-grey500"
-                            >
+                            <label htmlFor="rememberMe" className="text-[14px] text-grey500">
                               I don't have a web page
                             </label>
                           </div>
@@ -196,52 +205,42 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                       </div>
                     </div>
 
-                    <div className=" my-8">
-                      <p className=" text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-8">
+                    <div className="my-8">
+                      <p className="text-[16px] font-[500] font-sans leading-[24px] text-grey500 my-8">
                         Business address
                       </p>
-                      <div className=" grid gap-5">
+                      <div className="grid gap-5">
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className="text-[16px] font-[500] text-grey500">
                             Address (Line 1)
                           </label>
                           <CustomInput
                             type="text"
                             label="Street address"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
-                          />
-                        </div>
-                        <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
-                            Address (Line 2){" "}
-                            <span className=" text-grey200">(optional)</span>
-                          </label>
-                          <CustomInput
-                            type="text"
-                            label="Apartment, suite, unitv, building, floor"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
+                            value={businessAddress}
+                            onChange={(newValue) => handleInputChange("businessAddress", newValue)}
                           />
                         </div>
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className="text-[16px] font-[500] text-grey500">
+                            Address (Line 2) <span className="text-grey200">(optional)</span>
+                          </label>
+                          <CustomInput
+                            type="text"
+                            label="Apartment, suite, unit, building, floor"
+                            value={businessAddress}
+                            onChange={(newValue) => handleInputChange("businessAddress", newValue)}
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <label htmlFor="" className="text-[16px] font-[500] text-grey500">
                             City
                           </label>
                           <CustomInput
                             type="text"
                             label="City or town"
-                            value=""
-                            onChange={(newValue) => setName(newValue)}
+                            value={city}
+                            onChange={(newValue) => handleInputChange("city", newValue)}
                           />
                         </div>
                       </div>
@@ -253,31 +252,25 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                       </p>
                       <div className=" grid md:grid-cols-2 items-center gap-5">
                         <div className="grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             From:
                           </label>
                           <CustomInput
                             type="date"
                             label=""
                             value=""
-                            onChange={(newValue) => setName(newValue)}
+                            onChange={(newValue) => setSelectedValue(newValue)}
                           />
                         </div>
                         <div className=" grid gap-2">
-                          <label
-                            htmlFor=""
-                            className=" text-[16px] font-[500] text-grey500"
-                          >
+                          <label htmlFor="" className=" text-[16px] font-[500] text-grey500">
                             To:
                           </label>
                           <CustomInput
                             type="date"
                             label=""
                             value=""
-                            onChange={(newValue) => setName(newValue)}
+                            onChange={(newValue) => setSelectedValue(newValue)}
                           />
                         </div>
                       </div>
@@ -287,10 +280,9 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 1 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please make sure that your personal details remain
-                      up-to-date. Because this information is used to verify
-                      your identity. You will need to send our Support Team a
-                      message if you need to change it.
+                      Please make sure that your personal details remain up-to-date. Because this
+                      information is used to verify your identity. You will need to send our Support
+                      Team a message if you need to change it.
                     </p>
 
                     <div className=" grid gap-5">
@@ -298,40 +290,40 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         <CustomInput
                           type="text"
                           label="First name"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
+                          value={firstName}
+                          onChange={(newValue) => handleInputChange("firstName", newValue)}
                         />
                         <CustomInput
                           type="text"
                           label="Last name"
-                          value=""
-                          onChange={(newValue) => setName(newValue)}
+                          value={lastName}
+                          onChange={(newValue) => handleInputChange("lastName", newValue)}
                         />
                       </div>
 
                       <CustomInput
                         type="text"
                         label="Registered home address"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={personalAddress}
+                        onChange={(newValue) => handleInputChange("personalAddress", newValue)}
                       />
                       <CustomInput
                         type="text"
                         label="City"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={city}
+                        onChange={(newValue) => handleInputChange("city", newValue)}
                       />
                       <CustomInput
                         type="text"
                         label="State"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={state}
+                        onChange={(newValue) => handleInputChange("state", newValue)}
                       />
                       <CustomInput
                         type="text"
                         label="Country"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={country}
+                        onChange={(newValue) => handleInputChange("country", newValue)}
                       />
                     </div>
                   </div>
@@ -339,30 +331,31 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                 {openIndex === 2 && (
                   <div className="">
                     <p className=" mb-[32px] text-[16px] font-[400] leading-[24px] py-5 text-grey500">
-                      Please enter your bank account information. You’ll receive
-                      a four-digit verification code via text message. Once you
-                      enter the code Troo will direct all payouts to the
-                      account.
+                      Please enter your bank account information. You’ll receive a four-digit
+                      verification code via text message. Once you enter the code Troo will direct
+                      all payouts to the account.
                     </p>
 
                     <div className=" grid gap-5">
                       <CustomInput
                         type="text"
                         label="Account holder or business name"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={bankAccountName}
+                        onChange={(newValue) => handleInputChange("bankAccountName", newValue)}
                       />
                       <CustomInput
                         type="text"
                         label="Bank Verification Number (BVN) / IBAN"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={bankVerificationNumber}
+                        onChange={(newValue) =>
+                          handleInputChange("bankVerificationNumber", newValue)
+                        }
                       />
                       <CustomInput
                         type="text"
                         label="Country"
-                        value=""
-                        onChange={(newValue) => setName(newValue)}
+                        value={country}
+                        onChange={(newValue) => handleInputChange("country", newValue)}
                       />
                     </div>
                   </div>

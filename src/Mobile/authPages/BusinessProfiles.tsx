@@ -31,10 +31,7 @@ const BusinessProfiles: React.FC = () => {
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);

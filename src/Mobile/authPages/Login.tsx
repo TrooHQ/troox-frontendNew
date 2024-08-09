@@ -4,12 +4,7 @@ import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setEmail,
-  setPassword,
-  selectEmail,
-  selectPassword,
-} from "../../slices/authSlice.js";
+import { setEmail, setPassword, selectEmail, selectPassword } from "../../slices/authSlice.js";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.ts";
 import "react-toastify/dist/ReactToastify.css";
@@ -68,13 +63,10 @@ const Login = () => {
             const business = error.response.data.data.business;
             const userId = error.response.data.data.user_id;
 
-            navigate(
-              `/demo/register/troo-portal?business=${business}&user_id=${userId}`,
-              { state: { step: 3 } }
-            );
-          } else if (
-            error.response.data.message === "Account details not verified"
-          ) {
+            navigate(`/demo/register/troo-portal?business=${business}&user_id=${userId}`, {
+              state: { step: 3 },
+            });
+          } else if (error.response.data.message === "Account details not verified") {
             navigate("/demo/verify/troo-portal");
             console.log("Unverified");
           }
@@ -133,10 +125,8 @@ const Login = () => {
           </div>
         </div>
         <div className=" mt-[100px]">
-          <Link to="/demo/register/troo-portal">
-            <p className="font-[500] text-[16px] text-purple500">
-              Create a business account
-            </p>
+          <Link to="/register">
+            <p className="font-[500] text-[16px] text-purple500">Create a business account</p>
           </Link>
         </div>
       </div>

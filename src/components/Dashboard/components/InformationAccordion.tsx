@@ -95,7 +95,7 @@ export default function InformationAccordion() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("Selected file:", file);
+    console.log(file);
   };
 
   const handleChange = (panel: string) => (event: any, isExpanded: boolean) => {
