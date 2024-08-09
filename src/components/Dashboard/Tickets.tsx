@@ -18,17 +18,6 @@ import Close from "../../assets/closeIcon.svg";
 import CreditCard from "../../assets/creditCard.svg";
 import { RestartAlt } from "@mui/icons-material";
 import { toast } from "react-toastify";
-
-interface Ticket {
-  ordered_by: string;
-  menu_items: MenuItem[];
-  orders: string[];
-  total_price: number;
-  createdAt: string;
-  status: string;
-  name: string;
-  id: number;
-}
 interface MenuItem {
   name: string;
   price: string;
