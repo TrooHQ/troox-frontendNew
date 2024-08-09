@@ -5,7 +5,6 @@ import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/rootReducer";
 import More from "../../assets/more_vert.svg";
 import ArrowToggle from "../../assets/chevron-down2.svg";
 import { ToggleOff, ToggleOn } from "@mui/icons-material";
@@ -13,7 +12,7 @@ import CustomSelect5 from "../inputFields/CustomSelect5";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { fetchBranches } from "../../slices/branchSlice";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
 
@@ -128,7 +127,11 @@ const ManageTables: React.FC = () => {
     };
     try {
       setLoading(true);
-      const response = await axios.post(`${SERVER_DOMAIN}/asset/generateBusinessAsset/`, payload, headers);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/asset/generateBusinessAsset/`,
+        payload,
+        headers
+      );
       setAddModifierModal(false);
       dispatch(getRooms());
       dispatch(getTables());
