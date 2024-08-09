@@ -26,7 +26,6 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
-// import CancelButton from "../Buttons/CancelButton";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +35,6 @@ const MenuBuilder = () => {
   console.log(menuItems, "wwww");
 
   const userData = useSelector((state: RootState) => state.inviteUser);
-  // const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
@@ -52,6 +50,7 @@ const MenuBuilder = () => {
   const [menuDescription, setMenuDescription] = useState("");
   const [menuPrice, setMenuPrice] = useState("");
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
+  const [price, setPrice] = useState("");
 
   const handleGroupName = (value: string) => {
     setGroupName(value);
@@ -65,6 +64,9 @@ const MenuBuilder = () => {
   };
   const handleMenuPrice = (value: string) => {
     setMenuPrice(value);
+  };
+  const handlePrice = (value: string) => {
+    setPrice(value);
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +135,7 @@ const MenuBuilder = () => {
       }[];
     }[]
   >([]);
-  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0].name || null);
+  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0]?.name || null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [menuType, setMenuType] = useState<string>("");
 
@@ -155,9 +157,13 @@ const MenuBuilder = () => {
 
   // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
   useEffect(() => {
-    dispatch(fetchMenuCategories(selectedBranch.id));
-    dispatch(fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu }));
-    dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
+    selectedBranch && dispatch(fetchMenuCategories(selectedBranch.id));
+    selectedBranch &&
+      dispatch(
+        fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
+      );
+    selectedBranch &&
+      dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
   }, [selectedBranch, activeMainMenu, activeSubMenu]);
 
   // Update submenuContent when menuItems change
@@ -188,17 +194,16 @@ const MenuBuilder = () => {
       },
     };
 
+    let payload = {
+      category_name: activeMainMenu,
+      group_name: groupName,
+      branch_id: selectedBranch.id,
+      price_to_all_items: applyPriceToAll,
+      ...(applyPriceToAll && { price: Number(price) }),
+    };
+
     try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addMenuGroup`,
-        {
-          category_name: activeMainMenu,
-          group_name: groupName,
-          branch_id: selectedBranch.id,
-          price_to_all_items: applyPriceToAll,
-        },
-        headers
-      );
+      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
       console.log(response);
       dispatch(
         fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
@@ -577,7 +582,7 @@ const MenuBuilder = () => {
                           value="yes"
                           checked={applyPriceToAll === true}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${applyPriceToAll === true ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === true ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
@@ -590,7 +595,7 @@ const MenuBuilder = () => {
                           value="no"
                           checked={applyPriceToAll === false}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${applyPriceToAll === false ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === false ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
@@ -598,15 +603,15 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    {/* {selectedOption === "yes" && (
+                    {applyPriceToAll && (
                       <CustomInput
                         type="text"
                         label="Enter price"
-                        value=""
+                        value={price}
                         error=""
-                        onChange={(newValue) => handleInputChange("lastName", newValue)}
+                        onChange={(newValue) => handlePrice(newValue)}
                       />
-                    )} */}
+                    )}
 
                     {/* <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>

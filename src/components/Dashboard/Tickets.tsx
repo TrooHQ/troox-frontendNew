@@ -19,22 +19,6 @@ import CreditCard from "../../assets/creditCard.svg";
 import { RestartAlt } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
-interface Ticket {
-  ordered_by: string;
-  menu_items: MenuItem[];
-  orders: string[];
-  total_price: number;
-  createdAt: string;
-  status: string;
-  name: string;
-  id: number;
-}
-interface MenuItem {
-  name: string;
-  price: string;
-  quantity: string;
-}
-
 const data = [
   {
     id: 1,
@@ -117,14 +101,13 @@ const data = [
 ];
 
 const Tickets = () => {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
   const [menuOpenMap, setMenuOpenMap] = useState<{ [key: number]: boolean }>({});
   const [menuOpenMap2, setMenuOpenMap2] = useState<{ [key: number]: boolean }>({});
   const [voidOrderMenu, setVoidOrderMenu] = useState<boolean>(false);
   const [refundMenu, setRefundMenu] = useState<boolean>(false);
   const [vacateTableMenu, setVacateTableMenu] = useState<boolean>(false);
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
-  console.log(tickets);
+
   const userDetails = useSelector((state: RootState) => state.user);
 
   const [openInput, setOpenInput] = useState<boolean>(false);
@@ -185,7 +168,7 @@ const Tickets = () => {
     };
     try {
       const response = await axios.get(`${SERVER_DOMAIN}/order/getOrder`, headers);
-      setTickets(response.data);
+      toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
     }

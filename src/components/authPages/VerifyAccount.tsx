@@ -41,11 +41,11 @@ const VerifyAccount = () => {
   const resendOTP = async () => {
     try {
       setLoading(true);
-      await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
+      const response = await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
         email,
       });
       setLoading(false);
-      toast.success("Token has been resent");
+      toast.success(response.data.message || "Token has been resent");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -66,11 +66,11 @@ const VerifyAccount = () => {
     try {
       setLoading(true);
       const token = parseInt(digits.join(""));
-      await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
+      const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
         token,
       });
       setLoading(false);
-      toast.success("User verified successfully");
+      toast.success(response.data.message || "User verified successfully");
       history("/login");
     } catch (error) {
       console.error("Error occurred:", error);

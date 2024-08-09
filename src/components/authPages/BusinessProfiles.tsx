@@ -88,7 +88,7 @@ const BusinessProfiles: React.FC = () => {
   const renderStepProgress = () => {
     return (
       <div className="flex justify-center mb-8 gap-[8px]">
-        {stepTitles.map((title, index) => (
+        {stepTitles.map((_, index) => (
           <div key={index} className="flex items-center">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -98,9 +98,9 @@ const BusinessProfiles: React.FC = () => {
               {index + 1}
             </div>
             {index < stepTitles.length - 1 && (
-              <div className={`flex-1 h-1 ${currentStep > index ? "bg-purple500" : "bg-gray-300"}`}>
-                {title}
-              </div>
+              <div
+                className={`flex-1 h-1 ${currentStep > index ? "bg-purple500" : "bg-gray-300"}`}
+              ></div>
             )}
           </div>
         ))}
