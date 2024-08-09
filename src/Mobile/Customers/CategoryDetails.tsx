@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Add from "../assets/plusIconRound.svg";
-import Minus from "../assets/MinusRound.svg";
+import Minus from "../assets/Minus.svg";
+import Add from "../assets/add.svg";
 import TopMenuNav from "./TopMenuNav";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
@@ -13,6 +13,12 @@ import {
   removeItemFromBasket,
   updateItemQuantity,
 } from "../../slices/BasketSlice";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Counter from "../../Mobile/assets/counter.png";
+
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface MenuItem {
   _id: string;
@@ -22,12 +28,23 @@ interface MenuItem {
 
 interface Details extends MenuItem {
   name: string;
+  _id: string;
   business_name: string;
   menu_category_name: string;
   menu_group_name: string;
+  menu_item_name: string;
   menu_item_image: string;
-}
 
+  // name: string;
+  // business_name: string;
+  // menu_category_name: string;
+  // menu_group_name: string;
+  // menu_item_image: string;
+}
+// interface Group {
+//   menu_category_name: string;
+//   name: string;
+// }
 export const CategoryDetails = () => {
   const [menuGroup, setMenuGroup] = useState<Details[]>([]);
   const [menuItems, setMenuItems] = useState<Details[]>([]);
@@ -60,7 +77,16 @@ export const CategoryDetails = () => {
       );
       setMenuGroup(response.data.data);
       if (response.data.data && response.data.data.length > 0) {
-        setSelectedGroup(response.data.data[0].name);
+        const firstMatch = response.data.data.find(
+          (group: any) => group.menu_category_name === id
+        );
+        console.log("First match found:", firstMatch);
+
+        if (firstMatch) {
+          setSelectedGroup(firstMatch.name);
+        } else {
+          setSelectedGroup(response.data.data[0].name);
+        }
       }
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -94,6 +120,37 @@ export const CategoryDetails = () => {
     getGroups();
     getItems();
   }, []);
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          arrows: true,
+        },
+      },
+    ],
+  };
   const { id } = useParams();
 
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -142,35 +199,80 @@ export const CategoryDetails = () => {
     <div className=" relative ">
       {loading && <Loader />}
       <div className="  ">
-        <TopMenuNav />
-
-        <div className="mt-[24px] mb-[8px] flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap">
-          {menuGroup.map((menu) => (
-            <div key={menu._id}>
-              {menu.menu_category_name === id && (
-                <div className="flex items-center">
-                  <p
-                    className={`px-[12px] py-[8px] inline-block ${
-                      selectedGroup === menu.name
-                        ? "bg-[#0B7F7C] text-white font-[600]"
-                        : "border text-[#606060] font-[400]"
-                    } text-[14px] cursor-pointer`}
-                    onClick={() => setSelectedGroup(menu.name)}
-                  >
-                    {menu.name}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className=" mx-[24px] mb-[100px]">
-          <p className="text-[18px] font-[500] uppercase py-[9px] border-b ">
+        <TopMenuNav>
+          <div className=" bg-white  pt-[24px] mb-[8px] flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap">
+            {menuGroup.map((menu) => (
+              <div key={menu._id}>
+                {menu.menu_category_name === id && (
+                  <div className="flex items-center">
+                    <p
+                      className={`px-[12px] py-[8px] inline-block ${
+                        selectedGroup === menu.name
+                          ? "bg-[#FF0000] text-white font-[600]"
+                          : "border text-[#606060] font-[400]"
+                      } text-[14px] cursor-pointer`}
+                      onClick={() => setSelectedGroup(menu.name)}
+                    >
+                      {menu.name}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </TopMenuNav>
+        <div className="  mb-[100px]">
+          <p className="mx-[24px] text-[18px] font-[500] uppercase py-[9px] border-b text-[#FF0000] ">
             {selectedGroup}
           </p>
+
+          <div className=" bg-[#E7E7E7]">
+            <div className=" flex items-center justify-between py-[14px] px-[24px]">
+              <p className=" text-[16px] font-[500]">Most Popular</p>
+              <div className=" text-[16px]">
+                <MdKeyboardArrowRight />
+              </div>
+            </div>
+            <div className="overflow-x-auto mx-[12px]">
+              <Slider {...settings}>
+                {menuItems.map(
+                  (menu, index) =>
+                    menu.menu_group_name === selectedGroup && (
+                      <div
+                        className="max-w-[170px] mx-auto pb-[34px] pt-[2px] rounded-[10px] px-[2px] mb-[14px] border-2 drop-shadow bg-[#FFFFFF] border-[#E7E7E7] flex-shrink-0"
+                        key={index}
+                        // onClick={() => openModal(menu._id)}
+                      >
+                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                          <div>
+                            <div className="relative">
+                              <img
+                                src={menu?.menu_item_image}
+                                alt=""
+                                className="w-full object-cover h-auto"
+                              />
+                              <img
+                                src={Counter}
+                                alt=""
+                                className="absolute -bottom-4 right-0"
+                              />
+                            </div>
+                            <p className="text-[14px] text-[#121212] font-[500] px-[16px] mt-[8px]">
+                              {menu?.menu_item_name?.length > 18
+                                ? `${menu?.menu_item_name.substring(0, 15)}...`
+                                : menu?.menu_item_name}
+                            </p>
+                          </div>
+                        </Link>
+                      </div>
+                    )
+                )}
+              </Slider>
+            </div>
+          </div>
+
           {menuItems.map((menu) => (
-            <div key={menu._id} className={``}>
+            <div key={menu._id} className={` mx-[24px]`}>
               {menu.menu_group_name === selectedGroup && (
                 <>
                   <div className="">
@@ -184,12 +286,14 @@ export const CategoryDetails = () => {
                             {menu.menu_item_name}
                           </p>
                           <p className=" text-[12px] text-[#121212]">
-                            {/* {menu.details} */}
+                            Delicious Delicacy
                           </p>
                         </div>
 
                         <div className="">
-                          <Link to={`/menu-details/${menu._id}`}>
+                          <Link
+                            to={`/demo/menu-details/${menu._id}/orderandpay`}
+                          >
                             <img
                               src={menu.menu_item_image}
                               alt=""
@@ -229,7 +333,9 @@ export const CategoryDetails = () => {
                             </div>
                           ) : (
                             <div className="">
-                              <Link to={`/menu-details/${menu._id}`}>
+                              <Link
+                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                              >
                                 <div className="flex items-center justify-end">
                                   <img src={Add} alt="add" />
                                 </div>
@@ -246,16 +352,16 @@ export const CategoryDetails = () => {
           ))}
         </div>
         {ids && (
-          <div className="px-[16px] sticky bottom-[10px] w-full">
-            <div className="flex justify-between items-center py-[13px] px-[24px] text-white bg-[#0B7F7C] rounded-[3px] cursor-pointer">
+          <div className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto">
+            <div className="flex justify-between items-center py-[13px] px-[24px] text-white bg-[#FF0000] rounded-[3px] cursor-pointer">
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white rounded-[5px] text-[#0B7F7C] py-[12px] px-[10px] text-[16px] font-[500]">
+                <p className="bg-white rounded-[5px] text-[#FF0000] py-[12px] px-[10px] text-[16px] font-[500]">
                   {totalCount.totalQuantity || 0}
                 </p>
 
                 <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
               </div>
-              <Link to="/basket">
+              <Link to="/demo/basket/orderandpay">
                 <p className="text-[16px] font-[500]">View Basket</p>
               </Link>
             </div>

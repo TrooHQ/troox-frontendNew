@@ -3,7 +3,7 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import add from "../../assets/add.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/src/store/store";
+import { AppDispatch } from "@/src/store/store";
 import { createBranch, deleteBranch, fetchBranches } from "../../slices/branchSlice";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MoreVert from "@mui/icons-material/MoreVert";
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const ManageBranches = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: RootState) => state.branches);
+  const { branches } = useSelector((state: any) => state.branches);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmationDialog, setConfirmationDialog] = useState<{
@@ -74,7 +74,7 @@ const ManageBranches = () => {
 
   const handleDuplicateBranch = () => {
     if (selectedBranchId) {
-      const branchToDuplicate = branches.find((branch) => branch._id === selectedBranchId);
+      const branchToDuplicate = branches.find((branch: any) => branch._id === selectedBranchId);
       if (branchToDuplicate) {
         // Split the email into local part and domain
         const emailParts = branchToDuplicate.branch_email.split("@");
@@ -152,7 +152,7 @@ const ManageBranches = () => {
                 <hr className="mb-2 text-[#E7E7E7]" />
 
                 <tbody>
-                  {branches.map((branch) => (
+                  {branches.map((branch: any) => (
                     <tr
                       key={branch._id}
                       className={`${

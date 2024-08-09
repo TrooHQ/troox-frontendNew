@@ -19,7 +19,7 @@ import { TextField, Button, Popper, Paper } from "@mui/material";
 import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-material";
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { AppDispatch } from "../../store/store";
 import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
 interface MenuItem {
   subTitle?: string;

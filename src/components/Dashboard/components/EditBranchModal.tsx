@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
 import { fetchBranchById, updateBranch, resetBranchNotFound } from "../../../slices/branchSlice";
-import { RootState, AppDispatch } from "@/src/store/store";
+import { AppDispatch } from "@/src/store/store";
 
 interface EditBranchModalProps {
   isModalOpen: boolean;
@@ -18,7 +18,7 @@ const EditBranchModal: React.FC<EditBranchModalProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedBranch, loading, error, branches, branchNotFound } = useSelector(
-    (state: RootState) => state.branches
+    (state: any) => state.branches
   );
 
   const [branchData, setBranchData] = useState({
@@ -36,7 +36,7 @@ const EditBranchModal: React.FC<EditBranchModalProps> = ({
 
   useEffect(() => {
     if (branchNotFound && branchId) {
-      const fallbackBranch = branches.find((branch) => branch._id === branchId);
+      const fallbackBranch = branches.find((branch: { _id: string }) => branch._id === branchId);
       if (fallbackBranch) {
         setBranchData({
           branch_name: fallbackBranch.branch_name,

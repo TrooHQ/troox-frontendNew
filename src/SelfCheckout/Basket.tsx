@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
@@ -32,7 +32,7 @@ export const Basket = () => {
     setSelectedPercentage(selectedPercentage === tip ? null : tip);
     setCustomAmount(null);
     setTimeout(() => {
-      navigate("/payment");
+      navigate("/demo/payment/selfcheckout");
     }, 2000);
   };
 
@@ -72,10 +72,10 @@ export const Basket = () => {
     setSelectedPercentage(null);
     setCustomAmount(null);
     dispatch(setTip(null));
-    navigate("/payment");
+    navigate("/demo/payment/selfcheckout");
   };
   const handleNext = () => {
-    navigate("/payment");
+    navigate("/demo/payment/selfcheckout");
   };
 
   const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
@@ -105,10 +105,14 @@ export const Basket = () => {
               }`}
               key={index}
             >
-              <div className="grid grid-cols-5 place-items-center text-start items-center">
-                <p className="text-[30px] text-[#121212] font-[500] col-span-2">
-                  {item?.name}
-                </p>
+              <div className=" flex  justify-between place-items-center text-start items-center">
+                <Link to={`/menu-details/${item.id}`}>
+                  {" "}
+                  <p className="text-[30px] text-[#121212] font-[500] col-span-2">
+                    {item?.name}
+                  </p>
+                </Link>
+
                 <div className="flex items-center ">
                   <img
                     src={Minus}
@@ -163,7 +167,7 @@ export const Basket = () => {
                 </div>
               )}
 
-              <div className="mt-[10px]">
+              <div className="mt-[10px] hidden">
                 <p className="text-[20px] text-[#000000] font-[500]">
                   Sub Total: &#x20A6;{item.totalPrice.toLocaleString()}
                 </p>

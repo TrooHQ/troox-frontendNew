@@ -65,7 +65,7 @@ const Menu = () => {
         </div>
         <div className=" px-[21px] items-center place-items-center grid grid-cols-2 gap-[24px] mt-[10px]">
           {menuCategory.map((menu) => (
-            <Link to={`/category-details/${menu?.name}`}>
+            <Link to={`/demo/category-details/${menu?.name}/selfcheckout`}>
               <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
                 <div className=" h-[200px] w-[200px] text-center bg-[#FF0000] border-[8px] border-[#FFE100] rounded-full drop-shadow-md">
                   <div className="overflow-hidden h-full w-full rounded-full">

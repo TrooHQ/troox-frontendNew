@@ -20,9 +20,9 @@ export const Receipt = () => {
           </div>
         </div>
 
-        <Link to="/get-receipt">
+        <Link to="/demo/get-receipt/orderandpay">
           <div className=" flex items-center justify-center">
-            <p className="bg-[#0B7F7C] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
+            <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
               Email
             </p>
           </div>

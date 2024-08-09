@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import TopMenuNav from "./TopMenuNav";
-import ArrowRight from "../assets/chevronrightt.svg";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { useEffect, useState } from "react";
@@ -63,24 +62,24 @@ export const MenuPage = () => {
       <div className="  ">
         <TopMenuNav />
 
-        <div className=" px-[21px] ">
+        <div className=" mx-[24px] mt-[16px]">
+          <p className=" font-[500] text-[20px] text-[#121212]">
+            Menu Category
+          </p>
+        </div>
+
+        <div className=" px-[21px] grid grid-cols-2 gap-[24px]">
           {menuCategory.map((menu) => (
-            <Link to={`/${business_name}/category-details/${menu.name}`}>
+            <Link
+              to={`/demo/${business_name}/category-details/${menu.name}/orderandpay`}
+            >
               <div className="mt-[24px]">
-                <div className=" flex items-center justify-between ">
-                  <p className=" text-[16px] font-[500] text-[#121212]  uppercase">
-                    {truncateText(menu.name, 15)}
-                  </p>
-                  <div className=" flex items-center">
-                    <p className=" text-[14px] text-[#0B7F7C] font-[400] leading-[21px]">
-                      Explore Menu
-                    </p>
-                    <img src={ArrowRight} alt="" />
-                  </div>
-                </div>
-                <div className="pt-[16px] pb-[20px] border-b max-w-[200px] mx-auto">
+                <div className="pt-[16px] pb-[20px] border-b max-w-[104px] mx-auto">
                   <img src={menu?.image} alt="" className="w-full" />
                 </div>
+                <p className=" text-[16px] font-[500] text-[#121212]  uppercase text-center">
+                  {truncateText(menu.name, 15)}
+                </p>
               </div>
             </Link>
           ))}

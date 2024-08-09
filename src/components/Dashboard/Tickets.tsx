@@ -107,7 +107,7 @@ const Tickets = () => {
   const [refundMenu, setRefundMenu] = useState<boolean>(false);
   const [vacateTableMenu, setVacateTableMenu] = useState<boolean>(false);
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
-
+  console.log(tickets);
   const userDetails = useSelector((state: RootState) => state.user);
 
   const [openInput, setOpenInput] = useState<boolean>(false);

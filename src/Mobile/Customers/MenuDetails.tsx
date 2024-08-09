@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import TopMenuNav from "./TopMenuNav";
-import Plus from "../assets/Plus.svg";
-import Minus from "../assets/Minus.svg";
+import Add from "../assets/Plus.svg";
+import MinusMain from "../assets/MinusCounter.svg";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
+import { FaCircleCheck } from "react-icons/fa6";
+
 import {
   addItemToBasket,
   removeItemFromBasket,
   updateItemInBasket,
 } from "../../slices/BasketSlice";
 import Loader from "../../components/Loader";
+import Image from "../assets/FriedRice.png";
 
 interface MenuItem {
   _id: string;
@@ -48,6 +51,20 @@ export interface BasketItem {
   tableNumber: string;
 }
 
+const menuItems = [
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+  {
+    name: "Rice",
+    price: "From ₦3000",
+    image: Image,
+    details: "Crispy fried ankara straight from the oven",
+  },
+];
 const MenuDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -55,7 +72,6 @@ const MenuDetails = () => {
   const [menuModifiers, setMenuModifiers] = useState<Option[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
 
-  // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [itemCount, setItemCount] = useState<number>(1);
   const dispatch = useDispatch();
 
@@ -191,7 +207,7 @@ const MenuDetails = () => {
 
       <TopMenuNav />
       {menuItem && (
-        <div>
+        <div className=" relative">
           <div className="menu-item-image-container mx-[24px] mt-[32px] max-w-[400px] h-[300px] rounded-[20px] overflow-hidden">
             <img
               src={menuItem.menu_item_image}
@@ -213,7 +229,7 @@ const MenuDetails = () => {
 
           {menuModifiers.length > 0 && (
             <div className="menu-item-modifiers pb-[16px] border-b">
-              <p className="text-[#0B7F7C] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
+              <p className="text-[#FF0000] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
                 Customize
               </p>
               {menuModifiers.map((option) => (
@@ -245,27 +261,150 @@ const MenuDetails = () => {
           )}
 
           <div className="menu-item-quantity py-[16px]">
-            <p className="text-[#0B7F7C] text-[16px] font-[500] mx-[24px] mb-[10px]">
+            <p className="text-[#FF0000] text-[16px] font-[500] mx-[24px] mb-[10px]">
               Quantity
             </p>
             <hr />
             <div className="flex items-center justify-center">
               <div className="mt-[24px] mb-[37px] items-center rounded-[5px] justify-center inline-flex bg-[#E7E7E7]">
                 <p className="py-[12px] px-[20px]" onClick={handleDecrement}>
-                  <img src={Minus} alt="decrement" />
+                  <img src={MinusMain} alt="decrement" />
                 </p>
                 <p className="bg-white py-[12px] px-[25px] text-[16px] font-[500]">
                   {itemCount}
                 </p>
                 <p className="py-[12px] px-[20px]" onClick={handleIncrement}>
-                  <img src={Plus} alt="increment" />
+                  <img src={Add} alt="increment" />
                 </p>
               </div>
             </div>
           </div>
-          <div className="add-to-basket-button mx-[16px] my-[16px]">
+
+          <div className=" mx-[24px]">
+            <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
+              People also ordered for
+            </p>
+
+            <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
+              {menuItems.map((menu, index) => (
+                <div key={index} className="flex-shrink-0 w-[280px]">
+                  <div className="flex items-center justify-between">
+                    <div className="w-[180px]">
+                      <p className="text-[16px] text-[#121212] font-[500]">
+                        {menu.name}
+                      </p>
+                      <p className="text-[12px] text-[#121212]">
+                        {menu.details}
+                      </p>
+                    </div>
+                    <div>
+                      <img
+                        src={menu.image}
+                        alt={menu.name}
+                        className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                      />
+                    </div>
+                  </div>
+                  <div className="pt-[8px] flex items-center justify-between">
+                    <p className="text-[16px] text-[#121212] font-[500]">
+                      {menu.price}
+                    </p>
+                    <div className="w-[100px]">
+                      <div className="flex items-center justify-between">
+                        <img
+                          src={MinusMain}
+                          alt="decrement"
+                          className="cursor-pointer"
+                        />
+                        <p className="text-[16px] font-[500]">1</p>
+                        <img
+                          src={Add}
+                          alt="increment"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-[24px]">
+            <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
+              Recommended Items
+            </p>
+
+            <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
+              {menuItems.map((menu, index) => (
+                <div key={index} className="flex-shrink-0 w-[280px]">
+                  <div className="flex items-center justify-between">
+                    <div className="w-[180px]">
+                      <p className="text-[16px] text-[#121212] font-[500]">
+                        {menu.name}
+                      </p>
+                      <p className="text-[12px] text-[#121212]">
+                        {menu.details}
+                      </p>
+                    </div>
+                    <div>
+                      <img
+                        src={menu.image}
+                        alt={menu.name}
+                        className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                      />
+                    </div>
+                  </div>
+                  <div className="pt-[8px] flex items-center justify-between">
+                    <p className="text-[16px] text-[#121212] font-[500]">
+                      {menu.price}
+                    </p>
+                    <div className="w-[100px]">
+                      <div className="flex items-center justify-between">
+                        <img
+                          src={MinusMain}
+                          alt="decrement"
+                          className="cursor-pointer"
+                        />
+                        <p className="text-[16px] font-[500]">1</p>
+                        <img
+                          src={Add}
+                          alt="increment"
+                          className="cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className=" mx-[24px] mb-[150px] mt-[16px]">
+            <div className=" flex items-center justify-between py-[16px] ">
+              <p className=" text-[16px] font-[500] text-[#121212]">
+                Add Special Instructions
+              </p>
+            </div>
+
+            <div className=" ">
+              <div className="">
+                <textarea
+                  className=" text-[16px] w-full h-[153px] border  font-[400] text-[#929292] border-gray-300 rounded-md p-2 shadow-md"
+                  placeholder="Enter message here "
+                />
+              </div>
+              <div className=" mt-[10px] flex items-center justify-end">
+                <button className=" text-[#ff0000]  font-[500] text-[40px]">
+                  <FaCircleCheck />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto  my-[16px]">
             <div
-              className="flex justify-between items-center py-[13px] px-[24px] bg-[#0B7F7C] text-white rounded-[3px] cursor-pointer"
+              className="flex justify-between items-center py-[13px] px-[24px] bg-[#FF0000] text-white rounded-[3px] cursor-pointer"
               onClick={handleAddToBasket}
             >
               <p className="text-[16px] font-[500]">
