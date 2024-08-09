@@ -16,7 +16,6 @@ import {
   setURL,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
-// import NotFound from "../NotFound";
 
 const StartOrder = () => {
   const location = useLocation();
