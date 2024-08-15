@@ -5,6 +5,14 @@ import { SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import Modal from "../../Modal"; // Import the Modal component, adjust path accordingly
 
+type ModifierRules = {
+  requireSelection: boolean;
+  optionalShown: boolean;
+  optionalNotShown: boolean;
+  multipleChoices: boolean;
+  singleChoice: boolean;
+};
+
 const Modifiers = ({
   activeMainMenu,
   activeSubMenu,
@@ -20,6 +28,13 @@ const Modifiers = ({
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modifierRules, setModifierRules] = useState<ModifierRules>({
+    requireSelection: false,
+    optionalShown: false,
+    optionalNotShown: false,
+    multipleChoices: false,
+    singleChoice: false,
+  });
 
   useEffect(() => {
     setMenuOptions(menuItems);
@@ -81,9 +96,37 @@ const Modifiers = ({
           setLoading(false);
         });
     });
-    // setConfirmSaveModal(false);
-    // setSuccessModal(true);
   };
+
+  const handleRuleChange = (rule: keyof ModifierRules) => {
+    setModifierRules((prevRules) => ({
+      ...prevRules,
+      [rule]: !prevRules[rule],
+    }));
+  };
+
+  const rules: { label: string; key: keyof ModifierRules }[] = [
+    {
+      label: "Servers must make a selection for this group",
+      key: "requireSelection",
+    },
+    {
+      label: "This group is optional and is shown on add",
+      key: "optionalShown",
+    },
+    {
+      label: "This group is optional and is not shown on add",
+      key: "optionalNotShown",
+    },
+    {
+      label: "More than one modifier can be chosen",
+      key: "multipleChoices",
+    },
+    {
+      label: "Only one modifier can be chosen",
+      key: "singleChoice",
+    },
+  ];
 
   return (
     <div className="">
@@ -165,72 +208,27 @@ const Modifiers = ({
               Modifier Rules
             </p>
             <hr className=" border-[#B6B6B6]" />
-            <div className="">
-              <div className="flex items-center gap-[16px] my-[16px]">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="h-6 w-6 border-[#87878780]"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="text-[16px] font-[400] text-[#000000]"
+            <div>
+              {rules.map((rule) => (
+                <div
+                  key={rule.key}
+                  className="flex items-center gap-[16px] my-[16px]"
                 >
-                  Servers must make a selection for this group
-                </label>
-              </div>
-              <div className="flex items-center gap-[16px] my-[16px]">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="h-6 w-6 border-[#87878780]"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="text-[16px] font-[400] text-[#000000]"
-                >
-                  This group is optional and is shown on add
-                </label>
-              </div>
-              <div className="flex items-center gap-[16px] my-[16px]">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="h-6 w-6 border-[#87878780]"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="text-[16px] font-[400] text-[#000000]"
-                >
-                  This group is optional and is not shown on add
-                </label>
-              </div>
-              <div className="flex items-center gap-[16px] my-[16px]">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="h-6 w-6 border-[#87878780]"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="text-[16px] font-[400] text-[#000000]"
-                >
-                  More than one modifier can be chosen
-                </label>
-              </div>
-              <div className="flex items-center gap-[16px] my-[16px]">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  className="h-6 w-6 border-[#87878780]"
-                />
-                <label
-                  htmlFor="rememberMe"
-                  className="text-[16px] font-[400] text-[#000000]"
-                >
-                  Only one modifier can be chosen{" "}
-                </label>
-              </div>
+                  <input
+                    type="checkbox"
+                    id={rule.key}
+                    className="h-6 w-6 border-[#87878780]"
+                    checked={modifierRules[rule.key]}
+                    onChange={() => handleRuleChange(rule.key)}
+                  />
+                  <label
+                    htmlFor={rule.key}
+                    className="text-[16px] font-[400] text-[#000000]"
+                  >
+                    {rule.label}
+                  </label>
+                </div>
+              ))}
             </div>
             <hr className=" border-[#B6B6B6]" />
             <div className="flex items-center justify-end py-[16px]">
@@ -272,32 +270,6 @@ const Modifiers = ({
                 <button className="text-[16px]">
                   {loading ? "Sending..." : "Yes"}
                 </button>
-              </div>
-            </div>
-          </div>
-        </Modal>
-      )}
-
-      {/* Success Modal (if needed) */}
-      {successModal && (
-        <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>
-          <div className="w-[443px] px-[32px] py-[32px]">
-            <div
-              className="flex items-center justify-end cursor-pointer"
-              onClick={() => setSuccessModal(false)}
-            >
-              <Close />
-            </div>
-            <div className="flex flex-col gap-[24px] items-center justify-center">
-              <p className="text-grey500 text-[22px] font-[500]">Success!</p>
-              <p className="text-[16px] font-[400] text-grey500">
-                Modifiers have been saved successfully.
-              </p>
-              <div
-                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
-                onClick={() => setSuccessModal(false)}
-              >
-                <button className="text-[16px]">Close</button>
               </div>
             </div>
           </div>
