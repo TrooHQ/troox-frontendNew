@@ -22,9 +22,7 @@ export const AdminMenuPage = () => {
 
   const business_name = userDetails?.userData?.business_name;
 
-  const selectedOutletID = useSelector(
-    (state: RootState) => state.outlet.selectedOutletID
-  );
+  const selectedOutletID = useSelector((state: any) => state.outlet.selectedOutletID);
 
   const getCategories = async () => {
     setLoading(true);
@@ -73,10 +71,7 @@ export const AdminMenuPage = () => {
             </p>
           ) : (
             menuCategory.map((menu, index) => (
-              <Link
-                key={index}
-                to={`/demo/${business_name}/menu-page/${menu.name}/troo-portal`}
-              >
+              <Link key={index} to={`/demo/${business_name}/menu-page/${menu.name}/troo-portal`}>
                 <div className="mt-[24px]">
                   <div className="flex items-center justify-between">
                     <p className="text-[16px] font-[500] text-[#121212] uppercase">

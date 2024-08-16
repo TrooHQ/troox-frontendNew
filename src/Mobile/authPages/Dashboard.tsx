@@ -93,7 +93,7 @@ const Dashboard = () => {
   const token = userDetails?.userData?.token;
 
   const selectedOutlet = useSelector(
-    (state: RootState) => state.outlet?.selectedOutlet
+    (state: RootState) => state.outlet.selectedOutlet
   );
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -129,7 +129,7 @@ const Dashboard = () => {
               hover="hover:bg-[#5855B3] hover:text-white"
               searchable={false}
               onSelect={handleSelectOutlet}
-              value={selectedOutlet}
+              value={selectedOutlet ?? undefined}
             />
           </div>
         </div>

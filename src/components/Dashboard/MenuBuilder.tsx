@@ -9,7 +9,7 @@ import Publish from "../../assets/publish.svg";
 import chevron_right from "../../assets/chevron_right.svg";
 import imageIcon from "../../assets/image.svg";
 import activeArrow from "../../assets/activeArrow.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CoffeeImg from "../../assets/coffeeImg.png";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
@@ -18,172 +18,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import Modifiers from "./components/Modifiers";
-// import CancelButton from "../Buttons/CancelButton";
-
-interface MenuItem {
-  type?: string;
-  title: string;
-  data: {
-    type: string;
-    data: {
-      img: string;
-      price: string;
-      name: string;
-    }[];
-  }[];
-}
+import AddMenuCategory from "./AddMenuCategory";
+import { AppDispatch } from "@/src/store/store";
+import { fetchMenuCategories, fetchMenuGroups, fetchMenuItems } from "../../slices/menuSlice";
+import { truncateText } from "../../utils/truncateText";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { convertToBase64 } from "../../utils/imageToBase64";
 
 const MenuBuilder = () => {
-  const Menu: string[] = ["coffee", "soups", "specials", "desert", "happy meal"];
-  const arrayDummy: MenuItem[] = [
-    {
-      title: "coffee",
-      data: [
-        {
-          type: "coffee",
-          data: [
-            { img: "", price: "200-300", name: "brown coffee" },
-            {
-              img: "",
-              price: "100-500",
-              name: "brown coffee1",
-            },
-            {
-              img: "",
-              price: "800-900",
-              name: "brown coffee2",
-            },
-            {
-              img: "",
-              price: "200-400",
-              name: "brown coffee3",
-            },
-          ],
-        },
-        {
-          type: "black coffee",
-          data: [
-            {
-              img: "",
-              price: "100-200",
-              name: "spanish coffee",
-            },
-            {
-              img: "",
-              price: "200-500",
-              name: "spanish coffee1",
-            },
-            {
-              img: "",
-              price: "300-500",
-              name: "spanish coffee1",
-            },
-            {
-              img: "",
-              price: "400-500",
-              name: "spanish coffee1",
-            },
-          ],
-        },
-        {
-          type: "latte",
-          data: [
-            { img: "", price: "100-550", name: "latte special" },
-            { img: "", price: "150-750", name: "latte special1" },
-            { img: "", price: "200-550", name: "latte special2" },
-            { img: "", price: "200-450", name: "latte special3" },
-          ],
-        },
-        {
-          type: "expreso",
-          data: [
-            { img: "", price: "450-500", name: "espreso Chocolate" },
-            { img: "", price: "300-500", name: "espreso Chocolate1" },
-            { img: "", price: "200-500", name: "espreso Chocolate2" },
-            { img: "", price: "100-500", name: "espreso Chocolate3" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "soups",
-      data: [
-        {
-          type: "Egusi",
-          data: [
-            { img: "", price: "1000-2000", name: "Fried Egusi" },
-            { img: "", price: "1500-2000", name: "Boiled Egusi" },
-            { img: "", price: "1300-2000", name: "Fried Egusi2" },
-            { img: "", price: "1700-2000", name: "Fried Egusi3" },
-          ],
-        },
-        {
-          type: "Vegitable",
-          data: [
-            { img: "", price: "1000-2000", name: "Boiled Vegitable" },
-            { img: "", price: "1500-2000", name: "fried Vegitable" },
-            { img: "", price: "1300-2000", name: "Stewed Vegitable2" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "specials",
-      data: [
-        {
-          type: " chinese special",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "desert",
-      data: [
-        {
-          type: "desert Pizza",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "happy meal",
-      data: [
-        {
-          type: "happy meal Pizza",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Drinks",
-      data: [
-        {
-          type: "red wine",
-          data: [
-            { img: "", price: "2000-3000", name: "Vegitabele Pizza" },
-            { img: "", price: "100-200", name: "Chicken Pizza" },
-            { img: "", price: "200-400", name: "Beef Pizza" },
-          ],
-        },
-      ],
-    },
-  ];
+  const dispatch = useDispatch<AppDispatch>();
 
-  const dispatch = useDispatch();
+  const { categories, menuGroups, menuItems } = useSelector((state: any) => state.menu);
+  const { selectedBranch } = useSelector((state: any) => state.branches);
+  console.log(menuItems, "wwww");
+
   const userData = useSelector((state: RootState) => state.inviteUser);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
@@ -194,13 +45,48 @@ const MenuBuilder = () => {
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log("Selected file:", file);
+  const [groupName, setGroupName] = useState("");
+  const [menuName, setMenuName] = useState("");
+  const [menuDescription, setMenuDescription] = useState("");
+  const [menuPrice, setMenuPrice] = useState("");
+  const [applyPriceToAll, setApplyPriceToAll] = useState(false);
+  const [price, setPrice] = useState("");
+
+  const handleGroupName = (value: string) => {
+    setGroupName(value);
   };
+  const handleMenuName = (value: string) => {
+    setMenuName(value);
+  };
+  const handleMenuDescription = (value: any) => {
+    console.log(value);
+    setMenuDescription(value);
+  };
+  const handleMenuPrice = (value: string) => {
+    setMenuPrice(value);
+  };
+  const handlePrice = (value: string) => {
+    setPrice(value);
+  };
+
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value);
+    setApplyPriceToAll(event.target.value === "yes");
   };
+
+  const [imageName, setImageName] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+
+  const handleFileChange = async (e: any) => {
+    const file = e.target.files[0];
+    setImageName(file.name);
+    try {
+      const base64 = await convertToBase64(file);
+      setImage(base64 as string);
+    } catch (error) {
+      console.error("Error converting file to base64:", error);
+    }
+  };
+
   const handleAddMenu = () => {
     setIsModalOpen(true);
   };
@@ -238,35 +124,144 @@ const MenuBuilder = () => {
     dispatch(sendInvite());
     setIsModalOpen(false);
   };
-  const [subMenu, setSubmenu] = useState<MenuItem[]>([]);
 
   const [subMenuContent, setSubmenuContent] = useState<
     {
-      img: string;
-      price: string;
-      name: string;
+      type: string;
+      data: {
+        img: string;
+        price: string;
+        name: string;
+      }[];
     }[]
   >([]);
-  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(null);
+  const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0]?.name || null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [menuType, setMenuType] = useState<string>("");
 
-  const getSubmenu = (data: string) => {
-    const array = arrayDummy.filter((e) => e.title === data);
+  const getSubmenu = (categoryName: string) => {
+    const category = categories.find((cat: any) => cat.name === categoryName);
 
-    if (array.length > 0) {
-      const firstData = array[0].data[0];
-      if (firstData) {
-        // @ts-ignore
-        setSubmenu(array[0].data);
-        setActiveSubMenu(firstData.type || null);
-        setSubmenuContent(firstData.data);
-        setActiveMainMenu(array[0].title);
-        console.log(array[0].data);
-      }
+    if (category) {
+      setActiveMainMenu(category.name);
+      // Set submenu content with type included
+      setSubmenuContent([{ type: category.name, data: [] }]);
+    }
+  };
+  // useEffect(() => {
+  //   setActiveSubMenu(menuGroups[0].name);
+  // }, [dispatch, menuGroups]);
+
+  const [menuGroupLoading, setMenuGroupLoading] = useState(false);
+  console.log(activeMainMenu, activeSubMenu);
+
+  // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
+  useEffect(() => {
+    selectedBranch && dispatch(fetchMenuCategories(selectedBranch.id));
+    selectedBranch &&
+      dispatch(
+        fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
+      );
+    selectedBranch &&
+      dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
+  }, [selectedBranch, activeMainMenu, activeSubMenu]);
+
+  // Update submenuContent when menuItems change
+  useEffect(() => {
+    if (menuItems.length > 0) {
+      setSubmenuContent([
+        {
+          type: activeSubMenu as any,
+          data: menuItems.map((item: any) => ({
+            img: item.menu_item_image,
+            price: item.menu_item_price.toString(),
+            name: item.menu_item_name,
+          })),
+        },
+      ]);
+    } else {
+      setSubmenuContent([{ type: activeSubMenu as any, data: [] }]);
+    }
+  }, [menuItems, activeSubMenu]);
+
+  const handleSaveMenuGroup = async () => {
+    setMenuGroupLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    let payload = {
+      category_name: activeMainMenu,
+      group_name: groupName,
+      branch_id: selectedBranch.id,
+      price_to_all_items: applyPriceToAll,
+      ...(applyPriceToAll && { price: Number(price) }),
+    };
+
+    try {
+      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
+      console.log(response);
+      dispatch(
+        fetchMenuGroups({ branch_id: selectedBranch.id, menu_category_name: activeMainMenu })
+      );
+      toast.success(response.data.message || "Menu group added successfully.");
+
+      setGroupName("");
+      setApplyPriceToAll(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || "An error occurred. Please try again.");
+    } finally {
+      setMenuGroupLoading(false);
+      setAddMenuGroup(false);
     }
   };
 
+  const handleSaveMenuItem = async () => {
+    setMenuGroupLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuItem`,
+        {
+          menu_category_name: activeMainMenu,
+          branch_id: selectedBranch.id,
+          menu_group_name: activeSubMenu,
+          menu_item_name: menuName,
+          description: menuDescription,
+          price: Number(menuPrice),
+          image,
+        },
+        headers
+      );
+      console.log(response);
+      dispatch(fetchMenuItems({ branch_id: selectedBranch.id, menu_group_name: activeSubMenu }));
+      toast.success(response.data.message || "Menu group added successfully.");
+      setMenuName("");
+      setMenuDescription("");
+      setMenuPrice("");
+      setImage("");
+      setAddMenuItem(false);
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || "An error occurred. Please try again.");
+    } finally {
+      setMenuGroupLoading(false);
+      setAddMenuGroup(false);
+    }
+  };
+  console.log(subMenuContent, "ffff");
   return (
     <div>
       <DashboardLayout>
@@ -291,16 +286,16 @@ const MenuBuilder = () => {
             <div className=" flex ">
               <div className="mt-[24px]">
                 <nav className="flex flex-col gap-[8px]">
-                  {Menu.map((data, index) => (
+                  {categories.map((category: any) => (
                     <button
-                      onClick={() => getSubmenu(data)}
-                      key={index}
+                      onClick={() => getSubmenu(category.name)}
+                      key={category._id}
                       className={`${
-                        activeMainMenu === data && " bg-purple100 text-purple600 font-[500]"
-                      }  text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                        activeMainMenu === category.name && "bg-purple100 text-purple600 font-[500]"
+                      } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     >
-                      {data}{" "}
-                      {activeMainMenu === data ? (
+                      {truncateText(category.name, 13)}
+                      {activeMainMenu === category.name ? (
                         <img src={activeArrow} alt="activearrow" />
                       ) : (
                         <img src={chevron_right} alt="" />
@@ -315,23 +310,23 @@ const MenuBuilder = () => {
                     <div className=" w-[204px]">
                       <p className=" font-[400] text-[12px] text-[#606060]">Menu Group</p>
                       <div className="">
-                        {subMenu.map((data, index) => (
+                        {menuGroups.map((group: any) => (
                           <p
                             className={`${
-                              activeSubMenu === data.type
-                                ? " font-[500] text-[#5855B3] "
-                                : " text-grey200"
-                            }  hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px]  text-[16px] font-[400] py-[12px] px-[8px]`}
-                            key={index}
+                              activeSubMenu === group.name
+                                ? "font-[500] text-[#5855B3]"
+                                : "text-grey200"
+                            } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                            key={group._id}
                             onClick={() => {
-                              // @ts-ignore
-                              setSubmenuContent(data.data), setActiveSubMenu(data.type || null);
-                              // @ts-ignore
-                              setMenuType(data.type);
+                              // Update submenu content and active submenu
+                              setSubmenuContent([{ type: group.name, data: [] }]); // Adjust this line as needed
+                              setActiveSubMenu(group.name);
+                              setMenuType(group.menu_category_name); // Update based on your logic
                             }}
                           >
-                            {data.type}
-                            {activeSubMenu === data.type ? (
+                            {truncateText(group.name, 15)}
+                            {activeSubMenu === group.name ? (
                               <img src={activeArrow} alt="activearrow" />
                             ) : (
                               <img src={chevron_right} alt="" />
@@ -349,6 +344,7 @@ const MenuBuilder = () => {
                         </div>
                       </div>
                     </div>
+
                     <div className=" flex-grow space-y-[16px]">
                       <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
                       <div className=" flex items-start justify-between ">
@@ -364,30 +360,46 @@ const MenuBuilder = () => {
                           </button>
                         </div>
                       </div>
-                      {subMenuContent.map((data, index) => (
-                        <div className="" key={index}>
-                          <div className=" grid gap-[8px]">
-                            <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
-                              <div className=" flex gap-[8px]">
-                                <img src={CoffeeImg} alt="" />
+                      {subMenuContent.map((menuItem, index) => (
+                        <div>
+                          {menuItem.data.map((item, itemIndex) => (
+                            <div className="" key={index}>
+                              <div className=" grid gap-[8px]">
+                                <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+                                  <div className="flex gap-[8px] items-center">
+                                    <img src={item.img || CoffeeImg} alt="" />
 
-                                <div className="">
-                                  <p className=" text-[12px] font-[400] text-grey300">Item</p>
-                                  <p className=" leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
-                                    {data.name}
-                                  </p>
-                                  <p className=" text-[12px] font-[400] text-grey300">
-                                    Modifier groups (6)
-                                  </p>
+                                    <div className="">
+                                      <p className="text-[12px] font-[400] text-grey300">Item</p>
+                                      <div key={itemIndex}>
+                                        <p className="leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
+                                          {item.name}
+                                        </p>
+                                        <p className="text-[12px] font-[400] text-grey300">
+                                          Modifier groups (6){" "}
+                                          {/* This is static; you may want to make this dynamic */}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className=" flex">
+                                    <p className="text-[16px] font-[500] text-grey500">
+                                      &#8358;
+                                      {item.price}
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
-                              <div className=" flex">
-                                <p className=" text-[16px] font-[500] text-grey500">{data.price}</p>
-                              </div>
                             </div>
-                          </div>
+                          ))}
+                          {menuItem.data.length === 0 && (
+                            <div className=" flex justify-center items-center h-[200px]">
+                              <p className="text-[16px] font-[400] text-grey500">No menu items</p>
+                            </div>
+                          )}
                         </div>
                       ))}
+
                       {subMenuContent.length > 1 && (
                         <div className=" flex items-center justify-end">
                           <button
@@ -411,111 +423,7 @@ const MenuBuilder = () => {
             </div>
           </div>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <div className=" py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px]  w-[539px]">
-              <div className=" ">
-                <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-                  Add menu category
-                </p>
-
-                <div className=" lg:mb-[24px]">
-                  <div className=" grid gap-[32px] lg:gap-[32px] text-[16px] font-[400] text-grey200">
-                    <CustomInput
-                      type="text"
-                      label="Enter menu name"
-                      value={userData.firstName}
-                      error=""
-                      onChange={(newValue) => handleInputChange("firstName", newValue)}
-                    />
-
-                    <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
-
-                      <div className="flex items-center gap-[16px]">
-                        <label
-                          htmlFor="fileInput"
-                          className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
-                        >
-                          <input
-                            type="file"
-                            id="fileInput"
-                            className="hidden"
-                            onChange={handleFileChange}
-                            accept="image/*"
-                          />
-                          <img src={imageIcon} alt="Upload Icon" />
-                        </label>
-                        <div className="">
-                          <label
-                            htmlFor="fileInput"
-                            className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
-                          >
-                            Click to upload{" "}
-                            <span className=" font-[400] text-grey300">or drag and drop</span>
-                          </label>
-                          <p className=" text-[14px] font-[400] text-grey300">
-                            Max. file size: 2MB
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* <CustomSelect2
-                      options={["Channel1", "Channel2", "Channel3"]}
-                      placeholder="Channels"
-                    /> */}
-                    {/* <CustomInput
-                      type="text"
-                      label="Menu code"
-                      value=""
-                      error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
-                    /> */}
-
-                    {/* <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
-                        Tags
-                      </p>
-                      <div className=" flex items-center gap-[8px] justify-center">
-                        <img src={AddWhite} alt="" />
-                        <div className=" flex-grow  ">
-                          <CustomInput
-                            type="text"
-                            label="Enter Tag Name"
-                            value={userData.department}
-                            error=""
-                            onChange={(newValue) =>
-                              handleInputChange("department", newValue)
-                            }
-                          />
-                        </div>
-                        <p className=" hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[16px] px-[24px] py-[10px] rounded">
-                          Create Tag
-                        </p>
-                      </div>
-                    </div> */}
-                  </div>
-                </div>
-
-                <div className=" flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
-                  <div
-                    className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
-                    {/* <CancelButton text="Cancel" /> */}
-                  </div>
-
-                  <div
-                    className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                    onClick={handleSendInvite}
-                  >
-                    <button className=" text-[16px]">Save Menu</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AddMenuCategory setIsModalOpen={setIsModalOpen} />
           </Modal>
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>
@@ -655,10 +563,10 @@ const MenuBuilder = () => {
                   <div className=" grid gap-[32px] lg:gap-[32px] text-[16px] font-[400] text-grey200">
                     <CustomInput
                       type="text"
-                      label="Enter menu name"
-                      value={userData.firstName}
+                      label="Enter group name"
+                      value={groupName}
                       error=""
-                      onChange={(newValue) => handleInputChange("firstName", newValue)}
+                      onChange={(newValue) => handleGroupName(newValue)}
                     />
 
                     {/* <CustomSelect2
@@ -677,9 +585,9 @@ const MenuBuilder = () => {
                           id="yes"
                           name="options"
                           value="yes"
-                          checked={selectedOption === "yes"}
+                          checked={applyPriceToAll === true}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${selectedOption === "yes" ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === true ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                           Yes
@@ -690,9 +598,9 @@ const MenuBuilder = () => {
                           id="no"
                           name="options"
                           value="no"
-                          checked={selectedOption === "no"}
+                          checked={applyPriceToAll === false}
                           onChange={handleOptionChange}
-                          className={`mr-2 ${selectedOption === "no" ? " bg-purple500" : ""}`}
+                          className={`mr-2 ${applyPriceToAll === false ? "bg-purple500" : ""}`}
                         />
                         <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                           No
@@ -700,26 +608,17 @@ const MenuBuilder = () => {
                       </div>
                     </div>
 
-                    {selectedOption === "yes" && (
+                    {applyPriceToAll && (
                       <CustomInput
                         type="text"
                         label="Enter price"
-                        value=""
+                        value={price}
                         error=""
-                        onChange={(newValue) => handleInputChange("lastName", newValue)}
+                        onChange={(newValue) => handlePrice(newValue)}
                       />
                     )}
-                    {/* <CustomInput
-                      type="text"
-                      label="Menu code"
-                      value=""
-                      error=""
-                      onChange={(newValue) =>
-                        handleInputChange("lastName", newValue)
-                      }
-                    /> */}
 
-                    <div className="">
+                    {/* <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
 
                       <div className="flex items-center gap-[16px]">
@@ -749,7 +648,7 @@ const MenuBuilder = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -764,9 +663,11 @@ const MenuBuilder = () => {
 
                   <div
                     className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                    onClick={handleSendInvite}
+                    onClick={handleSaveMenuGroup}
                   >
-                    <button className=" text-[16px]">Save Menu</button>
+                    <button className=" text-[16px]">
+                      {menuGroupLoading ? "Saving..." : "Save Menu"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -789,188 +690,30 @@ const MenuBuilder = () => {
                     <CustomInput
                       type="text"
                       label="Enter menu item name"
-                      value={userData.firstName}
+                      value={menuName}
                       error=""
-                      onChange={(newValue) => handleInputChange("firstName", newValue)}
+                      onChange={(newValue) => handleMenuName(newValue)}
                     />
-
-                    {/* <CustomSelect2
-                      options={["Channel1", "Channel2", "Channel3"]}
-                      placeholder="Channels"
-                    /> */}
+                    <div className="">
+                      <textarea
+                        className=" w-full h-[153px] border text-[16px] font-[400] text-[#929292] border-gray-300 rounded-md p-2 outline-none"
+                        value={menuDescription}
+                        placeholder="Enter description of the menu item"
+                        onChange={(e) => handleMenuDescription(e.target.value)}
+                      />
+                    </div>
 
                     <div className="">
                       <p className="text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
+
                       <CustomInput
                         type="text"
                         label="Enter price"
-                        value=""
+                        value={menuPrice}
                         error=""
-                        onChange={(newValue) => handleInputChange("lastName", newValue)}
+                        onChange={(newValue) => handleMenuPrice(newValue)}
                       />
                     </div>
-                    {/* <div className="">
-                      <p className="text-[18px] mb-[8px] font-[500] text-grey500">
-                        Pricing
-                      </p>
-                      <p className="text-[14px] font-[400] text-grey500">
-                        Choose a pricing option.
-                      </p>
-                      <div className="flex items-center my-[8px]">
-                        <input
-                          type="radio"
-                          id="base"
-                          name="options"
-                          value="base"
-                          checked={selectedOption === "base"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "base" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="base"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
-                          Base Price
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="range"
-                          name="options"
-                          value="range"
-                          checked={selectedOption === "range"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "range" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="range"
-                          className="mr-4 text-grey500 text-[14px] font-[400]"
-                        >
-                          Range Price
-                        </label>
-
-                        <input
-                          type="radio"
-                          id="time"
-                          name="options"
-                          value="time"
-                          checked={selectedOption === "time"}
-                          onChange={handleOptionChange}
-                          className={`mr-2 ${
-                            selectedOption === "time" ? "bg-purple-500" : ""
-                          }`}
-                        />
-                        <label
-                          htmlFor="time"
-                          className="text-grey500 text-[14px] font-[400]"
-                        >
-                          Time Specific Price
-                        </label>
-                      </div>
-
-                      {selectedOption === "base" && (
-                        <>
-                          <div className=" ">
-                            <CustomInput
-                              type="text"
-                              label="Enter price"
-                              value=""
-                              error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
-                            />
-                          </div>
-                        </>
-                      )}
-                      {selectedOption === "range" && (
-                        <>
-                          <div className=" flex items-center gap-[8px] ">
-                            <div className=" w-[180px]">
-                              <CustomInput
-                                type="text"
-                                label="Pricing name"
-                                value=""
-                                error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
-                              />
-                            </div>
-                            <div className=" flex-1">
-                              <CustomInput
-                                type="text"
-                                label="Enter price"
-                                value=""
-                                error=""
-                                onChange={(newValue) =>
-                                  handleInputChange("lastName", newValue)
-                                }
-                              />
-                            </div>
-                            <p className=" flex hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[13px] px-[4px] py-[10px] rounded">
-                              <img src={AddWhite} alt="" />
-                              New Pricing
-                            </p>
-                          </div>
-                        </>
-                      )}
-                      {selectedOption === "time" && (
-                        <>
-                          <div className=" grid gap-[8px]">
-                            <CustomInput
-                              type="text"
-                              label="Base Price"
-                              value=""
-                              error=""
-                              onChange={(newValue) =>
-                                handleInputChange("lastName", newValue)
-                              }
-                            />
-
-                            <div className=" flex items-center gap-[8px] ">
-                              <div className="  flex-1">
-                                <CustomInput
-                                  type="text"
-                                  label="Enter Price"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                              <div className="w-[100px]">
-                                <CustomInput
-                                  type="date"
-                                  label="From:"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                              <div className=" w-[100px]">
-                                <CustomInput
-                                  type="date"
-                                  label="To:"
-                                  value=""
-                                  error=""
-                                  onChange={(newValue) =>
-                                    handleInputChange("lastName", newValue)
-                                  }
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div> */}
 
                     <div className="">
                       <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
@@ -1002,29 +745,13 @@ const MenuBuilder = () => {
                           </p>
                         </div>
                       </div>
-                    </div>
-
-                    {/* <div className="">
-                      <p className=" text-[18px] mb-[11px] font-[500] text-grey500">
-                        Tags
-                      </p>
-                      <div className=" flex items-center gap-[8px] justify-center">
-                        <div className=" flex-grow  ">
-                          <CustomInput
-                            type="text"
-                            label="Enter Tag Name"
-                            value={userData.department}
-                            error=""
-                            onChange={(newValue) =>
-                              handleInputChange("department", newValue)
-                            }
-                          />
+                      {image && (
+                        <div className="mt-4">
+                          <p className="text-[14px] text-grey500">Image: {imageName}</p>
+                          <img src={image} alt="Uploaded Preview" className="mt-2 w-full h-auto" />
                         </div>
-                        <p className=" hover:bg-[#F8F8F8] cursor-pointer  text-[#5955B3] font-[500] text-[16px] px-[24px] py-[10px] rounded">
-                          Create Tag
-                        </p>
-                      </div>
-                    </div> */}
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -1038,7 +765,9 @@ const MenuBuilder = () => {
                   </div>
 
                   <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
-                    <button className=" text-[16px]">Save Menu Item</button>
+                    <button onClick={handleSaveMenuItem} className=" text-[16px]">
+                      {menuGroupLoading ? "Saving..." : "Save Menu Item"}
+                    </button>
                   </div>
                 </div>
               </div>

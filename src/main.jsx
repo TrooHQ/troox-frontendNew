@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import App from "./App";
 import MobileLayout from "./MobileLayout";
 import SelfCheckoutLayout from "./SelfCheckoutLayout";
@@ -21,9 +21,7 @@ function Root() {
   useEffect(() => {
     function handleResize() {
       setIsMobileScreen(window.matchMedia("(max-width: 768px)").matches);
-      setIsLargeScreen(
-        window.matchMedia("(min-width: 769px) and (max-width: 1090px)").matches
-      );
+      setIsLargeScreen(window.matchMedia("(min-width: 769px) and (max-width: 1090px)").matches);
     }
 
     window.addEventListener("resize", handleResize);

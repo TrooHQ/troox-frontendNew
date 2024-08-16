@@ -16,9 +16,11 @@ import HubIcon from "../../assets/hub.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
 import { TextField, Button, Popper, Paper } from "@mui/material";
-import { ArrowDropDown, Search } from "@mui/icons-material";
+import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-material";
 import { CustomAutocomplete } from "./Overview";
-import { allOutlets } from "./OverviewAdmin";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
 interface MenuItem {
   subTitle?: string;
   title?: string;
@@ -35,11 +37,26 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
+  const { branches } = useSelector((state: RootState) => state.branches);
+
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState(allOutlets[0]);
+  const [selectedOutlet, setSelectedOutlet] = useState({
+    label: "All outlets",
+    id: "66a378962f635fa54a390478",
+  });
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  const transformedBranches = branches.map((branch: any) => ({
+    label: branch.branch_name,
+    id: branch._id,
+  }));
 
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,7 +65,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
-    setSelectedOutlet(value ?? allOutlets[0]);
+    console.log(value, "qqqq");
+    setSelectedOutlet(value ?? { label: "All outlets" });
+    dispatch(userSelectedBranch(value));
     setIsAutoOpen(false);
   };
 
@@ -84,8 +103,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "/menu-builder",
+      link: "/menu-list",
       subMenu: [
+        {
+          title: "Menu List",
+          link: "/menu-list",
+        },
         {
           title: "Menu Builder",
           link: "/menu-builder",
@@ -128,10 +151,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       ],
     },
     {
-      title: "Manage Tables",
+      title: "Manage Assets",
       gap: false,
       icon: ManageTablesIcon,
-      link: "/manage-tables",
+      link: "/manage-assets",
     },
     {
       title: "Manage Users",
@@ -151,12 +174,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       icon: PointOfSalesIcon,
       link: "/pos",
     },
-    {
-      title: "Logout",
-      gap: true,
-      icon: LogoutIcon,
-      link: "/logout",
-    },
+    // {
+    //   title: "Logout",
+    //   gap: true,
+    //   icon: LogoutIcon,
+    //   link: "/logout",
+    // },
   ];
 
   const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
@@ -205,8 +228,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         </div>
 
         <div className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"} `}>
-          <hr className="h-[1px] text-[#929292] mb-2" />
-          <div className="ml-[5px]">
+          <hr className="h-[2px] bg-[#929292] my-3" />
+          <div className="ml-[5px] flex flex-col items-start justify-center gap-2">
             <h4 className="text-base font-medium mb-0">Chicken Republic</h4>
 
             {/* Insert Button and Popper components here */}
@@ -233,7 +256,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <Paper sx={{ boxShadow: 3 }}>
                 <CustomAutocomplete
                   disablePortal
-                  options={allOutlets}
+                  options={transformedBranches}
                   value={selectedOutlet}
                   onChange={handleSelect}
                   renderInput={(params) => (
@@ -259,10 +282,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
             <p className="text-[#606060] text-xs font-normal">Restaurant</p>
           </div>
-          <hr className="h-[1px] bg-[#929292] mt-2" />
+          <hr className="h-[2px] bg-[#929292] my-3" />
         </div>
       </div>
-      <ul className="pt-6 pl-[1px] grid gap-[10px]">
+      <ul className="pt-2 pl-[1px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
             <li>
@@ -272,7 +295,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
-                    ? "  bg-[#d3d3d3] font-[600] text-[16px] text-[#414141] "
+                    ? "  bg-[#d3d3d3] font-bold text-[16px] text-black "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) && !menu.subTitle
                     ? " "
                     : ""
@@ -283,7 +306,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   <img
                     src={menu.icon}
                     alt={menu.title}
-                    style={{ width: "20px", marginRight: "8px" }}
+                    style={{
+                      width: "24px",
+                      marginRight: "8px",
+                      fontWeight: isMenuItemActive(menu.link || "", menu.subMenu)
+                        ? "bold"
+                        : "normal",
+                      color: isMenuItemActive(menu.link || "", menu.subMenu) ? "black" : "initial",
+                    }}
                   />
                 )}
                 <NavLink to={menu.link || "#"} className="flex-grow">
@@ -313,10 +343,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                     {menu.subMenu.map((subMenuItem, subIndex) => (
                       <NavLink to={subMenuItem.link || "#"} key={subIndex}>
                         <li
-                          className={`flex  p-2 cursor-pointer py-2  text-purple200 text-sm items-center gap-x-4 ${
+                          className={`flex p-2 cursor-pointer py-2  text-sm items-center gap-x-4 ${
                             isMenuItemActive(subMenuItem.link || "")
-                              ? "text-[#000] font-semibold"
-                              : ""
+                              ? "text-[#000] font-bold"
+                              : "text-purple200"
                           }`}
                         >
                           {subMenuItem.title}
@@ -330,6 +360,45 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           </div>
         ))}
       </ul>
+
+      <div className="mb-10">
+        <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
+        <p className="text-[10px] font-medium ml-3.5">You are using the</p>
+        <button className="ml-0 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1">
+          <span className="text-white text-base font-semibold mr-2">Standard Plan</span>
+          <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
+        </button>
+        <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
+      </div>
+      {/* Add the Logout item separately at the bottom */}
+      {/* <div
+        className="absolute bottom-0 w-full p-2 mt-6"
+        style={{
+          backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
+        }}
+      > */}
+      <div
+        className="w-full p-2 mt-6"
+        style={{
+          backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
+        }}
+      >
+        <NavLink to="/">
+          <div className="flex items-center gap-x-2 cursor-pointer py-2">
+            <img
+              src={LogoutIcon}
+              alt="Logout"
+              style={{
+                width: "20px",
+                marginRight: "8px",
+                fontWeight: isMenuItemActive("/logout") ? "bold" : "normal",
+                color: isMenuItemActive("/logout") ? "black" : "initial",
+              }}
+            />
+            <span className="text-[#000] font-semibold">Logout</span>
+          </div>
+        </NavLink>
+      </div>
     </div>
   );
 };

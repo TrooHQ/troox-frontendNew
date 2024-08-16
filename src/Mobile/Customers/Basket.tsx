@@ -16,21 +16,6 @@ import {
 } from "../../slices/BasketSlice";
 import { TiDelete } from "react-icons/ti";
 
-// const menuItems = [
-//   {
-//     name: "Rice",
-//     price: "From ₦3000",
-//     image: Image,
-//     details: "Crispy fried ankara straight from the oven",
-//   },
-//   {
-//     name: "Rice",
-//     price: "From ₦3000",
-//     image: Image,
-//     details: "Crispy fried ankara straight from the oven",
-//   },
-// ];
-
 export const Basket = () => {
   const navigate = useNavigate();
   const basketDetails = useSelector((state: RootState) => state.basket);

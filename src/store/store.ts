@@ -7,7 +7,12 @@ import inviteUserReducer from "../slices/InviteUserSlice";
 import faqSettingReducer from "../slices/FaqSettingSlice";
 import userReducer from "../slices/UserSlice";
 import businessReducer from "../slices/businessSlice";
+import registerReducer from "../slices/registerSlice";
+import bankRegisterReducer from "../slices/bankRegisterSlice";
 import basketReducer from "../slices/BasketSlice";
+import branchReducer from "../slices/branchSlice";
+import menuReducer from "../slices/menuSlice";
+import tableReducer from "../slices/TableSlice";
 import outletReducer from "../slices/OutletSlice";
 
 const rootReducer = combineReducers({
@@ -16,7 +21,12 @@ const rootReducer = combineReducers({
   faqSetting: faqSettingReducer,
   user: userReducer,
   business: businessReducer,
+  register: registerReducer,
+  bankRegister: bankRegisterReducer,
   basket: basketReducer,
+  branches: branchReducer,
+  menu: menuReducer,
+  tables: tableReducer,
   outlet: outletReducer,
 });
 
@@ -30,6 +40,9 @@ const persistConfig = {
     "user",
     "business",
     "basket",
+    "branches",
+    "menu",
+    "tables",
     "outlet",
   ],
 };

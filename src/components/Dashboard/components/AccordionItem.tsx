@@ -26,6 +26,7 @@ export const allOutlets = [
 
 export const AccordionItem = ({
   title,
+  subText,
   expanded,
   setExpanded,
   isEnabled,
@@ -34,6 +35,7 @@ export const AccordionItem = ({
   setSelectedOption,
   selectedOutlets,
   setSelectedOutlets,
+  setAllDisabled,
 }: any) => {
   const handleChange = (panel: any) => (event: { preventDefault: () => void }, isExpanded: any) => {
     event.preventDefault();
@@ -41,7 +43,12 @@ export const AccordionItem = ({
   };
 
   const handleToggleChange = () => {
-    setIsEnabled(!isEnabled);
+    if (!isEnabled) {
+      setAllDisabled(); // Disable all others before enabling this one
+      setIsEnabled(true);
+    } else {
+      setIsEnabled(false);
+    }
   };
 
   const handleRadioChange = (event: { target: { value: any } }) => {
@@ -68,7 +75,7 @@ export const AccordionItem = ({
         <p className="text-xs font-normal text-[#606060]">
           {isEnabled ? "Enabled for entire organization" : "Disabled"}
         </p>
-        <p className="text-base font-normal text-[#606060]">QR Code Order & Pay enables...</p>
+        <p className="text-base font-normal text-[#606060] w-full md:w-[50%]">{subText}</p>
         <div>
           <IconButton onClick={handleToggleChange} color="default">
             {isEnabled ? (

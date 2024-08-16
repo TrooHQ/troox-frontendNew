@@ -17,7 +17,7 @@ interface CustomSelect3Props {
   hover?: string;
   searchable?: boolean;
   onSelect?: (option: string) => void;
-  value?: string;
+  value?: string | null;
 }
 
 const CustomSelect3: React.FC<CustomSelect3Props> = ({
