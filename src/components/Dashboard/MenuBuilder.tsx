@@ -27,6 +27,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
 
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import { CancelOutlined, EditOutlined, VisibilityOutlined } from "@mui/icons-material";
+import VisibilityOpen from "./VisibilityOpen";
+import EditOpen from "./EditOpen";
+
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -46,6 +52,9 @@ const MenuBuilder = () => {
   const [addModifierModar, setAddModifierModal] = useState(false);
   const [menuGroupLoading, setMenuGroupLoading] = useState(false); // Loading state for menu groups
   const [menuItemLoading, setMenuItemLoading] = useState(false); // Loading state for menu items
+
+  const [isVisibilityOpen, setIsVisibilityOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const [groupName, setGroupName] = useState("");
   const [menuName, setMenuName] = useState("");
@@ -293,7 +302,42 @@ const MenuBuilder = () => {
       setAddMenuGroup(false);
     }
   };
-  console.log(subMenuContent, "ffff");
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>, groupName: string) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedGroup(groupName);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Implement actions for visibility, edit, and remove
+  const handleMenuVisibility = () => {
+    console.log("Menu Visibility for:", selectedGroup);
+    handleClose();
+    setIsVisibilityOpen(true);
+  };
+  console.log("Menu Visibility for:", isVisibilityOpen);
+
+  const handleCloseMenuVisibility = () => {
+    setIsVisibilityOpen(false);
+  };
+
+  const handleEdit = () => {
+    console.log("Edit group:", selectedGroup);
+    handleClose();
+    setIsEditOpen(true);
+  };
+
+  const handleRemove = () => {
+    console.log("Remove group:", selectedGroup);
+    handleClose();
+  };
+
   return (
     <div>
       <DashboardLayout>
@@ -350,27 +394,69 @@ const MenuBuilder = () => {
                           </div>
                         ) : (
                           menuGroups.map((group: any) => (
-                            <p
-                              className={`${
-                                activeSubMenu === group.name
-                                  ? "font-[500] text-[#5855B3]"
-                                  : "text-grey200"
-                              } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
-                              key={group._id}
-                              onClick={() => {
-                                // Update submenu content and active submenu
-                                setSubmenuContent([{ type: group.name, data: [] }]); // Adjust this line as needed
-                                setActiveSubMenu(group.name);
-                                setMenuType(group.menu_category_name); // Update based on your logic
-                              }}
-                            >
-                              {truncateText(group.name, 15)}
-                              {activeSubMenu === group.name ? (
-                                <img src={activeArrow} alt="activearrow" />
-                              ) : (
-                                <img src={chevron_right} alt="" />
-                              )}
-                            </p>
+                            <div key={group._id} className="flex items-center justify-between">
+                              <p
+                                className={`${
+                                  activeSubMenu === group.name
+                                    ? "font-[500] text-[#5855B3]"
+                                    : "text-grey200"
+                                } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                                key={group._id}
+                                onClick={() => {
+                                  // Update submenu content and active submenu
+                                  setSubmenuContent([{ type: group.name, data: [] }]);
+                                  setActiveSubMenu(group.name);
+                                  setMenuType(group.menu_category_name);
+                                }}
+                              >
+                                {truncateText(group.name, 15)}
+                                {activeSubMenu === group.name && (
+                                  <IconButton
+                                    aria-controls="simple-menu"
+                                    aria-haspopup="true"
+                                    onClick={(event) => handleClick(event, group.name)}
+                                  >
+                                    <MoreVertIcon />
+                                  </IconButton>
+                                )}
+                                <Menu
+                                  id="simple-menu"
+                                  anchorEl={anchorEl}
+                                  keepMounted
+                                  open={Boolean(anchorEl)}
+                                  onClose={handleClose}
+                                >
+                                  <MenuItem
+                                    onClick={handleMenuVisibility}
+                                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                                  >
+                                    <VisibilityOutlined
+                                      sx={{ fontSize: "20px", fontWeight: "300" }}
+                                    />
+                                    <span style={{ fontWeight: "300" }}>Menu Visibility</span>
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={handleEdit}
+                                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                                  >
+                                    <EditOutlined sx={{ fontSize: "20px", fontWeight: "300" }} />
+                                    <span style={{ fontWeight: "300" }}>Edit</span>
+                                  </MenuItem>
+                                  <MenuItem
+                                    onClick={handleRemove}
+                                    sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+                                  >
+                                    <CancelOutlined sx={{ fontSize: "20px", fontWeight: "300" }} />
+                                    <span style={{ fontWeight: "300" }}>Remove</span>
+                                  </MenuItem>
+                                </Menu>
+                                {activeSubMenu === group.name ? (
+                                  <img src={activeArrow} alt="activearrow" />
+                                ) : (
+                                  <img src={chevron_right} alt="" />
+                                )}
+                              </p>
+                            </div>
                           ))
                         )}
 
@@ -427,10 +513,7 @@ const MenuBuilder = () => {
                                           <p className="leading-[24px] text-[16px] font-[500] capitalize">
                                             {item.name}
                                           </p>
-                                          <p className="text-[12px] font-[400]">
-                                            Modifier groups (6){" "}
-                                            {/* This is static; you may want to make this dynamic */}
-                                          </p>
+                                          {/* <p className="text-[12px] font-[400]">Modifiers (6)</p> */}
                                         </div>
                                       </div>
                                     </div>
@@ -481,6 +564,14 @@ const MenuBuilder = () => {
           </div>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <AddMenuCategory setIsModalOpen={setIsModalOpen} />
+          </Modal>
+
+          <Modal isOpen={isVisibilityOpen} onClose={() => setIsVisibilityOpen(false)}>
+            <VisibilityOpen setIsVisibilityOpen={setIsVisibilityOpen} />
+          </Modal>
+
+          <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
+            <EditOpen setIsEditOpen={setIsEditOpen} />
           </Modal>
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>

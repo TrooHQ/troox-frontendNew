@@ -44,7 +44,7 @@ const Modifiers = ({
   const [fetchedModifiers, setFetchedModifiers] = useState<any[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
-  const { branches } = useSelector((state: RootState) => state.branches);
+  const { branches } = useSelector((state: any) => state.branches);
 
   useEffect(() => {
     dispatch(fetchBranches());
