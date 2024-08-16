@@ -444,14 +444,14 @@ const MenuBuilder = () => {
                                     <div className="flex gap-[8px] items-center">
                                       <img src={item.img || CoffeeImg} alt="" />
                                       <div className="">
-                                        <p className="text-[12px] font-[400] text-grey300">
+                                        <p className="text-[12px] font-[400]">
                                           Item
                                         </p>
                                         <div key={itemIndex}>
                                           <p className="leading-[24px] text-[16px] font-[500] capitalize">
                                             {item.name}
                                           </p>
-                                          <p className="text-[12px] font-[400] text-grey300">
+                                          <p className="text-[12px] font-[400]">
                                             Modifier groups (6){" "}
                                             {/* This is static; you may want to make this dynamic */}
                                           </p>

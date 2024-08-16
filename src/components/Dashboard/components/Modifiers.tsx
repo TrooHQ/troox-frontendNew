@@ -4,6 +4,10 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import Modal from "../../Modal"; // Import the Modal component, adjust path accordingly
+import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store/store";
+import { fetchBranches, userSelectedBranch } from "../../../slices/branchSlice";
 
 type ModifierRules = {
   requireSelection: boolean;
@@ -22,6 +26,8 @@ const Modifiers = ({
   menuItems,
   selectedMenuItem,
 }: any) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [modifiers, setModifiers] = useState([
     { id: Date.now(), name: "", price: "", menuItem: "" },
   ]);
@@ -37,6 +43,17 @@ const Modifiers = ({
   });
   const [fetchedModifiers, setFetchedModifiers] = useState<any[]>([]);
   const [isFetching, setIsFetching] = useState(false);
+
+  const { branches } = useSelector((state: RootState) => state.branches);
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  const transformedBranches = branches.map((branch: any) => ({
+    label: branch.branch_name,
+    id: branch._id,
+  }));
 
   useEffect(() => {
     setMenuOptions(menuItems);
@@ -141,6 +158,20 @@ const Modifiers = ({
       ...prevRules,
       [rule]: !prevRules[rule],
     }));
+  };
+
+  // Handle apply changes
+  const handleApplyChanges = (selectedOutletIds: string[]) => {
+    // Handle the application of changes based on the selected outlets
+    console.log("Selected Outlet IDs:", selectedOutletIds);
+
+    // If you need to update state or perform any actions with the selected outlets, do it here
+    // For example, you could filter branches, make an API call, or update local state
+    // Assuming you want to save the selected outlets to state, you could do:
+    // setSelectedOutlets(selectedOutletIds);
+
+    // Placeholder toast for demonstration
+    // toast.info("Changes applied to selected outlets");
   };
 
   const rules: { label: string; key: keyof ModifierRules }[] = [
@@ -298,9 +329,14 @@ const Modifiers = ({
               ))}
             </div>
             <hr className=" border-[#B6B6B6]" />
+            <OutletSelectionRadioGroup
+              allOutlets={transformedBranches}
+              onApplyChanges={handleApplyChanges}
+            />
+            <hr className=" border-[#B6B6B6] mt-3" />
             <div className="flex items-center justify-end py-[16px]">
               <div
-                className="cursor-pointer inline border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
+                className="cursor-pointer inline border mb-5 border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
                 onClick={saveModifiers}
               >
                 <button className=" text-[16px]">Save Modifier</button>
