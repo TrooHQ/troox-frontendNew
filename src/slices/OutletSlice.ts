@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface OutletState {
-  selectedOutlet: string;
+  selectedOutlet: string | null;
   selectedOutletID: string;
 }
 
 const initialState: OutletState = {
-  selectedOutlet: "",
+  selectedOutlet: null,
   selectedOutletID: "",
 };
 

@@ -13,6 +13,7 @@ import basketReducer from "../slices/BasketSlice";
 import branchReducer from "../slices/branchSlice";
 import menuReducer from "../slices/menuSlice";
 import tableReducer from "../slices/TableSlice";
+import outletReducer from "../slices/OutletSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   branches: branchReducer,
   menu: menuReducer,
   tables: tableReducer,
+  outlet: outletReducer,
 });
 
 const persistConfig = {
@@ -41,6 +43,7 @@ const persistConfig = {
     "branches",
     "menu",
     "tables",
+    "outlet",
   ],
 };
 
