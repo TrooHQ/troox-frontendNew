@@ -93,7 +93,7 @@ const Dashboard = () => {
   const token = userDetails?.userData?.token;
 
   const selectedOutlet = useSelector(
-    (state: RootState) => state.outlet.selectedOutlet
+    (state: RootState) => state.outlet?.selectedOutlet
   );
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
