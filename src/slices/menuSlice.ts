@@ -56,6 +56,7 @@ interface MenuState {
   menuGroups: MenuGroup[];
   menuItems: MenuItem[];
   loading: boolean;
+  mgLoading: boolean;
   error: string | null;
 }
 
@@ -64,6 +65,7 @@ const initialState: MenuState = {
   menuGroups: [],
   menuItems: [],
   loading: false,
+  mgLoading: false,
   error: null,
 };
 
@@ -158,15 +160,15 @@ const menuSlice = createSlice({
         state.categories = action.payload;
       })
       .addCase(fetchMenuCategories.rejected, (state, action: PayloadAction<string | undefined>) => {
-        state.loading = false;
+        state.mgLoading = false;
         state.error = action.payload || "Failed to fetch menu categories";
       })
       .addCase(fetchMenuGroups.pending, (state) => {
-        state.loading = true;
+        state.mgLoading = true;
         state.error = null;
       })
       .addCase(fetchMenuGroups.fulfilled, (state, action: PayloadAction<MenuGroup[]>) => {
-        state.loading = false;
+        state.mgLoading = false;
         state.menuGroups = action.payload;
       })
       .addCase(fetchMenuGroups.rejected, (state, action: PayloadAction<string | undefined>) => {
