@@ -20,13 +20,13 @@ const Modifiers = ({
   Add,
   selectedBranch,
   menuItems,
+  selectedMenuItem,
 }: any) => {
   const [modifiers, setModifiers] = useState([
     { id: Date.now(), name: "", price: "", menuItem: "" },
   ]);
   const [menuOptions, setMenuOptions] = useState<any[]>([]);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modifierRules, setModifierRules] = useState<ModifierRules>({
     requireSelection: false,
@@ -35,10 +35,48 @@ const Modifiers = ({
     multipleChoices: false,
     singleChoice: false,
   });
+  const [fetchedModifiers, setFetchedModifiers] = useState<any[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     setMenuOptions(menuItems);
   }, [menuItems]);
+
+  useEffect(() => {
+    // Clear the fetched modifiers when activeSubMenu changes
+    setFetchedModifiers([]);
+  }, [activeSubMenu]);
+
+  useEffect(() => {
+    const fetchModifiers = async () => {
+      setIsFetching(true);
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      try {
+        const response = await axios.get(
+          `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
+          headers
+        );
+
+        setFetchedModifiers(response.data.data || []);
+        toast.success("Modifiers fetched successfully.");
+      } catch (error) {
+        toast.error("Failed to fetch modifiers.");
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    console.log(activeMainMenu, selectedBranch);
+    if (selectedMenuItem) {
+      fetchModifiers();
+    }
+    // fetchModifiers();
+  }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
 
   const addModifier = () => {
     setModifiers([
@@ -71,7 +109,7 @@ const Modifiers = ({
         branch_id: selectedBranch.id,
         attach_to: "item",
         modifier_name: modifier.name,
-        menu_item_name: modifier.menuItem,
+        menu_item_name: selectedMenuItem,
         price: parseFloat(modifier.price),
       };
 
@@ -136,6 +174,50 @@ const Modifiers = ({
         </p>
         <hr className=" border-[#B6B6B6]" />
       </div>
+
+      {/* Display Fetched Modifiers */}
+      <div className="grid gap-[24px] mt-[32px]">
+        {isFetching ? (
+          <p>Loading modifiers...</p> // Loading indicator
+        ) : fetchedModifiers.length === 0 ? (
+          <p>No modifiers available</p> // Placeholder when no modifiers
+        ) : (
+          <>
+            {fetchedModifiers.map((modifier) => (
+              <div
+                key={modifier._id}
+                className="border p-[16px] rounded-lg shadow-sm flex items-center gap-[16px]"
+              >
+                <div>
+                  {modifier.image ? (
+                    <img
+                      src={modifier.image}
+                      alt={modifier.modifier_name}
+                      className="w-[50px] h-[50px] object-cover rounded-full"
+                    />
+                  ) : (
+                    <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex items-center justify-center">
+                      <span className="text-gray-500">
+                        {modifier.modifier_name.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="text-[18px] font-[500] text-gray-800">
+                    {modifier.modifier_name}
+                  </p>
+                  <p className="text-[16px] text-gray-600">
+                    Price: ${modifier.modifier_price}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+
+      {/* Modifier Form Section */}
       <div className=" grid gap-[56px]">
         <div>
           {modifiers.map((modifier) => (
@@ -143,28 +225,13 @@ const Modifiers = ({
               <div className=" mt-[32px] flex items-center gap-[8px]">
                 <input
                   type="text"
-                  className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[202px] px-[20px]"
+                  className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
                   placeholder=" Enter modifier name "
                   value={modifier.name}
                   onChange={(e) =>
                     updateModifier(modifier.id, "name", e.target.value)
                   }
                 />
-
-                <select
-                  className="border border-[#929292] rounded-[5px] py-[12px] px-[20px] w-[202px]"
-                  value={modifier.menuItem}
-                  onChange={(e) =>
-                    updateModifier(modifier.id, "menuItem", e.target.value)
-                  }
-                >
-                  <option value="">Select Menu Item</option>
-                  {menuOptions.map((item) => (
-                    <option key={item._id} value={item.menu_item_name}>
-                      {item.menu_item_name}
-                    </option>
-                  ))}
-                </select>
 
                 <input
                   type="text"
@@ -176,12 +243,12 @@ const Modifiers = ({
                   }
                 />
                 <div className="flex items-center">
-                  <button
+                  {/* <button
                     className="px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
                     onClick={handleAddModifier}
                   >
                     <img src={Add} alt="" /> Add - edit modifier item
-                  </button>
+                  </button> */}
                   {modifiers.length > 1 && (
                     <Close onClick={() => removeModifier(modifier.id)} />
                   )}

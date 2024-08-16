@@ -58,6 +58,12 @@ const MenuBuilder = () => {
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
   const [price, setPrice] = useState("");
 
+  const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
+
+  const handleMenuItemClick = (itemName: string) => {
+    setSelectedMenuItem(itemName);
+  };
+
   const handleGroupName = (value: string) => {
     setGroupName(value);
   };
@@ -152,13 +158,9 @@ const MenuBuilder = () => {
 
     if (category) {
       setActiveMainMenu(category.name);
-      // Set submenu content with type included
       setSubmenuContent([{ type: category.name, data: [] }]);
     }
   };
-  // useEffect(() => {
-  //   setActiveSubMenu(menuGroups[0].name);
-  // }, [dispatch, menuGroups]);
 
   const [menuGroupLoading, setMenuGroupLoading] = useState(false);
   console.log(activeMainMenu, activeSubMenu);
@@ -404,19 +406,26 @@ const MenuBuilder = () => {
                       </div>
                       {subMenuContent.map((menuItem, index) => (
                         <div>
-                          {menuItem.data.map((item, itemIndex) => (
-                            <div className="" key={index}>
-                              <div className=" grid gap-[8px]">
-                                <div className=" flex items-center justify-between bg-[#F8F8F8] py-[8px] px-[16px]">
+                          <div>
+                            {menuItem.data.map((item, itemIndex) => (
+                              <div className="" key={itemIndex}>
+                                <div
+                                  className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer
+          ${
+            selectedMenuItem === item.name
+              ? "bg-purple500 text-white"
+              : "bg-[#F8F8F8] text-grey500"
+          }`}
+                                  onClick={() => handleMenuItemClick(item.name)}
+                                >
                                   <div className="flex gap-[8px] items-center">
                                     <img src={item.img || CoffeeImg} alt="" />
-
                                     <div className="">
                                       <p className="text-[12px] font-[400] text-grey300">
                                         Item
                                       </p>
                                       <div key={itemIndex}>
-                                        <p className="leading-[24px] text-[16px] text-grey500 font-[500] capitalize">
+                                        <p className="leading-[24px] text-[16px] font-[500] capitalize">
                                           {item.name}
                                         </p>
                                         <p className="text-[12px] font-[400] text-grey300">
@@ -426,16 +435,17 @@ const MenuBuilder = () => {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className=" flex">
-                                    <p className="text-[16px] font-[500] text-grey500">
+                                  <div className="flex">
+                                    <p className="text-[16px] font-[500]">
                                       &#8358;
                                       {item.price}
                                     </p>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+
                           {menuItem.data.length === 0 && (
                             <div className=" flex justify-center items-center h-[200px]">
                               <p className="text-[16px] font-[400] text-grey500">
@@ -466,6 +476,7 @@ const MenuBuilder = () => {
                   Add={Add}
                   selectedBranch={selectedBranch}
                   menuItems={menuItems}
+                  selectedMenuItem={selectedMenuItem}
                 />
               </div>
             </div>
