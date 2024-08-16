@@ -121,7 +121,7 @@ const MobileLayout = () => {
           />
 
           <Route
-            path="demo/online_ordering/:id"
+            path="demo/online_ordering/:id/:branchId"
             element={<OnlineOrderingStartOrder />}
           />
 
@@ -130,7 +130,7 @@ const MobileLayout = () => {
             element={<OnlineOrderingMenuPage />}
           />
           <Route
-            path="demo/:id/category-details/:id/online_ordering"
+            path="demo/:id/items/online_ordering"
             element={<OnlineOrderingCategoryDetails />}
           />
           <Route

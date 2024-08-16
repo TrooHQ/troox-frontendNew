@@ -22,7 +22,7 @@ export const OnlineOrderingReceipt = () => {
 
         <Link to="/demo/get-receipt/online_ordering">
           <div className=" flex items-center justify-center">
-            <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
+            <p className="bg-[#606060] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
               Email
             </p>
           </div>

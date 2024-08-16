@@ -31,6 +31,12 @@ interface MenuItem {
   menu_item_price: number;
 }
 
+interface CustomerDetailsUpdate {
+  name?: string;
+  phone?: string;
+  address?: string;
+}
+
 export interface BasketItem {
   id: string;
   quantity: number;
@@ -45,18 +51,24 @@ interface BasketState {
   items: BasketItem[];
   totalPrice: number;
   customerName: string;
+  customerPhone: string;
+  cutomerAddress: string;
   customerTableNumber: string;
   totalQuantity: number;
   tip: number | null;
+  deliveryFee: number | null;
 }
 
 const initialState: BasketState = {
   items: [],
+  customerPhone: "",
   totalPrice: 0,
   customerName: "",
+  cutomerAddress: "",
   customerTableNumber: "",
   totalQuantity: 0,
   tip: null,
+  deliveryFee: null,
 };
 
 const BasketSlice = createSlice({
@@ -113,10 +125,22 @@ const BasketSlice = createSlice({
       state.customerName = "";
       state.customerTableNumber = "";
       state.tip = null;
+      state.deliveryFee = null;
     },
 
     updateCustomerName(state, action: PayloadAction<string>) {
       state.customerName = action.payload;
+    },
+
+    updateCustomerDetails(state, action: PayloadAction<CustomerDetailsUpdate>) {
+      const { name, phone, address } = action.payload;
+      if (name !== undefined) state.customerName = name;
+      if (phone !== undefined) state.customerPhone = phone;
+      if (address !== undefined) state.cutomerAddress = address;
+    },
+
+    updateCustomerAddress(state, action: PayloadAction<string>) {
+      state.cutomerAddress = action.payload;
     },
 
     updateCustomerTableNumber(state, action: PayloadAction<string>) {
@@ -162,6 +186,10 @@ const BasketSlice = createSlice({
     setTip(state, action: PayloadAction<number | null>) {
       state.tip = action.payload;
     },
+
+    setDeliveryFee(state, action: PayloadAction<number | null>) {
+      state.deliveryFee = action.payload;
+    },
   },
 });
 
@@ -171,9 +199,12 @@ export const {
   clearBasket,
   updateCustomerName,
   updateCustomerTableNumber,
+  updateCustomerAddress,
+  updateCustomerDetails,
   updateItemQuantity,
   updateItemInBasket,
   setTip,
+  setDeliveryFee,
 } = BasketSlice.actions;
 
 export default BasketSlice.reducer;
