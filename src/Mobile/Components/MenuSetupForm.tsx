@@ -104,7 +104,6 @@ const MenuSetupForm: React.FC<Props> = () => {
       );
       if (categoryName) {
         setOpenCategory(categoryName);
-        console.log("Currently open category:", categoryName);
       }
 
       return newState;
@@ -167,12 +166,10 @@ const MenuSetupForm: React.FC<Props> = () => {
     setExpandedGroups((prevState) => {
       const newState = { ...prevState };
       newState[groupName] = !prevState[groupName];
-      console.log("New state:", newState);
       return newState;
     });
 
     setOpenGroup(groupName);
-    console.log(groupName);
     getMenuItem(groupName);
   };
 
@@ -182,12 +179,10 @@ const MenuSetupForm: React.FC<Props> = () => {
 
       updatedState[itemName] = !prevState[itemName];
 
-      console.log("Updated State:", updatedState);
       return updatedState;
     });
 
     setOpenItem(itemName);
-    console.log("Toggled item:", openItem);
   };
 
   useEffect(() => {
@@ -212,7 +207,6 @@ const MenuSetupForm: React.FC<Props> = () => {
       reader.onload = function (event) {
         const base64 = event.target?.result as string;
         setBase64String(base64);
-        console.log("Base64 representation:", base64);
       };
       reader.readAsDataURL(file);
     }
@@ -251,17 +245,14 @@ const MenuSetupForm: React.FC<Props> = () => {
   const businessType = userDetails?.userData?.business_type;
   const id = userDetails?.userData?.user_id;
   const id2 = userDetails?.userData?.id;
-  console.log(id, id2);
 
   const token = userDetails?.userData?.token;
 
   const hasMenu = userDetails?.userData?.has_created_menu_item;
-  console.log(userDetails);
 
   const createCategory = async () => {
     if (!menuCategory) {
       setError("Add a Menu Category");
-      console.log(menuCategory);
       return;
     }
     const headers = {
@@ -283,13 +274,11 @@ const MenuSetupForm: React.FC<Props> = () => {
         },
         headers
       );
-      console.log("menu Category added successfully:", response.data);
       toast.success(response.data.message);
       setAddCategoryModal(false);
       window.location.reload();
     } catch (error: any) {
       console.error("Error adding Menu Category:", error);
-      console.log(token);
 
       if (error.response) {
         toast.error(error.response.data.message);
@@ -327,13 +316,11 @@ const MenuSetupForm: React.FC<Props> = () => {
         },
         headers
       );
-      console.log("menu item added successfully:", response.data);
       toast.success(response.data.message);
       setMenuItemModal(false);
       window.location.reload();
     } catch (error: any) {
       console.error("Error adding Menu Category:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -371,13 +358,11 @@ const MenuSetupForm: React.FC<Props> = () => {
         },
         headers
       );
-      console.log("menu Category added successfully:", response.data);
       toast.success(response.data.message);
       setAddGroupModal(false);
       window.location.reload();
     } catch (error: any) {
       console.error("Error adding Menu Category:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -404,12 +389,10 @@ const MenuSetupForm: React.FC<Props> = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuCategory/?branch_id=${selectedOutletID}`,
         headers
       );
-      console.log("menu Category retrieved successfully:", response.data.data);
 
       setMenuData(response.data.data);
     } catch (error: any) {
       console.error("Error adding Menu Category:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -434,17 +417,14 @@ const MenuSetupForm: React.FC<Props> = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuGroup/?branch_id=${selectedOutletID}`,
         headers
       );
-      console.log("Menu Group retrieved successfully:", response.data.data);
       setMenuGroup(response.data.data);
 
       response.data.data.forEach(async (menuItem: { name: string }) => {
         const menuGroupName = menuItem.name;
-        console.log(menuGroupName);
         await getMenuItem(menuGroupName);
       });
     } catch (error: any) {
       console.error("Error retrieving Menu Group:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -469,12 +449,10 @@ const MenuSetupForm: React.FC<Props> = () => {
         `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${openGroup}&branch_id=${selectedOutletID}`,
         headers
       );
-      console.log("Menu Items retrieved successfully:", response.data);
 
       setItems(response.data.data);
     } catch (error: any) {
       console.error("Error retrieving Menu Items:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -496,15 +474,13 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${openItem}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${openItem}&branch_id=${selectedOutletID}`,
         headers
       );
-      console.log("Modifier retrieved successfully:", response.data);
 
       setModifiers(response.data.data);
     } catch (error: any) {
       console.error("Error retrieving Modifiers:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);
@@ -532,6 +508,7 @@ const MenuSetupForm: React.FC<Props> = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/menu/addMenuModifier`,
         {
+          branch_id: selectedOutletID,
           attach_to: "item",
           modifier_name: modifierName,
           menu_item_name: openItem,
@@ -546,7 +523,6 @@ const MenuSetupForm: React.FC<Props> = () => {
       // window.location.reload();
     } catch (error: any) {
       console.error("Error adding modifier:", error);
-      console.log(token);
 
       if (error.response) {
         setError(error.response.data.message);

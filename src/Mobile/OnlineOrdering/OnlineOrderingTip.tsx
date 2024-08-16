@@ -40,13 +40,10 @@ export const OnlineOrderingTip = () => {
   useEffect(() => {
     if (selectedTip !== null) {
       const tipAmount = totalPrice * selectedTip;
-      console.log("Selected tip amount:", tipAmount);
       dispatch(setTip(tipAmount));
     } else if (customAmount !== null) {
-      console.log("Custom tip amount:", customAmount);
       dispatch(setTip(customAmount));
     } else {
-      console.log("Selected tip: None");
       dispatch(setTip(null));
     }
   }, [selectedTip, customAmount, totalPrice]);
@@ -69,7 +66,7 @@ export const OnlineOrderingTip = () => {
   };
 
   useEffect(() => {
-    console.log("Basket Details:", basketDetails);
+    console.log("Basket Details:");
   }, [basketDetails]);
 
   return (
@@ -114,13 +111,13 @@ export const OnlineOrderingTip = () => {
 
         <div className=" mt-[60px] flex items-center justify-center gap-[16px]">
           <p
-            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] text-[#FF0000]"
+            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] text-[#606060]"
             onClick={handleNoTipClick}
           >
             No Tip
           </p>
           <Link to="/demo/payment-type/online_ordering">
-            <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#FF0000] py-[10px] px-[56px]">
+            <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#606060] py-[10px] px-[56px]">
               Add Tip
             </p>
           </Link>

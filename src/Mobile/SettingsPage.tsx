@@ -207,10 +207,10 @@ const SettingsPage = () => {
     return newUrl;
   };
 
-  const attachBusinessIdToHost2 = (businessId: string) => {
+  const attachBusinessIdToHost2 = (businessId: string, branchId: string) => {
     const currentHost = window.location.origin;
 
-    const newUrl = `${currentHost}/demo/online_ordering/${businessId}`;
+    const newUrl = `${currentHost}/demo/online_ordering/${businessId}/${branchId}`;
 
     return newUrl;
   };
@@ -248,12 +248,13 @@ const SettingsPage = () => {
   };
 
   const handleClick2 = () => {
-    const urlToCopy = attachBusinessIdToHost2(businessId);
+    const urlToCopy = attachBusinessIdToHost2(businessId, selectedOutletID);
     copyToClipboard2(urlToCopy);
   };
 
   const businessId = userDetails?.userData?.business_identifier;
   const attachedUrl = attachBusinessIdToHost(businessId);
+
   console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 

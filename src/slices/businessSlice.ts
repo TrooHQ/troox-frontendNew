@@ -12,6 +12,7 @@ interface BusinessDetails {
 
 interface BusinessState {
   _id: string | null;
+  branchID: string | null;
   businessIdentifier: string | null;
   groupName: string;
   tableNo: string;
@@ -21,6 +22,7 @@ interface BusinessState {
 
 const initialState: BusinessState = {
   _id: null,
+  branchID: null,
   businessIdentifier: null,
   groupName: "default_group_name",
   tableNo: "",
@@ -34,6 +36,10 @@ const businessSlice = createSlice({
   reducers: {
     setBusinessIdentifier(state, action: PayloadAction<string>) {
       state.businessIdentifier = action.payload;
+    },
+
+    setBranchID(state, action: PayloadAction<string>) {
+      state.branchID = action.payload;
     },
     setGroupName(state, action: PayloadAction<string>) {
       state.groupName = action.payload;
@@ -49,6 +55,7 @@ const businessSlice = createSlice({
     },
     resetBusinessDetails(state) {
       state.businessIdentifier = initialState.businessIdentifier;
+      state.branchID = initialState.branchID;
       state.groupName = initialState.groupName;
       state.tableNo = initialState.tableNo;
       state.businessDetails = initialState.businessDetails;
@@ -61,6 +68,7 @@ export const {
   setGroupName,
   setTableNo,
   setURL,
+  setBranchID,
   setBusinessDetails,
   resetBusinessDetails,
 } = businessSlice.actions;

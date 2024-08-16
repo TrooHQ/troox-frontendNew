@@ -165,7 +165,6 @@ const OnlineOrderingMenuDetails = () => {
 
     const totalPrice = itemPrice + optionTotalPrice;
 
-    console.log(totalPrice);
     return totalPrice;
   };
 
@@ -194,8 +193,6 @@ const OnlineOrderingMenuDetails = () => {
           dispatch(addItemToBasket(basketItem));
         }
       }
-
-      console.log("Updated basket item:", basketItem);
 
       navigate(-1);
     }
@@ -229,7 +226,7 @@ const OnlineOrderingMenuDetails = () => {
 
           {menuModifiers.length > 0 && (
             <div className="menu-item-modifiers pb-[16px] border-b">
-              <p className="text-[#FF0000] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
+              <p className="text-[#606060] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
                 Customize
               </p>
               {menuModifiers.map((option) => (
@@ -261,7 +258,7 @@ const OnlineOrderingMenuDetails = () => {
           )}
 
           <div className="menu-item-quantity py-[16px]">
-            <p className="text-[#FF0000] text-[16px] font-[500] mx-[24px] mb-[10px]">
+            <p className="text-[#606060] text-[16px] font-[500] mx-[24px] mb-[10px]">
               Quantity
             </p>
             <hr />
@@ -395,7 +392,7 @@ const OnlineOrderingMenuDetails = () => {
                 />
               </div>
               <div className=" mt-[10px] flex items-center justify-end">
-                <button className=" text-[#ff0000]  font-[500] text-[40px]">
+                <button className=" text-[#606060]  font-[500] text-[40px]">
                   <FaCircleCheck />
                 </button>
               </div>
@@ -404,7 +401,7 @@ const OnlineOrderingMenuDetails = () => {
 
           <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto  my-[16px]">
             <div
-              className="flex justify-between items-center py-[13px] px-[24px] bg-[#FF0000] text-white rounded-[3px] cursor-pointer"
+              className="flex justify-between items-center py-[13px] px-[24px] bg-[#606060] text-white rounded-[3px] cursor-pointer"
               onClick={handleAddToBasket}
             >
               <p className="text-[16px] font-[500]">

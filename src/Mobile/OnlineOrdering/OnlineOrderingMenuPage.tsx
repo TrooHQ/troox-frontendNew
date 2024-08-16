@@ -18,7 +18,6 @@ export const OnlineOrderingMenuPage = () => {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
-  console.log(businessDetails);
 
   const business_identifier = businessDetails?._id;
   const business_name = businessDetails?.business_name;
@@ -35,7 +34,6 @@ export const OnlineOrderingMenuPage = () => {
         `${SERVER_DOMAIN}/menu/getCustomerMenuCategory/?business_identifier=${business_identifier}`,
         headers
       );
-      console.log("Business Details Retrieved successfully:", response.data);
       setMenuCategory(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -70,9 +68,7 @@ export const OnlineOrderingMenuPage = () => {
 
         <div className=" px-[21px] grid grid-cols-2 gap-[24px]">
           {menuCategory.map((menu) => (
-            <Link
-              to={`/demo/${business_name}/category-details/${menu.name}/online_ordering`}
-            >
+            <Link to={`/demo/${business_name}/items/online_ordering`}>
               <div className="mt-[24px]">
                 <div className="pt-[16px] pb-[20px] border-b max-w-[104px] mx-auto">
                   <img src={menu?.image} alt="" className="w-full" />

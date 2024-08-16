@@ -27,6 +27,7 @@ export const OnlineOrderingSelectPayment = () => {
 
   const totalPrice = basketDetails?.totalPrice ?? 0;
   const tip = basketDetails?.tip ?? 0;
+  const deliveryFee = basketDetails?.deliveryFee ?? 0;
   const finalTotal = totalPrice + tip;
   console.log(finalTotal);
   console.log(basketDetails);
@@ -106,6 +107,15 @@ export const OnlineOrderingSelectPayment = () => {
             ₦ {totalPrice ? totalPrice.toLocaleString() : "0"}
           </span>
         </p>
+
+        {deliveryFee !== 0 && (
+          <p className=" text-[#000000] text-[14px] font-[400] ">
+            Delivery Fee:{" "}
+            <span className=" text-[#121212]">
+              ₦ {deliveryFee ? deliveryFee.toLocaleString() : "0"}
+            </span>
+          </p>
+        )}
         <p className=" text-[#000000] text-[18px] font-[500]">
           Tip: ₦ {}{" "}
           <span className=" text-[#000000]">{tip.toLocaleString() || 0} </span>
@@ -115,7 +125,7 @@ export const OnlineOrderingSelectPayment = () => {
         <p className="text-[#000000] text-[18px] font-[600]">
           Pay:{" "}
           <span className="text-[#121212]">
-            ₦{(totalPrice + (tip ?? 0)).toLocaleString()}
+            ₦{(totalPrice + (tip ?? 0) + (deliveryFee ?? 0)).toLocaleString()}
           </span>
         </p>
       </div>
@@ -174,7 +184,7 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
                 >
                   Proceed to Pay
@@ -201,7 +211,7 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
                 >
                   Proceed to Pay
@@ -228,7 +238,7 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
                 >
                   Proceed to Pay
