@@ -50,6 +50,8 @@ const MenuBuilder = () => {
   const [confirmPublishModal, setConfirmPublishModal] = useState(false);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
+  const [menuGroupLoading, setMenuGroupLoading] = useState(false); // Loading state for menu groups
+  const [menuItemLoading, setMenuItemLoading] = useState(false); // Loading state for menu items
 
   const [groupName, setGroupName] = useState("");
   const [menuName, setMenuName] = useState("");
@@ -57,7 +59,6 @@ const MenuBuilder = () => {
   const [menuPrice, setMenuPrice] = useState("");
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
   const [price, setPrice] = useState("");
-
   const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
 
   const handleMenuItemClick = (itemName: string) => {
@@ -162,27 +163,40 @@ const MenuBuilder = () => {
     }
   };
 
-  const [menuGroupLoading, setMenuGroupLoading] = useState(false);
   console.log(activeMainMenu, activeSubMenu);
 
   // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
   useEffect(() => {
-    selectedBranch && dispatch(fetchMenuCategories(selectedBranch.id));
-    selectedBranch &&
+    if (selectedBranch) {
+      dispatch(fetchMenuCategories(selectedBranch.id));
+    }
+  }, [selectedBranch]);
+
+  useEffect(() => {
+    if (selectedBranch && activeMainMenu) {
       dispatch(
         fetchMenuGroups({
           branch_id: selectedBranch.id,
           menu_category_name: activeMainMenu,
         })
       );
-    selectedBranch &&
+    }
+  }, [selectedBranch, activeMainMenu]);
+
+  useEffect(() => {
+    if (selectedBranch && activeSubMenu) {
+      setMenuItemLoading(true); // Set loading to true before fetching menu items
+      setSelectedMenuItem(null); // Clear the selected menu item when a new group is selected
       dispatch(
         fetchMenuItems({
           branch_id: selectedBranch.id,
           menu_group_name: activeSubMenu,
         })
-      );
-  }, [selectedBranch, activeMainMenu, activeSubMenu]);
+      ).finally(() => {
+        setMenuItemLoading(false); // Set loading to false after fetching
+      });
+    }
+  }, [selectedBranch, activeSubMenu]);
 
   // Update submenuContent when menuItems change
   useEffect(() => {
@@ -404,57 +418,67 @@ const MenuBuilder = () => {
                           </button>
                         </div>
                       </div>
-                      {subMenuContent.map((menuItem, index) => (
-                        <div>
+                      {menuItemLoading ? (
+                        <div className="flex justify-center items-center h-[200px]">
+                          <p className="text-[16px] font-[400] text-grey500">
+                            Loading menu items...
+                          </p>
+                        </div>
+                      ) : (
+                        subMenuContent.map((menuItem, index) => (
                           <div>
-                            {menuItem.data.map((item, itemIndex) => (
-                              <div className="" key={itemIndex}>
-                                <div
-                                  className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer
+                            <div>
+                              {menuItem.data.map((item, itemIndex) => (
+                                <div className="" key={itemIndex}>
+                                  <div
+                                    className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer
           ${
             selectedMenuItem === item.name
               ? "bg-purple500 text-white"
               : "bg-[#F8F8F8] text-grey500"
           }`}
-                                  onClick={() => handleMenuItemClick(item.name)}
-                                >
-                                  <div className="flex gap-[8px] items-center">
-                                    <img src={item.img || CoffeeImg} alt="" />
-                                    <div className="">
-                                      <p className="text-[12px] font-[400] text-grey300">
-                                        Item
-                                      </p>
-                                      <div key={itemIndex}>
-                                        <p className="leading-[24px] text-[16px] font-[500] capitalize">
-                                          {item.name}
-                                        </p>
+                                    onClick={() =>
+                                      handleMenuItemClick(item.name)
+                                    }
+                                  >
+                                    <div className="flex gap-[8px] items-center">
+                                      <img src={item.img || CoffeeImg} alt="" />
+                                      <div className="">
                                         <p className="text-[12px] font-[400] text-grey300">
-                                          Modifier groups (6){" "}
-                                          {/* This is static; you may want to make this dynamic */}
+                                          Item
                                         </p>
+                                        <div key={itemIndex}>
+                                          <p className="leading-[24px] text-[16px] font-[500] capitalize">
+                                            {item.name}
+                                          </p>
+                                          <p className="text-[12px] font-[400] text-grey300">
+                                            Modifier groups (6){" "}
+                                            {/* This is static; you may want to make this dynamic */}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="flex">
-                                    <p className="text-[16px] font-[500]">
-                                      &#8358;
-                                      {item.price}
-                                    </p>
+                                    <div className="flex">
+                                      <p className="text-[16px] font-[500]">
+                                        &#8358;
+                                        {item.price}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-
-                          {menuItem.data.length === 0 && (
-                            <div className=" flex justify-center items-center h-[200px]">
-                              <p className="text-[16px] font-[400] text-grey500">
-                                No menu items
-                              </p>
+                              ))}
                             </div>
-                          )}
-                        </div>
-                      ))}
+
+                            {menuItem.data.length === 0 && (
+                              <div className=" flex justify-center items-center h-[200px]">
+                                <p className="text-[16px] font-[400] text-grey500">
+                                  No menu items
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      )}
 
                       {subMenuContent.length > 1 && (
                         <div className=" flex items-center justify-end">
