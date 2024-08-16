@@ -345,7 +345,7 @@ const MenuBuilder = () => {
                         {mgLoading ? (
                           <div className="flex justify-center items-center h-[200px]">
                             <p className="text-[16px] font-[400] text-grey500">
-                              Loading menu items...
+                              Loading menu groups...
                             </p>
                           </div>
                         ) : (
@@ -413,7 +413,7 @@ const MenuBuilder = () => {
                               {menuItem.data.map((item, itemIndex) => (
                                 <div className="" key={itemIndex}>
                                   <div
-                                    className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer
+                                    className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer mb-2
           ${
             selectedMenuItem === item.name ? "bg-purple500 text-white" : "bg-[#F8F8F8] text-grey500"
           }`}

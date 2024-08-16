@@ -96,17 +96,12 @@ const Modifiers = ({
   }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
 
   const addModifier = () => {
-    setModifiers([
-      ...modifiers,
-      { id: Date.now(), name: "", price: "", menuItem: "" },
-    ]);
+    setModifiers([...modifiers, { id: Date.now(), name: "", price: "", menuItem: "" }]);
   };
 
   const updateModifier = (id: number, field: string, value: string) => {
     setModifiers(
-      modifiers.map((modifier) =>
-        modifier.id === id ? { ...modifier, [field]: value } : modifier
-      )
+      modifiers.map((modifier) => (modifier.id === id ? { ...modifier, [field]: value } : modifier))
     );
   };
 
@@ -140,10 +135,7 @@ const Modifiers = ({
       axios
         .post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers)
         .then((response) =>
-          toast.success(
-            response.data.message ||
-              `Modifier ${modifier.name} added successfully.`
-          )
+          toast.success(response.data.message || `Modifier ${modifier.name} added successfully.`)
         )
         .catch((error) => toast.error(error.response.data.message))
         .finally(() => {
@@ -200,9 +192,7 @@ const Modifiers = ({
   return (
     <div className="">
       <div className=" mt-[32px] max-w-[628px]">
-        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-          Modifier
-        </p>
+        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">Modifier</p>
         <hr className=" border-[#B6B6B6]" />
       </div>
 
@@ -228,19 +218,13 @@ const Modifiers = ({
                     />
                   ) : (
                     <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex items-center justify-center">
-                      <span className="text-gray-500">
-                        {modifier.modifier_name.charAt(0)}
-                      </span>
+                      <span className="text-gray-500">{modifier.modifier_name.charAt(0)}</span>
                     </div>
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-[18px] font-[500] text-gray-800">
-                    {modifier.modifier_name}
-                  </p>
-                  <p className="text-[16px] text-gray-600">
-                    Price: ${modifier.modifier_price}
-                  </p>
+                  <p className="text-[18px] font-[500] text-gray-800">{modifier.modifier_name}</p>
+                  <p className="text-[16px] text-gray-600">Price: ₦ {modifier.modifier_price}</p>
                 </div>
               </div>
             ))}
@@ -259,9 +243,7 @@ const Modifiers = ({
                   className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
                   placeholder=" Enter modifier name "
                   value={modifier.name}
-                  onChange={(e) =>
-                    updateModifier(modifier.id, "name", e.target.value)
-                  }
+                  onChange={(e) => updateModifier(modifier.id, "name", e.target.value)}
                 />
 
                 <input
@@ -269,9 +251,7 @@ const Modifiers = ({
                   className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[127px] px-[20px]"
                   placeholder=" Enter price "
                   value={modifier.price}
-                  onChange={(e) =>
-                    updateModifier(modifier.id, "price", e.target.value)
-                  }
+                  onChange={(e) => updateModifier(modifier.id, "price", e.target.value)}
                 />
                 <div className="flex items-center">
                   {/* <button
@@ -280,9 +260,7 @@ const Modifiers = ({
                   >
                     <img src={Add} alt="" /> Add - edit modifier item
                   </button> */}
-                  {modifiers.length > 1 && (
-                    <Close onClick={() => removeModifier(modifier.id)} />
-                  )}
+                  {modifiers.length > 1 && <Close onClick={() => removeModifier(modifier.id)} />}
                 </div>
               </div>
             </div>
@@ -302,16 +280,11 @@ const Modifiers = ({
 
         <div className="">
           <div className=" mt-[32px] max-w-[628px]">
-            <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-              Modifier Rules
-            </p>
+            <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">Modifier Rules</p>
             <hr className=" border-[#B6B6B6]" />
             <div>
               {rules.map((rule) => (
-                <div
-                  key={rule.key}
-                  className="flex items-center gap-[16px] my-[16px]"
-                >
+                <div key={rule.key} className="flex items-center gap-[16px] my-[16px]">
                   <input
                     type="checkbox"
                     id={rule.key}
@@ -319,10 +292,7 @@ const Modifiers = ({
                     checked={modifierRules[rule.key]}
                     onChange={() => handleRuleChange(rule.key)}
                   />
-                  <label
-                    htmlFor={rule.key}
-                    className="text-[16px] font-[400] text-[#000000]"
-                  >
+                  <label htmlFor={rule.key} className="text-[16px] font-[400] text-[#000000]">
                     {rule.label}
                   </label>
                 </div>
@@ -348,10 +318,7 @@ const Modifiers = ({
 
       {/* Confirmation Modal */}
       {confirmSaveModal && (
-        <Modal
-          isOpen={confirmSaveModal}
-          onClose={() => setConfirmSaveModal(false)}
-        >
+        <Modal isOpen={confirmSaveModal} onClose={() => setConfirmSaveModal(false)}>
           <div className="w-[443px] px-[32px] py-[32px]">
             <div
               className="flex items-center justify-end cursor-pointer"
@@ -360,19 +327,15 @@ const Modifiers = ({
               <Close />
             </div>
             <div className="flex flex-col gap-[24px] items-center justify-center">
-              <p className="text-grey500 text-[22px] font-[500]">
-                Save changes
-              </p>
+              <p className="text-grey500 text-[22px] font-[500]">Save modifier(s)</p>
               <p className="text-[16px] font-[400] text-grey500">
-                Do you want to save changes made to this menu?
+                Are you sure you want to save the modifier(s)?
               </p>
               <div
                 className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                 onClick={handleConfirmSave}
               >
-                <button className="text-[16px]">
-                  {loading ? "Sending..." : "Yes"}
-                </button>
+                <button className="text-[16px]">{loading ? "Sending..." : "Yes"}</button>
               </div>
             </div>
           </div>
