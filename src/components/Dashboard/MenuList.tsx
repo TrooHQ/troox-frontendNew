@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import { Close, DeleteForeverOutlined } from "@mui/icons-material";
@@ -9,7 +9,9 @@ import clsx from "clsx";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Tooltip } from "@mui/material";
 import SearchIcon from "../../assets/searchIcon.svg";
-import BackButtonMain from "../buttons/BackButtonMain";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBranches } from "../../slices/branchSlice";
+import { AppDispatch } from "../../store/store";
 
 interface Modifier {
   name: string;
@@ -27,11 +29,11 @@ interface Branch {
   manager: string;
 }
 
-const branches: Branch[] = [
-  { id: 1, name: "Branch A", manager: "John Doe" },
-  { id: 2, name: "Branch B", manager: "Jane Smith" },
-  { id: 3, name: "Branch C", manager: "Alice Johnson" },
-];
+// const branches: Branch[] = [
+//   { id: 1, name: "Branch A", manager: "John Doe" },
+//   { id: 2, name: "Branch B", manager: "Jane Smith" },
+//   { id: 3, name: "Branch C", manager: "Alice Johnson" },
+// ];
 
 const data = [
   {
@@ -228,6 +230,10 @@ interface ConfirmationDialogState {
 }
 
 const MenuList = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const branches = useSelector((state: any) => state.branches.branches);
+
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
@@ -291,6 +297,10 @@ const MenuList = () => {
     setViewingBranch(null);
   };
 
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
   return (
     <DashboardLayout>
       <TopMenuNav pathName="Menu" />
@@ -307,11 +317,13 @@ const MenuList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {branches.map((branch) => (
-                    <tr key={branch.id} className="bg-[#ffffff]">
-                      <td className="text-base font-medium py-2 px-4 text-start">{branch.name}</td>
+                  {branches.map((branch: any) => (
+                    <tr key={branch._id} className="bg-[#ffffff]">
                       <td className="text-base font-medium py-2 px-4 text-start">
-                        {branch.manager}
+                        {branch.branch_name}
+                      </td>
+                      <td className="text-base font-medium py-2 px-4 text-start">
+                        {branch.branch_email}
                       </td>
                       <td className="text-base font-medium py-2 px-4 text-center">
                         <button className="text-blue-500" onClick={() => handleViewMore(branch)}>
