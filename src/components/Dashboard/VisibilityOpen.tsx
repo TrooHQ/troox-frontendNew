@@ -58,7 +58,7 @@ const VisibilityOpen = ({ setIsVisibilityOpen }: any) => {
             setIsVisibilityOpen(false);
           }}
         >
-          <button className="text-[16px]">Save Menu</button>
+          <button className="text-[16px]">Save</button>
         </div>
       </div>
     </div>

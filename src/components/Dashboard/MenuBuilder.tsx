@@ -316,11 +316,9 @@ const MenuBuilder = () => {
 
   // Implement actions for visibility, edit, and remove
   const handleMenuVisibility = () => {
-    console.log("Menu Visibility for:", selectedGroup);
     handleClose();
     setIsVisibilityOpen(true);
   };
-  console.log("Menu Visibility for:", isVisibilityOpen);
 
   const handleCloseMenuVisibility = () => {
     setIsVisibilityOpen(false);
