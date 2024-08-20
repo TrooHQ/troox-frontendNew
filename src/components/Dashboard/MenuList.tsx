@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { Close, DeleteForeverOutlined } from "@mui/icons-material";
+import { ArrowBack, Close, DeleteForeverOutlined } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
@@ -53,7 +53,18 @@ const MenuList = () => {
     id: null,
   });
 
-  const handleToggleChange = (id: any) => {
+  // Set toggleStates after menuItems are fetched
+  useEffect(() => {
+    if (menuItems && menuItems.length > 0) {
+      const initialState: { [key: string]: boolean } = {};
+      menuItems.forEach((item: any) => {
+        initialState[item._id] = true; // Default all items to enabled
+      });
+      setToggleStates(initialState);
+    }
+  }, [menuItems]);
+
+  const handleToggleChange = (id: string) => {
     setConfirmationDialog({ open: true, id });
   };
 
@@ -62,7 +73,7 @@ const MenuList = () => {
     if (id !== null) {
       setToggleStates((prevStates) => ({
         ...prevStates,
-        [id]: !prevStates[id as any],
+        [id]: !prevStates[id],
       }));
     }
     setConfirmationDialog({ open: false, id: null });
@@ -143,8 +154,10 @@ const MenuList = () => {
           <div className="my-[40px]">
             <button
               onClick={handleBackToBranches}
-              className="border border-purple500 text-purple500 mb-4 rounded-[6px] px-2"
+              className="border border-purple500 text-purple500 mb-4 rounded-[6px] px-2 flex items-center"
             >
+              {" "}
+              <ArrowBack />
               Back
             </button>
             <div className="flex items-center justify-between">

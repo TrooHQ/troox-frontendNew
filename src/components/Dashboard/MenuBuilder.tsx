@@ -38,7 +38,6 @@ const MenuBuilder = () => {
 
   const { categories, menuGroups, menuItems, mgLoading } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-  console.log(menuItems, "wwww");
 
   const userData = useSelector((state: RootState) => state.inviteUser);
 
@@ -506,7 +505,11 @@ const MenuBuilder = () => {
                                     onClick={() => handleMenuItemClick(item.name)}
                                   >
                                     <div className="flex gap-[8px] items-center">
-                                      <img src={item.img || CoffeeImg} alt="" />
+                                      <img
+                                        src={item.img || CoffeeImg}
+                                        alt=""
+                                        className="h-[150px] w-[200px] object-cover"
+                                      />
                                       <div className="">
                                         <p className="text-[12px] font-[400]">Item</p>
                                         <div key={itemIndex}>
