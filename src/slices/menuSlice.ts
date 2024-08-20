@@ -122,13 +122,20 @@ export const fetchMenuGroups = createAsyncThunk<
 
 export const fetchMenuItems = createAsyncThunk<
   MenuItem[],
-  { branch_id: string; menu_group_name: any },
+  { branch_id: string; menu_group_name?: any },
   { rejectValue: string }
 >("menu/fetchMenuItems", async ({ branch_id, menu_group_name }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem("token");
+
+    // Construct the query string
+    let queryString = `branch_id=${branch_id}`;
+    if (menu_group_name !== undefined && menu_group_name !== null) {
+      queryString += `&menu_group_name=${menu_group_name}`;
+    }
+
     const response = await axios.get<MenuItemResponse>(
-      `${SERVER_DOMAIN}/menu/filterMenuItems/?branch_id=${branch_id}&menu_group_name=${menu_group_name}`,
+      `${SERVER_DOMAIN}/menu/filterMenuItems/?${queryString}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -12,6 +12,7 @@ import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
+import { fetchMenuItems } from "../../slices/menuSlice";
 
 interface Modifier {
   name: string;
@@ -25,204 +26,10 @@ interface Modifiers {
 
 interface Branch {
   id: number;
+  _id: string;
   name: string;
   manager: string;
 }
-
-// const branches: Branch[] = [
-//   { id: 1, name: "Branch A", manager: "John Doe" },
-//   { id: 2, name: "Branch B", manager: "Jane Smith" },
-//   { id: 3, name: "Branch C", manager: "Alice Johnson" },
-// ];
-
-const data = [
-  {
-    id: 1,
-    menuName: "Semo",
-    qty: 250,
-    status: "Restocked",
-    price: "₦2000",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 2,
-    menuName: "Amala",
-    qty: 300,
-    status: "Restocked",
-    price: "₦1300",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 3,
-    menuName: "Poundo yam",
-    qty: 50,
-    status: "Almost out of stock",
-    price: "₦2500",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 4,
-    menuName: "Eba",
-    qty: 250,
-    status: "Restocked",
-    price: "₦1400",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 5,
-    menuName: "Jollof rice",
-    qty: 450,
-    status: "Restocked",
-    price: "₦3000",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 6,
-    menuName: "Fried rice",
-    qty: 28,
-    status: "Almost out of stock",
-    price: "₦2000",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 7,
-    menuName: "Grilled chicken",
-    qty: 0,
-    status: "Out of stock",
-    price: "₦4000",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 8,
-    menuName: "Fried chicken",
-    qty: 450,
-    status: "Restocked",
-    price: "₦2000",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-  {
-    id: 9,
-    menuName: "Coconut rice",
-    qty: 300,
-    status: "Restocked",
-    price: "₦3400",
-    modifiers: {
-      addOns: [
-        { name: "Egusi Soup", price: "₦1500" },
-        { name: "Oha Soup", price: "₦1500" },
-        { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
-      ],
-      proteins: [
-        { name: "Goat Meat", price: "₦1500" },
-        { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
-      ],
-    },
-  },
-];
 
 interface ConfirmationDialogState {
   open: boolean;
@@ -233,18 +40,13 @@ const MenuList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const branches = useSelector((state: any) => state.branches.branches);
+  const { menuItems, loading } = useSelector((state: any) => state.menu);
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
 
-  const [toggleStates, setToggleStates] = useState<{ [key: number]: boolean }>(() => {
-    const initialState: { [key: number]: boolean } = {};
-    data.forEach((item) => {
-      initialState[item.id] = true; // Default all items to enabled
-    });
-    return initialState;
-  });
+  const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
 
   const [confirmationDialog, setConfirmationDialog] = useState<ConfirmationDialogState>({
     open: false,
@@ -291,6 +93,7 @@ const MenuList = () => {
 
   const handleViewMore = (branch: Branch) => {
     setViewingBranch(branch);
+    dispatch(fetchMenuItems({ branch_id: branch._id }));
   };
 
   const handleBackToBranches = () => {
@@ -373,65 +176,73 @@ const MenuList = () => {
 
                 <hr className="mb-2 text-[#E7E7E7]" />
 
-                <tbody>
-                  {data.map((item, index) => (
-                    <tr
-                      key={item.id}
-                      className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
-                    >
-                      <td className="text-base font-medium py-2 px-4">{item.menuName}</td>
-                      <td className="text-base font-medium text-center py-2 px-4 break-words">
-                        <div className="flex justify-start gap-0 items-center pl-[60px]">
-                          <span className="w-[60px] ml-0">{item.qty}</span>
-                          {item.status !== "Restocked" && (
-                            <span
-                              className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
-                                item.status
-                              )}`}
-                            >
-                              {item.status}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="text-base font-medium text-center py-2 px-4 break-words">
-                        {item.price}
-                      </td>
-                      <td className="text-base font-medium text-center py-2 px-4 break-words">
-                        <button
-                          className="text-blue-500"
-                          onClick={() => handleOpenModal(item.modifiers)}
-                        >
-                          Click to see modifiers
-                        </button>
-                      </td>
-
-                      <td className="flex items-center text-center">
-                        <Tooltip
-                          title="Freezing this menu list will remove it from all your product channels"
-                          arrow
-                        >
-                          <IconButton onClick={() => handleToggleChange(item.id)} color="default">
-                            {toggleStates[item.id] ? (
-                              <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
-                            ) : (
-                              <ToggleOffIcon style={{ fontSize: "40px" }} />
+                {loading ? (
+                  <div className="text-center min-w-full">Loading...</div>
+                ) : menuItems.length !== 0 ? (
+                  <tbody>
+                    {menuItems.map((item: any, index: number) => (
+                      <tr
+                        key={item.id}
+                        className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
+                      >
+                        <td className="text-base font-medium py-2 px-4">{item.menu_item_name}</td>
+                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                          <div className="flex justify-start gap-0 items-center pl-[60px]">
+                            <span className="w-[60px] ml-0">{item.qty}</span>
+                            {item.status !== "Restocked" && (
+                              <span
+                                className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
+                                  item.status
+                                )}`}
+                              >
+                                {item.status}
+                              </span>
                             )}
-                          </IconButton>
-                        </Tooltip>
-                        <span
-                          className={clsx(
-                            toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
-                            "text-base font-medium"
-                          )}
-                        >
-                          {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
-                        </span>
-                        <DeleteForeverOutlined className="text-red-700 ml-3" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                          </div>
+                        </td>
+                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                          &#8358;{item.menu_item_price}
+                        </td>
+                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                          <button
+                            className="text-blue-500"
+                            onClick={() => handleOpenModal(item.modifiers)}
+                          >
+                            Click to see modifiers
+                          </button>
+                        </td>
+
+                        <td className="flex items-center text-center">
+                          <Tooltip
+                            title="Freezing this menu list will remove it from all your product channels"
+                            arrow
+                          >
+                            <IconButton onClick={() => handleToggleChange(item.id)} color="default">
+                              {toggleStates[item.id] ? (
+                                <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                              ) : (
+                                <ToggleOffIcon style={{ fontSize: "40px" }} />
+                              )}
+                            </IconButton>
+                          </Tooltip>
+                          <span
+                            className={clsx(
+                              toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
+                              "text-base font-medium"
+                            )}
+                          >
+                            {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
+                          </span>
+                          <DeleteForeverOutlined className="text-red-700 ml-3" />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <div>
+                    <p className="text-center min-w-full">No menu items found</p>
+                  </div>
+                )}
               </table>
             </div>
           </div>
