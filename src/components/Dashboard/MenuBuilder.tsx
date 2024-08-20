@@ -494,13 +494,15 @@ const MenuBuilder = () => {
                       ) : (
                         subMenuContent.map((menuItem, index) => (
                           <div>
-                            <div>
+                            <div key={index}>
                               {menuItem.data.map((item, itemIndex) => (
                                 <div className="" key={itemIndex}>
                                   <div
                                     className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer mb-2
           ${
-            selectedMenuItem === item.name ? "bg-purple500 text-white" : "bg-[#F8F8F8] text-grey500"
+            selectedMenuItem === item.name
+              ? "bg-[#ebebeb] text-purple500"
+              : "bg-[#F8F8F8] text-grey500"
           }`}
                                     onClick={() => handleMenuItemClick(item.name)}
                                   >
