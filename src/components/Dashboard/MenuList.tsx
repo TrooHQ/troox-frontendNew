@@ -9,6 +9,7 @@ import clsx from "clsx";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Tooltip } from "@mui/material";
 import SearchIcon from "../../assets/searchIcon.svg";
+import BackButtonMain from "../buttons/BackButtonMain";
 
 interface Modifier {
   name: string;
@@ -19,6 +20,18 @@ interface Modifiers {
   addOns: Modifier[];
   proteins: Modifier[];
 }
+
+interface Branch {
+  id: number;
+  name: string;
+  manager: string;
+}
+
+const branches: Branch[] = [
+  { id: 1, name: "Branch A", manager: "John Doe" },
+  { id: 2, name: "Branch B", manager: "Jane Smith" },
+  { id: 3, name: "Branch C", manager: "Alice Johnson" },
+];
 
 const data = [
   {
@@ -37,8 +50,6 @@ const data = [
       proteins: [
         { name: "Goat Meat", price: "₦1500" },
         { name: "Beef", price: "₦1500" },
-        { name: "Snail", price: "₦1500" },
-        { name: "Tilapia", price: "₦1500" },
       ],
     },
   },
@@ -53,7 +64,6 @@ const data = [
         { name: "Egusi Soup", price: "₦1500" },
         { name: "Oha Soup", price: "₦1500" },
         { name: "Ogbono Soup", price: "₦1500" },
-        { name: "White Soup", price: "₦1500" },
       ],
       proteins: [
         { name: "Goat Meat", price: "₦1500" },
@@ -220,6 +230,7 @@ interface ConfirmationDialogState {
 const MenuList = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
+  const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
 
   const [toggleStates, setToggleStates] = useState<{ [key: number]: boolean }>(() => {
     const initialState: { [key: number]: boolean } = {};
@@ -272,117 +283,147 @@ const MenuList = () => {
     setSelectedModifiers(null);
   };
 
+  const handleViewMore = (branch: Branch) => {
+    setViewingBranch(branch);
+  };
+
+  const handleBackToBranches = () => {
+    setViewingBranch(null);
+  };
+
   return (
     <DashboardLayout>
       <TopMenuNav pathName="Menu" />
       <div className="">
-        <div className="my-[40px]">
-          <div className="flex items-center justify-between">
-            <div className="relative">
-              <input
-                type="text"
-                className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                placeholder="Search"
-              />
-              <img src={SearchIcon} alt="" className="absolute left-6 top-3 pointer-events-none" />
-            </div>
-            {/* <div className=" flex items-center gap-[32px]">
-              <div className="">
-                <p className=" font-[500] text-[16px] text-[#121212]">Filter by:</p>
-              </div>
-              <div className=" flex items-center gap-[8px]">
-                <div className="border border-purple500 bg-purple500  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
-                  <button className="text-[12px] ">Add</button>
-                </div>
-                <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[121212]">
-                  <button className="text-[12px] ">Menu Name</button>
-                </div>
-                <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                  <button className="text-[12px] ">Quantity</button>
-                </div>
-                <div className="border border-[#B6B6B6]  rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                  <button className="text-[12px] ">Price</button>
-                </div>
-              </div>
-            </div> */}
-          </div>
-
-          <div className="overflow-x-auto mt-6">
-            <table className="min-w-full border-collapse">
-              <thead>
-                <tr className="bg-[#606060] text-white text-center text-base font-normal">
-                  <th className="py-2 px-4 text-base font-normal">Menu Name</th>
-                  <th className="py-2 px-4 text-base font-normal">Quantity</th>
-                  <th className="py-2 px-4 text-base font-normal">Price</th>
-                  <th className="py-2 px-4 text-base font-normal">Modifiers</th>
-                  <th className="py-2 px-4 text-base font-normal">Actions</th>
-                </tr>
-              </thead>
-
-              <hr className="mb-2 text-[#E7E7E7]" />
-
-              <tbody>
-                {data.map((item, index) => (
-                  <tr
-                    key={item.id}
-                    className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
-                  >
-                    <td className="text-base font-medium py-2 px-4">{item.menuName}</td>
-                    <td className="text-base font-medium text-center py-2 px-4 break-words">
-                      <div className="flex justify-start gap-0 items-center pl-[60px]">
-                        <span className="w-[60px] ml-0">{item.qty}</span>
-                        {item.status !== "Restocked" && (
-                          <span
-                            className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
-                              item.status
-                            )}`}
-                          >
-                            {item.status}
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="text-base font-medium text-center py-2 px-4 break-words">
-                      {item.price}
-                    </td>
-                    <td className="text-base font-medium text-center py-2 px-4 break-words">
-                      <button
-                        className="text-blue-500"
-                        onClick={() => handleOpenModal(item.modifiers)}
-                      >
-                        Click to see modifiers
-                      </button>
-                    </td>
-
-                    <td className="flex items-center text-center">
-                      <Tooltip
-                        title="Freezing this menu list will remove it from all your product channels"
-                        arrow
-                      >
-                        <IconButton onClick={() => handleToggleChange(item.id)} color="default">
-                          {toggleStates[item.id] ? (
-                            <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
-                          ) : (
-                            <ToggleOffIcon style={{ fontSize: "40px" }} />
-                          )}
-                        </IconButton>
-                      </Tooltip>
-                      <span
-                        className={clsx(
-                          toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
-                          "text-base font-medium"
-                        )}
-                      >
-                        {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
-                      </span>
-                      <DeleteForeverOutlined className="text-red-700 ml-3" />
-                    </td>
+        {viewingBranch === null ? (
+          <div className="my-[40px]">
+            <div className="overflow-x-auto mt-6">
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr className="bg-[#606060] text-white text-center text-base font-normal">
+                    <th className="py-2 px-4 text-base font-normal text-start">Branch Name</th>
+                    <th className="py-2 px-4 text-base font-normal text-start">Manager</th>
+                    <th className="py-2 px-4 text-base font-normal text-center">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {branches.map((branch) => (
+                    <tr key={branch.id} className="bg-[#ffffff]">
+                      <td className="text-base font-medium py-2 px-4 text-start">{branch.name}</td>
+                      <td className="text-base font-medium py-2 px-4 text-start">
+                        {branch.manager}
+                      </td>
+                      <td className="text-base font-medium py-2 px-4 text-center">
+                        <button className="text-blue-500" onClick={() => handleViewMore(branch)}>
+                          View more
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="my-[40px]">
+            <button
+              onClick={handleBackToBranches}
+              className="border border-purple500 text-purple500 mb-4 rounded-[6px] px-2"
+            >
+              Back
+            </button>
+            <div className="flex items-center justify-between">
+              <div className="relative">
+                <input
+                  type="text"
+                  className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
+                  placeholder="Search"
+                />
+                <img
+                  src={SearchIcon}
+                  alt=""
+                  className="absolute left-6 top-3 pointer-events-none"
+                />
+              </div>
+            </div>
+
+            <div className="overflow-x-auto mt-6">
+              <table className="min-w-full border-collapse">
+                <thead>
+                  <tr className="bg-[#606060] text-white text-center text-base font-normal">
+                    <th className="py-2 px-4 text-base font-normal">Menu Name</th>
+                    <th className="py-2 px-4 text-base font-normal">Quantity</th>
+                    <th className="py-2 px-4 text-base font-normal">Price</th>
+                    <th className="py-2 px-4 text-base font-normal">Modifiers</th>
+                    <th className="py-2 px-4 text-base font-normal">Actions</th>
+                  </tr>
+                </thead>
+
+                <hr className="mb-2 text-[#E7E7E7]" />
+
+                <tbody>
+                  {data.map((item, index) => (
+                    <tr
+                      key={item.id}
+                      className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
+                    >
+                      <td className="text-base font-medium py-2 px-4">{item.menuName}</td>
+                      <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        <div className="flex justify-start gap-0 items-center pl-[60px]">
+                          <span className="w-[60px] ml-0">{item.qty}</span>
+                          {item.status !== "Restocked" && (
+                            <span
+                              className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
+                                item.status
+                              )}`}
+                            >
+                              {item.status}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        {item.price}
+                      </td>
+                      <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        <button
+                          className="text-blue-500"
+                          onClick={() => handleOpenModal(item.modifiers)}
+                        >
+                          Click to see modifiers
+                        </button>
+                      </td>
+
+                      <td className="flex items-center text-center">
+                        <Tooltip
+                          title="Freezing this menu list will remove it from all your product channels"
+                          arrow
+                        >
+                          <IconButton onClick={() => handleToggleChange(item.id)} color="default">
+                            {toggleStates[item.id] ? (
+                              <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                            ) : (
+                              <ToggleOffIcon style={{ fontSize: "40px" }} />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                        <span
+                          className={clsx(
+                            toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
+                            "text-base font-medium"
+                          )}
+                        >
+                          {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
+                        </span>
+                        <DeleteForeverOutlined className="text-red-700 ml-3" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
 
         {openModal && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
