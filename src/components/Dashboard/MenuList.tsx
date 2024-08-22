@@ -179,7 +179,8 @@ const MenuList = () => {
               <table className="min-w-full border-collapse">
                 <thead>
                   <tr className="bg-[#606060] text-white text-center text-base font-normal">
-                    <th className="py-2 px-4 text-base font-normal">Menu Name</th>
+                    <th className="py-2 px-4 text-base font-normal">Menu Group</th>
+                    <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
                     <th className="py-2 px-4 text-base font-normal">Quantity</th>
                     <th className="py-2 px-4 text-base font-normal">Price</th>
                     <th className="py-2 px-4 text-base font-normal">Modifiers</th>
@@ -198,6 +199,7 @@ const MenuList = () => {
                         key={item.id}
                         className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
                       >
+                        <td className="text-base font-medium py-2 px-4">{item.menu_group_name}</td>
                         <td className="text-base font-medium py-2 px-4">{item.menu_item_name}</td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <div className="flex justify-start gap-0 items-center pl-[60px]">
