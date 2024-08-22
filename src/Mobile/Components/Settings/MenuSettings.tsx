@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckInput from "../../inputFields/CheckInput";
 import RadioInput from "../../inputFields/RadioInput";
 import info from "../../assets/info.svg";
@@ -14,6 +14,27 @@ import { Link } from "react-router-dom";
 import CustomInput from "../../inputFields/CustomInput";
 import MenuModal from "../MenuModal";
 import Back from "../../assets/Cancel.svg";
+import { RootState } from "../../../store/store";
+import { useSelector } from "react-redux";
+import { SERVER_DOMAIN } from "../../../Api/Api";
+import axios from "axios";
+
+interface MenuItem {
+  title: string;
+  link: string;
+}
+
+interface MenuCategory {
+  category: string;
+  items: MenuItem[];
+  name: string;
+  _id: string;
+  menu_category_name: string;
+  menu_group_name: string;
+  menu_item_name: string;
+  modifier_name: string;
+  modifier_price: string;
+}
 
 const MenuSettings = () => {
   const menu = [
@@ -44,7 +65,80 @@ const MenuSettings = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [deleteSuccessfullModal2, setDeleteSuccessfullModal2] = useState(false);
 
+  const [expandedCategories, setExpandedCategories] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const [expandedGroups, setExpandedGroups] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const [expandedItem, setExpandedItem] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [menuData, setMenuData] = useState<MenuCategory[]>([]);
+  const [menuGroup, setMenuGroup] = useState<MenuCategory[]>([]);
+  const [items, setItems] = useState<MenuCategory[]>([]);
+  const [modifiers, setModifiers] = useState<MenuCategory[]>([]);
+  // const [openCategory, setOpenCategory] = useState<string>("");
+  // const [openGroup, setOpenGroup] = useState<string>("");
+  const [openItem, setOpenItem] = useState<string>("");
+  const [menuName, setMenuName] = useState<string>("");
+  const [menuType, setMenuType] = useState<string>("");
+  const [error, setError] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const selectedOutletID = useSelector(
+    (state: any) => state.outlet.selectedOutletID
+  );
+
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
+
+  console.log(error);
+
+  const toggleCategory = (categoryId: string | number) => {
+    setExpandedCategories((prevState) => {
+      const newState = { ...prevState };
+      Object.keys(newState).forEach((key) => {
+        newState[key] = false;
+      });
+      newState[categoryId] = !prevState[categoryId];
+
+      // const categoryName = Object.keys(newState).find(
+      //   (key) => newState[key] === true
+      // );
+      // if (categoryName) {
+      //   setOpenCategory(categoryName);
+      // }
+
+      return newState;
+    });
+  };
+  const toggleGroup = (groupName: string) => {
+    setExpandedGroups((prevState) => {
+      const newState = { ...prevState };
+      newState[groupName] = !prevState[groupName];
+      return newState;
+    });
+
+    // setOpenGroup(groupName);
+    getMenuItem(groupName);
+  };
+
+  const toggleItem = (itemName: string) => {
+    setExpandedItem((prevState) => {
+      const updatedState: { [key: string]: boolean } = {};
+
+      updatedState[itemName] = !prevState[itemName];
+
+      return updatedState;
+    });
+
+    setOpenItem(itemName);
+  };
 
   const handleInfoModal = () => {
     setInfoModal(!infoModal);
@@ -56,10 +150,39 @@ const MenuSettings = () => {
   //   setAddModifierModal(true);
   // };
 
-  const handleWarningModal2 = () => {
+  const handleWarningModal2 = (menuType: string, menuName: string) => {
+    setMenuName(menuName);
+    setMenuType(menuType);
+    console.log(menuName, menuType);
+
     setRemoveMenuModal(false);
     setWarningModal2(true);
   };
+
+  const handleDeleteSuccessModal2 = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.delete(
+        `${SERVER_DOMAIN}/menu/removeMenu/?menu_type=${menuType}&name=${menuName}&branch_id=${selectedOutletID}`,
+        headers
+      );
+      console.log("Employee removed successfully:", response.data);
+      setLoading(false);
+      setWarningModal2(false);
+      setDeleteSuccessfullModal2(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error removing employee:", error);
+      setLoading(false);
+    }
+  };
+
   const handleEditModal = () => {
     setEditModal(true);
   };
@@ -87,15 +210,138 @@ const MenuSettings = () => {
     setSuccessModal(true);
   };
 
-  const handleDeleteSuccessModal2 = () => {
-    setWarningModal2(false);
-    setDeleteSuccessfullModal2(true);
-  };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     console.log("Selected file:", file);
   };
+
+  const getMenuCategory = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuCategory/?branch_id=${selectedOutletID}`,
+        headers
+      );
+
+      setMenuData(response.data.data);
+    } catch (error: any) {
+      console.error("Error adding Menu Category:", error);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const getMenuGroup = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuGroup/?branch_id=${selectedOutletID}`,
+        headers
+      );
+      setMenuGroup(response.data.data);
+
+      response.data.data.forEach(async (menuItem: { name: string }) => {
+        const menuGroupName = menuItem.name;
+        await getMenuItem(menuGroupName);
+      });
+    } catch (error: any) {
+      console.error("Error retrieving Menu Group:", error);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const getMenuItem = async (openGroup: string) => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/filterMenuItems/?menu_group_name=${openGroup}&branch_id=${selectedOutletID}`,
+        headers
+      );
+
+      setItems(response.data.data);
+    } catch (error: any) {
+      console.error("Error retrieving Menu Items:", error);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const getModifier = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${openItem}&branch_id=${selectedOutletID}`,
+        headers
+      );
+
+      setModifiers(response.data.data);
+    } catch (error: any) {
+      console.error("Error retrieving Modifiers:", error);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    getMenuCategory();
+    getMenuGroup();
+    // getMenuItem(menuGroupName);
+  }, []);
+
+  useEffect(() => {
+    if (openItem !== null) {
+      getModifier();
+    }
+  }, [expandedItem, openItem]);
+
   return (
     <div>
       <div className="bg-[#F3EBE8] p-[24px] rounded-[5px] mt-[24px]">
@@ -207,22 +453,134 @@ const MenuSettings = () => {
             <img src={Back} alt="" />
           </div>
           <p className="text-[20px] font-[400] text-grey500">Remove menu</p>
-          <div className=" mt-[24px] grid gap-[16px]">
-            {menu.map((user) => (
+          <div className="mt-[24px] grid gap-[16px]">
+            <h3 className="text-grey500 text-[16px] font-[600]">
+              Menu Category
+            </h3>
+
+            {menuData.map((user) => (
               <div
-                className=" py-[14px] px-[16px] border rounded-[5px] flex items-center justify-between"
-                key={user.id}
+                className="py-[14px] px-[16px] border rounded-[5px]"
+                key={user._id}
               >
-                <p className=" text-grey500 text-[14px] font-[400]">
-                  {user.name}
-                </p>
-                <p
-                  className=" text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
-                  onClick={handleWarningModal2}
-                >
-                  <img src={Trash} alt="" />
-                  Remove
-                </p>
+                <div className="flex items-center justify-between">
+                  <p
+                    className="text-grey500 text-[14px] font-[400] cursor-pointer"
+                    onClick={() => toggleCategory(user._id)}
+                  >
+                    {user.name}
+                  </p>
+                  <p
+                    className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                    onClick={() => handleWarningModal2("category", user.name)}
+                  >
+                    <img src={Trash} alt="Remove" />
+                  </p>
+                </div>
+
+                {menuGroup
+                  .filter((group) => group.menu_category_name === user.name)
+                  .map((group) => (
+                    <div key={group._id}>
+                      {expandedCategories[user._id] && (
+                        <div className="py-[14px]">
+                          <h4 className="text-grey500 text-[14px] font-[600]">
+                            Menu Group
+                          </h4>
+
+                          <div className="flex items-center justify-between">
+                            <p
+                              className="text-grey500 text-[14px] font-[400] cursor-pointer"
+                              onClick={() => toggleGroup(group.name)}
+                            >
+                              {group.name}
+                            </p>
+                            <p
+                              className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                              onClick={() =>
+                                handleWarningModal2("group", group.name)
+                              }
+                            >
+                              <img src={Trash} alt="Remove" />
+                            </p>
+                          </div>
+
+                          {expandedGroups[group.name] && (
+                            <div className=" ">
+                              <h5 className="text-grey500 text-[14px] font-[600] ">
+                                Menu Item(s)
+                              </h5>
+
+                              {items
+                                .filter(
+                                  (item) => group.name === item.menu_group_name
+                                )
+                                .map((item, index) => (
+                                  <div key={index}>
+                                    <div className="flex items-center justify-between cursor-pointer">
+                                      <p
+                                        className="text-grey500 py-[8px] text-[14px] font-[400] cursor-pointer"
+                                        onClick={() =>
+                                          toggleItem(item.menu_item_name)
+                                        }
+                                      >
+                                        {item.menu_item_name}
+                                      </p>
+                                      <p
+                                        className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                                        onClick={() =>
+                                          handleWarningModal2(
+                                            "item",
+                                            item.menu_item_name
+                                          )
+                                        }
+                                      >
+                                        <img src={Trash} alt="Remove" />
+                                      </p>
+                                    </div>
+
+                                    {expandedItem[item.menu_item_name] && (
+                                      <div className="grid gap-[10px] border-b">
+                                        <p className="text-grey500 text-[14px] font-[600] ">
+                                          Modifier(s)
+                                        </p>
+                                        {modifiers
+                                          .filter(
+                                            (modifier) =>
+                                              modifier.menu_item_name ===
+                                              item.menu_item_name
+                                          )
+                                          .map((modifier, index) => (
+                                            <div
+                                              key={index}
+                                              className="flex items-center justify-between  py-[8px]"
+                                            >
+                                              <p className=" text-grey500 text-[14px] font-[400]">
+                                                {modifier.modifier_name}
+                                              </p>
+                                              <p
+                                                className="text-[#ED5048] font-[400] text-[14px] flex items-center gap-[4px] cursor-pointer"
+                                                onClick={() =>
+                                                  handleWarningModal2(
+                                                    "modifier",
+                                                    modifier.modifier_name
+                                                  )
+                                                }
+                                              >
+                                                <img src={Trash} alt="Remove" />
+                                              </p>
+                                            </div>
+                                          ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
               </div>
             ))}
           </div>
@@ -415,10 +773,10 @@ const MenuSettings = () => {
         <div className="flex items-center justify-center absolute bg-white w-full bottom-0">
           <div className=" px-[32px] py-[32px] h-[292px] flex flex-col items-center justify-center">
             <img
-              className=" cursor-pointer"
+              className="  cursor-pointer"
               src={WarningIcon}
               alt=""
-              onClick={() => setSuccessModal(false)}
+              onClick={() => setWarningModal2(false)}
             />
             <p className="text-[16px] font-[400] text-grey500 text-center mt-[24px]">
               Are you sure you want to remove this menu?
@@ -426,7 +784,8 @@ const MenuSettings = () => {
 
             <button
               type="submit"
-              onClick={handleDeleteSuccessModal2}
+              onClick={() => handleDeleteSuccessModal2()}
+              disabled={loading}
               className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
             >
               Proceed

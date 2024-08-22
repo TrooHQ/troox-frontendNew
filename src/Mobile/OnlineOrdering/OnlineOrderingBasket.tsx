@@ -3,8 +3,6 @@ import { RootState } from "../../store/store";
 import TopMenuNav from "./OnlineOrderingTopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 
-import Minus from "../assets/minueGrey.svg";
-import Add from "../assets/addGrey.svg";
 import Delivery from "../assets/delivery.svg";
 import Pickup from "../assets/pickup.svg";
 import {
@@ -18,6 +16,7 @@ import { TiDelete } from "react-icons/ti";
 import MenuModal from "../Components/MenuModal";
 import Back from "../assets/Cancel.svg";
 import { useState } from "react";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 export const OnlineOrderingBasket = () => {
   const navigate = useNavigate();
@@ -104,25 +103,27 @@ export const OnlineOrderingBasket = () => {
                         </p>
                       </Link>
                       <div className="flex items-center mr-[10px]">
-                        <img
-                          className=" w-[20px]"
-                          src={Minus}
-                          alt=""
+                        <div
+                          className="  cursor-pointer text-white bg-[#414141]   rounded-full"
                           onClick={() =>
                             handleDecreaseQuantity(item.id, item.quantity)
                           }
-                        />
+                        >
+                          <HiMinusSm className=" text-[20px]" />
+                        </div>
+
                         <p className="text-[18px] text-[#000000] font-[500] mx-[10px]">
                           x{item?.quantity}
                         </p>
-                        <img
-                          className=" w-[20px]"
-                          src={Add}
-                          alt=""
+
+                        <div
+                          className="  cursor-pointer text-white bg-[#414141]   rounded-full"
                           onClick={() =>
                             handleIncreaseQuantity(item.id, item.quantity)
                           }
-                        />
+                        >
+                          <HiPlusSm className=" text-[20px]" />
+                        </div>
                       </div>
                       {item.menuItem && (
                         <p className="text-[#121212]">
