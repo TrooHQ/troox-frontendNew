@@ -392,6 +392,9 @@ const OnlineOrderingMenuDetails = () => {
                 />
               </div>
               <div className=" mt-[10px] flex items-center justify-end">
+                {/* <div className="  cursor-pointer text-white bg-[#414141]   rounded-full">
+                  <HiPlusSm className=" text-[27px]" />
+                </div> */}
                 <button className=" text-[#606060]  font-[500] text-[40px]">
                   <FaCircleCheck />
                 </button>

@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Minus from "../assets/minueGrey.svg";
-import Add from "../assets/addGrey.svg";
 import TopMenuNav from "./OnlineOrderingTopMenuNav";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -16,7 +14,7 @@ import {
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Counter from "../../Mobile/assets/counterGrey.svg";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 import { MdKeyboardArrowRight } from "react-icons/md";
 
@@ -39,6 +37,16 @@ interface Details extends MenuItem {
 export const OnlineOrderingCategoryDetails = () => {
   const [menuItems, setMenuItems] = useState<Details[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState("All");
+
+  const handleGroupClick = (groupName: string) => {
+    setSelectedGroup(groupName);
+  };
+
+  const filteredMenuItems =
+    selectedGroup === "All"
+      ? menuItems
+      : menuItems.filter((menu) => menu.menu_group_name === selectedGroup);
 
   const ids = useSelector((state: RootState) => state.basket.items);
   const totalCount = useSelector((state: RootState) => state.basket);
@@ -153,6 +161,38 @@ export const OnlineOrderingCategoryDetails = () => {
         <TopMenuNav />
         <div className=" mb-[100px]">
           <div className=" bg-[#E7E7E7] pb-[20px]">
+            <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
+              <p
+                className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
+                  selectedGroup === "All"
+                    ? "font-[600] bg-[#929292] text-[#FFFFFF] border border-[#929292]"
+                    : " text-[#606060] font-[400] border border-[#B6B6B6]"
+                }`}
+                onClick={() => handleGroupClick("All")}
+              >
+                All
+              </p>
+              <div className=" flex gap-[8px] items-center ">
+                {Array.from(
+                  new Set(menuItems.map((menu) => menu.menu_group_name))
+                ).map((groupName, index) => (
+                  <div key={index} className=" ">
+                    {" "}
+                    <p
+                      className={`cursor-pointer px-[12px] py-[8px] ${
+                        selectedGroup === groupName
+                          ? "font-bold bg-[#929292] border border-[#929292] text-[#FFFFFF]"
+                          : " text-[#606060] font-[400] border border-[#B6B6B6]"
+                      }`}
+                      onClick={() => handleGroupClick(groupName)}
+                    >
+                      {groupName}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className=" flex items-center justify-between py-[14px] px-[24px]">
               <p className=" text-[16px] font-[500]">Most Popular</p>
               <div className=" text-[16px]">
@@ -174,15 +214,14 @@ export const OnlineOrderingCategoryDetails = () => {
                             alt=""
                             className="w-full object-cover h-full"
                           />
-                          <img
-                            src={Counter}
-                            alt=""
-                            className="absolute -bottom-4 right-0"
-                          />
+
+                          <div className="absolute -bottom-4 text-white bg-[#414141] right-0  rounded-full">
+                            <HiPlusSm className=" text-[37px]" />
+                          </div>
                         </div>
                         <p className="text-[14px] text-[#121212] font-[500] px-[16px] mt-[8px] text-center">
-                          {menu?.menu_item_name?.length > 18
-                            ? `${menu?.menu_item_name.substring(0, 15)}...`
+                          {menu?.menu_item_name?.length > 10
+                            ? `${menu?.menu_item_name.substring(0, 10)}...`
                             : menu?.menu_item_name}
                         </p>
                       </div>
@@ -193,7 +232,7 @@ export const OnlineOrderingCategoryDetails = () => {
             </div>
           </div>
 
-          {menuItems.map((menu) => (
+          {filteredMenuItems.map((menu) => (
             <div key={menu._id} className={` mx-[24px] `}>
               <>
                 <div className="">
@@ -233,33 +272,42 @@ export const OnlineOrderingCategoryDetails = () => {
                         {ids.find((item: any) => item.id === menu._id) ? (
                           <div
                             key={menu._id}
-                            className="flex items-center justify-between"
+                            className="flex items-center justify-end gap-[12px]"
                           >
-                            <img
-                              src={Minus}
-                              alt="decrement"
+                            <div
+                              className="  cursor-pointer text-white bg-[#414141]   rounded-full"
                               onClick={() => decrement(menu)}
-                              className="cursor-pointer"
-                            />
+                            >
+                              <HiMinusSm className=" text-[27px]" />
+                            </div>
+
                             <p className="text-[16px] font-[500]">
                               {ids.find((item) => item.id === menu._id)
                                 ?.quantity || 1}
                             </p>
-                            <img
-                              src={Add}
-                              alt="increment"
+                            <div
+                              className="  cursor-pointer text-white bg-[#414141]   rounded-full"
                               onClick={() => increment(menu)}
-                              className="cursor-pointer"
-                            />
+                            >
+                              <HiPlusSm className=" text-[27px]" />
+                            </div>
                           </div>
                         ) : (
                           <div className="">
                             <Link
                               to={`/demo/menu-details/${menu._id}/online_ordering`}
                             >
-                              <div className="flex items-center justify-end">
-                                <img src={Add} alt="add" />
+                              <div className="flex items-center justify-end ">
+                                <div
+                                  className=" inline-flex cursor-pointer text-white bg-[#414141]   rounded-full"
+                                  onClick={() => increment(menu)}
+                                >
+                                  <HiPlusSm className=" text-[27px]" />
+                                </div>
                               </div>
+                              {/* <div className="flex items-center justify-end">
+                                <img src={Add} alt="add" />
+                              </div> */}
                             </Link>
                           </div>
                         )}

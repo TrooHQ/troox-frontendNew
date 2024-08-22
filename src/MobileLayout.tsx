@@ -51,6 +51,7 @@ import { OnlineOrderingTip } from "./Mobile/OnlineOrdering/OnlineOrderingTip";
 import { OnlineOrderingSelectPayment } from "./Mobile/OnlineOrdering/OnlineOrderingSelectPayment";
 import { OnlineOrderingReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingReceipt";
 import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingGetReceipt";
+import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 
 const MobileLayout = () => {
   return (
@@ -205,6 +206,11 @@ const MobileLayout = () => {
           <Route
             path="/demo/manage-qr/troo-portal"
             element={<ManageQrCode />}
+          />
+
+          <Route
+            path="/demo/choose-color/troo-portal"
+            element={<ChooseColor />}
           />
           <Route path="/demo/table/troo-portal" element={<TableSetupForm />} />
           <Route path="/demo/room/troo-portal" element={<RoomSetupForm />} />
