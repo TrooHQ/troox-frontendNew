@@ -152,26 +152,28 @@ const MenuList = () => {
           </div>
         ) : (
           <div className="my-[40px]">
-            <button
-              onClick={handleBackToBranches}
-              className="border border-purple500 text-purple500 mb-4 rounded-[6px] px-2 flex items-center"
-            >
-              {" "}
-              <ArrowBack />
-              Back
-            </button>
             <div className="flex items-center justify-between">
-              <div className="relative">
-                <input
-                  type="text"
-                  className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                  placeholder="Search"
-                />
-                <img
-                  src={SearchIcon}
-                  alt=""
-                  className="absolute left-6 top-3 pointer-events-none"
-                />
+              <button
+                onClick={handleBackToBranches}
+                className="border border-purple500 text-purple500 rounded-[6px] px-2 py-2 flex items-center"
+              >
+                {" "}
+                <ArrowBack />
+                Back
+              </button>
+              <div className="flex items-center justify-between">
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
+                    placeholder="Search"
+                  />
+                  <img
+                    src={SearchIcon}
+                    alt=""
+                    className="absolute left-6 top-3 pointer-events-none"
+                  />
+                </div>
               </div>
             </div>
 
