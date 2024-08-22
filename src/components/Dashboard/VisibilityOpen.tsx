@@ -22,7 +22,7 @@ const VisibilityOpen = ({ setIsVisibilityOpen }: any) => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <h2 className="text-[#121212] text-2xl font-medium">Menu Visibility</h2>
       <p className="text-[#0d0d0d] text-base font-normal">Select where this menu is visible</p>
 
