@@ -183,6 +183,30 @@ const MenuSettings = () => {
     }
   };
 
+  const handleDeleteModifier = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const response = await axios.delete(
+        `${SERVER_DOMAIN}/menu/deleteMenuModifier/?branch_id=${selectedOutletID}&modifier_id=${menuName}`,
+        headers
+      );
+      console.log("Employee removed successfully:", response.data);
+      setLoading(false);
+      setWarningModal2(false);
+      setDeleteSuccessfullModal2(true);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error removing employee:", error);
+      setLoading(false);
+    }
+  };
+
   const handleEditModal = () => {
     setEditModal(true);
   };
@@ -563,7 +587,7 @@ const MenuSettings = () => {
                                                 onClick={() =>
                                                   handleWarningModal2(
                                                     "modifier",
-                                                    modifier.modifier_name
+                                                    modifier._id
                                                   )
                                                 }
                                               >
@@ -784,7 +808,11 @@ const MenuSettings = () => {
 
             <button
               type="submit"
-              onClick={() => handleDeleteSuccessModal2()}
+              onClick={() =>
+                menuType === "modifier"
+                  ? handleDeleteModifier()
+                  : handleDeleteSuccessModal2()
+              }
               disabled={loading}
               className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
             >
