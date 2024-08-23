@@ -32,6 +32,7 @@ import { Menu, MenuItem, IconButton } from "@mui/material";
 import { CancelOutlined, EditOutlined, VisibilityOutlined } from "@mui/icons-material";
 import VisibilityOpen from "./VisibilityOpen";
 import EditOpen from "./EditOpen";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -330,9 +331,56 @@ const MenuBuilder = () => {
     setIsEditOpen(true);
   };
 
-  const handleRemove = () => {
-    console.log("Remove group:", selectedGroup);
+  const [confirmationDialog, setConfirmationDialog] = useState({
+    open: false,
+    item: {},
+  });
+
+  const handleDeleteClick = (item: any) => {
+    console.log("Remove group:", item);
+    setConfirmationDialog({ open: true, item: item });
     handleClose();
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmationDialog.item) {
+      await handleDeleteMenuName(confirmationDialog.item);
+      setConfirmationDialog({ open: false, item: "" });
+    }
+  };
+
+  const handleDeleteMenuName = async (item: any) => {
+    try {
+      const authToken = localStorage.getItem("token");
+
+      const response = await axios.delete(`${SERVER_DOMAIN}/menu/removeMenu/`, {
+        params: {
+          menu_type: "group",
+          name: item.name,
+          branch_id: item.branch,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      console.log(response);
+      if (response.status === 200) {
+        // Optionally refresh the list of modifiers after deletion
+        toast.success("Item deleted successfully");
+        dispatch(
+          fetchMenuGroups({
+            branch_id: selectedBranch.id,
+            menu_category_name: activeMainMenu,
+          })
+        );
+        // dispatch(fetchMenuItems({ branch_id: viewingBranch?._id as any }));
+      } else {
+        alert("Failed to delete modifier");
+      }
+    } catch (error) {
+      console.error("Error deleting modifier:", error);
+      alert("An error occurred while deleting the modifier");
+    }
   };
 
   return (
@@ -440,7 +488,7 @@ const MenuBuilder = () => {
                                     <span style={{ fontWeight: "300" }}>Edit</span>
                                   </MenuItem>
                                   <MenuItem
-                                    onClick={handleRemove}
+                                    onClick={() => handleDeleteClick(group)}
                                     sx={{ display: "flex", alignItems: "center", gap: "8px" }}
                                   >
                                     <CancelOutlined sx={{ fontSize: "20px", fontWeight: "300" }} />
@@ -556,15 +604,21 @@ const MenuBuilder = () => {
                 <Modifiers
                   activeMainMenu={activeMainMenu}
                   activeSubMenu={activeSubMenu}
-                  handleAddModifier={handleAddModifier}
-                  Add={Add}
                   selectedBranch={selectedBranch}
-                  menuItems={menuItems}
                   selectedMenuItem={selectedMenuItem}
                 />
               </div>
             </div>
           </div>
+
+          {/* Modals */}
+          <ConfirmationDialog
+            open={confirmationDialog.open}
+            onClose={() => setConfirmationDialog({ open: false, item: {} })}
+            onConfirm={handleConfirmDelete}
+            message={`Are you sure you want to delete this item?`}
+          />
+
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <AddMenuCategory setIsModalOpen={setIsModalOpen} />
           </Modal>
@@ -768,38 +822,6 @@ const MenuBuilder = () => {
                         onChange={(newValue) => handlePrice(newValue)}
                       />
                     )}
-
-                    {/* <div className="">
-                      <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
-
-                      <div className="flex items-center gap-[16px]">
-                        <label
-                          htmlFor="fileInput"
-                          className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
-                        >
-                          <input
-                            type="file"
-                            id="fileInput"
-                            className="hidden"
-                            onChange={handleFileChange}
-                            accept="image/*"
-                          />
-                          <img src={imageIcon} alt="Upload Icon" />
-                        </label>
-                        <div className="">
-                          <label
-                            htmlFor="fileInput"
-                            className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
-                          >
-                            Click to upload{" "}
-                            <span className=" font-[400] text-grey300">or drag and drop</span>
-                          </label>
-                          <p className=" text-[14px] font-[400] text-grey300">
-                            Max. file size: 2MB
-                          </p>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
 

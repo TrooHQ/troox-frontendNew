@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
-import Modal from "../../Modal"; // Import the Modal component, adjust path accordingly
+import Modal from "../../Modal";
 import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../store/store";
-import { fetchBranches, userSelectedBranch } from "../../../slices/branchSlice";
+import { AppDispatch } from "../../../store/store";
+import { fetchBranches } from "../../../slices/branchSlice";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 type ModifierRules = {
@@ -18,21 +18,12 @@ type ModifierRules = {
   singleChoice: boolean;
 };
 
-const Modifiers = ({
-  activeMainMenu,
-  activeSubMenu,
-  handleAddModifier,
-  Add,
-  selectedBranch,
-  menuItems,
-  selectedMenuItem,
-}: any) => {
+const Modifiers = ({ activeMainMenu, activeSubMenu, selectedBranch, selectedMenuItem }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [modifiers, setModifiers] = useState([
     { id: Date.now(), name: "", price: "", menuItem: "" },
   ]);
-  const [menuOptions, setMenuOptions] = useState<any[]>([]);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modifierRules, setModifierRules] = useState<ModifierRules>({
@@ -55,10 +46,6 @@ const Modifiers = ({
     label: branch.branch_name,
     id: branch._id,
   }));
-
-  useEffect(() => {
-    setMenuOptions(menuItems);
-  }, [menuItems]);
 
   useEffect(() => {
     // Clear the fetched modifiers when activeSubMenu changes
