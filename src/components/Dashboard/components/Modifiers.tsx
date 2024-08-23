@@ -1,4 +1,4 @@
-import { Close } from "@mui/icons-material";
+import { Close, DeleteForeverOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../../Api/Api";
@@ -8,6 +8,7 @@ import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
 import { fetchBranches, userSelectedBranch } from "../../../slices/branchSlice";
+import ConfirmationDialog from "../ConfirmationDialog";
 
 type ModifierRules = {
   requireSelection: boolean;
@@ -94,37 +95,6 @@ const Modifiers = ({
     }
   }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
 
-  // useEffect(() => {
-  //   const fetchModifiers = async () => {
-  //     setIsFetching(true);
-  //     const headers = {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     };
-  //     try {
-  //       const response = await axios.get(
-  //         `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
-  //         headers
-  //       );
-
-  //       setFetchedModifiers(response.data.data || []);
-  //       toast.success("Modifiers fetched successfully.");
-  //     } catch (error) {
-  //       toast.error("Failed to fetch modifiers.");
-  //     } finally {
-  //       setIsFetching(false);
-  //     }
-  //   };
-
-  //   console.log(activeMainMenu, selectedBranch);
-  //   if (selectedMenuItem) {
-  //     fetchModifiers();
-  //   }
-  //   // fetchModifiers();
-  // }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
-
   const addModifier = () => {
     setModifiers([...modifiers, { id: Date.now(), name: "", price: "", menuItem: "" }]);
   };
@@ -192,16 +162,52 @@ const Modifiers = ({
 
   // Handle apply changes
   const handleApplyChanges = (selectedOutletIds: string[]) => {
-    // Handle the application of changes based on the selected outlets
     console.log("Selected Outlet IDs:", selectedOutletIds);
+  };
 
-    // If you need to update state or perform any actions with the selected outlets, do it here
-    // For example, you could filter branches, make an API call, or update local state
-    // Assuming you want to save the selected outlets to state, you could do:
-    // setSelectedOutlets(selectedOutletIds);
+  const [confirmationDialog, setConfirmationDialog] = useState({
+    open: false,
+    id: "",
+  });
 
-    // Placeholder toast for demonstration
-    // toast.info("Changes applied to selected outlets");
+  const handleDeleteClick = (modifierId: string) => {
+    setConfirmationDialog({ open: true, id: modifierId });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmationDialog.id) {
+      await handleDeleteModifier(confirmationDialog.id);
+      setConfirmationDialog({ open: false, id: "" });
+    }
+  };
+
+  const handleDeleteModifier = async (modifierId: string) => {
+    try {
+      const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
+
+      const response = await axios.delete(`${SERVER_DOMAIN}/menu/deleteMenuModifier/`, {
+        params: {
+          branch_id: selectedBranch.id,
+          modifier_id: modifierId,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // Optionally refresh the list of modifiers after deletion
+        toast.success("Modifier deleted successfully");
+        setFetchedModifiers((prevModifiers) =>
+          prevModifiers.filter((modifier) => modifier._id !== modifierId)
+        );
+      } else {
+        alert("Failed to delete modifier");
+      }
+    } catch (error) {
+      console.error("Error deleting modifier:", error);
+      alert("An error occurred while deleting the modifier");
+    }
   };
 
   const rules: { label: string; key: keyof ModifierRules }[] = [
@@ -245,25 +251,31 @@ const Modifiers = ({
             {fetchedModifiers.map((modifier) => (
               <div
                 key={modifier._id}
-                className="border p-[16px] rounded-lg shadow-sm flex items-center gap-[16px]"
+                className="border p-[16px] rounded-lg shadow-sm flex items-center gap-[16px] justify-between"
               >
-                <div>
-                  {modifier.image ? (
-                    <img
-                      src={modifier.image}
-                      alt={modifier.modifier_name}
-                      className="w-[50px] h-[50px] object-cover rounded-full"
-                    />
-                  ) : (
-                    <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex items-center justify-center">
-                      <span className="text-gray-500">{modifier.modifier_name.charAt(0)}</span>
-                    </div>
-                  )}
+                <div className="flex items-center gap-4">
+                  <div>
+                    {modifier.image ? (
+                      <img
+                        src={modifier.image}
+                        alt={modifier.modifier_name}
+                        className="w-[50px] h-[50px] object-cover rounded-full"
+                      />
+                    ) : (
+                      <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex items-center justify-center">
+                        <span className="text-gray-500">{modifier.modifier_name.charAt(0)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[18px] font-[500] text-gray-800">{modifier.modifier_name}</p>
+                    <p className="text-[16px] text-gray-600">Price: ₦ {modifier.modifier_price}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-[18px] font-[500] text-gray-800">{modifier.modifier_name}</p>
-                  <p className="text-[16px] text-gray-600">Price: ₦ {modifier.modifier_price}</p>
-                </div>
+                <DeleteForeverOutlined
+                  onClick={() => handleDeleteClick(modifier._id)}
+                  className="text-red-700 ml-3 cursor-pointer"
+                />
               </div>
             ))}
           </>
@@ -354,7 +366,14 @@ const Modifiers = ({
         </div>
       </div>
 
-      {/* Confirmation Modal */}
+      {/* Confirmation Modals */}
+      <ConfirmationDialog
+        open={confirmationDialog.open}
+        onClose={() => setConfirmationDialog({ open: false, id: "" })}
+        onConfirm={handleConfirmDelete}
+        message={`Are you sure you want to delete this modifier?`}
+      />
+
       {confirmSaveModal && (
         <Modal isOpen={confirmSaveModal} onClose={() => setConfirmSaveModal(false)}>
           <div className="w-[443px] px-[32px] py-[32px]">

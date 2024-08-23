@@ -76,7 +76,6 @@ const MenuList = () => {
 
   const handleConfirmToggleChange = async () => {
     const { id } = confirmationDialog;
-    console.log(id, "didd");
     if (id !== null) {
       const currentState = toggleStates[id];
       const newState = !currentState;
