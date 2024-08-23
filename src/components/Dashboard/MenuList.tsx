@@ -64,7 +64,7 @@ const MenuList = () => {
     if (menuItems && menuItems.length > 0) {
       const initialState: { [key: string]: boolean } = {};
       menuItems.forEach((item: any) => {
-        initialState[item._id] = true; // Default all items to enabled
+        initialState[item._id] = !item.is_frozen; // If is_frozen is false, item is enabled
       });
       setToggleStates(initialState);
     }
@@ -74,13 +74,35 @@ const MenuList = () => {
     setConfirmationDialog({ open: true, id });
   };
 
-  const handleConfirmToggleChange = () => {
+  const handleConfirmToggleChange = async () => {
     const { id } = confirmationDialog;
+    console.log(id, "didd");
     if (id !== null) {
-      setToggleStates((prevStates) => ({
-        ...prevStates,
-        [id]: !prevStates[id],
-      }));
+      const currentState = toggleStates[id];
+      const newState = !currentState;
+
+      try {
+        await fetch("https://troox-backend-new.vercel.app/api/menu/freezeMenuWithId/", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            branch_id: viewingBranch?._id, // Replace with actual branch ID
+            menu_item_id: id,
+            freeze: newState ? "false" : "true",
+          }),
+        });
+
+        setToggleStates((prevStates) => ({
+          ...prevStates,
+          [id]: newState,
+        }));
+      } catch (error) {
+        console.error("Failed to update menu item status:", error);
+        // Optionally, handle error (e.g., show an error message)
+      }
     }
     setConfirmationDialog({ open: false, id: null });
   };
@@ -264,8 +286,11 @@ const MenuList = () => {
                             title="Freezing this menu list will remove it from all your product channels"
                             arrow
                           >
-                            <IconButton onClick={() => handleToggleChange(item.id)} color="default">
-                              {toggleStates[item.id] ? (
+                            <IconButton
+                              onClick={() => handleToggleChange(item._id)}
+                              color="default"
+                            >
+                              {toggleStates[item._id] ? (
                                 <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
                               ) : (
                                 <ToggleOffIcon style={{ fontSize: "40px" }} />
@@ -274,11 +299,11 @@ const MenuList = () => {
                           </Tooltip>
                           <span
                             className={clsx(
-                              toggleStates[item.id] ? "text-[#5855b3]" : "text-gray-700",
+                              toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
                               "text-base font-medium"
                             )}
                           >
-                            {toggleStates[item.id] ? "Unfreeze" : "Freeze"}
+                            {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
                           </span>
                           <DeleteForeverOutlined className="text-red-700 ml-3" />
                         </td>
