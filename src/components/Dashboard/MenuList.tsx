@@ -13,6 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
 import { fetchMenuItems } from "../../slices/menuSlice";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
 
 interface Modifier {
   name: string;
@@ -22,6 +25,7 @@ interface Modifier {
 interface Modifiers {
   addOns: Modifier[];
   proteins: Modifier[];
+  menu_item_name: string;
 }
 
 interface Branch {
@@ -29,6 +33,7 @@ interface Branch {
   _id: string;
   name: string;
   manager: string;
+  business: string;
 }
 
 interface ConfirmationDialogState {
@@ -47,7 +52,8 @@ const MenuList = () => {
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
 
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
-
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchedModifiers, setFetchedModifiers] = useState<any>([]);
   const [confirmationDialog, setConfirmationDialog] = useState<ConfirmationDialogState>({
     open: false,
     id: null,
@@ -92,10 +98,37 @@ const MenuList = () => {
     }
   };
 
+  const fetchModifiers = async ({ selectedMenuItem, selectedBranch }: any) => {
+    setIsFetching(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch}`,
+        headers
+      );
+
+      setFetchedModifiers(response.data.data || []);
+    } catch (error) {
+      toast.error("Failed to fetch modifiers.");
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   const handleOpenModal = (modifiers: any) => {
-    setSelectedModifiers(modifiers);
+    fetchModifiers({
+      selectedMenuItem: modifiers.menu_item_name,
+      selectedBranch: viewingBranch?._id,
+    });
     setOpenModal(true);
   };
+
+  console.log("fetchedModifiers", fetchedModifiers);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -221,10 +254,7 @@ const MenuList = () => {
                           &#8358;{item.menu_item_price}
                         </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
-                          <button
-                            className="text-blue-500"
-                            onClick={() => handleOpenModal(item.modifiers)}
-                          >
+                          <button className="text-blue-500" onClick={() => handleOpenModal(item)}>
                             Click to see modifiers
                           </button>
                         </td>
@@ -270,40 +300,34 @@ const MenuList = () => {
             <div className="fixed inset-0 bg-black opacity-50"></div>
             <div className="bg-white min-w-[30%] p-6 rounded-lg z-10 relative">
               <h2 className="text-lg font-semibold mb-4">
-                Semo
+                {selectedModifiers?.menu_item_name}
                 <span className="text-sm font-normal ml-5">MODIFIER</span>
               </h2>
               <hr className="h-[1px] bg-[#929292] my-3" />
 
-              {selectedModifiers && (
+              {isFetching ? (
+                "Fetching..."
+              ) : fetchedModifiers.length === 0 ? (
+                "No modifier available for this item"
+              ) : (
                 <>
                   <div>
                     <h3 className="font-semibold text-sm mb-2 text-[#414141]">Add-Ons:</h3>
                     <ul>
-                      {selectedModifiers.addOns.map((addOn: any, index: any) => (
+                      {fetchedModifiers.map((modifier: any, index: any) => (
                         <li key={index} className="flex justify-between">
-                          <span className="text-lg font-normal text-[#414141]">{addOn.name}</span>
-                          <span className="text-lg font-medium  text-[#414141]">{addOn.price}</span>
+                          <span className="text-lg font-normal text-[#414141]">
+                            {modifier.modifier_name}
+                          </span>
+                          <span className="text-lg font-medium  text-[#414141]">
+                            {modifier.modifier_price}
+                          </span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   <hr className="h-[1px] bg-[#929292] my-3" />
-
-                  <div className="mt-4">
-                    <h3 className="font-semibold text-sm mb-2 text-[#414141]">Proteins:</h3>
-                    <ul>
-                      {selectedModifiers.proteins.map((protein: any, index: any) => (
-                        <li key={index} className="flex justify-between">
-                          <span className="text-lg font-normal text-[#414141]">{protein.name}</span>
-                          <span className="text-lg font-medium text-[#414141]">
-                            {protein.price}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 </>
               )}
               <Close className="absolute top-3 right-3 cursor-pointer" onClick={handleCloseModal} />

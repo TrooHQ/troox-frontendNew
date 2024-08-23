@@ -64,36 +64,66 @@ const Modifiers = ({
     setFetchedModifiers([]);
   }, [activeSubMenu]);
 
-  useEffect(() => {
-    const fetchModifiers = async () => {
-      setIsFetching(true);
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      try {
-        const response = await axios.get(
-          `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
-          headers
-        );
-
-        setFetchedModifiers(response.data.data || []);
-        toast.success("Modifiers fetched successfully.");
-      } catch (error) {
-        toast.error("Failed to fetch modifiers.");
-      } finally {
-        setIsFetching(false);
-      }
+  const fetchModifiers = async () => {
+    setIsFetching(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
+        headers
+      );
 
+      setFetchedModifiers(response.data.data || []);
+      toast.success("Modifiers fetched successfully.");
+    } catch (error) {
+      toast.error("Failed to fetch modifiers.");
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  useEffect(() => {
     console.log(activeMainMenu, selectedBranch);
     if (selectedMenuItem) {
       fetchModifiers();
     }
-    // fetchModifiers();
   }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
+
+  // useEffect(() => {
+  //   const fetchModifiers = async () => {
+  //     setIsFetching(true);
+  //     const headers = {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     };
+  //     try {
+  //       const response = await axios.get(
+  //         `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
+  //         headers
+  //       );
+
+  //       setFetchedModifiers(response.data.data || []);
+  //       toast.success("Modifiers fetched successfully.");
+  //     } catch (error) {
+  //       toast.error("Failed to fetch modifiers.");
+  //     } finally {
+  //       setIsFetching(false);
+  //     }
+  //   };
+
+  //   console.log(activeMainMenu, selectedBranch);
+  //   if (selectedMenuItem) {
+  //     fetchModifiers();
+  //   }
+  //   // fetchModifiers();
+  // }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
 
   const addModifier = () => {
     setModifiers([...modifiers, { id: Date.now(), name: "", price: "", menuItem: "" }]);
@@ -116,7 +146,14 @@ const Modifiers = ({
   const handleConfirmSave = () => {
     // Proceed with saving modifiers after user confirms
     setLoading(true);
-    modifiers.forEach((modifier) => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    const promises = modifiers.map((modifier) => {
       const payload = {
         branch_id: selectedBranch.id,
         attach_to: "item",
@@ -125,24 +162,25 @@ const Modifiers = ({
         price: parseFloat(modifier.price),
       };
 
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-
-      axios
+      return axios
         .post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers)
-        .then((response) =>
-          toast.success(response.data.message || `Modifier ${modifier.name} added successfully.`)
-        )
-        .catch((error) => toast.error(error.response.data.message))
-        .finally(() => {
-          setConfirmSaveModal(false);
-          setLoading(false);
+        .then((response) => {
+          toast.success(response.data.message || `Modifier ${modifier.name} added successfully.`);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
         });
     });
+
+    Promise.all(promises)
+      .then(() => {
+        fetchModifiers();
+        setModifiers([]);
+      })
+      .finally(() => {
+        setConfirmSaveModal(false);
+        setLoading(false);
+      });
   };
 
   const handleRuleChange = (rule: keyof ModifierRules) => {
