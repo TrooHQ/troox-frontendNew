@@ -82,14 +82,14 @@ const MenuList = () => {
       const newState = !currentState;
 
       try {
-        await fetch("https://troox-backend-new.vercel.app/api/menu/freezeMenuWithId/", {
+        await fetch(`${SERVER_DOMAIN}/menu/freezeMenuWithId/`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            branch_id: viewingBranch?._id, // Replace with actual branch ID
+            branch_id: viewingBranch?._id,
             menu_item_id: id,
             freeze: newState ? "false" : "true",
           }),
@@ -101,7 +101,7 @@ const MenuList = () => {
         }));
       } catch (error) {
         console.error("Failed to update menu item status:", error);
-        // Optionally, handle error (e.g., show an error message)
+        toast.error(`An error occurred. ${error}`);
       }
     }
     setConfirmationDialog({ open: false, id: null });
@@ -300,7 +300,8 @@ const MenuList = () => {
                           <span
                             className={clsx(
                               toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
-                              "text-base font-medium"
+                              "text-base font-medium",
+                              "w-[70px]"
                             )}
                           >
                             {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
