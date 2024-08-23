@@ -59,6 +59,23 @@ const MenuList = () => {
     id: null,
   });
 
+  const [confirmationDialog2, setConfirmationDialog2] = useState({
+    open: false,
+    item: {},
+  });
+
+  const handleDeleteClick = (item: any) => {
+    console.log(item);
+    setConfirmationDialog2({ open: true, item: item });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmationDialog2.item) {
+      await handleDeleteMenu(confirmationDialog2.item);
+      setConfirmationDialog2({ open: false, item: "" });
+    }
+  };
+
   // Set toggleStates after menuItems are fetched
   useEffect(() => {
     if (menuItems && menuItems.length > 0) {
@@ -138,6 +155,34 @@ const MenuList = () => {
       toast.error("Failed to fetch modifiers.");
     } finally {
       setIsFetching(false);
+    }
+  };
+
+  const handleDeleteMenu = async (item: any) => {
+    try {
+      const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
+
+      const response = await axios.delete(`${SERVER_DOMAIN}/menu/removeMenu/`, {
+        params: {
+          menu_type: "item",
+          name: item.menu_item_name,
+          branch_id: viewingBranch?._id,
+        },
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // Optionally refresh the list of modifiers after deletion
+        toast.success("Modifier deleted successfully");
+        dispatch(fetchMenuItems({ branch_id: viewingBranch?._id as any }));
+      } else {
+        alert("Failed to delete modifier");
+      }
+    } catch (error) {
+      console.error("Error deleting modifier:", error);
+      alert("An error occurred while deleting the modifier");
     }
   };
 
@@ -305,7 +350,10 @@ const MenuList = () => {
                           >
                             {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
                           </span>
-                          <DeleteForeverOutlined className="text-red-700 ml-3" />
+                          <DeleteForeverOutlined
+                            onClick={() => handleDeleteClick(item)}
+                            className="text-red-700 ml-3"
+                          />
                         </td>
                       </tr>
                     ))}
@@ -360,6 +408,15 @@ const MenuList = () => {
           </div>
         )}
       </div>
+
+      {/* Modals */}
+      <ConfirmationDialog
+        open={confirmationDialog2.open}
+        onClose={() => setConfirmationDialog2({ open: false, item: "" })}
+        onConfirm={handleConfirmDelete}
+        message={`Are you sure you want to delete this item?`}
+      />
+
       <ConfirmationDialog
         open={confirmationDialog.open}
         onClose={() => setConfirmationDialog({ open: false, id: null })}
