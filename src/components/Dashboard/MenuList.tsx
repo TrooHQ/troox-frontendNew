@@ -272,7 +272,7 @@ const MenuList = () => {
                           </div>
                         </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
-                          &#8358;{item.menu_item_price}
+                          &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
                         </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <button className="text-blue-500" onClick={() => handleOpenModal(item)}>
@@ -326,7 +326,7 @@ const MenuList = () => {
             <div className="bg-white min-w-[30%] p-6 rounded-lg z-10 relative">
               <h2 className="text-lg font-semibold mb-4">
                 {selectedModifiers?.menu_item_name}
-                <span className="text-sm font-normal ml-5">MODIFIER</span>
+                <span className="text-sm font-normal ml-5">MODIFIERS</span>
               </h2>
               <hr className="h-[1px] bg-[#929292] my-3" />
 
@@ -337,7 +337,7 @@ const MenuList = () => {
               ) : (
                 <>
                   <div>
-                    <h3 className="font-semibold text-sm mb-2 text-[#414141]">Add-Ons:</h3>
+                    {/* <h3 className="font-semibold text-sm mb-2 text-[#414141]">Add-Ons:</h3> */}
                     <ul>
                       {fetchedModifiers.map((modifier: any, index: any) => (
                         <li key={index} className="flex justify-between">
@@ -345,7 +345,7 @@ const MenuList = () => {
                             {modifier.modifier_name}
                           </span>
                           <span className="text-lg font-medium  text-[#414141]">
-                            {modifier.modifier_price}
+                            &#8358; {parseFloat(modifier.modifier_price).toLocaleString()}
                           </span>
                         </li>
                       ))}
