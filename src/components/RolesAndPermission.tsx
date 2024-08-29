@@ -47,6 +47,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     setCheckedCategories(newCheckedCategories);
   };
 
+  const [grantGeneralAccess, setGrantGeneralAccess] = useState(false);
+  const [grantInventoryAccess, setGrantInventoryAccess] = useState(false);
+  const [grantTicketAccess, setGrantTicketAccess] = useState(false);
+
   const CheckboxWithLabel = ({
     id,
     label,
@@ -141,20 +145,108 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     { id: "levelThreeCheck", label: "Work on Open Tickets on Till" },
   ];
 
+  const handleGeneralAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    setGrantGeneralAccess(isChecked);
+    if (isChecked) {
+      setCheckedGeneral(generalLabels.map((label) => label.label));
+    } else {
+      setCheckedGeneral([]);
+    }
+  };
+
+  const handleInventoryAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    setGrantInventoryAccess(isChecked);
+    if (isChecked) {
+      setCheckedInventory(inventoryLabels.map((label) => label.label));
+    } else {
+      setCheckedInventory([]);
+    }
+  };
+
+  const handleTicketAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const isChecked = event.target.checked;
+    setGrantTicketAccess(isChecked);
+    if (isChecked) {
+      setCheckedTickets(ticketLabels.map((label) => label.label));
+    } else {
+      setCheckedTickets([]);
+    }
+  };
+
+  const handleMasterCheckboxChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    category: "general" | "inventory" | "ticket"
+  ) => {
+    const isChecked = event.target.checked;
+    if (category === "general") {
+      setGrantGeneralAccess(isChecked);
+      setCheckedGeneral(isChecked ? generalLabels.map((label) => label.label) : []);
+    } else if (category === "inventory") {
+      setGrantInventoryAccess(isChecked);
+      setCheckedInventory(isChecked ? inventoryLabels.map((label) => label.label) : []);
+    } else if (category === "ticket") {
+      setGrantTicketAccess(isChecked);
+      setCheckedTickets(isChecked ? ticketLabels.map((label) => label.label) : []);
+    }
+  };
+
+  const handleCheckboxChange = (label: string, category: "general" | "inventory" | "ticket") => {
+    if (category === "general") {
+      setCheckedGeneral((prev: any) =>
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+      );
+    } else if (category === "inventory") {
+      setCheckedInventory((prev: any) =>
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+      );
+    } else if (category === "ticket") {
+      setCheckedTickets((prev: any) =>
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+      );
+    }
+  };
+
+  useEffect(() => {
+    // Sync general access state with checkedGeneral
+    setGrantGeneralAccess(checkedGeneral.length === generalLabels.length);
+  }, [checkedGeneral]);
+
+  useEffect(() => {
+    // Sync inventory access state with checkedInventory
+    setGrantInventoryAccess(checkedInventory.length === inventoryLabels.length);
+  }, [checkedInventory]);
+
+  useEffect(() => {
+    // Sync ticket access state with checkedTickets
+    setGrantTicketAccess(checkedTickets.length === ticketLabels.length);
+  }, [checkedTickets]);
+
+  useEffect(() => {
+    const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
+    const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
+    setSelectedPermissions(uniqueCheckedLabels);
+  }, [checkedGeneral, checkedInventory, checkedTickets]);
+
   const renderCheckboxes = (
     labels: { id: string; label: string }[],
     checkedState: string[],
-    handleChange: (label: string, category: "general" | "inventory" | "ticket") => void,
     category: "general" | "inventory" | "ticket"
   ) =>
     labels.map((item, index) => (
-      <CheckboxWithLabel
-        key={index}
-        id={`${item.id}${index}`}
-        label={item.label}
-        checked={checkedState.includes(item.label)} // Check if the label is in the checked state
-        handlePermissionChange={() => handleChange(item.label, category)}
-      />
+      <div key={index} className="flex items-center mb-6">
+        <input
+          type="checkbox"
+          id={`${item.id}${index}`}
+          className="h-6 w-6 mr-[24px] border border-black"
+          checked={checkedState.includes(item.label)}
+          onChange={() => handleCheckboxChange(item.label, category)}
+        />
+        <label htmlFor={`${item.id}${index}`} className="text-[16px] font-[400] text-grey500">
+          {item.label}
+        </label>
+      </div>
     ));
 
   const handlePermissionChange = (label: string, category: "general" | "inventory" | "ticket") => {
@@ -187,15 +279,16 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     }
   };
 
-  const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
-
-  const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
-
   useEffect(() => {
+    const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
+
+    const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
     setSelectedPermissions(uniqueCheckedLabels);
+    console.log(uniqueCheckedLabels, "pppp");
   }, [checkedGeneral, checkedInventory, checkedTickets]);
 
-  console.log(uniqueCheckedLabels, "pppp");
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
   return (
     <div className="grid gap-[24px]">
       {faqData.map((faq, index) => (
@@ -203,32 +296,86 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           key={index}
           className={`bg-purple500 border border-purple500 focus:outline-[#5955B3] w-full rounded`}
         >
-          <div
-            className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
-            onClick={() => toggleAnswer(index)}
-          >
-            <p className="text-[#ffffff] font-[500] text-[14px] lg:text-[16px]">{faq.question}</p>
-            <img
-              src={ArrowToggle}
-              alt=""
-              className={`transform transition-transform duration-300 ${
-                openIndex === index ? "rotate-180" : ""
-              }`}
-            />
+          <div className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]">
+            <p
+              onClick={() => toggleAnswer(index)}
+              className="text-[#ffffff] font-[500] text-[14px] lg:text-[16px]"
+            >
+              {faq.question}
+            </p>
+            <div className="flex items-center">
+              {index === 0 && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={grantGeneralAccess}
+                      onChange={(e) => handleMasterCheckboxChange(e, "general")}
+                      sx={{
+                        "& .MuiSvgIcon-root": { fontSize: 32 },
+                        "&.Mui-checked": { color: "#ffffff" },
+                        color: "#ffffff",
+                      }}
+                    />
+                  }
+                  label="Grant this role all access"
+                  sx={{
+                    color: "#ffffff",
+                  }}
+                />
+              )}
+              {index === 1 && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={grantInventoryAccess}
+                      onChange={(e) => handleMasterCheckboxChange(e, "inventory")}
+                      sx={{
+                        "& .MuiSvgIcon-root": { fontSize: 32 },
+                        "&.Mui-checked": { color: "#ffffff" },
+                        color: "#ffffff",
+                      }}
+                    />
+                  }
+                  label="Grant this role all access"
+                  sx={{
+                    color: "#ffffff",
+                  }}
+                />
+              )}
+              {index === 2 && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={grantTicketAccess}
+                      onChange={(e) => handleMasterCheckboxChange(e, "ticket")}
+                      sx={{
+                        "& .MuiSvgIcon-root": { fontSize: 32 },
+                        "&.Mui-checked": { color: "#ffffff" },
+                        color: "#ffffff",
+                      }}
+                    />
+                  }
+                  label="Grant this role all access"
+                  sx={{
+                    color: "#ffffff",
+                  }}
+                />
+              )}
+              <img
+                src={ArrowToggle}
+                alt=""
+                onClick={() => toggleAnswer(index)}
+                className={`transform transition-transform duration-300 ${
+                  openIndex === index ? "rotate-180" : ""
+                }`}
+              />
+            </div>
           </div>
           {openIndex === index && (
             <div className="bg-white text-[#757575] text-[12px] lg:text-[18px] font-[300] py-[24px] px-[24px]">
-              {index === 0 &&
-                renderCheckboxes(generalLabels, checkedGeneral, handlePermissionChange, "general")}
-              {index === 1 &&
-                renderCheckboxes(
-                  inventoryLabels,
-                  checkedInventory,
-                  handlePermissionChange,
-                  "inventory"
-                )}
-              {index === 2 &&
-                renderCheckboxes(ticketLabels, checkedTickets, handlePermissionChange, "ticket")}
+              {index === 0 && renderCheckboxes(generalLabels, checkedGeneral, "general")}
+              {index === 1 && renderCheckboxes(inventoryLabels, checkedInventory, "inventory")}
+              {index === 2 && renderCheckboxes(ticketLabels, checkedTickets, "ticket")}
             </div>
           )}
         </div>

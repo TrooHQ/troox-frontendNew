@@ -30,8 +30,6 @@ const NewRoles = () => {
     { question: "Level 3 User", inputValue: "Input 3" },
   ];
 
-  const faqDataInner: FAQItem[] = [{ question: "Till", inputValue: "Input 1" }];
-
   const [checkedGeneral, setCheckedGeneral] = useState<string[]>([]);
   const [checkedInventory, setCheckedInventory] = useState<string[]>([]);
   const [checkedTickets, setCheckedTickets] = useState<string[]>([]);
@@ -148,7 +146,7 @@ const NewRoles = () => {
         <div className="my-10 ">
           <div className="flex items-center justify-between">
             <p className="text-[24px] font-[500] text-purple500">Permissions setting</p>
-            <div>
+            {/* <div>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -161,7 +159,7 @@ const NewRoles = () => {
                 }
                 label="Grant this role general access"
               />
-            </div>
+            </div> */}
           </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
