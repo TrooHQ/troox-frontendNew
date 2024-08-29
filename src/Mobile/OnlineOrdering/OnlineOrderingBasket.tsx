@@ -62,14 +62,14 @@ export const OnlineOrderingBasket = () => {
   const handleAddressSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleCloseDeliveryModal();
-    navigate("/demo/tip/online_ordering");
+    navigate("/demo/payment-type/online_ordering");
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     dispatch(updateCustomerDetails({ name: userName, phone, address }));
     handleCloseDeliveryModal();
-    navigate("/demo/tip/online_ordering");
+    navigate("/demo/payment-type/online_ordering");
   };
 
   const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
@@ -81,6 +81,12 @@ export const OnlineOrderingBasket = () => {
       dispatch(updateItemQuantity({ id, quantity: currentQuantity - 1 }));
     }
   };
+
+  const userDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = userDetails?.colour_scheme;
 
   return (
     <div className=" ">
@@ -97,17 +103,20 @@ export const OnlineOrderingBasket = () => {
                       <Link
                         to={`/demo/menu-details/${item.id}/online_ordering`}
                       >
-                        <p className="text-[16px] text-[#121212] font-[500]">
+                        <p className="text-[16px] text-[#121212] font-[500] max-w-[100px] ">
                           <span className="pr-2">{item.quantity}x</span>
                           {item.name}
                         </p>
                       </Link>
-                      <div className="flex items-center mr-[10px]">
+                      <div className="flex items-center mr-[10px] max-w-[100px]">
                         <div
-                          className="  cursor-pointer text-white bg-[#414141]   rounded-full"
+                          className="  cursor-pointer text-white   rounded-full"
                           onClick={() =>
                             handleDecreaseQuantity(item.id, item.quantity)
                           }
+                          style={{
+                            backgroundColor: colorScheme || "#414141",
+                          }}
                         >
                           <HiMinusSm className=" text-[20px]" />
                         </div>
@@ -117,10 +126,13 @@ export const OnlineOrderingBasket = () => {
                         </p>
 
                         <div
-                          className="  cursor-pointer text-white bg-[#414141]   rounded-full"
+                          className="  cursor-pointer text-white   rounded-full"
                           onClick={() =>
                             handleIncreaseQuantity(item.id, item.quantity)
                           }
+                          style={{
+                            backgroundColor: colorScheme || "#414141",
+                          }}
                         >
                           <HiPlusSm className=" text-[20px]" />
                         </div>
@@ -135,10 +147,13 @@ export const OnlineOrderingBasket = () => {
                       )}
 
                       <p
-                        className=" text-[30px] text-[#606060]"
+                        className=" text-[30px] "
                         onClick={() =>
                           dispatch(removeItemFromBasket({ id: item.id }))
                         }
+                        style={{
+                          color: colorScheme || "#606060",
+                        }}
                       >
                         <TiDelete />
                       </p>
@@ -171,11 +186,13 @@ export const OnlineOrderingBasket = () => {
           ))
         ) : (
           <div className="py-[20px] mx-[24px] text-center text-[16px] text-[#121212] font-[500] grid place-items-center items-center">
-            <p className=" text-7xl font-bold text-black"></p>
             <p>Your cart is empty.</p>
             <p
-              className=" px-[16px] py-[9px] bg-[#DB7F3B] text-white rounded-[8px] cursor-pointer"
+              className=" px-[16px] py-[9px]  text-white rounded-[8px] cursor-pointer"
               onClick={() => navigate(-1)}
+              style={{
+                backgroundColor: colorScheme || "#DB7F3B",
+              }}
             >
               Start Ordering
             </p>
@@ -185,7 +202,12 @@ export const OnlineOrderingBasket = () => {
           <div className="py-[16px] mx-[24px]">
             <div className="flex items-center justify-between">
               <p className="text-[16px] text-[#121212] font-[500]">Total:</p>
-              <p className="text-[16px] text-[#121212] font-[500]">
+              <p
+                className="text-[16px] font-[500]"
+                style={{
+                  color: colorScheme || "#121212",
+                }}
+              >
                 &#x20A6;{basketDetails?.totalPrice}
               </p>
             </div>
@@ -211,7 +233,12 @@ export const OnlineOrderingBasket = () => {
       {basketDetails?.items.length > 0 && (
         <div className="mt-[40px]">
           <div className="py-[20px] mx-[24px] grid gap-[10px] border-t-[#E7E7E7] border-t">
-            <p className="font-[400] text-[14px] text-[#414141]">
+            <p
+              className="font-[400] text-[14px]"
+              style={{
+                color: colorScheme || "#414141",
+              }}
+            >
               Choose your pickup option
             </p>
             <div className="py-[25px] flex items-center border-b justify-center">
@@ -225,7 +252,14 @@ export const OnlineOrderingBasket = () => {
                   className=""
                 />
                 <img src={Pickup} alt="Pickup" />
-                <p className="font-[500] text-[16px] text-[#414141]">Pickup</p>
+                <p
+                  className="font-[500] text-[16px] "
+                  style={{
+                    color: colorScheme || "#414141",
+                  }}
+                >
+                  Pickup
+                </p>
               </label>
 
               <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
@@ -238,7 +272,12 @@ export const OnlineOrderingBasket = () => {
                   className=""
                 />
                 <img src={Delivery} alt="Delivery" />
-                <p className="font-[500] text-[16px] text-[#414141]">
+                <p
+                  className="font-[500] text-[16px] "
+                  style={{
+                    color: colorScheme || "#414141",
+                  }}
+                >
                   Delivery
                 </p>
               </label>
@@ -257,7 +296,12 @@ export const OnlineOrderingBasket = () => {
               <img src={Back} alt="" />
             </div>
             <div>
-              <p className=" text-center text-[18px] font-[500] text-[#121212]">
+              <p
+                className=" text-center text-[18px] font-[500]"
+                style={{
+                  color: colorScheme || "#121212",
+                }}
+              >
                 Choose your preferred pickup location
               </p>
 
@@ -271,7 +315,14 @@ export const OnlineOrderingBasket = () => {
                     onChange={handleAddress}
                     className=""
                   />
-                  <p className="font-[400] text-[18px] text-[#121212]">Lekki</p>
+                  <p
+                    className="font-[400] text-[18px] "
+                    style={{
+                      color: colorScheme || "#121212",
+                    }}
+                  >
+                    Lekki
+                  </p>
                 </label>
 
                 <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
@@ -283,7 +334,14 @@ export const OnlineOrderingBasket = () => {
                     onChange={handleAddress}
                     className=""
                   />
-                  <p className="font-[400] text-[18px] text-[#121212]">Ikeja</p>
+                  <p
+                    className="font-[400] text-[18px] "
+                    style={{
+                      color: colorScheme || "#121212",
+                    }}
+                  >
+                    Ikeja
+                  </p>
                 </label>
 
                 <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
@@ -295,7 +353,14 @@ export const OnlineOrderingBasket = () => {
                     onChange={handleAddress}
                     className=""
                   />
-                  <p className="font-[400] text-[18px] text-[#121212]">Ikoyi</p>
+                  <p
+                    className="font-[400] text-[18px] "
+                    style={{
+                      color: colorScheme || "#121212",
+                    }}
+                  >
+                    Ikoyi
+                  </p>
                 </label>
 
                 <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
@@ -307,7 +372,14 @@ export const OnlineOrderingBasket = () => {
                     onChange={handleAddress}
                     className=""
                   />
-                  <p className="font-[400] text-[18px] text-[#121212]">Yaba</p>
+                  <p
+                    className="font-[400] text-[18px] "
+                    style={{
+                      color: colorScheme || "#121212",
+                    }}
+                  >
+                    Yaba
+                  </p>
                 </label>
 
                 <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
@@ -319,7 +391,12 @@ export const OnlineOrderingBasket = () => {
                     onChange={handleAddress}
                     className=""
                   />
-                  <p className="font-[400] text-[18px] text-[#121212]">
+                  <p
+                    className="font-[400] text-[18px] "
+                    style={{
+                      color: colorScheme || "#121212",
+                    }}
+                  >
                     Surulere
                   </p>
                 </label>
@@ -335,7 +412,11 @@ export const OnlineOrderingBasket = () => {
                 <button
                   type="submit"
                   disabled={!addressvalue}
-                  className=" font-[500] text-[16px] border border-[#11AE16] rounded-[5px] bg-[#11AE16] text-white py-[10px] px-[24px]"
+                  className=" font-[500] text-[16px] border  rounded-[5px]  text-white py-[10px] px-[24px]"
+                  style={{
+                    backgroundColor: colorScheme || "#11AE16",
+                    borderColor: colorScheme || "#11AE16",
+                  }}
                 >
                   Proceed to Pay
                 </button>
@@ -355,7 +436,12 @@ export const OnlineOrderingBasket = () => {
               <img src={Back} alt="" />
             </div>
             <div>
-              <p className=" text-left text-[18px] font-[500] text-[#121212]">
+              <p
+                className=" text-left text-[18px] font-[500] "
+                style={{
+                  color: colorScheme || "#121212",
+                }}
+              >
                 Enter your details
               </p>
 
@@ -396,7 +482,11 @@ export const OnlineOrderingBasket = () => {
                 <button
                   type="submit"
                   disabled={!address || !userName || !phone}
-                  className=" font-[500] text-[16px] border border-[#11AE16] rounded-[5px] bg-[#11AE16] text-white py-[10px] px-[24px]"
+                  className=" font-[500] text-[16px] border rounded-[5px]  text-white py-[10px] px-[24px]"
+                  style={{
+                    backgroundColor: colorScheme || "#11AE16",
+                    borderColor: colorScheme || "#11AE16",
+                  }}
                 >
                   Proceed to Pay
                 </button>

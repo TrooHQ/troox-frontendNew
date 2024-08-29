@@ -154,6 +154,9 @@ export const OnlineOrderingCategoryDetails = () => {
       }
     }
   };
+
+  const colorScheme = businessDetails?.colour_scheme;
+
   return (
     <div className=" relative ">
       {loading && <Loader />}
@@ -165,25 +168,42 @@ export const OnlineOrderingCategoryDetails = () => {
               <p
                 className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
                   selectedGroup === "All"
-                    ? "font-[600] bg-[#929292] text-[#FFFFFF] border border-[#929292]"
-                    : " text-[#606060] font-[400] border border-[#B6B6B6]"
+                    ? `font-[600] text-[#FFFFFF] border border-[#929292]`
+                    : "text-[#606060] font-[400] border border-[#B6B6B6]"
                 }`}
+                style={{
+                  backgroundColor:
+                    selectedGroup === "All"
+                      ? colorScheme || "#929292"
+                      : "transparent",
+                }}
                 onClick={() => handleGroupClick("All")}
               >
                 All
               </p>
-              <div className=" flex gap-[8px] items-center ">
+
+              <div className="flex gap-[8px] items-center">
                 {Array.from(
                   new Set(menuItems.map((menu) => menu.menu_group_name))
                 ).map((groupName, index) => (
-                  <div key={index} className=" ">
-                    {" "}
+                  <div key={index}>
                     <p
-                      className={`cursor-pointer px-[12px] py-[8px] ${
-                        selectedGroup === groupName
-                          ? "font-bold bg-[#929292] border border-[#929292] text-[#FFFFFF]"
-                          : " text-[#606060] font-[400] border border-[#B6B6B6]"
-                      }`}
+                      className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
+                      style={{
+                        backgroundColor:
+                          selectedGroup === groupName
+                            ? colorScheme || "#929292"
+                            : "transparent",
+                        borderColor:
+                          selectedGroup === groupName
+                            ? colorScheme || "#929292"
+                            : "#B6B6B6",
+                        color:
+                          selectedGroup === groupName ? "#FFFFFF" : "#606060",
+                        fontWeight:
+                          selectedGroup === groupName ? "bold" : "400",
+                        borderStyle: "solid",
+                      }}
                       onClick={() => handleGroupClick(groupName)}
                     >
                       {groupName}
@@ -215,8 +235,13 @@ export const OnlineOrderingCategoryDetails = () => {
                             className="w-full object-cover h-full"
                           />
 
-                          <div className="absolute -bottom-4 text-white bg-[#414141] right-0  rounded-full">
-                            <HiPlusSm className=" text-[37px]" />
+                          <div
+                            className="absolute -bottom-4 text-white right-0 rounded-full"
+                            style={{
+                              backgroundColor: colorScheme || "#414141",
+                            }}
+                          >
+                            <HiPlusSm className="text-[37px]" />
                           </div>
                         </div>
                         <p className="text-[14px] text-[#121212] font-[500] px-[16px] mt-[8px] text-center">
@@ -275,8 +300,11 @@ export const OnlineOrderingCategoryDetails = () => {
                             className="flex items-center justify-end gap-[12px]"
                           >
                             <div
-                              className="  cursor-pointer text-white bg-[#414141]   rounded-full"
+                              className="  cursor-pointer text-white    rounded-full"
                               onClick={() => decrement(menu)}
+                              style={{
+                                backgroundColor: colorScheme || "#414141",
+                              }}
                             >
                               <HiMinusSm className=" text-[27px]" />
                             </div>
@@ -286,8 +314,11 @@ export const OnlineOrderingCategoryDetails = () => {
                                 ?.quantity || 1}
                             </p>
                             <div
-                              className="  cursor-pointer text-white bg-[#414141]   rounded-full"
+                              className="  cursor-pointer text-white   rounded-full"
                               onClick={() => increment(menu)}
+                              style={{
+                                backgroundColor: colorScheme || "#414141",
+                              }}
                             >
                               <HiPlusSm className=" text-[27px]" />
                             </div>
@@ -299,8 +330,11 @@ export const OnlineOrderingCategoryDetails = () => {
                             >
                               <div className="flex items-center justify-end ">
                                 <div
-                                  className=" inline-flex cursor-pointer text-white bg-[#414141]   rounded-full"
+                                  className=" inline-flex cursor-pointer text-white    rounded-full"
                                   onClick={() => increment(menu)}
+                                  style={{
+                                    backgroundColor: colorScheme || "#414141",
+                                  }}
                                 >
                                   <HiPlusSm className=" text-[27px]" />
                                 </div>
@@ -321,7 +355,12 @@ export const OnlineOrderingCategoryDetails = () => {
         </div>
         {ids && (
           <div className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto">
-            <div className="flex justify-between items-center py-[13px] px-[24px] text-white bg-[#606060] rounded-[3px] cursor-pointer">
+            <div
+              className="flex justify-between items-center py-[13px] px-[24px] text-white  rounded-[3px] cursor-pointer"
+              style={{
+                backgroundColor: colorScheme || "#414141",
+              }}
+            >
               <div className="flex items-center gap-[16px]">
                 <p className="bg-white rounded-[5px] text-[#606060] py-[12px] px-[10px] text-[16px] font-[500]">
                   {totalCount.totalQuantity || 0}
