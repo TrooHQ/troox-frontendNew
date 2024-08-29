@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,24 +12,33 @@ interface FAQItem {
 
 interface RolesAndPermissionProps {
   faqData: FAQItem[];
-  faqDataInner: FAQItem[];
   openIndex: number | null;
-  openIndexInner: number | null;
   toggleAnswer: (index: number) => void;
-  toggleAnswer2: (index2: number) => void;
+  setSelectedPermissions: any;
+  checkedGeneral: string[];
+  setCheckedGeneral: any;
+  checkedInventory: string[];
+  setCheckedInventory: any;
+  checkedTickets: string[];
+  setCheckedTickets: any;
 }
 
 const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   faqData,
-  faqDataInner,
   openIndex,
-  openIndexInner,
   toggleAnswer,
-  toggleAnswer2,
+  setSelectedPermissions,
+  checkedGeneral,
+  setCheckedGeneral,
+  checkedInventory,
+  setCheckedInventory,
+  checkedTickets,
+  setCheckedTickets,
 }) => {
   const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
     Array(faqData.length).fill(false)
   );
+
   const navigate = useNavigate();
 
   const handleCategoryChange = (index: number) => {
@@ -41,18 +50,21 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   const CheckboxWithLabel = ({
     id,
     label,
-    onChange,
+    checked,
+    handlePermissionChange,
   }: {
     id: string;
     label: string;
-    onChange?: any;
+    checked: boolean;
+    handlePermissionChange: (label: string) => void;
   }) => (
     <div className="flex items-center mb-6">
       <input
         type="checkbox"
         id={id}
         className="h-6 w-6 mr-[24px] border border-black"
-        onChange={onChange}
+        checked={checked} // This is the important part to control the checkbox state
+        onChange={() => handlePermissionChange(label)} // Use the label as permission
       />
       <label htmlFor={id} className="text-[16px] font-[400] text-grey500">
         {label}
@@ -60,118 +72,130 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     </div>
   );
 
-  const renderCheckboxes = (labels: { id: string; label: string }[]) =>
+  const generalLabels = [
+    { id: "levelOneCheck", label: "Create Menus" },
+    { id: "levelOneCheck", label: "View All Menus" },
+    { id: "levelOneCheck", label: "Freeze/ Unfreeze Menu List" },
+    { id: "levelOneCheck", label: "Edit Menus" },
+    { id: "levelOneCheck", label: "Create Branches" },
+    { id: "levelOneCheck", label: "Update Branches" },
+    { id: "levelOneCheck", label: "Delete Branches" },
+    { id: "levelOneCheck", label: "Create QR Codes for Rooms" },
+    { id: "levelOneCheck", label: "Create QR Codes for Tables" },
+    { id: "levelOneCheck", label: "Generate Online Ordering Link" },
+    { id: "levelOneCheck", label: "Generate Self Checkout Link" },
+    { id: "levelOneCheck", label: "View Open and Closed Tickets" },
+    { id: "levelOneCheck", label: "Void Order for Open and Closed Tickets" },
+    { id: "levelOneCheck", label: "Request Refund for Order on Closed Tickets" },
+    { id: "levelOneCheck", label: "Vacate Table on Closed Tickets" },
+    { id: "levelOneCheck", label: "View Business Report" },
+    { id: "levelOneCheck", label: "Download Business Report" },
+    { id: "levelOneCheck", label: "Add Users" },
+    { id: "levelOneCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    { id: "levelOneCheck", label: "Change Order Status on Waiter App" },
+    { id: "levelOneCheck", label: "Collect Tips on Waiter App" },
+    { id: "levelOneCheck", label: "View Earnings from Tips" },
+    { id: "levelOneCheck", label: "Add Menus to Till" },
+    { id: "levelOneCheck", label: "Add Modifiers to Till" },
+    { id: "levelOneCheck", label: "Hold Orders on Till" },
+    { id: "levelOneCheck", label: "Work on Open Tickets on Till" },
+  ];
+
+  const inventoryLabels = [
+    { id: "levelTwoCheck", label: "Create Menus" },
+    { id: "levelTwoCheck", label: "View All Menus" },
+    { id: "levelTwoCheck", label: "Freeze/ Unfreeze Menu List" },
+    { id: "levelTwoCheck", label: "Edit Menus" },
+    { id: "levelTwoCheck", label: "Create Branches" },
+    { id: "levelTwoCheck", label: "Update Branches" },
+    { id: "levelTwoCheck", label: "Delete Branches" },
+    { id: "levelTwoCheck", label: "Create QR Codes for Rooms" },
+    { id: "levelTwoCheck", label: "Create QR Codes for Tables" },
+    { id: "levelTwoCheck", label: "Generate Online Ordering Link" },
+    { id: "levelTwoCheck", label: "Generate Self Checkout Link" },
+    { id: "levelTwoCheck", label: "View Open and Closed Tickets" },
+    { id: "levelTwoCheck", label: "Void Order for Open and Closed Tickets" },
+    { id: "levelTwoCheck", label: "Request Refund for Order on Closed Tickets" },
+    { id: "levelTwoCheck", label: "Vacate Table on Closed Tickets" },
+    { id: "levelTwoCheck", label: "View Business Report" },
+    { id: "levelTwoCheck", label: "Download Business Report" },
+    { id: "levelTwoCheck", label: "Add Users" },
+    { id: "levelTwoCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    { id: "levelTwoCheck", label: "Change Order Status on Waiter App" },
+    { id: "levelTwoCheck", label: "Collect Tips on Waiter App" },
+    { id: "levelTwoCheck", label: "View Earnings from Tips" },
+    { id: "levelTwoCheck", label: "Add Menus to Till" },
+    { id: "levelTwoCheck", label: "Add Modifiers to Till" },
+    { id: "levelTwoCheck", label: "Hold Orders on Till" },
+    { id: "levelTwoCheck", label: "Work on Open Tickets on Till" },
+  ];
+
+  const ticketLabels = [
+    { id: "levelThreeCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    { id: "levelThreeCheck", label: "Change Order Status on Waiter App" },
+    { id: "levelThreeCheck", label: "Collect Tips on Waiter App" },
+    { id: "levelThreeCheck", label: "View Earnings from Tips" },
+    { id: "levelThreeCheck", label: "Add Menus to Till" },
+    { id: "levelThreeCheck", label: "Add Modifiers to Till" },
+    { id: "levelThreeCheck", label: "Hold Orders on Till" },
+    { id: "levelThreeCheck", label: "Work on Open Tickets on Till" },
+  ];
+
+  const renderCheckboxes = (
+    labels: { id: string; label: string }[],
+    checkedState: string[],
+    handleChange: (label: string, category: "general" | "inventory" | "ticket") => void,
+    category: "general" | "inventory" | "ticket"
+  ) =>
     labels.map((item, index) => (
       <CheckboxWithLabel
         key={index}
         id={`${item.id}${index}`}
         label={item.label}
-        onChange={handleCategoryChange}
+        checked={checkedState.includes(item.label)} // Check if the label is in the checked state
+        handlePermissionChange={() => handleChange(item.label, category)}
       />
     ));
 
-  const generalLabels = [
-    { id: "categoryCheckbox", label: "Create Menus" },
-    { id: "categoryCheckbox", label: "View All Menus" },
-    { id: "categoryCheckbox", label: "Freeze/ Unfreeze Menu List" },
-    { id: "categoryCheckbox", label: "Edit Menus" },
-    { id: "categoryCheckbox", label: "Create Branches" },
-    { id: "categoryCheckbox", label: "Update Branches" },
-    { id: "categoryCheckbox", label: "Delete Branches" },
-    { id: "categoryCheckbox", label: "Create QR Codes for Rooms" },
-    { id: "categoryCheckbox", label: "Create QR Codes for Tables" },
-    { id: "categoryCheckbox", label: "Generate Online Ordering Link" },
-    { id: "categoryCheckbox", label: "Generate Self Checkout Link" },
-    { id: "categoryCheckbox", label: "View Open and Closed Tickets" },
-    { id: "categoryCheckbox", label: "Void Order for Open and Closed Tickets" },
-    { id: "categoryCheckbox", label: "Request Refund for Order on Closed Tickets" },
-    { id: "categoryCheckbox", label: "Vacate Table on Closed Tickets" },
-    { id: "categoryCheckbox", label: "View Business Report" },
-    { id: "categoryCheckbox", label: "Download Business Report" },
-    { id: "categoryCheckbox", label: "Add Users" },
-    { id: "categoryCheckbox", label: "Accept or Decline Incoming Tickets on Waiter App" },
-    { id: "categoryCheckbox", label: "Change Order Status on Waiter App" },
-    { id: "categoryCheckbox", label: "Collect Tips on Waiter App" },
-    { id: "categoryCheckbox", label: "View Earnings from Tips" },
-    { id: "categoryCheckbox", label: "Add Menus to Till" },
-    { id: "categoryCheckbox", label: "Add Modifiers to Till" },
-    { id: "categoryCheckbox", label: "Hold Orders on Till" },
-    { id: "categoryCheckbox", label: "Work on Open Tickets on Till" },
-  ];
+  const handlePermissionChange = (label: string, category: "general" | "inventory" | "ticket") => {
+    let updatedLabels: any;
 
-  const inventoryLabels = [
-    { id: "categoryCheckbox", label: "Create Menus" },
-    { id: "categoryCheckbox", label: "View All Menus" },
-    { id: "categoryCheckbox", label: "Freeze/ Unfreeze Menu List" },
-    { id: "categoryCheckbox", label: "Edit Menus" },
-    { id: "categoryCheckbox", label: "Create Branches" },
-    { id: "categoryCheckbox", label: "Update Branches" },
-    { id: "categoryCheckbox", label: "Delete Branches" },
-    { id: "categoryCheckbox", label: "Create QR Codes for Rooms" },
-    { id: "categoryCheckbox", label: "Create QR Codes for Tables" },
-    { id: "categoryCheckbox", label: "Generate Online Ordering Link" },
-    { id: "categoryCheckbox", label: "Generate Self Checkout Link" },
-    { id: "categoryCheckbox", label: "View Open and Closed Tickets" },
-    { id: "categoryCheckbox", label: "Void Order for Open and Closed Tickets" },
-    { id: "categoryCheckbox", label: "Request Refund for Order on Closed Tickets" },
-    { id: "categoryCheckbox", label: "Vacate Table on Closed Tickets" },
-    { id: "categoryCheckbox", label: "View Business Report" },
-    { id: "categoryCheckbox", label: "Download Business Report" },
-    { id: "categoryCheckbox", label: "Add Users" },
-    { id: "categoryCheckbox", label: "Accept or Decline Incoming Tickets on Waiter App" },
-    { id: "categoryCheckbox", label: "Change Order Status on Waiter App" },
-    { id: "categoryCheckbox", label: "Collect Tips on Waiter App" },
-    { id: "categoryCheckbox", label: "View Earnings from Tips" },
-    { id: "categoryCheckbox", label: "Add Menus to Till" },
-    { id: "categoryCheckbox", label: "Add Modifiers to Till" },
-    { id: "categoryCheckbox", label: "Hold Orders on Till" },
-    { id: "categoryCheckbox", label: "Work on Open Tickets on Till" },
-  ];
+    switch (category) {
+      case "general":
+        updatedLabels = checkedGeneral.includes(label as any)
+          ? checkedGeneral.filter((item: any) => item !== label)
+          : [...checkedGeneral, label];
+        setCheckedGeneral(updatedLabels);
+        break;
 
-  const ticketLabels = [
-    { id: "categoryCheckbox", label: "Accept or Decline Incoming Tickets on Waiter App" },
-    { id: "categoryCheckbox", label: "Change Order Status on Waiter App" },
-    { id: "categoryCheckbox", label: "Collect Tips on Waiter App" },
-    { id: "categoryCheckbox", label: "View Earnings from Tips" },
-    { id: "categoryCheckbox", label: "Add Menus to Till" },
-    { id: "categoryCheckbox", label: "Add Modifiers to Till" },
-    { id: "categoryCheckbox", label: "Hold Orders on Till" },
-    { id: "categoryCheckbox", label: "Work on Open Tickets on Till" },
-  ];
+      case "inventory":
+        updatedLabels = checkedInventory.includes(label as any)
+          ? checkedInventory.filter((item: any) => item !== label)
+          : [...checkedInventory, label];
+        setCheckedInventory(updatedLabels);
+        break;
 
-  const renderSubItems = (
-    faqDataInner: FAQItem[],
-    openIndexInner: number | null,
-    toggleAnswer2: (index2: number) => void
-  ) =>
-    faqDataInner.map((innerFaq, innerIndex) => (
-      <div
-        key={innerIndex}
-        className="bg-[#EEEEF7] border mt-4 focus:outline-[#5955B3] w-full rounded my-2"
-      >
-        <div
-          className="flex items-center justify-between cursor-pointer py-[12px] px-[12px] font-bold"
-          onClick={() => toggleAnswer2(innerIndex)}
-        >
-          <p className="text-purple500 font-[500] text-[14px] lg:text-[16px]">
-            {innerFaq.question}
-          </p>
-          <img
-            src={ArrowToggle2}
-            alt=""
-            className={`transform transition-transform duration-300 ${
-              openIndexInner === innerIndex ? "rotate-180" : ""
-            }`}
-          />
-        </div>
-        {openIndexInner === innerIndex && (
-          <div className="bg-white py-[28px] px-[24px] grid gap-[33px]">
-            {renderCheckboxes(inventoryLabels)}
-          </div>
-        )}
-      </div>
-    ));
+      case "ticket":
+        updatedLabels = checkedTickets.includes(label as any)
+          ? checkedTickets.filter((item: any) => item !== label)
+          : [...checkedTickets, label];
+        setCheckedTickets(updatedLabels);
+        break;
 
+      default:
+        return;
+    }
+  };
+
+  const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
+
+  const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
+
+  useEffect(() => {
+    setSelectedPermissions(uniqueCheckedLabels);
+  }, [checkedGeneral, checkedInventory, checkedTickets]);
+
+  console.log(uniqueCheckedLabels, "pppp");
   return (
     <div className="grid gap-[24px]">
       {faqData.map((faq, index) => (
@@ -194,15 +218,17 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           </div>
           {openIndex === index && (
             <div className="bg-white text-[#757575] text-[12px] lg:text-[18px] font-[300] py-[24px] px-[24px]">
-              {index === 0 && renderCheckboxes(generalLabels)}
-              {index === 1 && (
-                <>
-                  <div className="grid gap-[24px]">{renderCheckboxes(inventoryLabels)}</div>
-                  {renderSubItems(faqDataInner, openIndexInner, toggleAnswer2)}
-                </>
-              )}
-              {index === 2 && renderCheckboxes(ticketLabels)}
-              {/* Add more sections as needed */}
+              {index === 0 &&
+                renderCheckboxes(generalLabels, checkedGeneral, handlePermissionChange, "general")}
+              {index === 1 &&
+                renderCheckboxes(
+                  inventoryLabels,
+                  checkedInventory,
+                  handlePermissionChange,
+                  "inventory"
+                )}
+              {index === 2 &&
+                renderCheckboxes(ticketLabels, checkedTickets, handlePermissionChange, "ticket")}
             </div>
           )}
         </div>
@@ -218,18 +244,6 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           }
           label="Grant this role general access"
         />
-      </div>
-
-      <div className="flex justify-end items-center gap-2">
-        <div
-          className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500 cursor-pointer"
-          onClick={() => navigate(-1)}
-        >
-          Cancel
-        </div>
-        <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff]">
-          <Link to="/">Save and continue</Link>
-        </div>
       </div>
     </div>
   );
