@@ -8,6 +8,7 @@ interface BusinessDetails {
   business_logo: string;
   tableNumber: string;
   URL: string;
+  colour_scheme: string;
 }
 
 interface BusinessState {
@@ -17,6 +18,7 @@ interface BusinessState {
   groupName: string;
   tableNo: string;
   URL: string;
+  colour_scheme: string;
   businessDetails: BusinessDetails | null;
 }
 
@@ -28,6 +30,7 @@ const initialState: BusinessState = {
   tableNo: "",
   URL: "",
   businessDetails: null,
+  colour_scheme: "",
 };
 
 const businessSlice = createSlice({

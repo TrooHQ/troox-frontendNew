@@ -79,6 +79,8 @@ const OnlineOrderingMenuDetails = () => {
     (state: RootState) => state.business.businessDetails
   );
 
+  const colorScheme = userDetails?.colour_scheme;
+
   const basketItems = useSelector(
     (state: RootState) => state.basket.items
   ) as BasketItem[];
@@ -395,7 +397,12 @@ const OnlineOrderingMenuDetails = () => {
                 {/* <div className="  cursor-pointer text-white bg-[#414141]   rounded-full">
                   <HiPlusSm className=" text-[27px]" />
                 </div> */}
-                <button className=" text-[#606060]  font-[500] text-[40px]">
+                <button
+                  className="  font-[500] text-[40px]"
+                  style={{
+                    color: colorScheme || "#606060",
+                  }}
+                >
                   <FaCircleCheck />
                 </button>
               </div>
@@ -404,8 +411,11 @@ const OnlineOrderingMenuDetails = () => {
 
           <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto  my-[16px]">
             <div
-              className="flex justify-between items-center py-[13px] px-[24px] bg-[#606060] text-white rounded-[3px] cursor-pointer"
+              className="flex justify-between items-center py-[13px] px-[24px]  text-white rounded-[3px] cursor-pointer"
               onClick={handleAddToBasket}
+              style={{
+                backgroundColor: colorScheme || "#606060",
+              }}
             >
               <p className="text-[16px] font-[500]">
                 &#x20A6; {calculateTotalPrice()}

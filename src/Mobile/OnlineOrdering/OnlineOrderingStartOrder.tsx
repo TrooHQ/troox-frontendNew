@@ -1,12 +1,7 @@
 import { useEffect } from "react";
-// import Modal from "../Components/Modal";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
-// import {
-//   updateCustomerName,
-//   updateCustomerTableNumber,
-// } from "../../slices/BasketSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setBusinessIdentifier,
@@ -65,43 +60,25 @@ const OnlineOrderingStartOrder = () => {
     }
   };
 
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [isRoomOpen, setRoomIsOpen] = useState(false);
-  // const [userName, setUserName] = useState("");
-  // const [room, setRoom] = useState("");
-
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
 
-  // const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const name = event.target.value;
-  //   setUserName(name);
-  //   dispatch(updateCustomerName(name));
-  // };
-
-  // const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const roomNumber = event.target.value;
-  //   setRoom(roomNumber);
-  //   dispatch(updateCustomerTableNumber(roomNumber));
-  // };
-
-  // const handleNext = () => {
-  //   setIsOpen(false);
-  //   setRoomIsOpen(true);
-  // };
+  const color = businessDetails?.colour_scheme;
 
   if (!business_identifier) {
     return <NotFound />;
   }
 
   return (
-    <div className="mx-[22px]">
+    <div
+      className={`mx-[22px] ${color ? `text-[${color}]` : "text-[#606060]"}`}
+    >
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
           src={businessDetails?.business_logo}
           alt=""
-          className=" mb-[10px]"
+          className="mb-[10px]"
         />
         <p>
           Welcome to{" "}
@@ -116,14 +93,20 @@ const OnlineOrderingStartOrder = () => {
         <div className="mt-[40px] flex flex-col items-center justify-center">
           <Link
             to={`/demo/${businessDetails?.business_name}/items/online_ordering`}
-            // {`/demo/${business_name}/category-details/${menu.name}/online_ordering`}
           >
-            <p className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] bg-[#606060] rounded-[5px] font-[500] inline">
+            <p
+              className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] rounded-[5px] font-[500] inline"
+              style={{ backgroundColor: color || "#606060" }}
+            >
               Start Your Order
             </p>
           </Link>
           <a href="">
-            <p className="text-center text-[#606060] underline text-[16px] mt-[24px]">
+            <p
+              className={`text-center ${
+                color ? `text-[${color}]` : "text-[#606060]"
+              } underline text-[16px] mt-[24px]`}
+            >
               Click here for menu and nutrition information
             </p>
           </a>
@@ -131,72 +114,17 @@ const OnlineOrderingStartOrder = () => {
           <p className="italic text-center text-[16px] mt-[32px]">
             By clicking “Start Your Order” you agree to our{" "}
             <a href="">
-              <span className="text-[#606060] underline">
+              <span
+                className={`underline ${
+                  color ? `text-[${color}]` : "text-[#606060]"
+                }`}
+              >
                 Terms & Conditions
               </span>
             </a>
           </p>
         </div>
       </div>
-
-      {/* <Modal isOpen={isOpen}>
-        <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
-          <input
-            className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
-            type="text"
-            placeholder="Enter your first name"
-            value={userName}
-            onChange={handleUserNameChange}
-          />
-          <div className="mt-[25px]">
-            <p
-              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#606060] text-[16px] font-[500] cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </p>
-            <p
-              className={`px-[24px] py-[10px] ${
-                !userName ? "bg-[#F8C9C9]" : "bg-[#606060] cursor-pointer"
-              } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
-              onClick={userName ? handleNext : undefined}
-            >
-              Next
-            </p>
-          </div>
-        </div>
-      </Modal> */}
-
-      {/* <Modal isOpen={isRoomOpen}>
-        <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
-          <input
-            className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
-            type="text"
-            placeholder="Enter your Address"
-            value={room}
-            onChange={handleTableChange}
-          />
-          <div className="mt-[25px]">
-            <p
-              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#606060] text-[16px] font-[500] cursor-pointer"
-              onClick={() => setRoomIsOpen(false)}
-            >
-              Cancel
-            </p>
-            <Link
-              to={`/demo/${businessDetails?.business_name}/explore-menu/online_ordering`}
-            >
-              <p
-                className={`px-[24px] py-[10px] ${
-                  !room ? "bg-[#F8C9C9]" : "bg-[#606060] cursor-pointer"
-                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
-              >
-                Submit
-              </p>
-            </Link>
-          </div>
-        </div>
-      </Modal> */}
     </div>
   );
 };

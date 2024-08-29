@@ -26,9 +26,8 @@ export const OnlineOrderingSelectPayment = () => {
   const business = useSelector((state: RootState) => state.business);
 
   const totalPrice = basketDetails?.totalPrice ?? 0;
-  const tip = basketDetails?.tip ?? 0;
   const deliveryFee = basketDetails?.deliveryFee ?? 0;
-  const finalTotal = totalPrice + tip;
+  const finalTotal = totalPrice;
   console.log(finalTotal);
   console.log(basketDetails);
 
@@ -62,6 +61,11 @@ export const OnlineOrderingSelectPayment = () => {
     totalQuantity: basketDetails.totalQuantity,
   };
   const token = userDetails?.userData?.token;
+  const colorScheme = useSelector(
+    (state: RootState) => state.business?.businessDetails?.colour_scheme
+  );
+  console.log(colorScheme);
+
   const handlePayment = async () => {
     try {
       setLoading(true);
@@ -96,7 +100,7 @@ export const OnlineOrderingSelectPayment = () => {
     }
   };
   return (
-    <div className="  relative">
+    <div className="  relative mb-[20px]">
       <TopMenuNav exploreMenuText="Select Payment" />
       {loading && <Loader />}
 
@@ -116,16 +120,12 @@ export const OnlineOrderingSelectPayment = () => {
             </span>
           </p>
         )}
-        <p className=" text-[#000000] text-[18px] font-[500]">
-          Tip: ₦ {}{" "}
-          <span className=" text-[#000000]">{tip.toLocaleString() || 0} </span>
-        </p>
 
         <hr className=" border border-[#414141] mb-[16px] mt-[24px]" />
         <p className="text-[#000000] text-[18px] font-[600]">
           Pay:{" "}
           <span className="text-[#121212]">
-            ₦{(totalPrice + (tip ?? 0) + (deliveryFee ?? 0)).toLocaleString()}
+            ₦{(totalPrice + (deliveryFee ?? 0)).toLocaleString()}
           </span>
         </p>
       </div>
@@ -184,8 +184,12 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#606060",
+                    borderColor: colorScheme || "#606060",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -211,8 +215,12 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#606060",
+                    borderColor: colorScheme || "#606060",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -238,8 +246,12 @@ export const OnlineOrderingSelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#606060] border-[#606060] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#606060",
+                    borderColor: colorScheme || "#606060",
+                  }}
                 >
                   Proceed to Pay
                 </p>

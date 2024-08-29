@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import CartFill from "../assets/baskets.svg";
 import CartWhite from "../assets/basketWhite.svg";
 import BackArrow from "../assets/arrow-small-left-White.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface TopMenuNavProps {
   exploreMenuText?: string;
@@ -16,7 +18,6 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
   exploreMenuText = "Explore Menu",
   bgColor = "#606060",
   textColor = "#FFFFFF",
-  borderColor = "#606060",
   children,
 }) => {
   const navigate = useNavigate();
@@ -50,6 +51,12 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
     };
   }, []);
 
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
+
+  const colorScheme = businessDetails?.colour_scheme || bgColor;
+
   return (
     <div
       className={`${
@@ -58,14 +65,14 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
     >
       <div
         className="grid grid-cols-3 items-center py-4 shadow"
-        style={{ backgroundColor: bgColor }}
+        style={{ backgroundColor: colorScheme }}
       >
         <div className="justify-self-start">
           <p
             className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
             style={{
               color: textColor,
-              borderColor: borderColor,
+              borderColor: colorScheme,
               borderStyle: "solid",
               cursor: "pointer",
             }}
