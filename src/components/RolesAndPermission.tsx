@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import ArrowToggle from "../assets/chevron-down.svg";
-import ArrowToggle2 from "../assets/chevron-down2.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
@@ -38,18 +37,11 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
     Array(faqData.length).fill(false)
   );
-
-  const navigate = useNavigate();
-
-  const handleCategoryChange = (index: number) => {
-    const newCheckedCategories = [...checkedCategories];
-    newCheckedCategories[index] = !newCheckedCategories[index];
-    setCheckedCategories(newCheckedCategories);
-  };
-
   const [grantGeneralAccess, setGrantGeneralAccess] = useState(false);
   const [grantInventoryAccess, setGrantInventoryAccess] = useState(false);
   const [grantTicketAccess, setGrantTicketAccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const CheckboxWithLabel = ({
     id,
@@ -145,36 +137,6 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     { id: "levelThreeCheck", label: "Work on Open Tickets on Till" },
   ];
 
-  const handleGeneralAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = event.target.checked;
-    setGrantGeneralAccess(isChecked);
-    if (isChecked) {
-      setCheckedGeneral(generalLabels.map((label) => label.label));
-    } else {
-      setCheckedGeneral([]);
-    }
-  };
-
-  const handleInventoryAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = event.target.checked;
-    setGrantInventoryAccess(isChecked);
-    if (isChecked) {
-      setCheckedInventory(inventoryLabels.map((label) => label.label));
-    } else {
-      setCheckedInventory([]);
-    }
-  };
-
-  const handleTicketAccessChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = event.target.checked;
-    setGrantTicketAccess(isChecked);
-    if (isChecked) {
-      setCheckedTickets(ticketLabels.map((label) => label.label));
-    } else {
-      setCheckedTickets([]);
-    }
-  };
-
   const handleMasterCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
     category: "general" | "inventory" | "ticket"
@@ -209,17 +171,14 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   };
 
   useEffect(() => {
-    // Sync general access state with checkedGeneral
     setGrantGeneralAccess(checkedGeneral.length === generalLabels.length);
   }, [checkedGeneral]);
 
   useEffect(() => {
-    // Sync inventory access state with checkedInventory
     setGrantInventoryAccess(checkedInventory.length === inventoryLabels.length);
   }, [checkedInventory]);
 
   useEffect(() => {
-    // Sync ticket access state with checkedTickets
     setGrantTicketAccess(checkedTickets.length === ticketLabels.length);
   }, [checkedTickets]);
 
@@ -249,44 +208,6 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
       </div>
     ));
 
-  const handlePermissionChange = (label: string, category: "general" | "inventory" | "ticket") => {
-    let updatedLabels: any;
-
-    switch (category) {
-      case "general":
-        updatedLabels = checkedGeneral.includes(label as any)
-          ? checkedGeneral.filter((item: any) => item !== label)
-          : [...checkedGeneral, label];
-        setCheckedGeneral(updatedLabels);
-        break;
-
-      case "inventory":
-        updatedLabels = checkedInventory.includes(label as any)
-          ? checkedInventory.filter((item: any) => item !== label)
-          : [...checkedInventory, label];
-        setCheckedInventory(updatedLabels);
-        break;
-
-      case "ticket":
-        updatedLabels = checkedTickets.includes(label as any)
-          ? checkedTickets.filter((item: any) => item !== label)
-          : [...checkedTickets, label];
-        setCheckedTickets(updatedLabels);
-        break;
-
-      default:
-        return;
-    }
-  };
-
-  useEffect(() => {
-    const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
-
-    const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
-    setSelectedPermissions(uniqueCheckedLabels);
-    console.log(uniqueCheckedLabels, "pppp");
-  }, [checkedGeneral, checkedInventory, checkedTickets]);
-
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   return (
@@ -296,75 +217,15 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           key={index}
           className={`bg-purple500 border border-purple500 focus:outline-[#5955B3] w-full rounded`}
         >
-          <div className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]">
-            <p
-              onClick={() => toggleAnswer(index)}
-              className="text-[#ffffff] font-[500] text-[14px] lg:text-[16px]"
-            >
-              {faq.question}
-            </p>
+          <div
+            onClick={() => toggleAnswer(index)}
+            className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
+          >
+            <p className="text-[#ffffff] font-[500] text-[14px] lg:text-[16px]">{faq.question}</p>
             <div className="flex items-center">
-              {index === 0 && (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={grantGeneralAccess}
-                      onChange={(e) => handleMasterCheckboxChange(e, "general")}
-                      sx={{
-                        "& .MuiSvgIcon-root": { fontSize: 32 },
-                        "&.Mui-checked": { color: "#ffffff" },
-                        color: "#ffffff",
-                      }}
-                    />
-                  }
-                  label="Grant this role all access"
-                  sx={{
-                    color: "#ffffff",
-                  }}
-                />
-              )}
-              {index === 1 && (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={grantInventoryAccess}
-                      onChange={(e) => handleMasterCheckboxChange(e, "inventory")}
-                      sx={{
-                        "& .MuiSvgIcon-root": { fontSize: 32 },
-                        "&.Mui-checked": { color: "#ffffff" },
-                        color: "#ffffff",
-                      }}
-                    />
-                  }
-                  label="Grant this role all access"
-                  sx={{
-                    color: "#ffffff",
-                  }}
-                />
-              )}
-              {index === 2 && (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={grantTicketAccess}
-                      onChange={(e) => handleMasterCheckboxChange(e, "ticket")}
-                      sx={{
-                        "& .MuiSvgIcon-root": { fontSize: 32 },
-                        "&.Mui-checked": { color: "#ffffff" },
-                        color: "#ffffff",
-                      }}
-                    />
-                  }
-                  label="Grant this role all access"
-                  sx={{
-                    color: "#ffffff",
-                  }}
-                />
-              )}
               <img
                 src={ArrowToggle}
                 alt=""
-                onClick={() => toggleAnswer(index)}
                 className={`transform transition-transform duration-300 ${
                   openIndex === index ? "rotate-180" : ""
                 }`}
@@ -373,15 +234,78 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           </div>
           {openIndex === index && (
             <div className="bg-white text-[#757575] text-[12px] lg:text-[18px] font-[300] py-[24px] px-[24px]">
-              {index === 0 && renderCheckboxes(generalLabels, checkedGeneral, "general")}
-              {index === 1 && renderCheckboxes(inventoryLabels, checkedInventory, "inventory")}
-              {index === 2 && renderCheckboxes(ticketLabels, checkedTickets, "ticket")}
+              {index === 0 && (
+                <>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={grantGeneralAccess}
+                        onChange={(e) => handleMasterCheckboxChange(e, "general")}
+                        sx={{
+                          "& .MuiSvgIcon-root": { fontSize: 32 },
+                          "&.Mui-checked": { color: "#5955B3" },
+                          color: "#5955B3",
+                        }}
+                      />
+                    }
+                    label="Grant this role all access"
+                    sx={{
+                      color: "#5955B3",
+                    }}
+                  />
+                  {renderCheckboxes(generalLabels, checkedGeneral, "general")}
+                </>
+              )}
+              {index === 1 && (
+                <>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={grantInventoryAccess}
+                        onChange={(e) => handleMasterCheckboxChange(e, "inventory")}
+                        sx={{
+                          "& .MuiSvgIcon-root": { fontSize: 32 },
+                          "&.Mui-checked": { color: "#5955B3" },
+                          color: "#5955B3",
+                        }}
+                      />
+                    }
+                    label="Grant this role all access"
+                    sx={{
+                      color: "#5955B3",
+                    }}
+                  />
+                  {renderCheckboxes(inventoryLabels, checkedInventory, "inventory")}
+                </>
+              )}
+              {index === 2 && (
+                <>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={grantTicketAccess}
+                        onChange={(e) => handleMasterCheckboxChange(e, "ticket")}
+                        sx={{
+                          "& .MuiSvgIcon-root": { fontSize: 32 },
+                          "&.Mui-checked": { color: "#5955B3" },
+                          color: "#5955B3",
+                        }}
+                      />
+                    }
+                    label="Grant this role all access"
+                    sx={{
+                      color: "#5955B3",
+                    }}
+                  />
+                  {renderCheckboxes(ticketLabels, checkedTickets, "ticket")}
+                </>
+              )}
             </div>
           )}
         </div>
       ))}
 
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <p className="text-[24px] font-[500] text-purple500">Module setting</p>
         <FormControlLabel
           control={
@@ -391,7 +315,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           }
           label="Grant this role general access"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

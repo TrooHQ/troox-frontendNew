@@ -556,7 +556,7 @@ const MenuBuilder = () => {
                                       <img
                                         src={item.img || CoffeeImg}
                                         alt=""
-                                        className="h-[150px] w-[200px] object-cover"
+                                        className="h-[50px] w-[60px] object-cover rounded"
                                       />
                                       <div className="">
                                         <p className="text-[12px] font-[400]">Item</p>
