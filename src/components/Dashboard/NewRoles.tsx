@@ -2,8 +2,8 @@ import { useState, ChangeEvent } from "react";
 
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import FAQSetting from "../FAQSetting";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import RolesAndPermission from "../RolesAndPermission";
 
 interface FAQItem {
   question: string;
@@ -16,24 +16,16 @@ const NewRoles = () => {
 
   const faqData: FAQItem[] = [
     {
-      question: "Menu settings",
+      question: "Level 1 User",
       inputValue: "Input 1",
     },
     {
-      question: "Cash register",
+      question: "Level 2 User",
       inputValue: "Input 2",
     },
     {
-      question: "Tickets",
+      question: "Level 3 User",
       inputValue: "Input 3",
-    },
-    {
-      question: "Table ordering",
-      inputValue: "Input 4",
-    },
-    {
-      question: "Kitchen display system",
-      inputValue: "Input 5",
     },
   ];
 
@@ -104,7 +96,7 @@ const NewRoles = () => {
 
         <div className="my-10 ">
           <div className="flex items-center justify-between">
-            <p className="text-[24px] font-[500] text-purple500">New Roles</p>
+            <p className="text-[24px] font-[500] text-purple500">Permissions setting</p>
             <div>
               <FormControlLabel
                 control={
@@ -122,15 +114,13 @@ const NewRoles = () => {
           </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
-              <FAQSetting
+              <RolesAndPermission
                 faqData={faqData}
                 faqDataInner={faqDataInner}
                 openIndex={openIndex}
                 openIndexInner={openIndexInner}
                 toggleAnswer={toggleAnswer}
                 toggleAnswer2={toggleAnswer2}
-                handleInputChange={handleInputChange}
-                handleInputChange2={handleInputChange2}
               />
             </div>
           </div>
