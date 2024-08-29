@@ -21,7 +21,13 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 interface MenuItem {
   _id: string;
   menu_item_name: string;
+  menu_group_name: string;
+  menu_item_image: string;
   menu_item_price: number;
+  name: string;
+
+  business_name: string;
+  menu_category_name: string;
 }
 
 interface Details extends MenuItem {
@@ -32,6 +38,10 @@ interface Details extends MenuItem {
   menu_group_name: string;
   menu_item_name: string;
   menu_item_image: string;
+}
+
+interface GroupedMenuItems {
+  [groupName: string]: MenuItem[];
 }
 
 export const OnlineOrderingCategoryDetails = () => {
@@ -47,6 +57,18 @@ export const OnlineOrderingCategoryDetails = () => {
     selectedGroup === "All"
       ? menuItems
       : menuItems.filter((menu) => menu.menu_group_name === selectedGroup);
+
+  const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
+    (acc: GroupedMenuItems, item: MenuItem) => {
+      const { menu_group_name } = item;
+      if (!acc[menu_group_name]) {
+        acc[menu_group_name] = [];
+      }
+      acc[menu_group_name].push(item);
+      return acc;
+    },
+    {}
+  );
 
   const ids = useSelector((state: RootState) => state.basket.items);
   const totalCount = useSelector((state: RootState) => state.basket);
@@ -257,101 +279,99 @@ export const OnlineOrderingCategoryDetails = () => {
             </div>
           </div>
 
-          {filteredMenuItems.map((menu) => (
-            <div key={menu._id} className={` mx-[24px] `}>
-              <>
-                <div className="">
-                  <div
-                    className=" py-[11px] border-b border-[#E7E7E7] "
-                    key={menu._id}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className=" w-[180px]">
-                        <p className=" text-[16px] text-[#121212] font-[500]">
-                          {menu.menu_item_name}
-                        </p>
-                        <p className=" text-[12px] font-[400] text-[#121212]">
-                          Delicious Delicacy
-                        </p>
-                      </div>
+          <div className=" py-[20px]">
+            {Object.keys(groupedMenuItems).map((groupName) => (
+              <div key={groupName} className="mb-[24px]">
+                <p className="text-[20px] font-bold text-[#121212] mb-[12px] px-[24px]">
+                  {groupName === "undefined" ? "" : groupName}
+                </p>
 
-                      <div className="">
-                        <Link
-                          to={`/demo/menu-details/${menu._id}/online_ordering`}
-                        >
-                          <img
-                            src={menu.menu_item_image}
-                            alt=""
-                            className=" h-[80px] w-[80px] object-cover rounded-[8px]"
-                          />
-                        </Link>
-                      </div>
-                    </div>
+                {groupedMenuItems[groupName].map((menu) => (
+                  <div key={menu._id} className="mx-[24px]">
+                    <div className="py-[11px] border-b border-[#E7E7E7]">
+                      <div className="flex items-center justify-between">
+                        <div className="w-[180px]">
+                          <p className="text-[16px] text-[#121212] font-[500]">
+                            {menu.menu_item_name}
+                          </p>
+                          <p className="text-[12px] font-[400] text-[#121212]">
+                            Delicious Delicacy
+                          </p>
+                        </div>
 
-                    <div className="pt-[8px] flex items-center justify-between">
-                      <p className=" text-[16px] text-[#121212] font-[500] ">
-                        From &#x20A6;{menu.menu_item_price.toLocaleString()}
-                      </p>
-
-                      <div className="w-[100px]">
-                        {ids.find((item: any) => item.id === menu._id) ? (
-                          <div
-                            key={menu._id}
-                            className="flex items-center justify-end gap-[12px]"
+                        <div>
+                          <Link
+                            to={`/demo/menu-details/${menu._id}/online_ordering`}
                           >
-                            <div
-                              className="  cursor-pointer text-white    rounded-full"
-                              onClick={() => decrement(menu)}
-                              style={{
-                                backgroundColor: colorScheme || "#414141",
-                              }}
-                            >
-                              <HiMinusSm className=" text-[27px]" />
-                            </div>
+                            <img
+                              src={menu.menu_item_image}
+                              alt={menu.menu_item_name}
+                              className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                            />
+                          </Link>
+                        </div>
+                      </div>
 
-                            <p className="text-[16px] font-[500]">
-                              {ids.find((item) => item.id === menu._id)
-                                ?.quantity || 1}
-                            </p>
-                            <div
-                              className="  cursor-pointer text-white   rounded-full"
-                              onClick={() => increment(menu)}
-                              style={{
-                                backgroundColor: colorScheme || "#414141",
-                              }}
-                            >
-                              <HiPlusSm className=" text-[27px]" />
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="">
-                            <Link
-                              to={`/demo/menu-details/${menu._id}/online_ordering`}
-                            >
-                              <div className="flex items-center justify-end ">
-                                <div
-                                  className=" inline-flex cursor-pointer text-white    rounded-full"
-                                  onClick={() => increment(menu)}
-                                  style={{
-                                    backgroundColor: colorScheme || "#414141",
-                                  }}
-                                >
-                                  <HiPlusSm className=" text-[27px]" />
-                                </div>
+                      <div className="pt-[8px] flex items-center justify-between">
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          From &#x20A6;{menu.menu_item_price.toLocaleString()}
+                        </p>
+
+                        <div className="w-[100px]">
+                          {ids.find((item) => item.id === menu._id) ? (
+                            <div className="flex items-center justify-end gap-[12px]">
+                              <div
+                                className="cursor-pointer text-white rounded-full"
+                                onClick={() => decrement(menu)}
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiMinusSm className="text-[27px]" />
                               </div>
-                              {/* <div className="flex items-center justify-end">
-                                <img src={Add} alt="add" />
-                              </div> */}
-                            </Link>
-                          </div>
-                        )}
+
+                              <p className="text-[16px] font-[500]">
+                                {ids.find((item) => item.id === menu._id)
+                                  ?.quantity || 1}
+                              </p>
+
+                              <div
+                                className="cursor-pointer text-white rounded-full"
+                                onClick={() => increment(menu)}
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiPlusSm className="text-[27px]" />
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <Link
+                                to={`/demo/menu-details/${menu._id}/online_ordering`}
+                              >
+                                <div className="flex items-center justify-end">
+                                  <div
+                                    className="inline-flex cursor-pointer text-white rounded-full"
+                                    onClick={() => increment(menu)}
+                                    style={{
+                                      backgroundColor: colorScheme || "#414141",
+                                    }}
+                                  >
+                                    <HiPlusSm className="text-[27px]" />
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </>
-            </div>
-          ))}
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
         {ids && (
           <div className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto">
