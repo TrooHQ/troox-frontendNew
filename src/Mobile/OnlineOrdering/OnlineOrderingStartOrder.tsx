@@ -9,6 +9,7 @@ import {
   setURL,
   setBranchID,
 } from "../../slices/businessSlice";
+import Logo from "../assets/Restaurant_Logo.svg";
 import { RootState } from "../../store/store";
 import NotFound from "../NotFound";
 
@@ -76,7 +77,7 @@ const OnlineOrderingStartOrder = () => {
     >
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
-          src={businessDetails?.business_logo}
+          src={Logo || businessDetails?.business_logo}
           alt=""
           className="mb-[10px]"
         />
