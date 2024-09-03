@@ -471,21 +471,20 @@ export const OnlineOrderingBasket = () => {
                   className="bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full"
                   inputMode="tel"
                 />
-
-                <input
-                  type="text"
-                  id="name"
-                  value={town}
-                  onChange={(e) => setTown(e.target.value)}
-                  placeholder="Town"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
                 <input
                   type="text"
                   id="name"
                   value={streetAddress}
                   onChange={(e) => setStreetAddress(e.target.value)}
                   placeholder="Street Address"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+                <input
+                  type="text"
+                  id="name"
+                  value={town}
+                  onChange={(e) => setTown(e.target.value)}
+                  placeholder="City"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
               </div>

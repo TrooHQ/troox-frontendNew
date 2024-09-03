@@ -550,7 +550,7 @@ const SettingsPage = () => {
 
               <Link to="/demo/choose-color/troo-portal">
                 <p className="text-grey300 text-[16px] cursor-pointer">
-                  Change Color
+                Manage Themes
                 </p>
               </Link>
             </div>
