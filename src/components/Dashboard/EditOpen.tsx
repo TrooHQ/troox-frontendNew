@@ -1,28 +1,8 @@
-import React, { useState } from "react";
 import CustomInput from "../inputFields/CustomInput";
 
-type ModifierRules = {
-  [key: string]: boolean;
-};
-
 const EditOpen = ({ setIsEditOpen }: any) => {
-  const [modifierRules, setModifierRules] = useState<ModifierRules>({});
-
-  const rules = [
-    { key: "rule1", label: "Online Ordering" },
-    { key: "rule2", label: "Self Ordering" },
-    { key: "rule3", label: "QR Order & Pay" },
-    { key: "rule4", label: "QR In-Room Ordering" },
-  ];
-
-  const handleRuleChange = (key: string) => {
-    setModifierRules((prevRules) => ({
-      ...prevRules,
-      [key]: !prevRules[key],
-    }));
-  };
   const handleGroupName = (value: string) => {
-    console.log("value");
+    console.log(value);
   };
   return (
     <div
@@ -51,9 +31,12 @@ const EditOpen = ({ setIsEditOpen }: any) => {
                     /> */}
 
             <div className="">
-              <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Pricing</p>
+              <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                Pricing
+              </p>
               <p className=" text-[14px] font-[400] text-grey500">
-                Do you want this price to apply to all the items in this menu group?
+                Do you want this price to apply to all the items in this menu
+                group?
               </p>
               <div className="flex items-center mt-[8px]">
                 <input
@@ -65,7 +48,10 @@ const EditOpen = ({ setIsEditOpen }: any) => {
                   // onChange={handleOptionChange}
                   // className={`mr-2 ${applyPriceToAll === true ? "bg-purple500" : ""}`}
                 />
-                <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
+                <label
+                  htmlFor="yes"
+                  className="mr-4  text-grey500 text-[16px] font-[400]"
+                >
                   Yes
                 </label>
 
@@ -78,7 +64,10 @@ const EditOpen = ({ setIsEditOpen }: any) => {
                   // onChange={handleOptionChange}
                   // className={`mr-2 ${applyPriceToAll === false ? "bg-purple500" : ""}`}
                 />
-                <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
+                <label
+                  htmlFor="no"
+                  className=" text-grey500 text-[16px] font-[400]"
+                >
                   No
                 </label>
               </div>
@@ -133,7 +122,9 @@ const EditOpen = ({ setIsEditOpen }: any) => {
             className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
             onClick={() => setIsEditOpen(false)}
           >
-            <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+            <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+              Cancel
+            </p>
             {/* <CancelButton text="Cancel" /> */}
           </div>
 

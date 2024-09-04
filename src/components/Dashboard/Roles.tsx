@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";

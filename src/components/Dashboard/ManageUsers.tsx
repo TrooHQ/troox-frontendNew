@@ -29,7 +29,6 @@ const ManageUsers: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
-  const [employeeType, setEmployeeType] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);

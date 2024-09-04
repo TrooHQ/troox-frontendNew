@@ -2,12 +2,10 @@ import { useState, ChangeEvent } from "react";
 import axios from "axios";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { Checkbox, FormControlLabel } from "@mui/material";
 import RolesAndPermission from "../RolesAndPermission";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { WindowSharp } from "@mui/icons-material";
 
 interface FAQItem {
   question: string;
@@ -18,7 +16,6 @@ const NewRoles = () => {
   const navigate = useNavigate();
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [openIndexInner, setOpenIndexInner] = useState<number | null>(null);
   const [roleName, setRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
@@ -36,9 +33,6 @@ const NewRoles = () => {
 
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
-  };
-  const toggleAnswer2 = (index2: number) => {
-    setOpenIndexInner(openIndexInner === index2 ? null : index2);
   };
 
   const handleRoleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -98,7 +92,6 @@ const NewRoles = () => {
     }
   };
 
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (
     <DashboardLayout>
       <TopMenuNav pathName="Manage Users" />

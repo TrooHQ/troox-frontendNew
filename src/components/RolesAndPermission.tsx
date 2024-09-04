@@ -1,7 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
-import { Link, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel, Tooltip } from "@mui/material";
 import { InfoOutlined } from "@mui/icons-material";
 
@@ -36,39 +34,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   checkedTickets,
   setCheckedTickets,
 }) => {
-  const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
-    Array(faqData.length).fill(false)
-  );
   const [grantGeneralAccess, setGrantGeneralAccess] = useState(false);
   const [grantInventoryAccess, setGrantInventoryAccess] = useState(false);
   const [grantTicketAccess, setGrantTicketAccess] = useState(false);
-
-  const navigate = useNavigate();
-
-  const CheckboxWithLabel = ({
-    id,
-    label,
-    checked,
-    handlePermissionChange,
-  }: {
-    id: string;
-    label: string;
-    checked: boolean;
-    handlePermissionChange: (label: string) => void;
-  }) => (
-    <div className="flex flex-row-reverse items-center mb-6">
-      <input
-        type="checkbox"
-        id={id}
-        className="h-6 w-6 mr-[24px] border border-black"
-        checked={checked} // This is the important part to control the checkbox state
-        onChange={() => handlePermissionChange(label)} // Use the label as permission
-      />
-      <label htmlFor={id} className="text-[16px] font-[400] text-grey500">
-        {label}
-      </label>
-    </div>
-  );
 
   const generalLabels = [
     { id: "levelOneCheck", label: "Create Menus" },
@@ -249,8 +217,6 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
         </label>
       </div>
     ));
-
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   return (
     <div className="grid gap-[24px]">
