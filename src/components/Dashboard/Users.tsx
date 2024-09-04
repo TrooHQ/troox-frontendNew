@@ -23,20 +23,22 @@ const Users = ({
           users.map((user: any) => (
             <div
               key={user.id}
-              className="grid grid-cols-8 items-center px-5 py-4 font-[400] bg-[#F8F8F8] text-[16px] text-grey500"
+              className="grid grid-cols-8 items-center px-5 py-2 font-[400] bg-[#F8F8F8] text-[16px] text-grey500"
             >
-              <div className="col-span-2 px-3 py-2 flex items-center gap-[16px] overflow-visible whitespace-normal break-words">
+              <div className="col-span-2 px-3 py-2 flex items-center gap-[16px] overflow-visible whitespace-normal">
                 <img src={Profileimg} alt="Profile" />
                 <div>
                   <p>
                     {user.first_name} {user.last_name}
                   </p>
-                  <p className="font-medium text-[14px]">{user.personal_email}</p>
+                  <p className="font-medium text-[14px]">
+                    {user.personal_email}
+                  </p>
                 </div>
               </div>
-              <p className="px-3 py-2 break-words">{user.user_role}</p>
-              <p className="col-span-2 px-3 py-2 break-words">{user._id}</p>
-              <p className="px-3 py-2 break-words">{user.phone_number}</p>
+              <p className="px-3 py-2">{user.user_role}</p>
+              <p className="col-span-2 px-3 py-2">{user._id}</p>
+              <p className="px-3 py-2">{user.phone_number}</p>
               <div className="px-3 py-2 flex items-center col-span-2 justify-end">
                 <div className="text-[14px] flex gap-2 items-center border-2 rounded-md border-grey200">
                   <button

@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import ArrowToggle from "../assets/chevron-down.svg";
+import ArrowToggle2 from "../assets/chevron-down2.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
@@ -82,12 +83,18 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     { id: "levelOneCheck", label: "Generate Self Checkout Link" },
     { id: "levelOneCheck", label: "View Open and Closed Tickets" },
     { id: "levelOneCheck", label: "Void Order for Open and Closed Tickets" },
-    { id: "levelOneCheck", label: "Request Refund for Order on Closed Tickets" },
+    {
+      id: "levelOneCheck",
+      label: "Request Refund for Order on Closed Tickets",
+    },
     { id: "levelOneCheck", label: "Vacate Table on Closed Tickets" },
     { id: "levelOneCheck", label: "View Business Report" },
     { id: "levelOneCheck", label: "Download Business Report" },
     { id: "levelOneCheck", label: "Add Users" },
-    { id: "levelOneCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    {
+      id: "levelOneCheck",
+      label: "Accept or Decline Incoming Tickets on Waiter App",
+    },
     { id: "levelOneCheck", label: "Change Order Status on Waiter App" },
     { id: "levelOneCheck", label: "Collect Tips on Waiter App" },
     { id: "levelOneCheck", label: "View Earnings from Tips" },
@@ -111,12 +118,18 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     { id: "levelTwoCheck", label: "Generate Self Checkout Link" },
     { id: "levelTwoCheck", label: "View Open and Closed Tickets" },
     { id: "levelTwoCheck", label: "Void Order for Open and Closed Tickets" },
-    { id: "levelTwoCheck", label: "Request Refund for Order on Closed Tickets" },
+    {
+      id: "levelTwoCheck",
+      label: "Request Refund for Order on Closed Tickets",
+    },
     { id: "levelTwoCheck", label: "Vacate Table on Closed Tickets" },
     { id: "levelTwoCheck", label: "View Business Report" },
     { id: "levelTwoCheck", label: "Download Business Report" },
     { id: "levelTwoCheck", label: "Add Users" },
-    { id: "levelTwoCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    {
+      id: "levelTwoCheck",
+      label: "Accept or Decline Incoming Tickets on Waiter App",
+    },
     { id: "levelTwoCheck", label: "Change Order Status on Waiter App" },
     { id: "levelTwoCheck", label: "Collect Tips on Waiter App" },
     { id: "levelTwoCheck", label: "View Earnings from Tips" },
@@ -127,7 +140,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   ];
 
   const ticketLabels = [
-    { id: "levelThreeCheck", label: "Accept or Decline Incoming Tickets on Waiter App" },
+    {
+      id: "levelThreeCheck",
+      label: "Accept or Decline Incoming Tickets on Waiter App",
+    },
     { id: "levelThreeCheck", label: "Change Order Status on Waiter App" },
     { id: "levelThreeCheck", label: "Collect Tips on Waiter App" },
     { id: "levelThreeCheck", label: "View Earnings from Tips" },
@@ -144,28 +160,43 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     const isChecked = event.target.checked;
     if (category === "general") {
       setGrantGeneralAccess(isChecked);
-      setCheckedGeneral(isChecked ? generalLabels.map((label) => label.label) : []);
+      setCheckedGeneral(
+        isChecked ? generalLabels.map((label) => label.label) : []
+      );
     } else if (category === "inventory") {
       setGrantInventoryAccess(isChecked);
-      setCheckedInventory(isChecked ? inventoryLabels.map((label) => label.label) : []);
+      setCheckedInventory(
+        isChecked ? inventoryLabels.map((label) => label.label) : []
+      );
     } else if (category === "ticket") {
       setGrantTicketAccess(isChecked);
-      setCheckedTickets(isChecked ? ticketLabels.map((label) => label.label) : []);
+      setCheckedTickets(
+        isChecked ? ticketLabels.map((label) => label.label) : []
+      );
     }
   };
 
-  const handleCheckboxChange = (label: string, category: "general" | "inventory" | "ticket") => {
+  const handleCheckboxChange = (
+    label: string,
+    category: "general" | "inventory" | "ticket"
+  ) => {
     if (category === "general") {
       setCheckedGeneral((prev: any) =>
-        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+        prev.includes(label)
+          ? prev.filter((item: any) => item !== label)
+          : [...prev, label]
       );
     } else if (category === "inventory") {
       setCheckedInventory((prev: any) =>
-        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+        prev.includes(label)
+          ? prev.filter((item: any) => item !== label)
+          : [...prev, label]
       );
     } else if (category === "ticket") {
       setCheckedTickets((prev: any) =>
-        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
+        prev.includes(label)
+          ? prev.filter((item: any) => item !== label)
+          : [...prev, label]
       );
     }
   };
@@ -183,7 +214,11 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   }, [checkedTickets]);
 
   useEffect(() => {
-    const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
+    const allCheckedLabels = [
+      ...checkedGeneral,
+      ...checkedInventory,
+      ...checkedTickets,
+    ];
     const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
     setSelectedPermissions(uniqueCheckedLabels);
   }, [checkedGeneral, checkedInventory, checkedTickets]);
@@ -202,7 +237,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           checked={checkedState.includes(item.label)}
           onChange={() => handleCheckboxChange(item.label, category)}
         />
-        <label htmlFor={`${item.id}${index}`} className="text-[16px] font-[400] text-grey500">
+        <label
+          htmlFor={`${item.id}${index}`}
+          className="text-[16px] font-[400] text-grey500"
+        >
           {item.label}
         </label>
       </div>
@@ -215,16 +253,18 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`bg-purple500 border border-purple500 focus:outline-[#5955B3] w-full rounded`}
+          className={`bg-[#f8f8f8] border border-[#f8f8f8] focus:outline-[#5955B3] w-full rounded`}
         >
           <div
             onClick={() => toggleAnswer(index)}
             className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
           >
-            <p className="text-[#ffffff] font-[500] text-[14px] lg:text-[16px]">{faq.question}</p>
+            <p className="text-purple500 font-[500] text-[14px] lg:text-[16px]">
+              {faq.question}
+            </p>
             <div className="flex items-center">
               <img
-                src={ArrowToggle}
+                src={ArrowToggle2}
                 alt=""
                 className={`transform transition-transform duration-300 ${
                   openIndex === index ? "rotate-180" : ""
@@ -240,7 +280,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     control={
                       <Checkbox
                         checked={grantGeneralAccess}
-                        onChange={(e) => handleMasterCheckboxChange(e, "general")}
+                        onChange={(e) =>
+                          handleMasterCheckboxChange(e, "general")
+                        }
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },
@@ -262,7 +304,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     control={
                       <Checkbox
                         checked={grantInventoryAccess}
-                        onChange={(e) => handleMasterCheckboxChange(e, "inventory")}
+                        onChange={(e) =>
+                          handleMasterCheckboxChange(e, "inventory")
+                        }
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },
@@ -275,7 +319,11 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                       color: "#5955B3",
                     }}
                   />
-                  {renderCheckboxes(inventoryLabels, checkedInventory, "inventory")}
+                  {renderCheckboxes(
+                    inventoryLabels,
+                    checkedInventory,
+                    "inventory"
+                  )}
                 </>
               )}
               {index === 2 && (
@@ -284,7 +332,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     control={
                       <Checkbox
                         checked={grantTicketAccess}
-                        onChange={(e) => handleMasterCheckboxChange(e, "ticket")}
+                        onChange={(e) =>
+                          handleMasterCheckboxChange(e, "ticket")
+                        }
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },

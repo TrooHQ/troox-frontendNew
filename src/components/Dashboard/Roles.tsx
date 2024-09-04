@@ -2,29 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRoles } from "../../slices/rolesSlice";
+import { AppDispatch } from "../../store/store";
 
 const Roles = () => {
-  const [roles, setRoles] = useState([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const roles = useSelector((state: any) => state.roles.roles);
 
   useEffect(() => {
-    const fetchRoles = async () => {
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-      try {
-        const response = await axios.get(`${SERVER_DOMAIN}/role/getAllRolesByBusiness`, headers);
-        console.log("Roles:", response.data);
-        setRoles(response.data);
-      } catch (error) {
-        console.error("Error fetching roles:", error);
-      }
-    };
-
-    fetchRoles();
-  }, []);
+    dispatch(fetchRoles());
+  }, [dispatch]);
 
   // Clone
   const [saveLoading, setSaveLoading] = useState(false);
@@ -90,7 +78,9 @@ const Roles = () => {
           className="grid grid-cols-5 items-center px-5 py-4 bg-[#F8F8F8] text-grey500 text-[16px] my-3"
         >
           <p className="px-3 py-2">{role.name}</p>
-          <p className="col-span-2">{role.description || "No description available"}</p>
+          <p className="col-span-2">
+            {role.description || "No description available"}
+          </p>
           <div className="px-3 py-2 flex items-center col-span-2 justify-end">
             <div className="text-[14px] flex gap-2 items-center border rounded-md border-grey200">
               {["Edit", "Clone", "Delete"].map((action, index) => (

@@ -20,7 +20,7 @@ const ManageUsers: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
   const roles = useSelector((state: any) => state.roles.roles);
-  console.log(roles, "llll");
+
   // Local state for form fields
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");

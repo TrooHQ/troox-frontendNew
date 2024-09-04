@@ -69,6 +69,7 @@ const NewRoles = () => {
       );
 
       toast.success("Role created successfully.");
+      navigate(-1);
 
       const { _id: role_id, name: role_name } = roleResponse.data.data;
 
@@ -145,21 +146,9 @@ const NewRoles = () => {
 
         <div className="my-10 ">
           <div className="flex items-center justify-between">
-            <p className="text-[24px] font-[500] text-purple500">Permissions setting</p>
-            {/* <div>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...label}
-                    sx={{
-                      "& .MuiSvgIcon-root": { fontSize: 32 },
-                      "&.Mui-checked": { color: "#5855B3" },
-                    }}
-                  />
-                }
-                label="Grant this role general access"
-              />
-            </div> */}
+            <p className="text-[24px] font-[500] text-purple500">
+              Permissions setting
+            </p>
           </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
