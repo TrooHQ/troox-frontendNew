@@ -2,7 +2,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import ArrowToggle from "../assets/chevron-down.svg";
 import ArrowToggle2 from "../assets/chevron-down2.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel, Tooltip } from "@mui/material";
+import { InfoOutlined } from "@mui/icons-material";
 
 interface FAQItem {
   question: string;
@@ -55,7 +56,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     checked: boolean;
     handlePermissionChange: (label: string) => void;
   }) => (
-    <div className="flex items-center mb-6">
+    <div className="flex flex-row-reverse items-center mb-6">
       <input
         type="checkbox"
         id={id}
@@ -229,7 +230,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     category: "general" | "inventory" | "ticket"
   ) =>
     labels.map((item, index) => (
-      <div key={index} className="flex items-center mb-6">
+      <div
+        key={index}
+        className="flex flex-row-reverse justify-between items-center mb-6"
+      >
         <input
           type="checkbox"
           id={`${item.id}${index}`}
@@ -275,7 +279,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           {openIndex === index && (
             <div className="bg-white text-[#757575] text-[12px] lg:text-[18px] font-[300] py-[24px] px-[24px]">
               {index === 0 && (
-                <>
+                <div className="flex flex-col">
+                  <Tooltip title="this option is for abc">
+                    <InfoOutlined className="cursor" />
+                  </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -296,10 +303,13 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     }}
                   />
                   {renderCheckboxes(generalLabels, checkedGeneral, "general")}
-                </>
+                </div>
               )}
               {index === 1 && (
-                <>
+                <div className="flex flex-col">
+                  <Tooltip title="this option is for abc">
+                    <InfoOutlined className="cursor" />
+                  </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -324,10 +334,13 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     checkedInventory,
                     "inventory"
                   )}
-                </>
+                </div>
               )}
               {index === 2 && (
-                <>
+                <div className="flex flex-col">
+                  <Tooltip title="this option is for abc">
+                    <InfoOutlined className="cursor" />
+                  </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -348,7 +361,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                     }}
                   />
                   {renderCheckboxes(ticketLabels, checkedTickets, "ticket")}
-                </>
+                </div>
               )}
             </div>
           )}
