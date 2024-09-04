@@ -88,6 +88,12 @@ export const Basket = () => {
     }
   };
 
+  const userDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const color = userDetails?.colour_scheme || "#FF0000";
+
   return (
     <div className=" ">
       <div className=" mt-[50px] ">
@@ -136,10 +142,13 @@ export const Basket = () => {
                   &#x20A6;{item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
                 <p
-                  className=" text-[50px] text-[#ff0000]"
+                  className=" text-[50px] "
                   onClick={() =>
                     dispatch(removeItemFromBasket({ id: item.id }))
                   }
+                  style={{
+                    color: color || "#FF0000",
+                  }}
                 >
                   <TiDelete />
                 </p>
@@ -189,14 +198,22 @@ export const Basket = () => {
         {backetDetails?.items.length > 0 && (
           <div className=" mt-[10px] flex items-center justify-center gap-[16px] mb-[40px]">
             <p
-              className=" rounded-full cursor-pointer font-[500] text-[32px] text-[#FF0000] py-[20px] px-[40px] border-[3px] border-[#FF0000]"
+              className=" rounded-full cursor-pointer font-[500] text-[32px]  py-[20px] px-[40px] border-[3px] "
               onClick={() => navigate(-1)}
+              style={{
+                borderColor: color || "#FF0000",
+                color: color || "#FF0000",
+              }}
             >
               Cancel
             </p>
             <p
-              className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]  bg-[#FF0000] border-[#FF0000] text-white py-[20px] px-[40px]"
+              className=" cursor-pointer inline font-[500] text-[32px] rounded-full border-[3px]   text-white py-[20px] px-[40px]"
               onClick={() => setIsOpen(true)}
+              style={{
+                backgroundColor: color || "#FF0000",
+                borderColor: color || "#FF0000",
+              }}
             >
               Proceed to Pay
             </p>
@@ -230,10 +247,18 @@ export const Basket = () => {
                     key={index}
                     className={`py-[39px] px-[134px] flex items-center  justify-center text-center cursor-pointer rounded-[10px] text-[#121212] text-[36px] font-[500] ${
                       selectedPercentage === tip
-                        ? "bg-[#FF0000] border border-[#FF0000] text-white"
-                        : "border-2 border-[#606060]"
+                        ? " text-white"
+                        : "border-2 border-[#606060] "
                     }`}
                     onClick={() => handlePercentageClick(tip)}
+                    style={{
+                      backgroundColor:
+                        selectedPercentage === tip ? color || "#ff0000" : " ",
+                      borderColor:
+                        selectedPercentage === tip
+                          ? color || "#ff0000"
+                          : "#606060",
+                    }}
                   >
                     <p className=" text-center"> {(tip * 100).toFixed(1)}%</p>
                   </div>
@@ -282,18 +307,24 @@ export const Basket = () => {
                 onChange={handleCustomAmountChange}
               />
 
-              <div className=" mt-[25px]">
+              <div className="mt-[25px]">
                 <p
-                  className=" px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
+                  className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[16px] font-[500] cursor-pointer"
                   onClick={() => setTipModal(false)}
+                  style={{
+                    color: color || "#FF0000",
+                  }}
                 >
                   Cancel
                 </p>
                 <p
                   className={`px-[24px] py-[10px] ${
-                    !tip ? " bg-[#85C0BE]" : "bg-[#FF0000] cursor-pointer"
-                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] `}
+                    !tip ? "bg-[#85C0BE]" : "cursor-pointer"
+                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
                   onClick={tip ? handleNext : undefined}
+                  style={{
+                    backgroundColor: tip ? color || "#FF0000" : "#85C0BE",
+                  }}
                 >
                   Next
                 </p>

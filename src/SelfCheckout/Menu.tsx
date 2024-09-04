@@ -53,9 +53,14 @@ const Menu = () => {
     getCategories();
   }, []);
 
+  const color = businessDetails?.colour_scheme || "#FF0000";
   return (
     <div>
-      <Header2 bgColor="#ff0000" textColor="#ffffff" borderColor="#ffffff" />
+      <Header2
+        bgColor={`${color || "#ff0000"}`}
+        textColor="#ffffff"
+        borderColor="#ffffff"
+      />
 
       <div className=" mt-[53px]">
         <div className=" px-[21px]">
@@ -67,7 +72,10 @@ const Menu = () => {
           {menuCategory.map((menu) => (
             <Link to={`/demo/category-details/${menu?.name}/selfcheckout`}>
               <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
-                <div className=" h-[200px] w-[200px] text-center bg-[#FF0000] border-[8px] border-[#FFE100] rounded-full drop-shadow-md">
+                <div
+                  className=" h-[200px] w-[200px] text-center  border-[8px] border-[#FFE100] rounded-full drop-shadow-md"
+                  style={{ backgroundColor: color || "#FF0000" }}
+                >
                   <div className="overflow-hidden h-full w-full rounded-full">
                     <img
                       src={menu.image}

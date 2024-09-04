@@ -162,6 +162,8 @@ export const CategoryDetails = () => {
   const business_identifier = businessDetails?._id;
   console.log(business_identifier);
 
+  const color = businessDetails?.colour_scheme || "#FF0000";
+
   useEffect(() => {
     const getGroups = async () => {
       const headers = {
@@ -237,12 +239,18 @@ export const CategoryDetails = () => {
                   <div key={menu._id} className="">
                     {menu.menu_category_name === id && (
                       <p
-                        className={`px-[24px] py-[8px] ${
+                        className={`px-[24px] py-[8px] text-[32px] cursor-pointer ${
                           selectedGroup === menu?.name
-                            ? "text-[#C5291E]  font-[600]"
-                            : "text-[#606060] font-[400]"
-                        } text-[32px] cursor-pointer`}
+                            ? "font-[600]"
+                            : "font-[400] text-[#606060]"
+                        }`}
                         onClick={() => setSelectedGroup(menu?.name)}
+                        style={{
+                          color:
+                            selectedGroup === menu?.name
+                              ? color || "#C5291E"
+                              : "#606060",
+                        }}
                       >
                         {menu?.name}
                       </p>
@@ -253,7 +261,10 @@ export const CategoryDetails = () => {
             </div>
 
             {selectedGroup && (
-              <p className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] bg-[#FF0000]">
+              <p
+                className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] "
+                style={{ backgroundColor: color || "#FF0000" }}
+              >
                 {selectedGroup}
               </p>
             )}
@@ -326,7 +337,10 @@ export const CategoryDetails = () => {
                       </p>
                     </div>
                     <div className="pt-[8px] flex items-center justify-between px-[24px]">
-                      <p className="text-[36px] text-[#C5291E] font-[500]">
+                      <p
+                        className="text-[36px  font-[500]"
+                        style={{ color: color || "#C5291E" }}
+                      >
                         &#x20A6;{menu?.menu_item_price?.toLocaleString()}
                       </p>
 
@@ -369,7 +383,10 @@ export const CategoryDetails = () => {
         </div>
         {ids && (
           <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto my-[16px]">
-            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#C5291E] rounded-[3px] ">
+            <div
+              className="flex justify-between items-center py-[13px] px-[24px]  rounded-[3px] "
+              style={{ backgroundColor: color || "#C5291E" }}
+            >
               <div className="flex items-center gap-[16px] text-[44px] font-[500] text-white">
                 <p>
                   Total &#x20A6;

@@ -207,31 +207,33 @@ export const OnlineOrderingCategoryDetails = () => {
               <div className="flex gap-[8px] items-center">
                 {Array.from(
                   new Set(menuItems.map((menu) => menu.menu_group_name))
-                ).map((groupName, index) => (
-                  <div key={index}>
-                    <p
-                      className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
-                      style={{
-                        backgroundColor:
-                          selectedGroup === groupName
-                            ? colorScheme || "#929292"
-                            : "transparent",
-                        borderColor:
-                          selectedGroup === groupName
-                            ? colorScheme || "#929292"
-                            : "#B6B6B6",
-                        color:
-                          selectedGroup === groupName ? "#FFFFFF" : "#606060",
-                        fontWeight:
-                          selectedGroup === groupName ? "bold" : "400",
-                        borderStyle: "solid",
-                      }}
-                      onClick={() => handleGroupClick(groupName)}
-                    >
-                      {groupName}
-                    </p>
-                  </div>
-                ))}
+                )
+                  .filter((groupName) => groupName !== undefined)
+                  .map((groupName, index) => (
+                    <div key={index}>
+                      <p
+                        className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
+                        style={{
+                          backgroundColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "transparent",
+                          borderColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "#B6B6B6",
+                          color:
+                            selectedGroup === groupName ? "#FFFFFF" : "#606060",
+                          fontWeight:
+                            selectedGroup === groupName ? "bold" : "400",
+                          borderStyle: "solid",
+                        }}
+                        onClick={() => handleGroupClick(groupName)}
+                      >
+                        {groupName}
+                      </p>
+                    </div>
+                  ))}
               </div>
             </div>
 

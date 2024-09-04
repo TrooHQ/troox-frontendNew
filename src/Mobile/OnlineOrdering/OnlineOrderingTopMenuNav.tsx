@@ -60,11 +60,13 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
   return (
     <div
       className={`${
-        isSticky ? "fixed top-0 left-0 right-0 shadow-md" : ""
+        isSticky
+          ? "fixed top-0 left-0 right-0 shadow-md shadow-slate-400"
+          : "shadow"
       } z-10 transition-all duration-300 ease-in-out`}
     >
       <div
-        className="grid grid-cols-3 items-center py-4 shadow"
+        className="grid grid-cols-3 items-center py-4"
         style={{ backgroundColor: colorScheme }}
       >
         <div className="justify-self-start">
