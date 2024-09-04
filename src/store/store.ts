@@ -11,6 +11,7 @@ import registerReducer from "../slices/registerSlice";
 import bankRegisterReducer from "../slices/bankRegisterSlice";
 import basketReducer from "../slices/BasketSlice";
 import branchReducer from "../slices/branchSlice";
+import rolesReducer from "../slices/rolesSlice";
 import menuReducer from "../slices/menuSlice";
 import tableReducer from "../slices/TableSlice";
 
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   bankRegister: bankRegisterReducer,
   basket: basketReducer,
   branches: branchReducer,
+  roles: rolesReducer,
   menu: menuReducer,
   tables: tableReducer,
 });
@@ -39,6 +41,7 @@ const persistConfig = {
     "business",
     "basket",
     "branches",
+    "roles",
     "menu",
     "tables",
   ],
