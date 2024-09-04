@@ -8,6 +8,7 @@ import CustomSelect from "../inputFields/CustomSelect";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { fetchBranches } from "../../slices/branchSlice";
+import { fetchRoles } from "../../slices/rolesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { toast } from "react-toastify";
@@ -18,6 +19,7 @@ import Users from "./Users";
 const ManageUsers: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
+  const roles = useSelector((state: any) => state.roles.roles);
 
   // Local state for form fields
   const [firstName, setFirstName] = useState<string>("");
@@ -27,7 +29,6 @@ const ManageUsers: React.FC = () => {
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
-  const [employeeType, setEmployeeType] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
@@ -52,6 +53,7 @@ const ManageUsers: React.FC = () => {
   }, [selectedUser]);
   useEffect(() => {
     dispatch(fetchBranches());
+    dispatch(fetchRoles());
   }, [dispatch]);
 
   const handleNewRoleClick = () => {
@@ -70,7 +72,10 @@ const ManageUsers: React.FC = () => {
       },
     };
     try {
-      const response = await axios.get(`${SERVER_DOMAIN}/employee/getAllEmployee`, headers);
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/employee/getAllEmployee`,
+        headers
+      );
       setUsers(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -122,7 +127,7 @@ const ManageUsers: React.FC = () => {
           email,
           phone_number: mobileNumber,
           branch_id: selectedBranchId,
-          // role: selectedRole,
+          role: selectedRole,
           // employeeType,
         },
         headers
@@ -156,7 +161,9 @@ const ManageUsers: React.FC = () => {
       const clonedUser = {
         first_name: user.first_name,
         last_name: user.last_name,
-        email: `${user.personal_email.split("@")[0]}cloned@${user.personal_email.split("@")[1]}`,
+        email: `${user.personal_email.split("@")[0]}cloned@${
+          user.personal_email.split("@")[1]
+        }`,
         phone_number: user.phone_number,
         branch_id: user.branch,
       };
@@ -216,7 +223,9 @@ const ManageUsers: React.FC = () => {
   const handleBranchSelect = (branchId: string) => {
     setSelectedBranch(branchId);
 
-    const selectedBranchObj = branches.find((branch: any) => branch._id === branchId);
+    const selectedBranchObj = branches.find(
+      (branch: any) => branch._id === branchId
+    );
     if (selectedBranchObj) {
       setSelectedBranchId(selectedBranchObj._id);
     }
@@ -226,42 +235,12 @@ const ManageUsers: React.FC = () => {
     label: branch.branch_name,
     value: branch._id,
   }));
+  const rolesOptions = roles.map((role: any) => ({
+    label: role.name,
+    value: role.name,
+  }));
 
-  const handleEmployeeType = (type: string) => {
-    setEmployeeType(type);
-  };
-
-  const renderEmployeeTypeOptions = () => {
-    if (selectedRole === "Admin") {
-      return (
-        <CustomSelect
-          options={["Admin"]}
-          label="Employee Type"
-          value={employeeType}
-          onChange={handleEmployeeType}
-        />
-      );
-    } else if (selectedRole === "Operator") {
-      return (
-        <CustomSelect
-          options={["Manager"]}
-          label="Employee Type"
-          value={employeeType}
-          onChange={handleEmployeeType}
-        />
-      );
-    } else {
-      return (
-        <CustomSelect
-          options={["General user"]}
-          label="Employee Type"
-          value={employeeType}
-          onChange={handleEmployeeType}
-        />
-      );
-    }
-  };
-
+  console.log(rolesOptions, "roles");
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (index: number) => {
@@ -293,14 +272,18 @@ const ManageUsers: React.FC = () => {
               <Link to={`${activeTab === 0 && "/new-roles"}`}>
                 <button
                   className=""
-                  onClick={activeTab === 0 ? handleNewRoleClick : handleInviteUserClick}
+                  onClick={
+                    activeTab === 0 ? handleNewRoleClick : handleInviteUserClick
+                  }
                 >
                   {activeTab === 0 && "New Role"}
                 </button>
               </Link>
               <button
                 className=""
-                onClick={activeTab === 0 ? handleNewRoleClick : handleInviteUserClick}
+                onClick={
+                  activeTab === 0 ? handleNewRoleClick : handleInviteUserClick
+                }
               >
                 {activeTab === 1 && "Invite User"}
               </button>
@@ -360,32 +343,15 @@ const ManageUsers: React.FC = () => {
                     onChange={(newValue) => setMobileNumber(newValue)}
                   />
                   <div>
-                    <CustomSelect
-                      options={["Admin", "Operator", "General Users"]}
+                    <CustomSelect5
+                      options={rolesOptions}
                       label="User Role"
                       value={selectedRole}
                       onChange={handleRoleSelect}
                     />
-                    {selectedRole === "General Users" && (
-                      <div className="mt-0 ml-6 grid grid-cols-1 gap-4">
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          Waiter
-                        </label>
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          Kitchen Staff
-                        </label>
-                        <label className="flex items-center">
-                          <input type="checkbox" className="mr-2" />
-                          Others
-                          <input type="text" className="ml-2 border border-gray-300 p-1 rounded" />
-                        </label>
-                      </div>
-                    )}
                   </div>
 
-                  {renderEmployeeTypeOptions()}
+                  {/* {renderEmployeeTypeOptions()} */}
 
                   <CustomSelect5
                     options={branchOptions}
@@ -402,14 +368,18 @@ const ManageUsers: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
                   onClick={() => setIsModalOpen(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
                 </div>
 
                 <div
                   className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                   onClick={handleSendInvite}
                 >
-                  <button className="text-[16px]">{loading ? "Sending..." : "Send invite"}</button>
+                  <button className="text-[16px]">
+                    {loading ? "Sending..." : "Send invite"}
+                  </button>
                 </div>
               </div>
             </div>
@@ -420,7 +390,9 @@ const ManageUsers: React.FC = () => {
           <div className="">
             <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
               <div className="flex flex-col justify-center items-center gap-6">
-                <p className="text-[24px] font-[500] text-purple500">Delete User</p>{" "}
+                <p className="text-[24px] font-[500] text-purple500">
+                  Delete User
+                </p>{" "}
                 <p className="text-[16px] font-[400] text-grey500">
                   Are you sure you want to delete this user?
                 </p>
@@ -429,13 +401,17 @@ const ManageUsers: React.FC = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
                     onClick={() => setIsModalOpen2(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">No</p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      No
+                    </p>
                   </div>
                   <div
                     className="border border-[#ED5048] bg-[#ED5048] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
                     onClick={handleDeleteUser}
                   >
-                    <button className="text-[16px]">{loading ? "Deleting..." : "Delete"}</button>
+                    <button className="text-[16px]">
+                      {loading ? "Deleting..." : "Delete"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -478,7 +454,10 @@ const ManageUsers: React.FC = () => {
                       value={editingUser?.personal_email}
                       error=""
                       onChange={(newValue) =>
-                        setEditingUser({ ...editingUser, personal_email: newValue })
+                        setEditingUser({
+                          ...editingUser,
+                          personal_email: newValue,
+                        })
                       }
                     />
                     <CustomInput
@@ -487,7 +466,10 @@ const ManageUsers: React.FC = () => {
                       value={editingUser?.mobile_number}
                       error=""
                       onChange={(newValue) =>
-                        setEditingUser({ ...editingUser, mobile_number: newValue })
+                        setEditingUser({
+                          ...editingUser,
+                          mobile_number: newValue,
+                        })
                       }
                     />
                     <div>
@@ -496,32 +478,15 @@ const ManageUsers: React.FC = () => {
                         label="User Role"
                         value={editingUser?.user_role}
                         onChange={(newValue) =>
-                          setEditingUser({ ...editingUser, user_role: newValue })
+                          setEditingUser({
+                            ...editingUser,
+                            user_role: newValue,
+                          })
                         }
                       />
-                      {selectedRole === "General Users" && (
-                        <div className="mt-0 ml-6 grid grid-cols-1 gap-4">
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-2" />
-                            Waiter
-                          </label>
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-2" />
-                            Kitchen Staff
-                          </label>
-                          <label className="flex items-center">
-                            <input type="checkbox" className="mr-2" />
-                            Others
-                            <input
-                              type="text"
-                              className="ml-2 border border-gray-300 p-1 rounded"
-                            />
-                          </label>
-                        </div>
-                      )}
                     </div>
 
-                    {renderEmployeeTypeOptions()}
+                    {/* {renderEmployeeTypeOptions()} */}
 
                     <CustomSelect5
                       options={branchOptions}
@@ -540,14 +505,18 @@ const ManageUsers: React.FC = () => {
                     className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
                     onClick={() => setIsModalOpen3(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      Cancel
+                    </p>
                   </div>
 
                   <div
                     className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                     onClick={handleEditUser}
                   >
-                    <button className="text-[16px]">{loading ? "Sending..." : "Edit User"}</button>
+                    <button className="text-[16px]">
+                      {loading ? "Sending..." : "Edit User"}
+                    </button>
                   </div>
                 </div>
               </div>

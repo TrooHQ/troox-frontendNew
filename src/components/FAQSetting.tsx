@@ -16,9 +16,15 @@ interface FAQProps {
   openIndex: number | null;
   openIndexInner: number | null;
   toggleAnswer: (index: number) => void;
-  handleInputChange: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => void;
   toggleAnswer2: (index2: number) => void;
-  handleInputChange2: (index: number, event: ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange2: (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => void;
 }
 
 const FAQSetting: React.FC<FAQProps> = ({
@@ -97,7 +103,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Create Menu
                         </label>
                       </div>
@@ -107,7 +116,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Add Item
                         </label>
                       </div>
@@ -123,7 +135,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Inventory management
                         </label>
                       </div>
@@ -133,7 +148,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           POS integration
                         </label>
                       </div>
@@ -143,7 +161,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Hardware integration
                         </label>
                       </div>
@@ -167,7 +188,9 @@ const FAQSetting: React.FC<FAQProps> = ({
                               src={ArrowToggle2}
                               alt=""
                               className={`transform transition-transform duration-300 ${
-                                openIndexInner === innerIndex ? "rotate-180" : ""
+                                openIndexInner === innerIndex
+                                  ? "rotate-180"
+                                  : ""
                               }`}
                             />
                           </div>
@@ -348,7 +371,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           View all tickets
                         </label>
                       </div>
@@ -358,7 +384,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           View ticket status
                         </label>
                       </div>
@@ -368,7 +397,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Void ticket transactions
                         </label>
                       </div>
@@ -378,7 +410,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Refund ticket
                         </label>
                       </div>
@@ -394,7 +429,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Access handheld devices with pin
                         </label>
                       </div>
@@ -404,7 +442,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Mirror cash register privileges
                         </label>
                       </div>
@@ -420,7 +461,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           View order
                         </label>
                       </div>
@@ -430,7 +474,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Fulfil order
                         </label>
                       </div>
@@ -441,7 +488,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           View order status
                         </label>
                       </div>
@@ -451,7 +501,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Edit order status
                         </label>
                       </div>
@@ -461,7 +514,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                           id="rememberMe"
                           className="h-6 w-6 mr-[24px] border border-black"
                         />
-                        <label htmlFor="rememberMe" className="text-[16px] font-[400] text-grey500">
+                        <label
+                          htmlFor="rememberMe"
+                          className="text-[16px] font-[400] text-grey500"
+                        >
                           Order chat
                         </label>
                       </div>
@@ -477,7 +533,9 @@ const FAQSetting: React.FC<FAQProps> = ({
       <div className=" flex justify-end items-center gap-2">
         <div className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
           <div onClick={() => navigate(-1)}>
-            <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+            <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
+              Cancel
+            </p>
           </div>
         </div>
 
