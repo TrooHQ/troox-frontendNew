@@ -7,7 +7,7 @@ import CustomInput from "../Mobile/inputFields/CustomInput";
 
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCustomerName } from "../slices/BasketSlice";
 import {
   setBusinessDetails,
@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
 import Header2 from "./Header2";
+import { RootState } from "../store/store";
 const BeginOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
@@ -34,6 +35,11 @@ const BeginOrder = () => {
   const location = useLocation();
 
   const dispatch = useDispatch();
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
+
+  const color = businessDetails?.colour_scheme || "#FF0000";
 
   const queryParams = new URLSearchParams(location.search);
   console.log(queryParams);
@@ -102,8 +108,9 @@ const BeginOrder = () => {
 
           <div className=" mt-[10px] max-w-[574px] mx-auto">
             <p
-              className=" cursor-pointer text-[32px] text-center font-[500] text-white px-[48px] py-[37px] bg-[#FF0000] rounded-full"
+              className=" cursor-pointer text-[32px] text-center font-[500] text-white px-[48px] py-[37px]  rounded-full"
               onClick={() => setIsOpen(true)}
+              style={{ backgroundColor: color }}
             >
               START ORDER
             </p>
@@ -143,6 +150,9 @@ const BeginOrder = () => {
                 className={` px-[120px] py-[37px] text-[32px]  font-bold ${
                   !userName ? " bg-[#B6B6B6]" : "bg-[#FF0000] cursor-pointer"
                 } rounded-full inline-flex text-white text-center`}
+                style={{
+                  backgroundColor: !userName ? "#B6B6B6" : color,
+                }}
                 onClick={userName ? handleNext : undefined}
               >
                 NEXT
@@ -184,10 +194,13 @@ const BeginOrder = () => {
               </p>
               <Link to="/demo/menu/selfcheckout">
                 <p
-                  className={` px-[99px] py-[37px] text-[32px] font-[500] ${
-                    !number ? " bg-[#B6B6B6]" : "bg-[#FF0000] cursor-pointer"
-                  } rounded-full inline-flex text-white text-center`}
-                  // onClick={name ? handleNext : undefined}
+                  className={`px-[99px] py-[37px] text-[32px] font-[500] rounded-full inline-flex text-white text-center ${
+                    !number ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                  style={{
+                    backgroundColor: !number ? "#B6B6B6" : color,
+                  }}
+                  // onClick={number ? handleNext : undefined}
                 >
                   CONTINUE
                 </p>

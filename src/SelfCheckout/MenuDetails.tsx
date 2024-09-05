@@ -162,6 +162,8 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
     }
   };
 
+  const color = userDetails?.colour_scheme || "#FF0000";
+
   useEffect(() => {
     getItems();
   }, [menuItemId]);
@@ -427,7 +429,10 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                         />
                       </div>
                       <div className=" mt-[10px] flex items-center justify-end">
-                        <button className=" text-[#ff0000]  font-[500] text-[80px]">
+                        <button
+                          className="  font-[500] text-[80px]"
+                          style={{ color: color || "#ff0000" }}
+                        >
                           <FaCircleCheck />
                         </button>
                       </div>
@@ -435,7 +440,10 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                   </div>
 
                   <div className="fixed bottom-[60px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto my-[16px]">
-                    <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#C5291E] text-white rounded-[10px] w-full">
+                    <div
+                      className="flex justify-between items-center py-[13px] px-[24px]  text-white rounded-[10px] w-full"
+                      style={{ backgroundColor: color || "#C5291E" }}
+                    >
                       <p className="text-[36px] font-[500]">
                         &#x20A6; {calculateTotalPrice().toLocaleString()}
                       </p>

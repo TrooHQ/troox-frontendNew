@@ -31,6 +31,10 @@ const PaymentScreen = () => {
   console.log(basketDetails);
 
   const userDetails = useSelector((state: RootState) => state.user);
+  const color = useSelector(
+    (state: RootState) => state.business?.businessDetails?.colour_scheme
+  );
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -138,32 +142,54 @@ const PaymentScreen = () => {
 
       <div className="bg-[#F8F8F8] border border-[#E7E7E7] px-[24px] py-[32px] rounded-[10px] grid grid-cols-3 gap-[8px] items-center mx-[18px] mt-[80px]">
         <p
-          className={`text-[25px] font-[500] cursor-pointer text-center  py-[35px] px-[8px]  bg-white rounded-[10px] ${
+          className={`text-[25px] font-[500] cursor-pointer text-center py-[35px] px-[8px] bg-white rounded-[10px] ${
             selectedOption === "Bank Transfer QR"
-              ? " border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
+              ? "border-4 text-white"
+              : "border-4 text-[#414141]"
           }`}
           onClick={() => setSelectedOption("Bank Transfer QR")}
+          style={{
+            borderColor:
+              selectedOption === "Bank Transfer QR"
+                ? color || "#5855B3"
+                : "#B6B6B6",
+            color:
+              selectedOption === "Bank Transfer QR"
+                ? color || "#5855B3"
+                : "#414141",
+          }}
         >
           Bank Transfer QR
         </p>
+
         <p
           className={`text-[25px] font-[500] cursor-pointer  py-[35px] px-[8px] text-center border  bg-white rounded-[10px] ${
             selectedOption === "WebPay"
-              ? " border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
+              ? "border-4 text-white"
+              : "border-4 text-[#414141]"
           }`}
           onClick={() => setSelectedOption("WebPay")}
+          style={{
+            borderColor:
+              selectedOption === "WebPay" ? color || "#5855B3" : "#B6B6B6",
+            color: selectedOption === "WebPay" ? color || "#5855B3" : "#414141",
+          }}
         >
           WebPay
         </p>
         <p
           className={`text-[25px] font-[500] cursor-pointer text-[#414141] py-[35px] px-[8px] text-center  bg-white rounded-[10px] ${
             selectedOption === "Terminals"
-              ? " border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
+              ? "border-4 text-white"
+              : "border-4 text-[#414141]"
           }`}
           onClick={() => setSelectedOption("Terminals")}
+          style={{
+            borderColor:
+              selectedOption === "Terminals" ? color || "#5855B3" : "#B6B6B6",
+            color:
+              selectedOption === "Terminals" ? color || "#5855B3" : "#414141",
+          }}
         >
           Terminals
         </p>
@@ -190,8 +216,13 @@ const PaymentScreen = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[32px] rounded-full border  bg-[#FF0000] border-[#FF0000] text-white py-[37px] px-[40px]"
+                  className="cursor-pointer inline font-[500] text-[32px] rounded-full border py-[37px] px-[40px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: color || "#FF0000",
+                    borderColor: color || "#FF0000",
+                    color: "#FFFFFF",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -217,8 +248,13 @@ const PaymentScreen = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[32px] rounded-full border  bg-[#FF0000] border-[#FF0000] text-white py-[37px] px-[40px]"
+                  className="cursor-pointer inline font-[500] text-[32px] rounded-full border py-[37px] px-[40px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: color || "#FF0000",
+                    borderColor: color || "#FF0000",
+                    color: "#FFFFFF",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -244,8 +280,13 @@ const PaymentScreen = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[32px] rounded-full border  bg-[#FF0000] border-[#FF0000] text-white py-[37px] px-[40px]"
+                  className="cursor-pointer inline font-[500] text-[32px] rounded-full border py-[37px] px-[40px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: color || "#FF0000",
+                    borderColor: color || "#FF0000",
+                    color: "#FFFFFF",
+                  }}
                 >
                   Proceed to Pay
                 </p>

@@ -1,7 +1,9 @@
 import { useEffect, useState, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import MiniLogo from "../SelfCheckout/assets/image121.png";
+// import MiniLogo from "../SelfCheckout/assets/image121.png";
 import { MdKeyboardArrowLeft } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 interface Header2Props {
   children?: ReactNode;
@@ -20,6 +22,10 @@ const Header2: React.FC<Header2Props> = ({
 }) => {
   const navigate = useNavigate();
   const [isSticky, setSticky] = useState(false);
+
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,7 +70,7 @@ const Header2: React.FC<Header2Props> = ({
             </p>
           </div>
           <div className="col-span-1 justify-self-center">
-            <img src={MiniLogo} alt="Logo" />
+            <img src={businessDetails?.business_logo} alt="Logo" />
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
