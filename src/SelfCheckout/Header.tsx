@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 // import Logo from "./assets/chickenRepublic.png";
 import { RootState } from "../store/store";
+import Logo from "../Mobile/assets/Restaurant_Logo.svg";
 
 const Header = () => {
   const businessDetails = useSelector(
@@ -15,7 +16,7 @@ const Header = () => {
         className="h-[236px] flex items-center justify-center"
         style={{ backgroundColor: color }}
       >
-        <img src={businessDetails?.business_logo} alt="Business Logo" />
+        <img src={Logo || businessDetails?.business_logo} alt="Business Logo" />
       </div>
     </div>
   );

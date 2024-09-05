@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import Logo from "../Mobile/assets/Restaurant_Logo.svg";
 
 interface Header2Props {
   children?: ReactNode;
@@ -70,7 +71,7 @@ const Header2: React.FC<Header2Props> = ({
             </p>
           </div>
           <div className="col-span-1 justify-self-center">
-            <img src={businessDetails?.business_logo} alt="Logo" />
+            <img src={Logo || businessDetails?.business_logo} alt="Logo" />
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
