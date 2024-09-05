@@ -17,7 +17,7 @@ interface TopMenuNavProps {
 const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
   exploreMenuText = "Explore Menu",
   bgColor = "#606060",
-  textColor = "#FFFFFF",
+  textColor = "#000000",
   children,
 }) => {
   const navigate = useNavigate();
@@ -55,14 +55,34 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
     (state: RootState) => state.business?.businessDetails
   );
 
-  const colorScheme = businessDetails?.colour_scheme || bgColor;
+  let colorScheme = businessDetails?.colour_scheme || bgColor;
+
+  switch (colorScheme) {
+    case "#3450B0":
+      colorScheme = "#EBEEF7";
+      break;
+    case "#FF0000":
+      colorScheme = "#FFF2F2";
+      break;
+    case "#097F7C":
+      colorScheme = "#E6F2F2";
+      break;
+    case "#5955B3":
+      colorScheme = "#EEEEF7";
+      break;
+    case "#000000":
+      colorScheme = "#929294";
+      break;
+    default:
+      break;
+  }
 
   return (
     <div
       className={`${
         isSticky
           ? "fixed top-0 left-0 right-0 shadow-md shadow-slate-400"
-          : "shadow"
+          : "shadow "
       } z-10 transition-all duration-300 ease-in-out`}
     >
       <div
@@ -71,11 +91,9 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
       >
         <div className="justify-self-start">
           <p
-            className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
+            className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px]"
             style={{
               color: textColor,
-              borderColor: colorScheme,
-              borderStyle: "solid",
               cursor: "pointer",
             }}
             onClick={() => navigate(-1)}

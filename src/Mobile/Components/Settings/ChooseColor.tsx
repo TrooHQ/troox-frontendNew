@@ -14,11 +14,11 @@ type Color = {
 
 const ChooseColor = () => {
   const colors: Color[] = [
-    { name: "Troo Blue", colorCode: "#5955B3" },
-    { name: "Troo Black", colorCode: "#121212" },
-    { name: "Troo Green", colorCode: "#55B388" },
-    { name: "Troo Pink", colorCode: "#B355AF" },
-    { name: "Troo Red", colorCode: "#B35557" },
+    { name: "Blue", colorCode: "#3450B0" },
+    { name: "Black", colorCode: "#000000" },
+    { name: "Green", colorCode: "#097F7C" },
+    { name: "Purple", colorCode: "#5955B3" },
+    { name: "Red", colorCode: "#FF0000" },
   ];
 
   const [loading, setLoading] = useState(false);
