@@ -16,14 +16,16 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ title }) => {
 
   return (
     <div className=" mt-[20px] ">
-      <div className="inline-flex items-center gap-[20px] cursor-pointer">
+      <div className=" flex items-center justify-between">
+        <div className="inline-flex items-center gap-[20px] cursor-pointer">
+          <img src={Arrow} alt="Back" onClick={() => navigate(-1)} />
+          <p className="font-[400] text-[20px] text-[#121212] cursor-pointer">
+            {title}
+          </p>
+        </div>
         <div className="cursor-pointer" onClick={toggleSidebar}>
           <img src={Menu} alt="Menu" />
         </div>
-        <img src={Arrow} alt="Back" onClick={() => navigate(-1)} />
-        <p className="font-[400] text-[20px] text-[#121212] cursor-pointer">
-          {title}
-        </p>
       </div>
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
