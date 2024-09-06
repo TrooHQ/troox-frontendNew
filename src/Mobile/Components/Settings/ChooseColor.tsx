@@ -91,7 +91,7 @@ const ChooseColor = () => {
 
   return (
     <div className="mt-[16px] mx-[20px]">
-      <TopMenuNav title="Change Color" />
+      <TopMenuNav title="Manage Theme" />
 
       <div className="mt-[24px]">
         {colors.map((color) => (

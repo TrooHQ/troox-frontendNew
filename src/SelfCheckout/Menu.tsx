@@ -1,5 +1,5 @@
 import TakeAway from "../SelfCheckout/assets/take-away.svg";
-import DineIn from "../SelfCheckout/assets/dine-in.svg";
+import DineIn from "../SelfCheckout/assets/dinner-table.svg";
 import { Link } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
@@ -73,8 +73,11 @@ const Menu = () => {
             <Link to={`/demo/category-details/${menu?.name}/selfcheckout`}>
               <div className=" w-[304px] grid  gap-[12px] items-center place-items-center ">
                 <div
-                  className=" h-[200px] w-[200px] text-center  border-[8px] border-[#FFE100] rounded-full drop-shadow-md"
-                  style={{ backgroundColor: color || "#FF0000" }}
+                  className=" h-[200px] w-[200px] text-center  border-[8px] rounded-full drop-shadow-md"
+                  style={{
+                    backgroundColor: color || "#FF0000",
+                    borderColor: color || "#FF0000",
+                  }}
                 >
                   <div className="overflow-hidden h-full w-full rounded-full">
                     <img
@@ -101,11 +104,27 @@ const Menu = () => {
             How would you like your order?
           </p>
           <div
-            className=" flex items-center gap-[23px] mt-[44px]"
+            className="flex items-center gap-[23px] mt-[44px]"
             onClick={() => setIsOpen(false)}
           >
-            <img src={TakeAway} alt="" className=" cursor-pointer" />
-            <img src={DineIn} alt="" className=" cursor-pointer" />
+            <div
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full"
+              style={{
+                backgroundColor: color || "#E9B017",
+              }}
+            >
+              <img src={TakeAway} alt="" className="cursor-pointer h-[150px]" />
+              <p className="font-[400] text-[28px] ">Take-away</p>
+            </div>
+            <div
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full"
+              style={{
+                backgroundColor: color || "#E9B017",
+              }}
+            >
+              <img src={DineIn} alt="" className="cursor-pointer h-[150px]" />
+              <p className="font-[400] text-[28px]">Dine In</p>
+            </div>
           </div>
         </div>
       </Modal>
