@@ -308,7 +308,7 @@ const ManageUsers: React.FC = () => {
           <div className="py-[28px] 2xl:py-[56px] px-[28px] 2xl:px-[56px] bg-white relative rounded-[20px] w-[800px]">
             <div>
               <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-                Invite user
+                Invite User
               </p>
               <hr className="border border-grey100" />
 

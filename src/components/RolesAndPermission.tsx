@@ -219,11 +219,11 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     ));
 
   return (
-    <div className="grid gap-[24px]">
+    <div className="grid gap-[12px]">
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`bg-[#f8f8f8] border border-[#f8f8f8] focus:outline-[#5955B3] w-full rounded`}
+          className={`bg-[#ebebeb] border border-[#f8f8f8] focus:outline-[#5955B3] w-full rounded`}
         >
           <div
             onClick={() => toggleAnswer(index)}
