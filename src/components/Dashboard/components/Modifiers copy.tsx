@@ -12,7 +12,6 @@ import ConfirmationDialog from "../ConfirmationDialog";
 import Add from "../../../assets/addWhite.svg";
 import { truncateText } from "../../../utils/truncateText";
 import ModifierModal from "./ModifierModal";
-import DisplayModifiers from "./DisplayModifiers";
 
 type ModifierRules = {
   requireSelection: boolean;
@@ -54,18 +53,12 @@ const Modifiers = ({
   const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isGroupFetching, setIsGroupFetching] = useState(false);
-  const [selectedModifier, setSelectedModifier] = useState({} as any);
 
   const { branches } = useSelector((state: any) => state.branches);
 
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
-
-  const handleKeepModifierGroupDetail = (modifier: any) => {
-    console.log(modifier, "modifieraaa");
-    setSelectedModifier(modifier);
-  };
 
   const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,
@@ -148,24 +141,10 @@ const Modifiers = ({
   const saveModifiers = () => {
     setConfirmSaveModal(true); // Open the confirmation modal
   };
-  console.log(selectedModifier, "pppp");
 
   const handleConfirmSave = async () => {
+    // Proceed with saving modifiers after user confirms
     setLoading(true);
-
-    // Create the payload with branch_id, modifier_group_name, and modifiers array
-    const payload = {
-      branch_id: selectedBranch.id,
-      modifier_group_name: selectedModifier.modifier_group_name,
-      modifiers: modifiers.map((modifier) => ({
-        branch: selectedBranch.id,
-        menu_item_name: selectedMenuItem,
-        modifier_name: modifier.name,
-        modifier_price: parseFloat(modifier.price),
-        attached_to: "group", // assuming the modifiers are attached to a group
-      })),
-    };
-
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -173,25 +152,38 @@ const Modifiers = ({
       },
     };
 
-    try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addModifiertoGroup`,
-        payload,
-        headers
-      );
-      console.log(response, "responselll");
-      toast.success(response.data.message || "Modifiers added successfully.");
-      setAddModifierModal(false);
-      fetchModifiers(); // Fetch updated list of modifiers after adding
-      setModifiers([{ id: 1, name: "", price: "" }]); // Reset modifiers state
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to add modifiers.");
-    } finally {
-      setLoading(false);
-      setConfirmSaveModal(false); // Close the confirmation modal
-    }
-  };
+    const promises = modifiers.map((modifier) => {
+      const payload = {
+        branch_id: selectedBranch.id,
+        attach_to: "item",
+        modifier_name: modifier.name,
+        menu_item_name: selectedMenuItem,
+        price: parseFloat(modifier.price),
+      };
 
+      return axios
+        .post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers)
+        .then((response) => {
+          toast.success(response.data.message || `Modifier ${modifier.name} added successfully.`);
+          setAddModifierModal(false);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.message);
+        })
+        .finally(() => {});
+    });
+
+    Promise.all(promises)
+      .then(() => {
+        fetchModifiers();
+        setModifiers([]);
+      })
+      .finally(() => {
+        setConfirmSaveModal(false);
+        setLoading(false);
+        setModifiers([{ id: 1, name: "", price: "" }]);
+      });
+  };
   console.log(modifiers, "llllll");
   const handleRuleChange = (rule: keyof ModifierRules) => {
     setModifierRules((prevRules) => ({
@@ -393,20 +385,111 @@ const Modifiers = ({
       </div>
 
       {/* Display Fetched Modifiers */}
-      <DisplayModifiers
-        isGroupFetching={isGroupFetching}
-        fetchedModifierGroups={fetchedModifierGroups}
-        editId={editId}
-        newGroupName={newGroupName}
-        setNewGroupName={setNewGroupName}
-        handleSaveClick={handleSaveClick}
-        handleEditClick={handleEditClick}
-        handleModifierGroupDeleteClick={handleModifierGroupDeleteClick}
-        handleAddModifier={handleAddModifier}
-        truncateText={truncateText}
-        Add={Add}
-        handleKeepModifierGroupDetail={handleKeepModifierGroupDetail}
-      />
+      <div className="grid gap-[12px] mt-[32px]">
+        {isGroupFetching ? (
+          <p>Loading modifier groups...</p>
+        ) : fetchedModifierGroups.length === 0 ? (
+          <p>No modifiers available</p> // Placeholder when no modifiers
+        ) : (
+          <>
+            {fetchedModifierGroups.map((modifier) => (
+              <div key={modifier._id} className="flex items-center">
+                <div
+                  key={modifier._id}
+                  className=" flex items-center gap-[16px] justify-between  border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      {editId === modifier._id ? (
+                        // Render input if in edit mode
+                        <input
+                          type="text"
+                          value={newGroupName}
+                          onChange={(e) => setNewGroupName(e.target.value)}
+                          className="text-[18px] font-[500] text-gray-800 border-b-2"
+                        />
+                      ) : (
+                        // Render name if not editing
+                        <p className="text-[18px] font-[500] text-gray-800">
+                          {truncateText(modifier.modifier_group_name, 22)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    {editId === modifier._id ? (
+                      // Save button when in edit mode
+                      <button
+                        onClick={() => handleSaveClick(modifier)}
+                        className="text-purple500 mr-3 cursor-pointer"
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      // Edit button when not in edit mode
+                      <EditOutlined
+                        onClick={() => handleEditClick(modifier)}
+                        className="text-purple500 mr-0 cursor-pointer"
+                        fontSize="small"
+                      />
+                    )}
+                    <DeleteForeverOutlined
+                      onClick={() => handleModifierGroupDeleteClick(modifier.modifier_group_name)}
+                      className="text-red-700 ml-3 cursor-pointer"
+                      fontSize="small"
+                    />
+                  </div>
+                </div>
+                <button
+                  className="px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  onClick={handleAddModifier}
+                >
+                  <img src={Add} alt="" /> Add - edit modifier item
+                </button>
+              </div>
+            ))}
+          </>
+        )}
+
+        {/* {isFetching ? (
+          <p>Loading modifiers...</p>
+        ) : fetchedModifiers.length === 0 ? (
+          <p>No modifiers available</p>
+        ) : (
+          <>
+            {fetchedModifiers.map((modifier) => (
+              <div
+                key={modifier._id}
+                className="border p-[16px] rounded-lg shadow-sm flex items-center gap-[16px] justify-between"
+              >
+                <div className="flex items-center gap-4">
+                  <div>
+                    {modifier.image ? (
+                      <img
+                        src={modifier.image}
+                        alt={modifier.modifier_name}
+                        className="w-[50px] h-[50px] object-cover rounded-full"
+                      />
+                    ) : (
+                      <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex items-center justify-center">
+                        <span className="text-gray-500">{modifier.modifier_name.charAt(0)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[18px] font-[500] text-gray-800">{modifier.modifier_name}</p>
+                    <p className="text-[16px] text-gray-600">Price: ₦ {modifier.modifier_price}</p>
+                  </div>
+                </div>
+                <DeleteForeverOutlined
+                  onClick={() => handleDeleteClick(modifier._id)}
+                  className="text-red-700 ml-3 cursor-pointer"
+                />
+              </div>
+            ))}
+          </>
+        )} */}
+      </div>
 
       {/* Modifier Form Section */}
       <div className=" grid gap-[56px]">
