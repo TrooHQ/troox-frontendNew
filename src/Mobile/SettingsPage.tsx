@@ -199,10 +199,10 @@ const SettingsPage = () => {
     (state: any) => state.outlet.selectedOutletID
   );
 
-  const attachBusinessIdToHost = (businessId: string) => {
+  const attachBusinessIdToHost = (businessId: string, branchId: string) => {
     const currentHost = window.location.origin;
 
-    const newUrl = `${currentHost}/demo/selfcheckout/${businessId}`;
+    const newUrl = `${currentHost}/demo/selfcheckout/${businessId}/${branchId}`;
 
     return newUrl;
   };
@@ -243,7 +243,7 @@ const SettingsPage = () => {
   };
 
   const handleClick = () => {
-    const urlToCopy = attachBusinessIdToHost(businessId);
+    const urlToCopy = attachBusinessIdToHost(businessId, selectedOutletID);
     copyToClipboard(urlToCopy);
   };
 
@@ -253,7 +253,7 @@ const SettingsPage = () => {
   };
 
   const businessId = userDetails?.userData?.business_identifier;
-  const attachedUrl = attachBusinessIdToHost(businessId);
+  const attachedUrl = attachBusinessIdToHost(businessId, selectedOutletID);
 
   console.log(attachedUrl);
   const token = userDetails?.userData?.token;
@@ -550,7 +550,7 @@ const SettingsPage = () => {
 
               <Link to="/demo/choose-color/troo-portal">
                 <p className="text-grey300 text-[16px] cursor-pointer">
-                Manage Themes
+                  Manage Themes
                 </p>
               </Link>
             </div>

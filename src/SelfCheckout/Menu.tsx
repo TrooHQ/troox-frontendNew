@@ -57,7 +57,7 @@ const Menu = () => {
   return (
     <div>
       <Header2
-        bgColor={`${color || "#ff0000"}`}
+        // bgColor={`${color || "#ff0000"}`}
         textColor="#ffffff"
         borderColor="#ffffff"
       />
@@ -76,7 +76,7 @@ const Menu = () => {
                   className=" h-[200px] w-[200px] text-center  border-[8px] rounded-full drop-shadow-md"
                   style={{
                     backgroundColor: color || "#FF0000",
-                    borderColor: color || "#FF0000",
+                    // borderColor: color || "#FF0000",
                   }}
                 >
                   <div className="overflow-hidden h-full w-full rounded-full">
@@ -108,19 +108,23 @@ const Menu = () => {
             onClick={() => setIsOpen(false)}
           >
             <div
-              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full"
-              style={{
-                backgroundColor: color || "#E9B017",
-              }}
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              style={
+                {
+                  // backgroundColor: color || "#E9B017",
+                }
+              }
             >
               <img src={TakeAway} alt="" className="cursor-pointer h-[150px]" />
               <p className="font-[400] text-[28px] ">Take-away</p>
             </div>
             <div
-              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full"
-              style={{
-                backgroundColor: color || "#E9B017",
-              }}
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              style={
+                {
+                  // backgroundColor: color || "#E9B017",
+                }
+              }
             >
               <img src={DineIn} alt="" className="cursor-pointer h-[150px]" />
               <p className="font-[400] text-[28px]">Dine In</p>

@@ -465,7 +465,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                       </div>
 
                       <p
-                        className="text-[36px] font-[500] py-[14px] px-[48px] rounded-[5px] bg-[#FFE100] text-[#C5291E] cursor-pointer"
+                        className="text-[36px] font-[500] py-[14px] px-[48px] rounded-[5px] text-[#ffffff]  cursor-pointer"
                         onClick={handleAddToBasket}
                       >
                         Add

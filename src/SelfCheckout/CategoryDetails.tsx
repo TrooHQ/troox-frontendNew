@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import Add from "../SelfCheckout/assets/incrementIcon.svg";
-import Minus from "../SelfCheckout/assets/decrementIcon.svg";
-import Counter from "../SelfCheckout/assets/counter.svg";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SERVER_DOMAIN } from "../Api/Api";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,16 +13,27 @@ import "slick-carousel/slick/slick-theme.css";
 import { RiArrowUpDoubleLine } from "react-icons/ri";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import Header2 from "./Header2";
+import TakeAway from "../SelfCheckout/assets/take-away.svg";
+import DineIn from "../SelfCheckout/assets/dinner-table.svg";
 import {
   addItemToBasket,
   removeItemFromBasket,
   updateItemQuantity,
 } from "../slices/BasketSlice";
 
+import Modal from "../components/Modal";
+import { HiMinusCircle, HiPlusCircle, HiPlusSm } from "react-icons/hi";
+
 interface MenuItem {
   _id: string;
   menu_item_name: string;
+  menu_group_name: string;
+  menu_item_image: string;
   menu_item_price: number;
+  name: string;
+
+  business_name: string;
+  menu_category_name: string;
 }
 interface Details extends MenuItem {
   name: string;
@@ -37,14 +45,45 @@ interface Details extends MenuItem {
   menu_item_image: string;
 }
 
+interface GroupedMenuItems {
+  [groupName: string]: MenuItem[];
+}
+
 export const CategoryDetails = () => {
-  const [selectedGroup, setSelectedGroup] = useState("");
-  const { id } = useParams();
+  const [selectedGroup, setSelectedGroup] = useState("All");
+  const [menuItems, setMenuItems] = useState<Details[]>([]);
+
+  const handleGroupClick = (groupName: string) => {
+    setSelectedGroup(groupName);
+  };
+
+  const filteredMenuItems =
+    selectedGroup === "All"
+      ? menuItems
+      : menuItems.filter((menu) => menu.menu_group_name === selectedGroup);
+
+  const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
+    (acc: GroupedMenuItems, item: MenuItem) => {
+      const { menu_group_name } = item;
+      if (!acc[menu_group_name]) {
+        acc[menu_group_name] = [];
+      }
+      acc[menu_group_name].push(item);
+      return acc;
+    },
+    {}
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
 
   const [isVisible, setIsVisible] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
 
   const settings = {
     infinite: true,
@@ -148,9 +187,6 @@ export const CategoryDetails = () => {
     }
   };
 
-  const [menuGroup, setMenuGroup] = useState<Details[]>([]);
-  const [menuItems, setMenuItems] = useState<Details[]>([]);
-
   const ids = useSelector((state: RootState) => state.basket.items);
   console.log(ids);
 
@@ -159,48 +195,12 @@ export const CategoryDetails = () => {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
+  console.log(businessDetails);
   const business_identifier = businessDetails?._id;
-  console.log(business_identifier);
+
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
 
   const color = businessDetails?.colour_scheme || "#FF0000";
-
-  useEffect(() => {
-    const getGroups = async () => {
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      try {
-        const response = await axios.get<{ data: Details[] }>(
-          `${SERVER_DOMAIN}/menu/getCustomerMenuGroup/?business_identifier=${business_identifier}`,
-          headers
-        );
-        console.log(
-          "Business groups retrieved successfully:",
-          response.data.data
-        );
-        setMenuGroup(response.data.data);
-
-        if (response.data.data && response.data.data.length > 0) {
-          const firstMatch = response.data.data.find(
-            (group) => group.menu_category_name === id
-          );
-          console.log("First match found:", firstMatch);
-
-          if (firstMatch) {
-            setSelectedGroup(firstMatch.name);
-          } else {
-            setSelectedGroup(response.data.data[0].name);
-          }
-        }
-      } catch (error) {
-        console.error("Error getting business details:", error);
-      }
-    };
-
-    getGroups();
-  }, [id]);
 
   const getItems = async () => {
     const headers = {
@@ -210,13 +210,13 @@ export const CategoryDetails = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getCustomerMenuItem/?business_identifier=${business_identifier}`,
+        `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${business_identifier}&branch=${branchId}`,
         headers
       );
-      console.log("Business items Retrieved successfully:", response.data.data);
+      console.log("items Retrieved successfully:", response.data.data);
       setMenuItems(response.data.data);
     } catch (error) {
-      console.error("Error getting Business Details:", error);
+      console.error("Error Retrieving Items:", error);
     }
   };
 
@@ -231,43 +231,71 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
-              <div
-                className="flex items-center gap-[8px] text-center overflow-x-auto whitespace-nowrap"
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-              >
-                {menuGroup.map((menu) => (
-                  <div key={menu._id} className="">
-                    {menu.menu_category_name === id && (
-                      <p
-                        className={`px-[24px] py-[8px] text-[32px] cursor-pointer ${
-                          selectedGroup === menu?.name
-                            ? "font-[600]"
-                            : "font-[400] text-[#606060]"
-                        }`}
-                        onClick={() => setSelectedGroup(menu?.name)}
-                        style={{
-                          color:
-                            selectedGroup === menu?.name
-                              ? color || "#C5291E"
-                              : "#606060",
-                        }}
-                      >
-                        {menu?.name}
-                      </p>
-                    )}
-                  </div>
-                ))}
+              <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
+                <p
+                  className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${
+                    selectedGroup === "All"
+                      ? `font-[600] text-[#FFFFFF] border border-[#929292]`
+                      : "text-[#606060] font-[400] border border-[#B6B6B6]"
+                  }`}
+                  style={{
+                    backgroundColor:
+                      selectedGroup === "All"
+                        ? color || "#929292"
+                        : "transparent",
+                  }}
+                  onClick={() => handleGroupClick("All")}
+                >
+                  All
+                </p>
+
+                <div className="flex gap-[8px] items-center">
+                  {Array.from(
+                    new Set(menuItems.map((menu) => menu.menu_group_name))
+                  )
+                    .filter((groupName) => groupName !== undefined)
+                    .map((groupName, index) => (
+                      <div key={index}>
+                        <p
+                          className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border text-[32px] border-[${color}]`}
+                          style={{
+                            backgroundColor:
+                              selectedGroup === groupName
+                                ? color || "#929292"
+                                : "transparent",
+                            borderColor:
+                              selectedGroup === groupName
+                                ? color || "#929292"
+                                : "#B6B6B6",
+                            color:
+                              selectedGroup === groupName
+                                ? "#FFFFFF"
+                                : "#606060",
+                            fontWeight:
+                              selectedGroup === groupName ? "bold" : "400",
+                            borderStyle: "solid",
+                          }}
+                          onClick={() => handleGroupClick(groupName)}
+                        >
+                          {groupName}
+                        </p>
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
 
-            {selectedGroup && (
+            {/* {selectedGroup && (
               <p
-                className=" text-[56px] font-[600] text-[#FFFFFF] py-[10px] px-[16px] "
-                style={{ backgroundColor: color || "#FF0000" }}
+                className=" text-[56px] font-[600]  py-[10px] px-[16px] bg-[#EBEEF7] "
+                style={{
+                  // backgroundColor: color || "#FF0000",
+                  color: color || "#FF0000",
+                }}
               >
                 {selectedGroup}
               </p>
-            )}
+            )} */}
           </Header2>
         </div>
 
@@ -280,107 +308,137 @@ export const CategoryDetails = () => {
           </div>
           <div className="overflow-x-auto">
             <Slider {...settings}>
-              {menuItems.map(
-                (menu, index) =>
-                  menu.menu_group_name === selectedGroup && (
-                    <div
-                      className="max-w-[406px] pb-[34px] pt-[18px] rounded-[10px] px-[7px] mb-[34px] border-2 drop-shadow border-[#E7E7E7] flex-shrink-0"
-                      key={index}
-                      onClick={() => openModal(menu._id)}
-                    >
-                      <div>
-                        <div className="relative">
-                          <img
-                            src={menu?.menu_item_image}
-                            alt=""
-                            className="w-full object-cover h-[300px]"
-                          />
-                          <img
-                            src={Counter}
-                            alt=""
-                            className="absolute bottom-2 right-2"
-                          />
-                        </div>
-                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
-                          {menu?.menu_item_name?.length > 18
-                            ? `${menu?.menu_item_name.substring(0, 15)}...`
-                            : menu?.menu_item_name}
-                        </p>
+              {menuItems.map((menu, index) => (
+                <div
+                  className="max-w-[406px] pb-[34px] pt-[18px] rounded-[10px] px-[7px] mb-[34px] border-2 drop-shadow border-[#E7E7E7] flex-shrink-0"
+                  key={index}
+                  onClick={() => openModal(menu._id)}
+                >
+                  <div>
+                    <div className="relative">
+                      <img
+                        src={menu?.menu_item_image}
+                        alt=""
+                        className="w-full object-cover h-[300px]"
+                      />
+
+                      <div
+                        className="absolute -bottom-4 text-white right-0 rounded-full"
+                        style={{
+                          backgroundColor: color || "#414141",
+                        }}
+                      >
+                        <HiPlusSm className="text-[80px]" />
                       </div>
                     </div>
-                  )
-              )}
+                    <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                      {menu?.menu_item_name?.length > 18
+                        ? `${menu?.menu_item_name.substring(0, 15)}...`
+                        : menu?.menu_item_name}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </Slider>
           </div>
         </div>
 
-        <div className="mx-[16px] ">
-          <div className="grid grid-cols-2 items-center gap-4 mb-[100px]">
-            {menuItems.map(
-              (menu, index) =>
-                menu.menu_group_name === selectedGroup && (
-                  <div
-                    className="pb-[34px] pt-[18px] rounded-[10px] px-[7px] my-[34px] border-2 drop-shadow border-[#E7E7E7] max-w-[500px]"
-                    key={index}
-                  >
-                    <div>
-                      <img
-                        src={menu?.menu_item_image}
-                        alt=""
-                        className="w-full object-cover h-[217px]"
-                        onClick={() => openModal(menu._id)}
-                      />
-                      <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
-                        {menu?.menu_item_name?.length > 18
-                          ? `${menu?.menu_item_name.substring(0, 18)}...`
-                          : menu?.menu_item_name}
-                      </p>
-                    </div>
-                    <div className="pt-[8px] flex items-center justify-between px-[24px]">
-                      <p
-                        className="text-[36px  font-[500]"
-                        style={{ color: color || "#C5291E" }}
-                      >
-                        &#x20A6;{menu?.menu_item_price?.toLocaleString()}
-                      </p>
+        <div className="mx-[16px]">
+          {Object.keys(groupedMenuItems).map((groupName) => (
+            <div key={groupName} className="mb-[24px]">
+              {groupName !== "undefined" && (
+                <p className="text-[32px] font-bold text-[#121212] mb-[12px] px-[24px]">
+                  {groupName}
+                </p>
+              )}
 
+              {groupName !== "undefined" && (
+                <div className="grid grid-cols-2 items-center gap-4 mb-[100px]">
+                  {groupedMenuItems[groupName]?.map((menu) => (
+                    <div
+                      className="pb-[34px] pt-[18px] rounded-[10px] px-[7px] my-[34px] border-2 drop-shadow border-[#E7E7E7] max-w-[500px]"
+                      key={menu._id}
+                    >
                       <div>
-                        {ids.find((item) => item.id === menu._id) ? (
-                          <div className="flex items-center justify-between gap-[20px]">
-                            <img
-                              src={Minus}
-                              alt=""
-                              onClick={() => decrementCount(menu)}
-                              className="cursor-pointer"
-                            />
-                            <p className="text-[16px] font-[500]">
-                              {ids.find((item) => item.id === menu._id)
-                                ?.quantity || 1}
-                            </p>
-                            <img
-                              src={Add}
-                              alt=""
-                              onClick={() => incrementCount(menu)}
-                              className="cursor-pointer"
-                            />
-                          </div>
-                        ) : (
-                          <div>
+                        <img
+                          src={menu?.menu_item_image}
+                          alt={menu?.menu_item_name || "Menu Item"}
+                          className="w-full object-cover h-[217px] cursor-pointer"
+                          onClick={() => openModal(menu._id)}
+                        />
+
+                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                          {menu?.menu_item_name?.length > 18
+                            ? `${menu?.menu_item_name.substring(0, 18)}...`
+                            : menu?.menu_item_name}
+                        </p>
+                      </div>
+
+                      <div className="pt-[8px] flex items-center justify-between px-[24px]">
+                        <p
+                          className="text-[36px] font-[500]"
+                          style={{ color: color || "#C5291E" }}
+                        >
+                          &#x20A6;{menu?.menu_item_price?.toLocaleString()}
+                        </p>
+
+                        <div>
+                          {ids.find((item) => item.id === menu._id) ? (
+                            <div className="flex items-center justify-between gap-[20px]">
+                              {/* <img
+                                src={Minus}
+                                alt="Minus Icon"
+                                onClick={() => decrementCount(menu)}
+                                className="cursor-pointer"
+                              /> */}
+                              <div
+                                className=" flex items-center justify-end cursor-pointer rounded-full"
+                                style={{
+                                  backgroundColor: color || "#414141",
+                                  color: "#ffffff" || "#414141",
+                                }}
+                                onClick={() => decrementCount(menu)}
+                              >
+                                <HiMinusCircle className="text-[55px]" />
+                              </div>
+                              <p className="text-[26px] font-[500]">
+                                {ids.find((item) => item.id === menu._id)
+                                  ?.quantity || 1}
+                              </p>
+
+                              <div
+                                className=" flex items-center justify-end cursor-pointer rounded-full"
+                                style={{
+                                  backgroundColor: color || "#414141",
+                                  color: "#ffffff" || "#414141",
+                                }}
+                                onClick={() => incrementCount(menu)}
+                              >
+                                <HiPlusCircle className="text-[55px]" />
+                              </div>
+                            </div>
+                          ) : (
                             <div
-                              className="flex items-center justify-end"
+                              className=" flex items-center justify-end cursor-pointer rounded-full"
+                              style={{
+                                backgroundColor: color || "#414141",
+                                color: "#ffffff",
+                              }}
                               onClick={() => openModal(menu._id)}
                             >
-                              <img src={Add} alt="" />
+                              <HiPlusSm className="text-[55px]" />
                             </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
+
         {ids && (
           <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto my-[16px]">
             <div
@@ -394,7 +452,10 @@ export const CategoryDetails = () => {
                 </p>
               </div>
               <Link to="/demo/basket/selfcheckout">
-                <p className=" text-white  text-[36px] font-[500] py-[14px] px-[38px] rounded-[5px] bg-[#F38D41]">
+                <p
+                  className=" text-white  text-[36px] font-[500] py-[14px] px-[38px] rounded-[5px] "
+                  // style={{ color: color || "#C5291E" }}
+                >
                   Checkout
                 </p>
               </Link>
@@ -417,6 +478,41 @@ export const CategoryDetails = () => {
         onRequestClose={closeModal}
         menuItemId={selectedMenuItemId}
       />
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <div className=" pb-[128px] pt-[57px] px-[103px] flex flex-col items-center justify-center">
+          <p className=" text-[36px] font-[500] text-[#000000]">
+            How would you like your order?
+          </p>
+          <div
+            className="flex items-center gap-[23px] mt-[44px]"
+            onClick={() => setIsOpen(false)}
+          >
+            <div
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              style={
+                {
+                  // backgroundColor: color || "#E9B017",
+                }
+              }
+            >
+              <img src={TakeAway} alt="" className="cursor-pointer h-[150px]" />
+              <p className="font-[400] text-[28px] ">Take-away</p>
+            </div>
+            <div
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              style={
+                {
+                  // backgroundColor: color || "#E9B017",
+                }
+              }
+            >
+              <img src={DineIn} alt="" className="cursor-pointer h-[150px]" />
+              <p className="font-[400] text-[28px]">Dine In</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
