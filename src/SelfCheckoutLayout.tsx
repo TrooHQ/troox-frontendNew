@@ -26,6 +26,7 @@ const SelfCheckoutLayout = () => {
             path="/demo/category-details/selfcheckout"
             element={<CategoryDetails />}
           />
+
           <Route path="/demo/basket/selfcheckout" element={<Basket />} />
           <Route
             path="/demo/payment/selfcheckout"

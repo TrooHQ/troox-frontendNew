@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useEffect, useState } from "react";
 import Close from "../SelfCheckout/assets/close.svg";
@@ -14,8 +14,11 @@ import {
 } from "../slices/BasketSlice";
 import Header2 from "./Header2";
 import { TiDelete } from "react-icons/ti";
+import MenuDetailsModal from "./MenuDetails";
 export const Basket = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
   const backetDetails = useSelector((state: RootState) => state.basket);
   const tip = useSelector((state: RootState) => state.basket?.tip);
   const tipPercentages = [0.1, 0.125, 0.15];
@@ -94,6 +97,15 @@ export const Basket = () => {
 
   const color = userDetails?.colour_scheme || "#FF0000";
 
+  const openModal = (menuItemId: string) => {
+    setSelectedMenuItemId(menuItemId);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className=" ">
       <div className="  ">
@@ -112,13 +124,12 @@ export const Basket = () => {
               key={index}
             >
               <div className=" flex  justify-between place-items-center text-start items-center">
-                <Link to={`/menu-details/${item.id}`}>
-                  {" "}
-                  <p className="text-[30px] text-[#121212] font-[500] max-w-[200px]">
-                    {item?.name}
-                  </p>
-                </Link>
-
+                <p
+                  className="text-[30px] text-[#121212] font-[500] max-w-[200px]"
+                  onClick={() => openModal(item?.id)}
+                >
+                  {item?.name}
+                </p>
                 <div className="flex items-center gap-[20px]">
                   <img
                     src={Minus}
@@ -220,6 +231,12 @@ export const Basket = () => {
           </div>
         )}
       </div>
+
+      <MenuDetailsModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        menuItemId={selectedMenuItemId}
+      />
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className=" p-[32px]">

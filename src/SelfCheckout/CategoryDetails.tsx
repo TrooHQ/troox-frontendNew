@@ -188,7 +188,6 @@ export const CategoryDetails = () => {
   };
 
   const ids = useSelector((state: RootState) => state.basket.items);
-  console.log(ids);
 
   const totalCount = useSelector((state: RootState) => state.basket);
 
