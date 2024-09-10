@@ -262,7 +262,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                   <div className="pb-[16px] mx-[49px]">
                     <div>
                       <div className="flex items-start justify-between">
-                        <p className="text-grey500 font-[500] text-[36px] mb-[17px]">
+                        <p className="text-grey500 max-w-[400px] font-[500] text-[36px] mb-[17px]">
                           {menuItem.menu_item_name}
                         </p>
                         <p className="text-[##121212] text-[36px] font-[500] mx-[24px]">
