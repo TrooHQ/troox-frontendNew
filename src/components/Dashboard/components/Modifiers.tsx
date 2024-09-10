@@ -115,18 +115,14 @@ const Modifiers = ({
 
   const handleConfirmSave = async () => {
     setLoading(true);
-
+    console.log(modifiers, "modifiers");
     // Create the payload with branch_id, modifier_group_name, and modifiers array
     const payload = {
       branch_id: selectedBranch.id,
+      attach_to: "modifier_group",
+      modifier_name: modifiers[0].name,
       modifier_group_name: selectedModifier.modifier_group_name,
-      modifiers: modifiers.map((modifier) => ({
-        branch: selectedBranch.id,
-        menu_item_name: selectedMenuItem,
-        modifier_name: modifier.name,
-        modifier_price: parseFloat(modifier.price),
-        attached_to: "group", // assuming the modifiers are attached to a group
-      })),
+      price: parseFloat(modifiers[0].price),
     };
 
     const headers = {
@@ -137,11 +133,7 @@ const Modifiers = ({
     };
 
     try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addModifiertoGroup`,
-        payload,
-        headers
-      );
+      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers);
       console.log(response, "responselll");
       toast.success(response.data.message || "Modifiers added successfully.");
       setAddModifierModal(false);
