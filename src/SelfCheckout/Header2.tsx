@@ -17,9 +17,8 @@ interface Header2Props {
 const Header2: React.FC<Header2Props> = ({
   children,
   onClick = (navigate) => navigate(-1),
-  bgColor = "#ffffff",
+  bgColor = "#EBEEF7",
   textColor = "#000000",
-  borderColor = "#606060",
 }) => {
   const navigate = useNavigate();
   const [isSticky, setSticky] = useState(false);
@@ -56,11 +55,9 @@ const Header2: React.FC<Header2Props> = ({
         <div className="grid grid-cols-3 items-center py-4 shadow">
           <div className="justify-self-start">
             <p
-              className="text-[28px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
+              className="text-[28px] font-[500] flex items-center gap-[8px] p-[18px]"
               style={{
                 color: textColor,
-                borderColor: borderColor,
-                borderStyle: "solid",
               }}
               onClick={() => onClick(navigate)}
             >

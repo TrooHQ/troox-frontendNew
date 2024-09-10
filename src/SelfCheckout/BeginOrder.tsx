@@ -10,10 +10,10 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCustomerName } from "../slices/BasketSlice";
 import {
+  setBranchID,
   setBusinessDetails,
   setBusinessIdentifier,
   setGroupName,
-  setTableNo,
   setURL,
 } from "../slices/businessSlice";
 
@@ -25,7 +25,8 @@ const BeginOrder = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
-  const { id } = useParams();
+  const { id, branchId } = useParams();
+
   const [number, setNumber] = useState("");
 
   const handleNext = () => {
@@ -53,21 +54,20 @@ const BeginOrder = () => {
   sessionStorage.setItem("url", fullUrl);
 
   const business_identifier = id;
+  const BranchId = branchId;
   const tableNo = queryParams.get("table");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
   useEffect(() => {
-    if (business_identifier && tableNo) {
-      console.log(`Business Identifier: ${business_identifier}`);
+    if (business_identifier && BranchId) {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
-      dispatch(setTableNo(tableNo));
+      dispatch(setBranchID(BranchId));
       dispatch(setURL(fullUrl));
-      console.log(`Table: ${tableNo}`);
     }
 
     getBusinessDetails();
-  }, [business_identifier, tableNo, group_name]);
+  }, [business_identifier, BranchId, tableNo, group_name]);
 
   const getBusinessDetails = async () => {
     const headers = {
@@ -77,7 +77,7 @@ const BeginOrder = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}`,
+        `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}&branch=${BranchId}`,
         headers
       );
       console.log(
@@ -193,7 +193,7 @@ const BeginOrder = () => {
               >
                 CANCEL
               </p>
-              <Link to="/demo/menu/selfcheckout">
+              <Link to="/demo/category-details/selfcheckout">
                 <p
                   className={`px-[99px] py-[37px] text-[32px] font-[500] rounded-full inline-flex text-white text-center ${
                     !number ? "cursor-not-allowed" : "cursor-pointer"

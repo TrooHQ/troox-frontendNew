@@ -17,10 +17,13 @@ const SelfCheckoutLayout = () => {
       <Router>
         <ScrollToTop />
         <Routes>
-          <Route path="/demo/selfcheckout/:id" element={<BeginOrder />} />
+          <Route
+            path="/demo/selfcheckout/:id/:branchId"
+            element={<BeginOrder />}
+          />
           <Route path="/demo/menu/selfcheckout" element={<Menu />} />
           <Route
-            path="/demo/category-details/:id/selfcheckout"
+            path="/demo/category-details/selfcheckout"
             element={<CategoryDetails />}
           />
           <Route path="/demo/basket/selfcheckout" element={<Basket />} />

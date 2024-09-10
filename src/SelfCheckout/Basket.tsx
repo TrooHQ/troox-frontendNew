@@ -96,7 +96,7 @@ export const Basket = () => {
 
   return (
     <div className=" ">
-      <div className=" mt-[50px] ">
+      <div className="  ">
         <div className="">
           <Header2 />
           <p className=" text-[44px] font-[500] text-[#606060] text-center">
@@ -114,12 +114,12 @@ export const Basket = () => {
               <div className=" flex  justify-between place-items-center text-start items-center">
                 <Link to={`/menu-details/${item.id}`}>
                   {" "}
-                  <p className="text-[30px] text-[#121212] font-[500] col-span-2">
+                  <p className="text-[30px] text-[#121212] font-[500] max-w-[200px]">
                     {item?.name}
                   </p>
                 </Link>
 
-                <div className="flex items-center ">
+                <div className="flex items-center gap-[20px]">
                   <img
                     src={Minus}
                     alt=""
@@ -127,7 +127,7 @@ export const Basket = () => {
                       handleDecreaseQuantity(item.id, item.quantity)
                     }
                   />
-                  <p className="text-[30px] text-[#000000] font-[500] mx-[10px]">
+                  <p className="text-[30px] text-[#000000] font-[500] ">
                     x{item?.quantity}
                   </p>
                   <img
@@ -138,7 +138,7 @@ export const Basket = () => {
                     }
                   />
                 </div>
-                <p className="text-[20px] text-[#000000] font-[500]">
+                <p className="text-[25px] text-[#000000] font-[500]">
                   &#x20A6;{item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
                 <p

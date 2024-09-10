@@ -8,13 +8,13 @@ const Header = () => {
     (state: RootState) => state.business?.businessDetails
   );
 
-  const color = businessDetails?.colour_scheme || "#FF0000";
+  // const color = businessDetails?.colour_scheme || "#FF0000";
 
   return (
     <div>
       <div
-        className="h-[236px] flex items-center justify-center"
-        style={{ backgroundColor: color }}
+        className="h-[236px] flex items-center justify-center bg-[#EBEEF7]"
+        // style={{ backgroundColor: color }}
       >
         <img src={Logo || businessDetails?.business_logo} alt="Business Logo" />
       </div>
