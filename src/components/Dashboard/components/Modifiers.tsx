@@ -87,10 +87,10 @@ const Modifiers = ({
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getAllModifierGroups/?branch_id=${selectedBranch?.id}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
         headers
       );
-
+      console.log(response, "response");
       setFetchedModifierGroups(response.data.data || []);
       // toast.success("Modifier groups fetched successfully.");
     } catch (error) {
@@ -182,6 +182,7 @@ const Modifiers = ({
       console.log(response, "responselll");
       toast.success(response.data.message || "Modifiers added successfully.");
       setAddModifierModal(false);
+      fetchModifierGroups();
       fetchModifiers(); // Fetch updated list of modifiers after adding
       setModifiers([{ id: 1, name: "", price: "" }]); // Reset modifiers state
     } catch (error: any) {
@@ -326,13 +327,15 @@ const Modifiers = ({
     };
 
     const payload = {
-      group_name: groupName,
+      modifier_group_name: groupName,
       branch_id: selectedBranch.id,
+      attach_to: "item",
+      menu_item_name: selectedMenuItem,
     };
     try {
       setModGroupLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/createMenuModifierGroup/`,
+        `${SERVER_DOMAIN}/menu/attachMenuModifierGroup/`,
         payload,
         headers
       );

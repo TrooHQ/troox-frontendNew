@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../../Modal";
 import AddWhite from "../../../assets/addWhite.svg";
-import RemoveIcon from "../../../Mobile/assets/Minus.svg";
+import RemoveIcon from "../../../Mobile/assets/Minus2.svg";
 
 const ModifierModal = ({
   addModifierModar,
