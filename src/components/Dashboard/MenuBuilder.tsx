@@ -14,8 +14,6 @@ import CoffeeImg from "../../assets/coffeeImg.png";
 import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/rootReducer";
-import { sendInvite, setUserData } from "../../slices/InviteUserSlice";
 import Modifiers from "./components/Modifiers";
 import AddMenuCategory from "./AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
@@ -38,8 +36,6 @@ const MenuBuilder = () => {
 
   const { categories, menuGroups, menuItems, mgLoading } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-
-  const userData = useSelector((state: RootState) => state.inviteUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
@@ -128,14 +124,6 @@ const MenuBuilder = () => {
   };
   const handleConfirmPublishModal = () => {
     setConfirmPublishModal(true);
-  };
-  const handleInputChange = (fieldName: string, value: string) => {
-    dispatch(setUserData({ [fieldName]: value }));
-  };
-
-  const handleSendInvite = () => {
-    dispatch(sendInvite());
-    setIsModalOpen(false);
   };
 
   const [subMenuContent, setSubmenuContent] = useState<

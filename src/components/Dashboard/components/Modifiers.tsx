@@ -49,7 +49,6 @@ const Modifiers = ({
     singleChoice: false,
   });
   const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
-  const [isFetching, setIsFetching] = useState(false);
   const [isGroupFetching, setIsGroupFetching] = useState(false);
   const [selectedModifier, setSelectedModifier] = useState({} as any);
 
