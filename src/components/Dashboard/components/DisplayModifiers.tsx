@@ -7,6 +7,7 @@ interface Modifier {
   modifier_name: string;
   modifier_price: number;
   attached_to: string;
+  _id: string;
 }
 
 interface ModifierGroup {
@@ -28,6 +29,7 @@ interface DisplayModifiersProps {
   truncateText: (text: string, length: number) => string;
   Add: string;
   handleKeepModifierGroupDetail: any;
+  handleDeleteClick: any;
 }
 
 const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
@@ -43,6 +45,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
   handleKeepModifierGroupDetail,
   truncateText,
   Add,
+  handleDeleteClick,
 }) => {
   // State to track expanded modifier group
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
@@ -142,6 +145,11 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                         <p className="text-sm italic text-gray-500 flex-1">
                           {modifier.menu_item_name}
                         </p>
+
+                        <DeleteForeverOutlined
+                          onClick={() => handleDeleteClick(modifier._id)}
+                          className="text-red-700 ml-3 cursor-pointer"
+                        />
                       </div>
                     ))
                   ) : (

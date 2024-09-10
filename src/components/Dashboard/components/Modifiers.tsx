@@ -1,4 +1,4 @@
-import { Close, DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../../Api/Api";
@@ -29,7 +29,6 @@ interface Modifier {
 }
 
 const Modifiers = ({
-  activeMainMenu,
   activeSubMenu,
   selectedBranch,
   selectedMenuItem,
@@ -40,7 +39,6 @@ const Modifiers = ({
   const dispatch = useDispatch<AppDispatch>();
 
   const [modifiers, setModifiers] = useState<Modifier[]>([{ id: 1, name: "", price: "" }]);
-  const [modifierName, setModifierName] = useState("");
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modifierRules, setModifierRules] = useState<ModifierRules>({
@@ -50,7 +48,6 @@ const Modifiers = ({
     multipleChoices: false,
     singleChoice: false,
   });
-  const [fetchedModifiers, setFetchedModifiers] = useState<any[]>([]);
   const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isGroupFetching, setIsGroupFetching] = useState(false);
@@ -74,7 +71,6 @@ const Modifiers = ({
 
   useEffect(() => {
     // Clear the fetched modifiers when activeSubMenu changes
-    setFetchedModifiers([]);
   }, [activeSubMenu]);
 
   const fetchModifierGroups = async () => {
@@ -99,47 +95,15 @@ const Modifiers = ({
       setIsGroupFetching(false);
     }
   };
-  const fetchModifiers = async () => {
-    setIsFetching(true);
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    try {
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
-        headers
-      );
-
-      setFetchedModifiers(response.data.data || []);
-      toast.success("Modifiers fetched successfully.");
-    } catch (error) {
-      toast.error("Failed to fetch modifiers.");
-    } finally {
-      setIsFetching(false);
-    }
-  };
 
   useEffect(() => {
     if (selectedMenuItem) {
       const fetchData = async () => {
-        await Promise.all([fetchModifiers(), fetchModifierGroups()]);
+        await Promise.all([fetchModifierGroups()]);
       };
       fetchData();
     }
   }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
-
-  const addModifier = () => {
-    setModifiers((prev) => [...prev, { id: Date.now(), name: "", price: "", menuItem: "" }]);
-  };
-
-  const updateModifier = (id: number, field: string, value: string) => {
-    setModifiers((prev) =>
-      prev.map((modifier) => (modifier.id === id ? { ...modifier, [field]: value } : modifier))
-    );
-  };
 
   const removeModifier = (id: number) => {
     setModifiers((prev) => prev.filter((modifier) => modifier.id !== id));
@@ -183,7 +147,6 @@ const Modifiers = ({
       toast.success(response.data.message || "Modifiers added successfully.");
       setAddModifierModal(false);
       fetchModifierGroups();
-      fetchModifiers(); // Fetch updated list of modifiers after adding
       setModifiers([{ id: 1, name: "", price: "" }]); // Reset modifiers state
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to add modifiers.");
@@ -224,6 +187,7 @@ const Modifiers = ({
   };
 
   const handleConfirmDelete = async () => {
+    console.log(confirmationDialog, "confirmationDialog.id");
     if (confirmationDialog.id) {
       await handleDeleteModifier(confirmationDialog.id);
       setConfirmationDialog({ open: false, id: "" });
@@ -279,9 +243,6 @@ const Modifiers = ({
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Modifier deleted successfully");
-        setFetchedModifiers((prevModifiers) =>
-          prevModifiers.filter((modifier) => modifier._id !== modifierId)
-        );
       } else {
         toast.error("Failed to delete modifier");
       }
@@ -316,7 +277,6 @@ const Modifiers = ({
 
   const [modGroupLoading, setModGroupLoading] = useState(false);
   const [groupName, setGroupName] = useState("");
-  const [modGroup, setModGroup] = useState([]);
 
   const handleAddModifierGroup = async () => {
     const headers = {
@@ -342,7 +302,6 @@ const Modifiers = ({
       console.log(response, "eeee");
       toast.success(response.data.message || "Successful");
       fetchModifierGroups();
-      setModGroup(response.data.data);
       setGroupName("");
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -409,6 +368,7 @@ const Modifiers = ({
         truncateText={truncateText}
         Add={Add}
         handleKeepModifierGroupDetail={handleKeepModifierGroupDetail}
+        handleDeleteClick={handleDeleteClick}
       />
 
       {/* Modifier Form Section */}
