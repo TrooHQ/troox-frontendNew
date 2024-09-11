@@ -71,7 +71,7 @@ const MobileLayout = () => {
             element={<MenuPage />}
           />
           <Route
-            path="demo/:id/category-details/:id/orderandpay"
+            path="demo/:id?/category-details/:id?/orderandpay"
             element={<CategoryDetails />}
           />
           <Route

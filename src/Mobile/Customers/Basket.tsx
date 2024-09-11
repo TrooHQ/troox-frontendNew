@@ -2,11 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
-// import { GiShoppingCart } from "react-icons/gi";
-// import DeleteBin2FillIcon from "remixicon-react/DeleteBin2FillIcon";
-// import Add from "../assets/plusIconRound.svg";
-// import Image from "../assets/FriedRice.png";
-// import Minus from "../assets/MinusRound.svg";
 
 import Minus from "../assets/Minus.svg";
 import Add from "../assets/add.svg";
@@ -20,8 +15,6 @@ export const Basket = () => {
   const navigate = useNavigate();
   const basketDetails = useSelector((state: RootState) => state.basket);
   const dispatch = useDispatch();
-
-  console.log(basketDetails);
 
   const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
     dispatch(updateItemQuantity({ id, quantity: currentQuantity + 1 }));

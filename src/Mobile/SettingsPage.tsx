@@ -446,24 +446,40 @@ const SettingsPage = () => {
         Authorization: `Bearer ${token}`,
       },
     };
+
     try {
       const response = await axios.post(
         `${SERVER_DOMAIN}/asset/generateBusinessAsset`,
         {
+          branch_id: selectedOutletID,
           type: type,
           group_name: group_name,
           number: number,
         },
         headers
       );
-      console.log("Qr Code Generared successfully:", response.data);
+      console.log("Qr Code Generated successfully:", response.data);
       setLoading(false);
       setGroup_name("");
       setNumber("");
       setTableGroupSuccessModal(true);
     } catch (error) {
-      console.error("Error creating Qr Code:", error);
       setLoading(false);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          toast.error(
+            error.response?.data.message ||
+              "An error occurred. Please try again."
+          );
+        } else {
+          toast.error("An unexpected error occurred.");
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+
+      console.error("Error creating Qr Code:", error);
     }
   };
 

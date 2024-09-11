@@ -14,6 +14,7 @@ import {
   setGroupName,
   setTableNo,
   setURL,
+  setBranchID,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
 
@@ -36,6 +37,7 @@ const StartOrder = () => {
   sessionStorage.setItem("url", fullUrl);
 
   const business_identifier = queryParams.get("business_identifier");
+  const branch = queryParams.get("branch");
   const tableNo = queryParams.get("table");
   const roomNo = queryParams.get("room");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
@@ -46,6 +48,7 @@ const StartOrder = () => {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
       dispatch(setTableNo(tableNo));
+      dispatch(setBranchID(branch as string));
       dispatch(setURL(fullUrl));
       console.log(`Table: ${tableNo}`);
     }
@@ -197,9 +200,7 @@ const StartOrder = () => {
             >
               Cancel
             </p>
-            <Link
-              to={`/demo/${businessDetails?.business_name}/explore-menu/orderandpay`}
-            >
+            <Link to={`demo/category-details/orderandpay`}>
               <p
                 className={`px-[24px] py-[10px] ${
                   !table ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"

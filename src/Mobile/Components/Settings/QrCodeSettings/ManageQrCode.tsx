@@ -32,6 +32,10 @@ const ManageQrCode = () => {
   const navigate = useNavigate();
 
   const userDetails = useSelector((state: RootState) => state.user);
+  const selectedOutletID = useSelector(
+    (state: any) => state.outlet.selectedOutletID
+  );
+
   const token = userDetails?.userData?.token;
   const type = sessionStorage.getItem("type");
 
@@ -44,7 +48,7 @@ const ManageQrCode = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/asset/getBusinessAsset/?type=${type}`,
+        `${SERVER_DOMAIN}/asset/getBusinessAsset/?type=${type}&branch_id=${selectedOutletID}`,
         headers
       );
       setTables(response.data);
@@ -62,7 +66,7 @@ const ManageQrCode = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/asset/getBusinessAssetGroup/?type=${type}`,
+        `${SERVER_DOMAIN}/asset/getBusinessAssetGroup/?type=${type}&branch_id=${selectedOutletID}`,
         headers
       );
       setTablesGroup(response.data);
