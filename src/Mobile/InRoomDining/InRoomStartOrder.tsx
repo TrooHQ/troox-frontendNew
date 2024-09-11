@@ -12,8 +12,9 @@ import {
   setBusinessIdentifier,
   setBusinessDetails,
   setGroupName,
-  setTableNo,
+  // setTableNo,
   setURL,
+  setBranchID,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
 import NotFound from "../NotFound";
@@ -35,21 +36,23 @@ const InRoomStartOrder = () => {
   sessionStorage.setItem("url", fullUrl);
 
   const business_identifier = queryParams.get("business_identifier");
-  const roomNo = queryParams.get("room");
+  // const roomNo = queryParams.get("room");
+  const branch = queryParams.get("branch");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
   useEffect(() => {
-    if (business_identifier && roomNo) {
+    if (business_identifier && branch) {
       console.log(`Business Identifier: ${business_identifier}`);
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
-      dispatch(setTableNo(roomNo));
+      // dispatch(setTableNo(roomNo));
+      dispatch(setBranchID(branch));
       dispatch(setURL(fullUrl));
-      console.log(`Room: ${roomNo}`);
+      // console.log(`Room: ${roomNo}`);
     }
 
     getBusinessDetails();
-  }, [business_identifier, roomNo, group_name]);
+  }, [business_identifier, group_name]);
 
   const getBusinessDetails = async () => {
     const headers = {
@@ -99,7 +102,7 @@ const InRoomStartOrder = () => {
     setRoomIsOpen(true);
   };
 
-  if (!business_identifier || !roomNo) {
+  if (!business_identifier) {
     return <NotFound />;
   }
 

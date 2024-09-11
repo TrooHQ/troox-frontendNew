@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import CartFill from "../assets/baskets.svg";
 import CartWhite from "../assets/basketWhite.svg";
 import BackArrow from "../assets/arrow-small-left-White.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface TopMenuNavProps {
   exploreMenuText?: string;
@@ -21,8 +23,8 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const id = sessionStorage.getItem("ids");
   const [isSticky, setSticky] = useState(false);
+  const basketDetails = useSelector((state: RootState) => state.basket);
 
   const hideCartOnPaths = [
     "/demo/receipt/orderandpay",
@@ -84,7 +86,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
         <div className="justify-self-end px-4">
           {!hideCart && (
             <Link to="/demo/basket/orderandpay">
-              {id && id.length !== 0 ? (
+              {basketDetails?.items.length > 0 ? (
                 <img src={CartFill} alt="Cart" />
               ) : (
                 <img src={CartWhite} alt="Cart" />
