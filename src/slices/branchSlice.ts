@@ -11,6 +11,7 @@ interface Branch {
   branch_email: string;
   branch_phone_number: string;
   branch_address: string;
+  label?: string;
 }
 
 interface BranchState {

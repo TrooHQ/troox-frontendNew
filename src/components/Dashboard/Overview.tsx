@@ -8,9 +8,9 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { fetchBranches } from "../../slices/branchSlice";
+import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 
 export const storeData = {
   id: 1,
@@ -65,17 +65,26 @@ export const CustomAutocomplete = styled(Autocomplete)({
 
 const Overview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: any) => state.branches);
+  const { branches, selectedBranch } = useSelector((state: any) => state.branches);
+  const { userData } = useSelector((state: RootState) => state.user);
+
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
-
+  const [selectedOutlet, setSelectedOutlet] = useState(
+    selectedBranch
+      ? selectedBranch
+      : {
+          label: "All outlets",
+          id: "",
+        }
+  );
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
 
   const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,
+    id: branch._id,
   }));
 
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -86,6 +95,7 @@ const Overview: React.FC = () => {
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
     setSelectedOutlet(value ?? { label: "All outlets" });
+    dispatch(userSelectedBranch(value));
     setOpen(false);
   };
 
@@ -98,7 +108,7 @@ const Overview: React.FC = () => {
           <h3 className="text-[#606060] text-[20px] font-normal">
             Hello,{" "}
             <h5 className="text-[#121212] text-[24px] font-medium">
-              {storeData.name} {""}
+              {userData?.business_name} {""}
               {/* <span className="bg-[#5955B3] text-white px-2 rounded">{storeData.outlet}</span> */}
             </h5>
           </h3>
@@ -114,7 +124,7 @@ const Overview: React.FC = () => {
               },
             }}
           >
-            {selectedOutlet.label} <ArrowDropDown />
+            {selectedBranch.label} <ArrowDropDown />
           </Button>
           <Popper
             open={open}
@@ -126,7 +136,7 @@ const Overview: React.FC = () => {
               <CustomAutocomplete
                 disablePortal
                 options={transformedBranches}
-                value={selectedOutlet}
+                value={selectedBranch ? selectedBranch.label : selectedOutlet.label}
                 onChange={handleSelect}
                 renderInput={(params) => (
                   <TextField

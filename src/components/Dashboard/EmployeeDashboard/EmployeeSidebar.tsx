@@ -161,6 +161,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
         <div className=" grid gap-10 items-center">
           <div className="flex gap-x-4  items-center justify-center">
             <img
+              alt="logo"
               src={Logo}
               className={`cursor-pointer duration-500  `}
               // ${
@@ -169,6 +170,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
           </div>
           <div className="flex gap-x-4 items-center justify-center">
             <img
+              alt="logo"
               src={RestaurantLogo}
               className={`cursor-pointer duration-500`}
               // ${

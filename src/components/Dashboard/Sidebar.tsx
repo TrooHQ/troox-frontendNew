@@ -21,6 +21,7 @@ import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+
 interface MenuItem {
   subTitle?: string;
   title?: string;
@@ -38,17 +39,23 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
-  const { branches } = useSelector((state: RootState) => state.branches);
+  const { branches, selectedBranch } = useSelector((state: RootState) => state.branches);
+  const { userData } = useSelector((state: RootState) => state.user);
 
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState({
-    label: "All outlets",
-    id: "66a378962f635fa54a390478",
-  });
+  const [selectedOutlet, setSelectedOutlet] = useState(
+    selectedBranch
+      ? selectedBranch
+      : {
+          label: "All outlets",
+          id: "",
+        }
+  );
 
+  console.log(selectedBranch, "userData");
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
@@ -230,7 +237,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <div className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"} `}>
           <hr className="h-[2px] bg-[#929292] my-3" />
           <div className="ml-[5px] flex flex-col items-start justify-center gap-2">
-            <h4 className="text-base font-medium mb-0">Chicken Republic</h4>
+            <h4 className="text-base font-medium mb-0">{userData?.business_name}</h4>
 
             {/* Insert Button and Popper components here */}
             <Button
@@ -245,7 +252,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 },
               }}
             >
-              {selectedOutlet.label} <ArrowDropDown />
+              {selectedBranch?.label} <ArrowDropDown />
             </Button>
             <Popper
               open={isAutoOpen}
@@ -257,7 +264,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 <CustomAutocomplete
                   disablePortal
                   options={transformedBranches}
-                  value={selectedOutlet}
+                  value={selectedBranch ? selectedBranch.label : selectedOutlet.label}
                   onChange={handleSelect}
                   renderInput={(params) => (
                     <TextField
@@ -280,7 +287,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               </Paper>
             </Popper>
 
-            <p className="text-[#606060] text-xs font-normal">Restaurant</p>
+            <p className="text-[#606060] text-xs font-normal">{userData?.business_type}</p>
           </div>
           <hr className="h-[2px] bg-[#929292] my-3" />
         </div>
