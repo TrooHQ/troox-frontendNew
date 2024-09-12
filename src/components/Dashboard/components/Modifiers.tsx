@@ -85,7 +85,7 @@ const Modifiers = ({
         `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
         headers
       );
-      console.log(response, "response");
+      console.log(response, "response of modi");
       setFetchedModifierGroups(response.data.data || []);
       // toast.success("Modifier groups fetched successfully.");
     } catch (error) {
@@ -234,6 +234,7 @@ const Modifiers = ({
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Modifier deleted successfully");
+        fetchModifierGroups();
       } else {
         toast.error("Failed to delete modifier");
       }

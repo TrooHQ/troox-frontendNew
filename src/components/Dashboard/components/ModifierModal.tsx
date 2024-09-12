@@ -1,5 +1,4 @@
 import Modal from "../../Modal";
-import AddWhite from "../../../assets/addWhite.svg";
 
 const ModifierModal = ({
   addModifierModar,
@@ -8,16 +7,6 @@ const ModifierModal = ({
   modifiers,
   setModifiers,
 }: any) => {
-  const handleAddModifier = () => {
-    setModifiers([...modifiers, { id: modifiers.length + 1, name: "", price: "" }]);
-  };
-
-  const handleRemoveModifier = (id: number) => {
-    if (modifiers.length > 1) {
-      setModifiers(modifiers.filter((modifier: any) => modifier.id !== id));
-    }
-  };
-
   const updateModifier = (id: number, field: string, value: string) => {
     setModifiers(
       modifiers.map((modifier: any) =>
@@ -43,10 +32,7 @@ const ModifierModal = ({
               },
               index: number
             ) => (
-              <div
-                key={modifier.id}
-                className="flex items-center gap-[8px] justify-center mb-[8px]"
-              >
+              <div key={index} className="flex items-center gap-[8px] justify-center mb-[8px]">
                 {/* <img src={AddWhite} alt="" onClick={handleAddModifier} className="cursor-pointer" /> */}
                 <div className="flex items-center gap-[8px]">
                   <input
