@@ -20,6 +20,9 @@ export const SelectPayment = () => {
   const dispatch = useDispatch();
 
   const basketDetails = useSelector((state: RootState) => state.basket);
+
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
+
   const details = useSelector((state: RootState) => state);
   console.log(details);
 
@@ -53,19 +56,23 @@ export const SelectPayment = () => {
     tableNumber: item.tableNumber,
   }));
   const payload = {
+    branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
-    customerName: basketDetails.customerName,
+    customerName: basketDetails?.customerName,
     customerTableNumber: business?.tableNo,
     items: items,
     totalPrice: basketDetails.totalPrice,
     totalQuantity: basketDetails.totalQuantity,
+    ordered_by: basketDetails.customerName || "User",
+    menu_items: items,
+    total_price: basketDetails.totalPrice,
   };
   const token = userDetails?.userData?.token;
   const handlePayment = async () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        `${SERVER_DOMAIN}/order/createBranchOrder`,
         payload,
         {
           headers: {

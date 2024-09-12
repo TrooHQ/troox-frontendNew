@@ -14,6 +14,8 @@ import { toast } from "react-toastify";
 
 const PaymentScreen = () => {
   const basketDetails = useSelector((state: RootState) => state.basket);
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
+
   const details = useSelector((state: RootState) => state);
   console.log(details);
   const url = sessionStorage.getItem("url");
@@ -64,12 +66,17 @@ const PaymentScreen = () => {
   }));
 
   const payload = {
+    branch_id: branchId,
     businessIdentifier: business?.businessDetails?._id,
     customerName: basketDetails.customerName,
     customerTableNumber: business?.tableNo,
     items: items,
     totalPrice: basketDetails.totalPrice,
     totalQuantity: basketDetails.totalQuantity,
+
+    ordered_by: basketDetails.customerName || "User",
+    menu_items: items,
+    total_price: basketDetails.totalPrice,
   };
   const token = userDetails?.userData?.token;
   const handlePayment = async () => {
@@ -77,7 +84,7 @@ const PaymentScreen = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        `${SERVER_DOMAIN}/order/createBranchOrder`,
         payload,
         {
           headers: {

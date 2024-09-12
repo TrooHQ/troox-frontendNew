@@ -24,6 +24,7 @@ export const OnlineOrderingSelectPayment = () => {
   console.log(details);
 
   const business = useSelector((state: RootState) => state.business);
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
 
   const totalPrice = basketDetails?.totalPrice ?? 0;
   const deliveryFee = basketDetails?.deliveryFee ?? 0;
@@ -53,10 +54,14 @@ export const OnlineOrderingSelectPayment = () => {
     tableNumber: item.tableNumber,
   }));
   const payload = {
+    branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
     customerName: basketDetails.customerName,
+    ordered_by: basketDetails.customerName || "User",
     customerTableNumber: business?.tableNo,
     items: items,
+    menu_items: items,
+    total_price: basketDetails.totalPrice,
     totalPrice: basketDetails.totalPrice,
     totalQuantity: basketDetails.totalQuantity,
   };
@@ -70,7 +75,7 @@ export const OnlineOrderingSelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        `${SERVER_DOMAIN}/order/createBranchOrder`,
         payload,
         {
           headers: {
