@@ -51,6 +51,10 @@ const OrderTab: React.FC = () => {
     setActiveTab(tabId);
   };
 
+  const selectedOutletID = useSelector(
+    (state: any) => state.outlet.selectedOutletID
+  );
+
   const getTicket = async (status: string) => {
     setLoading(true);
 
@@ -63,7 +67,7 @@ const OrderTab: React.FC = () => {
 
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderbyStatus/?status=${status}`,
+        `${SERVER_DOMAIN}/order/getBranchOrderByStatus/?branch_id=${selectedOutletID}&status=${status}`,
         headers
       );
       console.log(
@@ -144,15 +148,18 @@ const OrderTab: React.FC = () => {
                     <div className="rounded-[5px] flex items-center justify-between font-[500] text-[16px]">
                       <div className="flex gap-[1px] items-center">
                         <p className="capitalize">
-                          {ticket.customer_name
-                            .split(" ")
-                            .map((name, nameIndex) =>
-                              nameIndex === 0
-                                ? name
-                                : nameIndex === 1
-                                ? ` ${name.charAt(0).toUpperCase()}.`
-                                : ""
-                            )}
+                          {ticket?.customer_name
+                            ? ticket?.customer_name
+                                .split(" ")
+                                .map((name, index) =>
+                                  index === 0
+                                    ? name
+                                    : index === 1
+                                    ? ` ${name.charAt(0).toUpperCase()}.`
+                                    : ""
+                                )
+                                .join("")
+                            : ""}
                         </p>
                         <p className="capitalize">
                           <span className="px-[4px]">|</span>#20
@@ -161,17 +168,17 @@ const OrderTab: React.FC = () => {
                         <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
                       </div>
 
-                      <p> &#x20A6;{ticket.total_price}</p>
+                      <p> &#x20A6;{ticket?.total_price.toLocaleString()}</p>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="font-[400] text-[16px] mt-[8px] capitalize">
-                        {ticket.menu_items.map((item, itemIndex) => (
+                        {ticket?.menu_items.map((item, itemIndex) => (
                           <>
                             {" "}
                             <div key={itemIndex}>
                               <p className="text-[16px] font-[400] text-[#121212]">
-                                {item.quantity || 1}x{" "}
-                                <span className="p-[5px]">{item.name}</span>
+                                {item?.quantity || 1}x{" "}
+                                <span className="p-[5px]">{item?.name}</span>
                               </p>
                             </div>
                             <div className="">
@@ -243,14 +250,17 @@ const OrderTab: React.FC = () => {
                         <div className=" flex items-center gap-[1px]">
                           <p className="capitalize">
                             {ticket?.customer_name
-                              .split(" ")
-                              .map((name, index) =>
-                                index === 0
-                                  ? name
-                                  : index === 1
-                                  ? ` ${name.charAt(0).toUpperCase()}.`
-                                  : ""
-                              )}
+                              ? ticket?.customer_name
+                                  .split(" ")
+                                  .map((name, index) =>
+                                    index === 0
+                                      ? name
+                                      : index === 1
+                                      ? ` ${name.charAt(0).toUpperCase()}.`
+                                      : ""
+                                  )
+                                  .join("")
+                              : ""}
                           </p>
                           <p className="capitalize">
                             <span className=" px-[4px]">|</span>#20
@@ -258,22 +268,22 @@ const OrderTab: React.FC = () => {
                           </p>
                           <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
                         </div>
-                        <p>#{ticket.total_price}</p>
+                        <p>#{ticket?.total_price.toLocaleString()}</p>
                       </div>
                       <div className="font-[400] text-[16px] mt-[8px] capitalize">
                         <div className="">
-                          {ticket.menu_items.map((item, index) => (
+                          {ticket?.menu_items.map((item, index) => (
                             <>
                               <div key={index}>
                                 <p className=" text-[16px] font-[400] text-[#121212]">
-                                  {item.quantity || 1}x{" "}
-                                  <span className=" p-[5px]">{item.name}</span>
+                                  {item?.quantity || 1}x{" "}
+                                  <span className=" p-[5px]">{item?.name}</span>
                                 </p>
                               </div>
                               <div className="">
                                 {item?.selectedOptions?.map((item, index) => (
                                   <div key={index}>
-                                    <p>{item.name}</p>
+                                    <p>{item?.name}</p>
                                   </div>
                                 ))}
                               </div>
