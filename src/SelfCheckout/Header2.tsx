@@ -17,7 +17,7 @@ interface Header2Props {
 const Header2: React.FC<Header2Props> = ({
   children,
   onClick = (navigate) => navigate(-1),
-  bgColor = "#EBEEF7",
+  bgColor = "#F2F2F2",
   textColor = "#000000",
 }) => {
   const navigate = useNavigate();
@@ -72,7 +72,11 @@ const Header2: React.FC<Header2Props> = ({
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
-        {children && <div>{children}</div>}
+        {children && (
+          <div className=" " style={{ backgroundColor: "#ffffff" }}>
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

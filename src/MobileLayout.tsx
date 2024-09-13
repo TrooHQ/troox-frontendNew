@@ -96,7 +96,7 @@ const MobileLayout = () => {
             element={<InRoomMenuPage />}
           />
           <Route
-            path="demo/:id/category-details/:id/in_room_dining"
+            path="demo/category-details/in_room_dining"
             element={<InRoomCategoryDetails />}
           />
           <Route

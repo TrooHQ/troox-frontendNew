@@ -39,14 +39,15 @@ const StartOrder = () => {
   const business_identifier = queryParams.get("business_identifier");
   const branch = queryParams.get("branch");
   const tableNo = queryParams.get("table");
-  const roomNo = queryParams.get("room");
+  const type = queryParams.get("type");
+
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
   useEffect(() => {
     if (business_identifier && tableNo) {
-      console.log(`Business Identifier: ${business_identifier}`);
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
+
       dispatch(setTableNo(tableNo));
       dispatch(setBranchID(branch as string));
       dispatch(setURL(fullUrl));
@@ -103,7 +104,7 @@ const StartOrder = () => {
     setTableIsOpen(true);
   };
 
-  if (roomNo) {
+  if (type === "room") {
     navigate(
       `demo/in_room_dining${
         location.pathname + location.search + location.hash

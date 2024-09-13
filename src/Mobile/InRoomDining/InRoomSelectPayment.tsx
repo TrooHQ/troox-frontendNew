@@ -128,7 +128,7 @@ export const InRoomSelectPayment = () => {
 
       <div className=" mt-[30px] border border-[#E7E7E7] px-[12px] py-[32px] rounded-[10px] flex items-center gap-[8px] mx-[8px] overflow-x-auto">
         <p
-          className={`text-[14px] font-[500] min-w-[120px] w-full cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] ${
+          className={`text-[14px]  font-[500] min-w-[120px] w-full cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] ${
             selectedOption === "Bank Transfer"
               ? "border-4 border-[#5855B3] text-[#5855B3]"
               : "border-4 border-[#B6B6B6] text-[#414141]"
@@ -162,7 +162,7 @@ export const InRoomSelectPayment = () => {
       {selectedOption && (
         <div className=" mx-[42px] mt-[20px]">
           {selectedOption === "Bank Transfer" && (
-            <div className="">
+            <div className=" text-center">
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 Bank Transfer
               </p>
@@ -189,7 +189,7 @@ export const InRoomSelectPayment = () => {
             </div>
           )}
           {selectedOption === "WebPay" && (
-            <div className="">
+            <div className="text-center">
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 WebPay
               </p>
@@ -216,7 +216,7 @@ export const InRoomSelectPayment = () => {
             </div>
           )}
           {selectedOption === "Terminals" && (
-            <div className="">
+            <div className="text-center">
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 Terminals
               </p>
