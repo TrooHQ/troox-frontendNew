@@ -93,7 +93,7 @@ export const CategoryDetails = () => {
       );
       setMenuItems(response?.data?.data);
     } catch (error) {
-      console.error("Error getting Business Details:", error);
+      console.error("Error getting Menu Items:", error);
     } finally {
       setLoading(false);
     }

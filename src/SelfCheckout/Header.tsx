@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <div>
       <div
-        className="h-[236px] flex items-center justify-center bg-[#EBEEF7]"
+        className="h-[236px] flex items-center justify-center bg-[#F2F2F2]"
         // style={{ backgroundColor: color }}
       >
         <img src={Logo || businessDetails?.business_logo} alt="Business Logo" />

@@ -192,9 +192,7 @@ const InRoomStartOrder = () => {
             >
               Cancel
             </p>
-            <Link
-              to={`/demo/${businessDetails?.business_name}/explore-menu/in_room_dining`}
-            >
+            <Link to={`/demo/category-details/in_room_dining`}>
               <p
                 className={`px-[24px] py-[10px] ${
                   !room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"

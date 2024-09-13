@@ -283,18 +283,6 @@ export const CategoryDetails = () => {
                 </div>
               </div>
             </div>
-
-            {/* {selectedGroup && (
-              <p
-                className=" text-[56px] font-[600]  py-[10px] px-[16px] bg-[#EBEEF7] "
-                style={{
-                  // backgroundColor: color || "#FF0000",
-                  color: color || "#FF0000",
-                }}
-              >
-                {selectedGroup}
-              </p>
-            )} */}
           </Header2>
         </div>
 
@@ -488,7 +476,7 @@ export const CategoryDetails = () => {
             onClick={() => setIsOpen(false)}
           >
             <div
-              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#F2F2F2]"
               style={
                 {
                   // backgroundColor: color || "#E9B017",
@@ -499,7 +487,7 @@ export const CategoryDetails = () => {
               <p className="font-[400] text-[28px] ">Take-away</p>
             </div>
             <div
-              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#B6B6B6]"
+              className="px-[70px] rounded-[15px] flex flex-col gap-[41px] items-center justify-center max-w-[300px] h-[356px] w-full bg-[#F2F2F2]"
               style={
                 {
                   // backgroundColor: color || "#E9B017",
