@@ -23,18 +23,20 @@ export const SelectPayment = () => {
 
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
-  const details = useSelector((state: RootState) => state);
-  console.log(details);
-
   const business = useSelector((state: RootState) => state.business);
 
   const totalPrice = basketDetails?.totalPrice ?? 0;
   const tip = basketDetails?.tip ?? 0;
-  const finalTotal = totalPrice + tip;
-  console.log(finalTotal);
-  console.log(basketDetails);
+  // const finalTotal = totalPrice + tip;
+  // console.log(finalTotal);
+  // console.log(basketDetails);
 
   const userDetails = useSelector((state: RootState) => state.user);
+  const BusinessDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = BusinessDetails?.colour_scheme;
 
   const items = basketDetails.items.map((item) => ({
     id: item.id,
@@ -118,7 +120,10 @@ export const SelectPayment = () => {
           <span className=" text-[#000000]">{tip.toLocaleString() || 0} </span>
         </p>
 
-        <hr className=" border border-[#414141] mb-[16px] mt-[24px]" />
+        <hr
+          className=" border mb-[16px] mt-[24px]"
+          style={{ borderColor: colorScheme || "#414141" }}
+        />
         <p className="text-[#000000] text-[18px] font-[600]">
           Pay:{" "}
           <span className="text-[#121212]">
@@ -129,32 +134,50 @@ export const SelectPayment = () => {
 
       <div className=" mt-[30px] border border-[#E7E7E7] px-[12px] py-[32px] rounded-[10px] flex items-center gap-[8px] mx-[8px] overflow-x-auto">
         <p
-          className={`text-[14px] font-[500] min-w-[120px] w-full cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] ${
-            selectedOption === "Bank Transfer"
-              ? "border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
-          }`}
+          className={`text-[14px] font-[500] border-4 min-w-[120px] w-full cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] `}
           onClick={() => setSelectedOption("Bank Transfer")}
+          style={{
+            borderColor:
+              selectedOption === "Bank Transfer"
+                ? colorScheme || "#5855B3"
+                : "#B6B6B6",
+            color:
+              selectedOption === "Bank Transfer"
+                ? colorScheme || "#5855B3"
+                : "#414141",
+          }}
         >
           Bank Transfer
         </p>
         <p
-          className={`min-w-[120px] w-full text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] ${
-            selectedOption === "WebPay"
-              ? "border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
-          }`}
+          className={`min-w-[120px] w-full border-4 text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] `}
           onClick={() => setSelectedOption("WebPay")}
+          style={{
+            borderColor:
+              selectedOption === "WebPay"
+                ? colorScheme || "#5855B3"
+                : "#B6B6B6",
+            color:
+              selectedOption === "WebPay"
+                ? colorScheme || "#5855B3"
+                : "#414141",
+          }}
         >
           WebPay
         </p>
         <p
-          className={`min-w-[120px] w-full text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] ${
-            selectedOption === "Terminals"
-              ? "border-4 border-[#5855B3] text-[#5855B3]"
-              : "border-4 border-[#B6B6B6] text-[#414141]"
-          }`}
+          className={`min-w-[120px] border-4 w-full text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px]`}
           onClick={() => setSelectedOption("Terminals")}
+          style={{
+            borderColor:
+              selectedOption === "Terminals"
+                ? colorScheme || "#5855B3"
+                : "#B6B6B6",
+            color:
+              selectedOption === "Terminals"
+                ? colorScheme || "#5855B3"
+                : "#414141",
+          }}
         >
           Terminals
         </p>
@@ -167,7 +190,12 @@ export const SelectPayment = () => {
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 Bank Transfer
               </p>
-              <hr className=" border-[#929292] border" />
+              <hr
+                className=" border"
+                style={{
+                  borderColor: colorScheme || "#929292",
+                }}
+              />
 
               <div className=" my-[10px] max-w-[566px] mx-auto text-center">
                 <p className=" text-[14px]  font-[400] text-[#121212]">
@@ -181,8 +209,12 @@ export const SelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#FF0000",
+                    borderColor: colorScheme || "#ff0000",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -194,7 +226,12 @@ export const SelectPayment = () => {
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 WebPay
               </p>
-              <hr className=" border-[#929292] border" />
+              <hr
+                className=" border"
+                style={{
+                  borderColor: colorScheme || "#929292",
+                }}
+              />
 
               <div className=" my-[10px] max-w-[566px] mx-auto text-center">
                 <p className=" text-[14px]  font-[400] text-[#121212]">
@@ -208,8 +245,12 @@ export const SelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#FF0000",
+                    borderColor: colorScheme || "#ff0000",
+                  }}
                 >
                   Proceed to Pay
                 </p>
@@ -221,7 +262,12 @@ export const SelectPayment = () => {
               <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
                 Terminals
               </p>
-              <hr className=" border-[#929292] border" />
+              <hr
+                className=" border"
+                style={{
+                  borderColor: colorScheme || "#929292",
+                }}
+              />
 
               <div className=" my-[10px] max-w-[566px] mx-auto text-center">
                 <p className=" text-[14px]  font-[400] text-[#121212]">
@@ -235,8 +281,12 @@ export const SelectPayment = () => {
 
               <div className=" flex items-center  justify-center">
                 <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border  bg-[#FF0000] border-[#FF0000] text-white py-[11px] px-[20px]"
+                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
                   onClick={handlePayment}
+                  style={{
+                    backgroundColor: colorScheme || "#FF0000",
+                    borderColor: colorScheme || "#ff0000",
+                  }}
                 >
                   Proceed to Pay
                 </p>

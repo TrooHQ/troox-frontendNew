@@ -79,6 +79,8 @@ export const CategoryDetails = () => {
   const business_identifier = businessDetails?._id;
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
+  const colorScheme = businessDetails?.colour_scheme;
+
   const getItems = async () => {
     setLoading(true);
     const headers = {
@@ -190,7 +192,9 @@ export const CategoryDetails = () => {
               }`}
               style={{
                 backgroundColor:
-                  selectedGroup === "All" ? "#929292" : "transparent",
+                  selectedGroup === "All"
+                    ? colorScheme || "#929292"
+                    : "transparent",
               }}
               onClick={() => handleGroupClick("All")}
             >
@@ -209,7 +213,7 @@ export const CategoryDetails = () => {
                       style={{
                         backgroundColor:
                           selectedGroup === groupName
-                            ? "#929292"
+                            ? colorScheme || "#929292"
                             : "transparent",
                         borderColor:
                           selectedGroup === groupName ? "#929292" : "#B6B6B6",
@@ -228,7 +232,7 @@ export const CategoryDetails = () => {
             </div>
           </div>
 
-          <div className=" bg-[#E7E7E7]">
+          <div className=" bg-[#F2F2F2]">
             <div className=" flex items-center justify-between py-[14px] px-[24px]">
               <p className=" text-[16px] font-[500]">Most Popular</p>
               <div className=" text-[16px]">
@@ -254,7 +258,7 @@ export const CategoryDetails = () => {
                           <div
                             className="absolute -bottom-4 text-white right-0 rounded-full"
                             style={{
-                              backgroundColor: "#414141",
+                              backgroundColor: colorScheme || "#414141",
                             }}
                           >
                             <HiPlusSm className="text-[37px]" />
@@ -318,7 +322,7 @@ export const CategoryDetails = () => {
                                 className="cursor-pointer text-white rounded-full"
                                 onClick={() => decrement(menu)}
                                 style={{
-                                  backgroundColor: "#414141",
+                                  backgroundColor: colorScheme || "#414141",
                                 }}
                               >
                                 <HiMinusSm className="text-[27px]" />
@@ -333,7 +337,7 @@ export const CategoryDetails = () => {
                                 className="cursor-pointer text-white rounded-full"
                                 onClick={() => increment(menu)}
                                 style={{
-                                  backgroundColor: "#414141",
+                                  backgroundColor: colorScheme || "#414141",
                                 }}
                               >
                                 <HiPlusSm className="text-[27px]" />
@@ -349,7 +353,7 @@ export const CategoryDetails = () => {
                                     className="inline-flex cursor-pointer text-white rounded-full"
                                     onClick={() => increment(menu)}
                                     style={{
-                                      backgroundColor: "#414141",
+                                      backgroundColor: colorScheme || "#414141",
                                     }}
                                   >
                                     <HiPlusSm className="text-[27px]" />
@@ -368,14 +372,24 @@ export const CategoryDetails = () => {
           </div>
         </div>
         {ids && (
-          <div className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto">
-            <div className="flex justify-between items-center py-[13px] px-[24px] text-white bg-[#FF0000] rounded-[3px] cursor-pointer">
+          <div
+            className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto"
+            style={{
+              backgroundColor: colorScheme || "#414141",
+            }}
+          >
+            <div className="flex justify-between items-center py-[13px] px-[24px] text-white  rounded-[3px] cursor-pointer">
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white rounded-[5px] text-[#FF0000] py-[12px] px-[10px] text-[16px] font-[500]">
+                <p
+                  className="bg-white rounded-[5px]  py-[12px] px-[10px] text-[16px] font-[500]"
+                  style={{
+                    color: colorScheme || "#414141",
+                  }}
+                >
                   {totalCount.totalQuantity || 0}
                 </p>
 
-                <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
+                <p>&#x20A6;{totalCount.totalPrice.toLocaleString() || 0.0}</p>
               </div>
               <Link to="/demo/basket/orderandpay">
                 <p className="text-[16px] font-[500]">View Basket</p>

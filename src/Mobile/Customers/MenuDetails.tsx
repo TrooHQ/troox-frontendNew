@@ -79,6 +79,8 @@ const MenuDetails = () => {
     (state: RootState) => state.business.businessDetails
   );
 
+  const colorScheme = userDetails?.colour_scheme;
+
   const basketItems = useSelector(
     (state: RootState) => state.basket.items
   ) as BasketItem[];
@@ -165,7 +167,6 @@ const MenuDetails = () => {
 
     const totalPrice = itemPrice + optionTotalPrice;
 
-    console.log(totalPrice);
     return totalPrice;
   };
 
@@ -194,8 +195,6 @@ const MenuDetails = () => {
           dispatch(addItemToBasket(basketItem));
         }
       }
-
-      console.log("Updated basket item:", basketItem);
 
       navigate(-1);
     }
@@ -357,7 +356,7 @@ const MenuDetails = () => {
                   </div>
                   <div className="pt-[8px] flex items-center justify-between">
                     <p className="text-[16px] text-[#121212] font-[500]">
-                      {menu.price}
+                      {menu?.price}
                     </p>
                     <div className="w-[100px]">
                       <div className="flex items-center justify-between">
@@ -402,9 +401,14 @@ const MenuDetails = () => {
             </div>
           </div>
 
-          <div className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto  my-[16px]">
+          <div
+            className="fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto  my-[16px]"
+            style={{
+              backgroundColor: colorScheme || "#414141",
+            }}
+          >
             <div
-              className="flex justify-between items-center py-[13px] px-[24px] bg-[#FF0000] text-white rounded-[3px] cursor-pointer"
+              className="flex justify-between items-center py-[13px] px-[24px]  text-white rounded-[3px] cursor-pointer"
               onClick={handleAddToBasket}
             >
               <p className="text-[16px] font-[500]">

@@ -1,9 +1,17 @@
 import TopMenuNav from "./TopMenuNav";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Restaurant_Logo.svg";
-export const GetReceipt = () => {
-  const url = sessionStorage.getItem("url");
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
+export const GetReceipt = () => {
+  const url = useSelector((state: RootState) => state.business.URL);
+
+  const BusinessDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = BusinessDetails?.colour_scheme;
   return (
     <div className="  ">
       <TopMenuNav exploreMenuText="Get Receipt" />
@@ -29,14 +37,23 @@ export const GetReceipt = () => {
         <div className="grid gap-[16px] items-center justify-center">
           {/* <Link to="/"> */}
           <div className=" flex items-center justify-center">
-            <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
+            <p
+              className=" rounded-[5px] py-[10px] px-[24px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]"
+              style={{ backgroundColor: colorScheme || "#FF0000" }}
+            >
               Get an eReceipt
             </p>
           </div>
           {/* </Link> */}
           <Link to={`${url}`}>
             <div className=" flex items-center justify-center">
-              <p className=" border border-[#FF0000] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#FF0000]">
+              <p
+                className=" border  rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#FF0000]"
+                style={{
+                  borderColor: colorScheme || "#FF0000",
+                  color: colorScheme || "#FF0000",
+                }}
+              >
                 Order more
               </p>
             </div>

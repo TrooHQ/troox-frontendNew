@@ -1,7 +1,14 @@
+import { RootState } from "../../store/store";
 import TopMenuNav from "./TopMenuNav";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const Receipt = () => {
+  const BusinessDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = BusinessDetails?.colour_scheme;
   return (
     <div className="  ">
       <TopMenuNav exploreMenuText="Select Payment" />
@@ -22,7 +29,10 @@ export const Receipt = () => {
 
         <Link to="/demo/get-receipt/orderandpay">
           <div className=" flex items-center justify-center">
-            <p className="bg-[#FF0000] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]">
+            <p
+              className=" rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]"
+              style={{ backgroundColor: colorScheme || "#FF0000" }}
+            >
               Email
             </p>
           </div>
