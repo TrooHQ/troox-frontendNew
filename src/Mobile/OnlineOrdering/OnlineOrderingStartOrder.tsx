@@ -72,9 +72,7 @@ const OnlineOrderingStartOrder = () => {
   }
 
   return (
-    <div
-      className={`mx-[22px] ${color ? `text-[${color}]` : "text-[#606060]"}`}
-    >
+    <div className={`mx-[22px] `} style={{ color: color || "#606060" }}>
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
           src={Logo || businessDetails?.business_logo}

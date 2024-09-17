@@ -3,6 +3,8 @@ import Modal from "../Components/Modal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
+import Logo from "../assets/Restaurant_Logo.svg";
+
 import {
   updateCustomerName,
   updateCustomerTableNumber,
@@ -27,7 +29,6 @@ const StartOrder = () => {
   const token = userDetails?.userData?.token;
 
   const queryParams = new URLSearchParams(location.search);
-  console.log(queryParams);
 
   const fullUrl =
     window.location.origin +
@@ -51,7 +52,6 @@ const StartOrder = () => {
       dispatch(setTableNo(tableNo));
       dispatch(setBranchID(branch as string));
       dispatch(setURL(fullUrl));
-      console.log(`Table: ${tableNo}`);
     }
     getBusinessDetails();
   }, [business_identifier, tableNo, group_name, navigate]);
@@ -68,10 +68,7 @@ const StartOrder = () => {
         `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}`,
         headers
       );
-      console.log(
-        "Business Details Retrieved successfully:",
-        response.data.data
-      );
+
       dispatch(setBusinessDetails(response.data.data));
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -87,6 +84,8 @@ const StartOrder = () => {
     (state: RootState) => state.business?.businessDetails
   );
 
+  const color = businessDetails?.colour_scheme;
+
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setUserName(name);
@@ -94,7 +93,10 @@ const StartOrder = () => {
   };
 
   const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const tableNumber = event.target.value;
+    const inputValue = event.target.value;
+
+    const tableNumber = inputValue.replace(/\D/g, "");
+
     setTable(tableNumber);
     dispatch(updateCustomerTableNumber(tableNumber));
   };
@@ -116,10 +118,10 @@ const StartOrder = () => {
   }
 
   return (
-    <div className="mx-[22px]">
+    <div className="mx-[22px]" style={{ color: color || "#606060" }}>
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
-          src={businessDetails?.business_logo}
+          src={Logo || businessDetails?.business_logo}
           alt=""
           className=" mb-[10px]"
         />
@@ -135,8 +137,9 @@ const StartOrder = () => {
 
         <div className="mt-[40px] flex flex-col items-center justify-center">
           <p
-            className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] bg-[#FF0000] rounded-[5px] font-[500] inline"
+            className="cursor-pointer text-[#ffffff] px-[40px] py-[10px]  rounded-[5px] font-[500] inline"
             onClick={() => setIsOpen(true)}
+            style={{ backgroundColor: color || "#606060" }}
           >
             Start Your Order
           </p>
@@ -166,18 +169,22 @@ const StartOrder = () => {
             value={userName}
             onChange={handleUserNameChange}
           />
-          <div className="mt-[25px]">
+          <div className="mt-[25px] flex space-x-4">
             <p
               className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
               onClick={() => setIsOpen(false)}
             >
               Cancel
             </p>
+
             <p
-              className={`px-[24px] py-[10px] ${
-                !userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
-              } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+              className={`px-[24px] py-[10px] inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] ${
+                !userName ? " cursor-default" : "cursor-pointer"
+              }`}
               onClick={userName ? handleNext : undefined}
+              style={{
+                backgroundColor: userName ? color : "#f2f2f2",
+              }}
             >
               Next
             </p>
@@ -189,7 +196,7 @@ const StartOrder = () => {
         <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
           <input
             className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
-            type="text"
+            type="tel"
             placeholder="Enter your table number"
             value={table}
             onChange={handleTableChange}
@@ -204,8 +211,11 @@ const StartOrder = () => {
             <Link to={`demo/category-details/orderandpay`}>
               <p
                 className={`px-[24px] py-[10px] ${
-                  !table ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                  !table ? " cursor-default" : " cursor-pointer"
                 } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+                style={{
+                  backgroundColor: table ? color : "#f2f2f2",
+                }}
               >
                 Submit
               </p>
