@@ -72,11 +72,13 @@ export const InRoomCategoryDetails = () => {
 
   const ids = useSelector((state: RootState) => state.basket.items);
   const totalCount = useSelector((state: RootState) => state.basket);
-  console.log(totalCount);
 
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
+
+  const colorScheme = businessDetails?.colour_scheme;
+
   const business_identifier = businessDetails?._id;
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
@@ -190,7 +192,9 @@ export const InRoomCategoryDetails = () => {
               }`}
               style={{
                 backgroundColor:
-                  selectedGroup === "All" ? "#929292" : "transparent",
+                  selectedGroup === "All"
+                    ? colorScheme || "#929292"
+                    : "transparent",
               }}
               onClick={() => handleGroupClick("All")}
             >
@@ -209,7 +213,7 @@ export const InRoomCategoryDetails = () => {
                       style={{
                         backgroundColor:
                           selectedGroup === groupName
-                            ? "#929292"
+                            ? colorScheme || "#929292"
                             : "transparent",
                         borderColor:
                           selectedGroup === groupName ? "#929292" : "#B6B6B6",
@@ -242,7 +246,7 @@ export const InRoomCategoryDetails = () => {
                     className="max-w-[170px] h-[167px] mx-auto pb-[34px]  p-[5px] rounded-[10px]   border-2 drop-shadow bg-[#FFFFFF] border-[#E7E7E7] flex-shrink-0"
                     key={index}
                   >
-                    <Link to={`/demo/menu-details/${menu._id}/online_ordering`}>
+                    <Link to={`/demo/menu-details/${menu._id}/in_room_dining`}>
                       <div>
                         <div className=" w-full h-[112px] relative">
                           <img
@@ -254,7 +258,7 @@ export const InRoomCategoryDetails = () => {
                           <div
                             className="absolute -bottom-4 text-white right-0 rounded-full"
                             style={{
-                              backgroundColor: "#414141",
+                              backgroundColor: colorScheme || "#414141",
                             }}
                           >
                             <HiPlusSm className="text-[37px]" />
@@ -295,7 +299,7 @@ export const InRoomCategoryDetails = () => {
 
                         <div>
                           <Link
-                            to={`/demo/menu-details/${menu._id}/online_ordering`}
+                            to={`/demo/menu-details/${menu._id}/in_room_dining`}
                           >
                             <img
                               src={menu?.menu_item_image}
@@ -318,7 +322,7 @@ export const InRoomCategoryDetails = () => {
                                 className="cursor-pointer text-white rounded-full"
                                 onClick={() => decrement(menu)}
                                 style={{
-                                  backgroundColor: "#414141",
+                                  backgroundColor: colorScheme || "#414141",
                                 }}
                               >
                                 <HiMinusSm className="text-[27px]" />
@@ -333,7 +337,7 @@ export const InRoomCategoryDetails = () => {
                                 className="cursor-pointer text-white rounded-full"
                                 onClick={() => increment(menu)}
                                 style={{
-                                  backgroundColor: "#414141",
+                                  backgroundColor: colorScheme || "#414141",
                                 }}
                               >
                                 <HiPlusSm className="text-[27px]" />
@@ -342,14 +346,14 @@ export const InRoomCategoryDetails = () => {
                           ) : (
                             <div>
                               <Link
-                                to={`/demo/menu-details/${menu._id}/online_ordering`}
+                                to={`/demo/menu-details/${menu._id}/in_room_dining`}
                               >
                                 <div className="flex items-center justify-end">
                                   <div
                                     className="inline-flex cursor-pointer text-white rounded-full"
                                     onClick={() => increment(menu)}
                                     style={{
-                                      backgroundColor: "#414141",
+                                      backgroundColor: colorScheme || "#414141",
                                     }}
                                   >
                                     <HiPlusSm className="text-[27px]" />
@@ -369,14 +373,24 @@ export const InRoomCategoryDetails = () => {
         </div>
 
         {ids && (
-          <div className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto">
-            <div className="flex justify-between items-center py-[13px] px-[24px] text-white bg-[#FF0000] rounded-[3px] cursor-pointer">
+          <div
+            className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto"
+            style={{
+              backgroundColor: colorScheme || "#414141",
+            }}
+          >
+            <div className="flex justify-between items-center py-[13px] px-[24px] text-white  rounded-[3px] cursor-pointer">
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white rounded-[5px] text-[#FF0000] py-[12px] px-[10px] text-[16px] font-[500]">
+                <p
+                  className="bg-white rounded-[5px]  py-[12px] px-[10px] text-[16px] font-[500]"
+                  style={{
+                    color: colorScheme || "#414141",
+                  }}
+                >
                   {totalCount.totalQuantity || 0}
                 </p>
 
-                <p>&#x20A6;{totalCount.totalPrice || 0.0}</p>
+                <p>&#x20A6;{totalCount.totalPrice.toLocaleString() || 0.0}</p>
               </div>
               <Link to="/demo/basket/in_room_dining">
                 <p className="text-[16px] font-[500]">View Basket</p>

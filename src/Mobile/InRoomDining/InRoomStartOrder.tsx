@@ -42,13 +42,11 @@ const InRoomStartOrder = () => {
 
   useEffect(() => {
     if (business_identifier && branch) {
-      console.log(`Business Identifier: ${business_identifier}`);
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
       // dispatch(setTableNo(roomNo));
       dispatch(setBranchID(branch));
       dispatch(setURL(fullUrl));
-      // console.log(`Room: ${roomNo}`);
     }
 
     getBusinessDetails();
@@ -66,10 +64,7 @@ const InRoomStartOrder = () => {
         `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}`,
         headers
       );
-      console.log(
-        "Business Details Retrieved successfully:",
-        response.data.data
-      );
+
       dispatch(setBusinessDetails(response.data.data));
     } catch (error) {
       console.error("Error getting Business Details:", error);
@@ -84,6 +79,7 @@ const InRoomStartOrder = () => {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
+  const color = businessDetails?.colour_scheme;
 
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
@@ -107,7 +103,7 @@ const InRoomStartOrder = () => {
   }
 
   return (
-    <div className="mx-[22px]">
+    <div className="mx-[22px]" style={{ color: color || "#606060" }}>
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
           src={businessDetails?.business_logo}
@@ -128,6 +124,7 @@ const InRoomStartOrder = () => {
           <p
             className="cursor-pointer text-[#ffffff] px-[40px] py-[10px] bg-[#FF0000] rounded-[5px] font-[500] inline"
             onClick={() => setIsOpen(true)}
+            style={{ backgroundColor: color || "#606060" }}
           >
             Start Your Order
           </p>
@@ -169,6 +166,9 @@ const InRoomStartOrder = () => {
                 !userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
               } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
               onClick={userName ? handleNext : undefined}
+              style={{
+                backgroundColor: userName ? color : "#f2f2f2",
+              }}
             >
               Next
             </p>
@@ -197,6 +197,9 @@ const InRoomStartOrder = () => {
                 className={`px-[24px] py-[10px] ${
                   !room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
                 } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+                style={{
+                  backgroundColor: room ? color : "#f2f2f2",
+                }}
               >
                 Submit
               </p>

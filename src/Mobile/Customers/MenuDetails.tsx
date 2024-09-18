@@ -260,7 +260,10 @@ const MenuDetails = () => {
           )}
 
           <div className="menu-item-quantity py-[16px]">
-            <p className="text-[#FF0000] text-[16px] font-[500] mx-[24px] mb-[10px]">
+            <p
+              className=" text-[16px] font-[500] mx-[24px] mb-[10px]"
+              style={{ color: colorScheme || "#ff0000" }}
+            >
               Quantity
             </p>
             <hr />
@@ -394,7 +397,10 @@ const MenuDetails = () => {
                 />
               </div>
               <div className=" mt-[10px] flex items-center justify-end">
-                <button className=" text-[#ff0000]  font-[500] text-[40px]">
+                <button
+                  className=" font-[500] text-[40px]"
+                  style={{ color: colorScheme || "#ff0000" }}
+                >
                   <FaCircleCheck />
                 </button>
               </div>
