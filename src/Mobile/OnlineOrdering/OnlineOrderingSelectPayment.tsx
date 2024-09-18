@@ -32,8 +32,6 @@ export const OnlineOrderingSelectPayment = () => {
   console.log(finalTotal);
   console.log(basketDetails);
 
-  const userDetails = useSelector((state: RootState) => state.user);
-
   const items = basketDetails.items.map((item) => ({
     id: item.id,
     quantity: item.quantity,
@@ -65,7 +63,6 @@ export const OnlineOrderingSelectPayment = () => {
     totalPrice: basketDetails.totalPrice,
     totalQuantity: basketDetails.totalQuantity,
   };
-  const token = userDetails?.userData?.token;
   const colorScheme = useSelector(
     (state: RootState) => state.business?.businessDetails?.colour_scheme
   );
@@ -75,19 +72,13 @@ export const OnlineOrderingSelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/createBranchOrder`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        payload
       );
       setLoading(false);
       console.log(response.data);
       toast.success("Order has been Made successfully");
       dispatch(clearBasket());
-      // dispatch(resetBusinessDetails());
       navigate("/demo/receipt/online_ordering");
     } catch (error) {
       console.error("Error occurred:", error);

@@ -32,7 +32,6 @@ const PaymentScreen = () => {
   console.log(finalTotal);
   console.log(basketDetails);
 
-  const userDetails = useSelector((state: RootState) => state.user);
   const color = useSelector(
     (state: RootState) => state.business?.businessDetails?.colour_scheme
   );
@@ -78,25 +77,18 @@ const PaymentScreen = () => {
     menu_items: items,
     total_price: basketDetails.totalPrice,
   };
-  const token = userDetails?.userData?.token;
   const handlePayment = async () => {
     if (loading) return;
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/createBranchOrder`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        payload
       );
       setLoading(false);
       console.log(response.data);
       toast.success("Order has been Made successfully");
       dispatch(clearBasket());
-      // dispatch(resetBusinessDetails());
       window.location.href = `${url}`;
     } catch (error) {
       console.error("Error occurred:", error);
