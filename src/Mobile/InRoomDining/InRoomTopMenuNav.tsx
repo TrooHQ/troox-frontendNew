@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import CartFill from "../assets/baskets.svg";
 import CartWhite from "../assets/basketWhite.svg";
 import BackArrow from "../assets/arrow-small-left-White.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 interface TopMenuNavProps {
   exploreMenuText?: string;
@@ -14,9 +16,8 @@ interface TopMenuNavProps {
 
 const InRoomTopMenuNav: React.FC<TopMenuNavProps> = ({
   exploreMenuText = "Explore Menu",
-  bgColor = "#FF0000",
-  textColor = "#FFFFFF",
-  borderColor = "#FF0000",
+  bgColor = "#f2f2f2",
+  textColor = "#000000",
   children,
 }) => {
   const navigate = useNavigate();
@@ -50,6 +51,32 @@ const InRoomTopMenuNav: React.FC<TopMenuNavProps> = ({
     };
   }, []);
 
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
+
+  let colorScheme = businessDetails?.colour_scheme || bgColor;
+
+  switch (colorScheme) {
+    case "#3450B0":
+      colorScheme = "#EBEEF7";
+      break;
+    case "#FF0000":
+      colorScheme = "#FFF2F2";
+      break;
+    case "#097F7C":
+      colorScheme = "#E6F2F2";
+      break;
+    case "#5955B3":
+      colorScheme = "#EEEEF7";
+      break;
+    case "#000000":
+      colorScheme = "#929294";
+      break;
+    default:
+      break;
+  }
+
   return (
     <div
       className={`${
@@ -58,15 +85,13 @@ const InRoomTopMenuNav: React.FC<TopMenuNavProps> = ({
     >
       <div
         className="grid grid-cols-3 items-center py-4 shadow"
-        style={{ backgroundColor: bgColor }}
+        style={{ backgroundColor: colorScheme }}
       >
         <div className="justify-self-start">
           <p
             className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
             style={{
               color: textColor,
-              borderColor: borderColor,
-              borderStyle: "solid",
               cursor: "pointer",
             }}
             onClick={() => navigate(-1)}

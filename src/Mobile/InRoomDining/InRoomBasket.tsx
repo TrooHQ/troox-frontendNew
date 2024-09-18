@@ -3,20 +3,23 @@ import { RootState } from "../../store/store";
 import TopMenuNav from "./InRoomTopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 
-import Minus from "../assets/Minus.svg";
-import Add from "../assets/add.svg";
 import {
   removeItemFromBasket,
   updateItemQuantity,
 } from "../../slices/BasketSlice";
 import { TiDelete } from "react-icons/ti";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 export const InRoomBasket = () => {
   const navigate = useNavigate();
   const basketDetails = useSelector((state: RootState) => state.basket);
   const dispatch = useDispatch();
 
-  console.log(basketDetails);
+  const userDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = userDetails?.colour_scheme;
 
   const handleIncreaseQuantity = (id: string, currentQuantity: number) => {
     dispatch(updateItemQuantity({ id, quantity: currentQuantity + 1 }));
@@ -61,33 +64,45 @@ export const InRoomBasket = () => {
                           {item.name}
                         </p>
                       </Link>
-                      <div className="flex items-center mr-[10px]">
-                        <img
-                          className=" w-[20px]"
-                          src={Minus}
-                          alt=""
+                      <div className="flex items-center justify-center w-full max-w-[100px] ">
+                        <div
+                          className="  cursor-pointer text-white   rounded-full"
                           onClick={() =>
                             handleDecreaseQuantity(item.id, item.quantity)
                           }
-                        />
-                        <p className="text-[18px] text-[#000000] font-[500] mx-[10px]">
+                          style={{
+                            backgroundColor: colorScheme || "#414141",
+                          }}
+                        >
+                          <HiMinusSm className=" text-[20px]" />
+                        </div>
+
+                        <p
+                          className="text-[18px] font-[500] mx-[10px]"
+                          style={{
+                            color: colorScheme || "#121212",
+                          }}
+                        >
                           x{item?.quantity}
                         </p>
-                        <img
-                          className=" w-[20px]"
-                          src={Add}
-                          alt=""
+                        <div
+                          className="  cursor-pointer text-white   rounded-full"
                           onClick={() =>
                             handleIncreaseQuantity(item.id, item.quantity)
                           }
-                        />
+                          style={{
+                            backgroundColor: colorScheme || "#414141",
+                          }}
+                        >
+                          <HiPlusSm className=" text-[20px]" />
+                        </div>
                       </div>
                       {item.menuItem && (
                         <p className="text-[#121212]">
                           &#x20A6;
                           {(
                             item.menuItem.menu_item_price * item.quantity
-                          ).toFixed(2)}
+                          ).toLocaleString()}
                         </p>
                       )}
 
@@ -113,7 +128,9 @@ export const InRoomBasket = () => {
                               </p>
                               <p className="text-[14px] text-[#121212] font-[400]">
                                 &#x20A6;
-                                {(option.price * item.quantity).toFixed(2)}
+                                {(
+                                  option.price * item.quantity
+                                ).toLocaleString()}
                               </p>
                             </div>
                           ))}
@@ -131,8 +148,11 @@ export const InRoomBasket = () => {
             </p>
             <p>Your cart is empty.</p>
             <p
-              className=" px-[16px] py-[9px] bg-[#DB7F3B] text-white rounded-[8px] cursor-pointer"
+              className=" px-[16px] py-[9px]  text-white rounded-[8px] cursor-pointer"
               onClick={() => navigate(-1)}
+              style={{
+                backgroundColor: colorScheme || "#121212",
+              }}
             >
               Start Ordering
             </p>
@@ -142,8 +162,13 @@ export const InRoomBasket = () => {
           <div className="py-[16px] mx-[24px]">
             <div className="flex items-center justify-between">
               <p className="text-[16px] text-[#121212] font-[500]">Total:</p>
-              <p className="text-[16px] text-[#121212] font-[500]">
-                &#x20A6;{basketDetails?.totalPrice.toFixed(2)}
+              <p
+                className="text-[16px]  font-[500]"
+                style={{
+                  color: colorScheme || "#121212",
+                }}
+              >
+                &#x20A6;{basketDetails?.totalPrice.toLocaleString()}
               </p>
             </div>
 
@@ -155,7 +180,12 @@ export const InRoomBasket = () => {
                 Cancel
               </p>
               <Link to="/demo/tip/in_room_dining">
-                <p className="inline font-[500] text-[16px] rounded-[5px] bg-[#FF0000] text-white py-[10px] px-[24px]">
+                <p
+                  className="inline font-[500] text-[16px] rounded-[5px]  text-white py-[10px] px-[24px]"
+                  style={{
+                    backgroundColor: colorScheme || "#121212",
+                  }}
+                >
                   Proceed to Pay
                 </p>
               </Link>

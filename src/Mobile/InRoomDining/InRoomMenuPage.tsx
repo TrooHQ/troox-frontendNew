@@ -18,7 +18,6 @@ export const InRoomMenuPage = () => {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
-  console.log(businessDetails);
 
   const business_identifier = businessDetails?._id;
   const business_name = businessDetails?.business_name;
@@ -35,7 +34,6 @@ export const InRoomMenuPage = () => {
         `${SERVER_DOMAIN}/menu/getCustomerMenuCategory/?business_identifier=${business_identifier}`,
         headers
       );
-      console.log("Business Details Retrieved successfully:", response.data);
       setMenuCategory(response.data.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);

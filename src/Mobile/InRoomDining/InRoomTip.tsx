@@ -14,7 +14,6 @@ export const InRoomTip = () => {
   const dispatch = useDispatch();
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<number | null>(null);
-  const basketDetails = useSelector((state: RootState) => state.basket);
   const tipPercentages = [0.1, 0.125, 0.15];
 
   useEffect(() => {
@@ -40,13 +39,10 @@ export const InRoomTip = () => {
   useEffect(() => {
     if (selectedTip !== null) {
       const tipAmount = totalPrice * selectedTip;
-      console.log("Selected tip amount:", tipAmount);
       dispatch(setTip(tipAmount));
     } else if (customAmount !== null) {
-      console.log("Custom tip amount:", customAmount);
       dispatch(setTip(customAmount));
     } else {
-      console.log("Selected tip: None");
       dispatch(setTip(null));
     }
   }, [selectedTip, customAmount, totalPrice]);
@@ -68,9 +64,11 @@ export const InRoomTip = () => {
     navigate("/demo/payment-type/in_room_dining");
   };
 
-  useEffect(() => {
-    console.log("Basket Details:", basketDetails);
-  }, [basketDetails]);
+  const userDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+
+  const colorScheme = userDetails?.colour_scheme;
 
   return (
     <div className="  ">
@@ -85,15 +83,18 @@ export const InRoomTip = () => {
             {tipPercentages.map((tip, index) => (
               <div
                 key={index}
-                className={`flex flex-col items-center px-[36px] py-[8px] border border-[#B6B6B6] rounded-[3px] cursor-pointer ${
-                  selectedTip === tip ? "bg-[#E0E0E0]" : ""
-                }`}
+                className={`flex flex-col items-center px-[36px] py-[8px] border border-[#B6B6B6] rounded-[3px] cursor-pointer`}
+                style={{
+                  backgroundColor:
+                    selectedTip === tip ? colorScheme || "#E0E0E0" : "",
+                  color: selectedTip === tip ? "#ffffff" : "#121212",
+                }}
                 onClick={() => handleTipClick(tip)}
               >
-                <p className=" text-[#121212] text-[16px] font-[500]">
+                <p className=" text-[16px] font-[500]">
                   {(tip * 100).toFixed(1)}%
                 </p>
-                <p className=" text-[14px] text-[#121212] font-[400]">
+                <p className=" text-[14px] font-[400]">
                   {(totalPrice * tip).toFixed(2)}
                 </p>
               </div>
@@ -114,13 +115,17 @@ export const InRoomTip = () => {
 
         <div className=" mt-[60px] flex items-center justify-center gap-[16px]">
           <p
-            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] text-[#FF0000]"
+            className=" cursor-pointer font-[500] text-[16px] py-[10px] px-[24px] "
+            style={{ color: colorScheme || "#FF0000" }}
             onClick={handleNoTipClick}
           >
             No Tip
           </p>
           <Link to="/demo/payment-type/in_room_dining">
-            <p className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff] bg-[#FF0000] py-[10px] px-[56px]">
+            <p
+              className=" inline font-[500] text-[16px] rounded-[5px] text-[#ffffff]  py-[10px] px-[56px]"
+              style={{ backgroundColor: colorScheme || "#FF0000" }}
+            >
               Add Tip
             </p>
           </Link>
