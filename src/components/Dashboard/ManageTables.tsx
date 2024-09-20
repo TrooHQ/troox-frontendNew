@@ -15,6 +15,7 @@ import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch, RootState } from "../../store/store";
 import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
+import OtherSettings from "./OtherSettings";
 
 const DropdownMenu = ({ onClose, onDelete }: { onClose: () => void; onDelete: () => void }) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -81,7 +82,6 @@ const ManageTables: React.FC = () => {
   const [location, setLocation] = useState("");
   const [tableNumber, setTableNumber] = useState("1");
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
@@ -91,8 +91,11 @@ const ManageTables: React.FC = () => {
     dispatch(getTables());
   }, [dispatch]);
 
-  const roomData = useSelector((state: RootState) => state.tables.rooms);
-  const tableData = useSelector((state: RootState) => state.tables.tables);
+  const roomData = useSelector((state: any) => state.tables.rooms);
+  const tableData = useSelector((state: any) => state.tables.tables);
+  const { selectedBranch: selectedOutlet } = useSelector((state: RootState) => state.branches);
+
+  console.log(selectedOutlet, selectedBranchId);
 
   const handleBranchSelect = (branchId: string) => {
     setSelectedBranch(branchId);
@@ -250,42 +253,47 @@ const ManageTables: React.FC = () => {
                   </div>
                   <div>
                     <ul>
-                      {items.map((item, index) => (
-                        <li
-                          key={index}
-                          className={`grid grid-cols-7 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                            index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                          }`}
-                        >
-                          <p className="col-span-2 px-3 py-2">{item.number}</p>
-                          <p className="col-span-2 px-3 py-2">{item.group_name}</p>
-                          <p className="px-3 py-2">
-                            {item.qrcode && <img src={item.qrcode} alt="" />}
-                          </p>
-                          <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                            <div
-                              className={`${
-                                activeMenuIndex === index ? "bg-slate-200" : ""
-                              } py-[10px] px-[20px] rounded-full`}
-                            >
+                      {items.map(
+                        (
+                          item: { number: any; group_name: any; qrcode: any; branch: any },
+                          index: any
+                        ) => (
+                          <li
+                            key={index}
+                            className={`grid grid-cols-7 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                              index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                            }`}
+                          >
+                            <p className="col-span-2 px-3 py-2">{item.number}</p>
+                            <p className="col-span-2 px-3 py-2">{item.group_name}</p>
+                            <p className="px-3 py-2">
+                              {item.qrcode && <img src={item.qrcode} alt="" />}
+                            </p>
+                            <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
                               <div
-                                className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                                onClick={() => toggleMenu(index)}
+                                className={`${
+                                  activeMenuIndex === index ? "bg-slate-200" : ""
+                                } py-[10px] px-[20px] rounded-full`}
                               >
-                                <img src={More} alt="" className="cursor-pointer w-[5px]" />
+                                <div
+                                  className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                                  onClick={() => toggleMenu(index)}
+                                >
+                                  <img src={More} alt="" className="cursor-pointer w-[5px]" />
+                                </div>
                               </div>
+                              {activeMenuIndex === index && (
+                                <DropdownMenu
+                                  onClose={() => toggleMenu(index)}
+                                  onDelete={() =>
+                                    handleDeleteConfirmation(item.group_name, item.branch)
+                                  }
+                                />
+                              )}
                             </div>
-                            {activeMenuIndex === index && (
-                              <DropdownMenu
-                                onClose={() => toggleMenu(index)}
-                                onDelete={() =>
-                                  handleDeleteConfirmation(item.group_name, item.branch)
-                                }
-                              />
-                            )}
-                          </div>
-                        </li>
-                      ))}
+                          </li>
+                        )
+                      )}
                     </ul>
                   </div>
                 </>
@@ -293,6 +301,8 @@ const ManageTables: React.FC = () => {
             </div>
           ))}
         </div>
+
+        <OtherSettings selectedOutlet={selectedOutlet} />
 
         {/* Modals */}
         <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
