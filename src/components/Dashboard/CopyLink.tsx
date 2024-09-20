@@ -1,5 +1,7 @@
 // src/components/CopyLink.tsx
 import React, { useState } from "react";
+import { IconButton } from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
 
 interface CopyLinkProps {
   linkType: "self-checkout" | "online-ordering"; // Link type, either "self-checkout" or "online-ordering"
@@ -37,16 +39,20 @@ const CopyLink: React.FC<CopyLinkProps> = ({ linkType, businessId, outletId }) =
   };
 
   return (
-    <p
-      className={`px-4 py-2 rounded-lg text-white mb-3 cursor-pointer ${
-        copySuccess ? "bg-green-500 hover:bg-green-600" : "bg-purple500 hover:bg-purple-900"
-      } focus:outline-none transition-colors duration-300`}
+    <div
+      className="flex items-center cursor-pointer"
       onClick={handleClick}
+      style={{ color: copySuccess ? "#5855B3" : "black" }} // purple500 color code
     >
-      {copySuccess
-        ? "Copied!"
-        : `Get ${linkType === "self-checkout" ? "Self-Checkout" : "Online-Ordering"} link`}
-    </p>
+      <IconButton style={{ color: copySuccess ? "#5855B3" : "black" }}>
+        <LinkIcon />
+      </IconButton>
+      <p className="ml-2 text-[16px] font-[500]">
+        {copySuccess
+          ? "Copied!"
+          : `Get ${linkType === "self-checkout" ? "Self-Checkout" : "Online-Ordering"} link`}
+      </p>
+    </div>
   );
 };
 
