@@ -124,7 +124,7 @@ const Overview: React.FC = () => {
               },
             }}
           >
-            {selectedBranch?.label || "All outlets"} <ArrowDropDown />
+            {selectedBranch?.label || selectedOutlet?.label || "All outlets"} <ArrowDropDown />
           </Button>
           <Popper
             open={open}
