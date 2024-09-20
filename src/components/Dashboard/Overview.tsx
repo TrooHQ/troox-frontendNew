@@ -124,7 +124,7 @@ const Overview: React.FC = () => {
               },
             }}
           >
-            {selectedBranch.label} <ArrowDropDown />
+            {selectedBranch?.label || "All outlets"} <ArrowDropDown />
           </Button>
           <Popper
             open={open}
@@ -136,7 +136,7 @@ const Overview: React.FC = () => {
               <CustomAutocomplete
                 disablePortal
                 options={transformedBranches}
-                value={selectedBranch ? selectedBranch.label : selectedOutlet.label}
+                value={selectedBranch ? selectedBranch?.label : "All outlets"}
                 onChange={handleSelect}
                 renderInput={(params) => (
                   <TextField
