@@ -16,6 +16,7 @@ import {
 } from "../../slices/BasketSlice";
 import Loader from "../../components/Loader";
 import Image from "../assets/FriedRice.png";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface MenuItem {
   _id: string;
@@ -282,9 +283,14 @@ const InRoomMenuDetails = () => {
           </div>
 
           <div className=" mx-[24px]">
-            <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
-              People also ordered for
-            </p>
+            <div className=" flex items-center justify-between my-[20px]">
+              <p className="text-[16px] text-[#121212] font-[500] ">
+                People also ordered for
+              </p>
+              <div className=" text-[16px]">
+                <MdKeyboardArrowRight />
+              </div>
+            </div>
 
             <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
               {menuItems.map((menu, index) => (
@@ -332,9 +338,14 @@ const InRoomMenuDetails = () => {
           </div>
 
           <div className="mx-[24px]">
-            <p className="text-[16px] text-[#121212] font-[500] my-[20px]">
-              Recommended Items
-            </p>
+            <div className=" flex items-center justify-between my-[20px]">
+              <p className="text-[16px] text-[#121212] font-[500] ">
+                Recommended Items
+              </p>
+              <div className=" text-[16px]">
+                <MdKeyboardArrowRight />
+              </div>
+            </div>
 
             <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
               {menuItems.map((menu, index) => (
