@@ -246,7 +246,7 @@ export const CategoryDetails = () => {
                     className="max-w-[170px] h-[167px] mx-auto pb-[34px]  p-[5px] rounded-[10px]   border-2 drop-shadow bg-[#FFFFFF] border-[#E7E7E7] flex-shrink-0"
                     key={index}
                   >
-                    <Link to={`/demo/menu-details/${menu._id}/online_ordering`}>
+                    <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
                       <div>
                         <div className=" w-full h-[112px] relative">
                           <img
@@ -299,7 +299,7 @@ export const CategoryDetails = () => {
 
                         <div>
                           <Link
-                            to={`/demo/menu-details/${menu._id}/online_ordering`}
+                            to={`/demo/menu-details/${menu._id}/orderandpay`}
                           >
                             <img
                               src={menu?.menu_item_image}
@@ -346,7 +346,7 @@ export const CategoryDetails = () => {
                           ) : (
                             <div>
                               <Link
-                                to={`/demo/menu-details/${menu._id}/online_ordering`}
+                                to={`/demo/menu-details/${menu._id}/orderandpay`}
                               >
                                 <div className="flex items-center justify-end">
                                   <div
