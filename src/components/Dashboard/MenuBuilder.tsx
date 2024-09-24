@@ -17,7 +17,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Modifiers from "./components/Modifiers";
 import AddMenuCategory from "./AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
-import { fetchMenuCategories, fetchMenuGroups, fetchMenuItems } from "../../slices/menuSlice";
+import {
+  fetchMenuCategories,
+  fetchMenuGroups,
+  fetchMenuItemsByMenuGroup,
+} from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
@@ -34,7 +38,9 @@ import ConfirmationDialog from "./ConfirmationDialog";
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { categories, menuGroups, menuItems, mgLoading } = useSelector((state: any) => state.menu);
+  const { categories, menuGroups, menuItems, menuItemsByGroup, mgLoading } = useSelector(
+    (state: any) => state.menu
+  );
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -151,6 +157,21 @@ const MenuBuilder = () => {
 
   console.log(activeMainMenu, activeSubMenu);
 
+  useEffect(() => {
+    if (selectedBranch && activeSubMenu) {
+      setMenuItemLoading(true); // Set loading to true before fetching menu items
+      setSelectedMenuItem(null); // Clear the selected menu item when a new group is selected
+      dispatch(
+        fetchMenuItemsByMenuGroup({
+          branch_id: selectedBranch.id,
+          menu_group_name: activeSubMenu,
+        })
+      ).finally(() => {
+        setMenuItemLoading(false); // Set loading to false after fetching
+      });
+    }
+  }, [selectedBranch, activeSubMenu]);
+
   // Fetch data based on selectedBranch, activeMainMenu, and activeSubMenu
   useEffect(() => {
     if (selectedBranch) {
@@ -169,28 +190,25 @@ const MenuBuilder = () => {
     }
   }, [selectedBranch, activeMainMenu]);
 
-  useEffect(() => {
+  const handleFetchMenuItems = () => {
+    console.log(selectedBranch, activeSubMenu);
     if (selectedBranch && activeSubMenu) {
-      setMenuItemLoading(true); // Set loading to true before fetching menu items
-      setSelectedMenuItem(null); // Clear the selected menu item when a new group is selected
       dispatch(
-        fetchMenuItems({
+        fetchMenuItemsByMenuGroup({
           branch_id: selectedBranch.id,
           menu_group_name: activeSubMenu,
         })
-      ).finally(() => {
-        setMenuItemLoading(false); // Set loading to false after fetching
-      });
+      );
     }
-  }, [selectedBranch, activeSubMenu]);
+  };
 
   // Update submenuContent when menuItems change
   useEffect(() => {
-    if (menuItems.length > 0) {
+    if (menuItemsByGroup?.length > 0) {
       setSubmenuContent([
         {
           type: activeSubMenu as any,
-          data: menuItems.map((item: any) => ({
+          data: menuItemsByGroup.map((item: any) => ({
             img: item.menu_item_image,
             price: item.menu_item_price.toString(),
             name: item.menu_item_name,
@@ -200,7 +218,7 @@ const MenuBuilder = () => {
     } else {
       setSubmenuContent([{ type: activeSubMenu as any, data: [] }]);
     }
-  }, [menuItems, activeSubMenu]);
+  }, [menuItemsByGroup, activeSubMenu]);
 
   const handleSaveMenuGroup = async () => {
     setMenuGroupLoading(true);
@@ -268,7 +286,7 @@ const MenuBuilder = () => {
       );
       console.log(response);
       dispatch(
-        fetchMenuItems({
+        fetchMenuItemsByMenuGroup({
           branch_id: selectedBranch.id,
           menu_group_name: activeSubMenu,
         })
@@ -354,7 +372,7 @@ const MenuBuilder = () => {
             menu_category_name: activeMainMenu,
           })
         );
-        // dispatch(fetchMenuItems({ branch_id: viewingBranch?._id as any }));
+        // dispatch(fetchMenuItemsByMenuGroup({ branch_id: viewingBranch?._id as any }));
       } else {
         alert("Failed to delete modifier");
       }
@@ -429,10 +447,10 @@ const MenuBuilder = () => {
                                 } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                                 key={group._id}
                                 onClick={() => {
-                                  // Update submenu content and active submenu
-                                  setSubmenuContent([{ type: group.name, data: [] }]);
+                                  // setSubmenuContent([{ type: group.name, data: [] }]);
                                   setActiveSubMenu(group.name);
-                                  setMenuType(group.menu_category_name);
+                                  // setMenuType(group.menu_category_name);
+                                  handleFetchMenuItems();
                                 }}
                               >
                                 {truncateText(group.name, 15)}

@@ -44,7 +44,6 @@ function formatNumber(num: number) {
 }
 
 function PieCenterLabel({ children }: { children: React.ReactNode }) {
-  console.log(children);
   const { width, height, left, top } = useDrawingArea();
   const sum = data.reduce((sum, { value }) => sum + value, 0);
   const formattedSum = formatNumber(sum);
@@ -63,10 +62,7 @@ function PieCenterLabel({ children }: { children: React.ReactNode }) {
 
 const PieCharts = () => {
   return (
-    <PieChart
-      series={[{ data, innerRadius: 125, color: data[0].color }]}
-      {...size}
-    >
+    <PieChart series={[{ data, innerRadius: 125, color: data[0].color }]} {...size}>
       <PieCenterLabel>
         <div className="text-center text-[#858497] font-inter text-lg leading-[27px]">
           Total Revenue
