@@ -67,7 +67,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   console.log(transformedBranches, selectedBranch, "userData");
   useEffect(() => {
     const defaultBranch = transformedBranches[0];
-    selectedBranch === null && dispatch(userSelectedBranch(defaultBranch as any));
+    (selectedBranch === null || selectedBranch === undefined) &&
+      dispatch(userSelectedBranch(defaultBranch as any));
   }, [dispatch]);
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
