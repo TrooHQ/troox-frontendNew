@@ -23,43 +23,43 @@ const menuItems = [
     name: "Rice",
     price: "₦3,000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "₦3,000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "₦3,000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "₦3,000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "From ₦3000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "From ₦3000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "From ₦3000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
 ];
 interface MenuItem {
@@ -69,7 +69,7 @@ interface MenuItem {
   price: number;
   options?: Option[];
   menu_item_image: string;
-  details: string;
+  description: string;
   business_name: string;
   menu_category_name: string;
   menu_group_name: string;
@@ -271,7 +271,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                       </div>
                       <div className="flex items-center justify-between">
                         <p className="text-grey500 font-[400] text-[28px] mb-[17px]">
-                          {menuItem.details ||
+                          {menuItem.description ||
                             "If it Ain't Delicious, it Ain't from Chicken Republic"}
                         </p>
                       </div>

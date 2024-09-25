@@ -99,7 +99,9 @@ const MenuSetupForm: React.FC<Props> = () => {
       });
       newState[categoryId] = !prevState[categoryId];
 
-      const categoryName = Object.keys(newState).find((key) => newState[key] === true);
+      const categoryName = Object.keys(newState).find(
+        (key) => newState[key] === true
+      );
       if (categoryName) {
         setOpenCategory(categoryName);
       }
@@ -234,9 +236,11 @@ const MenuSetupForm: React.FC<Props> = () => {
     setInfoModal(!infoModal);
   };
 
-  const userDetails = useSelector((state: RootState) => state.user);
+  const userDetails = useSelector((state: RootState) => state?.user);
 
-  const selectedOutletID = useSelector((state: any) => state.outlet.selectedOutletID);
+  const selectedOutletID = useSelector(
+    (state: any) => state?.outlet?.selectedOutletID
+  );
 
   const businessType = userDetails?.userData?.business_type;
   const id = userDetails?.userData?.user_id;
@@ -618,10 +622,13 @@ const MenuSetupForm: React.FC<Props> = () => {
                                   <div className=" pl-[20px]">
                                     {items.map((item, index) => (
                                       <div className="" key={index}>
-                                        {group.name === item.menu_group_name && (
+                                        {group.name ===
+                                          item.menu_group_name && (
                                           <div
                                             className="flex items-center justify-between"
-                                            onClick={() => toggleItem(item.menu_item_name)}
+                                            onClick={() =>
+                                              toggleItem(item.menu_item_name)
+                                            }
                                             style={{ cursor: "pointer" }}
                                           >
                                             <p className=" font-[500] py-[8px]">
@@ -631,10 +638,13 @@ const MenuSetupForm: React.FC<Props> = () => {
                                               src={Arrow}
                                               alt=""
                                               style={{
-                                                transform: expandedItem[item.menu_item_name]
+                                                transform: expandedItem[
+                                                  item.menu_item_name
+                                                ]
                                                   ? "rotate(180deg)"
                                                   : "rotate(0deg)",
-                                                transition: "transform 0.3s ease",
+                                                transition:
+                                                  "transform 0.3s ease",
                                               }}
                                             />
                                           </div>
@@ -643,19 +653,24 @@ const MenuSetupForm: React.FC<Props> = () => {
                                         {expandedItem[item.menu_item_name] && (
                                           <div
                                             className=" grid gap-[10px]"
-                                            onClick={() => setModifierModal(true)}
+                                            onClick={() =>
+                                              setModifierModal(true)
+                                            }
                                           >
                                             {modifiers
                                               .filter(
                                                 (modifier) =>
-                                                  modifier.menu_item_name === item.menu_item_name
+                                                  modifier.menu_item_name ===
+                                                  item.menu_item_name
                                               )
                                               .map((modifier, index) => (
                                                 <div
                                                   key={index}
                                                   className=" flex items-center justify-between  bg-slate-50 p-[8px]"
                                                 >
-                                                  <p className=" ">{modifier.modifier_name}</p>
+                                                  <p className=" ">
+                                                    {modifier.modifier_name}
+                                                  </p>
                                                   <p>
                                                     &#x20A6;
                                                     {modifier.modifier_price}
@@ -715,7 +730,9 @@ const MenuSetupForm: React.FC<Props> = () => {
               </div>
             )}
 
-            <Link to={`${hasMenu === false ? "/" : "/demo/dashboard/troo-portal"}`}>
+            <Link
+              to={`${hasMenu === false ? "/" : "/demo/dashboard/troo-portal"}`}
+            >
               <button className=" text-[16px] font-[500] text-[#929292] border border-[#B6B6B6] w-full text-center py-3 rounded">
                 {hasMenu === false ? "Cancel" : "Back"}
               </button>
@@ -724,7 +741,10 @@ const MenuSetupForm: React.FC<Props> = () => {
         </div>
       </div>
 
-      <MenuModal isOpen={addCategory} onClose={() => setAddCategoryModal(false)}>
+      <MenuModal
+        isOpen={addCategory}
+        onClose={() => setAddCategoryModal(false)}
+      >
         <div className=" fixed top-1/3  left-0 w-full  z-50 py-[32px] px-[21px] bg-white rounded-tl-[20px] rounded-tr-[20px]">
           <div className=" ">
             {/* <p className=" text-red-500">{error ? error : ""}</p> */}
@@ -735,18 +755,25 @@ const MenuSetupForm: React.FC<Props> = () => {
               <img src={Cancel} alt="" />
             </div>
             <div className="relative flex items-end gap-[5px] mb-[12px]">
-              <p className=" text-[20px]  font-[400] text-grey500 ">New menu category</p>
-              <img src={info} alt="" className=" cursor-pointer" onClick={handleInfoModal} />
+              <p className=" text-[20px]  font-[400] text-grey500 ">
+                New menu category
+              </p>
+              <img
+                src={info}
+                alt=""
+                className=" cursor-pointer"
+                onClick={handleInfoModal}
+              />
               {infoModal && (
                 <div className="grid gap-[10px] absolute top-[30px] right-0 shadow-2xl z-[50] w-[300px] py-[32px] px-[16px] bg-white">
                   <p className=" text-[14px] font-[400] text-grey500">
-                    New Menu allows you create a new menu category where other food items can be
-                    added to it.
+                    New Menu allows you create a new menu category where other
+                    food items can be added to it.
                   </p>
                   <p className=" text-[14px] font-[400] text-grey500">
-                    E.g when you create a menu for soup, you have created a category called soup in
-                    your database. You can add soups such as Pepper soup e.t.c. when you create a
-                    menu item.
+                    E.g when you create a menu for soup, you have created a
+                    category called soup in your database. You can add soups
+                    such as Pepper soup e.t.c. when you create a menu item.
                   </p>
                 </div>
               )}
@@ -773,7 +800,9 @@ const MenuSetupForm: React.FC<Props> = () => {
 
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                  Add image
+                </p>
 
                 <div className="flex items-center gap-[16px]">
                   <label
@@ -832,18 +861,25 @@ const MenuSetupForm: React.FC<Props> = () => {
               <img src={Cancel} alt="" />
             </div>
             <div className=" flex relative items-center gap-[5px] mb-[16px]">
-              <p className=" text-[20px]  font-[400] text-grey500">New Menu Group</p>
-              <img src={info} alt="" onClick={handleInfoModal} className=" cursor-pointer" />
+              <p className=" text-[20px]  font-[400] text-grey500">
+                New Menu Group
+              </p>
+              <img
+                src={info}
+                alt=""
+                onClick={handleInfoModal}
+                className=" cursor-pointer"
+              />
               {infoModal && (
                 <div className="grid gap-[10px] absolute top-[30px] right-0 shadow-2xl z-[50] w-[300px] py-[32px] px-[16px] bg-white">
                   <p className=" text-[14px] font-[400] text-grey500">
-                    New Menu allows you create a new menu category where other food items can be
-                    added to it.
+                    New Menu allows you create a new menu category where other
+                    food items can be added to it.
                   </p>
                   <p className=" text-[14px] font-[400] text-grey500">
-                    E.g when you create a menu for soup, you have created a category called soup in
-                    your database. You can add soups such as Pepper soup e.t.c. when you create a
-                    menu item.
+                    E.g when you create a menu for soup, you have created a
+                    category called soup in your database. You can add soups
+                    such as Pepper soup e.t.c. when you create a menu item.
                   </p>
                 </div>
               )}
@@ -869,7 +905,8 @@ const MenuSetupForm: React.FC<Props> = () => {
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
                 <p className=" text-[#606060] text-[14px] font-[400]">
-                  Do you want all the menu items under this menu group to have the same price?
+                  Do you want all the menu items under this menu group to have
+                  the same price?
                 </p>
 
                 <div className=" flex items-center gap-[16px]">
@@ -968,7 +1005,9 @@ const MenuSetupForm: React.FC<Props> = () => {
             >
               <img src={Cancel} alt="" />
             </div>
-            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">New menu Item</p>
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
+              New menu Item
+            </p>
 
             <div className=" grid gap-[16px] ">
               <CustomInput
@@ -996,7 +1035,9 @@ const MenuSetupForm: React.FC<Props> = () => {
             </div>
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                  Add image
+                </p>
 
                 <div className="flex items-center gap-[16px]">
                   <label
@@ -1049,7 +1090,9 @@ const MenuSetupForm: React.FC<Props> = () => {
             >
               <img src={Cancel} alt="" />
             </div>
-            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">Add Modifier</p>
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
+              Add Modifier
+            </p>
 
             <div className=" grid gap-[20px]">
               <CustomInput
@@ -1067,7 +1110,9 @@ const MenuSetupForm: React.FC<Props> = () => {
             </div>
             <div className=" grid gap-[8px] my-[16px]">
               <div className="">
-                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">Add image</p>
+                <p className=" text-[18px] mb-[8px] font-[500] text-grey500">
+                  Add image
+                </p>
 
                 <div className="flex items-center gap-[16px]">
                   <label
@@ -1119,14 +1164,18 @@ const MenuSetupForm: React.FC<Props> = () => {
               alt=""
               onClick={() => setSuccessModal(false)}
             />
-            <p className="text-[16px] font-[400] text-grey500">Menu has been setup successfully</p>
+            <p className="text-[16px] font-[400] text-grey500">
+              Menu has been setup successfully
+            </p>
           </div>
         </div>
       </MenuModal>
 
       {hasMenu === false && (
         <div className=" absolute bottom-10 right-10 ">
-          <Link to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}>
+          <Link
+            to={`${businessType === "Hotel & Lodgings" ? "/room" : "/table"}`}
+          >
             <div className="flex items-end gap-[5px]">
               <p className=" text-[#5855B3] text-[18px] leading-[24px] font-400">
                 Continue
