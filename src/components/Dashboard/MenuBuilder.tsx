@@ -38,7 +38,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { categories, menuGroups, menuItems, menuItemsByGroup, mgLoading } = useSelector(
+  const { categories, menuGroups, menuItemsByGroup, mgLoading } = useSelector(
     (state: any) => state.menu
   );
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -144,7 +144,6 @@ const MenuBuilder = () => {
   >([]);
   const [activeMainMenu, setActiveMainMenu] = useState<string | null>(categories[0]?.name || null);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
-  const [menuType, setMenuType] = useState<string>("");
 
   const getSubmenu = (categoryName: string) => {
     const category = categories.find((cat: any) => cat.name === categoryName);
@@ -543,9 +542,7 @@ const MenuBuilder = () => {
                     <div className=" flex-grow space-y-[16px]">
                       <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
                       <div className=" flex items-start justify-between ">
-                        <p className=" text-[16px] font-[500] text-[#5855B3]">
-                          {menuType || "Type"}
-                        </p>
+                        <p className=" text-[16px] font-[500] text-[#5855B3]">Type</p>
                         <div className=" ">
                           <button
                             className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"

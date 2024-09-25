@@ -47,6 +47,7 @@ function PieCenterLabel({ children }: { children: React.ReactNode }) {
   const { width, height, left, top } = useDrawingArea();
   const sum = data.reduce((sum, { value }) => sum + value, 0);
   const formattedSum = formatNumber(sum);
+  console.log(children);
 
   return (
     <>
