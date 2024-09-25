@@ -55,7 +55,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         }
   );
 
-  console.log(selectedBranch, "userData");
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
@@ -65,6 +64,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     id: branch._id,
   }));
 
+  console.log(transformedBranches, selectedBranch, "userData");
+  useEffect(() => {
+    const defaultBranch = transformedBranches[0];
+    (selectedBranch === null || selectedBranch === undefined) &&
+      dispatch(userSelectedBranch(defaultBranch as any));
+  }, [dispatch]);
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     setIsAutoOpen((prev) => !prev);
