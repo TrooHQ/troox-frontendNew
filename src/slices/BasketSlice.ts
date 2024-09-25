@@ -23,7 +23,7 @@ interface MenuItem {
   price: number;
   options?: SelectedOption[];
   menu_item_image: string;
-  details: string;
+  description: string;
   business_name: string;
   menu_category_name: string;
   menu_group_name: string;

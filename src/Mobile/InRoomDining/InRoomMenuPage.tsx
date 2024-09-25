@@ -34,7 +34,7 @@ export const InRoomMenuPage = () => {
         `${SERVER_DOMAIN}/menu/getCustomerMenuCategory/?business_identifier=${business_identifier}`,
         headers
       );
-      setMenuCategory(response.data.data);
+      setMenuCategory(response?.data?.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
     } finally {

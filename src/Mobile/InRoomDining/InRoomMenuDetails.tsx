@@ -25,7 +25,7 @@ interface MenuItem {
   price: number;
   options?: Option[];
   menu_item_image: string;
-  details: string;
+  description: string;
   business_name: string;
   menu_category_name: string;
   menu_group_name: string;
@@ -57,13 +57,13 @@ const menuItems = [
     name: "Rice",
     price: "From ₦3000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
   {
     name: "Rice",
     price: "From ₦3000",
     image: Image,
-    details: "Crispy fried ankara straight from the oven",
+    description: "Crispy fried ankara straight from the oven",
   },
 ];
 const InRoomMenuDetails = () => {
@@ -201,7 +201,7 @@ const InRoomMenuDetails = () => {
   };
 
   return (
-    <div className="menu-details relative">
+    <div className="menu-description relative">
       {loading && <Loader />}
 
       <TopMenuNav />
@@ -215,10 +215,10 @@ const InRoomMenuDetails = () => {
             />
           </div>
 
-          <div className="menu-item-details mt-[24px] pb-[16px] border-b">
+          <div className="menu-item-description mt-[24px] pb-[16px] border-b">
             <div className="flex items-center justify-between mx-[24px]">
               <p className="text-grey500 font-[500] text-[18px] mb-[17px]">
-                {menuItem.details || "A Delicious Delicacy"}
+                {menuItem.description || "A Delicious Delicacy"}
               </p>
             </div>
             <p className="text-grey500 text-[16px] mx-[24px]">
@@ -282,7 +282,7 @@ const InRoomMenuDetails = () => {
             </div>
           </div>
 
-          <div className=" mx-[24px]">
+          <div className=" hidden mx-[24px]">
             <div className=" flex items-center justify-between my-[20px]">
               <p className="text-[16px] text-[#121212] font-[500] ">
                 People also ordered for
@@ -301,7 +301,7 @@ const InRoomMenuDetails = () => {
                         {menu.name}
                       </p>
                       <p className="text-[12px] text-[#121212]">
-                        {menu.details}
+                        {menu.description}
                       </p>
                     </div>
                     <div>
@@ -356,7 +356,7 @@ const InRoomMenuDetails = () => {
                         {menu.name}
                       </p>
                       <p className="text-[12px] text-[#121212]">
-                        {menu.details}
+                        {menu.description}
                       </p>
                     </div>
                     <div>

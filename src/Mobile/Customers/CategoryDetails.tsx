@@ -26,6 +26,7 @@ interface MenuItem {
   menu_item_price: number;
   name: string;
   business_name: string;
+  description: string;
   menu_category_name: string;
 }
 
@@ -293,7 +294,7 @@ export const CategoryDetails = () => {
                             {menu.menu_item_name}
                           </p>
                           <p className="text-[12px] font-[400] text-[#121212]">
-                            Delicious Delicacy
+                            {menu.description || "A Delicious Delicacy"}
                           </p>
                         </div>
 
