@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -8,6 +8,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import imageIcon from "../../../assets/image60.png";
+import { SERVER_DOMAIN } from "../../../Api/Api";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 type PersonalInfo = {
   firstName: string;
@@ -65,16 +68,17 @@ export default function InformationAccordion() {
     sortCode: false,
     bankCountry: false,
   });
+
   const [formData, setFormData] = useState<FormData>({
     businessInfo: {
-      businessName: "Chicken Republic",
-      ownerName: "Ridwan Samson",
-      address: "123 GRA Road, Ikeja Lagos",
-      email: "chickenrepublic@restaurant.com",
-      phoneNumber: "+2349088443322",
-      social1: "chickenrepublic1234",
-      social2: "chickenrepublic1234",
-      motto: "Quick Service Restaurant",
+      businessName: "",
+      ownerName: "",
+      address: "",
+      email: "",
+      phoneNumber: "",
+      social1: "",
+      social2: "",
+      motto: "",
     },
     personalInfo: {
       firstName: "Chinedu",
@@ -85,14 +89,59 @@ export default function InformationAccordion() {
       country: "Nigeria",
     },
     payoutBankDetails: {
-      accountNumber: "2398473611",
-      accountName: "Chicken Republic QSR",
-      bankName: "United Bank of Africa",
-      sortCode: "23984364",
+      accountNumber: "",
+      accountName: "",
+      bankName: "",
+      sortCode: "",
       bankCountry: "Nigeria",
     },
   });
 
+  const userDetails = useSelector((state: any) => state.user);
+  const token = userDetails?.userData?.token;
+
+  // Fetch the business information on component mount
+  useEffect(() => {
+    const fetchBusinessInfo = async () => {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      try {
+        const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, headers);
+        const { data } = response.data;
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          businessInfo: {
+            businessName: data.business,
+            ownerName: data.account_name,
+            address: "123 GRA Road, Ikeja Lagos", // Use static address or another field from API if available
+            email: "example@domain.com", // Email field is not in the response, manually set or fetch
+            phoneNumber: "+2349088443322", // Static or from another field
+            social1: "chickenrepublic1234", // Placeholder value
+            social2: "chickenrepublic1234", // Placeholder value
+            motto: "Quick Service Restaurant", // Placeholder value
+          },
+          payoutBankDetails: {
+            accountNumber: data.account_number,
+            accountName: data.account_name,
+            bankName: data.bank_name,
+            sortCode: data.bank_verification_number,
+            bankCountry: data.country,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching account details:", error);
+      }
+    };
+
+    fetchBusinessInfo();
+  }, []);
+  console.log(formData);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     console.log(file);
@@ -116,27 +165,13 @@ export default function InformationAccordion() {
       subField?: keyof PersonalInfo | keyof BusinessInfo | keyof BankInfo
     ) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFormData((prevFormData) => {
-        if (
-          section === "personalInfo" ||
-          section === "businessInfo" ||
-          section === "payoutBankDetails"
-        ) {
-          return {
-            ...prevFormData,
-            [section]: {
-              ...prevFormData[section],
-              [subField!]: event.target.value,
-            },
-          };
-        } else {
-          // Assuming payoutBankDetails is a direct field in formData and not nested
-          return {
-            ...prevFormData,
-            [section]: event.target.value,
-          };
-        }
-      });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [section]: {
+          ...prevFormData[section],
+          [subField!]: event.target.value,
+        },
+      }));
     };
 
   return (

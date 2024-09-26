@@ -77,7 +77,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
-    console.log(value, "qqqq");
     setSelectedOutlet(value ?? { label: "All outlets" });
     dispatch(userSelectedBranch(value));
     setIsAutoOpen(false);

@@ -1,7 +1,12 @@
 import Modal from "../../Modal";
 import Close from "../../../assets/closeIcon.svg";
 
-const VoidOrderMenu = ({ voidOrderMenu, handleVoidOrderMenu, setVoidOrderMenu }: any) => {
+const VoidOrderMenu = ({
+  voidOrderMenu,
+  handleVoidOrderMenu,
+  setVoidOrderMenu,
+  handleVoidOrder,
+}: any) => {
   return (
     <div>
       {" "}
@@ -29,7 +34,9 @@ const VoidOrderMenu = ({ voidOrderMenu, handleVoidOrderMenu, setVoidOrderMenu }:
                 </div>
 
                 <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
-                  <button className=" text-[16px]">Yes</button>
+                  <button onClick={() => handleVoidOrder()} className=" text-[16px]">
+                    Yes
+                  </button>
                 </div>
               </div>
             </div>
