@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
@@ -20,7 +20,8 @@ import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-mate
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+import { clearSelectedBranch, fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+import { clearUserData } from "../../slices/UserSlice";
 
 interface MenuItem {
   subTitle?: string;
@@ -39,6 +40,8 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const { branches, selectedBranch } = useSelector((state: RootState) => state.branches);
   const { userData } = useSelector((state: RootState) => state.user);
 
@@ -213,6 +216,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       );
     }
     return false;
+  };
+
+  const handleLogout = () => {
+    dispatch(clearUserData());
+    dispatch(clearSelectedBranch());
+    navigate("/");
   };
 
   return (
@@ -394,21 +403,19 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
         }}
       >
-        <NavLink to="/">
-          <div className="flex items-center gap-x-2 cursor-pointer py-2">
-            <img
-              src={LogoutIcon}
-              alt="Logout"
-              style={{
-                width: "20px",
-                marginRight: "8px",
-                fontWeight: isMenuItemActive("/logout") ? "bold" : "normal",
-                color: isMenuItemActive("/logout") ? "black" : "initial",
-              }}
-            />
-            <span className="text-[#000] font-semibold">Logout</span>
-          </div>
-        </NavLink>
+        <div onClick={handleLogout} className="flex items-center gap-x-2 cursor-pointer py-2">
+          <img
+            src={LogoutIcon}
+            alt="Logout"
+            style={{
+              width: "20px",
+              marginRight: "8px",
+              fontWeight: isMenuItemActive("/logout") ? "bold" : "normal",
+              color: isMenuItemActive("/logout") ? "black" : "initial",
+            }}
+          />
+          <span className="text-[#000] font-semibold">Logout</span>
+        </div>
       </div>
     </div>
   );
