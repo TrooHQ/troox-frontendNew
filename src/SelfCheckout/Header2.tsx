@@ -68,7 +68,7 @@ const Header2: React.FC<Header2Props> = ({
             </p>
           </div>
           <div className="col-span-1 justify-self-center">
-            <img src={Logo || businessDetails?.business_logo} alt="Logo" />
+            <img src={businessDetails?.business_logo || Logo} alt="Logo" />
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
