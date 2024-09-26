@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import TopMenuNav from "./OnlineOrderingTopMenuNav";
 import Add from "../assets/Plus.svg";
 import MinusMain from "../assets/MinusCounter.svg";
@@ -13,9 +13,9 @@ import {
   addItemToBasket,
   removeItemFromBasket,
   updateItemInBasket,
+  updateItemQuantity,
 } from "../../slices/BasketSlice";
 import Loader from "../../components/Loader";
-import Image from "../assets/FriedRice.png";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface MenuItem {
@@ -52,23 +52,24 @@ export interface BasketItem {
   tableNumber: string;
 }
 
-const menuItems = [
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-];
+interface Details extends MenuItem {
+  is_recommended: boolean;
+  name: string;
+  _id: string;
+  business_name: string;
+  menu_category_name: string;
+  menu_group_name: string;
+  menu_item_name: string;
+  menu_item_image: string;
+}
+
 const OnlineOrderingMenuDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const ids = useSelector((state: RootState) => state.basket.items);
+
+  const [menuItems, setMenuItems] = useState<Details[]>([]);
+
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
   const [menuModifiers, setMenuModifiers] = useState<Option[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
@@ -87,6 +88,7 @@ const OnlineOrderingMenuDetails = () => {
   ) as BasketItem[];
 
   const businessIdentifier = userDetails?._id;
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
 
   const handleCheckboxChange = (option: Option) => {
     const optionIndex = selectedOptions.findIndex(
@@ -132,6 +134,30 @@ const OnlineOrderingMenuDetails = () => {
     getItems();
   }, [id]);
 
+  const getRecommendedItems = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${businessIdentifier}&branch=${branchId}`,
+        headers
+      );
+      setMenuItems(response?.data?.data);
+    } catch (error) {
+      console.error("Error getting Menu Items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getRecommendedItems();
+  }, []);
+
   const existingItem = basketItems.find((item) => item.id === id);
 
   useEffect(() => {
@@ -148,6 +174,45 @@ const OnlineOrderingMenuDetails = () => {
 
   const handleDecrement = () => {
     setItemCount((prevCount) => (prevCount > 0 ? prevCount - 1 : prevCount));
+  };
+
+  const increment = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      dispatch(
+        updateItemQuantity({
+          id: menuItem._id,
+          quantity: itemInBasket.quantity + 1,
+        })
+      );
+    } else {
+      dispatch(
+        addItemToBasket({
+          id: menuItem._id,
+          quantity: 1,
+          selectedOptions: [],
+          totalPrice: menuItem.menu_item_price,
+          name: menuItem.menu_item_name,
+          tableNumber: 1,
+        })
+      );
+    }
+  };
+
+  const decrement = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      if (itemInBasket.quantity > 1) {
+        dispatch(
+          updateItemQuantity({
+            id: menuItem._id,
+            quantity: itemInBasket.quantity - 1,
+          })
+        );
+      } else {
+        dispatch(removeItemFromBasket({ id: menuItem._id }));
+      }
+    }
   };
 
   const calculateTotalPrice = () => {
@@ -280,61 +345,6 @@ const OnlineOrderingMenuDetails = () => {
             </div>
           </div>
 
-          <div className="hidden mx-[24px]">
-            <div className=" flex items-center justify-between my-[20px]">
-              <p className="text-[16px] text-[#121212] font-[500] ">
-                People also ordered for
-              </p>
-              <div className=" text-[16px]">
-                <MdKeyboardArrowRight />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
-              {menuItems.map((menu, index) => (
-                <div key={index} className="flex-shrink-0 w-[280px]">
-                  <div className="flex items-center justify-between">
-                    <div className="w-[180px]">
-                      <p className="text-[16px] text-[#121212] font-[500]">
-                        {menu.name}
-                      </p>
-                      <p className="text-[12px] text-[#121212]">
-                        {menu.description}
-                      </p>
-                    </div>
-                    <div>
-                      <img
-                        src={menu.image}
-                        alt={menu.name}
-                        className="h-[80px] w-[80px] object-cover rounded-[8px]"
-                      />
-                    </div>
-                  </div>
-                  <div className="pt-[8px] flex items-center justify-between">
-                    <p className="text-[16px] text-[#121212] font-[500]">
-                      {menu.price}
-                    </p>
-                    <div className="w-[100px]">
-                      <div className="flex items-center justify-between">
-                        <img
-                          src={MinusMain}
-                          alt="decrement"
-                          className="cursor-pointer"
-                        />
-                        <p className="text-[16px] font-[500]">1</p>
-                        <img
-                          src={Add}
-                          alt="increment"
-                          className="cursor-pointer"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="mx-[24px]">
             <div className=" flex items-center justify-between my-[20px]">
               <p className="text-[16px] text-[#121212] font-[500] ">
@@ -346,47 +356,74 @@ const OnlineOrderingMenuDetails = () => {
             </div>
 
             <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
-              {menuItems.map((menu, index) => (
-                <div key={index} className="flex-shrink-0 w-[280px]">
-                  <div className="flex items-center justify-between">
-                    <div className="w-[180px]">
-                      <p className="text-[16px] text-[#121212] font-[500]">
-                        {menu.name}
-                      </p>
-                      <p className="text-[12px] text-[#121212]">
-                        {menu.description}
-                      </p>
-                    </div>
-                    <div>
-                      <img
-                        src={menu.image}
-                        alt={menu.name}
-                        className="h-[80px] w-[80px] object-cover rounded-[8px]"
-                      />
-                    </div>
-                  </div>
-                  <div className="pt-[8px] flex items-center justify-between">
-                    <p className="text-[16px] text-[#121212] font-[500]">
-                      {menu.price}
-                    </p>
-                    <div className="w-[100px]">
+              {menuItems.map(
+                (menu) =>
+                  !menu.is_recommended &&
+                  menu._id !== id && (
+                    <div key={menu.id} className="flex-shrink-0 w-[280px]">
                       <div className="flex items-center justify-between">
-                        <img
-                          src={MinusMain}
-                          alt="decrement"
-                          className="cursor-pointer"
-                        />
-                        <p className="text-[16px] font-[500]">1</p>
-                        <img
-                          src={Add}
-                          alt="increment"
-                          className="cursor-pointer"
-                        />
+                        <div className="w-[180px]">
+                          <p className="text-[16px] text-[#121212] font-[500]">
+                            {menu?.menu_item_name}
+                          </p>
+                          <p className="text-[12px] text-[#121212]">
+                            {menu?.description || "A Delicious Delicacy"}
+                          </p>
+                        </div>
+                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                          <div>
+                            <img
+                              src={menu?.menu_item_image}
+                              alt={menu.menu_item_name}
+                              className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                            />
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="pt-[8px] flex items-center justify-between">
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          {menu?.menu_item_price}
+                        </p>
+                        <div className="w-[100px]">
+                          {ids.find((item) => item.id === menu._id) ? (
+                            <div className="flex items-center justify-between">
+                              <img
+                                onClick={() => decrement(menu)}
+                                src={MinusMain}
+                                alt="decrement"
+                                className="cursor-pointer"
+                              />
+                              <p className="text-[16px] font-[500]">
+                                {ids.find((item) => item.id === menu._id)
+                                  ?.quantity || 1}
+                              </p>
+                              <img
+                                onClick={() => increment(menu)}
+                                src={Add}
+                                alt="increment"
+                                className="cursor-pointer"
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              <Link
+                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                              >
+                                <div className="flex items-center justify-end">
+                                  <img
+                                    src={Add}
+                                    alt="increment"
+                                    className="cursor-pointer"
+                                  />
+                                </div>
+                              </Link>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  )
+              )}
             </div>
           </div>
 

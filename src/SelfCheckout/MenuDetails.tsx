@@ -10,58 +10,14 @@ import {
   addItemToBasket,
   removeItemFromBasket,
   updateItemInBasket,
+  updateItemQuantity,
 } from "../slices/BasketSlice";
 import Modal from "../components/Modal";
-import Counter from "../SelfCheckout/assets/counter.svg";
 
-import Image from "../SelfCheckout/assets/FriedRice.png";
 import Loader from "../components/Loader";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { FaCircleCheck } from "react-icons/fa6";
-const menuItems = [
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "₦3,000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-  {
-    name: "Rice",
-    price: "From ₦3000",
-    image: Image,
-    description: "Crispy fried ankara straight from the oven",
-  },
-];
+import { FaCircleCheck, FaCircleMinus, FaCirclePlus } from "react-icons/fa6";
+
 interface MenuItem {
   _id: string;
   id?: string;
@@ -96,6 +52,17 @@ interface BasketItem {
   tableNumber: string;
 }
 
+interface Details extends MenuItem {
+  is_recommended: boolean;
+  name: string;
+  _id: string;
+  business_name: string;
+  menu_category_name: string;
+  menu_group_name: string;
+  menu_item_name: string;
+  menu_item_image: string;
+}
+
 interface MenuDetailsModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -108,6 +75,12 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
   menuItemId,
 }) => {
   const [menuItem, setMenuItem] = useState<MenuItem | null>(null);
+
+  const ids = useSelector((state: RootState) => state.basket.items);
+
+  const [menuItems, setMenuItems] = useState<Details[]>([]);
+  const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
+
   const [menuModifiers, setMenuModifiers] = useState<Option[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
   const [itemCount, setItemCount] = useState<number>(1);
@@ -121,6 +94,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
     (state: RootState) => state.basket.items
   ) as BasketItem[];
   const businessIdentifier = userDetails?._id;
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
 
   const handleCheckboxChange = (option: Option) => {
     const optionIndex = selectedOptions.findIndex(
@@ -146,7 +120,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
     }
   };
 
-  const getItems = async () => {
+  const getItems = async (menuItemId: string) => {
     setLoading(true);
     try {
       const response = await axios.get(
@@ -154,19 +128,54 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
       );
       setMenuItem(response.data.data);
       setMenuModifiers(response.data.modifiers);
-      setLoading(false);
     } catch (error) {
-      console.error("Error getting Business Details:", error);
+      console.error("Error getting Menu Item Details:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const color = userDetails?.colour_scheme || "#FF0000";
+  const handleClick = (id: string) => {
+    setSelectedMenuItemId(id);
+  };
 
   useEffect(() => {
-    getItems();
+    if (selectedMenuItemId) {
+      getItems(selectedMenuItemId);
+    }
+  }, [selectedMenuItemId]);
+
+  useEffect(() => {
+    if (menuItemId) {
+      getItems(menuItemId);
+    }
   }, [menuItemId]);
+
+  const color = userDetails?.colour_scheme || "#FF0000";
+
+  const getRecommendedItems = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${businessIdentifier}&branch=${branchId}`,
+        headers
+      );
+      setMenuItems(response?.data?.data);
+    } catch (error) {
+      console.error("Error getting Menu Items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getRecommendedItems();
+  }, []);
 
   const existingItem = basketItems.find((item) => item.id === menuItemId);
 
@@ -184,6 +193,45 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
 
   const handleDecrement = () => {
     setItemCount((prevCount) => (prevCount > 0 ? prevCount - 1 : prevCount));
+  };
+
+  const increment = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      dispatch(
+        updateItemQuantity({
+          id: menuItem._id,
+          quantity: itemInBasket.quantity + 1,
+        })
+      );
+    } else {
+      dispatch(
+        addItemToBasket({
+          id: menuItem._id,
+          quantity: 1,
+          selectedOptions: [],
+          totalPrice: menuItem.menu_item_price,
+          name: menuItem.menu_item_name,
+          tableNumber: 1,
+        })
+      );
+    }
+  };
+
+  const decrement = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      if (itemInBasket.quantity > 1) {
+        dispatch(
+          updateItemQuantity({
+            id: menuItem._id,
+            quantity: itemInBasket.quantity - 1,
+          })
+        );
+      } else {
+        dispatch(removeItemFromBasket({ id: menuItem._id }));
+      }
+    }
   };
 
   const calculateTotalPrice = () => {
@@ -221,15 +269,18 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
       if (itemCount === 0) {
         if (existingItem) {
           dispatch(removeItemFromBasket({ id: existingItem.id }));
+          setItemCount(0);
         }
       } else {
         if (existingItem) {
           dispatch(updateItemInBasket({ ...existingItem, ...basketItem }));
+          setItemCount(0);
         } else {
           dispatch(addItemToBasket(basketItem));
+          setItemCount(0);
         }
       }
-
+      window.location.reload();
       onRequestClose();
     }
   };
@@ -335,7 +386,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                   <div className=" mx-[24px] my-[80px]">
                     <div className=" flex items-center justify-between py-[32px] px-[24px]">
                       <p className=" text-[32px] font-[500] text-[#121212]">
-                        Recommended Beverages
+                        Recommended Items
                       </p>
                       <div className=" text-[50px]">
                         <MdKeyboardArrowRight />
@@ -343,74 +394,69 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                     </div>
 
                     <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
-                      {menuItems.map((menu, index) => (
-                        <div
-                          key={index}
-                          className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
-                        >
-                          <div className="flex items-center justify-between px-[24px]">
-                            <div className="w-[180px] grid gap-[40px]">
-                              <p className="text-[28px] text-[#121212] font-[500] ">
-                                {menu.name}
-                              </p>
-                              <p className="text-[28px] text-[#606060]">
-                                {menu.price?.toLocaleString()}
-                              </p>
-                            </div>
-                            <div className=" relative">
-                              <img
-                                src={menu.image}
-                                alt={menu.name}
-                                className=" h-auto w-[224px] object-cover rounded-[8px]"
-                              />
-                              <div className=" absolute bottom-2 right-2">
-                                <img src={Counter} alt="" />
+                      {menuItems.map(
+                        (menu, index) =>
+                          !menu.is_recommended &&
+                          menu._id !== menuItemId && (
+                            <div
+                              key={index}
+                              className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
+                            >
+                              <div className="flex items-center justify-between px-[24px] ">
+                                <div className="w-[180px] grid gap-[40px]">
+                                  <p className="text-[28px] text-[#121212] font-[500] ">
+                                    {menu?.menu_item_name}
+                                  </p>
+                                  <p className="text-[28px] text-[#606060]">
+                                    {menu.menu_item_price?.toLocaleString()}
+                                  </p>
+                                </div>
+                                <div className="  relative">
+                                  <img
+                                    src={menu.menu_item_image}
+                                    alt={menu.menu_item_name}
+                                    className=" h-[201px]  w-[224px] object-cover rounded-[8px]"
+                                  />
+                                  <div className="">
+                                    {ids.find(
+                                      (item) => item.id === menuItemId
+                                    ) ? (
+                                      <div className=" absolute bottom-2 right-2">
+                                        <div className=" flex items-center gap-[20px] p-[10px] rounded-[8px] bg-black">
+                                          <FaCircleMinus
+                                            className="  text-[#ffffff]"
+                                            size={30}
+                                            onClick={() => decrement(menu)}
+                                          />
+                                          <p className="text-[36px] text-[#ffffff] font-[500]">
+                                            {ids.find(
+                                              (item) => item.id === menuItemId
+                                            )?.quantity || 1}
+                                          </p>
+                                          <FaCirclePlus
+                                            className=" text-[#ffffff]"
+                                            size={30}
+                                            onClick={() => increment(menu)}
+                                          />
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className=" absolute bottom-2 right-2"
+                                        onClick={() => handleClick(menu?._id)}
+                                      >
+                                        <FaCirclePlus
+                                          className="text-red-500"
+                                          size={50}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className=" mx-[24px] my-[80px]">
-                    <div className=" flex items-center justify-between py-[32px] px-[24px]">
-                      <p className=" text-[32px] font-[500] text-[#121212]">
-                        You Might Also Like
-                      </p>
-                      <div className=" text-[50px]">
-                        <MdKeyboardArrowRight />
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px]  cursor-pointer">
-                      {menuItems.map((menu, index) => (
-                        <div
-                          key={index}
-                          className="flex-shrink-0 w-[531px] h-[231px] border shadow-md "
-                        >
-                          <div className="flex items-center justify-between px-[24px]">
-                            <div className="w-[180px] grid gap-[40px]">
-                              <p className="text-[28px] text-[#414141] font-[500] ">
-                                {menu.name}
-                              </p>
-                              <p className="text-[28px] text-[#606060]">
-                                {menu.price.toLocaleString()}
-                              </p>
-                            </div>
-                            <div className=" relative">
-                              <img
-                                src={menu.image}
-                                alt={menu.name}
-                                className=" h-auto w-[224px] object-cover rounded-[8px]"
-                              />
-                              <div className=" absolute bottom-2 right-2">
-                                <img src={Counter} alt="" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                          )
+                      )}
                     </div>
                   </div>
 
