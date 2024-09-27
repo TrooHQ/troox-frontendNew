@@ -86,7 +86,7 @@ const Tickets = () => {
             className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex items-center justify-between"
           >
             <p className="capitalize w-[80px]">
-              {ticket.customer_name
+              {(ticket?.customer_name || "")
                 .split(" ")
                 .map((name, index) =>
                   index === 0
@@ -103,11 +103,11 @@ const Tickets = () => {
               onClick={() => handleTicketModal(ticket)}
             >
               <div className="">
-                {ticket.menu_items.map((item, index) => (
+                {ticket?.menu_items.map((item, index) => (
                   <div key={index}>
                     <p className=" text-[16px] font-[400] text-[#121212]">
-                      {item.quantity || 1}x{" "}
-                      <span className=" p-[5px]">{item.name}</span>
+                      {item?.quantity || 1}x{" "}
+                      <span className=" p-[5px]">{item?.name}</span>
                     </p>
                   </div>
                 ))}
