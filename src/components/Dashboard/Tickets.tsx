@@ -131,6 +131,7 @@ const Tickets = () => {
       console.log(response.data);
       getTickets();
       setVoidOrderMenu(false);
+      setActiveMenuIndex(null);
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error voiding order");

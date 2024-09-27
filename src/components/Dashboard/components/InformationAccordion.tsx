@@ -13,6 +13,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { SERVER_DOMAIN } from "../../../Api/Api";
 import imageIcon from "../../../assets/image60.png";
+import { convertToBase64 } from "../../../utils/imageToBase64";
+import { toast } from "react-toastify";
 
 type PersonalInfo = {
   firstName: string;
@@ -30,6 +32,7 @@ type BusinessInfo = {
   phoneNumber: string;
   businessType: string;
   cacNumber: string;
+  businessLogo: any;
 };
 
 type BankInfo = {
@@ -48,6 +51,8 @@ type FormData = {
 };
 
 export default function InformationAccordion() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({
     businessName: false,
@@ -78,6 +83,7 @@ export default function InformationAccordion() {
       phoneNumber: "",
       businessType: "",
       cacNumber: "",
+      businessLogo: imageIcon,
     },
     personalInfo: {
       firstName: "",
@@ -100,57 +106,53 @@ export default function InformationAccordion() {
   const userDetails = useSelector((state: any) => state.user);
   const token = userDetails?.userData?.token;
 
-  useEffect(() => {
-    const fetchAccountDetails = async () => {
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      try {
-        const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, headers);
-        const { data } = response.data;
-
-        setFormData({
-          personalInfo: {
-            firstName: data.personal_information.first_name,
-            lastName: data.personal_information.last_name,
-            address: data.personal_information.personal_address,
-            city: data.personal_information.city,
-            state: data.personal_information.state,
-            country: data.personal_information.country,
-          },
-          businessInfo: {
-            businessName: data.business_information.business_name,
-            businessAddress: data.business_information.business_address,
-            businessEmail: data.business_information.business_email,
-            phoneNumber: data.business_information.business_phone_number,
-            businessType: data.business_information.business_type,
-            cacNumber: data.business_information.cac_number,
-          },
-          payoutBankDetails: {
-            accountNumber: data.account_details.account_number,
-            accountName: data.account_details.account_name,
-            bankName: data.account_details.bank_name,
-            bvn: data.account_details.bank_verification_number,
-            bankCountry: data.account_details.country,
-            sortCode: data.account_details.sort_code,
-          },
-        });
-      } catch (error) {
-        console.error("Error fetching account details:", error);
-      }
+  const fetchAccountDetails = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     };
 
+    try {
+      const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, headers);
+      const { data } = response.data;
+
+      setFormData({
+        personalInfo: {
+          firstName: data.personal_information.first_name,
+          lastName: data.personal_information.last_name,
+          address: data.personal_information.personal_address,
+          city: data.personal_information.city,
+          state: data.personal_information.state,
+          country: data.personal_information.country,
+        },
+        businessInfo: {
+          businessName: data.business_information.business_name,
+          businessAddress: data.business_information.business_address,
+          businessEmail: data.business_information.business_email,
+          phoneNumber: data.business_information.business_phone_number,
+          businessType: data.business_information.business_type,
+          cacNumber: data.business_information.cac_number,
+          businessLogo: data.business_information.business_logo,
+        },
+        payoutBankDetails: {
+          accountNumber: data.account_details.account_number,
+          accountName: data.account_details.account_name,
+          bankName: data.account_details.bank_name,
+          bvn: data.account_details.bank_verification_number,
+          bankCountry: data.account_details.country,
+          sortCode: data.account_details.sort_code,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching account details:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchAccountDetails();
   }, [token]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log(file);
-  };
 
   const handleChange = (panel: string) => (event: any, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
@@ -188,7 +190,7 @@ export default function InformationAccordion() {
         }
 
         const response = await axios.put(endpoint, payload, { headers });
-
+        fetchAccountDetails();
         console.log(`${section} field updated successfully:`, response.data);
       } catch (error) {
         console.error(`Error updating ${section} field:`, error);
@@ -200,6 +202,69 @@ export default function InformationAccordion() {
       ...prevEditMode,
       [field]: !prevEditMode[field],
     }));
+  };
+
+  // Update Logo
+
+  // Update handleFileChange to handle logo upload
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file); // Store the selected file temporarily
+
+      // Convert the file to base64 and store it for preview
+      const base64 = await convertToBase64(file);
+      setSelectedFileBase64(base64 as string); // Cast to string because base64 is a string
+    }
+  };
+
+  const handleClearLogo = () => {
+    setSelectedFile(null); // Clear the selected file
+    setSelectedFileBase64(null); // Clear the base64 preview
+  };
+
+  const handleSaveLogo = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    if (!selectedFile) {
+      toast.error("No file selected");
+      return;
+    }
+
+    try {
+      const base64Image = await convertToBase64(selectedFile); // Convert the file to base64
+
+      const payload = {
+        business_logo: base64Image, // Send the image as base64 in the payload
+      };
+
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+
+      // Send the request to update the logo
+      const response = await axios.put(`${SERVER_DOMAIN}/updateBusinessDetails`, payload, {
+        headers,
+      });
+
+      console.log("Logo updated successfully:", response.data);
+
+      // Optionally update the form data or state with the new logo URL or base64 string
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        businessInfo: {
+          ...prevFormData.businessInfo,
+          business_logo: base64Image, // Optionally store the base64 image
+        },
+      }));
+      setSelectedFileBase64(null);
+      toast.success("Logo updated successfully");
+      fetchAccountDetails();
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      toast.error("Error uploading logo");
+    }
   };
 
   const handleInputChange =
@@ -279,7 +344,7 @@ export default function InformationAccordion() {
           <div className="flex items-center px-4 py-1 gap-[16px]">
             <label
               htmlFor="fileInput"
-              className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+              className="w-[120px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
             >
               <input
                 type="file"
@@ -288,7 +353,21 @@ export default function InformationAccordion() {
                 onChange={handleFileChange}
                 accept="image/*"
               />
-              <img src={imageIcon} alt="Upload Icon" className="w-[70px]" />
+              {selectedFileBase64 ? (
+                <img
+                  src={selectedFileBase64}
+                  alt="Selected Logo Preview"
+                  className="w-[200px] object-cover"
+                />
+              ) : formData.businessInfo.businessLogo ? (
+                <img
+                  src={formData.businessInfo.businessLogo}
+                  alt="Business Logo"
+                  className="w-[200px] object-cover"
+                />
+              ) : (
+                <img src={imageIcon} alt="Upload Icon" className="w-[200px]" />
+              )}
             </label>
             <div>
               <label
@@ -300,6 +379,24 @@ export default function InformationAccordion() {
               <p className="text-[14px] font-[400] text-grey300">Max. file size: 2MB</p>
             </div>
           </div>
+
+          {/* Conditionally render the Save and Clear buttons */}
+          {selectedFileBase64 && (
+            <div className="px-4 py-2 flex gap-2">
+              <button
+                className="bg-[#5855B3] text-white font-semibold py-2 px-4 rounded"
+                onClick={(e: any) => handleSaveLogo(e)}
+              >
+                Save Logo
+              </button>
+              <button
+                className="bg-red-500 text-white font-semibold py-2 px-4 rounded"
+                onClick={handleClearLogo}
+              >
+                Clear
+              </button>
+            </div>
+          )}
         </AccordionDetails>
       </Accordion>
 
