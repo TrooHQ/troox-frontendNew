@@ -296,23 +296,27 @@ export const OnlineOrderingCategoryDetails = () => {
                   <div key={menu._id} className="mx-[24px]">
                     <div className="py-[11px] border-b border-[#E7E7E7]">
                       <div className="flex items-center justify-between">
-                        <div className="w-[180px]">
-                          <p className="text-[16px] text-[#121212] font-[500]">
-                            {menu.menu_item_name}
-                          </p>
-                          <p className="text-[12px] font-[400] text-[#121212]">
-                            {menu.description || "A Delicious Delicacy"}
-                          </p>
-                        </div>
+                        <Link
+                          to={`/demo/menu-details/${menu._id}/online_ordering`}
+                        >
+                          <div className="w-[180px]">
+                            <p className="text-[16px] text-[#121212] font-[500]">
+                              {menu?.menu_item_name}
+                            </p>
+                            <p className="text-[12px] font-[400] text-[#121212]">
+                              {menu?.description || "A Delicious Delicacy"}
+                            </p>
+                          </div>
+                        </Link>
 
-                        <div>
+                        <div className="h-[80px] w-[80px]  rounded-[8px] overflow-hidden ">
                           <Link
                             to={`/demo/menu-details/${menu._id}/online_ordering`}
                           >
                             <img
                               src={menu.menu_item_image}
                               alt={menu.menu_item_name}
-                              className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                              className=" w-full h-auto object-fill"
                             />
                           </Link>
                         </div>

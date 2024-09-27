@@ -354,7 +354,10 @@ export const CategoryDetails = () => {
                           onClick={() => openModal(menu._id)}
                         />
 
-                        <p className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]">
+                        <p
+                          className="text-[32px] text-[#121212] font-[500] px-[24px] mt-[24px]"
+                          onClick={() => openModal(menu._id)}
+                        >
                           {menu?.menu_item_name?.length > 18
                             ? `${menu?.menu_item_name.substring(0, 18)}...`
                             : menu?.menu_item_name}
