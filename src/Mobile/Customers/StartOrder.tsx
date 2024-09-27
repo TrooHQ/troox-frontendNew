@@ -3,7 +3,6 @@ import Modal from "../Components/Modal";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
-import Logo from "../assets/Restaurant_Logo.svg";
 
 import {
   updateCustomerName,
@@ -121,8 +120,8 @@ const StartOrder = () => {
     <div className="mx-[22px]" style={{ color: color || "#606060" }}>
       <div className="flex flex-col items-center justify-center mt-[64px]">
         <img
-          src={businessDetails?.business_logo || Logo}
-          alt=""
+          src={businessDetails?.business_logo}
+          alt="Logo"
           className=" mb-[10px]"
         />
         <p>

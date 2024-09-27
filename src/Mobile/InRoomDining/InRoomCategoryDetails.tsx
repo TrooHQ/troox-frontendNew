@@ -289,14 +289,18 @@ export const InRoomCategoryDetails = () => {
                   <div key={menu._id} className="mx-[24px]">
                     <div className="py-[11px] border-b border-[#E7E7E7]">
                       <div className="flex items-center justify-between">
-                        <div className="w-[180px]">
-                          <p className="text-[16px] text-[#121212] font-[500]">
-                            {menu.menu_item_name}
-                          </p>
-                          <p className="text-[12px] font-[400] text-[#121212]">
-                            {menu.description || "A Delicious Delicacy"}
-                          </p>
-                        </div>
+                        <Link
+                          to={`/demo/menu-details/${menu._id}/in_room_dining`}
+                        >
+                          <div className="w-[180px]">
+                            <p className="text-[16px] text-[#121212] font-[500]">
+                              {menu.menu_item_name}
+                            </p>
+                            <p className="text-[12px] font-[400] text-[#121212]">
+                              {menu.description || "A Delicious Delicacy"}
+                            </p>
+                          </div>
+                        </Link>
 
                         <div>
                           <Link
