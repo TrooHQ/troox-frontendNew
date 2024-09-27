@@ -6,7 +6,7 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import SaveIcon from "@mui/icons-material/Save";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,6 +15,8 @@ import { SERVER_DOMAIN } from "../../../Api/Api";
 import imageIcon from "../../../assets/image60.png";
 import { convertToBase64 } from "../../../utils/imageToBase64";
 import { toast } from "react-toastify";
+import { setUserData } from "../../../slices/UserSlice";
+import { AppDispatch } from "../../../store/store";
 
 type PersonalInfo = {
   firstName: string;
@@ -51,6 +53,10 @@ type FormData = {
 };
 
 export default function InformationAccordion() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const userData = useSelector((state: any) => state.user.userData);
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | boolean>(false);
@@ -154,55 +160,12 @@ export default function InformationAccordion() {
     fetchAccountDetails();
   }, [token]);
 
-  const handleChange = (panel: string) => (event: any, isExpanded: boolean) => {
+  const handleChange = (panel: string) => (_: any, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   const toSnakeCase = (str: string) =>
     str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-
-  const handleEditClick = async (
-    field:
-      | keyof FormData["businessInfo"]
-      | keyof FormData["personalInfo"]
-      | keyof FormData["payoutBankDetails"],
-    section: "businessInfo" | "personalInfo" | "payoutBankDetails"
-  ) => {
-    const isCurrentlyInEditMode = editMode[field];
-    // Check if the field is in edit mode, and if yes, send the update request
-    if (isCurrentlyInEditMode) {
-      const payload = {
-        [toSnakeCase(field)]: formData[section][field],
-      };
-
-      try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        };
-
-        // Determine the endpoint based on the section
-        let endpoint = "";
-        if (section === "businessInfo" || section === "payoutBankDetails") {
-          endpoint = `${SERVER_DOMAIN}/updateBusinessDetails`; // Use this for business info
-        } else if (section === "personalInfo") {
-          endpoint = `${SERVER_DOMAIN}/updatePersonalInformation`; // Use this for personal info
-        }
-
-        const response = await axios.put(endpoint, payload, { headers });
-        fetchAccountDetails();
-        console.log(`${section} field updated successfully:`, response.data);
-      } catch (error) {
-        console.error(`Error updating ${section} field:`, error);
-      }
-    }
-
-    // Toggle the edit mode
-    setEditMode((prevEditMode) => ({
-      ...prevEditMode,
-      [field]: !prevEditMode[field],
-    }));
-  };
 
   // Update Logo
 
@@ -223,6 +186,58 @@ export default function InformationAccordion() {
     setSelectedFileBase64(null); // Clear the base64 preview
   };
 
+  const handleEditClick = async (
+    field:
+      | keyof FormData["businessInfo"]
+      | keyof FormData["personalInfo"]
+      | keyof FormData["payoutBankDetails"],
+    section: "businessInfo" | "personalInfo" | "payoutBankDetails"
+  ) => {
+    const isCurrentlyInEditMode = editMode[field];
+    // Check if the field is in edit mode, and if yes, send the update request
+    if (isCurrentlyInEditMode) {
+      const payload = {
+        [toSnakeCase(field)]: (formData[section] as any)[field],
+      };
+
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+
+        // Determine the endpoint based on the section
+        let endpoint = "";
+        if (section === "businessInfo" || section === "payoutBankDetails") {
+          endpoint = `${SERVER_DOMAIN}/updateBusinessDetails`; // Use this for business info
+        } else if (section === "personalInfo") {
+          endpoint = `${SERVER_DOMAIN}/updatePersonalInformation`; // Use this for personal info
+        }
+
+        const response = await axios.put(endpoint, payload, { headers });
+        fetchAccountDetails();
+        console.log(`${section} field updated successfully:`, response.data);
+
+        // Dispatch setUserData with sorted user data
+        dispatch(
+          setUserData({
+            ...userData, // Spread existing user data
+            [toSnakeCase(field)]: response.data.data[toSnakeCase(field)], // Update only the changed field
+          })
+        );
+      } catch (error) {
+        console.error(`Error updating ${section} field:`, error);
+      }
+    }
+
+    // Toggle the edit mode
+    setEditMode((prevEditMode) => ({
+      ...prevEditMode,
+      [field]: !prevEditMode[field],
+    }));
+  };
+
+  const [isSavingLogo, setIsSavingLogo] = useState(false);
   const handleSaveLogo = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
 
@@ -232,6 +247,7 @@ export default function InformationAccordion() {
     }
 
     try {
+      setIsSavingLogo(true);
       const base64Image = await convertToBase64(selectedFile); // Convert the file to base64
 
       const payload = {
@@ -261,9 +277,19 @@ export default function InformationAccordion() {
       setSelectedFileBase64(null);
       toast.success("Logo updated successfully");
       fetchAccountDetails();
+
+      // Dispatch setUserData with sorted user data
+      dispatch(
+        setUserData({
+          ...userData, // Spread existing user data
+          business_logo: response.data.data.business_logo, // Update only the changed field
+        })
+      );
     } catch (error) {
       console.error("Error uploading logo:", error);
       toast.error("Error uploading logo");
+    } finally {
+      setIsSavingLogo(false);
     }
   };
 
@@ -296,7 +322,7 @@ export default function InformationAccordion() {
       <div key={item.field} className="flex items-center gap-2">
         <TextField
           fullWidth
-          value={formData[section][item.field]}
+          value={(formData[section] as any)[item.field]}
           onChange={handleInputChange(section, item.field)}
           disabled={!editMode[item.field]}
           variant="outlined"
@@ -384,13 +410,13 @@ export default function InformationAccordion() {
           {selectedFileBase64 && (
             <div className="px-4 py-2 flex gap-2">
               <button
-                className="bg-[#5855B3] text-white font-semibold py-2 px-4 rounded"
+                className="bg-white text-[#5855B3] border border-[#5855B3] font-semibold py-2 px-4 rounded"
                 onClick={(e: any) => handleSaveLogo(e)}
               >
-                Save Logo
+                {isSavingLogo ? "Saving..." : "Save Logo"}
               </button>
               <button
-                className="bg-red-500 text-white font-semibold py-2 px-4 rounded"
+                className="text-red-500 bg-white border border-red-500 font-semibold py-2 px-4 rounded"
                 onClick={handleClearLogo}
               >
                 Clear

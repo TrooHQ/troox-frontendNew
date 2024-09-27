@@ -67,7 +67,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     id: branch._id,
   }));
 
-  console.log(transformedBranches, selectedBranch, "userData");
+  console.log(userData, selectedBranch, "userData");
   useEffect(() => {
     const defaultBranch = transformedBranches[0];
     (selectedBranch === null || selectedBranch === undefined) &&
@@ -234,7 +234,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       <div className="grid gap-10 items-center">
         <div className="flex gap-x-4 mt-4 items-center justify-start">
           <img
-            src={Logo}
+            src={userData?.business_logo ? userData.business_logo : Logo}
             alt="logo"
             className={`cursor-pointer duration-500 w-[200px] ${!open ? "hidden" : "block"} `}
             onClick={() => setOpen(!open)}
