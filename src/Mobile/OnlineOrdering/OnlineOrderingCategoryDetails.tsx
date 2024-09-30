@@ -316,7 +316,7 @@ export const OnlineOrderingCategoryDetails = () => {
                             <img
                               src={menu.menu_item_image}
                               alt={menu.menu_item_name}
-                              className=" w-full h-auto object-fill"
+                              className=" w-full h-full object-cover"
                             />
                           </Link>
                         </div>
@@ -363,7 +363,6 @@ export const OnlineOrderingCategoryDetails = () => {
                                 <div className="flex items-center justify-end">
                                   <div
                                     className="inline-flex cursor-pointer text-white rounded-full"
-                                    onClick={() => increment(menu)}
                                     style={{
                                       backgroundColor: colorScheme || "#414141",
                                     }}

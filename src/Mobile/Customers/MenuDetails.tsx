@@ -17,6 +17,7 @@ import {
 } from "../../slices/BasketSlice";
 import Loader from "../../components/Loader";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 interface MenuItem {
   _id: string;
@@ -389,22 +390,28 @@ const MenuDetails = () => {
                         <div className="w-[100px]">
                           {ids.find((item) => item.id === menu._id) ? (
                             <div className="flex items-center justify-between">
-                              <img
+                              <div
+                                className="inline-flex cursor-pointer text-white rounded-full"
                                 onClick={() => decrement(menu)}
-                                src={MinusMain}
-                                alt="decrement"
-                                className="cursor-pointer"
-                              />
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiMinusSm className="text-[30px]" />
+                              </div>
                               <p className="text-[16px] font-[500]">
                                 {ids.find((item) => item.id === menu._id)
                                   ?.quantity || 1}
                               </p>
-                              <img
+                              <div
+                                className="inline-flex cursor-pointer text-white rounded-full"
                                 onClick={() => increment(menu)}
-                                src={Add}
-                                alt="increment"
-                                className="cursor-pointer"
-                              />
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiPlusSm className="text-[30px]" />
+                              </div>
                             </div>
                           ) : (
                             <div>
@@ -412,11 +419,14 @@ const MenuDetails = () => {
                                 to={`/demo/menu-details/${menu._id}/orderandpay`}
                               >
                                 <div className="flex items-center justify-end">
-                                  <img
-                                    src={Add}
-                                    alt="increment"
-                                    className="cursor-pointer"
-                                  />
+                                  <div
+                                    className="inline-flex cursor-pointer text-white rounded-full"
+                                    style={{
+                                      backgroundColor: colorScheme || "#414141",
+                                    }}
+                                  >
+                                    <HiPlusSm className="text-[30px]" />
+                                  </div>
                                 </div>
                               </Link>
                             </div>
