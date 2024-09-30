@@ -89,7 +89,7 @@ const InRoomTopMenuNav: React.FC<TopMenuNavProps> = ({
       >
         <div className="justify-self-start">
           <p
-            className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px] border-2"
+            className="text-[16px] font-[500] flex items-center gap-[8px] p-[18px] "
             style={{
               color: textColor,
               cursor: "pointer",

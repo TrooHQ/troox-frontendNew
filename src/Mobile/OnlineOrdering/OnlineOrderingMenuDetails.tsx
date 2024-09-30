@@ -17,6 +17,7 @@ import {
 } from "../../slices/BasketSlice";
 import Loader from "../../components/Loader";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 interface MenuItem {
   _id: string;
@@ -288,7 +289,7 @@ const OnlineOrderingMenuDetails = () => {
               </p>
             </div>
             <p className="text-grey500 text-[16px] mx-[24px]">
-              &#x20A6; {menuItem.menu_item_price}
+              &#x20A6; {menuItem.menu_item_price.toLocaleString()}
             </p>
           </div>
 
@@ -301,7 +302,8 @@ const OnlineOrderingMenuDetails = () => {
                 <div key={option.modifier_name} className="border-b">
                   <div className="flex items-center justify-between py-[16px] mx-[24px]">
                     <label htmlFor={option.modifier_name} className="ml-2">
-                      {option.modifier_name} ({option.modifier_price})
+                      {option.modifier_name} (
+                      {option.modifier_price.toLocaleString()})
                     </label>
                     <input
                       type="checkbox"
@@ -370,7 +372,9 @@ const OnlineOrderingMenuDetails = () => {
                             {menu?.description || "A Delicious Delicacy"}
                           </p>
                         </div>
-                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                        <Link
+                          to={`/demo/menu-details/${menu._id}/online_ordering`}
+                        >
                           <div>
                             <img
                               src={menu?.menu_item_image}
@@ -382,39 +386,49 @@ const OnlineOrderingMenuDetails = () => {
                       </div>
                       <div className="pt-[8px] flex items-center justify-between">
                         <p className="text-[16px] text-[#121212] font-[500]">
-                          {menu?.menu_item_price}
+                          {menu?.menu_item_price.toLocaleString()}
                         </p>
                         <div className="w-[100px]">
                           {ids.find((item) => item.id === menu._id) ? (
-                            <div className="flex items-center justify-between">
-                              <img
+                            <div className="flex items-center justify-end gap-[10px]">
+                              <div
+                                className="inline-flex cursor-pointer text-white rounded-full"
                                 onClick={() => decrement(menu)}
-                                src={MinusMain}
-                                alt="decrement"
-                                className="cursor-pointer"
-                              />
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiMinusSm className="text-[30px]" />
+                              </div>
+
                               <p className="text-[16px] font-[500]">
                                 {ids.find((item) => item.id === menu._id)
                                   ?.quantity || 1}
                               </p>
-                              <img
+                              <div
+                                className="inline-flex cursor-pointer text-white rounded-full"
                                 onClick={() => increment(menu)}
-                                src={Add}
-                                alt="increment"
-                                className="cursor-pointer"
-                              />
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiPlusSm className="text-[30px]" />
+                              </div>
                             </div>
                           ) : (
                             <div>
                               <Link
-                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                                to={`/demo/menu-details/${menu._id}/online_ordering`}
                               >
                                 <div className="flex items-center justify-end">
-                                  <img
-                                    src={Add}
-                                    alt="increment"
-                                    className="cursor-pointer"
-                                  />
+                                  <div
+                                    className="inline-flex cursor-pointer text-white rounded-full"
+                                    style={{
+                                      backgroundColor: colorScheme || "#414141",
+                                    }}
+                                  >
+                                    <HiPlusSm className="text-[30px]" />
+                                  </div>
                                 </div>
                               </Link>
                             </div>
@@ -466,7 +480,7 @@ const OnlineOrderingMenuDetails = () => {
               }}
             >
               <p className="text-[16px] font-[500]">
-                &#x20A6; {calculateTotalPrice()}
+                &#x20A6; {calculateTotalPrice().toLocaleString()}
               </p>
               <p className="text-[16px] font-[500]">Add to basket</p>
             </div>

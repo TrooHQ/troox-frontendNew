@@ -354,7 +354,6 @@ export const CategoryDetails = () => {
                                 <div className="flex items-center justify-end">
                                   <div
                                     className="inline-flex cursor-pointer text-white rounded-full"
-                                    onClick={() => increment(menu)}
                                     style={{
                                       backgroundColor: colorScheme || "#414141",
                                     }}
