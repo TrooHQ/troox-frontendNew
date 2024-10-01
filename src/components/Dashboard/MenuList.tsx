@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { ArrowBack, Close, DeleteForeverOutlined } from "@mui/icons-material";
+import { ArrowBack, Close, DeleteForeverOutlined, MoreVert } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import clsx from "clsx";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { Tooltip } from "@mui/material";
+import { Menu, MenuItem, Tooltip } from "@mui/material";
 import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
@@ -52,6 +52,7 @@ const MenuList = () => {
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
 
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>({});
+  const [toggleStates2, setToggleStates2] = useState<{ [key: string]: boolean }>({});
   const [isFetching, setIsFetching] = useState(false);
   const [fetchedModifiers, setFetchedModifiers] = useState<any>([]);
   const [confirmationDialog, setConfirmationDialog] = useState<ConfirmationDialogState>({
@@ -62,6 +63,11 @@ const MenuList = () => {
   const [confirmationDialog2, setConfirmationDialog2] = useState({
     open: false,
     item: {},
+  });
+
+  const [confirmationDialog3, setConfirmationDialog3] = useState<ConfirmationDialogState>({
+    open: false,
+    id: null,
   });
 
   const handleDeleteClick = (item: any) => {
@@ -85,10 +91,26 @@ const MenuList = () => {
       });
       setToggleStates(initialState);
     }
+    if (menuItems && menuItems.length > 0) {
+      const initialState: { [key: string]: boolean } = {};
+      menuItems.forEach((item: any) => {
+        initialState[item._id] = item.is_recommended; // If is_frozen is false, item is enabled
+      });
+      setToggleStates2(initialState);
+    }
   }, [menuItems]);
 
   const handleToggleChange = (id: string) => {
     setConfirmationDialog({ open: true, id });
+  };
+
+  const handleToggleRecommendChange = (id: string) => {
+    setConfirmationDialog3({ open: true, id });
+  };
+
+  const handleConfirmToggleRecommendChange = async () => {
+    const { id } = confirmationDialog;
+    console.log(id);
   };
 
   const handleConfirmToggleChange = async () => {
@@ -115,6 +137,7 @@ const MenuList = () => {
           ...prevStates,
           [id]: newState,
         }));
+        setCurrentItem(null);
       } catch (error) {
         console.error("Failed to update menu item status:", error);
         toast.error(`An error occurred. ${error}`);
@@ -213,6 +236,33 @@ const MenuList = () => {
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
+
+  // Anchor
+
+  // State for managing the dropdown menu
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [currentItem, setCurrentItem] = useState<any>(null);
+  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
+  const [currentItem2, setCurrentItem2] = useState<any>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, item: any) => {
+    setAnchorEl(event.currentTarget);
+    setCurrentItem(item);
+  };
+
+  const handleOpenRecommendMenu = (event: React.MouseEvent<HTMLElement>, item: any) => {
+    setAnchorEl2(event.currentTarget);
+    setCurrentItem2(item);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+    setCurrentItem(null);
+  };
+  const handleCloseRecommendMenu = () => {
+    setAnchorEl2(null);
+    setCurrentItem2(null);
+  };
 
   return (
     <DashboardLayout>
@@ -325,36 +375,89 @@ const MenuList = () => {
                           </button>
                         </td>
 
-                        <td className="flex items-center text-center">
-                          <Tooltip
-                            title="Freezing this menu list will remove it from all your product channels"
-                            arrow
-                          >
+                        <td className="flex items-center justify-center text-center w-full">
+                          <Tooltip title="More options" arrow>
                             <IconButton
-                              onClick={() => handleToggleChange(item._id)}
+                              onClick={(event) => handleOpenMenu(event, item)}
                               color="default"
+                              style={{ width: "100%" }}
                             >
-                              {toggleStates[item._id] ? (
-                                <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
-                              ) : (
-                                <ToggleOffIcon style={{ fontSize: "40px" }} />
-                              )}
+                              <MoreVert />
                             </IconButton>
                           </Tooltip>
-                          <span
-                            className={clsx(
-                              toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
-                              "text-base font-medium",
-                              "w-[70px]"
-                            )}
-                          >
-                            {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
-                          </span>
-                          <DeleteForeverOutlined
-                            onClick={() => handleDeleteClick(item)}
-                            className="text-red-700 ml-3"
-                          />
                         </td>
+                        {/* Menu for More options */}
+                        {currentItem && currentItem._id === item._id && (
+                          <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseMenu}
+                          >
+                            <MenuItem onClick={() => handleToggleChange(item._id)}>
+                              <Tooltip
+                                title="Freezing this menu list will remove it from all your product channels"
+                                arrow
+                              >
+                                <IconButton
+                                  onClick={() => handleToggleChange(item._id)}
+                                  color="default"
+                                >
+                                  {toggleStates[item._id] ? (
+                                    <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                                  ) : (
+                                    <ToggleOffIcon style={{ fontSize: "40px" }} />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                              <span
+                                className={clsx(
+                                  toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
+                                  "text-base font-medium",
+                                  "w-[70px]"
+                                )}
+                              >
+                                {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
+                              </span>
+                            </MenuItem>
+                            <MenuItem onClick={() => handleDeleteClick(item)}>
+                              <div className="flex items-center justify-start">
+                                {/* <DeleteForeverOutlined
+                                  onClick={() => handleDeleteClick(item)}
+                                  className="text-red-700 mr-5"
+                                /> */}
+                                <span>Delete Menu</span>
+                              </div>
+                            </MenuItem>
+
+                            {/* Recommend */}
+                            <MenuItem onClick={() => handleToggleRecommendChange(item._id)}>
+                              <Tooltip
+                                title="Recommending this menu list will display it on all your product channels"
+                                arrow
+                              >
+                                <IconButton
+                                  onClick={() => handleToggleRecommendChange(item._id)}
+                                  color="default"
+                                >
+                                  {toggleStates2[item._id] ? (
+                                    <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                                  ) : (
+                                    <ToggleOffIcon style={{ fontSize: "40px" }} />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                              <span
+                                className={clsx(
+                                  toggleStates2[item._id] ? "text-[#5855b3]" : "text-gray-700",
+                                  "text-[14px] font-medium",
+                                  "w-[70px]"
+                                )}
+                              >
+                                {toggleStates2[item._id] ? "Recommend" : "Not recommend"}
+                              </span>
+                            </MenuItem>
+                          </Menu>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -429,6 +532,18 @@ const MenuList = () => {
           confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
             ? "Freezing it will remove it from all your product channels."
             : ""
+        }`}
+      />
+
+      <ConfirmationDialog
+        open={confirmationDialog3.open}
+        onClose={() => setConfirmationDialog3({ open: false, id: null })}
+        onConfirm={handleConfirmToggleRecommendChange}
+        message={`Are you sure you want to ${
+          confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
+            ? "recommend"
+            : "not recommend"
+        } this menu item?
         }`}
       />
     </DashboardLayout>

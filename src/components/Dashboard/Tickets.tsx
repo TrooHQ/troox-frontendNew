@@ -204,10 +204,10 @@ const Tickets = () => {
                 <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Open tables</p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
-                  <p className=" text-[14px] text-[#121212]">Outlet</p>
+                  <p className=" text-[14px] text-[#121212]">Date</p>
+                  <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Table No</p>
                   <p className=" text-[14px] text-[#121212]">Order No</p>
-                  <p className=" text-[14px] text-[#121212]">Date - Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
                   <p className=" text-[14px] text-[#121212]">Waiter </p>
                   <p className=" text-[14px] text-[#121212]">Channel </p>
@@ -222,14 +222,15 @@ const Tickets = () => {
                     }`}
                     key={index}
                   >
-                    <p onClick={handleTicketMenu} className="items-center">
-                      {selectedBranch.label}
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.updatedAt.slice(0, 10)}
+                    </p>
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.updatedAt.slice(11, 16)}
                     </p>
                     <p onClick={handleTicketMenu}>{item.menu_items[0].tableNumber || index}</p>
-                    {item.menu_items[0].tableNumber || `Ord00${index + 1}`}
-                    <p className=" ">
-                      {item.updatedAt.slice(0, 10)}-{item.updatedAt.slice(11, 16)}
-                    </p>
+                    {item.menu_items[0].tableNumber || `ord00${index + 1}`}
+
                     {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
                     <p onClick={handleTicketMenu}>{item.customer || ""}</p>
@@ -289,10 +290,10 @@ const Tickets = () => {
                 <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Closed tables</p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
-                  <p className=" text-[14px] text-[#121212]">Outlet</p>
+                  <p className=" text-[14px] text-[#121212]">Date</p>
+                  <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Table No</p>
                   <p className=" text-[14px] text-[#121212]">Order No</p>
-                  <p className=" text-[14px] text-[#121212]">Date - Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
                   <p className=" text-[14px] text-[#121212]">Waiter </p>
                   <p className=" text-[14px] text-[#121212]">Channel </p>
@@ -307,8 +308,11 @@ const Tickets = () => {
                     }`}
                     key={index}
                   >
-                    <p onClick={handleTicketMenu} className="items-center">
-                      {selectedBranch.label}
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.updatedAt.slice(0, 10)}
+                    </p>
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.updatedAt.slice(11, 16)}
                     </p>
                     <p onClick={handleTicketMenu}>{item.menu_items[0].tableNumber || index}</p>
                     <p onClick={handleTicketMenu}>
