@@ -1,25 +1,82 @@
+import { useState, useEffect } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
 import SearchIcon from "../../assets/searchIcon.svg";
 import { fetchMenuItems } from "../../slices/menuSlice";
-
 import Publish from "../../assets/publish.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { AppDispatch } from "@/src/store/store";
+import axios from "axios";
+import { AppDispatch } from "../../store/store";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
 
 const PriceList = () => {
   const dispatch = useDispatch<AppDispatch>();
-
   const { menuItems, loading } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-  console.log(selectedBranch);
-  console.log(menuItems);
+
+  // New states for handling price edits
+  const [editMode, setEditMode] = useState<string | null>(null); // Track which item is being edited
+  const [newPrice, setNewPrice] = useState<number | null>(null); // Store the new price input
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const userDetails = useSelector((state: any) => state.user);
+  const token = userDetails?.userData?.token;
+
   useEffect(() => {
     dispatch(fetchMenuItems({ branch_id: selectedBranch?.id }));
-  }, []);
+  }, [dispatch, selectedBranch]);
+
+  // Handle the edit button click
+  const handleEditClick = (item: any) => {
+    setEditMode(item._id); // Set the current item in edit mode
+    setNewPrice(item.menu_item_price); // Prepopulate the price with the current item's price
+  };
+
+  // Handle the cancel button click
+  const handleCancelEdit = () => {
+    setEditMode(null); // Exit edit mode without saving
+    setNewPrice(null); // Reset the new price value
+  };
+
+  // Handle the price input change
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPrice(parseFloat(e.target.value)); // Update the new price
+  };
+
+  const handleSave = async (item: any) => {
+    if (newPrice === null) return;
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const payload = {
+      menu_item_id: item._id,
+      name: item.menu_item_name,
+      price: newPrice,
+      description: item.description || "",
+      is_recommended: item.is_recommended,
+      is_frozen: item.is_frozen,
+    };
+
+    setIsSubmitting(true);
+    try {
+      await axios.put(`${SERVER_DOMAIN}/menu/editMenuItem`, payload, headers);
+      dispatch(fetchMenuItems({ branch_id: selectedBranch?.id })); // Refetch menu items after editing
+      setEditMode(null); // Exit edit mode
+    } catch (error) {
+      console.error("Error editing price:", error);
+      toast.error("Error editing price");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>
@@ -52,7 +109,7 @@ const PriceList = () => {
                     />
                     <img
                       src={SearchIcon}
-                      alt=""
+                      alt="Search icon"
                       className="absolute left-6 top-3 pointer-events-none"
                     />
                   </div>
@@ -69,7 +126,6 @@ const PriceList = () => {
                       <th className="py-2 px-4 text-base font-normal">Actions</th>
                     </tr>
                   </thead>
-
                   <hr className="mb-2 text-[#E7E7E7]" />
 
                   {loading ? (
@@ -78,22 +134,47 @@ const PriceList = () => {
                     <tbody>
                       {menuItems.map((item: any, index: number) => (
                         <tr
-                          key={item.id}
+                          key={item._id}
                           className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
                         >
                           <td className="text-base font-medium py-2 px-4">
                             {item.menu_group_name}
                           </td>
                           <td className="text-base font-medium py-2 px-4">{item.menu_item_name}</td>
+
+                          {/* Conditional rendering for editing price */}
                           <td className="text-base font-medium text-center py-2 px-4 break-words">
-                            &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
+                            {editMode === item._id ? (
+                              <input
+                                type="number"
+                                value={newPrice ?? item.menu_item_price}
+                                onChange={handlePriceChange}
+                                className="border border-gray-300 p-1 rounded"
+                              />
+                            ) : (
+                              `₦${parseFloat(item.menu_item_price).toLocaleString()}`
+                            )}
                           </td>
 
-                          <td className="flex items-center text-center">
-                            <button className="flex items-center gap-2">
-                              <img src={edit} alt="" />
-                              Edit
-                            </button>
+                          <td className="flex items-center justify-center text-center gap-4">
+                            {editMode === item._id ? (
+                              <div className="flex items-center gap-2 mt-2.5">
+                                <button className="text-purple500" onClick={() => handleSave(item)}>
+                                  {isSubmitting ? "Saving..." : "Save"}
+                                </button>
+                                <button className="text-red-500" onClick={handleCancelEdit}>
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                className="flex items-center gap-2 mt-2.5"
+                                onClick={() => handleEditClick(item)}
+                              >
+                                <img src={edit} alt="" />
+                                Edit
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}

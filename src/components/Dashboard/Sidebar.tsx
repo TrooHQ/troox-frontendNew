@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
@@ -20,7 +20,8 @@ import { ArrowCircleRightOutlined, ArrowDropDown, Search } from "@mui/icons-mate
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+import { clearSelectedBranch, fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+import { clearUserData } from "../../slices/UserSlice";
 
 interface MenuItem {
   subTitle?: string;
@@ -39,6 +40,8 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const { branches, selectedBranch } = useSelector((state: RootState) => state.branches);
   const { userData } = useSelector((state: RootState) => state.user);
 
@@ -64,7 +67,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     id: branch._id,
   }));
 
-  console.log(transformedBranches, selectedBranch, "userData");
+  console.log(userData, selectedBranch, "userData");
   useEffect(() => {
     const defaultBranch = transformedBranches[0];
     (selectedBranch === null || selectedBranch === undefined) &&
@@ -77,7 +80,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const handleSelect = (event: any, value: any) => {
     event.preventDefault();
-    console.log(value, "qqqq");
     setSelectedOutlet(value ?? { label: "All outlets" });
     dispatch(userSelectedBranch(value));
     setIsAutoOpen(false);
@@ -216,6 +218,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     return false;
   };
 
+  const handleLogout = () => {
+    dispatch(clearUserData());
+    dispatch(clearSelectedBranch());
+    navigate("/");
+  };
+
   return (
     <div
       className={`p-2 ${
@@ -226,7 +234,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       <div className="grid gap-10 items-center">
         <div className="flex gap-x-4 mt-4 items-center justify-start">
           <img
-            src={Logo}
+            src={userData?.business_logo ? userData.business_logo : Logo}
             alt="logo"
             className={`cursor-pointer duration-500 w-[200px] ${!open ? "hidden" : "block"} `}
             onClick={() => setOpen(!open)}
@@ -395,21 +403,19 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
         }}
       >
-        <NavLink to="/">
-          <div className="flex items-center gap-x-2 cursor-pointer py-2">
-            <img
-              src={LogoutIcon}
-              alt="Logout"
-              style={{
-                width: "20px",
-                marginRight: "8px",
-                fontWeight: isMenuItemActive("/logout") ? "bold" : "normal",
-                color: isMenuItemActive("/logout") ? "black" : "initial",
-              }}
-            />
-            <span className="text-[#000] font-semibold">Logout</span>
-          </div>
-        </NavLink>
+        <div onClick={handleLogout} className="flex items-center gap-x-2 cursor-pointer py-2">
+          <img
+            src={LogoutIcon}
+            alt="Logout"
+            style={{
+              width: "20px",
+              marginRight: "8px",
+              fontWeight: isMenuItemActive("/logout") ? "bold" : "normal",
+              color: isMenuItemActive("/logout") ? "black" : "initial",
+            }}
+          />
+          <span className="text-[#000] font-semibold">Logout</span>
+        </div>
       </div>
     </div>
   );
