@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { ArrowBack, Close, DeleteForeverOutlined, MoreVert } from "@mui/icons-material";
+import { ArrowBack, Close, MoreVert } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
@@ -242,26 +242,15 @@ const MenuList = () => {
   // State for managing the dropdown menu
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentItem, setCurrentItem] = useState<any>(null);
-  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const [currentItem2, setCurrentItem2] = useState<any>(null);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>, item: any) => {
     setAnchorEl(event.currentTarget);
     setCurrentItem(item);
   };
 
-  const handleOpenRecommendMenu = (event: React.MouseEvent<HTMLElement>, item: any) => {
-    setAnchorEl2(event.currentTarget);
-    setCurrentItem2(item);
-  };
-
   const handleCloseMenu = () => {
     setAnchorEl(null);
     setCurrentItem(null);
-  };
-  const handleCloseRecommendMenu = () => {
-    setAnchorEl2(null);
-    setCurrentItem2(null);
   };
 
   return (

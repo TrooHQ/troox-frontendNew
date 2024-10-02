@@ -17,6 +17,7 @@ import VoidOrderMenu from "./ticketComponents/VoidOrderMenu";
 import { useSelector } from "react-redux";
 import { DropdownMenu } from "./DropdownMenuOpenTickets";
 import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
+import ChangeBranchForTicket from "./ChangeBranchForTicket";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -27,6 +28,7 @@ const Tickets = () => {
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [data, setData] = useState<any[]>([]);
   const [closedData, setClosedData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userDetails = useSelector((state: any) => state.user);
 
@@ -67,6 +69,7 @@ const Tickets = () => {
       },
     };
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getOrderByBranch/?branch_id=${selectedBranch.id}`,
         headers
@@ -76,6 +79,8 @@ const Tickets = () => {
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -87,6 +92,7 @@ const Tickets = () => {
       },
     };
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getBranchOrderByStatus/?branch_id=${selectedBranch.id}&status=Cancelled`,
         headers
@@ -96,13 +102,15 @@ const Tickets = () => {
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getTickets();
     getClosedTickets();
-  }, []);
+  }, [selectedBranch]);
 
   const handleVoidOrder = async () => {
     if (activeMenuIndex === null) {
@@ -164,11 +172,17 @@ const Tickets = () => {
       );
       console.log(response.data);
       getTickets();
+      getClosedTickets();
       setVoidOrderMenu(false);
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error voiding order");
     }
+  };
+
+  const handleRefresh = () => {
+    getTickets();
+    getClosedTickets();
   };
 
   return (
@@ -177,6 +191,7 @@ const Tickets = () => {
         <TopMenuNav pathName="Tickets" />
         <div className="">
           <div className="mt-[40px]">
+            <ChangeBranchForTicket handleRefresh={handleRefresh} />
             <div className="flex items-center justify-between">
               <div className="flex items-center justify-between">
                 <div className="relative">
@@ -192,9 +207,10 @@ const Tickets = () => {
                   />
                 </div>
               </div>
-              <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-[#ffffff]">
-                <button onClick={getTickets} className="text-[16px] flex items-center gap-[8px]">
-                  <img src={Refresh} alt="" /> Refresh Tickets
+              <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-[#5955B3]">
+                <button onClick={handleRefresh} className="text-[16px] flex items-center gap-[8px]">
+                  <img src={Refresh} alt="" />
+                  {isLoading ? "Fetching..." : "Refresh Tickets"}
                 </button>
               </div>
             </div>
@@ -237,7 +253,7 @@ const Tickets = () => {
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
-                      {item.status === "cancelled" && (
+                      {item.status === "Cancelled" && (
                         <img src={red} alt="" className="w-[12px] h-[12px]" />
                       )}
                       {item.status === "Ordered" && (
@@ -318,9 +334,6 @@ const Tickets = () => {
                     <p onClick={handleTicketMenu}>
                       {item.menu_items[0].tableNumber || `Ord00${index + 1}`}
                     </p>
-                    <p className=" ">
-                      {item.updatedAt.slice(0, 10)}-{item.updatedAt.slice(11, 16)}
-                    </p>{" "}
                     <p onClick={handleTicketMenu}>{item.customer || ""}</p>
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
