@@ -148,6 +148,7 @@ const branchSlice = createSlice({
     },
     clearSelectedBranch: (state) => {
       state.selectedBranch = null;
+      state.branches = [];
     },
   },
   extraReducers: (builder) => {

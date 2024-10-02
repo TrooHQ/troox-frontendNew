@@ -360,7 +360,7 @@ const MenuList = () => {
                         </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <button className="text-blue-500" onClick={() => handleOpenModal(item)}>
-                            Click to see modifiers
+                            See modifiers
                           </button>
                         </td>
 
