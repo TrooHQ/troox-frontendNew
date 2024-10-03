@@ -15,7 +15,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-// import CustomSelect3 from "../inputFields/CustomSelect3";
 
 interface MenuItem {
   title: string;
@@ -32,6 +31,7 @@ interface MenuCategory {
   menu_item_name: string;
   modifier_name: string;
   modifier_price: string;
+  modifier_group_name: string;
 }
 interface Props {
   menuData?: MenuCategory[];
@@ -54,19 +54,27 @@ const MenuSetupForm: React.FC<Props> = () => {
   const [expandedItem, setExpandedItem] = useState<{
     [key: string]: boolean;
   }>({});
+
+  const [expandedModifierGroup, setExpandedModifierGroup] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [menuData, setMenuData] = useState<MenuCategory[]>([]);
   const [menuGroup, setMenuGroup] = useState<MenuCategory[]>([]);
   const [items, setItems] = useState<MenuCategory[]>([]);
   const [modifiers, setModifiers] = useState<MenuCategory[]>([]);
+  const [modifierGroup, setModifierGroup] = useState<MenuCategory[]>([]);
   const [menuCategory, setMenuCategory] = useState<string>("");
   const [openCategory, setOpenCategory] = useState<string>("");
   const [openGroup, setOpenGroup] = useState<string>("");
   const [openItem, setOpenItem] = useState<string>("");
+  const [openModifierGroup, setOpenModifierGroup] = useState<string>("");
   const [menuItem, setMenuItem] = useState<string>("");
   const [menuItemPrice, setMenuItemPrice] = useState<string>("");
   const [modifierName, setModifierName] = useState<string>("");
   const [modifierPrice, setModifierPrice] = useState<string>("");
   const [menuItemModal, setMenuItemModal] = useState(false);
+  const [modifierGroupName, setModifierGroupName] = useState<string>("");
+  const [modifierGroupModal, setModifierGroupModal] = useState(false);
   const [modifierModal, setModifierModal] = useState(false);
 
   const [menuGroupName, setMenuGroupName] = useState<string>("");
@@ -110,58 +118,6 @@ const MenuSetupForm: React.FC<Props> = () => {
     });
   };
 
-  // const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
-  // const [branch, setBranch] = useState<Option[]>([]);
-
-  // const handleSelect = (Outlet: string) => {
-  //   const selectedOption = branch.find((option) => option.label === Outlet);
-  //   console.log(selectedOption);
-  //   if (selectedOption) {
-  //     setSelectedBranch(selectedOption.value);
-  //   }
-  // };
-
-  // const getBranch = async () => {
-  //   const headers = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await axios.get(
-  //       `${SERVER_DOMAIN}/branch/getBranch`,
-  //       headers
-  //     );
-
-  //     const branchOptions = response.data.data.map((branch: any) => ({
-  //       label: branch.branch_name,
-  //       value: branch._id,
-  //     }));
-  //     setBranch(branchOptions);
-  //   } catch (error) {
-  //     console.error("Error Retrieving Branch:", error);
-
-  //     if (axios.isAxiosError(error)) {
-  //       if (error.response) {
-  //         toast.error(error.response.data.message);
-  //       } else {
-  //         toast.error("An error occurred. Please try again later.");
-  //       }
-  //     } else {
-  //       toast.error("An error occurred. Please try again later.");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getBranch();
-  // }, []);
-
   const toggleGroup = (groupName: string) => {
     setExpandedGroups((prevState) => {
       const newState = { ...prevState };
@@ -185,9 +141,22 @@ const MenuSetupForm: React.FC<Props> = () => {
     setOpenItem(itemName);
   };
 
+  const toggleModifierGroup = (modifierGroupName: string) => {
+    setExpandedModifierGroup((prevState) => {
+      const updatedState: { [key: string]: boolean } = {};
+
+      updatedState[modifierGroupName] = !prevState[modifierGroupName];
+
+      return updatedState;
+    });
+
+    setOpenModifierGroup(modifierGroupName);
+    getModifier(modifierGroupName);
+  };
+
   useEffect(() => {
     if (openItem !== null) {
-      getModifier();
+      getModifierGroup();
     }
   }, [expandedItem, openItem]);
 
@@ -324,10 +293,48 @@ const MenuSetupForm: React.FC<Props> = () => {
 
       if (error.response) {
         setError(error.response.data.message);
-        // toast.error(error.response.data.message);
         setMenuItemError(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const createModifierGroup = async () => {
+    if (!modifierGroupName) {
+      setMenuItemError("Add Modifer Group Name");
+      return;
+    }
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/attachMenuModifierGroup`,
+        {
+          modifier_group_name: modifierGroupName,
+          attach_to: "item",
+          menu_item_name: openItem,
+          branch_id: selectedOutletID,
+        },
+        headers
+      );
+      toast.success(response?.data?.message);
+      setModifierGroupModal(false);
+      window.location.reload();
+    } catch (error: any) {
+      console.error("Error adding Modifier Group :", error);
+
+      if (error.response) {
+        toast.error(error?.response?.data?.message);
+      } else {
+        toast.error("An error occurred. Please try again later.");
       }
     }
     setLoading(false);
@@ -366,7 +373,6 @@ const MenuSetupForm: React.FC<Props> = () => {
 
       if (error.response) {
         setError(error.response.data.message);
-        // toast.error(error.response.data.message);
         setMenuGroupError(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");
@@ -463,7 +469,7 @@ const MenuSetupForm: React.FC<Props> = () => {
     setLoading(false);
   };
 
-  const getModifier = async () => {
+  const getModifier = async (openModifierGroup: string) => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -474,11 +480,40 @@ const MenuSetupForm: React.FC<Props> = () => {
       setLoading(true);
 
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${openItem}&branch_id=${selectedOutletID}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=modifier_group&name=${openModifierGroup}&branch_id=${selectedOutletID}`,
         headers
       );
 
       setModifiers(response.data.data);
+    } catch (error: any) {
+      console.error("Error retrieving Modifiers:", error);
+
+      if (error.response) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    }
+    setLoading(false);
+  };
+
+  const getModifierGroup = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllModifierGroups/?branch_id=${selectedOutletID}`,
+        headers
+      );
+
+      setModifierGroup(response.data.data);
+      console.log(response.data.data);
     } catch (error: any) {
       console.error("Error retrieving Modifiers:", error);
 
@@ -509,9 +544,9 @@ const MenuSetupForm: React.FC<Props> = () => {
         `${SERVER_DOMAIN}/menu/addMenuModifier`,
         {
           branch_id: selectedOutletID,
-          attach_to: "item",
+          attach_to: "modifier_group",
           modifier_name: modifierName,
-          menu_item_name: openItem,
+          modifier_group_name: openModifierGroup,
           price: modifierPrice,
           image: base64String,
         },
@@ -520,13 +555,12 @@ const MenuSetupForm: React.FC<Props> = () => {
       console.log("Modifier added successfully:", response.data);
       toast.success(response.data.message);
       setModifierModal(false);
-      // window.location.reload();
+      window.location.reload();
     } catch (error: any) {
       console.error("Error adding modifier:", error);
 
       if (error.response) {
         setError(error.response.data.message);
-        // toast.error(error.response.data.message);
         setModifierError(error.response.data.message);
       } else {
         setError("An error occurred. Please try again later.");
@@ -651,35 +685,108 @@ const MenuSetupForm: React.FC<Props> = () => {
                                         )}
 
                                         {expandedItem[item.menu_item_name] && (
-                                          <div
-                                            className=" grid gap-[10px]"
-                                            onClick={() =>
-                                              setModifierModal(true)
-                                            }
-                                          >
-                                            {modifiers
+                                          <div className=" grid gap-[10px]">
+                                            {modifierGroup
                                               .filter(
                                                 (modifier) =>
                                                   modifier.menu_item_name ===
                                                   item.menu_item_name
                                               )
                                               .map((modifier, index) => (
-                                                <div
-                                                  key={index}
-                                                  className=" flex items-center justify-between  bg-slate-50 p-[8px]"
-                                                >
-                                                  <p className=" ">
-                                                    {modifier.modifier_name}
-                                                  </p>
-                                                  <p>
-                                                    &#x20A6;
-                                                    {modifier.modifier_price}
-                                                  </p>
-                                                </div>
+                                                <>
+                                                  <div
+                                                    key={index}
+                                                    className=" flex items-center justify-between  bg-slate-50 py-[12px] px-[8px]"
+                                                    onClick={() =>
+                                                      toggleModifierGroup(
+                                                        modifier.modifier_group_name
+                                                      )
+                                                    }
+                                                    style={{
+                                                      cursor: "pointer",
+                                                    }}
+                                                  >
+                                                    <p className=" ">
+                                                      {
+                                                        modifier.modifier_group_name
+                                                      }
+                                                    </p>
+                                                    <img
+                                                      src={Arrow}
+                                                      alt=""
+                                                      style={{
+                                                        transform:
+                                                          expandedModifierGroup[
+                                                            modifier
+                                                              .modifier_group_name
+                                                          ]
+                                                            ? "rotate(180deg)"
+                                                            : "rotate(0deg)",
+                                                        transition:
+                                                          "transform 0.3s ease",
+                                                      }}
+                                                    />
+                                                  </div>
+
+                                                  {expandedModifierGroup[
+                                                    modifier.modifier_group_name
+                                                  ] && (
+                                                    <div className="grid gap-[10px]">
+                                                      {modifiers
+                                                        .filter(
+                                                          (MainModifier) =>
+                                                            MainModifier.modifier_group_name ===
+                                                            modifier.modifier_group_name
+                                                        )
+                                                        .map(
+                                                          (
+                                                            MainModifier,
+                                                            index
+                                                          ) => (
+                                                            <div
+                                                              key={index}
+                                                              className="flex items-center justify-between bg-slate-50 p-[8px]"
+                                                            >
+                                                              <p>
+                                                                {
+                                                                  MainModifier.modifier_name
+                                                                }
+                                                              </p>
+                                                              <p>
+                                                                &#x20A6;
+                                                                {
+                                                                  MainModifier.modifier_price
+                                                                }
+                                                              </p>
+                                                            </div>
+                                                          )
+                                                        )}
+
+                                                      <p
+                                                        className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
+                                                        onClick={() =>
+                                                          setModifierModal(true)
+                                                        }
+                                                      >
+                                                        <img
+                                                          src={AddWhite}
+                                                          alt=""
+                                                        />
+                                                        Add Modifier
+                                                      </p>
+                                                    </div>
+                                                  )}
+                                                </>
                                               ))}
-                                            <p className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer">
+
+                                            <p
+                                              className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
+                                              onClick={() =>
+                                                setModifierGroupModal(true)
+                                              }
+                                            >
                                               <img src={AddWhite} alt="" />
-                                              Add Modifier
+                                              Add Modifier Group
                                             </p>
                                           </div>
                                         )}
@@ -1072,6 +1179,44 @@ const MenuSetupForm: React.FC<Props> = () => {
               <div
                 className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
                 onClick={createItem}
+              >
+                <button className=" text-[16px] ">Save</button>
+              </div>
+            )}
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal
+        isOpen={modifierGroupModal}
+        onClose={() => setModifierGroupModal(false)}
+      >
+        <div className="  w-full py-[32px] px-[16px] absolute bottom-0  bg-white">
+          <div className=" ">
+            <p className=" text-red-500">{menuItemError}</p>
+            <div
+              className=" flex items-center justify-end cursor-pointer"
+              onClick={() => setModifierGroupModal(false)}
+            >
+              <img src={Cancel} alt="" />
+            </div>
+            <p className=" text-[20px]  font-[400] text-grey500 mb-[16px]">
+              New Modifier Group
+            </p>
+
+            <div className=" grid gap-[16px] ">
+              <CustomInput
+                type="text"
+                label="Modifier Group name"
+                value={modifierGroupName}
+                onChange={(newValue) => setModifierGroupName(newValue)}
+              />
+            </div>
+
+            {!loading && (
+              <div
+                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                onClick={createModifierGroup}
               >
                 <button className=" text-[16px] ">Save</button>
               </div>

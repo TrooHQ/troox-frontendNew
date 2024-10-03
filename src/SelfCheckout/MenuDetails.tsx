@@ -33,6 +33,11 @@ interface MenuItem {
   menu_item_price: number;
 }
 
+interface Modifier {
+  modifier_name: string;
+  modifier_price: number;
+  value: string;
+}
 interface Option {
   modifier_name: string;
   modifier_price: number;
@@ -40,6 +45,8 @@ interface Option {
   price: number;
   name: string;
   label?: string;
+  modifiers?: Modifier[];
+  modifier_group_name?: string;
 }
 
 interface BasketItem {
@@ -96,7 +103,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
   const businessIdentifier = userDetails?._id;
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
-  const handleCheckboxChange = (option: Option) => {
+  const handleCheckboxChange = (option: Modifier) => {
     const optionIndex = selectedOptions.findIndex(
       (selectedOption) => selectedOption.name === option.modifier_name
     );
@@ -127,7 +134,6 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
         `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${menuItemId}`
       );
       setMenuItem(response.data.data);
-      setMenuModifiers(response.data.modifiers);
     } catch (error) {
       console.error("Error getting Menu Item Details:", error);
     } finally {
@@ -176,6 +182,25 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
   useEffect(() => {
     getRecommendedItems();
   }, []);
+
+  const getModifiers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getbusinessMenuModifierGroupByItem/?business_identifier=${businessIdentifier}&attach_to=item&name=${menuItem?.menu_item_name}&branch=${branchId}`
+      );
+      setMenuModifiers(response.data.data);
+    } catch (error) {
+      console.error("Error getting Modifiers", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (menuItem?.menu_item_name) {
+      getModifiers();
+    }
+  }, [menuItem?.menu_item_name]);
 
   const existingItem = basketItems.find((item) => item.id === menuItemId);
 
@@ -239,18 +264,22 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
 
     const optionTotalPrice =
       selectedOptions.reduce((total, option) => {
-        const selectedOption = menuModifiers.find(
-          (opt) => opt.modifier_name === option.name
-        );
-        if (selectedOption) {
-          total += selectedOption.modifier_price;
-        }
+        menuModifiers?.forEach((menu) => {
+          const selectedOption = menu.modifiers?.find(
+            (opt) => opt.modifier_name === option.modifier_name
+          );
+          if (selectedOption) {
+            total += selectedOption.modifier_price;
+          }
+        });
         return total;
       }, 0) * itemCount;
 
     const itemPrice = menuItem.menu_item_price * itemCount;
 
-    return itemPrice + optionTotalPrice;
+    const totalPrice = itemPrice + optionTotalPrice;
+
+    return totalPrice;
   };
 
   const handleAddToBasket = () => {
@@ -337,51 +366,65 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                     </div>
                   )}
 
-                  <div className="mx-[49px] grid grid-cols-2 gap-[20px]">
-                    {menuModifiers.map((option) => (
-                      <div
-                        key={option.modifier_name}
-                        className="border-b shadow border rounded-[5px]"
-                      >
-                        <div
-                          className="flex items-center gap-[24px] py-[31px] px-[24px] cursor-pointer"
-                          onClick={() => handleCheckboxChange(option)}
-                        >
-                          <div
-                            id={option.modifier_name}
-                            className={`h-[48px] w-[48px] border rounded-full ${
-                              selectedOptions.some(
-                                (opt) => opt.name === option.modifier_name
-                              )
-                                ? "bg-red-600"
-                                : " border-[3px] border-[#B6B6B6]"
-                            }`}
-                          ></div>
-                          <label
-                            htmlFor={option.modifier_name}
-                            className="ml-2 text-[28px] font-[500]"
-                          >
-                            {option.modifier_name}
-                            <span className="text-[16px] font-[400] text-[#000000]">
-                              {" "}
-                              (&#x20A6;{option.modifier_price?.toLocaleString()}
-                              )
-                            </span>
-                          </label>
-                          <input
-                            type="checkbox"
-                            id={option.modifier_name}
-                            value={option.modifier_name}
-                            checked={selectedOptions.some(
-                              (opt) => opt.name === option.modifier_name
-                            )}
-                            onChange={() => handleCheckboxChange(option)}
-                            className="sr-only "
-                          />
+                  <>
+                    {menuModifiers.map((menu, index) => (
+                      <div className="" key={index}>
+                        <div className="">
+                          <p className="text-[#121212] mx-[49px] font-[500] text-[24px] pb-[16px] pt-[24px]">
+                            {menu?.modifier_group_name}
+                          </p>
+                          <div className="mx-[49px] grid grid-cols-2 gap-[20px]">
+                            {menu?.modifiers?.map((option) => (
+                              <div
+                                key={option.modifier_name}
+                                className="border-b shadow border rounded-[5px]"
+                              >
+                                <div
+                                  className="flex items-center gap-[24px] py-[31px] px-[24px] cursor-pointer"
+                                  onClick={() => handleCheckboxChange(option)}
+                                >
+                                  <div
+                                    id={option.modifier_name}
+                                    className={`h-[40px] min-w-[40px] border rounded-full ${
+                                      selectedOptions.some(
+                                        (opt) =>
+                                          opt.name === option.modifier_name
+                                      )
+                                        ? "bg-red-600"
+                                        : " border-[3px] border-[#B6B6B6]"
+                                    }`}
+                                  ></div>
+                                  <label
+                                    htmlFor={option.modifier_name}
+                                    className="ml-2 text-[28px] font-[500]"
+                                  >
+                                    {option.modifier_name} <br />
+                                    <span className="text-[16px] font-[400] text-[#000000]">
+                                      {" "}
+                                      (&#x20A6;
+                                      {option.modifier_price?.toLocaleString()})
+                                    </span>
+                                  </label>
+                                  <input
+                                    type="checkbox"
+                                    id={option.modifier_name}
+                                    value={option.modifier_name}
+                                    checked={selectedOptions.some(
+                                      (opt) => opt.name === option.modifier_name
+                                    )}
+                                    onChange={() =>
+                                      handleCheckboxChange(option)
+                                    }
+                                    className="sr-only "
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}
-                  </div>
+                  </>
 
                   <div className=" mx-[24px] my-[80px]">
                     <div className=" flex items-center justify-between py-[32px] px-[24px]">

@@ -309,17 +309,22 @@ export const OnlineOrderingCategoryDetails = () => {
                           </div>
                         </Link>
 
-                        <div className="h-[80px] w-[80px]  rounded-[8px] overflow-hidden ">
-                          <Link
-                            to={`/demo/menu-details/${menu._id}/online_ordering`}
+                        <Link
+                          to={`/demo/menu-details/${menu._id}/online_ordering`}
+                        >
+                          <div
+                            className="h-[80px] w-[80px] border-4 rounded-[8px] overflow-hidden p-0 m-0 flex items-center justify-center"
+                            style={{
+                              borderColor: colorScheme || "#414141",
+                            }}
                           >
                             <img
                               src={menu.menu_item_image}
                               alt={menu.menu_item_name}
-                              className=" w-full h-full object-cover"
+                              className="w-full h-full object-cover"
                             />
-                          </Link>
-                        </div>
+                          </div>
+                        </Link>
                       </div>
 
                       <div className="pt-[8px] flex items-center justify-between">

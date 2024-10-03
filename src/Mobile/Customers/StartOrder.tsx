@@ -40,20 +40,21 @@ const StartOrder = () => {
   const branch = queryParams.get("branch");
   const tableNo = queryParams.get("table");
   const type = queryParams.get("type");
-
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
   useEffect(() => {
     if (business_identifier && tableNo) {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
-
       dispatch(setTableNo(tableNo));
       dispatch(setBranchID(branch as string));
       dispatch(setURL(fullUrl));
+
+      getBusinessDetails();
+    } else {
+      navigate("/demo/login/troo-portal");
     }
-    getBusinessDetails();
-  }, [business_identifier, tableNo, group_name, navigate]);
+  }, [business_identifier, tableNo, group_name, navigate, branch, fullUrl]);
 
   const getBusinessDetails = async () => {
     const headers = {
