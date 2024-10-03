@@ -76,10 +76,10 @@ export const OnlineOrderingSelectPayment = () => {
         payload
       );
       setLoading(false);
-      console.log(response.data);
+      console.log(response.data?.data?._id);
       toast.success("Order has been Made successfully");
+      navigate(`/demo/receipt/online_ordering/${response.data?.data?._id}`);
       dispatch(clearBasket());
-      navigate("/demo/receipt/online_ordering");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

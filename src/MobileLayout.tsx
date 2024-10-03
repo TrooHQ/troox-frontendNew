@@ -64,7 +64,7 @@ const MobileLayout = () => {
 
           <Route path="/restaurants" element={<ListofRestaurants />} />
 
-          <Route path="/" element={<StartOrder />} />
+          <Route path="/:id?" element={<StartOrder />} />
           <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
           <Route
             path="/demo/:id/explore-menu/orderandpay"
@@ -151,7 +151,7 @@ const MobileLayout = () => {
             element={<OnlineOrderingSelectPayment />}
           />
           <Route
-            path="/demo/receipt/online_ordering"
+            path="/demo/receipt/online_ordering/:id?"
             element={<OnlineOrderingReceipt />}
           />
           <Route

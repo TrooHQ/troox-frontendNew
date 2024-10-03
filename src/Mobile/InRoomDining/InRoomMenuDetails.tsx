@@ -34,6 +34,11 @@ interface MenuItem {
   menu_item_price: number;
 }
 
+interface Modifier {
+  modifier_name: string;
+  modifier_price: number;
+  value: string;
+}
 interface Option {
   modifier_name: string;
   modifier_price: number;
@@ -41,6 +46,8 @@ interface Option {
   price: number;
   name: string;
   label?: string;
+  modifiers?: Modifier[];
+  modifier_group_name?: string;
 }
 
 export interface BasketItem {
@@ -89,7 +96,7 @@ const InRoomMenuDetails = () => {
   const businessIdentifier = userDetails?._id;
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
-  const handleCheckboxChange = (option: Option) => {
+  const handleCheckboxChange = (option: Modifier) => {
     const optionIndex = selectedOptions.findIndex(
       (selectedOption) => selectedOption.name === option.modifier_name
     );
@@ -121,13 +128,32 @@ const InRoomMenuDetails = () => {
         `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${id}`
       );
       setMenuItem(response.data.data);
-      setMenuModifiers(response.data.modifiers);
     } catch (error) {
       console.error("Error getting Business Details:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  const getModifiers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getbusinessMenuModifierGroupByItem/?business_identifier=${businessIdentifier}&attach_to=item&name=${menuItem?.menu_item_name}&branch=${branchId}`
+      );
+      setMenuModifiers(response.data.data);
+    } catch (error) {
+      console.error("Error getting Modifiers", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (menuItem?.menu_item_name) {
+      getModifiers();
+    }
+  }, [menuItem?.menu_item_name]);
 
   useEffect(() => {
     getItems();
@@ -219,12 +245,14 @@ const InRoomMenuDetails = () => {
 
     const optionTotalPrice =
       selectedOptions.reduce((total, option) => {
-        const selectedOption = menuModifiers.find(
-          (opt) => opt.modifier_name === option.name
-        );
-        if (selectedOption) {
-          (total += selectedOption.modifier_price), 10;
-        }
+        menuModifiers?.forEach((menu) => {
+          const selectedOption = menu.modifiers?.find(
+            (opt) => opt.modifier_name === option.modifier_name
+          );
+          if (selectedOption) {
+            total += selectedOption.modifier_price;
+          }
+        });
         return total;
       }, 0) * itemCount;
 
@@ -296,32 +324,46 @@ const InRoomMenuDetails = () => {
               <p className="text-[#FF0000] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
                 Customize
               </p>
-              {menuModifiers.map((option) => (
-                <div key={option.modifier_name} className="border-b">
-                  <div className="flex items-center justify-between py-[16px] mx-[24px]">
-                    <label htmlFor={option.modifier_name} className="ml-2">
-                      {option.modifier_name} (
-                      {option.modifier_price.toLocaleString()})
-                    </label>
-                    <input
-                      type="checkbox"
-                      id={option.modifier_name}
-                      value={option.modifier_name}
-                      checked={selectedOptions.some(
-                        (opt) => opt.name === option.modifier_name
-                      )}
-                      onChange={() => handleCheckboxChange(option)}
-                      className={`h-5 w-5 ${
-                        selectedOptions.some(
-                          (opt) => opt.name === option.modifier_name
-                        )
-                          ? "bg-red-600"
-                          : "bg-white"
-                      }`}
-                    />
+              <>
+                {menuModifiers.map((menu, index) => (
+                  <div
+                    className="text-[#606060] mx-[24px] font-[500] text-[16px] pb-[16px] pt-[24px]"
+                    key={index}
+                  >
+                    <p className="">{menu?.modifier_group_name}</p>
+
+                    {menu?.modifiers?.map((option) => (
+                      <div key={option.modifier_name} className="border-b">
+                        <div className="flex items-center justify-between py-[16px] mx-[24px]">
+                          <label
+                            htmlFor={option.modifier_name}
+                            className="ml-2"
+                          >
+                            {option.modifier_name} (
+                            {option.modifier_price.toLocaleString()})
+                          </label>
+                          <input
+                            type="checkbox"
+                            id={option.modifier_name}
+                            value={option.modifier_name}
+                            checked={selectedOptions.some(
+                              (opt) => opt.name === option.modifier_name
+                            )}
+                            onChange={() => handleCheckboxChange(option)}
+                            className={`h-5 w-5 ${
+                              selectedOptions.some(
+                                (opt) => opt.name === option.modifier_name
+                              )
+                                ? "bg-red-600"
+                                : "bg-white"
+                            }`}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
+                ))}
+              </>
             </div>
           )}
 

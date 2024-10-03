@@ -32,7 +32,10 @@ const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
     "/demo/payment-type/online_ordering",
     "/demo/tip/online_ordering",
   ];
-  const hideCart = hideCartOnPaths.includes(location.pathname);
+  // const hideCart = hideCartOnPaths.includes(location.pathname);
+  const hideCart = hideCartOnPaths.some((path) =>
+    location.pathname.startsWith(path)
+  );
 
   useEffect(() => {
     const handleScroll = () => {

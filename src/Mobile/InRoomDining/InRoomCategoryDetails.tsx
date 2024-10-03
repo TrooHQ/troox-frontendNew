@@ -302,17 +302,22 @@ export const InRoomCategoryDetails = () => {
                           </div>
                         </Link>
 
-                        <div>
-                          <Link
-                            to={`/demo/menu-details/${menu._id}/in_room_dining`}
+                        <Link
+                          to={`/demo/menu-details/${menu._id}/in_room_dining`}
+                        >
+                          <div
+                            className="h-[80px] w-[80px] border-4 rounded-[8px] overflow-hidden p-0 m-0 flex items-center justify-center"
+                            style={{
+                              borderColor: colorScheme || "#414141",
+                            }}
                           >
                             <img
                               src={menu?.menu_item_image}
                               alt={menu?.menu_item_name}
-                              className="h-[80px] w-[80px] object-cover rounded-[8px]"
+                              className=" w-full h-full object-cover"
                             />
-                          </Link>
-                        </div>
+                          </div>
+                        </Link>
                       </div>
 
                       <div className="pt-[8px] flex items-center justify-between">
