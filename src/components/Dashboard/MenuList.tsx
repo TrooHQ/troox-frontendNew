@@ -323,6 +323,7 @@ const MenuList = () => {
                     <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
                     <th className="py-2 px-4 text-base font-normal">Quantity</th>
                     <th className="py-2 px-4 text-base font-normal">Price</th>
+                    <th className="py-2 px-4 text-base font-normal">Frozen?</th>
                     <th className="py-2 px-4 text-base font-normal">Modifiers</th>
                     <th className="py-2 px-4 text-base font-normal">Actions</th>
                   </tr>
@@ -355,12 +356,13 @@ const MenuList = () => {
                             )}
                           </div>
                         </td>
+                        <td>{toggleStates[item._id] ? "Not Frozen" : "Frozen"}</td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
                         </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <button className="text-blue-500" onClick={() => handleOpenModal(item)}>
-                            Click to see modifiers
+                            See modifiers
                           </button>
                         </td>
 

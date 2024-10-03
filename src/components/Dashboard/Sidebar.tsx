@@ -67,12 +67,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     id: branch._id,
   }));
 
-  console.log(userData, selectedBranch, "userData");
+  console.log(transformedBranches, selectedBranch, "userData");
   useEffect(() => {
     const defaultBranch = transformedBranches[0];
     (selectedBranch === null || selectedBranch === undefined) &&
       dispatch(userSelectedBranch(defaultBranch as any));
-  }, [dispatch]);
+  }, [dispatch, transformedBranches, selectedBranch]);
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     setIsAutoOpen((prev) => !prev);
@@ -221,6 +221,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const handleLogout = () => {
     dispatch(clearUserData());
     dispatch(clearSelectedBranch());
+
+    console.log(transformedBranches, selectedBranch, "userData");
+
     navigate("/");
   };
 

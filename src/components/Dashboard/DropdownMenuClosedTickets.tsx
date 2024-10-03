@@ -31,12 +31,6 @@ export const DropdownMenuClosedTickets = ({
       >
         Vacate Table
       </li>
-      <li
-        onClick={() => handleItemClick("Void Order")}
-        className="font-[400] cursor-pointer text-left"
-      >
-        Void Order
-      </li>
     </ul>
   );
 };
