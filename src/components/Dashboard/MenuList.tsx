@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { ArrowBack, Close, MoreVert } from "@mui/icons-material";
+import {
+  ArrowBack,
+  CheckCircleOutline,
+  Close,
+  DeleteForeverOutlined,
+  MoreVert,
+} from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
@@ -108,9 +114,44 @@ const MenuList = () => {
     setConfirmationDialog3({ open: true, id });
   };
 
+  const [confirmationLoading, setConfirmationLoading] = useState(false);
   const handleConfirmToggleRecommendChange = async () => {
-    const { id } = confirmationDialog;
+    const { id } = confirmationDialog3;
     console.log(id);
+    if (id !== null) {
+      const currentState = toggleStates2[id];
+      const newState = !currentState;
+
+      console.log(currentState, "aaaaaa");
+      console.log(newState);
+      try {
+        setConfirmationLoading(true);
+        await fetch(`${SERVER_DOMAIN}/menu/updateRecommendation`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            // branch_id: viewingBranch?._id,
+            menu_item_id: id,
+            is_recommended: newState ? "true" : "false",
+          }),
+        });
+
+        setToggleStates2((prevStates) => ({
+          ...prevStates,
+          [id]: newState,
+        }));
+        setCurrentItem(null);
+      } catch (error) {
+        console.error("Failed to update menu item status:", error);
+        toast.error(`An error occurred. ${error}`);
+      } finally {
+        setConfirmationLoading(false);
+      }
+    }
+    setConfirmationDialog3({ open: false, id: null });
   };
 
   const handleConfirmToggleChange = async () => {
@@ -198,7 +239,7 @@ const MenuList = () => {
 
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
-        toast.success("Modifier deleted successfully");
+        toast.success("Deleted successfully");
         dispatch(fetchMenuItems({ branch_id: viewingBranch?._id as any }));
       } else {
         alert("Failed to delete modifier");
@@ -323,7 +364,6 @@ const MenuList = () => {
                     <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
                     <th className="py-2 px-4 text-base font-normal">Quantity</th>
                     <th className="py-2 px-4 text-base font-normal">Price</th>
-                    <th className="py-2 px-4 text-base font-normal">Frozen?</th>
                     <th className="py-2 px-4 text-base font-normal">Modifiers</th>
                     <th className="py-2 px-4 text-base font-normal">Actions</th>
                   </tr>
@@ -338,10 +378,29 @@ const MenuList = () => {
                     {menuItems.map((item: any, index: number) => (
                       <tr
                         key={item.id}
-                        className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
+                        className={`${
+                          !toggleStates[item._id]
+                            ? "opacity-50"
+                            : index % 2 === 1
+                            ? "bg-[#ffffff]"
+                            : "bg-[#F8F8F8]"
+                        }`}
                       >
                         <td className="text-base font-medium py-2 px-4">{item.menu_group_name}</td>
-                        <td className="text-base font-medium py-2 px-4">{item.menu_item_name}</td>
+                        <td className="text-base font-medium py-2 px-4">
+                          <div className="flex items-center justify-start gap-1">
+                            {toggleStates2[item._id] && (
+                              <Tooltip title="This item is recommended." arrow>
+                                <IconButton style={{ padding: "0px" }} color="default">
+                                  <CheckCircleOutline
+                                    style={{ color: "#5955b3", padding: "0px" }}
+                                  />{" "}
+                                </IconButton>
+                              </Tooltip>
+                            )}
+                            <span>{item.menu_item_name}</span>
+                          </div>
+                        </td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <div className="flex justify-start gap-0 items-center pl-[60px]">
                             <span className="w-[60px] ml-0">{item.qty}</span>
@@ -356,7 +415,6 @@ const MenuList = () => {
                             )}
                           </div>
                         </td>
-                        <td>{toggleStates[item._id] ? "Not Frozen" : "Frozen"}</td>
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
                         </td>
@@ -384,7 +442,10 @@ const MenuList = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleCloseMenu}
                           >
-                            <MenuItem onClick={() => handleToggleChange(item._id)}>
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "4px", width: "250px" }}
+                              onClick={() => handleToggleChange(item._id)}
+                            >
                               <Tooltip
                                 title="Freezing this menu list will remove it from all your product channels"
                                 arrow
@@ -404,24 +465,34 @@ const MenuList = () => {
                                 className={clsx(
                                   toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
                                   "text-base font-medium",
-                                  "w-[70px]"
+                                  "w-full"
                                 )}
                               >
                                 {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
                               </span>
                             </MenuItem>
-                            <MenuItem onClick={() => handleDeleteClick(item)}>
-                              <div className="flex items-center justify-start">
-                                {/* <DeleteForeverOutlined
-                                  onClick={() => handleDeleteClick(item)}
-                                  className="text-red-700 mr-5"
-                                /> */}
+
+                            {/* Delete */}
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "12px", width: "250px" }}
+                              onClick={() => handleDeleteClick(item)}
+                            >
+                              <div className="flex items-center justify-start w-full">
+                                <Tooltip title="Delete menu item" arrow>
+                                  <IconButton color="default">
+                                    <DeleteForeverOutlined />
+                                  </IconButton>
+                                </Tooltip>
+
                                 <span>Delete Menu</span>
                               </div>
                             </MenuItem>
 
                             {/* Recommend */}
-                            <MenuItem onClick={() => handleToggleRecommendChange(item._id)}>
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "4px", width: "250px" }}
+                              onClick={() => handleToggleRecommendChange(item._id)}
+                            >
                               <Tooltip
                                 title="Recommending this menu list will display it on all your product channels"
                                 arrow
@@ -431,9 +502,9 @@ const MenuList = () => {
                                   color="default"
                                 >
                                   {toggleStates2[item._id] ? (
-                                    <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                                    <CheckCircleOutline style={{ color: "#5855B3" }} />
                                   ) : (
-                                    <ToggleOffIcon style={{ fontSize: "40px" }} />
+                                    <CheckCircleOutline />
                                   )}
                                 </IconButton>
                               </Tooltip>
@@ -441,10 +512,12 @@ const MenuList = () => {
                                 className={clsx(
                                   toggleStates2[item._id] ? "text-[#5855b3]" : "text-gray-700",
                                   "text-[14px] font-medium",
-                                  "w-[70px]"
+                                  "w-full"
                                 )}
                               >
-                                {toggleStates2[item._id] ? "Recommend" : "Not recommend"}
+                                {toggleStates2[item._id]
+                                  ? "Unmark from recommended"
+                                  : "Mark as recommended"}
                               </span>
                             </MenuItem>
                           </Menu>
@@ -530,12 +603,13 @@ const MenuList = () => {
         open={confirmationDialog3.open}
         onClose={() => setConfirmationDialog3({ open: false, id: null })}
         onConfirm={handleConfirmToggleRecommendChange}
+        isLoading={confirmationLoading}
         message={`Are you sure you want to ${
-          confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
-            ? "recommend"
-            : "not recommend"
+          confirmationDialog3.id !== null && toggleStates2[confirmationDialog3.id as any]
+            ? "unrecommend"
+            : "recommend"
         } this menu item?
-        }`}
+        `}
       />
     </DashboardLayout>
   );

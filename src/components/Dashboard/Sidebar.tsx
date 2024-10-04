@@ -234,18 +234,22 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      <div className="grid gap-10 items-center">
-        <div className="flex gap-x-4 mt-4 items-center justify-start">
+      <div className="grid gap-3 items-center">
+        <div className="flex gap-x-4 mt-4 items-center justify-center">
           <img
             src={userData?.business_logo ? userData.business_logo : Logo}
             alt="logo"
-            className={`cursor-pointer duration-500 w-[200px] ${!open ? "hidden" : "block"} `}
+            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+              !open ? "hidden" : "block"
+            } `}
             onClick={() => setOpen(!open)}
           />
           <img
             alt="logo-mini"
             src={LogoMini}
-            className={`cursor-pointer duration-500 ${!open ? "block" : "hidden"} `}
+            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+              !open ? "block" : "hidden"
+            } `}
             onClick={() => setOpen(!open)}
           />
         </div>

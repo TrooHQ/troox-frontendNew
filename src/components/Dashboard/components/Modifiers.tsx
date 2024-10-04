@@ -206,7 +206,7 @@ const Modifiers = ({
 
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
-        toast.success("Modifier deleted successfully");
+        toast.success("Deleted successfully");
         fetchModifierGroups();
       } else {
         toast.error("Failed to delete modifier");
