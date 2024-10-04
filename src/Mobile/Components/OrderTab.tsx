@@ -6,6 +6,9 @@ import dayjs from "dayjs";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 import Loader from "../../components/Loader";
+import Modal from "./Modal";
+import Close from "../../assets/closeIcon.svg";
+
 interface TabItem {
   id: number;
   label: string;
@@ -47,8 +50,16 @@ const OrderTab: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [activeTab, setActiveTab] = useState<number>(1);
+  const [ticketModal, setTicketModal] = useState(false);
+
   const handleTabChange = (tabId: number) => {
     setActiveTab(tabId);
+  };
+
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const handleTicketModal = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setTicketModal(true);
   };
 
   const selectedOutletID = useSelector(
@@ -172,7 +183,7 @@ const OrderTab: React.FC = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="font-[400] text-[16px] mt-[8px] capitalize">
-                        {ticket?.menu_items.map((item, itemIndex) => (
+                        {ticket?.menu_items?.map((item, itemIndex) => (
                           <>
                             {" "}
                             <div key={itemIndex}>
@@ -194,7 +205,10 @@ const OrderTab: React.FC = () => {
                           </>
                         ))}
                       </div>
-                      <div>
+                      <div
+                        className=" cursor-pointer"
+                        onClick={() => handleTicketModal(ticket)}
+                      >
                         <img src={chatMessage} alt="" />
                       </div>
                     </div>
@@ -341,6 +355,41 @@ const OrderTab: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <Modal isOpen={ticketModal}>
+        <div className=" w-[328px] min-h-[181px]">
+          <div className="border-b border-b-[#E7E7E7] flex items-center justify-between">
+            <div className=" py-[16px]  w-full">
+              <p className=" text-[16px] font-[500] text-grey500 ">
+                James O. | #23 | 9:18AM
+              </p>
+              <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
+                <p>
+                  {selectedTicket?.customer_name
+                    ?.split(" ")
+                    .map((name, index) =>
+                      index === 0
+                        ? name
+                        : index === 1
+                        ? ` ${name.charAt(0).toUpperCase()}.`
+                        : ""
+                    )}
+                </p>
+              </div>
+            </div>
+            <img
+              src={Close}
+              alt=""
+              onClick={() => setTicketModal(false)}
+              className=" cursor-pointer"
+            />
+          </div>
+
+          <div className="">
+            <p>Please I want the spaghetti with less spice and extra hot dog</p>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
