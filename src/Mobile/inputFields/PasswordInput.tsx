@@ -9,13 +9,7 @@ interface PasswordInputProps {
   style?: CSSProperties;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({
-  label,
-  value,
-  onChange,
-  error,
-  style,
-}) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({ label, value, onChange, error, style }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -62,10 +56,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
           {label}
         </label>
 
-        <div
-          className="absolute top-2 right-2 cursor-pointer"
-          onClick={togglePasswordVisibility}
-        >
+        <div className="absolute top-2 right-2 cursor-pointer" onClick={togglePasswordVisibility}>
           {showPassword ? (
             <img src={EyeOpen} alt="" className="text-gray-400" />
           ) : (

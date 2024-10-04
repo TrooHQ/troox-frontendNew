@@ -109,7 +109,7 @@ const MenuList = () => {
   };
 
   const handleConfirmToggleRecommendChange = async () => {
-    const { id } = confirmationDialog;
+    const { id } = confirmationDialog3;
     console.log(id);
   };
 
@@ -384,7 +384,10 @@ const MenuList = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleCloseMenu}
                           >
-                            <MenuItem onClick={() => handleToggleChange(item._id)}>
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "4px", width: "200px" }}
+                              onClick={() => handleToggleChange(item._id)}
+                            >
                               <Tooltip
                                 title="Freezing this menu list will remove it from all your product channels"
                                 arrow
@@ -404,24 +407,18 @@ const MenuList = () => {
                                 className={clsx(
                                   toggleStates[item._id] ? "text-[#5855b3]" : "text-gray-700",
                                   "text-base font-medium",
-                                  "w-[70px]"
+                                  "w-full"
                                 )}
                               >
                                 {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
                               </span>
                             </MenuItem>
-                            <MenuItem onClick={() => handleDeleteClick(item)}>
-                              <div className="flex items-center justify-start">
-                                {/* <DeleteForeverOutlined
-                                  onClick={() => handleDeleteClick(item)}
-                                  className="text-red-700 mr-5"
-                                /> */}
-                                <span>Delete Menu</span>
-                              </div>
-                            </MenuItem>
 
                             {/* Recommend */}
-                            <MenuItem onClick={() => handleToggleRecommendChange(item._id)}>
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "4px", width: "200px" }}
+                              onClick={() => handleToggleRecommendChange(item._id)}
+                            >
                               <Tooltip
                                 title="Recommending this menu list will display it on all your product channels"
                                 arrow
@@ -441,11 +438,21 @@ const MenuList = () => {
                                 className={clsx(
                                   toggleStates2[item._id] ? "text-[#5855b3]" : "text-gray-700",
                                   "text-[14px] font-medium",
-                                  "w-[70px]"
+                                  "w-full"
                                 )}
                               >
                                 {toggleStates2[item._id] ? "Recommend" : "Not recommend"}
                               </span>
+                            </MenuItem>
+
+                            {/* Delete */}
+                            <MenuItem
+                              sx={{ paddingLeft: "12px", paddingRight: "12px", width: "200px" }}
+                              onClick={() => handleDeleteClick(item)}
+                            >
+                              <div className="flex items-center justify-start w-full">
+                                <span>Delete Menu</span>
+                              </div>
                             </MenuItem>
                           </Menu>
                         )}
@@ -532,10 +539,10 @@ const MenuList = () => {
         onConfirm={handleConfirmToggleRecommendChange}
         message={`Are you sure you want to ${
           confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
-            ? "recommend"
-            : "not recommend"
+            ? "unrecommend"
+            : "recommend"
         } this menu item?
-        }`}
+        `}
       />
     </DashboardLayout>
   );
