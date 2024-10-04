@@ -94,7 +94,7 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getBranchOrderByStatus/?branch_id=${selectedBranch.id}&status=Cancelled`,
+        `${SERVER_DOMAIN}/order/getBranchOrderByStatus/?branch_id=${selectedBranch.id}&status=served`,
         headers
       );
       console.log(response.data);
@@ -253,7 +253,7 @@ const Tickets = () => {
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
-                      {item.status === "Cancelled" && (
+                      {item.status?.toLowerCase() === "cancelled" && (
                         <img src={red} alt="" className="w-[12px] h-[12px]" />
                       )}
                       {item.status === "Ordered" && (
