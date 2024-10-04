@@ -111,6 +111,37 @@ const MenuList = () => {
   const handleConfirmToggleRecommendChange = async () => {
     const { id } = confirmationDialog3;
     console.log(id);
+    if (id !== null) {
+      const currentState = toggleStates2[id];
+      const newState = !currentState;
+
+      console.log(currentState, "aaaaaa");
+      console.log(newState);
+      try {
+        await fetch(`${SERVER_DOMAIN}/menu/updateRecommendation`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            // branch_id: viewingBranch?._id,
+            menu_item_id: id,
+            is_recommended: newState ? "true" : "false",
+          }),
+        });
+
+        setToggleStates2((prevStates) => ({
+          ...prevStates,
+          [id]: newState,
+        }));
+        setCurrentItem(null);
+      } catch (error) {
+        console.error("Failed to update menu item status:", error);
+        toast.error(`An error occurred. ${error}`);
+      }
+    }
+    setConfirmationDialog3({ open: false, id: null });
   };
 
   const handleConfirmToggleChange = async () => {
@@ -322,8 +353,8 @@ const MenuList = () => {
                     <th className="py-2 px-4 text-base font-normal">Menu Group</th>
                     <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
                     <th className="py-2 px-4 text-base font-normal">Quantity</th>
-                    <th className="py-2 px-4 text-base font-normal">Price</th>
                     <th className="py-2 px-4 text-base font-normal">Frozen?</th>
+                    <th className="py-2 px-4 text-base font-normal">Price</th>
                     <th className="py-2 px-4 text-base font-normal">Modifiers</th>
                     <th className="py-2 px-4 text-base font-normal">Actions</th>
                   </tr>
@@ -538,7 +569,7 @@ const MenuList = () => {
         onClose={() => setConfirmationDialog3({ open: false, id: null })}
         onConfirm={handleConfirmToggleRecommendChange}
         message={`Are you sure you want to ${
-          confirmationDialog.id !== null && toggleStates[confirmationDialog.id as any]
+          confirmationDialog.id !== null && toggleStates2[confirmationDialog.id as any]
             ? "unrecommend"
             : "recommend"
         } this menu item?
