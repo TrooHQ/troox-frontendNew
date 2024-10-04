@@ -3,7 +3,21 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 
-const ConfirmationDialog = ({ open, onClose, onConfirm, message }: any) => {
+interface ConfirmationDialogProps {
+  open: boolean;
+  onClose: any;
+  onConfirm: any;
+  message: string;
+  isLoading?: boolean;
+}
+
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  open,
+  onClose,
+  onConfirm,
+  message,
+  isLoading = false,
+}) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <div className="flex flex-col justify-center items-center gap-6">
@@ -16,15 +30,16 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, message }: any) => {
         <DialogActions className="flex items-center justify-center gap-4 mt-0 !pb-[32px]">
           <button
             onClick={onClose}
-            className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+            className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
           >
             No
           </button>
           <button
             onClick={onConfirm}
-            className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
+            className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+            disabled={isLoading}
           >
-            Yes
+            {isLoading ? "Loading..." : "Yes"}
           </button>
         </DialogActions>
       </div>
