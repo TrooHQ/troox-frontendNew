@@ -468,7 +468,7 @@ const MenuList = () => {
                                   "w-full"
                                 )}
                               >
-                                {toggleStates[item._id] ? "Unfreeze" : "Freeze"}
+                                {toggleStates[item._id] ? "Unfreeze" : "Item frozen"}
                               </span>
                             </MenuItem>
 
