@@ -250,9 +250,30 @@ const RegistrationStepForm = () => {
     }
   };
 
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //     const reader = new FileReader();
+  //     reader.onload = function (event) {
+  //       const base64 = event.target?.result as string;
+  //       setBase64String(base64);
+  //       console.log("Base64 representation:", base64);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
     if (file) {
+      const fileSizeInMB = file.size / (1024 * 1024);
+      if (fileSizeInMB > 2) {
+        alert("File size exceeds 2MB. Please upload a smaller file.");
+        return;
+      }
+
       setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = function (event) {
@@ -480,30 +501,6 @@ const RegistrationStepForm = () => {
                 />
               </div>
 
-              <div
-                className={`${
-                  emailError ||
-                  (fieldsError && " border border-red-500  rounded-[5px]")
-                }`}
-              >
-                <CustomInput
-                  type="email"
-                  label="Business Email"
-                  value={email}
-                  onChange={(newValue) => {
-                    setEmail(newValue);
-                    const isValidEmail = validateEmail(newValue);
-                    if (!isValidEmail) {
-                      setEmailError("Please enter a valid email address");
-                    } else {
-                      setEmailError("");
-                    }
-                  }}
-                />
-              </div>
-              {emailError && (
-                <p className="text-red-500 text-[14px]">{emailError}</p>
-              )}
               <div
                 className={`${
                   fieldsError && " border border-red-500  rounded-[5px]"
