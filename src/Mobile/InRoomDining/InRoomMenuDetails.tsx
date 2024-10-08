@@ -391,19 +391,23 @@ const InRoomMenuDetails = () => {
           </div>
 
           <div className="mx-[24px]">
-            <div className=" flex items-center justify-between my-[20px]">
-              <p className="text-[16px] text-[#121212] font-[500] ">
-                Recommended Items
-              </p>
-              <div className=" text-[16px]">
-                <MdKeyboardArrowRight />
+            {menuItems.some(
+              (menu) => menu.is_recommended && menu._id !== id
+            ) && (
+              <div className=" flex items-center justify-between my-[20px]">
+                <p className="text-[16px] text-[#121212] font-[500] ">
+                  Recommended Items
+                </p>
+                <div className=" text-[16px]">
+                  <MdKeyboardArrowRight />
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
               {menuItems.map(
                 (menu) =>
-                  !menu.is_recommended &&
+                  menu.is_recommended &&
                   menu._id !== id && (
                     <div key={menu.id} className="flex-shrink-0 w-[280px]">
                       <div className="flex items-center justify-between">
