@@ -187,19 +187,6 @@ const MenuList = () => {
     setConfirmationDialog({ open: false, id: null });
   };
 
-  const getStatusBgColor = (status: string) => {
-    switch (status) {
-      case "Restocked":
-        return "bg-green-100 text-green-800";
-      case "Almost out of stock":
-        return "bg-red-100 text-red-800";
-      case "Out of stock":
-        return "bg-red-100 text-red-800";
-      default:
-        return "";
-    }
-  };
-
   const fetchModifiers = async ({ selectedMenuItem, selectedBranch }: any) => {
     setIsFetching(true);
     const headers = {
@@ -362,7 +349,7 @@ const MenuList = () => {
                   <tr className="bg-[#606060] text-white text-center text-base font-normal">
                     <th className="py-2 px-4 text-base font-normal">Menu Group</th>
                     <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
-                    <th className="py-2 px-4 text-base font-normal">Quantity</th>
+                    {/* <th className="py-2 px-4 text-base font-normal">Quantity</th> */}
                     <th className="py-2 px-4 text-base font-normal">Price</th>
                     <th className="py-2 px-4 text-base font-normal">Modifiers</th>
                     <th className="py-2 px-4 text-base font-normal">Actions</th>
@@ -401,7 +388,7 @@ const MenuList = () => {
                             <span>{item.menu_item_name}</span>
                           </div>
                         </td>
-                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        {/* <td className="text-base font-medium text-center py-2 px-4 break-words">
                           <div className="flex justify-start gap-0 items-center pl-[60px]">
                             <span className="w-[60px] ml-0">{item.qty}</span>
                             {item.status !== "Restocked" && (
@@ -414,7 +401,7 @@ const MenuList = () => {
                               </span>
                             )}
                           </div>
-                        </td>
+                        </td> */}
                         <td className="text-base font-medium text-center py-2 px-4 break-words">
                           &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
                         </td>

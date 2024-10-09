@@ -592,7 +592,7 @@ const MenuBuilder = () => {
                                     <div className="flex">
                                       <p className="text-[16px] font-[500]">
                                         &#8358;
-                                        {item.price}
+                                        {Number(item.price).toLocaleString()}
                                       </p>
                                     </div>
                                   </div>
