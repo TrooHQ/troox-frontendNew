@@ -65,6 +65,7 @@ const PaymentScreen = () => {
   }));
 
   const payload = {
+    channel: "Self-Checkout",
     branch_id: branchId,
     businessIdentifier: business?.businessDetails?._id,
     customerName: basketDetails.customerName,
