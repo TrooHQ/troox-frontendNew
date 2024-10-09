@@ -12,35 +12,35 @@ import DaysTab2 from "./DaysTab2";
 
 export const productsSold = [
   {
-    name: "REFUEL-MAX-SPAGHETTI-MEAL",
+    name: "Refuel Max Spaghetti Meal",
     image: img1,
     numberSold: 3400,
     amountSold: "₦6,105,000.00",
     indicator: "#9787FF",
   },
   {
-    name: "REFUEL-MAX-FRIED-RICE-MEAL",
+    name: "Refuel Max Fried Rice Meal",
     image: img2,
     numberSold: 1000,
     amountSold: "₦4,050,000.00",
     indicator: "#FFA5DA",
   },
   {
-    name: "REFUEL-DODO-MEAL",
+    name: "Refuel Dodo Meal",
     image: img3,
     numberSold: 2409,
     amountSold: "₦2,352,000.00",
     indicator: "#0096FF",
   },
   {
-    name: "REFUEL-SPICY-RICE-MEAL",
+    name: "Refuel Spicy Rice Meal",
     image: img4,
     numberSold: 3200,
     amountSold: "₦1,768,000.00",
     indicator: "#5BD222",
   },
   {
-    name: "REFUEL-FRIED-RICE-MEAL",
+    name: "Refuel Fried Rice Meal",
     image: img5,
     numberSold: 1280,
     amountSold: "₦2,011,000.00",
@@ -56,13 +56,6 @@ export const productsSold = [
   {
     name: "Refuel Max Rice Beans Meal",
     image: img7,
-    numberSold: 1280,
-    amountSold: "₦2,011,000.00",
-    indicator: "#FDB600",
-  },
-  {
-    name: "REFUEL-FRIED-RICE-MEAL",
-    image: img5,
     numberSold: 1280,
     amountSold: "₦2,011,000.00",
     indicator: "#FDB600",
