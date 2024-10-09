@@ -81,9 +81,9 @@ export const CategoryDetails = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  // useEffect(() => {
+  //   setIsOpen(true);
+  // }, []);
 
   const settings = {
     infinite: true,

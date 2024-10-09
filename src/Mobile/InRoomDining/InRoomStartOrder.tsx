@@ -105,11 +105,13 @@ const InRoomStartOrder = () => {
   return (
     <div className="mx-[22px]" style={{ color: color || "#606060" }}>
       <div className="flex flex-col items-center justify-center mt-[64px]">
-        <img
-          src={businessDetails?.business_logo}
-          alt=""
-          className=" mb-[10px]"
-        />
+        <div className="mb-[10px] max-w-[200px] h-[200px]">
+          <img
+            src={businessDetails?.business_logo}
+            alt=""
+            className=" w-full object-cover h-full"
+          />
+        </div>
         <p>
           Welcome to{" "}
           <span className="font-bold">{businessDetails?.business_name}</span>{" "}

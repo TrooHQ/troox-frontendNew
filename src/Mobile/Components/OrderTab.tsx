@@ -23,6 +23,7 @@ interface Ticket {
   createdAt: string;
   status: string;
   _id: number;
+  orderID: string;
 }
 
 interface SelectedOption {
@@ -173,7 +174,8 @@ const OrderTab: React.FC = () => {
                             : ""}
                         </p>
                         <p className="capitalize">
-                          <span className="px-[4px]">|</span>#20
+                          <span className="px-[4px]">|</span>#
+                          {ticket?.orderID || "20"}
                           <span className="px-[4px]">|</span>
                         </p>
                         <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
@@ -277,7 +279,8 @@ const OrderTab: React.FC = () => {
                               : ""}
                           </p>
                           <p className="capitalize">
-                            <span className=" px-[4px]">|</span>#20
+                            <span className=" px-[4px]">|</span>#
+                            {ticket?.orderID || "20"}
                             <span className=" px-[4px]">|</span>
                           </p>
                           <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
@@ -360,10 +363,8 @@ const OrderTab: React.FC = () => {
         <div className=" w-[328px] min-h-[181px]">
           <div className="border-b border-b-[#E7E7E7] flex items-center justify-between">
             <div className=" py-[16px]  w-full">
-              <p className=" text-[16px] font-[500] text-grey500 ">
-                James O. | #23 | 9:18AM
-              </p>
-              <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
+              {/* <p className=" text-[16px] font-[500] text-grey500 ">James O.</p> */}
+              <div className="text-[16px] font-[500] text-grey500 flex items-center justify-between capitalize">
                 <p>
                   {selectedTicket?.customer_name
                     ?.split(" ")
@@ -374,6 +375,9 @@ const OrderTab: React.FC = () => {
                         ? ` ${name.charAt(0).toUpperCase()}.`
                         : ""
                     )}
+                  | #{selectedTicket?.orderID || "23"}
+                  {" | "}
+                  {dayjs(selectedTicket?.createdAt).format("h:mm a")}
                 </p>
               </div>
             </div>

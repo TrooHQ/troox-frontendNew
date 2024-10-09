@@ -66,7 +66,11 @@ const Header2: React.FC<Header2Props> = ({
             </p>
           </div>
           <div className="col-span-1 justify-self-center">
-            <img src={businessDetails?.business_logo} alt="Logo" />
+            <img
+              src={businessDetails?.business_logo}
+              alt="Logo"
+              className="h-[150px] max-w-[150px] w-full object-cover"
+            />
           </div>
           <div className="justify-self-end px-4"></div>
         </div>
