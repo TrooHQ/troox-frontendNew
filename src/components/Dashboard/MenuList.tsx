@@ -187,19 +187,6 @@ const MenuList = () => {
     setConfirmationDialog({ open: false, id: null });
   };
 
-  const getStatusBgColor = (status: string) => {
-    switch (status) {
-      case "Restocked":
-        return "bg-green-100 text-green-800";
-      case "Almost out of stock":
-        return "bg-red-100 text-red-800";
-      case "Out of stock":
-        return "bg-red-100 text-red-800";
-      default:
-        return "";
-    }
-  };
-
   const fetchModifiers = async ({ selectedMenuItem, selectedBranch }: any) => {
     setIsFetching(true);
     const headers = {
