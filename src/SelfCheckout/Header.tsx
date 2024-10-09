@@ -11,10 +11,14 @@ const Header = () => {
   return (
     <div>
       <div
-        className="h-[236px] flex items-center justify-center bg-[#F2F2F2]"
+        className=" flex items-center justify-center bg-[#F2F2F2]"
         // style={{ backgroundColor: color }}
       >
-        <img src={businessDetails?.business_logo} alt="Business Logo" />
+        <img
+          src={businessDetails?.business_logo}
+          alt="Business Logo"
+          className="h-[200px] max-w-[200px] w-full object-cover"
+        />
       </div>
     </div>
   );
