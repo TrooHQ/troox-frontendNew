@@ -81,9 +81,14 @@ export const CategoryDetails = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  // useEffect(() => {
-  //   setIsOpen(true);
-  // }, []);
+  useEffect(() => {
+    const isModalOpen = localStorage.getItem("isModalOpen");
+
+    if (!isModalOpen) {
+      setIsOpen(true);
+      localStorage.setItem("isModalOpen", "true");
+    }
+  }, []);
 
   const settings = {
     infinite: true,
@@ -230,6 +235,9 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
+              <div className=" flex items-center justify-end px-[24px]">
+                <MdKeyboardArrowRight className=" text-[50px]" />
+              </div>
               <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
                 <p
                   className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${

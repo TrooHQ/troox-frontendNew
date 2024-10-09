@@ -173,10 +173,10 @@ export const Basket = () => {
                   {item.selectedOptions.map((option, optionIndex) => (
                     <div
                       key={optionIndex}
-                      className="flex items-center gap-[20px]"
+                      className="flex items-center  justify-between gap-[20px]"
                     >
                       <p className="text-[20px] font-[500] text-[#606060]">
-                        {option.name} -
+                        {option.name}
                       </p>
                       <p className="text-[20px] font-[500] text-[#606060]">
                         &#x20A6;

@@ -88,9 +88,9 @@ const PaymentScreen = () => {
       );
       setLoading(false);
       console.log(response.data);
-      toast.success("Order has been Made successfully");
       dispatch(clearBasket());
       window.location.href = `${url}`;
+      toast.success("Order has been Made successfully");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
