@@ -249,7 +249,11 @@ const Tickets = () => {
 
                     {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
-                    <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
+                    <p onClick={handleTicketMenu}>
+                      {item.customer_name
+                        ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
+                        : ""}
+                    </p>
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
@@ -270,7 +274,7 @@ const Tickets = () => {
                       )}
                       <p className="capitalize">{item.status}</p>
                     </div>
-                    <p>&#x20A6;{item.menu_items[0].totalPrice}</p>
+                    <p>&#x20A6;{item.total_price.toLocaleString()}</p>
                     <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
                       <div
                         className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
@@ -339,7 +343,7 @@ const Tickets = () => {
                       <img src={green} alt="" className="w-[12px] h-[12px]" />
                       <p>Served</p>
                     </div>
-                    <p>&#x20A6;{item.menu_items[0].totalPrice}</p>
+                    <p>&#x20A6;{item.total_price.toLocaleString()}</p>
                     <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
                       <div
                         className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
