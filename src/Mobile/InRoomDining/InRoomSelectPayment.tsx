@@ -53,6 +53,7 @@ export const InRoomSelectPayment = () => {
     tableNumber: item.tableNumber,
   }));
   const payload = {
+    channel: "In-Room Dinning",
     branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
     customerName: basketDetails?.customerName,

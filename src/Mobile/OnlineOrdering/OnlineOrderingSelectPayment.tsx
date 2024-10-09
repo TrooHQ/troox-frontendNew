@@ -52,6 +52,7 @@ export const OnlineOrderingSelectPayment = () => {
     tableNumber: item.tableNumber,
   }));
   const payload = {
+    channel: "Online Ordering",
     branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
     customerName: basketDetails.customerName,

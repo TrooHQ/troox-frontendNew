@@ -54,6 +54,7 @@ export const SelectPayment = () => {
     tableNumber: item.tableNumber,
   }));
   const payload = {
+    channel: "QR Order And Pay",
     branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
     customerName: basketDetails?.customerName,
