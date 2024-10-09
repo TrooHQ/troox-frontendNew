@@ -79,7 +79,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                           className="text-[18px] font-[500] text-gray-800 border-b-2"
                         />
                       ) : (
-                        <p className="text-[18px] font-[500] text-gray-800">
+                        <p className="text-[18px] font-[500] text-gray-800 capitalize">
                           {truncateText(modifierGroup.modifier_group_name, 22)}
                         </p>
                       )}
