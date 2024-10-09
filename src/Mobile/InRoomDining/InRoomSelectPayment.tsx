@@ -74,9 +74,9 @@ export const InRoomSelectPayment = () => {
         payload
       );
       setLoading(false);
-      toast.success(response.data.message);
       dispatch(clearBasket());
       navigate("/demo/receipt/in_room_dining");
+      toast.success(response.data.message);
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

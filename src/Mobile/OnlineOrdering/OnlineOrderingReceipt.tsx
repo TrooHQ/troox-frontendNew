@@ -139,7 +139,7 @@ export const OnlineOrderingReceipt = () => {
           </div>
         </div>
       </div>
-      <div className=" flex items-center justify-center mt-[50px]">
+      <div className=" flex items-center justify-center mt-[50px] hidden">
         <div className=" flex items-center justify-center mt-[50px] space-x-4">
           <p
             className="bg-[#606060] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]"

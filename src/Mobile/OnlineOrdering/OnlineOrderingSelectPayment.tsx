@@ -78,9 +78,9 @@ export const OnlineOrderingSelectPayment = () => {
       );
       setLoading(false);
       console.log(response.data?.data?._id);
-      toast.success("Order has been Made successfully");
       navigate(`/demo/receipt/online_ordering/${response.data?.data?._id}`);
       dispatch(clearBasket());
+      toast.success("Order has been Made successfully");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
