@@ -217,7 +217,7 @@ const Tickets = () => {
 
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Open tables</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Open tickets</p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
                   <p className=" text-[14px] text-[#121212]">Date</p>
@@ -239,17 +239,17 @@ const Tickets = () => {
                     key={index}
                   >
                     <p className=" " onClick={handleTicketMenu}>
-                      {item.updatedAt.slice(0, 10)}
+                      {item.createdAt.slice(0, 10)}
                     </p>
                     <p className=" " onClick={handleTicketMenu}>
-                      {item.updatedAt.slice(11, 16)}
+                      {item.createdAt.slice(11, 16)}
                     </p>
-                    <p onClick={handleTicketMenu}>{item.menu_items[0].tableNumber || index}</p>
-                    {item.menu_items[0].tableNumber || `ord00${index + 1}`}
+                    <p onClick={handleTicketMenu}>{item.tableNumber || "-"}</p>
+                    <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
 
                     {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
-                    <p onClick={handleTicketMenu}>{item.customer || ""}</p>
+                    <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
@@ -303,7 +303,7 @@ const Tickets = () => {
               )}
 
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Closed tables</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Closed tickets</p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
                   <p className=" text-[14px] text-[#121212]">Date</p>
@@ -325,16 +325,14 @@ const Tickets = () => {
                     key={index}
                   >
                     <p className=" " onClick={handleTicketMenu}>
-                      {item.updatedAt.slice(0, 10)}
+                      {item.createdAt.slice(0, 10)}
                     </p>
                     <p className=" " onClick={handleTicketMenu}>
-                      {item.updatedAt.slice(11, 16)}
+                      {item.createdAt.slice(11, 16)}
                     </p>
-                    <p onClick={handleTicketMenu}>{item.menu_items[0].tableNumber || index}</p>
-                    <p onClick={handleTicketMenu}>
-                      {item.menu_items[0].tableNumber || `Ord00${index + 1}`}
-                    </p>
-                    <p onClick={handleTicketMenu}>{item.customer || ""}</p>
+                    <p onClick={handleTicketMenu}>{item.tableNumber || index}</p>
+                    <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
+                    <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
                     <p>{item.waiter || ""}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
