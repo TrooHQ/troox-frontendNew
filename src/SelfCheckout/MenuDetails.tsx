@@ -370,7 +370,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                     {menuModifiers.map((menu, index) => (
                       <div className="" key={index}>
                         <div className="">
-                          <p className="text-[#121212] mx-[49px] font-[500] text-[24px] pb-[16px] pt-[24px]">
+                          <p className="text-[#121212] mx-[49px] font-[500] text-[24px] pb-[16px] pt-[24px] capitalize">
                             {menu?.modifier_group_name}
                           </p>
                           <div className="mx-[49px] grid grid-cols-2 gap-[20px]">
