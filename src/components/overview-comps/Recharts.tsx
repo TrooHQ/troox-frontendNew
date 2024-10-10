@@ -31,7 +31,7 @@ const CustomLabel = () => (
   <div>
     <ArrowOutwardDownIcon />
     <span>
-      ₦25,678,572.89 <ArrowOutwardDownIcon />
+      ₦ 10,500,000 <ArrowOutwardDownIcon />
     </span>
   </div>
 );
@@ -54,11 +54,7 @@ const Recharts = () => {
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           {/* <XAxis dataKey="name" /> */}
           <XAxis dataKey="name">
-            <Label
-              content={<CustomLabel />}
-              position="insideBottomRight"
-              offset={10}
-            />{" "}
+            <Label content={<CustomLabel />} position="insideBottomRight" offset={10} />{" "}
           </XAxis>
           <YAxis
             orientation="left"
@@ -72,7 +68,7 @@ const Recharts = () => {
         </BarChart>
       </ResponsiveContainer>
       <div className="ml-[100px] flex justify-start items-center w-full mt-6 gap-2">
-        <h5>₦25,678,572.89</h5>
+        <h5>₦ 10,500,000</h5>
         <p className="text-red-500">-1.5%</p>
         <img src={ArrowDown} alt="arrow-down" />
       </div>
