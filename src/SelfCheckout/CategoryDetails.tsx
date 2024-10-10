@@ -199,7 +199,6 @@ export const CategoryDetails = () => {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
-  console.log(businessDetails);
   const business_identifier = businessDetails?._id;
 
   const branchId = useSelector((state: RootState) => state.business?.branchID);
@@ -217,7 +216,6 @@ export const CategoryDetails = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${business_identifier}&branch=${branchId}`,
         headers
       );
-      console.log("items Retrieved successfully:", response.data.data);
       setMenuItems(response.data.data);
     } catch (error) {
       console.error("Error Retrieving Items:", error);
@@ -228,7 +226,6 @@ export const CategoryDetails = () => {
     getItems();
   }, []);
 
-  console.log("Selected Group:", selectedGroup);
   return (
     <div className=" relative ">
       <div className="  ">

@@ -465,7 +465,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                                     />
                                     <div>
                                       {ids.find(
-                                        (item) => item.id === menuItemId
+                                        (item) => item.id === menu?._id
                                       ) ? (
                                         <div className="absolute bottom-2 right-2">
                                           <div className="flex items-center gap-[20px] p-[10px] rounded-[8px] bg-black">
@@ -476,7 +476,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                                             />
                                             <p className="text-[36px] text-[#ffffff] font-[500]">
                                               {ids.find(
-                                                (item) => item.id === menuItemId
+                                                (item) => item.id === menu?._id
                                               )?.quantity || 1}
                                             </p>
                                             <FaCirclePlus
