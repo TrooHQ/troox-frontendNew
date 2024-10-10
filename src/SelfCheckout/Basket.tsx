@@ -125,10 +125,12 @@ export const Basket = () => {
             >
               <div className=" flex  justify-between place-items-center text-start items-center">
                 <p
-                  className="text-[30px] text-[#121212] font-[500] max-w-[200px]"
+                  className="text-[20px] text-[#121212] font-[400] max-w-[200px]"
                   onClick={() => openModal(item?.id)}
                 >
-                  {item?.name}
+                  {item?.name?.length > 12
+                    ? `${item.name.slice(0, 10)}...`
+                    : item.name}
                 </p>
                 <div className="flex items-center gap-[20px]">
                   <img
@@ -173,14 +175,47 @@ export const Basket = () => {
                   {item.selectedOptions.map((option, optionIndex) => (
                     <div
                       key={optionIndex}
-                      className="flex items-center  justify-between gap-[20px]"
+                      className="flex  justify-between place-items-center text-start items-center"
                     >
-                      <p className="text-[20px] font-[500] text-[#606060]">
-                        {option.name}
+                      <p className="text-[20px] font-[500] text-[#606060] max-w-[200px]">
+                        {option?.name?.length > 12
+                          ? `${option.name.slice(0, 10)}...`
+                          : option.name}
                       </p>
-                      <p className="text-[20px] font-[500] text-[#606060]">
+                      <div className="flex items-center gap-[20px] opacity-0">
+                        <img
+                          src={Minus}
+                          alt=""
+                          onClick={() =>
+                            handleDecreaseQuantity(item.id, item.quantity)
+                          }
+                        />
+                        <p className="text-[30px] text-[#000000] font-[500] ">
+                          x{item?.quantity}
+                        </p>
+                        <img
+                          src={Add}
+                          alt=""
+                          onClick={() =>
+                            handleIncreaseQuantity(item.id, item.quantity)
+                          }
+                        />
+                      </div>
+                      <p className="text-[20px] font-[500] text-[#606060] ">
                         &#x20A6;
                         {(option.price * item.quantity).toLocaleString()}
+                      </p>
+
+                      <p
+                        className=" text-[50px] opacity-0 "
+                        onClick={() =>
+                          dispatch(removeItemFromBasket({ id: item.id }))
+                        }
+                        style={{
+                          color: color || "#FF0000",
+                        }}
+                      >
+                        <TiDelete />
                       </p>
                     </div>
                   ))}

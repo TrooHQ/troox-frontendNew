@@ -1,7 +1,10 @@
-import HeroImage from "./assets/selfCheckDisplayImg.png";
+// import HeroImage from "./assets/selfCheckDisplayImg.png";
 import Visa from "./assets/visa.png";
 import Mastercard from "./assets/mastercard.png";
 import Verve from "./assets/verve.png";
+import FastOrdering from "./assets/FastOrdering.png";
+import selfOrdering from "./assets/selfOrdering.png";
+import Queue from "./assets/Queue.png";
 import Header from "./Header";
 import CustomInput from "../Mobile/inputFields/CustomInput";
 
@@ -99,12 +102,10 @@ const BeginOrder = () => {
       {!isOpen && !isTableOpen && (
         <>
           <Header />
-          <div className="">
-            <img
-              src={HeroImage}
-              alt=""
-              className=" h-[50vh] w-full object-cover"
-            />
+          <div className=" animate-pulse">
+            <img src={FastOrdering} alt="" className="  w-full object-cover " />
+            <img src={selfOrdering} alt="" className="  w-full object-cover" />
+            <img src={Queue} alt="" className="  w-full object-cover" />
           </div>
 
           <div className=" mt-[10px] max-w-[574px] mx-auto">
@@ -115,7 +116,7 @@ const BeginOrder = () => {
             >
               START ORDER
             </p>
-            <div className=" flex items-center justify-between mt-[61px]">
+            <div className=" flex items-center justify-between mt-[61px] ">
               <img src={Mastercard} alt="" className=" w-[20%] " />
               <img src={Verve} alt="" className="w-[20%] " />
               <img src={Visa} alt="" className="w-[20%] " />
