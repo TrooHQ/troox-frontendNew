@@ -125,7 +125,7 @@ export const Basket = () => {
             >
               <div className=" flex  justify-between place-items-center text-start items-center">
                 <p
-                  className="text-[20px] text-[#121212] font-[400] max-w-[200px]"
+                  className="text-[25px] text-[#121212] font-[400] max-w-[200px]"
                   onClick={() => openModal(item?.id)}
                 >
                   {item?.name?.length > 12
