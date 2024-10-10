@@ -54,7 +54,7 @@ const BalanceComp: React.FC<HeaderProps> = ({ storeData }) => {
           </div>
           <div className="flex items-center justify-start gap-1">
             <img src={confirmation_number} alt="confirmation_number" />
-            <h6 className={clsx(styles.manage)}>485 Closed Tickets</h6>
+            <h6 className={clsx(styles.manage)}>500 Closed Tickets</h6>
           </div>
         </div>
       </div>

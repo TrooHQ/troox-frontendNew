@@ -18,7 +18,7 @@ export const storeData = {
   name: "Chicken Republic",
   address: "No 1, Kanta Street, Lagos",
   phoneNo: "0817 8901 234",
-  availableBalance: "₦ 35,688,000.85",
+  availableBalance: "₦ 10,500,000",
   noOfWarehouses: "450",
   noOfProducts: "12,450",
   noOfTransactions: "N2.25M",
