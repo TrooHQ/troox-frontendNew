@@ -442,9 +442,9 @@ const MenuList = () => {
                                   color="default"
                                 >
                                   {toggleStates[item._id] ? (
-                                    <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
-                                  ) : (
                                     <ToggleOffIcon style={{ fontSize: "40px" }} />
+                                  ) : (
+                                    <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
                                   )}
                                 </IconButton>
                               </Tooltip>
@@ -455,7 +455,7 @@ const MenuList = () => {
                                   "w-full"
                                 )}
                               >
-                                {toggleStates[item._id] ? "Unfreeze" : "Item frozen"}
+                                {toggleStates[item._id] ? "Freeze" : "Unfreeze"}
                               </span>
                             </MenuItem>
 
