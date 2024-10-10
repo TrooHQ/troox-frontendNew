@@ -89,8 +89,11 @@ const PaymentScreen = () => {
       setLoading(false);
       console.log(response.data);
       dispatch(clearBasket());
-      window.location.href = `${url}`;
+      localStorage.clear();
       toast.success("Order has been Made successfully");
+      setTimeout(() => {
+        window.location.href = `${url}`;
+      }, 1000);
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
