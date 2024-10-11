@@ -35,7 +35,7 @@ const SalesActivities = () => {
         icon: ArrowDown,
         title: "Gross Profit",
         time: "12:45 PM",
-        amount: "₦ 5,250,000",
+        amount: "₦ 8,250,000",
         statusIcon: ArrowDown,
         status: "10% from yesterday",
       },
