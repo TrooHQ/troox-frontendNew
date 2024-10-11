@@ -454,6 +454,7 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                                       {menu?.menu_item_name}
                                     </p>
                                     <p className="text-[28px] text-[#606060]">
+                                      &#x20A6;
                                       {menu.menu_item_price?.toLocaleString()}
                                     </p>
                                   </div>
