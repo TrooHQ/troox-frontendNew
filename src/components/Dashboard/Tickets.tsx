@@ -254,7 +254,7 @@ const Tickets = () => {
                         ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
                         : ""}
                     </p>
-                    <p>{item.waiter || ""}</p>
+                    <p>{item.waiter || "-"}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
                       {item.status?.toLowerCase() === "cancelled" && (
@@ -337,7 +337,7 @@ const Tickets = () => {
                     <p onClick={handleTicketMenu}>{item.tableNumber || index}</p>
                     <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
                     <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
-                    <p>{item.waiter || ""}</p>
+                    <p>{item.waiter || "-"}</p>
                     <p>{item.channel || ""}</p>
                     <div className="flex items-center justify-center gap-[10px]">
                       <img src={green} alt="" className="w-[12px] h-[12px]" />
