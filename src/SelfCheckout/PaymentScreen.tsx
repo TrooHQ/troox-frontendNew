@@ -16,11 +16,6 @@ const PaymentScreen = () => {
   const basketDetails = useSelector((state: RootState) => state.basket);
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
-  const details = useSelector((state: RootState) => state);
-  console.log(details);
-  const url = sessionStorage.getItem("url");
-  console.log(url);
-
   const business = useSelector((state: RootState) => state.business);
   console.log(business?.businessDetails?._id);
 
@@ -87,13 +82,12 @@ const PaymentScreen = () => {
         payload
       );
       setLoading(false);
-      console.log(response.data);
+      console.log(response.data?.data?.orderID);
+      sessionStorage.setItem("orderId", response.data?.data?.orderID);
       dispatch(clearBasket());
       localStorage.clear();
       toast.success("Order has been Made successfully");
-      setTimeout(() => {
-        window.location.href = `${url}`;
-      }, 1000);
+      navigate(`/demo/success/selfcheckout`);
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {

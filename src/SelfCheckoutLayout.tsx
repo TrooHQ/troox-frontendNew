@@ -9,6 +9,7 @@ import Menu from "./SelfCheckout/Menu";
 import { CategoryDetails } from "./SelfCheckout/CategoryDetails";
 import { Basket } from "./SelfCheckout/Basket";
 import PaymentScreen from "./SelfCheckout/PaymentScreen";
+import SuccessPage from "./SelfCheckout/SuccessPage";
 
 const SelfCheckoutLayout = () => {
   return (
@@ -32,6 +33,8 @@ const SelfCheckoutLayout = () => {
             path="/demo/payment/selfcheckout"
             element={<PaymentScreen />}
           />
+
+          <Route path="/demo/success/selfcheckout" element={<SuccessPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
