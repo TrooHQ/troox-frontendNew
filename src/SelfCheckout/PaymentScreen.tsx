@@ -78,12 +78,17 @@ const PaymentScreen = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        `${SERVER_DOMAIN}/order/uploadBranchUserOrder`,
         payload
       );
       setLoading(false);
       console.log(response.data?.data?.orderID);
       sessionStorage.setItem("orderId", response.data?.data?.orderID);
+      sessionStorage.setItem(
+        "collection_number",
+        response.data?.data?.collection_number
+      );
+
       dispatch(clearBasket());
       localStorage.clear();
       toast.success("Order has been Made successfully");
