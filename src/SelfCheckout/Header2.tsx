@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import Logo from "./assets/llogo.svg";
 
 interface Header2Props {
   children?: ReactNode;
@@ -67,7 +68,7 @@ const Header2: React.FC<Header2Props> = ({
           </div>
           <div className="col-span-1 justify-self-center">
             <img
-              src={businessDetails?.business_logo}
+              src={Logo || businessDetails?.business_logo}
               alt="Logo"
               className="h-[150px] max-w-[150px] w-full object-cover"
             />
