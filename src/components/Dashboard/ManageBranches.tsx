@@ -159,17 +159,17 @@ const ManageBranches = () => {
                         branches.indexOf(branch) % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                       }`}
                     >
-                      <td className="text-base font-medium py-2 px-4">{branch.branch_name}</td>
-                      <td className="text-base font-medium py-2 px-4 break-words">
+                      <td className="text-base font-normal py-2 px-4">{branch.branch_name}</td>
+                      <td className="text-base font-normal py-2 px-4 break-words">
                         {branch.branch_address}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 break-words text-center">
+                      <td className="text-base font-normal py-2 px-4 break-words text-center">
                         {branch.branch_email}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 break-words text-center">
+                      <td className="text-base font-normal py-2 px-4 break-words text-center">
                         {branch.branch_phone_number}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 break-words text-center">
+                      <td className="text-base font-normal py-2 px-4 break-words text-center">
                         {branch.branch_email}
                       </td>
                       <td className="text-center">

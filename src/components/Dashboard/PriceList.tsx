@@ -4,7 +4,7 @@ import TopMenuNav from "./TopMenuNav";
 import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
 import SearchIcon from "../../assets/searchIcon.svg";
-import { fetchMenuItems } from "../../slices/menuSlice";
+import { fetchMenuItems2 } from "../../slices/menuSlice";
 import Publish from "../../assets/publish.svg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const PriceList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { menuItems, loading } = useSelector((state: any) => state.menu);
+  const { menuItems2: menuItems, loading } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   // New states for handling price edits
@@ -26,7 +26,7 @@ const PriceList = () => {
   const token = userDetails?.userData?.token;
 
   useEffect(() => {
-    dispatch(fetchMenuItems({ branch_id: selectedBranch?.id }));
+    dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id }));
   }, [dispatch, selectedBranch]);
 
   // Handle the edit button click
@@ -68,7 +68,7 @@ const PriceList = () => {
     setIsSubmitting(true);
     try {
       await axios.put(`${SERVER_DOMAIN}/menu/editMenuItem`, payload, headers);
-      dispatch(fetchMenuItems({ branch_id: selectedBranch?.id })); // Refetch menu items after editing
+      dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id })); // Refetch menu items after editing
       setEditMode(null); // Exit edit mode
     } catch (error) {
       console.error("Error editing price:", error);
@@ -137,13 +137,13 @@ const PriceList = () => {
                           key={item._id}
                           className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
                         >
-                          <td className="text-base font-medium py-2 px-4">
+                          <td className="text-base font-normal py-2 px-4">
                             {item.menu_group_name}
                           </td>
-                          <td className="text-base font-medium py-2 px-4">{item.menu_item_name}</td>
+                          <td className="text-base font-normal py-2 px-4">{item.menu_item_name}</td>
 
                           {/* Conditional rendering for editing price */}
-                          <td className="text-base font-medium text-center py-2 px-4 break-words">
+                          <td className="text-base font-normal text-center py-2 px-4 break-words">
                             {editMode === item._id ? (
                               <input
                                 type="number"
