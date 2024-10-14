@@ -118,7 +118,7 @@ export const Basket = () => {
         <div className=" shadow-xl shadow-[#E7E7E7] border border-[#E7E7E7] my-[40px]  max-w-[960px] mx-[5%] rounded-[10px]">
           {backetDetails?.items.map((item, index) => (
             <div
-              className={`border-[#E7E7E7] grid items-center px-[40px] py-[36px] ${
+              className={`border-[#E7E7E7] grid items-center mb-[10px]  px-[40px] py-[36px]  ${
                 index % 2 === 0 ? "bg-[#f0f0f0]" : ""
               }`}
               key={index}
@@ -132,7 +132,7 @@ export const Basket = () => {
                     ? `${item.name.slice(0, 10)}...`
                     : item.name}
                 </p>
-                <div className="flex items-center gap-[20px]">
+                <div className="flex items-center gap-[20px] max-w-[100px] ">
                   <img
                     src={Minus}
                     alt=""
@@ -151,11 +151,11 @@ export const Basket = () => {
                     }
                   />
                 </div>
-                <p className="text-[25px] text-[#000000] font-[500]">
+                <p className="text-[25px] text-[#000000] font-[500] max-w-[100px]">
                   &#x20A6;{item.menuItem?.menu_item_price.toLocaleString()}
                 </p>
                 <p
-                  className=" text-[50px] "
+                  className=" text-[50px] max-w-[100px]"
                   onClick={() =>
                     dispatch(removeItemFromBasket({ id: item.id }))
                   }
@@ -177,12 +177,12 @@ export const Basket = () => {
                       key={optionIndex}
                       className="flex  justify-between place-items-center text-start items-center"
                     >
-                      <p className="text-[20px] font-[500] text-[#606060] max-w-[200px]">
+                      <p className="text-[20px] font-[500] text-[#606060] max-w-[200px] w-full ">
                         {option?.name?.length > 12
                           ? `${option.name.slice(0, 10)}...`
                           : option.name}
                       </p>
-                      <div className="flex items-center gap-[20px] opacity-0">
+                      <div className="flex items-center gap-[20px] max-w-[100px] w-full opacity-0">
                         <img
                           src={Minus}
                           alt=""
@@ -201,13 +201,13 @@ export const Basket = () => {
                           }
                         />
                       </div>
-                      <p className="text-[20px] font-[500] text-[#606060] ">
+                      <p className="text-[20px] font-[500] text-[#606060] max-w-[100px] w-full text-center">
                         &#x20A6;
                         {(option.price * item.quantity).toLocaleString()}
                       </p>
 
                       <p
-                        className=" text-[50px] opacity-0 "
+                        className=" text-[50px] opacity-0 max-w-[100px] w-full"
                         onClick={() =>
                           dispatch(removeItemFromBasket({ id: item.id }))
                         }

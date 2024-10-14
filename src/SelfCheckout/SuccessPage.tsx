@@ -31,7 +31,7 @@ const SuccessPage = () => {
 
         <div className=" space-y-[50px]">
           <p className="text-[30px] font-[500]">
-            Your Collection Number is:
+            Your Queue Number is:
             <span
               className=" font-bold"
               style={{
