@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   Label,
 } from "recharts";
 import ArrowDown from "../../assets/ArrowDown.svg";
