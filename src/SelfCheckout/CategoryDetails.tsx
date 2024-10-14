@@ -443,7 +443,7 @@ export const CategoryDetails = () => {
               <div className="flex items-center gap-[16px] text-[44px] font-[500] text-white">
                 <p>
                   Total &#x20A6;
-                  {totalCount.totalPrice?.toLocaleString() || 0.0}
+                  {totalCount.totalPrice?.toFixed(2) || 0.0}
                 </p>
               </div>
               <Link to="/demo/basket/selfcheckout">

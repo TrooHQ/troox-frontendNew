@@ -358,13 +358,13 @@ const MenuDetailsModal: React.FC<MenuDetailsModalProps> = ({
                     </div>
                   </div>
 
-                  {menuModifiers.length > 0 && (
+                  {/* {menuModifiers.length > 0 && (
                     <div>
                       <p className="text-[#121212] mx-[49px] font-[500] text-[24px] pb-[16px] pt-[24px]">
                         Side Options
                       </p>
                     </div>
-                  )}
+                  )} */}
 
                   <>
                     {menuModifiers.map((menu, index) => (

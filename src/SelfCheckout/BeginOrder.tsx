@@ -1,11 +1,7 @@
-// import HeroImage from "./assets/selfCheckDisplayImg.png";
+import HeroImage from "./assets/banner.png";
 import Visa from "./assets/visa.png";
 import Mastercard from "./assets/mastercard.png";
 import Verve from "./assets/verve.png";
-import FastOrdering from "./assets/fast-food value.svg";
-import selfOrdering from "./assets/self order-food.svg";
-import Queue from "./assets/queue.svg";
-import Header from "./Header";
 import CustomInput from "../Mobile/inputFields/CustomInput";
 
 import { useEffect, useState } from "react";
@@ -101,27 +97,9 @@ const BeginOrder = () => {
     <div>
       {!isOpen && !isTableOpen && (
         <>
-          <Header />
-          <div className="animate-pulse">
-            <div className=" space-y-[24px] text-center grid items-center place-items-center py-[30px] bg-[#F4F4F4]">
-              <img src={selfOrdering} alt="" className=" w-[80px]" />
-              <p className=" font-[500] text-[35px] text-[#000000]">
-                Self - Ordering
-              </p>
-            </div>
-            <div className=" space-y-[24px] text-center grid items-center place-items-center py-[30px] bg-[#ffffff]">
-              <img src={FastOrdering} alt="" className=" w-[80px]" />
-              <p className=" font-[500] text-[35px] text-[#000000]">
-                Fast - Ordering
-              </p>
-            </div>
-
-            <div className=" space-y-[24px] text-center grid items-center place-items-center py-[30px] bg-[#F4F4F4]">
-              <img src={Queue} alt="" className=" w-[80px]" />
-              <p className=" font-[500] text-[35px] text-[#000000]">
-                Skip The Queue
-              </p>
-            </div>
+          {/* <Header /> */}
+          <div className=" w-full h-full">
+            <img src={HeroImage} alt="" className=" h-full object-cover " />
           </div>
 
           <div className=" mt-[10px] max-w-[574px] mx-auto">
