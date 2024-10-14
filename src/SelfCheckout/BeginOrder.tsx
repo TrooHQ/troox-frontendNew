@@ -2,10 +2,6 @@ import HeroImage from "./assets/banner.png";
 import Visa from "./assets/visa.png";
 import Mastercard from "./assets/mastercard.png";
 import Verve from "./assets/verve.png";
-import FastOrdering from "./assets/fast-food value.svg";
-import selfOrdering from "./assets/self order-food.svg";
-import Queue from "./assets/queue.svg";
-import Header from "./Header";
 import CustomInput from "../Mobile/inputFields/CustomInput";
 
 import { useEffect, useState } from "react";
