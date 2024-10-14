@@ -349,9 +349,7 @@ export default function InformationAccordion() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium text-blackish">
-            Business Information
-          </div>
+          <div className="flex gap-3 font-base text-normal text-blackish">Business Information</div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("businessInfo", [
@@ -432,9 +430,7 @@ export default function InformationAccordion() {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium text-blackish">
-            Personal Information
-          </div>
+          <div className="flex gap-3 font-base text-normal text-blackish">Personal Information</div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("personalInfo", [
@@ -454,9 +450,7 @@ export default function InformationAccordion() {
           aria-controls="panel3-content"
           id="panel3-header"
         >
-          <div className="flex gap-3 sm:text-lg md:text-[22px] font-medium text-blackish">
-            Bank Information
-          </div>
+          <div className="flex gap-3 font-base text-normal text-blackish">Bank Information</div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("payoutBankDetails", [

@@ -233,7 +233,7 @@ const Tickets = () => {
                 </div>
                 {data.map((item, index) => (
                   <div
-                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-[500] text-[14px] text-[#414141] ${
+                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-normal text-[#414141] ${
                       index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                     }`}
                     key={index}
@@ -323,7 +323,7 @@ const Tickets = () => {
                 </div>
                 {closedData.map((item, index) => (
                   <div
-                    className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-[500] text-[14px] text-[#414141] ${
+                    className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${
                       index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                     }`}
                     key={index}

@@ -59,7 +59,7 @@ const Recharts = () => {
           <YAxis
             orientation="left"
             stroke="#494953"
-            label={{ value: "Quantity", angle: -90, position: "insideLeft" }}
+            // label={{ value: "Quantity", angle: -90, position: "insideLeft" }}
           />
           <YAxis orientation="right" stroke="#5855B3" />
           <Tooltip />
