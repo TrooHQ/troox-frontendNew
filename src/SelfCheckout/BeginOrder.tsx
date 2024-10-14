@@ -112,7 +112,7 @@ const BeginOrder = () => {
             <div className=" space-y-[24px] text-center grid items-center place-items-center py-[30px] bg-[#ffffff]">
               <img src={FastOrdering} alt="" className=" w-[80px]" />
               <p className=" font-[500] text-[35px] text-[#000000]">
-                Fast - Ordering
+                Fast - Checkout
               </p>
             </div>
 
