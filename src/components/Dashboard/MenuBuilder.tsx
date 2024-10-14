@@ -582,7 +582,7 @@ const MenuBuilder = () => {
                                       <div className="">
                                         <p className="text-[12px] font-[400]">Item</p>
                                         <div key={itemIndex}>
-                                          <p className="leading-[24px] text-[16px] font-[500] capitalize">
+                                          <p className="leading-[24px] text-[16px] font-normal capitalize">
                                             {item.name}
                                           </p>
                                           {/* <p className="text-[12px] font-[400]">Modifiers (6)</p> */}

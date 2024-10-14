@@ -18,7 +18,7 @@ import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
-import { fetchMenuItems } from "../../slices/menuSlice";
+import { fetchMenuItems2 } from "../../slices/menuSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
@@ -51,8 +51,8 @@ const MenuList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const branches = useSelector((state: any) => state.branches.branches);
-  const { menuItems, loading } = useSelector((state: any) => state.menu);
-
+  const { menuItems2: menuItems, loading } = useSelector((state: any) => state.menu);
+  console.log(menuItems, "pppppp");
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
@@ -227,7 +227,7 @@ const MenuList = () => {
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Deleted successfully");
-        dispatch(fetchMenuItems({ branch_id: viewingBranch?._id as any }));
+        dispatch(fetchMenuItems2({ branch_id: viewingBranch?._id as any }));
       } else {
         alert("Failed to delete modifier");
       }
@@ -254,7 +254,7 @@ const MenuList = () => {
 
   const handleViewMore = (branch: Branch) => {
     setViewingBranch(branch);
-    dispatch(fetchMenuItems({ branch_id: branch._id }));
+    dispatch(fetchMenuItems2({ branch_id: branch._id }));
   };
 
   const handleBackToBranches = () => {
@@ -299,13 +299,13 @@ const MenuList = () => {
                 <tbody>
                   {branches.map((branch: any) => (
                     <tr key={branch._id} className="bg-[#ffffff]">
-                      <td className="text-base font-medium py-2 px-4 text-start">
+                      <td className="text-base font-normal py-2 px-4 text-start">
                         {branch.branch_name}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 text-start">
+                      <td className="text-base font-normal py-2 px-4 text-start">
                         {branch.branch_email}
                       </td>
-                      <td className="text-base font-medium py-2 px-4 text-center">
+                      <td className="text-base font-normal py-2 px-4 text-center">
                         <button className="text-blue-500" onClick={() => handleViewMore(branch)}>
                           View more
                         </button>
@@ -373,8 +373,8 @@ const MenuList = () => {
                             : "bg-[#F8F8F8]"
                         }`}
                       >
-                        <td className="text-base font-medium py-2 px-4">{item.menu_group_name}</td>
-                        <td className="text-base font-medium py-2 px-4">
+                        <td className="text-base font-normal py-2 px-4">{item.menu_group_name}</td>
+                        <td className="text-base font-normal py-2 px-4">
                           <div className="flex items-center justify-start gap-1">
                             {toggleStates2[item._id] && (
                               <Tooltip title="This item is recommended." arrow>
@@ -402,10 +402,10 @@ const MenuList = () => {
                             )}
                           </div>
                         </td> */}
-                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        <td className="text-base font-normal text-center py-2 px-4 break-words">
                           &#8358;{parseFloat(item.menu_item_price).toLocaleString()}
                         </td>
-                        <td className="text-base font-medium text-center py-2 px-4 break-words">
+                        <td className="text-base font-normal text-center py-2 px-4 break-words">
                           <button className="text-blue-500" onClick={() => handleOpenModal(item)}>
                             See modifiers
                           </button>
