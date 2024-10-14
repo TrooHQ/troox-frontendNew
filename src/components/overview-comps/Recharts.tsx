@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   Label,
 } from "recharts";
 import ArrowDown from "../../assets/ArrowDown.svg";
@@ -59,11 +58,10 @@ const Recharts = () => {
           <YAxis
             orientation="left"
             stroke="#494953"
-            // label={{ value: "Quantity", angle: -90, position: "insideLeft" }}
+            label={{ value: "Quantity", angle: -90, position: "insideLeft" }}
           />
           <YAxis orientation="right" stroke="#5855B3" />
           <Tooltip />
-          <Legend />
           <Bar dataKey="Sales Revenue" fill="#5855B3" barSize={20} />{" "}
         </BarChart>
       </ResponsiveContainer>
