@@ -15,7 +15,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 interface MenuItem {
@@ -70,6 +70,26 @@ export const InRoomCategoryDetails = () => {
     },
     {}
   );
+
+  const groupNames = [
+    "All",
+    ...Array.from(
+      new Set(menuItems.map((menu) => menu.menu_group_name))
+    ).filter((groupName) => groupName !== undefined),
+  ];
+
+  const handleNextGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const nextIndex = (currentIndex + 1) % groupNames.length;
+    setSelectedGroup(groupNames[nextIndex]);
+  };
+
+  const handlePrevGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const prevIndex =
+      (currentIndex - 1 + groupNames.length) % groupNames.length;
+    setSelectedGroup(groupNames[prevIndex]);
+  };
 
   const ids = useSelector((state: RootState) => state.basket.items);
   const totalCount = useSelector((state: RootState) => state.basket);
@@ -184,6 +204,16 @@ export const InRoomCategoryDetails = () => {
       <div className="  ">
         <TopMenuNav />
         <div className="  mb-[100px]">
+          <div className="text-[16px] flex items-center gap-[20px] justify-end pt-[10px] px-[24px]">
+            <MdKeyboardArrowLeft
+              className=" cursor-pointer"
+              onClick={handlePrevGroupClick}
+            />
+            <MdKeyboardArrowRight
+              className=" cursor-pointer"
+              onClick={handleNextGroupClick}
+            />
+          </div>
           <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
             <p
               className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
