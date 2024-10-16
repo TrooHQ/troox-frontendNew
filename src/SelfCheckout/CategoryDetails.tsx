@@ -11,7 +11,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { RiArrowUpDoubleLine } from "react-icons/ri";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import Header2 from "./Header2";
 import TakeAway from "../SelfCheckout/assets/take-away.svg";
 import DineIn from "../SelfCheckout/assets/dinner-table.svg";
@@ -73,6 +73,25 @@ export const CategoryDetails = () => {
     },
     {}
   );
+
+  const groupNames = [
+    "All",
+    ...Array.from(
+      new Set(menuItems.map((menu) => menu.menu_group_name))
+    ).filter((groupName) => groupName !== undefined),
+  ];
+
+  const handleNextGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const nextIndex = (currentIndex + 1) % groupNames.length;
+    setSelectedGroup(groupNames[nextIndex]);
+  };
+  const handlePrevGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const prevIndex =
+      (currentIndex - 1 + groupNames.length) % groupNames.length;
+    setSelectedGroup(groupNames[prevIndex]);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMenuItemId, setSelectedMenuItemId] = useState("");
@@ -232,8 +251,15 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
-              <div className=" flex items-center justify-end px-[24px]">
-                <MdKeyboardArrowRight className=" text-[50px]" />
+              <div className="text-[50px] flex items-center gap-[20px] justify-end px-[24px]">
+                <MdKeyboardArrowLeft
+                  className=" cursor-pointer"
+                  onClick={handlePrevGroupClick}
+                />
+                <MdKeyboardArrowRight
+                  className=" cursor-pointer"
+                  onClick={handleNextGroupClick}
+                />
               </div>
               <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
                 <p
