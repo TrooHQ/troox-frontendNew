@@ -61,7 +61,9 @@ export const Basket = () => {
                       <Link to={`/demo/menu-details/${item.id}/orderandpay`}>
                         <p className="text-[16px] text-[#121212] font-[500] max-w-[100px] w-full">
                           <span className="pr-2">{item.quantity}x</span>
-                          {item.name}
+                          {item?.name?.length > 12
+                            ? `${item.name.slice(0, 8)}...`
+                            : item.name}
                         </p>
                       </Link>
                       <div className="flex items-center justify-center w-full max-w-[100px] ">
@@ -121,12 +123,13 @@ export const Basket = () => {
                           {item.selectedOptions.map((option, optionIndex) => (
                             <div
                               key={optionIndex}
-                              className="flex justify-between"
+                              className="flex items-start justify-between"
                             >
                               <p className="text-[14px] text-[#121212] font-[400]">
                                 {option.name}
                               </p>
-                              <p className="text-[14px] text-[#121212] font-[400]">
+
+                              <p className="text-[14px] text-[#121212] font-[400]  text-start w-[100px]">
                                 &#x20A6;
                                 {(
                                   option.price * item.quantity

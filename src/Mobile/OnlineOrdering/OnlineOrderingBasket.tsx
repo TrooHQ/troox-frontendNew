@@ -108,7 +108,9 @@ export const OnlineOrderingBasket = () => {
                       >
                         <p className="text-[16px] text-[#121212] font-[500] max-w-[100px] ">
                           <span className="pr-2">{item.quantity}x</span>
-                          {item.name}
+                          {item?.name?.length > 12
+                            ? `${item.name.slice(0, 8)}...`
+                            : item.name}
                         </p>
                       </Link>
                       <div className="flex items-center mr-[10px] max-w-[100px]">
@@ -167,12 +169,13 @@ export const OnlineOrderingBasket = () => {
                           {item.selectedOptions.map((option, optionIndex) => (
                             <div
                               key={optionIndex}
-                              className="flex justify-between"
+                              className="flex items-start justify-between"
                             >
                               <p className="text-[14px] text-[#121212] font-[400]">
                                 {option.name}
                               </p>
-                              <p className="text-[14px] text-[#121212] font-[400]">
+
+                              <p className="text-[14px] text-[#121212] font-[400]  text-start w-[100px]">
                                 &#x20A6;
                                 {(
                                   option.price * item.quantity
@@ -203,10 +206,10 @@ export const OnlineOrderingBasket = () => {
         )}
         {basketDetails?.items.length > 0 && (
           <div className="py-[16px] mx-[24px]">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between gap-[20px]">
               <p className="text-[16px] text-[#121212] font-[500]">Total:</p>
               <p
-                className="text-[16px] font-[500]"
+                className="text-[16px] font-[500] "
                 style={{
                   color: colorScheme || "#121212",
                 }}
