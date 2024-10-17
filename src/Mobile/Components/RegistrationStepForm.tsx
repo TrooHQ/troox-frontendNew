@@ -75,7 +75,6 @@ const RegistrationStepForm = () => {
   const business_Id = useSelector(
     (state: RootState) => state.user?.userData?.business_id
   );
-  console.log(business_Id);
 
   const location = useLocation();
 
@@ -302,6 +301,7 @@ const RegistrationStepForm = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/createAccountDetails`,
         {
+          business_id: business_Id,
           user_id: id,
           account_name: "account Name",
           account_number: accountNumber,

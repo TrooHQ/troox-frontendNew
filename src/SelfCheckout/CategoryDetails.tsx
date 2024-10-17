@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { SERVER_DOMAIN } from "../Api/Api";
 import axios from "axios";
@@ -53,8 +53,18 @@ export const CategoryDetails = () => {
   const [selectedGroup, setSelectedGroup] = useState("All");
   const [menuItems, setMenuItems] = useState<Details[]>([]);
 
-  const handleGroupClick = (groupName: string) => {
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const handleGroupClick = (groupName: string, index: number) => {
     setSelectedGroup(groupName);
+
+    if (groupRefs.current[index]) {
+      groupRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const filteredMenuItems =
@@ -74,23 +84,40 @@ export const CategoryDetails = () => {
     {}
   );
 
-  const groupNames = [
+  const groupNames: string[] = [
     "All",
     ...Array.from(
       new Set(menuItems.map((menu) => menu.menu_group_name))
-    ).filter((groupName) => groupName !== undefined),
+    ).filter((groupName): groupName is string => groupName !== undefined),
   ];
 
   const handleNextGroupClick = () => {
     const currentIndex = groupNames.indexOf(selectedGroup);
     const nextIndex = (currentIndex + 1) % groupNames.length;
     setSelectedGroup(groupNames[nextIndex]);
+
+    if (groupRefs.current[nextIndex]) {
+      groupRefs.current[nextIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
+
   const handlePrevGroupClick = () => {
     const currentIndex = groupNames.indexOf(selectedGroup);
     const prevIndex =
       (currentIndex - 1 + groupNames.length) % groupNames.length;
     setSelectedGroup(groupNames[prevIndex]);
+
+    if (groupRefs.current[prevIndex]) {
+      groupRefs.current[prevIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -251,7 +278,7 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
-              <div className="text-[50px] flex items-center gap-[20px] justify-end px-[24px]">
+              <div className="text-[50px] flex items-center gap-[20px] justify-between px-[24px]">
                 <MdKeyboardArrowLeft
                   className=" cursor-pointer"
                   onClick={handlePrevGroupClick}
@@ -261,11 +288,11 @@ export const CategoryDetails = () => {
                   onClick={handleNextGroupClick}
                 />
               </div>
-              <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
+              <div className="py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
                 <p
                   className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${
                     selectedGroup === "All"
-                      ? `font-[600] text-[#FFFFFF] border border-[#929292]`
+                      ? "font-[600] text-[#FFFFFF] border border-[#929292]"
                       : "text-[#606060] font-[400] border border-[#B6B6B6]"
                   }`}
                   style={{
@@ -274,7 +301,7 @@ export const CategoryDetails = () => {
                         ? color || "#929292"
                         : "transparent",
                   }}
-                  onClick={() => handleGroupClick("All")}
+                  onClick={() => handleGroupClick("All", 0)}
                 >
                   All
                 </p>
@@ -285,9 +312,16 @@ export const CategoryDetails = () => {
                   )
                     .filter((groupName) => groupName !== undefined)
                     .map((groupName, index) => (
-                      <div key={index}>
+                      <div
+                        key={index}
+                        ref={(el) => (groupRefs.current[index + 1] = el)}
+                      >
                         <p
-                          className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border text-[32px] border-[${color}]`}
+                          className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] border ${
+                            selectedGroup === groupName
+                              ? "font-[600] text-[#FFFFFF] border-[#929292]"
+                              : "text-[#606060] font-[400] border-[#B6B6B6]"
+                          }`}
                           style={{
                             backgroundColor:
                               selectedGroup === groupName
@@ -297,15 +331,8 @@ export const CategoryDetails = () => {
                               selectedGroup === groupName
                                 ? color || "#929292"
                                 : "#B6B6B6",
-                            color:
-                              selectedGroup === groupName
-                                ? "#FFFFFF"
-                                : "#606060",
-                            fontWeight:
-                              selectedGroup === groupName ? "bold" : "400",
-                            borderStyle: "solid",
                           }}
-                          onClick={() => handleGroupClick(groupName)}
+                          onClick={() => handleGroupClick(groupName, index + 1)}
                         >
                           {groupName}
                         </p>

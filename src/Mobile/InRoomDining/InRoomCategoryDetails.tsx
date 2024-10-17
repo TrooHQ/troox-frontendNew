@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TopMenuNav from "./InRoomTopMenuNav";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -50,9 +50,19 @@ export const InRoomCategoryDetails = () => {
 
   const [selectedGroup, setSelectedGroup] = useState("All");
 
-  const handleGroupClick = (groupName: string) => {
+  const handleGroupClick = (groupName: string, index: number) => {
     setSelectedGroup(groupName);
+
+    if (groupRefs.current[index]) {
+      groupRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
+
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const filteredMenuItems =
     selectedGroup === "All"
@@ -82,6 +92,14 @@ export const InRoomCategoryDetails = () => {
     const currentIndex = groupNames.indexOf(selectedGroup);
     const nextIndex = (currentIndex + 1) % groupNames.length;
     setSelectedGroup(groupNames[nextIndex]);
+
+    if (groupRefs.current[nextIndex]) {
+      groupRefs?.current[nextIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const handlePrevGroupClick = () => {
@@ -89,6 +107,14 @@ export const InRoomCategoryDetails = () => {
     const prevIndex =
       (currentIndex - 1 + groupNames.length) % groupNames.length;
     setSelectedGroup(groupNames[prevIndex]);
+
+    if (groupRefs.current[prevIndex]) {
+      groupRefs?.current[prevIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const ids = useSelector((state: RootState) => state.basket.items);
@@ -204,7 +230,7 @@ export const InRoomCategoryDetails = () => {
       <div className="  ">
         <TopMenuNav />
         <div className="  mb-[100px]">
-          <div className="text-[16px] flex items-center gap-[20px] justify-end pt-[10px] px-[24px]">
+          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px]">
             <MdKeyboardArrowLeft
               className=" cursor-pointer"
               onClick={handlePrevGroupClick}
@@ -227,7 +253,7 @@ export const InRoomCategoryDetails = () => {
                     ? colorScheme || "#929292"
                     : "transparent",
               }}
-              onClick={() => handleGroupClick("All")}
+              onClick={() => handleGroupClick("All", 0)}
             >
               All
             </p>
@@ -240,6 +266,7 @@ export const InRoomCategoryDetails = () => {
                 .map((groupName, index) => (
                   <div key={index}>
                     <p
+                      ref={(el) => (groupRefs.current[0] = el)}
                       className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[#929292]`}
                       style={{
                         backgroundColor:
@@ -254,7 +281,7 @@ export const InRoomCategoryDetails = () => {
                           selectedGroup === groupName ? "bold" : "400",
                         borderStyle: "solid",
                       }}
-                      onClick={() => handleGroupClick(groupName)}
+                      onClick={() => handleGroupClick(groupName, index + 1)}
                     >
                       {groupName}
                     </p>
