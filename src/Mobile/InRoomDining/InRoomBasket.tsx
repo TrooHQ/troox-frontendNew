@@ -121,12 +121,13 @@ export const InRoomBasket = () => {
                           {item.selectedOptions.map((option, optionIndex) => (
                             <div
                               key={optionIndex}
-                              className="flex justify-between"
+                              className="flex items-start justify-between"
                             >
                               <p className="text-[14px] text-[#121212] font-[400]">
                                 {option.name}
                               </p>
-                              <p className="text-[14px] text-[#121212] font-[400]">
+
+                              <p className="text-[14px] text-[#121212] font-[400]  text-start w-[100px]">
                                 &#x20A6;
                                 {(
                                   option.price * item.quantity
