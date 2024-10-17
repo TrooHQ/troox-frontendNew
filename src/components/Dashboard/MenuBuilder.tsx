@@ -4,12 +4,9 @@ import Add from "../../assets/add.svg";
 import CheckCircle from "../../assets/check_circle.svg";
 import Close from "../../assets/closeIcon.svg";
 import PublishIcon from "../../assets/publishIcon.svg";
-import AddWhite from "../../assets/addWhite.svg";
 import Publish from "../../assets/publish.svg";
-import chevron_right from "../../assets/chevron_right.svg";
 import activeArrow from "../../assets/activeArrow.svg";
 import { useEffect, useState } from "react";
-import CoffeeImg from "../../assets/coffeeImg.png";
 import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 import Modifiers from "./components/Modifiers";
@@ -25,10 +22,8 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
-
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Menu, MenuItem, IconButton } from "@mui/material";
-import { CancelOutlined, EditOutlined, MoreVert, VisibilityOutlined } from "@mui/icons-material";
+import { CancelOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
 import VisibilityOpen from "./VisibilityOpen";
 import EditOpen from "./EditOpen";
 import ConfirmationDialog from "./ConfirmationDialog";
@@ -549,6 +544,10 @@ const MenuBuilder = () => {
 
           <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
             <EditOpen setIsEditOpen={setIsEditOpen} />
+          </Modal>
+
+          <Modal isOpen={isCategoryEditOpen} onClose={() => setIsCategoryEditOpen(false)}>
+            <div>hi</div>
           </Modal>
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>
