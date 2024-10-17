@@ -4,7 +4,6 @@ import { CancelOutlined, EditOutlined, MoreVert, VisibilityOutlined } from "@mui
 import chevron_right from "../../../assets/chevron_right.svg";
 import activeArrow from "../../../assets/activeArrow.svg";
 import CoffeeImg from "../../../assets/coffeeImg.png";
-import { ReactElement, JSXElementConstructor, ReactNode, Key } from "react";
 
 interface Props {
   mgLoading: boolean;
