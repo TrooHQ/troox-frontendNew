@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TopMenuNav from "./OnlineOrderingTopMenuNav";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -49,8 +49,16 @@ export const OnlineOrderingCategoryDetails = () => {
   const [loading, setLoading] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("All");
 
-  const handleGroupClick = (groupName: string) => {
+  const handleGroupClick = (groupName: string, index: number) => {
     setSelectedGroup(groupName);
+
+    if (groupRefs.current[index]) {
+      groupRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const filteredMenuItems =
@@ -69,6 +77,7 @@ export const OnlineOrderingCategoryDetails = () => {
     },
     {}
   );
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const groupNames = [
     "All",
@@ -81,6 +90,14 @@ export const OnlineOrderingCategoryDetails = () => {
     const currentIndex = groupNames.indexOf(selectedGroup);
     const nextIndex = (currentIndex + 1) % groupNames.length;
     setSelectedGroup(groupNames[nextIndex]);
+
+    if (groupRefs.current[nextIndex]) {
+      groupRefs?.current[nextIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const handlePrevGroupClick = () => {
@@ -88,6 +105,14 @@ export const OnlineOrderingCategoryDetails = () => {
     const prevIndex =
       (currentIndex - 1 + groupNames.length) % groupNames.length;
     setSelectedGroup(groupNames[prevIndex]);
+
+    if (groupRefs.current[prevIndex]) {
+      groupRefs?.current[prevIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
   };
 
   const ids = useSelector((state: RootState) => state.basket.items);
@@ -206,7 +231,7 @@ export const OnlineOrderingCategoryDetails = () => {
         <TopMenuNav />
         <div className=" mb-[100px]">
           <div className=" bg-[#ffffff] pb-[20px]">
-            <div className="text-[16px] flex items-center gap-[20px] justify-end pt-[10px] px-[24px]">
+            <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px]">
               <MdKeyboardArrowLeft
                 className=" cursor-pointer"
                 onClick={handlePrevGroupClick}
@@ -216,8 +241,9 @@ export const OnlineOrderingCategoryDetails = () => {
                 onClick={handleNextGroupClick}
               />
             </div>
-            <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
+            <div className="py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
               <p
+                ref={(el) => (groupRefs.current[0] = el)}
                 className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
                   selectedGroup === "All"
                     ? `font-[600] text-[#FFFFFF] border border-[#929292]`
@@ -229,7 +255,7 @@ export const OnlineOrderingCategoryDetails = () => {
                       ? colorScheme || "#929292"
                       : "transparent",
                 }}
-                onClick={() => handleGroupClick("All")}
+                onClick={() => handleGroupClick("All", 0)}
               >
                 All
               </p>
@@ -240,8 +266,9 @@ export const OnlineOrderingCategoryDetails = () => {
                 )
                   .filter((groupName) => groupName !== undefined)
                   .map((groupName, index) => (
-                    <div key={index}>
+                    <div key={index + 1}>
                       <p
+                        ref={(el) => (groupRefs.current[index + 1] = el)}
                         className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
                         style={{
                           backgroundColor:
@@ -258,7 +285,7 @@ export const OnlineOrderingCategoryDetails = () => {
                             selectedGroup === groupName ? "bold" : "400",
                           borderStyle: "solid",
                         }}
-                        onClick={() => handleGroupClick(groupName)}
+                        onClick={() => handleGroupClick(groupName, index + 1)}
                       >
                         {groupName}
                       </p>
