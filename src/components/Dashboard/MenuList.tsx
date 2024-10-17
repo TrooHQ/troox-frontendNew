@@ -52,7 +52,7 @@ const MenuList = () => {
 
   const branches = useSelector((state: any) => state.branches.branches);
   const { menuItems2: menuItems, loading } = useSelector((state: any) => state.menu);
-  console.log(menuItems, "pppppp");
+
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
@@ -197,13 +197,14 @@ const MenuList = () => {
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifier/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch}`,
         headers
       );
 
       setFetchedModifiers(response.data.data || []);
-    } catch (error) {
-      toast.error("Failed to fetch modifiers.");
+    } catch (error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || "Failed to fetch modifiers.");
     } finally {
       setIsFetching(false);
     }
@@ -250,6 +251,7 @@ const MenuList = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedModifiers(null);
+    setFetchedModifiers([]);
   };
 
   const handleViewMore = (branch: Branch) => {
@@ -541,14 +543,25 @@ const MenuList = () => {
                   <div>
                     {/* <h3 className="font-semibold text-sm mb-2 text-[#414141]">Add-Ons:</h3> */}
                     <ul>
-                      {fetchedModifiers.map((modifier: any, index: any) => (
-                        <li key={index} className="flex justify-between">
-                          <span className="text-lg font-normal text-[#414141]">
-                            {modifier.modifier_name}
-                          </span>
-                          <span className="text-lg font-medium  text-[#414141]">
-                            &#8358; {parseFloat(modifier.modifier_price).toLocaleString()}
-                          </span>
+                      {fetchedModifiers.map((group: any, groupIndex: any) => (
+                        <li key={groupIndex} className="mb-4">
+                          {/* Display the Modifier Group Name */}
+                          <h3 className="text-xl font-bold text-[#414141]">
+                            {group.modifier_group_name}
+                          </h3>
+                          <ul className="ml-4">
+                            {/* Display the Modifiers under the group */}
+                            {group.modifiers.map((modifier: any, modifierIndex: any) => (
+                              <li key={modifierIndex} className="flex justify-between">
+                                <span className="text-lg font-normal text-[#414141]">
+                                  {modifier.modifier_name}
+                                </span>
+                                <span className="text-lg font-medium text-[#414141]">
+                                  &#8358; {parseFloat(modifier.modifier_price).toLocaleString()}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
                         </li>
                       ))}
                     </ul>

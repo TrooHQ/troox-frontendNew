@@ -110,9 +110,18 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     },
     {
       title: "Tickets",
-      gap: false,
       icon: TicketIcon,
       link: "/tickets",
+      subMenu: [
+        {
+          title: "Tickets",
+          link: "/tickets",
+        },
+        {
+          title: "Order history",
+          link: "/order-history",
+        },
+      ],
     },
     {
       title: "Menu",
