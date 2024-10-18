@@ -671,16 +671,6 @@ const MenuList = () => {
               </div>
             </div>
           </Modal>
-          // <div className="modal">
-          //   <h2>Edit Menu Item</h2>
-          //   <input
-          //     type="text"
-          //     value={newMenuName}
-          //     onChange={(e) => setNewMenuName(e.target.value)}
-          //   />
-          //   <button onClick={handleEditConfirm}>Confirm</button>
-          //   <button onClick={() => setEditModalOpen(false)}>Cancel</button>
-          // </div>
         )}
       </div>
 

@@ -32,6 +32,7 @@ import ConfirmSaveModal from "./MenuBuilderModals/ConfirmSaveModal";
 import AddMenuGroup from "./MenuBuilderModals/AddMenuGroup";
 import MenuGroup from "./MenuBuilderModals/MenuGroup";
 import AddMenuItem from "./MenuBuilderModals/AddMenuItem";
+import CustomInput from "../inputFields/CustomInput";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,7 +55,6 @@ const MenuBuilder = () => {
 
   const [isVisibilityOpen, setIsVisibilityOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isCategoryEditOpen, setIsCategoryEditOpen] = useState(false);
 
   const [groupName, setGroupName] = useState("");
   const [menuName, setMenuName] = useState("");
@@ -63,6 +63,64 @@ const MenuBuilder = () => {
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
   const [price, setPrice] = useState("");
   const [selectedMenuItem, setSelectedMenuItem] = useState<string | null>(null);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const [editCategoryModalOpen, setEditCategoryModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<{ id: string; oldName: string } | null>(
+    null
+  );
+  const [newCategoryName, setNewCategoryName] = useState<string>("");
+  const [newGroupName, setNewGroupName] = useState<string>("");
+  const [editingGroup, setEditingGroup] = useState<{ id: string; oldName: string } | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
+
+  const handleCategoryEdit = (category: any) => {
+    console.log("Edit category:", category);
+    setEditingCategory({ id: category._id, oldName: category.name });
+    setNewCategoryName(category.name); // Set initial value to the current name
+    setEditCategoryModalOpen(true);
+    setAnchorEl2(null);
+  };
+
+  const handleEditCategoryConfirm = async () => {
+    if (editingCategory) {
+      setEditLoading(true);
+      try {
+        const response = await axios.put(
+          `${SERVER_DOMAIN}/menu/editMenu`,
+          {
+            branch_id: selectedBranch?.id,
+            menu_type: "category",
+            old_name: editingCategory.oldName,
+            name: newCategoryName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          toast.success("Category updated successfully");
+          // Optionally refresh the list of categories
+          dispatch(fetchMenuCategories(selectedBranch.id));
+        }
+      } catch (error) {
+        console.error("Error editing category:", error);
+        toast.error("Failed to edit category.");
+      } finally {
+        setEditCategoryModalOpen(false);
+        setEditingCategory(null);
+        setNewCategoryName("");
+        setEditLoading(false);
+      }
+    }
+  };
 
   const handleMenuItemClick = (itemName: string) => {
     setSelectedMenuItem(itemName);
@@ -304,11 +362,6 @@ const MenuBuilder = () => {
     }
   };
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>, groupName: string) => {
     setAnchorEl(event.currentTarget);
     setSelectedGroup(groupName);
@@ -318,6 +371,8 @@ const MenuBuilder = () => {
     setAnchorEl2(event.currentTarget);
     setSelectedCategory(categoryName);
   };
+
+  console.log("Category name:", selectedCategory);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -333,16 +388,53 @@ const MenuBuilder = () => {
     setIsVisibilityOpen(true);
   };
 
-  const handleEdit = () => {
-    console.log("Edit group:", selectedGroup);
+  const handleEdit = (group: any) => {
+    console.log("Edit group:", selectedGroup, group);
     handleClose();
+    setEditingGroup({ id: group._id, oldName: group.name });
+    setNewGroupName(group.name);
     setIsEditOpen(true);
   };
 
-  const handleCategoryEdit = () => {
-    console.log("Edit group:", selectedCategory);
-    handleClose2();
-    setIsCategoryEditOpen(true);
+  const handleEditGroupConfirm = async () => {
+    if (editingGroup) {
+      setEditLoading(true);
+      try {
+        const response = await axios.put(
+          `${SERVER_DOMAIN}/menu/editMenu`,
+          {
+            branch_id: selectedBranch?.id,
+            menu_type: "group",
+            old_name: editingGroup.oldName,
+            name: newGroupName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          toast.success("Group updated successfully");
+          // Optionally refresh the list of groups
+          dispatch(
+            fetchMenuGroups({
+              branch_id: selectedBranch?.id,
+              menu_category_name: activeMainMenu,
+            })
+          );
+        }
+      } catch (error) {
+        console.error("Error editing group:", error);
+        toast.error("Failed to edit group.");
+      } finally {
+        setIsEditOpen(false);
+        setEditingGroup(null);
+        setNewGroupName("");
+        setEditLoading(false);
+      }
+    }
   };
 
   const [confirmationDialog, setConfirmationDialog] = useState({
@@ -424,11 +516,12 @@ const MenuBuilder = () => {
                 </button>
               </div>
             </div>
+
             <div className=" flex ">
               <div className="mt-[24px]">
                 <nav className="flex flex-col gap-[8px]">
                   {categories.map((category: any) => (
-                    <button
+                    <div
                       onClick={() => getSubmenu(category.name)}
                       key={category._id}
                       className={`${
@@ -440,7 +533,7 @@ const MenuBuilder = () => {
                         <IconButton
                           aria-controls="simple-menu"
                           aria-haspopup="true"
-                          onClick={(event) => handleClick2(event, category.name)}
+                          onClick={(event) => handleClick2(event, category)}
                         >
                           <MoreVert />
                         </IconButton>
@@ -453,7 +546,7 @@ const MenuBuilder = () => {
                         onClose={handleClose2}
                       >
                         <MenuItem
-                          onClick={handleCategoryEdit}
+                          onClick={() => handleCategoryEdit(selectedCategory)}
                           sx={{
                             display: "flex",
                             alignItems: "center",
@@ -468,7 +561,7 @@ const MenuBuilder = () => {
                           />
                           <span style={{ fontWeight: "300" }}>Edit</span>
                         </MenuItem>
-                        <MenuItem
+                        {/* <MenuItem
                           onClick={() => handleCategoryDeleteClick(category)}
                           sx={{
                             display: "flex",
@@ -483,12 +576,12 @@ const MenuBuilder = () => {
                             }}
                           />
                           <span style={{ fontWeight: "300" }}>Remove</span>
-                        </MenuItem>
+                        </MenuItem> */}
                       </Menu>
                       {activeMainMenu === category.name ? (
                         <img src={activeArrow} alt="activearrow" />
                       ) : null}
-                    </button>
+                    </div>
                   ))}
                 </nav>
               </div>
@@ -543,12 +636,65 @@ const MenuBuilder = () => {
           </Modal>
 
           <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)}>
-            <EditOpen setIsEditOpen={setIsEditOpen} />
+            {/* <EditOpen setIsEditOpen={setIsEditOpen} /> */}
+            <div className=" w-[539px] py-[32px] px-[52px]">
+              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">Edit Group Name</h2>
+              <CustomInput
+                type="text"
+                label=""
+                value={newGroupName}
+                error=""
+                onChange={(newValue) => setNewGroupName(newValue)}
+              />
+              <hr className="border my-[24px] border-[#E7E7E7]" />
+              <div className="flex items-center justify-end gap-4 mt-8">
+                <button
+                  onClick={handleEditGroupConfirm}
+                  className="bg-[#5855B3] text-white rounded-[6px] px-4 py-2"
+                >
+                  {editLoading ? "Loading..." : "Confirm"}
+                </button>
+                <button
+                  onClick={() => setIsEditOpen(false)}
+                  className="bg-[#F8F8F8] text-[#5855B3] rounded-[6px] px-4 py-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </Modal>
 
-          <Modal isOpen={isCategoryEditOpen} onClose={() => setIsCategoryEditOpen(false)}>
-            <div>hi</div>
+          {/* {editCategoryModalOpen && ( */}
+          <Modal isOpen={editCategoryModalOpen} onClose={() => setEditCategoryModalOpen(false)}>
+            <div className=" w-[539px] py-[32px] px-[52px]">
+              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">
+                Edit Category Name
+              </h2>
+              <CustomInput
+                type="text"
+                label=""
+                value={newCategoryName}
+                error=""
+                onChange={(newValue) => setNewCategoryName(newValue)}
+              />
+              <hr className="border my-[24px] border-[#E7E7E7]" />
+              <div className="flex items-center justify-end gap-4 mt-8">
+                <button
+                  onClick={handleEditCategoryConfirm}
+                  className="bg-[#5855B3] text-white rounded-[6px] px-4 py-2"
+                >
+                  {editLoading ? "Loading..." : "Confirm"}
+                </button>
+                <button
+                  onClick={() => setEditCategoryModalOpen(false)}
+                  className="bg-[#F8F8F8] text-[#5855B3] rounded-[6px] px-4 py-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </Modal>
+          {/* )} */}
 
           <Modal isOpen={successModal} onClose={() => setSuccessModal(false)}>
             <SuccessModal setSuccessModal={setSuccessModal} />

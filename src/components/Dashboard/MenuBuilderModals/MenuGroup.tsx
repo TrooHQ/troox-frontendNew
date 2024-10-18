@@ -15,7 +15,7 @@ interface Props {
   handleClick: (event: React.MouseEvent<HTMLElement>, name: string) => void;
   handleClose: () => void;
   handleMenuVisibility: () => void;
-  handleEdit: () => void;
+  handleEdit: (group: any) => void;
   handleDeleteClick: (group: any) => void;
   handleAddMenuGroup: () => void;
   menuItemLoading: boolean;
@@ -103,7 +103,7 @@ const MenuGroup: React.FC<Props> = ({
                         <span style={{ fontWeight: "300" }}>Menu Visibility</span>
                       </MenuItem>
                       <MenuItem
-                        onClick={handleEdit}
+                        onClick={() => handleEdit(group)}
                         sx={{
                           display: "flex",
                           alignItems: "center",
