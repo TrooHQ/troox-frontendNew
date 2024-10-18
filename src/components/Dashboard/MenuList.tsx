@@ -6,6 +6,7 @@ import {
   CheckCircleOutline,
   Close,
   DeleteForeverOutlined,
+  Edit,
   MoreVert,
 } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
@@ -22,6 +23,8 @@ import { fetchMenuItems2 } from "../../slices/menuSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
+import Modal from "../Modal";
+import CustomInput from "../inputFields/CustomInput";
 
 interface Modifier {
   name: string;
@@ -76,6 +79,11 @@ const MenuList = () => {
     id: null,
   });
 
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<{ id: string; oldName: string } | null>(null);
+  const [newMenuName, setNewMenuName] = useState<string>("");
+
+  // Delete function
   const handleDeleteClick = (item: any) => {
     console.log(item);
     setConfirmationDialog2({ open: true, item: item });
@@ -85,6 +93,51 @@ const MenuList = () => {
     if (confirmationDialog2.item) {
       await handleDeleteMenu(confirmationDialog2.item);
       setConfirmationDialog2({ open: false, item: "" });
+    }
+  };
+
+  // Edit function
+  const handleEditClick = (item: any) => {
+    setEditingItem({ id: item._id, oldName: item.menu_item_name });
+    setNewMenuName(item.menu_item_name); // Set initial value to the current name
+    setEditModalOpen(true);
+    setAnchorEl(null);
+  };
+
+  const [editLoading, setEditLoading] = useState(false);
+  const handleEditConfirm = async () => {
+    if (editingItem) {
+      try {
+        setEditLoading(true);
+        const response = await axios.put(
+          `${SERVER_DOMAIN}/menu/editMenu`,
+          {
+            branch_id: viewingBranch?._id,
+            menu_type: "item",
+            old_name: editingItem.oldName,
+            name: newMenuName,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          // Optionally refresh the list of menu items
+          toast.success("Menu item updated successfully");
+          dispatch(fetchMenuItems2({ branch_id: viewingBranch?._id as any }));
+        }
+      } catch (error) {
+        console.error("Error editing menu item:", error);
+        toast.error("Failed to edit menu item.");
+      } finally {
+        setEditModalOpen(false);
+        setEditingItem(null);
+        setNewMenuName("");
+        setEditLoading(false);
+      }
     }
   };
 
@@ -461,6 +514,21 @@ const MenuList = () => {
                               </span>
                             </MenuItem>
 
+                            {/* Edit */}
+                            <MenuItem
+                              sx={{ paddingLeft: "4px", paddingRight: "12px", width: "250px" }}
+                              onClick={() => handleEditClick(item)}
+                            >
+                              <div className="flex items-center justify-start w-full">
+                                <Tooltip title="Edit menu item" arrow>
+                                  <IconButton color="default">
+                                    <Edit />
+                                  </IconButton>
+                                </Tooltip>
+                                <span>Edit Menu</span>
+                              </div>
+                            </MenuItem>
+
                             {/* Delete */}
                             <MenuItem
                               sx={{ paddingLeft: "4px", paddingRight: "12px", width: "250px" }}
@@ -573,6 +641,46 @@ const MenuList = () => {
               <Close className="absolute top-3 right-3 cursor-pointer" onClick={handleCloseModal} />
             </div>
           </div>
+        )}
+
+        {editModalOpen && (
+          <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
+            <div className=" w-[539px] py-[32px] px-[52px]">
+              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">Edit Menu Item</h2>
+              <CustomInput
+                type="text"
+                label=""
+                value={newMenuName}
+                error=""
+                onChange={(newValue) => setNewMenuName(newValue)}
+              />
+              <hr className="border my-[24px] border-[#E7E7E7]" />
+              <div className="flex items-center justify-end gap-4 mt-8">
+                <button
+                  onClick={handleEditConfirm}
+                  className="bg-[#5855B3] text-white rounded-[6px] px-4 py-2"
+                >
+                  {editLoading ? "Loading..." : "Confirm"}
+                </button>
+                <button
+                  onClick={() => setEditModalOpen(false)}
+                  className="bg-[#F8F8F8] text-[#5855B3] rounded-[6px] px-4 py-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </Modal>
+          // <div className="modal">
+          //   <h2>Edit Menu Item</h2>
+          //   <input
+          //     type="text"
+          //     value={newMenuName}
+          //     onChange={(e) => setNewMenuName(e.target.value)}
+          //   />
+          //   <button onClick={handleEditConfirm}>Confirm</button>
+          //   <button onClick={() => setEditModalOpen(false)}>Cancel</button>
+          // </div>
         )}
       </div>
 
