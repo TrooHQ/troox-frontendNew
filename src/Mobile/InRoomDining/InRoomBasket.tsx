@@ -61,7 +61,9 @@ export const InRoomBasket = () => {
                       <Link to={`/demo/menu-details/${item.id}/in_room_dining`}>
                         <p className="text-[16px] text-[#121212] font-[500]">
                           <span className="pr-2">{item.quantity}x</span>
-                          {item.name}
+                          {item?.name?.length > 12
+                            ? `${item.name.slice(0, 8)}...`
+                            : item.name}
                         </p>
                       </Link>
                       <div className="flex items-center justify-center w-full max-w-[100px] ">
@@ -164,7 +166,7 @@ export const InRoomBasket = () => {
             <div className="flex items-center justify-between">
               <p className="text-[16px] text-[#121212] font-[500]">Total:</p>
               <p
-                className="text-[16px]  font-[500]"
+                className="text-[16px]  font-[500] w-[100px]"
                 style={{
                   color: colorScheme || "#121212",
                 }}
