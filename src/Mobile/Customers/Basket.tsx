@@ -166,7 +166,7 @@ export const Basket = () => {
             <div className="flex items-center justify-between">
               <p className="text-[16px] text-[#121212] font-[500]">Total:</p>
               <p
-                className="text-[16px]  font-[500]"
+                className="text-[16px]  font-[500] w-[100px]"
                 style={{
                   color: colorScheme || "#121212",
                 }}
