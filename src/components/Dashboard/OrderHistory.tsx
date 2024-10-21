@@ -220,8 +220,9 @@ const OrderHistory = () => {
                   <p className=" text-[14px] text-[#121212]">Date</p>
                   <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
+                  <p className=" text-[14px] text-[#121212]">Channel </p>
                   <p className=" text-[14px] text-[#121212]">Bill </p>
-                  <p className=" text-[14px] text-[#121212]">Actions </p>
+                  {/* <p className=" text-[14px] text-[#121212]">Actions </p> */}
                 </div>
                 {data.map((item, index) => (
                   <div
@@ -240,23 +241,14 @@ const OrderHistory = () => {
                       {item.createdAt.slice(11, 16)}
                     </p>
 
+                    <p>{item.channel}</p>
+
                     <p onClick={handleTicketMenu}>
                       {item.customer_name
                         ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
                         : ""}
                     </p>
                     <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                    <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                      <div
-                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                        onClick={() => toggleMenu(index)}
-                      >
-                        <img src={More} alt="More Options" className="w-[5px]" />
-                      </div>
-                      {activeMenuIndex === index && (
-                        <DropdownMenu handleVoidOrderMenu={() => handleVoidOrderMenu()} />
-                      )}
-                    </div>
                   </div>
                 ))}
               </div>

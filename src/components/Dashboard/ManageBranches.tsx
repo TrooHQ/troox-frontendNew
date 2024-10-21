@@ -103,7 +103,7 @@ const ManageBranches = () => {
   return (
     <div>
       <DashboardLayout>
-        <TopMenuNav pathName="Menu" />
+        <TopMenuNav pathName="Manage Branches" />
         <div className="">
           <div className="my-[40px]">
             <div className="flex items-center justify-between">
