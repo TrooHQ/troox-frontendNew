@@ -11,6 +11,7 @@ interface CustomInputProps {
   onChange: (value: string) => void;
   textSize?: string;
   labelSize?: string;
+  showLabel?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -22,6 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   onChange,
   textSize,
   labelSize,
+  showLabel = false,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -59,27 +61,30 @@ const CustomInput: React.FC<CustomInputProps> = ({
           onBlur={handleBlur}
           maxLength={maxLength}
           ref={inputRef}
+          placeholder={!showLabel ? label : ""}
           style={{
             borderColor: error ? "#FF0000" : undefined,
             outlineColor: color,
           }}
         />
-        <label
-          className={`absolute transition-all duration-300 cursor-text ${
-            labelSize ? labelSize : "text-[14px]"
-          } ${
-            isFocused
-              ? `-top-3 left-2 px-2`
-              : "top-2 left-4 text-grey200 text-[14px]"
-          } ${error ? "text-red-500" : ""}`}
-          onClick={handleLabelClick}
-          style={{
-            backgroundColor: isFocused ? "#EFEFEF" : "transparent",
-            color: isFocused ? "#000000" : color,
-          }}
-        >
-          {label}
-        </label>
+        {showLabel && (
+          <label
+            className={`absolute transition-all duration-300 cursor-text ${
+              labelSize ? labelSize : "text-[14px]"
+            } ${
+              isFocused
+                ? `-top-3 left-2 px-2`
+                : "top-2 left-4 text-grey200 text-[14px]"
+            } ${error ? "text-red-500" : ""}`}
+            onClick={handleLabelClick}
+            style={{
+              backgroundColor: isFocused ? "#EFEFEF" : "transparent",
+              color: isFocused ? "#000000" : color,
+            }}
+          >
+            {label}
+          </label>
+        )}
       </div>
       {error && <p className="text-red-500 mt-1">{error}</p>}
     </div>
