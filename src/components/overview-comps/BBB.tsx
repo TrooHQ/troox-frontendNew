@@ -42,13 +42,7 @@ const BBB = () => {
   const CustomBarShape = (props: any) => {
     const { x, y, width, height, index } = props;
     return (
-      <Rectangle
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={colors[index % colors.length]}
-      />
+      <Rectangle x={x} y={y} width={width} height={height} fill={colors[index % colors.length]} />
     );
   };
 
@@ -69,13 +63,12 @@ const BBB = () => {
             />
             <YAxis stroke="#000" />
             <Tooltip />
-            <Bar dataKey="value" shape={CustomBarShape} barSize={30} />{" "}
-            {/* Adjust bar size */}
+            <Bar dataKey="value" shape={CustomBarShape} barSize={30} /> {/* Adjust bar size */}
           </BarChart>
         </ResponsiveContainer>
       </div>
       <div className="ml-[80px] flex justify-start items-center w-full mt-6 gap-2">
-        <h5>₦25,678,572.89</h5>
+        <h5>₦ 10,500,000</h5>
         <p className="text-red-500">-1.5%</p>
         <img src={ArrowDown} alt="arrow-down" />
       </div>

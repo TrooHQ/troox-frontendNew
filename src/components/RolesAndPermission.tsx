@@ -129,43 +129,28 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     const isChecked = event.target.checked;
     if (category === "general") {
       setGrantGeneralAccess(isChecked);
-      setCheckedGeneral(
-        isChecked ? generalLabels.map((label) => label.label) : []
-      );
+      setCheckedGeneral(isChecked ? generalLabels.map((label) => label.label) : []);
     } else if (category === "inventory") {
       setGrantInventoryAccess(isChecked);
-      setCheckedInventory(
-        isChecked ? inventoryLabels.map((label) => label.label) : []
-      );
+      setCheckedInventory(isChecked ? inventoryLabels.map((label) => label.label) : []);
     } else if (category === "ticket") {
       setGrantTicketAccess(isChecked);
-      setCheckedTickets(
-        isChecked ? ticketLabels.map((label) => label.label) : []
-      );
+      setCheckedTickets(isChecked ? ticketLabels.map((label) => label.label) : []);
     }
   };
 
-  const handleCheckboxChange = (
-    label: string,
-    category: "general" | "inventory" | "ticket"
-  ) => {
+  const handleCheckboxChange = (label: string, category: "general" | "inventory" | "ticket") => {
     if (category === "general") {
       setCheckedGeneral((prev: any) =>
-        prev.includes(label)
-          ? prev.filter((item: any) => item !== label)
-          : [...prev, label]
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
       );
     } else if (category === "inventory") {
       setCheckedInventory((prev: any) =>
-        prev.includes(label)
-          ? prev.filter((item: any) => item !== label)
-          : [...prev, label]
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
       );
     } else if (category === "ticket") {
       setCheckedTickets((prev: any) =>
-        prev.includes(label)
-          ? prev.filter((item: any) => item !== label)
-          : [...prev, label]
+        prev.includes(label) ? prev.filter((item: any) => item !== label) : [...prev, label]
       );
     }
   };
@@ -183,11 +168,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   }, [checkedTickets]);
 
   useEffect(() => {
-    const allCheckedLabels = [
-      ...checkedGeneral,
-      ...checkedInventory,
-      ...checkedTickets,
-    ];
+    const allCheckedLabels = [...checkedGeneral, ...checkedInventory, ...checkedTickets];
     const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
     setSelectedPermissions(uniqueCheckedLabels);
   }, [checkedGeneral, checkedInventory, checkedTickets]);
@@ -198,10 +179,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     category: "general" | "inventory" | "ticket"
   ) =>
     labels.map((item, index) => (
-      <div
-        key={index}
-        className="flex flex-row-reverse justify-between items-center mb-6"
-      >
+      <div key={index} className="flex flex-row-reverse justify-between items-center mb-6">
         <input
           type="checkbox"
           id={`${item.id}${index}`}
@@ -209,29 +187,24 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
           checked={checkedState.includes(item.label)}
           onChange={() => handleCheckboxChange(item.label, category)}
         />
-        <label
-          htmlFor={`${item.id}${index}`}
-          className="text-[16px] font-[400] text-grey500"
-        >
+        <label htmlFor={`${item.id}${index}`} className="text-[16px] font-[400] text-grey500">
           {item.label}
         </label>
       </div>
     ));
 
   return (
-    <div className="grid gap-[24px]">
+    <div className="grid gap-[12px]">
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`bg-[#f8f8f8] border border-[#f8f8f8] focus:outline-[#5955B3] w-full rounded`}
+          className={`bg-[#ebebeb] border border-[#f8f8f8] focus:outline-[#5955B3] w-full rounded`}
         >
           <div
             onClick={() => toggleAnswer(index)}
             className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
           >
-            <p className="text-purple500 font-[500] text-[14px] lg:text-[16px]">
-              {faq.question}
-            </p>
+            <p className="text-purple500 font-[500] text-[14px] lg:text-[16px]">{faq.question}</p>
             <div className="flex items-center">
               <img
                 src={ArrowToggle2}
@@ -246,16 +219,26 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
             <div className="bg-white text-[#757575] text-[12px] lg:text-[18px] font-[300] py-[24px] px-[24px]">
               {index === 0 && (
                 <div className="flex flex-col">
-                  <Tooltip title="this option is for abc">
-                    <InfoOutlined className="cursor" />
+                  <Tooltip title="Level 1 users have the highest access across the system. They can manage all aspects of the business, including menus, branches, tickets, and user permissions across all locations.">
+                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                      <div className="text-purple500">
+                        <InfoOutlined className="cursor-pointer text-2xl" />
+                      </div>
+                      <div className="text-gray-700">
+                        <span className="font-semibold text-lg">Level 1 Access:</span>
+                        <p className="mt-1 text-sm leading-relaxed">
+                          Level 1 users have the highest access across the system. They can manage
+                          all aspects of the business, including menus, branches, tickets, and user
+                          permissions across all locations.
+                        </p>
+                      </div>
+                    </div>
                   </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={grantGeneralAccess}
-                        onChange={(e) =>
-                          handleMasterCheckboxChange(e, "general")
-                        }
+                        onChange={(e) => handleMasterCheckboxChange(e, "general")}
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },
@@ -273,16 +256,26 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
               )}
               {index === 1 && (
                 <div className="flex flex-col">
-                  <Tooltip title="this option is for abc">
-                    <InfoOutlined className="cursor" />
+                  <Tooltip title="Level 2 users manage their specific branch. They can handle menus, tickets, QR codes, and user roles within their branch, but cannot oversee other branches.">
+                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                      <div className="text-purple500">
+                        <InfoOutlined className="cursor-pointer text-2xl" />
+                      </div>
+                      <div className="text-gray-700">
+                        <span className="font-semibold text-lg">Level 2 Access:</span>
+                        <p className="mt-1 text-sm leading-relaxed">
+                          Level 2 users manage their specific branch. They can handle menus,
+                          tickets, QR codes, and user roles within their branch, but cannot oversee
+                          other branches.
+                        </p>
+                      </div>
+                    </div>
                   </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={grantInventoryAccess}
-                        onChange={(e) =>
-                          handleMasterCheckboxChange(e, "inventory")
-                        }
+                        onChange={(e) => handleMasterCheckboxChange(e, "inventory")}
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },
@@ -295,25 +288,33 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                       color: "#5955B3",
                     }}
                   />
-                  {renderCheckboxes(
-                    inventoryLabels,
-                    checkedInventory,
-                    "inventory"
-                  )}
+                  {renderCheckboxes(inventoryLabels, checkedInventory, "inventory")}
                 </div>
               )}
               {index === 2 && (
                 <div className="flex flex-col">
-                  <Tooltip title="this option is for abc">
-                    <InfoOutlined className="cursor" />
+                  <Tooltip title="Level 3 users have limited access, focusing on daily tasks such as handling tickets, tips, and orders. Their permissions are restricted to specific apps like Troo Till and Troo Waiter.">
+                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                      <div className="text-purple500">
+                        <InfoOutlined className="cursor-pointer text-2xl" />
+                      </div>
+                      <div className="text-gray-700">
+                        <span className="font-semibold text-lg">Level 3 Access:</span>
+                        <p className="mt-1 text-sm leading-relaxed">
+                          Level 3 users have limited access, focusing on daily tasks such as
+                          handling tickets, tips, and orders. Their permissions are restricted to
+                          specific apps like{" "}
+                          <span className="font-bold text-purple500">Troo Till</span> and{" "}
+                          <span className="font-bold text-purple500">Troo Waiter</span>.
+                        </p>
+                      </div>
+                    </div>
                   </Tooltip>{" "}
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={grantTicketAccess}
-                        onChange={(e) =>
-                          handleMasterCheckboxChange(e, "ticket")
-                        }
+                        onChange={(e) => handleMasterCheckboxChange(e, "ticket")}
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 32 },
                           "&.Mui-checked": { color: "#5955B3" },

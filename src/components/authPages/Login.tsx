@@ -40,6 +40,7 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
+      console.log(response, "qqqq");
       dispatch(setUserData(response.data));
       localStorage.setItem("token", response.data.token);
       const userType = response.data.user_role;

@@ -11,6 +11,7 @@ interface Branch {
   branch_email: string;
   branch_phone_number: string;
   branch_address: string;
+  label?: string;
 }
 
 interface BranchState {
@@ -145,6 +146,10 @@ const branchSlice = createSlice({
     userSelectedBranch: (state, action: PayloadAction<Branch>) => {
       state.selectedBranch = action.payload;
     },
+    clearSelectedBranch: (state) => {
+      state.selectedBranch = null;
+      state.branches = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -219,5 +224,5 @@ const branchSlice = createSlice({
   },
 });
 
-export const { resetBranchNotFound, userSelectedBranch } = branchSlice.actions;
+export const { resetBranchNotFound, userSelectedBranch, clearSelectedBranch } = branchSlice.actions;
 export default branchSlice.reducer;

@@ -41,6 +41,7 @@ import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx"
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
+import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
 
 export default function App() {
   return (
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="/menu-list" element={<MenuList />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
+          <Route path="/order-history" element={<OrderHistory />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
