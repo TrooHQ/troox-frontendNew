@@ -23,9 +23,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { convertToBase64 } from "../../utils/imageToBase64";
 import { Menu, MenuItem, IconButton } from "@mui/material";
-import { CancelOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
+import { EditOutlined, MoreVert } from "@mui/icons-material";
 import VisibilityOpen from "./VisibilityOpen";
-import EditOpen from "./EditOpen";
 import ConfirmationDialog from "./ConfirmationDialog";
 import SuccessModal from "./MenuBuilderModals/SuccessModal";
 import ConfirmSaveModal from "./MenuBuilderModals/ConfirmSaveModal";
@@ -448,11 +447,11 @@ const MenuBuilder = () => {
     handleClose();
   };
 
-  const handleCategoryDeleteClick = (item: any) => {
-    console.log("Remove category:", item);
-    setConfirmationDialog({ open: true, item: item });
-    handleClose2();
-  };
+  // const handleCategoryDeleteClick = (item: any) => {
+  //   console.log("Remove category:", item);
+  //   setConfirmationDialog({ open: true, item: item });
+  //   handleClose2();
+  // };
 
   const handleConfirmDelete = async () => {
     if (confirmationDialog.item) {

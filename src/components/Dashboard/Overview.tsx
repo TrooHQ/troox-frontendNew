@@ -109,7 +109,6 @@ const Overview: React.FC = () => {
             Hello,{" "}
             <h5 className="text-[#121212] text-[24px] font-medium">
               {userData?.business_name} {""}
-              {/* <span className="bg-[#5955B3] text-white px-2 rounded">{storeData.outlet}</span> */}
             </h5>
           </h3>
           <Button

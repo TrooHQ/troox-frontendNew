@@ -1,61 +1,26 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import More from "../../assets/more_vert.svg";
-import SearchIcon from "../../assets/searchIcon.svg";
-import Refresh from "../../assets/refresh.svg";
 import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
-import OpenTicketModal from "./ticketComponents/OpenTicketModal";
-import VacateTableModal from "./ticketComponents/VacateTableModal";
-import RefundMenu from "./ticketComponents/RefundMenu";
-import VoidOrderMenu from "./ticketComponents/VoidOrderMenu";
 import { useSelector } from "react-redux";
-import { DropdownMenu } from "./DropdownMenuOpenTickets";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { CalendarMonth } from "@mui/icons-material";
 
 const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
   console.log(selectedBranch);
-  const [voidOrderMenu, setVoidOrderMenu] = useState<boolean>(false);
-  const [refundMenu, setRefundMenu] = useState<boolean>(false);
-  const [vacateTableMenu, setVacateTableMenu] = useState<boolean>(false);
+
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [data, setData] = useState<any[]>([]);
-  const [closedData, setClosedData] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userDetails = useSelector((state: any) => state.user);
 
-  const [openInput, setOpenInput] = useState<boolean>(false);
-  const [refundType, setRefundType] = useState<string>("");
-  const [refundAmount, setRefundAmount] = useState<string>("");
-  const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
-  const [activeMenuIndex2, setActiveMenuIndex2] = useState<number | null>(null);
-
   const token = userDetails?.userData?.token;
 
-  const handleVoidOrderMenu = () => {
-    setVoidOrderMenu(!voidOrderMenu);
-  };
-  const handleRefundMenu = () => {
-    setRefundMenu(!refundMenu);
-  };
-  const handleVacateTableMenu = () => {
-    setVacateTableMenu(!vacateTableMenu);
-  };
   const handleTicketMenu = () => {
     setOpenTicket(!openTicket);
-  };
-
-  const toggleMenu = (index: number) => {
-    setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
-
-  const toggleMenu2 = (index: number) => {
-    setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
   };
 
   const getTickets = async () => {
@@ -66,91 +31,21 @@ const OrderHistory = () => {
       },
     };
     try {
-      setIsLoading(true);
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getOrderByBranch/?branch_id=${selectedBranch.id}`,
         headers
       );
       console.log(response.data);
       setData(response.data);
-      toast.success(response.data.message || "Successful");
+      // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     getTickets();
   }, [selectedBranch]);
-
-  const handleVoidOrder = async () => {
-    if (activeMenuIndex === null) {
-      toast.error("No active menu selected");
-      return;
-    }
-
-    console.log(data[activeMenuIndex], "pppp");
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/order/updateBranchOrder/`,
-        {
-          branch_id: selectedBranch.id,
-          order_id: data[activeMenuIndex]._id,
-          status: "cancel",
-        },
-        headers
-      );
-      console.log(response.data);
-      getTickets();
-      setVoidOrderMenu(false);
-      setActiveMenuIndex(null);
-      toast.success(response.data.message || "Successful");
-    } catch (error) {
-      toast.error("Error voiding order");
-    }
-  };
-
-  const handleVoidOrder2 = async () => {
-    if (activeMenuIndex2 === null) {
-      toast.error("No active menu selected");
-      return;
-    }
-
-    console.log(data[activeMenuIndex2], "pppp");
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/order/updateBranchOrder/`,
-        {
-          branch_id: selectedBranch.id,
-          order_id: data[activeMenuIndex2]._id,
-          status: "cancel",
-        },
-        headers
-      );
-      console.log(response.data);
-      getTickets();
-      setVoidOrderMenu(false);
-      toast.success(response.data.message || "Successful");
-    } catch (error) {
-      toast.error("Error voiding order");
-    }
-  };
 
   const handleRefresh = () => {
     getTickets();
@@ -252,47 +147,6 @@ const OrderHistory = () => {
                   </div>
                 ))}
               </div>
-
-              {activeMenuIndex !== null ? (
-                <VoidOrderMenu
-                  voidOrderMenu={voidOrderMenu}
-                  handleVoidOrderMenu={handleVoidOrderMenu}
-                  setVoidOrderMenu={setVoidOrderMenu}
-                  handleVoidOrder={handleVoidOrder}
-                />
-              ) : (
-                <VoidOrderMenu
-                  voidOrderMenu={voidOrderMenu}
-                  handleVoidOrderMenu={handleVoidOrderMenu}
-                  setVoidOrderMenu={setVoidOrderMenu}
-                  handleVoidOrder={handleVoidOrder2}
-                />
-              )}
-
-              <RefundMenu
-                refundMenu={refundMenu}
-                handleRefundMenu={handleRefundMenu}
-                refundType={refundType}
-                setRefundType={setRefundType}
-                openInput={openInput}
-                setOpenInput={setOpenInput}
-                refundAmount={refundAmount}
-                setRefundAmount={setRefundAmount}
-                setRefundMenu={setRefundMenu}
-              />
-
-              <VacateTableModal
-                vacateTableMenu={vacateTableMenu}
-                handleVacateTableMenu={handleVacateTableMenu}
-                setVacateTableMenu={setVacateTableMenu}
-              />
-
-              <OpenTicketModal
-                openTicket={openTicket}
-                handleTicketMenu={handleTicketMenu}
-                setOpenTicket={setOpenTicket}
-                data={data}
-              />
             </div>
           </div>
         </div>
