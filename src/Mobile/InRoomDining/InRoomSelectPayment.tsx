@@ -74,6 +74,10 @@ export const InRoomSelectPayment = () => {
         payload
       );
       setLoading(false);
+      sessionStorage.setItem(
+        "OrderDetails",
+        JSON.stringify(response.data.data)
+      );
       dispatch(clearBasket());
       navigate("/demo/receipt/in_room_dining");
       toast.success(response.data.message);
