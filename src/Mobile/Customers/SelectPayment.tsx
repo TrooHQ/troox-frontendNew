@@ -75,9 +75,13 @@ export const SelectPayment = () => {
       );
       setLoading(false);
       console.log(response.data);
+      sessionStorage.setItem(
+        "OrderDetails",
+        JSON.stringify(response.data.data)
+      );
       dispatch(clearBasket());
-      navigate("/demo/receipt/orderandpay");
       toast.success("Order has been Made successfully");
+      navigate("/demo/receipt/orderandpay");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
