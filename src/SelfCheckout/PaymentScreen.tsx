@@ -82,8 +82,8 @@ const PaymentScreen = () => {
         payload
       );
       setLoading(false);
-      console.log(response.data?.data?.orderID);
-      sessionStorage.setItem("orderId", response.data?.data?.orderID);
+      console.log(response.data?.data?.order_number);
+      sessionStorage.setItem("orderId", response.data?.data?.order_number);
       sessionStorage.setItem(
         "collection_number",
         response.data?.data?.collection_number

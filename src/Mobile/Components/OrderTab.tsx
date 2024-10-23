@@ -23,7 +23,7 @@ interface Ticket {
   createdAt: string;
   status: string;
   _id: number;
-  orderID: string;
+  order_number: string;
 }
 
 interface SelectedOption {
@@ -175,7 +175,7 @@ const OrderTab: React.FC = () => {
                         </p>
                         <p className="capitalize">
                           <span className="px-[4px]">|</span>#
-                          {ticket?.orderID || "20"}
+                          {ticket?.order_number || "20"}
                           <span className="px-[4px]">|</span>
                         </p>
                         <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
@@ -280,7 +280,7 @@ const OrderTab: React.FC = () => {
                           </p>
                           <p className="capitalize">
                             <span className=" px-[4px]">|</span>#
-                            {ticket?.orderID || "20"}
+                            {ticket?.order_number || "20"}
                             <span className=" px-[4px]">|</span>
                           </p>
                           <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
@@ -375,7 +375,7 @@ const OrderTab: React.FC = () => {
                         ? ` ${name.charAt(0).toUpperCase()}.`
                         : ""
                     )}
-                  | #{selectedTicket?.orderID || "23"}
+                  | #{selectedTicket?.order_number || "23"}
                   {" | "}
                   {dayjs(selectedTicket?.createdAt).format("h:mm a")}
                 </p>

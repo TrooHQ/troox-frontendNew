@@ -70,7 +70,7 @@ export const InRoomSelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/uploadUserOrder`,
+        `${SERVER_DOMAIN}/order/uploadBranchUserOrder`,
         payload
       );
       setLoading(false);

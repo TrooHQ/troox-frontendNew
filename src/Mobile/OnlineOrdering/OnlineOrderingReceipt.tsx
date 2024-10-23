@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import TopMenuNav from "./OnlineOrderingTopMenuNav";
-import { jsPDF } from "jspdf";
+// import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
 export const OnlineOrderingReceipt = () => {
@@ -18,32 +18,32 @@ export const OnlineOrderingReceipt = () => {
     }
   };
 
-  const handleDownloadPDF = async () => {
-    const element = receiptRef.current;
-    if (element) {
-      const canvas = await html2canvas(element);
-      const imgData = canvas.toDataURL("image/png");
+  // const handleDownloadPDF = async () => {
+  //   const element = receiptRef.current;
+  //   if (element) {
+  //     const canvas = await html2canvas(element);
+  //     const imgData = canvas.toDataURL("image/png");
 
-      const pdf = new jsPDF();
-      const imgWidth = 210;
-      const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let position = 0;
+  //     const pdf = new jsPDF();
+  //     const imgWidth = 210;
+  //     const pageHeight = 297;
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  //     let heightLeft = imgHeight;
+  //     let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+  //     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  //     heightLeft -= pageHeight;
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+  //     while (heightLeft >= 0) {
+  //       position = heightLeft - imgHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  //       heightLeft -= pageHeight;
+  //     }
 
-      pdf.save("receipt.pdf");
-    }
-  };
+  //     pdf.save("receipt.pdf");
+  //   }
+  // };
 
   return (
     <div className="  ">
@@ -139,20 +139,20 @@ export const OnlineOrderingReceipt = () => {
           </div>
         </div>
       </div>
-      <div className=" flex items-center justify-center mt-[50px] hidden">
+      <div className=" mt-[50px]">
         <div className=" flex items-center justify-center mt-[50px] space-x-4">
           <p
             className="bg-[#606060] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]"
             onClick={handleDownloadImage}
           >
-            Download Image
+            Download
           </p>
-          <p
+          {/* <p
             className="bg-[#606060] rounded-[5px] py-[10px] px-[64px] text-center cursor-pointer inline text-[16px] font-[500] text-[#ffffff]"
             onClick={handleDownloadPDF}
           >
             Download PDF
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
