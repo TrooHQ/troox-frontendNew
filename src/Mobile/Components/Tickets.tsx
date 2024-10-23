@@ -14,7 +14,7 @@ import TopMenuNav from "./TopMenuNav";
 import Loader from "../../components/Loader";
 
 interface Ticket {
-  orderID: string;
+  order_number: string;
   customer_name: string;
   menu_items: MenuItem[];
   orders: string[];
@@ -98,7 +98,7 @@ const Tickets = () => {
                 )}
             </p>
 
-            <p className=" w-[54px] ">#{ticket?.orderID || "20"}</p>
+            <p className=" w-[54px] ">#{ticket?.order_number || "20"}</p>
             <div
               className="w-[132px] flex justify-between items-center cursor-pointer"
               onClick={() => handleTicketModal(ticket)}
@@ -165,7 +165,7 @@ const Tickets = () => {
             <p className="text-[16px] font-[500] text-grey500 ">Order Number</p>
             <p className=" text-[16px] font-[400] text-grey500">
               {"#"}
-              {selectedTicket?.orderID || "20"}
+              {selectedTicket?.order_number || "20"}
               {/* {selectedTicket?.number} */}
             </p>
           </div>

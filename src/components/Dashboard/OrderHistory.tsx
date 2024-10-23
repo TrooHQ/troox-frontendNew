@@ -75,7 +75,9 @@ const OrderHistory = () => {
               </div> */}
               <div className="flex items-center gap-[32px]">
                 <div className="">
-                  <p className="font-[500] text-[16px] text-[#121212]">Filter by:</p>
+                  <p className="font-[500] text-[16px] text-[#121212]">
+                    Filter by:
+                  </p>
                 </div>
                 <div className="flex items-center gap-[8px]">
                   <div className="border border-purple500 bg-purple500 rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
@@ -108,10 +110,14 @@ const OrderHistory = () => {
 
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Orders</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                  Orders
+                </p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
-                  <p className="text-start text-[14px] text-[#121212]">Order No</p>
+                  <p className="text-start text-[14px] text-[#121212]">
+                    Order No
+                  </p>
                   <p className=" text-[14px] text-[#121212]">Date</p>
                   <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
@@ -140,7 +146,8 @@ const OrderHistory = () => {
 
                     <p onClick={handleTicketMenu}>
                       {item.customer_name
-                        ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
+                        ? item.customer_name.charAt(0).toUpperCase() +
+                          item.customer_name.slice(1)
                         : ""}
                     </p>
                     <p>&#x20A6;{item.total_price.toLocaleString()}</p>
