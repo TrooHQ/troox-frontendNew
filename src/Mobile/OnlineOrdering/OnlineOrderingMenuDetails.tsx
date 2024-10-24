@@ -432,7 +432,7 @@ const OnlineOrderingMenuDetails = () => {
                       </div>
                       <div className="pt-[8px] flex items-center justify-between">
                         <p className="text-[16px] text-[#121212] font-[500]">
-                          {menu?.menu_item_price.toLocaleString()}
+                          &#x20A6;{menu?.menu_item_price.toLocaleString()}
                         </p>
                         <div className="w-[100px]">
                           {ids.find((item) => item.id === menu._id) ? (
