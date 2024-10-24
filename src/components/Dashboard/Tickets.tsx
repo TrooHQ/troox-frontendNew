@@ -71,11 +71,11 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderByBranch/?branch_id=${selectedBranch.id}`,
+        `${SERVER_DOMAIN}/order/getOpenTickets/?branch_id=${selectedBranch.id}`,
         headers
       );
       console.log(response.data);
-      setData(response.data);
+      setData(response.data.data);
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -94,11 +94,11 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getBranchOrderByStatus/?branch_id=${selectedBranch.id}&status=served`,
+        `${SERVER_DOMAIN}/order/getClosedTickets/?branch_id=${selectedBranch.id}`,
         headers
       );
       console.log(response.data);
-      setClosedData(response.data);
+      setClosedData(response.data.data);
       toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -231,63 +231,67 @@ const Tickets = () => {
                   <p className=" text-[14px] text-[#121212]">Bill </p>
                   <p className=" text-[14px] text-[#121212]">Actions </p>
                 </div>
-                {data.map((item, index) => (
-                  <div
-                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${
-                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                    }`}
-                    key={index}
-                  >
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(0, 10)}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(11, 16)}
-                    </p>
-                    <p onClick={handleTicketMenu}>{item.tableNumber || "-"}</p>
-                    <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
+                {data.length === 0 ? (
+                  <p className="px-8">No order available</p>
+                ) : (
+                  data.map((item, index) => (
+                    <div
+                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${
+                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                      }`}
+                      key={index}
+                    >
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(0, 10)}
+                      </p>
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(11, 16)}
+                      </p>
+                      <p onClick={handleTicketMenu}>{item.tableNumber || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
 
-                    {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
+                      {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
-                    <p onClick={handleTicketMenu}>
-                      {item.customer_name
-                        ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
-                        : ""}
-                    </p>
-                    <p>{item.waiter || "-"}</p>
-                    <p>{item.channel || ""}</p>
-                    <div className="flex items-center justify-center gap-[10px]">
-                      {item.status?.toLowerCase() === "cancelled" && (
-                        <img src={red} alt="" className="w-[12px] h-[12px]" />
-                      )}
-                      {item.status === "Ordered" && (
-                        <img src={red} alt="" className="w-[12px] h-[12px]" />
-                      )}
-                      {item.status === "Served" && (
-                        <img src={green} alt="" className="w-[12px] h-[12px]" />
-                      )}
-                      {item.status === "Ready" && (
-                        <img src={orange} alt="" className="w-[12px] h-[12px]" />
-                      )}
-                      {item.status === "Pending" && (
-                        <img src={orange} alt="" className="w-[12px] h-[12px]" />
-                      )}
-                      <p className="capitalize">{item.status}</p>
-                    </div>
-                    <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                    <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                      <div
-                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                        onClick={() => toggleMenu(index)}
-                      >
-                        <img src={More} alt="More Options" className="w-[5px]" />
+                      <p onClick={handleTicketMenu}>
+                        {item.customer_name
+                          ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
+                          : ""}
+                      </p>
+                      <p>{item.waiter || "-"}</p>
+                      <p>{item.channel || ""}</p>
+                      <div className="flex items-center justify-center gap-[10px]">
+                        {item.status?.toLowerCase() === "cancelled" && (
+                          <img src={red} alt="" className="w-[12px] h-[12px]" />
+                        )}
+                        {item.status === "Ordered" && (
+                          <img src={red} alt="" className="w-[12px] h-[12px]" />
+                        )}
+                        {item.status === "Served" && (
+                          <img src={green} alt="" className="w-[12px] h-[12px]" />
+                        )}
+                        {item.status === "Ready" && (
+                          <img src={orange} alt="" className="w-[12px] h-[12px]" />
+                        )}
+                        {item.status === "Pending" && (
+                          <img src={orange} alt="" className="w-[12px] h-[12px]" />
+                        )}
+                        <p className="capitalize">{item.status}</p>
                       </div>
-                      {activeMenuIndex === index && (
-                        <DropdownMenu handleVoidOrderMenu={() => handleVoidOrderMenu()} />
-                      )}
+                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                      <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
+                        <div
+                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                          onClick={() => toggleMenu(index)}
+                        >
+                          <img src={More} alt="More Options" className="w-[5px]" />
+                        </div>
+                        {activeMenuIndex === index && (
+                          <DropdownMenu handleVoidOrderMenu={() => handleVoidOrderMenu()} />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
               {activeMenuIndex !== null ? (
@@ -321,46 +325,50 @@ const Tickets = () => {
                   <p className=" text-[14px] text-[#121212]">Tip </p>
                   <p className=" text-[14px] text-[#121212]">Actions </p>
                 </div>
-                {closedData.map((item, index) => (
-                  <div
-                    className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${
-                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                    }`}
-                    key={index}
-                  >
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(0, 10)}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(11, 16)}
-                    </p>
-                    <p onClick={handleTicketMenu}>{item.tableNumber || index}</p>
-                    <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
-                    <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
-                    <p>{item.waiter || "-"}</p>
-                    <p>{item.channel || ""}</p>
-                    <div className="flex items-center justify-center gap-[10px]">
-                      <img src={green} alt="" className="w-[12px] h-[12px]" />
-                      <p>Served</p>
-                    </div>
-                    <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                    <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                      <div
-                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                        onClick={() => toggleMenu2(index)}
-                      >
-                        <img src={More} alt="" className="w-[5px]" />
+                {closedData.length === 0 ? (
+                  <p className="px-8">No order available</p>
+                ) : (
+                  closedData.map((item, index) => (
+                    <div
+                      className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${
+                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                      }`}
+                      key={index}
+                    >
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(0, 10)}
+                      </p>
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(11, 16)}
+                      </p>
+                      <p onClick={handleTicketMenu}>{item.tableNumber || index}</p>
+                      <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
+                      <p>{item.waiter || "-"}</p>
+                      <p>{item.channel || ""}</p>
+                      <div className="flex items-center justify-center gap-[10px]">
+                        <img src={green} alt="" className="w-[12px] h-[12px]" />
+                        <p>Served</p>
                       </div>
-                      {activeMenuIndex2 === index && (
-                        <DropdownMenuClosedTickets
-                          handleVoidOrderMenu={() => handleVoidOrderMenu()}
-                          handleVacateTableMenu={() => handleVacateTableMenu()}
-                          handleRefundMenu={() => handleRefundMenu()}
-                        />
-                      )}
-                    </p>
-                  </div>
-                ))}
+                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                      <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
+                        <div
+                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                          onClick={() => toggleMenu2(index)}
+                        >
+                          <img src={More} alt="" className="w-[5px]" />
+                        </div>
+                        {activeMenuIndex2 === index && (
+                          <DropdownMenuClosedTickets
+                            handleVoidOrderMenu={() => handleVoidOrderMenu()}
+                            handleVacateTableMenu={() => handleVacateTableMenu()}
+                            handleRefundMenu={() => handleRefundMenu()}
+                          />
+                        )}
+                      </p>
+                    </div>
+                  ))
+                )}
               </div>
 
               <RefundMenu
