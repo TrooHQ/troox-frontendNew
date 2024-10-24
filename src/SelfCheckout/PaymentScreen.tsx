@@ -60,7 +60,8 @@ const PaymentScreen = () => {
   }));
 
   const payload = {
-    channel: "Self-Checkout",
+    is_paid: "true",
+    channel: "self-checkout",
     branch_id: branchId,
     businessIdentifier: business?.businessDetails?._id,
     customerName: basketDetails.customerName,

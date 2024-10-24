@@ -140,7 +140,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
               ))
             ) : (
               <div className="p-2 text-center text-gray-500">
-                No Outlet found
+                No result found
               </div>
             )}
           </div>

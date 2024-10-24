@@ -15,6 +15,7 @@ import {
 import Header2 from "./Header2";
 import { TiDelete } from "react-icons/ti";
 import MenuDetailsModal from "./MenuDetails";
+
 export const Basket = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
