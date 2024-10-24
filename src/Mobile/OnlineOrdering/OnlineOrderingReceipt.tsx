@@ -44,8 +44,6 @@ export const OnlineOrderingReceipt = () => {
       link.href = dataUrl;
       link.download = "receipt.png";
       link.click();
-
-      sessionStorage.clear();
       window.location.href = "/demo/get-receipt/online_ordering";
     }
   };
@@ -70,28 +68,35 @@ export const OnlineOrderingReceipt = () => {
         </div>
 
         <div className="border-b border-[#929292]">
-          {orderDetails?.menu_items.map((menu, index) => (
-            <div className="" key={index}>
+          {orderDetails?.menu_items?.map((menu, index) => (
+            <div key={index}>
               <div className="space-y-[8px] pb-[24px]">
                 <div className="font-[400] text-[16px] text-[#121212] flex items-center justify-between">
-                  <p className="">{menu.menuItem.menu_item_name}</p>
-                  <p>₦{menu.menuItem.menu_item_price?.toLocaleString()}</p>
+                  <p>{menu?.menuItem?.menu_item_name || ""}</p>
+
+                  <p>
+                    ₦{menu?.menuItem?.menu_item_price?.toLocaleString() || "0"}
+                  </p>
                 </div>
 
-                {menu.selectedOptions.map((item, index) => (
-                  <div className="" key={index}>
+                {menu?.selectedOptions?.length > 0 && (
+                  <div>
                     <p className="font-[500] text-[10px] text-[#606060]">
                       MODIFIERS
                     </p>
-                    <div className="space-y-[8px]">
-                      <div className="flex items-center justify-between text-[16px] font-[400] text-[#606060]">
-                        <p className="">{item.name}</p>
-                        <p>₦{item.price?.toLocaleString()}</p>
+                    {menu.selectedOptions.map((item, index) => (
+                      <div className="space-y-[8px]" key={index}>
+                        <div className="flex items-center justify-between text-[16px] font-[400] text-[#606060]">
+                          <p>{item?.name || ""}</p>
+
+                          <p>₦{item?.price?.toLocaleString() || "0"}</p>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
+
               <hr className="w-[64px] text-[#929292]" />
             </div>
           ))}
