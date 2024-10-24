@@ -21,7 +21,7 @@ import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import TopMenuNav from "./Components/TopMenuNav";
 import { toast } from "react-toastify";
-// import CustomSelect3 from "./inputFields/CustomSelect3";
+import CustomSelect3 from "./inputFields/CustomSelect3";
 import Loader from "../components/Loader";
 
 // interface FormData extends FieldValues {
@@ -29,10 +29,10 @@ import Loader from "../components/Loader";
 //   employee_email?: string;
 //   employee_phone?: string;
 // }
-// interface Option {
-//   value: string;
-//   label: string;
-// }
+interface Option {
+  value: string;
+  label: string;
+}
 
 interface EmployeeData {
   id: number;
@@ -46,12 +46,12 @@ const SettingsPage = () => {
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  // const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
 
   const [selectedEmail, setSelectedEmail] = useState("");
+  const [selectedRole, setSelectedRole] = useState("");
 
-  // const [branch, setBranch] = useState<Option[]>([]);
   const [employee, setEmployee] = useState<EmployeeData[]>([]);
+  const [roles, setRoles] = useState<Option[]>([]);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -59,21 +59,6 @@ const SettingsPage = () => {
   const [tempPassword, setTempPassword] = useState("");
   const [group_name, setGroup_name] = useState("");
   const [number, setNumber] = useState("");
-
-  // const users = [
-  //   {
-  //     id: 1,
-  //     name: "John Doe",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Jane Smith",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Alice Johnson",
-  //   },
-  // ];
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
 
@@ -253,19 +238,23 @@ const SettingsPage = () => {
   };
 
   const businessId = userDetails?.userData?.business_identifier;
-  const attachedUrl = attachBusinessIdToHost(businessId, selectedOutletID);
+  // const attachedUrl = attachBusinessIdToHost(businessId, selectedOutletID);
 
-  console.log(attachedUrl);
+  // console.log(attachedUrl);
   const token = userDetails?.userData?.token;
 
-  // const handleSelect = (selectedOutlet: string) => {
-  //   const selectedOption = branch.find(
-  //     (option) => option.value === selectedOutlet
+  // const handleSelect = () => {
+  //   const selectedOption = roles.find(
+  //     (option) => option.value === selectedRole
   //   );
   //   if (selectedOption) {
-  //     setSelectedBranch(selectedOption.label);
+  //     setSelectedRole(selectedOption.label);
   //   }
   // };
+
+  const handleSelect = (role: string) => {
+    setSelectedRole(role);
+  };
 
   const createEmployee = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -286,6 +275,7 @@ const SettingsPage = () => {
       const response = await axios.post(
         `${SERVER_DOMAIN}/employee/createEmployee`,
         {
+          role: selectedRole,
           first_name: first_name,
           last_name: last_name,
           email: email,
@@ -354,8 +344,47 @@ const SettingsPage = () => {
     }
   };
 
+  const getRoles = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/role/getAllRolesByBusiness`,
+        headers
+      );
+
+      const roleOptions = response.data?.map((role: any) => ({
+        value: role._id,
+        label: role.name,
+      }));
+      setRoles(roleOptions);
+      console.log(response?.data);
+    } catch (error) {
+      console.error("Error Retrieving Roles:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("An error occurred. Please try again later.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getEmployees();
+    getRoles();
   }, []);
 
   useEffect(() => {
@@ -982,15 +1011,15 @@ const SettingsPage = () => {
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
-                {/* <CustomSelect3
-                  options={branch}
-                  placeholder="All outlets"
+                <CustomSelect3
+                  options={roles}
+                  placeholder="Roles"
                   BG=" bg-[#5855B3]"
                   text=" text-white"
                   hover="hover:bg-[#5855B3] hover:text-white"
                   searchable={false}
                   onSelect={handleSelect}
-                /> */}
+                />
 
                 <button
                   type="submit"
