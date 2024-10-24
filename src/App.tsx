@@ -43,6 +43,8 @@ import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
 import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
 import Home from "./LandingPage/Home.tsx";
+import CreatePin from "./components/authPages/CreatePin.tsx";
+import PinCreated from "./components/authPages/PinCreated.tsx";
 
 export default function App() {
   return (
@@ -86,7 +88,9 @@ export default function App() {
           <Route path="/verify-account" element={<VerifyAccount />} />
           <Route path="/checkmail" element={<CheckMail />} />
           <Route path="/password-changed" element={<PasswordChanged />} />
+          <Route path="/pin-created" element={<PinCreated />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/create-pin" element={<CreatePin />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
           <Route path="/till" element={<Till />} />

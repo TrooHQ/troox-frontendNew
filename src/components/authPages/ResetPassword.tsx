@@ -8,15 +8,15 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 const ResetPassword = () => {
   const navigate = useNavigate();
 
-  const [token, setToken] = useState<string>("");
+  // const [token, setToken] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const handleTokenChange = (newValue: string) => {
-    setToken(newValue);
-  };
+  // const handleTokenChange = (newValue: string) => {
+  //   setToken(newValue);
+  // };
 
   const handlePasswordChange = (newValue: string) => {
     setPassword(newValue);
@@ -37,7 +37,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
-        token,
+        // token,
         password,
         confirm_password: confirmPassword,
       });
@@ -74,13 +74,13 @@ const ResetPassword = () => {
             <p className="text-2xl text-grey500 mb-4 font-[600]">Create new password</p>
             <p>Your new password must be different from previously used passwords.</p>
           </div>
-          <input
+          {/* <input
             type="text"
             placeholder="Enter token"
             value={token}
             onChange={(e) => handleTokenChange(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded mt-4"
-          />
+          /> */}
           <PasswordInput
             label="Enter new password"
             value={password}
