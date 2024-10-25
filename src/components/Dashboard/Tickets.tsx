@@ -76,7 +76,7 @@ const Tickets = () => {
       );
       console.log(response.data);
       setData(response.data.data);
-      toast.success(response.data.message || "Successful");
+      // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
     } finally {
@@ -99,7 +99,7 @@ const Tickets = () => {
       );
       console.log(response.data);
       setClosedData(response.data.data);
-      toast.success(response.data.message || "Successful");
+      // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
     } finally {
@@ -231,7 +231,9 @@ const Tickets = () => {
                   <p className=" text-[14px] text-[#121212]">Bill </p>
                   <p className=" text-[14px] text-[#121212]">Actions </p>
                 </div>
-                {data.length === 0 ? (
+                {isLoading ? (
+                  <p className="px-8">Loading...</p>
+                ) : data.length === 0 ? (
                   <p className="px-8">No order available</p>
                 ) : (
                   data.map((item, index) => (
@@ -247,8 +249,8 @@ const Tickets = () => {
                       <p className=" " onClick={handleTicketMenu}>
                         {item.createdAt.slice(11, 16)}
                       </p>
-                      <p onClick={handleTicketMenu}>{item.tableNumber || "-"}</p>
-                      <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.table_number || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.order_number || "-"}</p>
 
                       {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
@@ -322,10 +324,12 @@ const Tickets = () => {
                   <p className=" text-[14px] text-[#121212]">Waiter </p>
                   <p className=" text-[14px] text-[#121212]">Channel </p>
                   <p className=" text-[14px] text-[#121212]">Status </p>
-                  <p className=" text-[14px] text-[#121212]">Tip </p>
+                  <p className=" text-[14px] text-[#121212]">Bill</p>
                   <p className=" text-[14px] text-[#121212]">Actions </p>
                 </div>
-                {closedData.length === 0 ? (
+                {isLoading ? (
+                  <p className="px-8">Loading...</p>
+                ) : closedData.length === 0 ? (
                   <p className="px-8">No order available</p>
                 ) : (
                   closedData.map((item, index) => (
@@ -341,8 +345,8 @@ const Tickets = () => {
                       <p className=" " onClick={handleTicketMenu}>
                         {item.createdAt.slice(11, 16)}
                       </p>
-                      <p onClick={handleTicketMenu}>{item.tableNumber || index}</p>
-                      <p onClick={handleTicketMenu}>{item.orderID || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.table_number || "-"}</p>
+                      <p onClick={handleTicketMenu}>{item.order_number || "-"}</p>
                       <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
                       <p>{item.waiter || "-"}</p>
                       <p>{item.channel || ""}</p>

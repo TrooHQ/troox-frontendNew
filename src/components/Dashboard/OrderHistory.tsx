@@ -191,14 +191,14 @@ const OrderHistory = () => {
                     <p className=" " onClick={handleTicketMenu}>
                       {item.createdAt.slice(11, 16)}
                     </p>
-
-                    <p>{item.channel}</p>
-
                     <p onClick={handleTicketMenu}>
                       {item.customer_name
                         ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
                         : ""}
                     </p>
+
+                    <p>{item.channel}</p>
+
                     <p>&#x20A6;{item.total_price.toLocaleString()}</p>
                   </div>
                 ))}
