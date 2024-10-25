@@ -37,7 +37,7 @@ interface MenuItem {
 }
 const OrderTab: React.FC = () => {
   const tabItems: TabItem[] = [
-    { id: 1, label: "Taken", content: renderMenuCategory },
+    { id: 1, label: "Order", content: renderMenuCategory },
     { id: 2, label: "Ready", content: renderMenuCategoryReady },
   ];
 
@@ -132,7 +132,7 @@ const OrderTab: React.FC = () => {
 
   useEffect(() => {
     if (activeTab === 1) {
-      getTicket("Pending");
+      getTicket("Ordered");
     } else if (activeTab === 2) {
       getTicket("Accepted");
     }

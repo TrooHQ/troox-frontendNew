@@ -15,6 +15,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import Swipe from "../assets/swipe.png";
+
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
@@ -229,62 +231,77 @@ export const CategoryDetails = () => {
         <TopMenuNav />
 
         <div className="  mb-[100px]">
-          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px]">
+          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px] hidden">
             <MdKeyboardArrowLeft
               className=" cursor-pointer"
               onClick={handlePrevGroupClick}
             />
+
             <MdKeyboardArrowRight
               className=" cursor-pointer"
               onClick={handleNextGroupClick}
             />
           </div>
-          <div className=" py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
-            <p
-              className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
-                selectedGroup === "All"
-                  ? `font-[600] text-[#FFFFFF] border border-[#929292]`
-                  : "text-[#606060] font-[400] border border-[#B6B6B6]"
-              }`}
-              style={{
-                backgroundColor:
-                  selectedGroup === "All"
-                    ? colorScheme || "#929292"
-                    : "transparent",
-              }}
-              onClick={() => handleGroupClick("All", 0)}
-            >
-              All
-            </p>
 
-            <div className="flex gap-[8px] items-center">
-              {Array.from(
-                new Set(menuItems.map((menu) => menu.menu_group_name))
-              )
-                .filter((groupName) => groupName !== undefined)
-                .map((groupName, index) => (
-                  <div key={index}>
-                    <p
-                      className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[#929292]`}
-                      style={{
-                        backgroundColor:
-                          selectedGroup === groupName
-                            ? colorScheme || "#929292"
-                            : "transparent",
-                        borderColor:
-                          selectedGroup === groupName ? "#929292" : "#B6B6B6",
-                        color:
-                          selectedGroup === groupName ? "#FFFFFF" : "#606060",
-                        fontWeight:
-                          selectedGroup === groupName ? "bold" : "400",
-                        borderStyle: "solid",
-                      }}
-                      onClick={() => handleGroupClick(groupName, index + 1)}
-                    >
-                      {groupName}
-                    </p>
-                  </div>
-                ))}
+          <div className=" flex items-center gap-[10px] py-[20px] px-[14px]">
+            <img
+              src={Swipe}
+              alt=""
+              onClick={handleNextGroupClick}
+              className=" ml-[5px]"
+            />
+
+            <div className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]">
+              <p
+                ref={(el) => (groupRefs.current[0] = el)}
+                className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
+                  selectedGroup === "All"
+                    ? `font-[600] text-[#FFFFFF] border border-[#929292]`
+                    : "text-[#606060] font-[400] border border-[#B6B6B6]"
+                }`}
+                style={{
+                  backgroundColor:
+                    selectedGroup === "All"
+                      ? colorScheme || "#929292"
+                      : "transparent",
+                }}
+                onClick={() => handleGroupClick("All", 0)}
+              >
+                All
+              </p>
+
+              <div className="flex gap-[8px] items-center">
+                {Array.from(
+                  new Set(menuItems.map((menu) => menu.menu_group_name))
+                )
+                  .filter((groupName) => groupName !== undefined)
+                  .map((groupName, index) => (
+                    <div key={index + 1}>
+                      <p
+                        ref={(el) => (groupRefs.current[index + 1] = el)}
+                        className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
+                        style={{
+                          backgroundColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "transparent",
+                          borderColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "#B6B6B6",
+                          color:
+                            selectedGroup === groupName ? "#FFFFFF" : "#606060",
+                          fontWeight:
+                            selectedGroup === groupName ? "bold" : "400",
+                          borderStyle: "solid",
+                        }}
+                        onClick={() => handleGroupClick(groupName, index + 1)}
+                      >
+                        {groupName}
+                      </p>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
 
