@@ -21,6 +21,8 @@ import {
   updateItemQuantity,
 } from "../slices/BasketSlice";
 
+import Swipe from "./assets/swipe.png";
+
 import Modal from "../components/Modal";
 import { HiMinusCircle, HiPlusCircle, HiPlusSm } from "react-icons/hi";
 
@@ -278,7 +280,7 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
-              <div className="text-[50px] flex items-center gap-[20px] justify-between px-[24px]">
+              <div className="text-[50px] flex items-center gap-[20px] justify-between px-[24px] hidden">
                 <MdKeyboardArrowLeft
                   className=" cursor-pointer"
                   onClick={handlePrevGroupClick}
@@ -288,56 +290,67 @@ export const CategoryDetails = () => {
                   onClick={handleNextGroupClick}
                 />
               </div>
-              <div className="py-[20px] flex gap-[8px] items-center px-[24px] overflow-x-auto whitespace-nowrap text-[14px]">
-                <p
-                  className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${
-                    selectedGroup === "All"
-                      ? "font-[600] text-[#FFFFFF] border border-[#929292]"
-                      : "text-[#606060] font-[400] border border-[#B6B6B6]"
-                  }`}
-                  style={{
-                    backgroundColor:
-                      selectedGroup === "All"
-                        ? color || "#929292"
-                        : "transparent",
-                  }}
-                  onClick={() => handleGroupClick("All", 0)}
-                >
-                  All
-                </p>
 
-                <div className="flex gap-[8px] items-center">
-                  {Array.from(
-                    new Set(menuItems.map((menu) => menu.menu_group_name))
-                  )
-                    .filter((groupName) => groupName !== undefined)
-                    .map((groupName, index) => (
-                      <div
-                        key={index}
-                        ref={(el) => (groupRefs.current[index + 1] = el)}
-                      >
-                        <p
-                          className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] border ${
-                            selectedGroup === groupName
-                              ? "font-[600] text-[#FFFFFF] border-[#929292]"
-                              : "text-[#606060] font-[400] border-[#B6B6B6]"
-                          }`}
-                          style={{
-                            backgroundColor:
-                              selectedGroup === groupName
-                                ? color || "#929292"
-                                : "transparent",
-                            borderColor:
-                              selectedGroup === groupName
-                                ? color || "#929292"
-                                : "#B6B6B6",
-                          }}
-                          onClick={() => handleGroupClick(groupName, index + 1)}
+              <div className=" flex items-center gap-[10px] py-[20px] px-[14px]">
+                <img
+                  src={Swipe}
+                  alt=""
+                  className=" max-w-[50px] w-full h-auto"
+                  onClick={handleNextGroupClick}
+                />
+                <div className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]">
+                  <p
+                    className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${
+                      selectedGroup === "All"
+                        ? "font-[600] text-[#FFFFFF] border border-[#929292]"
+                        : "text-[#606060] font-[400] border border-[#B6B6B6]"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        selectedGroup === "All"
+                          ? color || "#929292"
+                          : "transparent",
+                    }}
+                    onClick={() => handleGroupClick("All", 0)}
+                  >
+                    All
+                  </p>
+
+                  <div className="flex gap-[8px] items-center">
+                    {Array.from(
+                      new Set(menuItems.map((menu) => menu.menu_group_name))
+                    )
+                      .filter((groupName) => groupName !== undefined)
+                      .map((groupName, index) => (
+                        <div
+                          key={index}
+                          ref={(el) => (groupRefs.current[index + 1] = el)}
                         >
-                          {groupName}
-                        </p>
-                      </div>
-                    ))}
+                          <p
+                            className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] border ${
+                              selectedGroup === groupName
+                                ? "font-[600] text-[#FFFFFF] border-[#929292]"
+                                : "text-[#606060] font-[400] border-[#B6B6B6]"
+                            }`}
+                            style={{
+                              backgroundColor:
+                                selectedGroup === groupName
+                                  ? color || "#929292"
+                                  : "transparent",
+                              borderColor:
+                                selectedGroup === groupName
+                                  ? color || "#929292"
+                                  : "#B6B6B6",
+                            }}
+                            onClick={() =>
+                              handleGroupClick(groupName, index + 1)
+                            }
+                          >
+                            {groupName}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
                 </div>
               </div>
             </div>
