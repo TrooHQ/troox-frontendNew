@@ -298,7 +298,10 @@ export const CategoryDetails = () => {
                   className=" max-w-[50px] w-full h-auto"
                   onClick={handleNextGroupClick}
                 />
-                <div className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]">
+                <div
+                  className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                >
                   <p
                     className={`cursor-pointer text-[32px] px-[12px] py-[8px] rounded-[4px] ${
                       selectedGroup === "All"

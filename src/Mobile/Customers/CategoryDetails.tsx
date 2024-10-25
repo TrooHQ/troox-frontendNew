@@ -251,7 +251,10 @@ export const CategoryDetails = () => {
               className=" ml-[5px]"
             />
 
-            <div className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]">
+            <div
+              className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
               <p
                 ref={(el) => (groupRefs.current[0] = el)}
                 className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
