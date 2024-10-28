@@ -114,7 +114,7 @@ export const OnlineOrderingReceipt = () => {
           </div>
 
           <div className="font-[500] text-[18px] text-[#121212] flex items-center justify-between">
-            <p className="">Balance Due</p>
+            <p className="">Paid</p>
             <p>₦{orderDetails?.total_price?.toLocaleString()}</p>
           </div>
         </div>

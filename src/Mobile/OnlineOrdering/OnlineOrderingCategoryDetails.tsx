@@ -361,9 +361,18 @@ export const OnlineOrderingCategoryDetails = () => {
 
           <div className=" py-[20px]">
             {Object.keys(groupedMenuItems).map((groupName) => (
-              <div key={groupName} className="mb-[24px]">
-                <p className="text-[20px] font-bold text-[#121212] mb-[12px] px-[24px]">
-                  {groupName === "undefined" ? "" : groupName}
+              <div key={groupName} className="mb-[24px] ">
+                <p
+                  className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px] rounded-[4px] border border-[#929292]"
+                  style={{
+                    backgroundColor: colorScheme || "#414141",
+                  }}
+                >
+                  {groupName && groupName !== "undefined"
+                    ? groupName.length > 20
+                      ? `${groupName.slice(0, 20)}...`
+                      : groupName
+                    : ""}
                 </p>
 
                 {groupedMenuItems[groupName].map((menu) => (
@@ -375,10 +384,15 @@ export const OnlineOrderingCategoryDetails = () => {
                         >
                           <div className="w-[180px]">
                             <p className="text-[16px] text-[#121212] font-[500]">
-                              {menu?.menu_item_name}
+                              {menu?.menu_item_name?.length > 20
+                                ? `${menu.menu_item_name.slice(0, 20)}...`
+                                : menu?.menu_item_name}
                             </p>
+
                             <p className="text-[12px] font-[400] text-[#121212]">
-                              {menu?.description || "A Delicious Delicacy"}
+                              {menu?.description?.length > 50
+                                ? `${menu.description.slice(0, 50)}...`
+                                : menu?.description || "A Delicious Delicacy"}
                             </p>
                           </div>
                         </Link>
@@ -389,7 +403,7 @@ export const OnlineOrderingCategoryDetails = () => {
                           <div
                             className="h-[80px] w-[80px] border-4 rounded-[8px] overflow-hidden p-0 m-0 flex items-center justify-center"
                             style={{
-                              borderColor: colorScheme || "#414141",
+                              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
                             }}
                           >
                             <img
@@ -470,7 +484,7 @@ export const OnlineOrderingCategoryDetails = () => {
               }}
             >
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white rounded-[5px] text-[#606060] py-[12px] px-[10px] text-[16px] font-[500]">
+                <p className="bg-white rounded-[5px] text-[#606060] py-[2px] px-[10px] text-[16px] font-[500]">
                   {totalCount.totalQuantity || 0}
                 </p>
 
