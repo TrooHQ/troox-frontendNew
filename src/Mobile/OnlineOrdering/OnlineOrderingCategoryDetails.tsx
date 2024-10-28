@@ -67,17 +67,32 @@ export const OnlineOrderingCategoryDetails = () => {
       ? menuItems
       : menuItems.filter((menu) => menu.menu_group_name === selectedGroup);
 
+  // const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
+  //   (acc: GroupedMenuItems, item: MenuItem) => {
+  //     const { menu_group_name } = item;
+  //     if (!acc[menu_group_name]) {
+  //       acc[menu_group_name] = [];
+  //     }
+  //     acc[menu_group_name].push(item);
+  //     return acc;
+  //   },
+  //   {}
+  // );
+
   const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
     (acc: GroupedMenuItems, item: MenuItem) => {
       const { menu_group_name } = item;
-      if (!acc[menu_group_name]) {
-        acc[menu_group_name] = [];
+      if (menu_group_name) {
+        if (!acc[menu_group_name]) {
+          acc[menu_group_name] = [];
+        }
+        acc[menu_group_name].push(item);
       }
-      acc[menu_group_name].push(item);
       return acc;
     },
     {}
   );
+
   const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const groupNames = [
@@ -140,6 +155,7 @@ export const OnlineOrderingCategoryDetails = () => {
         headers
       );
       setMenuItems(response.data.data);
+      console.log(response?.data?.data);
     } catch (error) {
       console.error("Error getting Business Details:", error);
     } finally {
@@ -362,18 +378,20 @@ export const OnlineOrderingCategoryDetails = () => {
           <div className=" py-[20px]">
             {Object.keys(groupedMenuItems).map((groupName) => (
               <div key={groupName} className="mb-[24px] ">
-                <p
-                  className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px] rounded-[4px] border border-[#929292]"
-                  style={{
-                    backgroundColor: colorScheme || "#414141",
-                  }}
-                >
-                  {groupName && groupName !== "undefined"
-                    ? groupName.length > 20
-                      ? `${groupName.slice(0, 20)}...`
-                      : groupName
-                    : ""}
-                </p>
+                {groupName && (
+                  <p
+                    className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px] rounded-[4px] border border-[#929292]"
+                    style={{
+                      backgroundColor: colorScheme || "#414141",
+                    }}
+                  >
+                    {groupName && groupName !== "undefined"
+                      ? groupName.length > 20
+                        ? `${groupName.slice(0, 20)}...`
+                        : groupName
+                      : ""}
+                  </p>
+                )}
 
                 {groupedMenuItems[groupName].map((menu) => (
                   <div key={menu._id} className="mx-[24px]">
