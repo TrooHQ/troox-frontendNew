@@ -409,7 +409,9 @@ export const CategoryDetails = () => {
             <div key={groupName} className="mb-[24px]">
               {groupName !== "undefined" && (
                 <p className="text-[32px] font-bold text-[#121212] mb-[12px] px-[24px]">
-                  {groupName}
+                  {groupName.length > 30
+                    ? `${groupName.slice(0, 30)}...`
+                    : groupName}
                 </p>
               )}
 
