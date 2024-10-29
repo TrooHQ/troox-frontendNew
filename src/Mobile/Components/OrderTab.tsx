@@ -165,7 +165,7 @@ const OrderTab: React.FC = () => {
                                 .split(" ")
                                 .map((name, index) =>
                                   index === 0
-                                    ? name
+                                    ? name.slice(0, 6)
                                     : index === 1
                                     ? ` ${name.charAt(0).toUpperCase()}.`
                                     : ""
@@ -175,7 +175,7 @@ const OrderTab: React.FC = () => {
                         </p>
                         <p className="capitalize">
                           <span className="px-[4px]">|</span>#
-                          {ticket?.order_number || "20"}
+                          {ticket?.order_number.slice(7, 10) || "20"}
                           <span className="px-[4px]">|</span>
                         </p>
                         <p>{dayjs(ticket?.createdAt).format("h:mm a")}</p>
@@ -392,6 +392,13 @@ const OrderTab: React.FC = () => {
           <div className="">
             <p>Please I want the spaghetti with less spice and extra hot dog</p>
           </div>
+
+          <button
+            className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px]"
+            disabled
+          >
+            Refund
+          </button>
         </div>
       </Modal>
     </div>
