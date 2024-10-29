@@ -294,7 +294,7 @@ export const CategoryDetails = () => {
         <div className="">
           <Header2>
             <div className="mt-[24px] mb-[8px] ">
-              <div className="text-[50px] flex items-center gap-[20px] justify-between px-[24px] hidden">
+              <div className="text-[50px] flex items-center gap-[20px] justify-between px-[24px] ">
                 <MdKeyboardArrowLeft
                   className=" cursor-pointer"
                   onClick={handlePrevGroupClick}
@@ -309,7 +309,7 @@ export const CategoryDetails = () => {
                 <img
                   src={Swipe}
                   alt=""
-                  className=" max-w-[50px] w-full h-auto"
+                  className=" max-w-[50px] w-full h-auto hidden"
                   onClick={handleNextGroupClick}
                 />
                 <div

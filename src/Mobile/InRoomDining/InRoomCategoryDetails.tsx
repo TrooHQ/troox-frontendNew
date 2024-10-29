@@ -245,7 +245,7 @@ export const InRoomCategoryDetails = () => {
       <div className="  ">
         <TopMenuNav />
         <div className="  mb-[100px]">
-          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px] hidden">
+          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px]">
             <MdKeyboardArrowLeft
               className=" cursor-pointer"
               onClick={handlePrevGroupClick}
@@ -260,7 +260,7 @@ export const InRoomCategoryDetails = () => {
               src={Swipe}
               alt=""
               onClick={handleNextGroupClick}
-              className=" ml-[5px]"
+              className=" ml-[5px] hidden"
             />
 
             <div
