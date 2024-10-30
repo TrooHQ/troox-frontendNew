@@ -10,12 +10,14 @@ import { CalendarMonth } from "@mui/icons-material";
 import * as XLSX from "xlsx"; // For Excel export
 import { saveAs } from "file-saver"; // To save files locally
 import Papa from "papaparse"; // For CSV export
+import { truncateText } from "../../utils/truncateText";
 
 const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
   console.log(selectedBranch);
 
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
 
   const userDetails = useSelector((state: any) => state.user);
@@ -92,6 +94,20 @@ const OrderHistory = () => {
     saveAs(blob, "order_history.csv");
   };
 
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const handleDownloadCSV = () => {
+    setDropdownVisible(false);
+    exportToCSV();
+  };
+
+  const handleDownloadExcel = () => {
+    setDropdownVisible(false);
+    exportToExcel();
+  };
+
   return (
     <div>
       <DashboardLayout>
@@ -147,18 +163,30 @@ const OrderHistory = () => {
               </div>
               {/* Export buttons */}
               <div className="flex items-center gap-[12px]">
-                <button
-                  onClick={exportToCSV}
-                  className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
-                >
-                  Download CSV
-                </button>
-                <button
-                  onClick={exportToExcel}
-                  className="border border-purple500 bg-purple500 rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]"
-                >
-                  Download Excel
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={toggleDropdown}
+                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
+                  >
+                    Download
+                  </button>
+                  {dropdownVisible && (
+                    <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                      <button
+                        onClick={handleDownloadCSV}
+                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                      >
+                        Download CSV
+                      </button>
+                      <button
+                        onClick={handleDownloadExcel}
+                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                      >
+                        Download Excel
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -193,7 +221,11 @@ const OrderHistory = () => {
                     </p>
                     <p onClick={handleTicketMenu}>
                       {item.customer_name
-                        ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
+                        ? truncateText(
+                            item.customer_name.charAt(0).toUpperCase() +
+                              item.customer_name.slice(1),
+                            12
+                          )
                         : ""}
                     </p>
 
