@@ -17,6 +17,12 @@ import MenuModal from "../Components/MenuModal";
 import Back from "../assets/Cancel.svg";
 import { useState } from "react";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import CustomSelect3 from "../inputFields/CustomSelect3";
+
+// interface Option {
+//   value: string;
+//   label: string;
+// }
 
 export const OnlineOrderingBasket = () => {
   const navigate = useNavigate();
@@ -29,7 +35,7 @@ export const OnlineOrderingBasket = () => {
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
-  const [town, setTown] = useState("");
+  // const [town, setTown] = useState("");
   const [addressvalue, setAddressvalue] = useState("");
 
   const DELIVERY_PRICE = 500;
@@ -68,9 +74,7 @@ export const OnlineOrderingBasket = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    dispatch(
-      updateCustomerDetails({ name: userName, phone, streetAddress, town })
-    );
+    dispatch(updateCustomerDetails({ name: userName, phone, streetAddress }));
     handleCloseDeliveryModal();
     navigate("/demo/payment-type/online_ordering");
   };
@@ -482,14 +486,18 @@ export const OnlineOrderingBasket = () => {
                   placeholder="Street Address"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
-                <input
+                <CustomSelect3
+                  options={["Abuja", "Lagos"]}
+                  placeholder="City"
+                />
+                {/* <input
                   type="text"
                   id="name"
                   value={town}
                   onChange={(e) => setTown(e.target.value)}
                   placeholder="City"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
+                /> */}
               </div>
               <div className="mt-[24px] flex items-center justify-center gap-[16px]">
                 <p
@@ -501,7 +509,7 @@ export const OnlineOrderingBasket = () => {
 
                 <button
                   type="submit"
-                  disabled={!streetAddress || !town || !userName || !phone}
+                  disabled={!streetAddress || !userName || !phone}
                   className=" font-[500] text-[16px] border rounded-[5px]  text-white py-[10px] px-[24px]"
                   style={{
                     backgroundColor: colorScheme || "#11AE16",

@@ -368,7 +368,7 @@ const MenuSettings = () => {
 
   return (
     <div>
-      <div className="bg-[#F3EBE8] p-[24px] rounded-[5px] mt-[24px]">
+      <div className="border border-[#F3EBE8] p-[24px] rounded-[5px] mt-[24px]">
         <div className="flex items-center justify-between ">
           <div className="flex items-center gap-[16px]">
             <img src={MenuIcon} alt="" />

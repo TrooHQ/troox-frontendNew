@@ -124,9 +124,9 @@ const Dashboard = () => {
             <CustomSelect3
               options={branch}
               placeholder="All outlets"
-              BG="bg-[#5855B3]"
-              text="text-white"
-              hover="hover:bg-[#5855B3] hover:text-white"
+              BG="bg-[#ebebeb]"
+              text="text-black"
+              hover="hover:bg-[#ebebeb] hover:text-black"
               searchable={false}
               onSelect={handleSelectOutlet}
               value={selectedOutlet ?? undefined}
@@ -134,7 +134,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="py-[16px] px-[24px] bg-[#DB7F3B] rounded-[5px] mt-[16px]">
+        <div className="py-[16px] px-[24px] bg-[#3e3e43] rounded-[5px] mt-[16px]">
           <div className="flex items-center justify-between">
             <p className="font-[400] text-[12px] text-white">Total sales</p>
 
@@ -162,7 +162,7 @@ const Dashboard = () => {
 
         <div className="mt-[16px] grid grid-cols-2 gap-[16px]">
           <Link to="/demo/ticket/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#AEE1D8] rounded-[5px]">
+            <div className="px-[28px] py-[47px] border border-[#AEE1D8] rounded-[5px]">
               <div className="flex flex-col gap-[8px] items-center justify-center">
                 <img src={Confirmation} alt="" />
                 <p className="text-[20px] font-[400] text-grey500">Tickets</p>
@@ -171,7 +171,7 @@ const Dashboard = () => {
           </Link>
 
           <Link to="/demo/admin-menu/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#E5BFD0] rounded-[5px]">
+            <div className="px-[28px] py-[47px]  border border-[#E5BFD0] rounded-[5px]">
               <div className="flex flex-col gap-[8px] items-center justify-center">
                 <img src={restaurantIcon} alt="" />
                 <p className="text-[20px] font-[400] text-grey500">Menu</p>
@@ -180,7 +180,7 @@ const Dashboard = () => {
           </Link>
 
           <Link to="/demo/order/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#E8DEB4] rounded-[5px]">
+            <div className="px-[28px] py-[47px]  border border-[#E8DEB4] rounded-[5px]">
               <div className="flex flex-col gap-[8px] items-center justify-center">
                 <img src={orderIcon} alt="" />
                 <p className="text-[20px] font-[400] text-grey500">Orders</p>
@@ -189,7 +189,7 @@ const Dashboard = () => {
           </Link>
 
           <Link to="/demo/settings/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#F9D9CA] rounded-[5px]">
+            <div className="px-[28px] py-[47px] border border-[#F9D9CA] rounded-[5px]">
               <div className="flex flex-col gap-[8px] items-center justify-center">
                 <img src={setting} alt="" />
                 <p className="text-[20px] font-[400] text-grey500">Settings</p>
