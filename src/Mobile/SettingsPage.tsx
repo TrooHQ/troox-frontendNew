@@ -518,7 +518,7 @@ const SettingsPage = () => {
         <TopMenuNav title="Settings" />
 
         <div className="mt-[24px]">
-          <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">
+          <div className="border border-[#CFF5EE] p-[24px] rounded-[5px]">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
@@ -552,7 +552,7 @@ const SettingsPage = () => {
 
           <MenuSettings />
 
-          <div className="bg-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] ">
+          <div className="border border-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] ">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={QrIcon} alt="" />
@@ -1014,8 +1014,8 @@ const SettingsPage = () => {
                 <CustomSelect3
                   options={roles}
                   placeholder="Roles"
-                  BG=" bg-[#5855B3]"
-                  text=" text-white"
+                  BG=" bg-[#ffffff]"
+                  text=" text-black"
                   hover="hover:bg-[#5855B3] hover:text-white"
                   searchable={false}
                   onSelect={handleSelect}

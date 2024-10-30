@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import CustomSelect3 from "../inputFields/CustomSelect3";
-import { setSelectedOutlet, setSelectedOutletID } from "../../slices/OutletSlice";
+import {
+  setSelectedOutlet,
+  setSelectedOutletID,
+} from "../../slices/OutletSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -32,7 +35,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
   const userDetails = useSelector((state: RootState) => state.user?.userData);
 
-  const selectedOutlet = useSelector((state: any) => state.outlet.selectedOutlet);
+  const selectedOutlet = useSelector(
+    (state: any) => state.outlet.selectedOutlet
+  );
 
   const token = userDetails?.token;
 
@@ -56,7 +61,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       },
     };
     try {
-      const response = await axios.get(`${SERVER_DOMAIN}/branch/getBranch`, headers);
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/branch/getBranch`,
+        headers
+      );
 
       const branchOptions = response.data.data.map((branch: any) => ({
         value: branch._id,
@@ -98,22 +106,31 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       >
         <div className="flex items-center justify-between pb-[33px] border-b border-[#E7E7E7]">
           <img src={Logo} alt="Logo" className="max-w-[147px]" />
-          <img src={closeIcon} alt="Close" onClick={toggleSidebar} className="cursor-pointer" />
+          <img
+            src={closeIcon}
+            alt="Close"
+            onClick={toggleSidebar}
+            className="cursor-pointer"
+          />
         </div>
         <div className="p-4  border-b border-[#E7E7E7] grid gap-[8px]">
-          <p className="text-[16px] font-[500] text-[#121212]">{userDetails?.business_name}</p>
+          <p className="text-[16px] font-[500] text-[#121212]">
+            {userDetails?.business_name}
+          </p>
 
           <CustomSelect3
             options={branch}
             placeholder="All outlets"
-            BG="bg-[#5855B3]"
-            text="text-white"
-            hover="hover:bg-[#5855B3] hover:text-white"
+            BG="bg-[#ebebeb]"
+            text="text-black"
+            hover="hover:bg-[#ebebeb] hover:text-black"
             searchable={true}
             onSelect={handleSelectOutlet}
             value={selectedOutlet}
           />
-          <p className="text-[14px] font-[400] text-[#606060]">{userDetails?.business_type}</p>
+          <p className="text-[14px] font-[400] text-[#606060]">
+            {userDetails?.business_type}
+          </p>
         </div>
         <div className="absolute bottom-4 left-4 right-4">
           <div
