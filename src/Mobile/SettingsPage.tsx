@@ -518,7 +518,7 @@ const SettingsPage = () => {
         <TopMenuNav title="Settings" />
 
         <div className="mt-[24px]">
-          <div className="border border-[#CFF5EE] p-[24px] rounded-[5px]">
+          <div className="bg-[#CFF5EE] p-[24px] rounded-[5px]">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={AccountIcon} alt="" />
@@ -552,7 +552,7 @@ const SettingsPage = () => {
 
           <MenuSettings />
 
-          <div className="border border-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] ">
+          <div className="bg-[#F9F7EC] p-[24px] rounded-[5px] mt-[24px] ">
             <div className="flex items-center justify-between ">
               <div className="flex items-center gap-[16px]">
                 <img src={QrIcon} alt="" />
