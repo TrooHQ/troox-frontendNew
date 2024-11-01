@@ -14,9 +14,8 @@ import TopMenuNav from "./TopMenuNav";
 import Loader from "../../components/Loader";
 
 interface Ticket {
-  channel: string;
   order_number: string;
-  customer_name: string;
+  channel: string;
   menu_items: MenuItem[];
   orders: string[];
   total_price: number;
@@ -32,7 +31,7 @@ interface MenuItem {
   totalPrice: number;
 }
 
-const Tickets = () => {
+const OrderHistory = () => {
   const [ticketModal, setTicketModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -73,23 +72,23 @@ const Tickets = () => {
   return (
     <div className="my-[16px] mx-[24px] relative">
       {loading && <Loader />}
-      <TopMenuNav title="Tickets" />
+      <TopMenuNav title="Order History" />
 
       <div className="">
-        <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between border-b pb-[12px] px-[8px]">
-          <p className=" w-[80px]">Name</p>
-          <p className="w-[54px]">Number</p>
-          <p className=" w-[132px]">Orders</p>
+        <div className="my-[32px] text-[14px] font-[400] text-grey500  grid grid-cols-3 items-center border-b pb-[12px] px-[8px]">
+          <p className=" ">Channel</p>
+          <p className="">Order No</p>
+          <p className=" ">Date</p>
         </div>
 
         {tickets.map((ticket, index) => (
           <div
             key={index}
-            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex items-center justify-between"
+            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] grid grid-cols-3 items-center"
           >
-            <p className="capitalize w-[80px]">
-              {(ticket?.customer_name || "")
-                .split(" ")
+            <p className="capitalize ">
+              {(ticket?.channel || "")
+                .split(/[\s-]+/)
                 .map((name, index) =>
                   index === 0
                     ? name
@@ -99,21 +98,12 @@ const Tickets = () => {
                 )}
             </p>
 
-            <p className=" w-[54px] ">#{ticket?.order_number || "20"}</p>
+            <p className="  ">#{ticket?.order_number || "20"}</p>
             <div
-              className="w-[132px] flex justify-between items-center cursor-pointer"
+              className=" flex justify-between items-center cursor-pointer"
               onClick={() => handleTicketModal(ticket)}
             >
-              <div className="">
-                {ticket?.menu_items.map((item, index) => (
-                  <div key={index}>
-                    <p className=" text-[16px] font-[400] text-[#121212]">
-                      {item?.quantity || 1}x{" "}
-                      <span className=" p-[5px]">{item?.name}</span>
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <div className="">{ticket?.createdAt.slice(0, 10)}</div>
               <img src={More} alt="" className={` `} />
             </div>
           </div>
@@ -127,7 +117,7 @@ const Tickets = () => {
               <p className=" text-[16px] font-[500] text-grey500 ">Name</p>
               <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
                 <p>
-                  {selectedTicket?.customer_name
+                  {selectedTicket?.channel
                     .split(" ")
                     .map((name, index) =>
                       index === 0
@@ -162,8 +152,8 @@ const Tickets = () => {
               ))}
             </div>
           </div>
-          <div className=" flex items-center justify-between">
-            <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px]">
+          <div className=" flex items-center justify-between border-b border-b-[#E7E7E7]">
+            <div className="  py-[16px]  grid gap-[8px]">
               <p className="text-[16px] font-[500] text-grey500 ">
                 Order Number
               </p>
@@ -172,26 +162,26 @@ const Tickets = () => {
                 {selectedTicket?.order_number || "20"}
               </p>
             </div>
-            <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px] text-end">
+            <div className="  py-[16px]  grid gap-[8px]">
               <p className="text-[16px] font-[500] text-grey500 ">Channel</p>
               <p className=" capitalize text-[16px] font-[400] text-grey500">
                 {selectedTicket?.channel || ""}
               </p>
             </div>
           </div>
-          <div className="flex items-center justify-between border-b border-b-[#E7E7E7]">
-            <div className="py-[16px]  grid gap-[8px]">
-              <p className="text-[16px] font-[500] text-grey500">Date</p>
-              <p className="text-[16px] font-[400] text-grey500">
-                {dayjs(selectedTicket?.createdAt).format("MMMM D, YYYY")}
-              </p>
-            </div>
-            <div className="py-[16px]  grid gap-[8px] text-end">
-              <p className="text-[16px] font-[500] text-grey500">Time</p>
-              <p className="text-[16px] font-[400] text-grey500">
-                {dayjs(selectedTicket?.createdAt).format("h:mm A")}
-              </p>
-            </div>
+          <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px]">
+            <p className=" text-[16px] font-[500] text-grey500">Time</p>
+            <p className=" text-[16px] font-[400] text-grey500">
+              {" "}
+              {dayjs(selectedTicket?.createdAt).format("h:mm a")}
+            </p>
+          </div>
+
+          <div className="  py-[16px] border-b border-b-[#E7E7E7] grid gap-[8px]">
+            <p className=" text-[16px] font-[500] text-grey500">
+              Delivery Details
+            </p>
+            <p className=" text-[16px] font-[400] text-grey500"> Pick Up</p>
           </div>
 
           <p className=" flex items-center gap-[8px] py-[16px]">
@@ -203,16 +193,10 @@ const Tickets = () => {
               {selectedTicket?.status}
             </span>
           </p>
-          <button
-            className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px]"
-            disabled
-          >
-            Refund
-          </button>
         </div>
       </Modal>
     </div>
   );
 };
 
-export default Tickets;
+export default OrderHistory;
