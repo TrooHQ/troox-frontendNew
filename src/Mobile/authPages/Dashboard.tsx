@@ -150,13 +150,21 @@ const Dashboard = () => {
             N250,000.00
           </p>
 
-          <div className="grid gap-[5px] mt-[16px]">
-            <p className="text-[14px] font-[400] text-white leading-[21px]">
-              30 Processed orders
-            </p>
-            <p className="text-[14px] font-[400] text-white leading-[21px]">
-              30 Processed orders
-            </p>
+          <div className=" flex items-end justify-between">
+            <div className="grid gap-[5px] mt-[16px]">
+              <p className="text-[14px] font-[400] text-white leading-[21px]">
+                30 Processed orders
+              </p>
+              <p className="text-[14px] font-[400] text-white leading-[21px]">
+                30 Processed orders
+              </p>
+            </div>
+
+            <Link to="/demo/order-history/troo-portal">
+              <div className=" cursor-pointer inline-block text-white py-[8px] px-[8px] rounded-[4px] border">
+                <p>Order History</p>
+              </div>
+            </Link>
           </div>
         </div>
 

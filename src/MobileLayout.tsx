@@ -52,6 +52,7 @@ import { OnlineOrderingSelectPayment } from "./Mobile/OnlineOrdering/OnlineOrder
 import { OnlineOrderingReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingReceipt";
 import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingGetReceipt";
 import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
+import OrderHistory from "./Mobile/Components/OrderHistory";
 
 const MobileLayout = () => {
   return (
@@ -180,6 +181,10 @@ const MobileLayout = () => {
           />
 
           <Route path="/demo/ticket/troo-portal" element={<Tickets />} />
+          <Route
+            path="/demo/order-history/troo-portal"
+            element={<OrderHistory />}
+          />
 
           <Route path="/demo/order/troo-portal" element={<Order />} />
 
