@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { DropdownMenu } from "./DropdownMenuOpenTickets";
 import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
+import { truncateText } from "../../utils/truncateText";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -256,7 +257,11 @@ const Tickets = () => {
 
                       <p onClick={handleTicketMenu}>
                         {item.customer_name
-                          ? item.customer_name.charAt(0).toUpperCase() + item.customer_name.slice(1)
+                          ? truncateText(
+                              item.customer_name.charAt(0).toUpperCase() +
+                                item.customer_name.slice(1),
+                              10
+                            )
                           : ""}
                       </p>
                       <p>{item.waiter || "-"}</p>
@@ -347,7 +352,15 @@ const Tickets = () => {
                       </p>
                       <p onClick={handleTicketMenu}>{item.table_number || "-"}</p>
                       <p onClick={handleTicketMenu}>{item.order_number || "-"}</p>
-                      <p onClick={handleTicketMenu}>{item.customer_name || ""}</p>
+                      <p onClick={handleTicketMenu}>
+                        {item.customer_name
+                          ? truncateText(
+                              item.customer_name.charAt(0).toUpperCase() +
+                                item.customer_name.slice(1),
+                              10
+                            )
+                          : ""}
+                      </p>
                       <p>{item.waiter || "-"}</p>
                       <p>{item.channel || ""}</p>
                       <div className="flex items-center justify-center gap-[10px]">

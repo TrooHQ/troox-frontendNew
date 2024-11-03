@@ -1,4 +1,5 @@
-import Profileimg from "../../assets/Profileimg.svg";
+import { Avatar } from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Users = ({
   users,
@@ -26,14 +27,16 @@ const Users = ({
               className="grid grid-cols-8 items-center px-5 py-2 font-[400] bg-[#F8F8F8] text-[16px] text-grey500"
             >
               <div className="col-span-2 px-3 py-2 flex items-center gap-[16px] overflow-visible whitespace-normal">
-                <img src={Profileimg} alt="Profile" />
+                <div>
+                  <Avatar sx={{ width: 40, height: 40 }}>
+                    <PersonIcon />
+                  </Avatar>
+                </div>
                 <div>
                   <p>
                     {user.first_name} {user.last_name}
                   </p>
-                  <p className="font-medium text-[14px]">
-                    {user.personal_email}
-                  </p>
+                  <p className="font-medium text-[14px]">{user.personal_email}</p>
                 </div>
               </div>
               <p className="px-3 py-2">{user.user_role}</p>

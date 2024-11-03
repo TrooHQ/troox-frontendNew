@@ -4,7 +4,7 @@ import Add from "../../assets/add.svg";
 import CheckCircle from "../../assets/check_circle.svg";
 import Close from "../../assets/closeIcon.svg";
 import PublishIcon from "../../assets/publishIcon.svg";
-import Publish from "../../assets/publish.svg";
+// import Publish from "../../assets/publish.svg";
 import activeArrow from "../../assets/activeArrow.svg";
 import { useEffect, useState } from "react";
 import Modal from "../Modal";
@@ -184,9 +184,9 @@ const MenuBuilder = () => {
     setConfirmPublishModal(false);
     setPublishModal(true);
   };
-  const handleConfirmPublishModal = () => {
-    setConfirmPublishModal(true);
-  };
+  // const handleConfirmPublishModal = () => {
+  //   setConfirmPublishModal(true);
+  // };
 
   const [subMenuContent, setSubmenuContent] = useState<
     {
@@ -506,14 +506,15 @@ const MenuBuilder = () => {
                   <img src={Add} alt="" /> Add new menu category
                 </button>
               </div>
-              <div
+              <div></div>
+              {/* <div
                 className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500"
                 onClick={handleConfirmPublishModal}
               >
                 <button className="text-[14px] flex items-center gap-[8px]">
                   <img src={Publish} alt="" /> Publish changes
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div className=" flex ">
