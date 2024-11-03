@@ -317,6 +317,7 @@ const Modifiers = ({
       branch_id: selectedBranch.id, // Replace with the correct branch ID
       modifier_group_name: modifier.modifier_group_name,
       new_group_name: newGroupName,
+      menu_item_name: selectedMenuItem,
       rule: "single", // Adjust as necessary
     };
 

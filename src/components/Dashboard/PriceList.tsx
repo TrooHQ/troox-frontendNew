@@ -91,9 +91,9 @@ const PriceList = () => {
                 </button>
               </div>
               <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
-                <button className="text-[14px] flex items-center gap-[8px]">
+                {/* <button className="text-[14px] flex items-center gap-[8px]">
                   <img src={Publish} alt="" /> Publish changes
-                </button>
+                </button> */}
               </div>
             </div>
 
