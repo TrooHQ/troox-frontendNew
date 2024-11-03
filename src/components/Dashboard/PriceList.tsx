@@ -5,7 +5,7 @@ import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
 import SearchIcon from "../../assets/searchIcon.svg";
 import { fetchMenuItems2 } from "../../slices/menuSlice";
-import Publish from "../../assets/publish.svg";
+// import Publish from "../../assets/publish.svg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { AppDispatch } from "../../store/store";
@@ -90,11 +90,11 @@ const PriceList = () => {
                   <img src={Print} alt="" /> Print price list
                 </button>
               </div>
-              <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
-                {/* <button className="text-[14px] flex items-center gap-[8px]">
+              {/* <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
+                <button className="text-[14px] flex items-center gap-[8px]">
                   <img src={Publish} alt="" /> Publish changes
-                </button> */}
-              </div>
+                </button>
+              </div> */}
             </div>
 
             <div className="my-[40px]">
