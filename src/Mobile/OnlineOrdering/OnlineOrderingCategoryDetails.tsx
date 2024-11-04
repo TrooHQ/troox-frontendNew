@@ -16,7 +16,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 import Swipe from "../assets/swipe.png";
-
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 interface MenuItem {
@@ -380,9 +379,10 @@ export const OnlineOrderingCategoryDetails = () => {
               <div key={groupName} className="mb-[24px] ">
                 {groupName && (
                   <p
-                    className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px] rounded-[4px] border border-[#929292]"
+                    className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px]"
                     style={{
-                      backgroundColor: colorScheme || "#414141",
+                      borderLeft: `5px solid ${colorScheme || "#414141"}`,
+                      color: colorScheme || "#414141",
                     }}
                   >
                     {groupName && groupName !== "undefined"

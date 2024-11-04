@@ -22,6 +22,7 @@ interface Ticket {
   createdAt: string;
   status: string;
   name: string;
+  customer_name: string;
 }
 
 interface MenuItem {
@@ -75,35 +76,32 @@ const OrderHistory = () => {
       <TopMenuNav title="Order History" />
 
       <div className="">
-        <div className="my-[32px] text-[14px] font-[400] text-grey500  grid grid-cols-3 items-center border-b pb-[12px] px-[8px]">
-          <p className=" ">Channel</p>
-          <p className="">Order No</p>
-          <p className=" ">Date</p>
+        <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between items-center border-b pb-[12px] px-[8px]">
+          <p className=" w-[80px] ">Date</p>
+          <p className=" w-[80px]">Channel</p>
+          <p className="w-[80px]">Order No</p>
+          <p className="w-[54px]">Amount</p>
         </div>
 
         {tickets.map((ticket, index) => (
           <div
             key={index}
-            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] grid grid-cols-3 items-center"
+            className=" text-center my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex justify-between items-center"
           >
-            <p className="capitalize ">
-              {(ticket?.channel || "")
-                .split(/[\s-]+/)
-                .map((name, index) =>
-                  index === 0
-                    ? name
-                    : index === 1
-                    ? ` ${name.charAt(0).toUpperCase()}.`
-                    : ""
-                )}
-            </p>
+            <div className=" w-[80px]">
+              {" "}
+              {ticket?.createdAt.slice(0, 10)} {ticket?.createdAt.slice(11, 16)}
+            </div>
 
-            <p className="  ">#{ticket?.order_number || "20"}</p>
+            <p className="  w-[80px]">
+              #{(ticket?.order_number || "20").slice(8, 10)}
+            </p>
+            <p className="capitalize w-[80px]">{ticket?.channel.slice(0, 6)}</p>
             <div
-              className=" flex justify-between items-center cursor-pointer"
+              className=" flex justify-between gap-[10px] items-center cursor-pointer "
               onClick={() => handleTicketModal(ticket)}
             >
-              <div className="">{ticket?.createdAt.slice(0, 10)}</div>
+              <p className="  ">&#x20A6;{ticket?.total_price}</p>
               <img src={More} alt="" className={` `} />
             </div>
           </div>
@@ -117,7 +115,7 @@ const OrderHistory = () => {
               <p className=" text-[16px] font-[500] text-grey500 ">Name</p>
               <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
                 <p>
-                  {selectedTicket?.channel
+                  {selectedTicket?.customer_name
                     .split(" ")
                     .map((name, index) =>
                       index === 0

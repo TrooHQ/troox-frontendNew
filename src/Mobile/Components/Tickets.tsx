@@ -77,18 +77,22 @@ const Tickets = () => {
 
       <div className="">
         <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between border-b pb-[12px] px-[8px]">
+          <p className=" w-[80px]">Date</p>
           <p className=" w-[80px]">Name</p>
-          <p className="w-[54px]">Number</p>
-          <p className=" w-[132px]">Orders</p>
+          <p className="w-[54px]">Ord. No.</p>
+          <p className=" w-[80px]">Channel</p>
         </div>
 
         {tickets.map((ticket, index) => (
           <div
             key={index}
-            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex items-center justify-between"
+            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px]  flex items-center justify-between"
           >
             <p className="capitalize w-[80px]">
-              {(ticket?.customer_name || "")
+              {ticket?.createdAt.slice(0, 10)} {ticket?.createdAt.slice(11, 16)}
+            </p>
+            <p className="capitalize w-[80px]">
+              {(ticket?.customer_name || "*****")
                 .split(" ")
                 .map((name, index) =>
                   index === 0
@@ -99,12 +103,18 @@ const Tickets = () => {
                 )}
             </p>
 
-            <p className=" w-[54px] ">#{ticket?.order_number || "20"}</p>
+            <p className=" w-[54px] ">
+              #{(ticket?.order_number || "20").slice(8, 10)}
+            </p>
+
             <div
-              className="w-[132px] flex justify-between items-center cursor-pointer"
+              className="w-[80px] flex justify-between items-center cursor-pointer"
               onClick={() => handleTicketModal(ticket)}
             >
-              <div className="">
+              <p className=" capitalize text-[16px] font-[400] text-grey500 ">
+                {ticket?.channel.slice(0, 6) || ""}
+              </p>
+              <div className=" hidden">
                 {ticket?.menu_items.map((item, index) => (
                   <div key={index}>
                     <p className=" text-[16px] font-[400] text-[#121212]">
@@ -127,15 +137,16 @@ const Tickets = () => {
               <p className=" text-[16px] font-[500] text-grey500 ">Name</p>
               <div className=" text-[16px] font-[400] text-grey500 flex items-center justify-between capitalize">
                 <p>
-                  {selectedTicket?.customer_name
-                    .split(" ")
-                    .map((name, index) =>
-                      index === 0
-                        ? name
-                        : index === 1
-                        ? ` ${name.charAt(0).toUpperCase()}.`
-                        : ""
-                    )}
+                  {selectedTicket?.customer_name ||
+                    "*****"
+                      .split(" ")
+                      .map((name, index) =>
+                        index === 0
+                          ? name
+                          : index === 1
+                          ? ` ${name.charAt(0).toUpperCase()}.`
+                          : ""
+                      )}
                 </p>
               </div>
             </div>
