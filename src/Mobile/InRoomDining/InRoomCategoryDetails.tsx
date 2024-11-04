@@ -368,18 +368,21 @@ export const InRoomCategoryDetails = () => {
           <div className=" py-[20px]">
             {Object.keys(groupedMenuItems).map((groupName) => (
               <div key={groupName} className="mb-[24px]">
-                <p
-                  className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px] rounded-[4px] border border-[#929292]"
-                  style={{
-                    backgroundColor: colorScheme || "#414141",
-                  }}
-                >
-                  {groupName && groupName !== "undefined"
-                    ? groupName.length > 20
-                      ? `${groupName.slice(0, 20)}...`
-                      : groupName
-                    : ""}
-                </p>
+                {groupName && (
+                  <p
+                    className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px]"
+                    style={{
+                      borderLeft: `5px solid ${colorScheme || "#414141"}`,
+                      color: colorScheme || "#414141",
+                    }}
+                  >
+                    {groupName && groupName !== "undefined"
+                      ? groupName.length > 20
+                        ? `${groupName.slice(0, 20)}...`
+                        : groupName
+                      : ""}
+                  </p>
+                )}
 
                 {groupedMenuItems[groupName].map((menu) => (
                   <div key={menu._id} className="mx-[24px]">

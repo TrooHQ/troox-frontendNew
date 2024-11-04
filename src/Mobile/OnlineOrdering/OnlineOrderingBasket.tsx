@@ -60,8 +60,13 @@ export const OnlineOrderingBasket = () => {
     setSelectedOption("");
   };
 
-  const handleAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const addressLocation = event.target.value;
+  // const handleAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const addressLocation = event.target.value;
+  //   setAddressvalue(addressLocation);
+  //   dispatch(updateCustomerAddress(addressLocation));
+  // };
+
+  const handleAddress = (addressLocation: string) => {
     setAddressvalue(addressLocation);
     dispatch(updateCustomerAddress(addressLocation));
   };
@@ -221,21 +226,6 @@ export const OnlineOrderingBasket = () => {
                 &#x20A6;{basketDetails?.totalPrice}
               </p>
             </div>
-
-            {/* <div className="mt-[60px] flex items-center justify-center gap-[16px]">
-              <p
-                className="cursor-pointer font-[500] border border-[#B11111] rounded-[5px] text-[16px] text-[#B11111] py-[10px] px-[24px]"
-                onClick={() => navigate(-1)}
-              >
-                Cancel
-              </p>
-
-              <Link to="/demo/tip/online_ordering">
-                <p className=" font-[500] text-[16px] border border-[#11AE16] rounded-[5px] bg-[#11AE16] text-white py-[10px] px-[24px]">
-                  Proceed to Pay
-                </p>
-              </Link>
-            </div> */}
           </div>
         )}
       </div>
@@ -312,104 +302,24 @@ export const OnlineOrderingBasket = () => {
                   color: colorScheme || "#121212",
                 }}
               >
-                Choose your preferred pickup location
+                Enter Details
               </p>
 
               <div className="py-[25px] grid gap-[16px]">
-                <label className="flex items-center gap-[12px] px-[24px] border-r cursor-pointer">
-                  <input
-                    type="radio"
-                    name="deliveryOption"
-                    value="Lekki"
-                    checked={addressvalue === "Lekki"}
-                    onChange={handleAddress}
-                    className=""
-                  />
-                  <p
-                    className="font-[400] text-[18px] "
-                    style={{
-                      color: colorScheme || "#121212",
-                    }}
-                  >
-                    Lekki
-                  </p>
-                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Enter Full Name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
 
-                <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
-                  <input
-                    type="radio"
-                    name="deliveryOption"
-                    value="Ikeja"
-                    checked={addressvalue === "Ikeja"}
-                    onChange={handleAddress}
-                    className=""
-                  />
-                  <p
-                    className="font-[400] text-[18px] "
-                    style={{
-                      color: colorScheme || "#121212",
-                    }}
-                  >
-                    Ikeja
-                  </p>
-                </label>
-
-                <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
-                  <input
-                    type="radio"
-                    name="deliveryOption"
-                    value="Ikoyi"
-                    checked={addressvalue === "Ikoyi"}
-                    onChange={handleAddress}
-                    className=""
-                  />
-                  <p
-                    className="font-[400] text-[18px] "
-                    style={{
-                      color: colorScheme || "#121212",
-                    }}
-                  >
-                    Ikoyi
-                  </p>
-                </label>
-
-                <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
-                  <input
-                    type="radio"
-                    name="deliveryOption"
-                    value="Yaba"
-                    checked={addressvalue === "Yaba"}
-                    onChange={handleAddress}
-                    className=""
-                  />
-                  <p
-                    className="font-[400] text-[18px] "
-                    style={{
-                      color: colorScheme || "#121212",
-                    }}
-                  >
-                    Yaba
-                  </p>
-                </label>
-
-                <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
-                  <input
-                    type="radio"
-                    name="deliveryOption"
-                    value="Surulere"
-                    checked={addressvalue === "Surulere"}
-                    onChange={handleAddress}
-                    className=""
-                  />
-                  <p
-                    className="font-[400] text-[18px] "
-                    style={{
-                      color: colorScheme || "#121212",
-                    }}
-                  >
-                    Surulere
-                  </p>
-                </label>
+                <CustomSelect3
+                  options={["Lekki", "Ikeja", "Ikoyi", "Yaba", "Lagos"]}
+                  placeholder="City"
+                  onSelect={handleAddress}
+                />
               </div>
               <div className="mt-[24px] flex items-center justify-center gap-[16px]">
                 <p
@@ -490,14 +400,6 @@ export const OnlineOrderingBasket = () => {
                   options={["Abuja", "Lagos"]}
                   placeholder="City"
                 />
-                {/* <input
-                  type="text"
-                  id="name"
-                  value={town}
-                  onChange={(e) => setTown(e.target.value)}
-                  placeholder="City"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                /> */}
               </div>
               <div className="mt-[24px] flex items-center justify-center gap-[16px]">
                 <p
