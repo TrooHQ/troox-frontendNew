@@ -89,7 +89,7 @@ const Tickets = () => {
             className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px]  flex items-center justify-between"
           >
             <p className="capitalize w-[80px]">
-              {ticket?.createdAt.slice(0, 10)} {ticket?.createdAt.slice(11, 16)}
+              {ticket?.createdAt.slice(0, 10)}
             </p>
             <p className="capitalize w-[80px]">
               {(ticket?.customer_name || "*****")
@@ -104,7 +104,7 @@ const Tickets = () => {
             </p>
 
             <p className=" w-[54px] ">
-              #{(ticket?.order_number || "20").slice(8, 10)}
+              #{(ticket?.order_number || "20").slice(7, 10)}
             </p>
 
             <div

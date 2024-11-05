@@ -78,8 +78,8 @@ const OrderHistory = () => {
       <div className="">
         <div className="my-[32px] text-[14px] font-[400] text-grey500  flex justify-between items-center border-b pb-[12px] px-[8px]">
           <p className=" w-[80px] ">Date</p>
-          <p className=" w-[80px]">Channel</p>
           <p className="w-[80px]">Order No</p>
+          <p className=" w-[80px]">Channel</p>
           <p className="w-[54px]">Amount</p>
         </div>
 
@@ -88,10 +88,7 @@ const OrderHistory = () => {
             key={index}
             className=" text-center my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex justify-between items-center"
           >
-            <div className=" w-[80px]">
-              {" "}
-              {ticket?.createdAt.slice(0, 10)} {ticket?.createdAt.slice(11, 16)}
-            </div>
+            <div className=" w-[80px]"> {ticket?.createdAt.slice(0, 10)}</div>
 
             <p className="  w-[80px]">
               #{(ticket?.order_number || "20").slice(8, 10)}
@@ -101,7 +98,9 @@ const OrderHistory = () => {
               className=" flex justify-between gap-[10px] items-center cursor-pointer "
               onClick={() => handleTicketModal(ticket)}
             >
-              <p className="  ">&#x20A6;{ticket?.total_price}</p>
+              <p className="  ">
+                &#x20A6;{ticket?.total_price.toLocaleString()}
+              </p>
               <img src={More} alt="" className={` `} />
             </div>
           </div>
