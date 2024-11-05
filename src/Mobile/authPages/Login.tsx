@@ -49,11 +49,11 @@ const Login = () => {
       if (userType === "employee") {
         navigate("/demo/employee-dashboard/troo-portal");
       } else if (userType === "admin") {
-        if (response.data.has_created_menu_item === false) {
-          navigate("/demo/menu/troo-portal");
-        } else {
-          navigate("/demo/dashboard/troo-portal");
-        }
+        // if (response.data.has_created_menu_item === false) {
+        //   navigate("/demo/menu/troo-portal");
+        // } else {
+        navigate("/demo/dashboard/troo-portal");
+        // }
       }
     } catch (error) {
       console.error("Error occurred:", error);

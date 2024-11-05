@@ -392,13 +392,6 @@ const OrderTab: React.FC = () => {
           <div className="">
             <p>Please I want the spaghetti with less spice and extra hot dog</p>
           </div>
-
-          <button
-            className="text-white text-center font-[500] text-[14px] border border-[#ED5048] bg-[#ED5048] py-[8px] flex items-center justify-center w-full rounded-[5px] mt-[16px]"
-            disabled
-          >
-            Refund
-          </button>
         </div>
       </Modal>
     </div>
