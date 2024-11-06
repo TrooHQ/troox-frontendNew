@@ -23,24 +23,24 @@ const ProfileDetails = () => {
           <SectionHeader title="Personal Information" />
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">First Name</p>
-              <p className="text-gray-900">Sam</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">First Name</p>
+              <p className="text-[#121212] font-medium text-base">Sam</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Last Name</p>
-              <p className="text-gray-900">Doe</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Last Name</p>
+              <p className="text-[#121212] font-medium text-base">Doe</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Email</p>
-              <p className="text-gray-900">samdoe@email.com</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Email</p>
+              <p className="text-[#121212] font-medium text-base">samdoe@email.com</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Phone Number</p>
-              <p className="text-gray-900">+234 80 123 4567 89</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Phone Number</p>
+              <p className="text-[#121212] font-medium text-base">+234 80 123 4567 89</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Role</p>
-              <p className="text-gray-900">Admin</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Role</p>
+              <p className="text-[#121212] font-medium text-base">Admin</p>
             </div>
           </div>
         </div>
@@ -49,16 +49,16 @@ const ProfileDetails = () => {
           <SectionHeader title="Address" />
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Country</p>
-              <p className="text-gray-900">Nigeria</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Country</p>
+              <p className="text-[#121212] font-medium text-base">Nigeria</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">City/State</p>
-              <p className="text-gray-900">Lagos, Nigeria</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">City/State</p>
+              <p className="text-[#121212] font-medium text-base">Lagos, Nigeria</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 mb-1">Email</p>
-              <p className="text-gray-900">samdoe@email.com</p>
+              <p className="text-sm text-[#606060] font-normal mb-1">Email</p>
+              <p className="text-[#121212] font-medium text-base">samdoe@email.com</p>
             </div>
           </div>
         </div>
