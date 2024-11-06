@@ -10,6 +10,7 @@ import AccountingIcon from "../../assets/AccountingIcon.svg";
 import RestaurantDetailsIcon from "../../assets/restaurantDetails.svg";
 import ManageTablesIcon from "../../assets/manageTableIcon.svg";
 import PointOfSalesIcon from "../../assets/posIcon.svg";
+import AccountCircleIcon from "../../assets/account_circle.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import HubIcon from "../../assets/hub.svg";
@@ -196,6 +197,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       gap: false,
       icon: PointOfSalesIcon,
       link: "/pos",
+    },
+    {
+      title: "Profile",
+      gap: false,
+      icon: AccountCircleIcon,
+      link: "/profile-page",
     },
     // {
     //   title: "Logout",
