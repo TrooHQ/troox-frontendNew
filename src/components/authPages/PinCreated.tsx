@@ -16,7 +16,7 @@ const PinCreated = () => {
               <div className=" max-w-[355px] mx-auto">
                 <p className=" text-grey500 text-[24px] font-[600]">Well done!</p>
                 <p className=" text-grey500 text-[16px] font-[500] py-3">
-                  You have successfully created a pin!
+                  You have successfully created a pin and a password!
                 </p>
               </div>
             </div>
