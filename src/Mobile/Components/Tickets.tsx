@@ -83,51 +83,59 @@ const Tickets = () => {
           <p className=" w-[80px]">Channel</p>
         </div>
 
-        {tickets.map((ticket, index) => (
-          <div
-            key={index}
-            className=" my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px]  flex items-center justify-between"
-          >
-            <p className="capitalize w-[80px]">
-              {ticket?.createdAt.slice(0, 10)}
-            </p>
-            <p className="capitalize w-[80px]">
-              {(ticket?.customer_name || "*****")
-                .split(" ")
-                .map((name, index) =>
-                  index === 0
-                    ? name
-                    : index === 1
-                    ? ` ${name.charAt(0).toUpperCase()}.`
-                    : ""
-                )}
-            </p>
-
-            <p className=" w-[54px] ">
-              #{(ticket?.order_number || "20").slice(7, 10)}
-            </p>
-
+        {tickets
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .map((ticket, index) => (
             <div
-              className="w-[80px] flex justify-between items-center cursor-pointer"
-              onClick={() => handleTicketModal(ticket)}
+              key={index}
+              className="my-[32px] text-[14px] font-[400] text-grey500 border-b pb-[12px] px-[8px] flex items-center justify-between"
             >
-              <p className=" capitalize text-[16px] font-[400] text-grey500 ">
-                {ticket?.channel.slice(0, 6) || ""}
+              <p className="capitalize w-[80px]">
+                {typeof ticket.createdAt === "string"
+                  ? ticket.createdAt.slice(0, 10)
+                  : new Date(ticket.createdAt).toISOString().slice(0, 10)}
               </p>
-              <div className=" hidden">
-                {ticket?.menu_items.map((item, index) => (
-                  <div key={index}>
-                    <p className=" text-[16px] font-[400] text-[#121212]">
-                      {item?.quantity || 1}x{" "}
-                      <span className=" p-[5px]">{item?.name}</span>
-                    </p>
-                  </div>
-                ))}
+
+              <p className="capitalize w-[80px]">
+                {(ticket?.customer_name || "*****")
+                  .split(" ")
+                  .map((name, index) =>
+                    index === 0
+                      ? name
+                      : index === 1
+                      ? ` ${name.charAt(0).toUpperCase()}.`
+                      : ""
+                  )}
+              </p>
+
+              <p className="w-[54px]">
+                #{(ticket?.order_number || "20").slice(7, 10)}
+              </p>
+
+              <div
+                className="w-[80px] flex justify-between items-center cursor-pointer"
+                onClick={() => handleTicketModal(ticket)}
+              >
+                <p className="capitalize text-[16px] font-[400] text-grey500">
+                  {ticket?.channel.slice(0, 6) || ""}
+                </p>
+                <div className="hidden">
+                  {ticket?.menu_items?.map((item, idx) => (
+                    <div key={idx}>
+                      <p className="text-[16px] font-[400] text-[#121212]">
+                        {item?.quantity || 1}x{" "}
+                        <span className="p-[5px]">{item?.name}</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <img src={More} alt="" />
               </div>
-              <img src={More} alt="" className={` `} />
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       <Modal isOpen={ticketModal}>

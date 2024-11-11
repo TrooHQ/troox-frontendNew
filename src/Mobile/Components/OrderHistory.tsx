@@ -19,7 +19,7 @@ interface Ticket {
   menu_items: MenuItem[];
   orders: string[];
   total_price: number;
-  createdAt: string;
+  createdAt: string | Date;
   status: string;
   name: string;
   customer_name: string;
@@ -35,7 +35,7 @@ interface MenuItem {
 const OrderHistory = () => {
   const [ticketModal, setTicketModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [orderHistory, setOrderHistory] = useState<Ticket[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const handleTicketModal = (ticket: Ticket) => {
     setSelectedTicket(ticket);
@@ -58,8 +58,7 @@ const OrderHistory = () => {
         `${SERVER_DOMAIN}/order/getOrder`,
         headers
       );
-      console.log("Tickets Retrieved successfully:", response.data);
-      setTickets(response.data);
+      setOrderHistory(response.data);
     } catch (error) {
       console.error("Error Retrieving Tickets:", error);
     } finally {
@@ -83,28 +82,37 @@ const OrderHistory = () => {
           <p className="w-[54px]">Amount</p>
         </div>
 
-        {tickets.map((ticket, index) => (
-          <div
-            key={index}
-            className=" text-center my-[32px] text-[14px] font-[400] text-grey500  border-b pb-[12px] px-[8px] flex justify-between items-center"
-          >
-            <div className=" w-[80px]"> {ticket?.createdAt.slice(0, 10)}</div>
-
-            <p className="  w-[80px]">
-              #{(ticket?.order_number || "20").slice(8, 10)}
-            </p>
-            <p className="capitalize w-[80px]">{ticket?.channel.slice(0, 6)}</p>
+        {orderHistory
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .map((ticket, index) => (
             <div
-              className=" flex justify-between gap-[10px] items-center cursor-pointer "
-              onClick={() => handleTicketModal(ticket)}
+              key={index}
+              className="text-center my-[32px] text-[14px] font-[400] text-grey500 border-b pb-[12px] px-[8px] flex justify-between items-center"
             >
-              <p className="  ">
-                &#x20A6;{ticket?.total_price.toLocaleString()}
+              <div className="w-[80px]">
+                {typeof ticket.createdAt === "string"
+                  ? ticket.createdAt.slice(0, 10)
+                  : new Date(ticket.createdAt).toISOString().slice(0, 10)}
+              </div>
+
+              <p className="w-[80px]">
+                #{(ticket?.order_number || "20").slice(8, 10)}
               </p>
-              <img src={More} alt="" className={` `} />
+              <p className="capitalize w-[80px]">
+                {ticket?.channel.slice(0, 6)}
+              </p>
+              <div
+                className="flex justify-between gap-[10px] items-center cursor-pointer"
+                onClick={() => handleTicketModal(ticket)}
+              >
+                <p>&#x20A6;{ticket?.total_price.toLocaleString()}</p>
+                <img src={More} alt="" />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       <Modal isOpen={ticketModal}>
