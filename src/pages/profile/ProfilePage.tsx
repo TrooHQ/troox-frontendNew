@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/Dashboard/DashboardLayout";
 import TopMenuNav from "../../components/Dashboard/TopMenuNav";
 import ProfileDetails from "./ProfileDetails";
 import BranchDetails from "./BranchDetails";
 import Security from "./Security";
 import Sidebar from "../../components/Dashboard/Profile/Sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { fetchUserDetails } from "../../slices/UserSlice";
 
 const ProfilePage = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { userDetails, loading, error } = useSelector((state: any) => state.user);
+
+  console.log(userDetails, loading, error);
+
+  useEffect(() => {
+    // Fetch user details
+    dispatch(fetchUserDetails());
+  }, []);
+
   const [activeComponent, setActiveComponent] = useState("profile");
 
   // Function to render the active component

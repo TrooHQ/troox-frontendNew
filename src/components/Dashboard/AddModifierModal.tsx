@@ -76,7 +76,7 @@ const AddModifierModal: React.FC<AddModifierModalProps> = ({
             </div>
             {selectedType === "QR Scan at Table" && location !== "" && (
               <>
-                <div className="mt-3 flex-grow">
+                <div className="mt-3">
                   <CustomInput
                     type="text"
                     label="How many tables do you have?"
@@ -93,24 +93,32 @@ const AddModifierModal: React.FC<AddModifierModalProps> = ({
                     }}
                   />
                 </div>
-                {tableArr.map((table, index) => (
-                  <div key={index} className="mt-3 flex-grow">
-                    <CustomInput
-                      type="number"
-                      label={`Guests at Table ${table.table_number}`}
-                      value={table.guests.toString()}
-                      onChange={(newValue) => {
-                        setTableArr((prevArr: any) =>
-                          prevArr.map((t: any) =>
-                            t.table_number === table.table_number
-                              ? { ...t, guests: Number(newValue) }
-                              : t
-                          )
-                        );
-                      }}
-                    />
+
+                <div className="mt-4 p-4 bg-gray-50 border rounded-lg">
+                  <h3 className="text-lg font-medium mb-4">Number of Seats by Table</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* <div className="text-center font-semibold">Table</div>
+                    <div className="text-center font-semibold">Seat</div> */}
+                    {tableArr.map((table, index) => (
+                      <div key={index}>
+                        <CustomInput
+                          type="number"
+                          label={`Seats at Table ${table.table_number}`}
+                          value={table.guests.toString()}
+                          onChange={(newValue) => {
+                            setTableArr((prevArr: any) =>
+                              prevArr.map((t: any) =>
+                                t.table_number === table.table_number
+                                  ? { ...t, guests: Number(newValue) }
+                                  : t
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </>
             )}
           </div>

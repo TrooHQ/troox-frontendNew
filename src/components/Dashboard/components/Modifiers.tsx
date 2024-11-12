@@ -123,6 +123,7 @@ const Modifiers = ({
       modifier_name: modifiers[0].name,
       modifier_group_name: selectedModifier.modifier_group_name,
       price: parseFloat(modifiers[0].price),
+      modifier_group_id: selectedModifier._id,
     };
 
     const headers = {
