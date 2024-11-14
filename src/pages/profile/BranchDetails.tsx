@@ -1,40 +1,67 @@
+import { useSelector } from "react-redux";
 import SectionHeader from "../../components/Dashboard/Profile/SectionHeader";
+import { Key, useState } from "react";
+import EditBranchDetailsModal from "../../components/Dashboard/Profile/EditBranchDetailsModal";
 
 const BranchDetails = () => {
-  const privileges = [
-    "Create Menu",
-    "View All Menus",
-    "Freeze/Unfreeze Menu List",
-    "Edit Menu",
-    "Create QR Codes for Tables",
-    "Generate Online Ordering Link",
-  ];
+  const { userDetails, loading } = useSelector((state: any) => state.user);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+  };
 
   return (
     <div className="space-y-8">
-      <SectionHeader title="Branch Details" />
-
+      {
+        <SectionHeader
+          title="Branch Details"
+          onEditClick={handleEditClick}
+          showEdit={userDetails.user_role === "admin" ? true : false}
+        />
+      }
       <div className="grid grid-cols-2 gap-6">
         <div>
           <p className="text-sm text-gray-600 mb-1">Branch Name</p>
-          <p className="text-gray-900">Lekki Branch</p>
+          <p className="text-gray-900">
+            {userDetails.user_role === "admin" ? "All branches" : userDetails.branch_name}
+          </p>
         </div>
         <div>
           <p className="text-sm text-gray-600 mb-1">Role</p>
-          <p className="text-gray-900">Admin</p>
+          <p className="text-gray-900 capitalize">
+            {userDetails.user_role}
+            {"(" + userDetails.role + ")"}
+          </p>
         </div>
       </div>
 
       <div>
-        <SectionHeader title="Privileges" />
+        <SectionHeader
+          title="Privileges"
+          showEdit={userDetails.user_role === "admin" ? true : false}
+        />
         <ul className="space-y-3">
-          {privileges.map((privilege, index) => (
-            <li key={index} className="text-gray-700">
-              {privilege}
-            </li>
-          ))}
+          {userDetails.user_role === "admin"
+            ? "All permissions"
+            : userDetails.permissions.map((privilege: any, index: Key | null | undefined) => (
+                <li key={index} className="text-gray-700">
+                  {privilege}
+                </li>
+              ))}
         </ul>
       </div>
+
+      <EditBranchDetailsModal
+        userDetails={userDetails}
+        isOpen={isEditModalOpen}
+        onClose={handleCloseModal}
+        loading={loading}
+      />
     </div>
   );
 };

@@ -7,6 +7,7 @@ interface CustomInputProps {
   error?: string;
   maxLength?: number;
   onChange: (value: string) => void;
+  className?: string; // Optional className prop
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -16,6 +17,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   error,
   maxLength,
   onChange,
+  className, // Destructure className prop
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -46,7 +48,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           type={type}
           className={`border outline-grey200 p-2 text-grey500 text-[16px] focus:outline-purple500 focus:border-none w-full rounded ${
             error ? "border-red-500" : ""
-          }`}
+          } ${className}`} // Apply className prop
           value={value}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
           onFocus={handleFocus}
