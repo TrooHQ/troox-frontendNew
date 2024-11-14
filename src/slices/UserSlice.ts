@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../Api/Api";
+import { toast } from "react-toastify";
 
 interface UserState {
   userData: { [key: string]: any } | null;
@@ -57,11 +58,12 @@ export const updateUserDetails = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(`${SERVER_DOMAIN}/userDetails`, updatedDetails, {
+      const response = await axios.put(`${SERVER_DOMAIN}/updateUserDetails`, updatedDetails, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      toast.success("Successful!");
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

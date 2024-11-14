@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { fetchUserDetails, updateUserDetails } from "../../../slices/UserSlice";
 import { AppDispatch } from "../../../store/store";
 
-interface EditProfileModalProps {
+interface EditBranchDetailsModalProps {
   userDetails: {
     first_name: string;
     last_name: string;
@@ -22,7 +22,7 @@ interface EditProfileModalProps {
   loading: boolean;
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({
+const EditBranchDetailsModal: React.FC<EditBranchDetailsModalProps> = ({
   userDetails,
   isOpen,
   onClose,
@@ -220,4 +220,4 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   );
 };
 
-export default EditProfileModal;
+export default EditBranchDetailsModal;

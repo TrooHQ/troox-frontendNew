@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 
 const ProfileDetails = () => {
-  const { userDetails } = useSelector((state: any) => state.user);
+  const { userDetails, loading } = useSelector((state: any) => state.user);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleEditClick = () => {
@@ -21,7 +21,7 @@ const ProfileDetails = () => {
 
       <div className="flex items-center space-x-4 mb-8">
         <img
-          src={userDetails.business_logo || "https://via.placeholder.com/150"}
+          src={userDetails.photo || userDetails.business_logo}
           alt={`${userDetails.first_name} ${userDetails.last_name}`}
           className="w-16 h-16 rounded-full object-cover"
         />
@@ -90,6 +90,7 @@ const ProfileDetails = () => {
         userDetails={userDetails}
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
+        loading={loading}
       />
     </div>
   );
