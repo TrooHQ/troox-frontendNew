@@ -6,6 +6,7 @@ const ModifierModal = ({
   handleConfirmSave,
   modifiers,
   setModifiers,
+  loading,
 }: any) => {
   const updateModifier = (id: number, field: string, value: string) => {
     setModifiers(
@@ -76,7 +77,7 @@ const ModifierModal = ({
               className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
               onClick={() => handleConfirmSave(modifiers)}
             >
-              <button className=" text-[16px]">Save item</button>
+              <button className=" text-[16px]">{loading ? "Saving..." : "Save item"}</button>
             </div>
           </div>
         </div>
