@@ -1,7 +1,5 @@
 import pencil from "../../../assets/Pencil.svg";
 
-import { MouseEventHandler } from "react";
-
 interface EditButtonProps {
   onClick: any;
 }
