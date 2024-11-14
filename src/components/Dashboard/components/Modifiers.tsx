@@ -121,7 +121,7 @@ const Modifiers = ({
       branch_id: selectedBranch.id,
       attach_to: "modifier_group",
       modifier_name: modifiers[0].name,
-      modifier_group_name: selectedModifier.modifier_group_name,
+      // modifier_group_name: selectedModifier.modifier_group_name,
       price: parseFloat(modifiers[0].price),
       modifier_group_id: selectedModifier._id,
     };
@@ -525,6 +525,7 @@ const Modifiers = ({
         handleConfirmSave={handleConfirmSave}
         modifiers={modifiers}
         setModifiers={setModifiers}
+        loading={loading}
       />
     </div>
   );
