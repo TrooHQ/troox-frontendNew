@@ -218,11 +218,11 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
 
-  const userMenu = [...commonMenu];
-
   const userPermissions = userData?.permissions || [];
   const permittedMenu =
-    userData?.user_role === "admin" ? userMenu : getPermittedMenuItems(userMenu, userPermissions);
+    userData?.user_role === "admin"
+      ? commonMenu
+      : getPermittedMenuItems(commonMenu, userPermissions);
 
   const selectedMenu = userType === "admin" ? adminMenu : permittedMenu;
 
