@@ -63,7 +63,7 @@ const EditSecurityModal: React.FC<EditSecurityModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-md shadow-md w-[80%] md:w-[94%]">
+      <div className="bg-white p-8 rounded-md shadow-md w-[80%] md:w-[50%] max-h-[80vh] overflow-y-scroll">
         <h2 className="text-lg font-semibold mb-4">
           {credentialType === "email" ? "Edit Password" : "Edit PIN"}
         </h2>

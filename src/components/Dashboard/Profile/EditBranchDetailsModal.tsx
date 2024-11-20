@@ -41,6 +41,7 @@ const EditBranchDetailsModal: React.FC<EditBranchDetailsModalProps> = ({
     city: userDetails.city || "",
     business_email: userDetails.business_email || "",
     business_address: userDetails.business_address || "",
+    photo: userDetails.photo || null,
   });
   const [photo, setPhoto] = useState<string | null>(userDetails.business_logo || null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -95,14 +96,14 @@ const EditBranchDetailsModal: React.FC<EditBranchDetailsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-md shadow-md w-[80%] md:w-[94%]">
+      <div className="bg-white p-8 rounded-md shadow-md w-[80%] md:w-[50%] max-h-[80vh] overflow-y-scroll">
         <h2 className="text-lg font-semibold mb-4">Edit Profile Details</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Photo Preview and Upload */}
           <div className="flex items-center mb-4 space-x-4">
             {photo && (
               <img
-                src={photo}
+                src={formData.photo as any}
                 alt="Profile Preview"
                 className="w-16 h-16 rounded-full object-cover"
               />
