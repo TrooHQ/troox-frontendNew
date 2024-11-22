@@ -16,6 +16,7 @@ const SalesRevenue = () => {
           nonSelectedColor="#606060"
           iconClassName={clsx("text-[#ADADB9]")}
           border="1px solid var(--Kanta-Neutral-200, #C7C6CF)"
+          onDateFilterChange={() => {}}
         />
       </div>
       <Recharts />

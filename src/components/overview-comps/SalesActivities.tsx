@@ -72,14 +72,14 @@ const SalesActivities = () => {
         statusIcon: ArrowUp,
         status: "10% from yesterday",
       },
-      {
-        icon: ArrowDown,
-        title: "Gross Profit",
-        time: "12:45 PM",
-        amount: "₦ 8,250,000",
-        statusIcon: ArrowDown,
-        status: "10% from yesterday",
-      },
+      // {
+      //   icon: ArrowDown,
+      //   title: "Gross Profit",
+      //   time: "12:45 PM",
+      //   amount: "₦ 8,250,000",
+      //   statusIcon: ArrowDown,
+      //   status: "10% from yesterday",
+      // },
     ],
   };
   return (
