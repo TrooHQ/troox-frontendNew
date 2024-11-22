@@ -15,6 +15,7 @@ import rolesReducer from "../slices/rolesSlice";
 import menuReducer from "../slices/menuSlice";
 import tableReducer from "../slices/TableSlice";
 import outletReducer from "../slices/OutletSlice";
+import overviewReducer from "../slices/overviewSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   menu: menuReducer,
   tables: tableReducer,
   outlet: outletReducer,
+  overview: overviewReducer,
 });
 
 const persistConfig = {

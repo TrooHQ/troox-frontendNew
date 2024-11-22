@@ -161,7 +161,7 @@ const Overview: React.FC = () => {
           </Popper>
         </div>
         {/* Second div */}
-        <BalanceComp storeData={storeData} />
+        <BalanceComp />
         {/* Third div */}
         <div className="mt-9">
           <SalesActivities />

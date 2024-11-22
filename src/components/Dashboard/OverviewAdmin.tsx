@@ -159,7 +159,7 @@ const OverviewAdmin: React.FC = () => {
         </div>
 
         {/* Second div */}
-        <BalanceComp storeData={storeData} />
+        <BalanceComp />
 
         {/* Third div */}
         <div className="mt-9">

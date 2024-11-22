@@ -75,6 +75,7 @@ const KPI = () => {
           nonSelectedColor="#C7C6CF"
           iconClassName={clsx("text-[#ADADB9]")}
           border="1px solid var(--Kanta-Neutral-200, #C7C6CF)"
+          onDateFilterChange={() => {}}
         />
       </div>
       <div className="overflow-auto whitespace-nowrap scrollbar-hide">

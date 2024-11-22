@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Tab, Tabs, Box, IconButton } from "@mui/material";
 import { DateRangeOutlined, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { DatePicker, Space } from "antd";
@@ -13,6 +13,12 @@ interface DaysTabProps {
   nonSelectedColor?: string;
   iconClassName?: string;
   border?: string;
+  onDateFilterChange: (
+    dateFilter: string,
+    startDate?: string,
+    endDate?: string,
+    number_of_days?: number
+  ) => void;
 }
 
 const DaysTab2 = ({
@@ -22,15 +28,22 @@ const DaysTab2 = ({
   nonSelectedColor,
   iconClassName,
   border,
+  onDateFilterChange,
 }: DaysTabProps) => {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<[string | null, string | null]>([null, null]);
   console.log(dateRange);
 
-  const handleChange = (event: any, newValue: React.SetStateAction<number>) => {
+  const handleChange = (event: any, newValue: number) => {
     event.preventDefault();
     setValue(newValue);
+    console.log("jjjj", newValue);
+    const date_filter = newValue === 0 ? "today" : "days";
+    const number_of_days = parseInt(days[newValue]);
+    newValue === 0
+      ? onDateFilterChange(date_filter)
+      : onDateFilterChange(date_filter, undefined, undefined, number_of_days);
   };
 
   const handleOpen = () => {
@@ -38,10 +51,10 @@ const DaysTab2 = ({
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
-    console.log(dates, dateStrings);
     setDateRange(dateStrings);
-    // setOpen(false);
     console.log(dates);
+    onDateFilterChange("date_range", dateStrings[0], dateStrings[1]);
+    setOpen(false);
   };
   console.log(dateRange);
 
