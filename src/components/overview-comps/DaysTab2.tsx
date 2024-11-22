@@ -13,7 +13,12 @@ interface DaysTabProps {
   nonSelectedColor?: string;
   iconClassName?: string;
   border?: string;
-  onDateFilterChange: (dateFilter: string, startDate?: string, endDate?: string) => void;
+  onDateFilterChange: (
+    dateFilter: string,
+    startDate?: string,
+    endDate?: string,
+    number_of_days?: number
+  ) => void;
 }
 
 const DaysTab2 = ({
@@ -33,8 +38,12 @@ const DaysTab2 = ({
   const handleChange = (event: any, newValue: number) => {
     event.preventDefault();
     setValue(newValue);
-    const date_filter = days[newValue].toLowerCase().replace(" ", "");
-    onDateFilterChange(date_filter);
+    console.log("jjjj", newValue);
+    const date_filter = newValue === 0 ? "today" : "days";
+    const number_of_days = parseInt(days[newValue]);
+    newValue === 0
+      ? onDateFilterChange(date_filter)
+      : onDateFilterChange(date_filter, undefined, undefined, number_of_days);
   };
 
   const handleOpen = () => {

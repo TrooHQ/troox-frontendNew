@@ -7,31 +7,39 @@ import restaurant_menu from "../../assets/restaurant_menu.svg";
 import DaysTab2 from "./DaysTab2";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { fetchOpenAndClosedTickets, fetchTotalSales } from "../../slices/overviewSlice";
+import {
+  fetchOpenAndClosedTickets,
+  fetchTotalSales,
+  fetchAverageOrderValue,
+} from "../../slices/overviewSlice";
 
-interface HeaderProps {
-  storeData?: any;
-}
-const BalanceComp: React.FC<HeaderProps> = ({ storeData }) => {
+const BalanceComp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showBalance, setShowBalance] = useState(true);
-  console.log(storeData);
-  const { openAndClosedTickets, loading, totalSales } = useSelector(
+  const { openAndClosedTickets, loading, totalSales, averageOrderValue } = useSelector(
     (state: RootState) => state.overview
   );
 
   useEffect(() => {
     dispatch(fetchOpenAndClosedTickets({ date_filter: "today" }));
     dispatch(fetchTotalSales({ date_filter: "today" }));
+    dispatch(fetchAverageOrderValue({ date_filter: "today" }));
   }, [dispatch]);
 
   const changeVisibility = () => {
     setShowBalance(!showBalance);
   };
+  console.log(averageOrderValue?.data?.averageOrderValue);
 
-  const handleDateFilterChange = (date_filter: string, startDate?: string, endDate?: string) => {
-    dispatch(fetchOpenAndClosedTickets({ date_filter, startDate, endDate }));
-    dispatch(fetchTotalSales({ date_filter, startDate, endDate }));
+  const handleDateFilterChange = (
+    date_filter: string,
+    startDate?: string,
+    endDate?: string,
+    number_of_days?: number
+  ) => {
+    dispatch(fetchOpenAndClosedTickets({ date_filter, startDate, endDate, number_of_days }));
+    dispatch(fetchTotalSales({ date_filter, startDate, endDate, number_of_days }));
+    dispatch(fetchAverageOrderValue({ date_filter, startDate, endDate, number_of_days }));
   };
 
   const closedTickets = openAndClosedTickets?.data?.closed_tickets || 0;
@@ -76,7 +84,7 @@ const BalanceComp: React.FC<HeaderProps> = ({ storeData }) => {
             <img src={restaurant_menu} alt="confirmation_number" />
             <h6 className={clsx(styles.manage)}>
               {" "}
-              {loading ? "Loading..." : `${processedOrders} Processed Orders`}
+              {loading ? "Loading..." : `${processedOrders} Open Orders`}
             </h6>
           </div>
           <div className="flex items-center justify-start gap-1">
