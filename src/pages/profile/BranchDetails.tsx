@@ -35,7 +35,7 @@ const BranchDetails = () => {
           <p className="text-sm text-gray-600 mb-1">Role</p>
           <p className="text-gray-900 capitalize">
             {userDetails.user_role}
-            {"(" + userDetails.role + ")"}
+            {userDetails.user_role !== "admin" ? "(" + userDetails?.role || +")" : ""}
           </p>
         </div>
       </div>
