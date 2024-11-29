@@ -16,7 +16,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         >
           <div
             className={`container mx-auto px-6 py-8 bg-white h-[100vh] overflow-y-scroll rounded-2xl`}
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none", overflowX: "hidden" }}
           >
             {children}
           </div>
