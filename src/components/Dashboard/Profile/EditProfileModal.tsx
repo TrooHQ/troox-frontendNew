@@ -32,17 +32,17 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
   // Local state for form fields and photo
   const [formData, setFormData] = useState({
-    first_name: userDetails.first_name || "",
-    last_name: userDetails.last_name || "",
-    personal_email: userDetails.personal_email || "",
-    phone_number: userDetails.phone_number || "",
-    country: userDetails.country || "",
-    state: userDetails.state || "",
-    city: userDetails.city || "",
-    business_email: userDetails.business_email || "",
-    business_address: userDetails.business_address || "",
+    first_name: userDetails?.first_name || "",
+    last_name: userDetails?.last_name || "",
+    personal_email: userDetails?.personal_email || "",
+    phone_number: userDetails?.phone_number || "",
+    country: userDetails?.country || "",
+    state: userDetails?.state || "",
+    city: userDetails?.city || "",
+    business_email: userDetails?.business_email || "",
+    business_address: userDetails?.business_address || "",
   });
-  const [photo, setPhoto] = useState<string | null>(userDetails.business_logo || null);
+  const [photo, setPhoto] = useState<string | null>(userDetails?.business_logo || null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   // Handle form input changes

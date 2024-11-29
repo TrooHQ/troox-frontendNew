@@ -1,15 +1,6 @@
-import React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
 import { styled } from "@mui/material/styles";
-
-const data = [
-  { value: 6150000, color: "#9787FF" },
-  { value: 4050000, color: "#FFA5DA" },
-  { value: 2352000, color: "#0096FF" },
-  { value: 1768000, color: "#5BD222" },
-  { value: 2011000, color: "#FDB600" },
-];
 
 const size = {
   width: 400,
@@ -37,17 +28,24 @@ const StyledSum = styled(StyledText)({
   lineHeight: "54px",
 });
 
-function formatNumber(num: number) {
-  return Math.abs(num) > 999999
-    ? (Math.sign(num) * (Math.abs(num) / 1000000)).toFixed(1) + "M"
-    : (Math.sign(num) * (Math.abs(num) / 1000)).toFixed(1) + "K";
+function formatNumber(num: number): string {
+  console.log(num, "num");
+  if (num < 1000) {
+    return num.toString(); // Show full number for values below 1000
+  } else if (num >= 1000 && num < 1000000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K"; // Show as 'K' for thousands
+  } else if (num >= 1000000 && num < 1000000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M"; // Show as 'M' for millions
+  } else if (num >= 1000000000 && num < 1000000000000) {
+    return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "B"; // Show as 'B' for billions
+  } else {
+    return (num / 1000000000000).toFixed(1).replace(/\.0$/, "") + "T"; // Show as 'T' for trillions
+  }
 }
 
-function PieCenterLabel({ children }: { children: React.ReactNode }) {
+function PieCenterLabel({ total }: { total: number }) {
   const { width, height, left, top } = useDrawingArea();
-  const sum = data.reduce((sum, { value }) => sum + value, 0);
-  const formattedSum = formatNumber(sum);
-  console.log(children);
+  const formattedSum = formatNumber(total);
 
   return (
     <>
@@ -61,17 +59,43 @@ function PieCenterLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-const PieCharts = () => {
+const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
+  const totalValue = topMenuItems.reduce((sum, item) => sum + item.totalRevenue, 0);
+
+  // Map the data to include percentages
+  const data = topMenuItems.map((item, index) => ({
+    value: parseFloat(((item.totalRevenue / totalValue) * 100).toFixed(2)),
+    // label: `${item.menuItemName}: ${((item.totalRevenue / totalValue) * 100).toFixed(2)}%`, // Add `%` to the label
+    color: [
+      "#9787FF",
+      "#FFA5DA",
+      "#0096FF",
+      "#5BD222",
+      "#FDB600",
+      "#FF5733",
+      "#33FF57",
+      "#3357FF",
+      "#FF33A5",
+      "#A533FF",
+    ][index % 10],
+  }));
+
+  const total = topMenuItems.reduce((sum, item) => sum + item.totalRevenue, 0);
+
   return (
-    <PieChart series={[{ data, innerRadius: 125, color: data[0].color }]} {...size}>
-      <PieCenterLabel>
-        <div className="text-center text-[#858497] font-inter text-lg leading-[27px]">
-          Total Revenue
-        </div>
-        <div className="text-center text-[#201F44] font-inter text-4xl font-semibold leading-[54px]">
-          ₦{data.reduce((sum, { value }) => sum + value, 0)}
-        </div>
-      </PieCenterLabel>
+    <PieChart
+      series={[
+        {
+          data,
+          innerRadius: 125,
+        },
+      ]}
+      {...size}
+      tooltip={{
+        trigger: "item",
+      }}
+    >
+      <PieCenterLabel total={total} />
     </PieChart>
   );
 };
