@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import styles from "./Header.module.css";
 import Recharts from "./Recharts";
-import DaysTab2 from "./DaysTab2";
 
 const SalesRevenue = () => {
   return (
