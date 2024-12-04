@@ -82,7 +82,7 @@ const Modifiers = ({
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
         headers
       );
       console.log(response, "response of modi");

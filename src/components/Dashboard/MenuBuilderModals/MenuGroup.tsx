@@ -8,15 +8,10 @@ import CoffeeImg from "../../../assets/coffeeImg.png";
 interface Props {
   mgLoading: boolean;
   menuGroups: any[];
-  activeSubMenu: any;
-  setActiveSubMenu: (name: string) => void;
-  handleFetchMenuItems: () => void;
+  handleFetchMenuItems: (group: any) => void;
   anchorEl: HTMLElement | null;
-  handleClick: (event: React.MouseEvent<HTMLElement>, name: string) => void;
   handleClose: () => void;
   handleMenuVisibility: () => void;
-  handleEdit: (group: any) => void;
-  handleDeleteClick: (group: any) => void;
   handleAddMenuGroup: () => void;
   menuItemLoading: boolean;
   subMenuContent: any[];
@@ -24,20 +19,20 @@ interface Props {
   handleMenuItemClick: (name: string) => void;
   handleAddMenuItem: () => void;
   truncateText: (text: string, maxLength: number) => string;
+  activeGroup: any;
+  handleGroupDropdown: (event: React.MouseEvent<HTMLElement>, group: any) => void;
+  handleGroupEdit: (group: any) => void;
+  handleGroupDeleteClick: (group: any) => void;
+  activeCategory: any;
 }
 
 const MenuGroup: React.FC<Props> = ({
   mgLoading,
   menuGroups,
-  activeSubMenu,
-  setActiveSubMenu,
   handleFetchMenuItems,
   anchorEl,
-  handleClick,
   handleClose,
   handleMenuVisibility,
-  handleEdit,
-  handleDeleteClick,
   handleAddMenuGroup,
   menuItemLoading,
   subMenuContent,
@@ -45,6 +40,11 @@ const MenuGroup: React.FC<Props> = ({
   handleMenuItemClick,
   handleAddMenuItem,
   truncateText,
+  activeGroup,
+  handleGroupDropdown,
+  handleGroupEdit,
+  handleGroupDeleteClick,
+  activeCategory,
 }) => {
   return (
     <div className="mt-[24px] w-full border p-[16px]">
@@ -56,86 +56,89 @@ const MenuGroup: React.FC<Props> = ({
               <div className="flex justify-center items-center h-[200px]">
                 <p className="text-[16px] font-[400] text-grey500">Loading menu groups...</p>
               </div>
-            ) : (
+            ) : activeCategory ? (
               menuGroups.map((group: any) => (
                 <div key={group._id} className="flex items-center justify-between">
                   <p
                     className={`${
-                      activeSubMenu === group.name ? "font-[500] text-[#5855B3]" : "text-grey200"
+                      activeGroup?.name === group?.name
+                        ? "font-[500] text-[#5855B3]"
+                        : "text-grey200"
                     } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     key={group._id}
                     onClick={() => {
-                      setActiveSubMenu(group.name);
-                      handleFetchMenuItems();
+                      handleFetchMenuItems(group);
                     }}
                   >
                     {truncateText(group.name, 15)}
-                    {activeSubMenu === group.name && (
+                    {activeGroup?.name === group.name && (
                       <IconButton
                         aria-controls="simple-menu"
                         aria-haspopup="true"
-                        onClick={(event) => handleClick(event, group.name)}
+                        onClick={(event) => handleGroupDropdown(event, group)}
                       >
                         <MoreVert />
                       </IconButton>
                     )}
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                    >
-                      <MenuItem
-                        onClick={handleMenuVisibility}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
+                    {activeGroup?.name === group.name && (
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
                       >
-                        <VisibilityOutlined
+                        <MenuItem
+                          onClick={handleMenuVisibility}
                           sx={{
-                            fontSize: "20px",
-                            fontWeight: "300",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
                           }}
-                        />
-                        <span style={{ fontWeight: "300" }}>Menu Visibility</span>
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => handleEdit(group)}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      >
-                        <EditOutlined
+                        >
+                          <VisibilityOutlined
+                            sx={{
+                              fontSize: "20px",
+                              fontWeight: "300",
+                            }}
+                          />
+                          <span style={{ fontWeight: "300" }}>Menu Visibility</span>
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => handleGroupEdit(group)}
                           sx={{
-                            fontSize: "20px",
-                            fontWeight: "300",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
                           }}
-                        />
-                        <span style={{ fontWeight: "300" }}>Edit</span>
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => handleDeleteClick(group)}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                        }}
-                      >
-                        <CancelOutlined
+                        >
+                          <EditOutlined
+                            sx={{
+                              fontSize: "20px",
+                              fontWeight: "300",
+                            }}
+                          />
+                          <span style={{ fontWeight: "300" }}>Edit</span>
+                        </MenuItem>
+                        <MenuItem
+                          onClick={() => handleGroupDeleteClick(group)}
                           sx={{
-                            fontSize: "20px",
-                            fontWeight: "300",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
                           }}
-                        />
-                        <span style={{ fontWeight: "300" }}>Remove</span>
-                      </MenuItem>
-                    </Menu>
-                    {activeSubMenu === group.name ? (
+                        >
+                          <CancelOutlined
+                            sx={{
+                              fontSize: "20px",
+                              fontWeight: "300",
+                            }}
+                          />
+                          <span style={{ fontWeight: "300" }}>Remove</span>
+                        </MenuItem>
+                      </Menu>
+                    )}
+                    {activeGroup?.name === group.name ? (
                       <img src={activeArrow} alt="activearrow" />
                     ) : (
                       <img src={chevron_right} alt="" />
@@ -143,7 +146,7 @@ const MenuGroup: React.FC<Props> = ({
                   </p>
                 </div>
               ))
-            )}
+            ) : null}
 
             <div
               className=" w-[196px]  px-[10px] py-[6px] font-[500] text-purple500"
@@ -156,85 +159,85 @@ const MenuGroup: React.FC<Props> = ({
           </div>
         </div>
 
-        <div className=" flex-grow space-y-[16px]">
-          <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
-          <div className=" flex items-start justify-between ">
-            <p className=" text-[16px] font-[500] text-[#5855B3]">Type</p>
-            <div className=" ">
-              <button
-                className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
-                onClick={handleAddMenuItem}
-              >
-                <img src={AddWhite} alt="" /> Add Menu Item
-              </button>
+        {/* Menu items */}
+        {activeGroup ? (
+          <div className=" flex-grow space-y-[16px]">
+            <p className=" font-[400] text-[12px] text-[#606060]">Menu Item</p>
+            <div className=" flex items-start justify-between ">
+              <p className=" text-[16px] font-[500] text-[#5855B3]">Type</p>
+              <div className=" ">
+                <button
+                  className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  onClick={handleAddMenuItem}
+                >
+                  <img src={AddWhite} alt="" /> Add Menu Item
+                </button>
+              </div>
             </div>
-          </div>
-          {menuItemLoading ? (
-            <div className="flex justify-center items-center h-[200px]">
-              <p className="text-[16px] font-[400] text-grey500">Loading menu items...</p>
-            </div>
-          ) : (
-            subMenuContent.map((menuItem, index) => (
-              <div>
-                <div key={index}>
-                  {menuItem.data.map((item: any, itemIndex: any) => (
-                    <div className="" key={itemIndex}>
+            {menuItemLoading ? (
+              <div className="flex justify-center items-center h-[200px]">
+                <p className="text-[16px] font-[400] text-grey500">Loading menu items...</p>
+              </div>
+            ) : (
+              subMenuContent?.map((item, index) => {
+                return (
+                  <div>
+                    <div className="" key={index}>
                       <div
                         className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer mb-2
           ${
-            selectedMenuItem === item.name
+            selectedMenuItem?._id === item?._id
               ? "bg-[#ebebeb] text-purple500"
               : "bg-[#F8F8F8] text-grey500"
           }`}
-                        onClick={() => handleMenuItemClick(item.name)}
+                        onClick={() => handleMenuItemClick(item)}
                       >
                         <div className="flex gap-[8px] items-center">
                           <img
-                            src={item.img || CoffeeImg}
+                            src={item.menu_item_image || CoffeeImg}
                             alt=""
                             className="h-[50px] w-[60px] object-cover rounded"
                           />
                           <div className="">
                             <p className="text-[12px] font-[400]">Item</p>
-                            <div key={itemIndex}>
+                            <div key={item}>
                               <p className="leading-[24px] text-[16px] font-normal capitalize">
-                                {item.name}
+                                {item.menu_item_name}
                               </p>
-                              {/* <p className="text-[12px] font-[400]">Modifiers (6)</p> */}
                             </div>
                           </div>
                         </div>
                         <div className="flex">
                           <p className="text-[16px] font-[500]">
                             &#8358;
-                            {Number(item.price).toLocaleString()}
+                            {Number(item.menu_item_price).toLocaleString()}
                           </p>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
 
-                {menuItem.data.length === 0 && (
-                  <div className=" flex justify-center items-center h-[200px]">
-                    <p className="text-[16px] font-[400] text-grey500">No menu items</p>
+                    {subMenuContent.length === 0 && (
+                      <div className=" flex justify-center items-center h-[200px]">
+                        <p className="text-[16px] font-[400] text-grey500">No menu items</p>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))
-          )}
+                );
+              })
+            )}
 
-          {subMenuContent.length > 1 && (
-            <div className=" flex items-center justify-end">
-              <button
-                className="w-[196px] border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
-                onClick={handleAddMenuItem}
-              >
-                <img src={AddWhite} alt="" /> Add Menu Item
-              </button>
-            </div>
-          )}
-        </div>
+            {subMenuContent.length > 1 && (
+              <div className=" flex items-center justify-end">
+                <button
+                  className="w-[196px] border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  onClick={handleAddMenuItem}
+                >
+                  <img src={AddWhite} alt="" /> Add Menu Item
+                </button>
+              </div>
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );
