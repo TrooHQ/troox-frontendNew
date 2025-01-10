@@ -5,11 +5,8 @@ import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
 import TicketIcon from "../../assets/Tickets.svg";
 import MenuIcon from "../../assets/menuIcon.svg";
-import PaymentIcon from "../../assets/paymentIcon.svg";
-import AccountingIcon from "../../assets/AccountingIcon.svg";
 import RestaurantDetailsIcon from "../../assets/restaurantDetails.svg";
 import ManageTablesIcon from "../../assets/manageTableIcon.svg";
-import PointOfSalesIcon from "../../assets/posIcon.svg";
 import AccountCircleIcon from "../../assets/account_circle.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
@@ -147,18 +144,18 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         },
       ],
     },
-    {
-      title: "Payment",
-      gap: false,
-      icon: PaymentIcon,
-      link: "/payment",
-    },
-    {
-      title: "Accounting",
-      gap: false,
-      icon: AccountingIcon,
-      link: "/account",
-    },
+    // {
+    //   title: "Payment",
+    //   gap: false,
+    //   icon: PaymentIcon,
+    //   link: "/payment",
+    // },
+    // {
+    //   title: "Accounting",
+    //   gap: false,
+    //   icon: AccountingIcon,
+    //   link: "/account",
+    // },
     {
       subTitle: "SETTINGS",
       Subgap: true,
@@ -196,12 +193,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       icon: HubIcon,
       link: "/tenant-settings",
     },
-    {
-      title: "Point of Sales",
-      gap: false,
-      icon: PointOfSalesIcon,
-      link: "/pos",
-    },
+    // {
+    //   title: "Point of Sales",
+    //   gap: false,
+    //   icon: PointOfSalesIcon,
+    //   link: "/pos",
+    // },
     {
       title: "Profile",
       gap: false,

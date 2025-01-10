@@ -26,7 +26,7 @@ const BalanceComp = () => {
     dispatch(fetchOpenAndClosedTickets({ date_filter: "today" }));
     dispatch(fetchTotalSales({ date_filter: "today" }));
     dispatch(fetchAverageOrderValue({ date_filter: "today" }));
-    dispatch(fetchTopMenuItems({ branch_id: selectedBranch.id, date_filter: "today" }));
+    dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" }));
   }, [dispatch]);
 
   const changeVisibility = () => {
