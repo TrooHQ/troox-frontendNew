@@ -18,9 +18,7 @@ const SalesActivities = () => {
 
   useEffect(() => {
     dispatch(fetchSalesGrowthRate());
-    // dispatch(fetchTotalSales({ date_filter: "today" }));
   }, [dispatch]);
-  console.log(salesGrowthRate, "salesGrowthRate");
 
   // Assuming salesGrowthRate.data is available
   const salesGrowthRateData = salesGrowthRate?.data || {

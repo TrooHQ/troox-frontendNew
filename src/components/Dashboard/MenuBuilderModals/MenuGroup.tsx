@@ -178,6 +178,10 @@ const MenuGroup: React.FC<Props> = ({
               <div className="flex justify-center items-center h-[200px]">
                 <p className="text-[16px] font-[400] text-grey500">Loading menu items...</p>
               </div>
+            ) : subMenuContent.length === 0 ? (
+              <div className="flex justify-center items-center h-[200px]">
+                <span>No item available</span>
+              </div>
             ) : (
               subMenuContent?.map((item, index) => {
                 return (

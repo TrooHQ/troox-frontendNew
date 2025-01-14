@@ -29,7 +29,6 @@ const StyledSum = styled(StyledText)({
 });
 
 function formatNumber(num: number): string {
-  console.log(num, "num");
   if (num < 1000) {
     return num.toString(); // Show full number for values below 1000
   } else if (num >= 1000 && num < 1000000) {

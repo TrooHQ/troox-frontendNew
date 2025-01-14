@@ -49,7 +49,6 @@ const EditSecurityModal: React.FC<EditSecurityModalProps> = ({
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       toast.success("Successful!");
       dispatch(fetchUserDetails());
       onClose(); // Close modal on successful submission

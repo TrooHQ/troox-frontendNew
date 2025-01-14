@@ -32,7 +32,6 @@ const BalanceComp = () => {
   const changeVisibility = () => {
     setShowBalance(!showBalance);
   };
-  console.log(averageOrderValue?.data?.averageOrderValue);
 
   const handleDateFilterChange = (
     date_filter: string,
