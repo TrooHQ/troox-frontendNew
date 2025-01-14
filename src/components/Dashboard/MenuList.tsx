@@ -249,8 +249,10 @@ const MenuList = () => {
       },
     };
     try {
+      const encodedName = encodeURIComponent(selectedMenuItem);
+
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${encodedName}&branch_id=${selectedBranch}`,
         headers
       );
 
