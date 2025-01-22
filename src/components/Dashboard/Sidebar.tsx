@@ -180,6 +180,20 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       gap: false,
       icon: ManageTablesIcon,
       link: "/manage-assets",
+      subMenu: [
+        {
+          title: "Manage Assets",
+          link: "/manage-assets",
+        },
+        {
+          title: "Online Ordering",
+          link: "/online-ordering",
+        },
+        {
+          title: "QR Codes",
+          link: "/qr-codes",
+        },
+      ],
     },
     {
       title: "Manage Users",

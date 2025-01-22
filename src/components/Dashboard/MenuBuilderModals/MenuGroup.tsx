@@ -46,6 +46,7 @@ const MenuGroup: React.FC<Props> = ({
   handleGroupDeleteClick,
   activeCategory,
 }) => {
+  console.log(subMenuContent, "now");
   return (
     <div className="mt-[24px] w-full border p-[16px]">
       <div className=" flex gap-[16px] items-start">

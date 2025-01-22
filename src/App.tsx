@@ -77,6 +77,7 @@ export default function App() {
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/menu-list" element={<MenuList />} />
+          <Route path="/online-ordering" element={<MenuList />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
           <Route path="/order-history" element={<OrderHistory />} />
