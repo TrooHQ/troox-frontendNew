@@ -19,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeComponent, setActiveComponent }
       <nav className="space-y-6 mt-0">
         <button
           onClick={() => setActiveComponent("pickup location")}
-          className={`flex items-center py-3 px-2 rounded-lg ${
+          className={`flex items-center justify-between py-3 px-2 rounded-lg w-full ${
             isActive("pickup location") ? "bg-[#EEEEF7]" : "hover:bg-gray-50"
           }`}
         >
@@ -39,38 +39,42 @@ const Sidebar: React.FC<SidebarProps> = ({ activeComponent, setActiveComponent }
           />
         </button>
         <button
-          onClick={() => setActiveComponent("branch")}
-          className={`flex items-center space-x-3 p-3 rounded-lg ${
-            isActive("branch") ? "bg-gray-100" : "hover:bg-gray-50"
+          onClick={() => setActiveComponent("delivery service")}
+          className={`flex items-center justify-between py-3 px-2 rounded-lg w-full ${
+            isActive("delivery service") ? "bg-[#EEEEF7]" : "hover:bg-gray-50"
           }`}
         >
-          <LocationCityOutlined
-            className={`w-5 h-5 ${isActive("branch") ? "text-[#121212]" : "text-[#929292]"}`}
-          />
           <span
             className={`${
-              isActive("branch") ? "text-[#121212] font-medium" : "text-[#929292] font-normal"
+              isActive("delivery service")
+                ? "text-[#3E3C7F] font-medium"
+                : "text-[#929292] font-normal"
             } text-[16px] leading-[24px] tracking-[0.5px]`}
           >
-            Branch Details
+            DELIVERY
           </span>
+          <ChevronRight
+            className={`w-5 h-5 ${
+              isActive("delivery service") ? "text-[#3E3C7F]" : "text-[#929292]"
+            }`}
+          />
         </button>
         <button
-          onClick={() => setActiveComponent("security")}
-          className={`flex items-center space-x-3 p-3 rounded-lg ${
-            isActive("security") ? "bg-gray-100" : "hover:bg-gray-50"
+          onClick={() => setActiveComponent("your link")}
+          className={`flex items-center justify-between py-3 px-2 rounded-lg w-full ${
+            isActive("your link") ? "bg-[#EEEEF7]" : "hover:bg-gray-50"
           }`}
         >
-          <Password
-            className={`w-5 h-5 ${isActive("security") ? "text-[#121212]" : "text-[#929292]"}`}
-          />
           <span
             className={`${
-              isActive("security") ? "text-[#121212] font-medium" : "text-[#929292] font-normal"
+              isActive("your link") ? "text-[#3E3C7F] font-medium" : "text-[#929292] font-normal"
             } text-[16px] leading-[24px] tracking-[0.5px]`}
           >
-            Password & Pin
+            YOUR LINK
           </span>
+          <ChevronRight
+            className={`w-5 h-5 ${isActive("your link") ? "text-[#3E3C7F]" : "text-[#929292]"}`}
+          />
         </button>
       </nav>
     </div>

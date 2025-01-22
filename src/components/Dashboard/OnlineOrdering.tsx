@@ -31,7 +31,9 @@ const OnlineOrdering = () => {
       <div className="mt-6">
         <div className="flex">
           <Sidebar activeComponent={activeComponent} setActiveComponent={setActiveComponent} />
-          <div className="w-full px-4 mt-4">{renderActiveComponent()}</div>
+          <div className="w-full mt-4 border border-[#5855b3] pt-5 px-6 h-[700px]">
+            {renderActiveComponent()}
+          </div>
         </div>
       </div>
     </DashboardLayout>
