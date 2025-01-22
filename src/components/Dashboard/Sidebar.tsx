@@ -177,7 +177,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     },
     {
       title: "Manage Assets",
-      gap: false,
       icon: ManageTablesIcon,
       link: "/manage-assets",
       subMenu: [

@@ -46,6 +46,7 @@ import CreatePin from "./components/authPages/CreatePin.tsx";
 import PinCreated from "./components/authPages/PinCreated.tsx";
 import UpdateCredentials from "./components/authPages/UpdateCredentials.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import OnlineOrdering from "./components/Dashboard/OnlineOrdering.tsx";
 
 export default function App() {
   return (
@@ -77,7 +78,7 @@ export default function App() {
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/menu-list" element={<MenuList />} />
-          <Route path="/online-ordering" element={<MenuList />} />
+          <Route path="/online-ordering" element={<OnlineOrdering />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
           <Route path="/order-history" element={<OrderHistory />} />
