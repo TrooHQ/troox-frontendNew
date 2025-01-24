@@ -30,11 +30,18 @@ import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categories, menuGroups, menuItemsByGroup, mgLoading } = useSelector(
-    (state: any) => state.menu
-  );
+  const {
+    categories,
+    menuGroups,
+    menuItemsByGroup,
+    totalItems,
+    totalPages,
+    currentPage,
+    mgLoading,
+  } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-
+  const itemsPerPage = 10;
+  console.log(totalItems, totalPages, currentPage, "allP");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
   const [addMenuItem, setAddMenuItem] = useState(false);
@@ -70,7 +77,6 @@ const MenuBuilder = () => {
   const [activeCategory, setActiveCategory] = useState<any | null>(null);
   const [activeGroup, setActiveGroup] = useState<any | null>(null);
 
-  console.log(selectedCategory, selectedCategoryForEdit, selectedGroupForEdit);
   // Useeffects
   useEffect(() => {
     if (selectedBranch) {
@@ -85,7 +91,6 @@ const MenuBuilder = () => {
 
   // Get men groups and set active category
   const getSubCategory = (category: any) => {
-    console.log(category, "category");
     setActiveCategory(category);
     dispatch(
       fetchMenuGroups({
@@ -255,7 +260,6 @@ const MenuBuilder = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(response);
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Item deleted successfully");
@@ -270,7 +274,6 @@ const MenuBuilder = () => {
         alert("Failed to delete item");
       }
     } catch (error) {
-      console.error("Error deleting item:", error);
       alert("An error occurred while deleting the item");
     }
   };
@@ -312,7 +315,6 @@ const MenuBuilder = () => {
 
     try {
       const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
-      console.log(response);
       dispatch(
         fetchMenuGroups({
           branch_id: selectedBranch.id,
@@ -324,7 +326,6 @@ const MenuBuilder = () => {
       setGroupName("");
       setApplyPriceToAll(false);
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message || "An error occurred. Please try again.");
     } finally {
       setMenuGroupLoading(false);
@@ -355,14 +356,12 @@ const MenuBuilder = () => {
     setMenuName(value);
   };
   const handleMenuDescription = (value: any) => {
-    console.log(value);
     setMenuDescription(value);
   };
   const handleMenuPrice = (value: string) => {
     setMenuPrice(value);
   };
 
-  console.log(activeCategory, activeGroup, "help2");
   const handleSaveMenuItem = async () => {
     setMenuGroupLoading(true);
 
@@ -372,7 +371,6 @@ const MenuBuilder = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    console.log(activeCategory, activeGroup, "help");
     try {
       const response = await axios.post(
         `${SERVER_DOMAIN}/menu/addMenuItem`,
@@ -387,7 +385,6 @@ const MenuBuilder = () => {
         },
         headers
       );
-      console.log(response);
       dispatch(
         fetchMenuItemsByMenuGroup({
           branch_id: selectedBranch.id,
@@ -401,7 +398,6 @@ const MenuBuilder = () => {
       setImage("");
       setAddMenuItem(false);
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message || "An error occurred. Please try again.");
     } finally {
       setMenuGroupLoading(false);
@@ -418,7 +414,13 @@ const MenuBuilder = () => {
     setAddModifierModal(true);
   };
 
-  console.log(selectedMenuItem, menuItemsByGroup, "menuItemsByGroup", activeGroup);
+  // Called when the page changes
+  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    // setCurrentPage(page); // Update current page
+    // fetchMenuItems(page); // Fetch new page data
+    console.log("...");
+  };
+
   return (
     <div>
       {" "}
@@ -527,6 +529,10 @@ const MenuBuilder = () => {
                     selectedMenuItem={selectedMenuItem}
                     handleMenuItemClick={handleMenuItemClick}
                     handleAddMenuItem={handleAddMenuItem}
+                    totalItems={totalItems}
+                    currentPage={currentPage}
+                    itemsPerPage={10}
+                    handlePageChange={handlePageChange}
                   />
                 </>
                 <Modifiers

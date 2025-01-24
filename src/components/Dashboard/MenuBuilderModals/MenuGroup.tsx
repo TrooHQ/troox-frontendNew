@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Pagination } from "@mui/material";
 import AddWhite from "../../../assets/addWhite.svg";
 import { CancelOutlined, EditOutlined, MoreVert, VisibilityOutlined } from "@mui/icons-material";
 import chevron_right from "../../../assets/chevron_right.svg";
@@ -24,6 +24,10 @@ interface Props {
   handleGroupEdit: (group: any) => void;
   handleGroupDeleteClick: (group: any) => void;
   activeCategory: any;
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
 const MenuGroup: React.FC<Props> = ({
@@ -45,8 +49,18 @@ const MenuGroup: React.FC<Props> = ({
   handleGroupEdit,
   handleGroupDeleteClick,
   activeCategory,
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  handlePageChange,
 }) => {
-  console.log(subMenuContent, "now");
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const paginatedItems = subMenuContent.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="mt-[24px] w-full border p-[16px]">
       <div className=" flex gap-[16px] items-start">
@@ -229,6 +243,17 @@ const MenuGroup: React.FC<Props> = ({
                   </div>
                 );
               })
+            )}
+
+            {totalPages > 1 && (
+              <div className="flex justify-end">
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </div>
             )}
 
             {subMenuContent.length > 1 && (

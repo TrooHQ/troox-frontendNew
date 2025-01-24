@@ -65,7 +65,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     label: branch.branch_name,
     id: branch._id,
   }));
-
+  console.log(userData, "long");
   useEffect(() => {
     if (userData?.user_role === "admin") {
       const defaultBranch = transformedBranches[0];

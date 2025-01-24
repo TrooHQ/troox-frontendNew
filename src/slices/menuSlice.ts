@@ -51,6 +51,13 @@ interface MenuItemResponse {
   data: MenuItem[];
 }
 
+interface MenuItemsByGroupResponse {
+  data: MenuItem[];
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+}
+
 interface MenuState {
   categories: MenuCategory[];
   menuGroups: MenuGroup[];
@@ -61,6 +68,10 @@ interface MenuState {
   loading: boolean;
   mgLoading: boolean;
   error: string | null;
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  itemsPerPage: number;
 }
 
 const initialState: MenuState = {
@@ -73,6 +84,10 @@ const initialState: MenuState = {
   loading: false,
   mgLoading: false,
   error: null,
+  totalItems: 0,
+  totalPages: 1,
+  currentPage: 1,
+  itemsPerPage: 10,
 };
 
 export const fetchMenuCategories = createAsyncThunk<
@@ -226,7 +241,7 @@ export const fetchMenuItemsWithoutStatus = createAsyncThunk<
 );
 
 export const fetchMenuItemsByMenuGroup = createAsyncThunk<
-  MenuItem[],
+  MenuItemsByGroupResponse,
   { branch_id: string; menu_group_name?: any },
   { rejectValue: string }
 >("menu/fetchMenuItemsByMenuGroup", async ({ branch_id, menu_group_name }, { rejectWithValue }) => {
@@ -239,7 +254,7 @@ export const fetchMenuItemsByMenuGroup = createAsyncThunk<
       queryString += `&menu_group_name=${menu_group_name}`;
     }
 
-    const response = await axios.get<MenuItemResponse>(
+    const response = await axios.get<MenuItemsByGroupResponse>(
       `${SERVER_DOMAIN}/menu/filterMenuItems/?${queryString}`,
       {
         headers: {
@@ -247,7 +262,7 @@ export const fetchMenuItemsByMenuGroup = createAsyncThunk<
         },
       }
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue(error.response.data.message);
@@ -333,10 +348,16 @@ const menuSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMenuItemsByMenuGroup.fulfilled, (state, action: PayloadAction<MenuItem[]>) => {
-        state.loading = false;
-        state.menuItemsByGroup = action.payload;
-      })
+      .addCase(
+        fetchMenuItemsByMenuGroup.fulfilled,
+        (state, action: PayloadAction<MenuItemsByGroupResponse>) => {
+          state.loading = false;
+          state.menuItemsByGroup = action.payload.data;
+          state.totalItems = action.payload.totalItems;
+          state.totalPages = action.payload.totalPages;
+          state.currentPage = action.payload.currentPage;
+        }
+      )
       .addCase(
         fetchMenuItemsByMenuGroup.rejected,
         (state, action: PayloadAction<string | undefined>) => {
