@@ -44,14 +44,14 @@ const EditSecurityModal: React.FC<EditSecurityModalProps> = ({
       // Dispatch Redux action or call the endpoint here
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(`${SERVER_DOMAIN}/updateUserDetails`, payload, {
+      await axios.put(`${SERVER_DOMAIN}/updateUserDetails`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       toast.success("Successful!");
       dispatch(fetchUserDetails());
-      onClose(); // Close modal on successful submission
+      onClose();
     } catch (error) {
       console.error("Failed to update credentials:", error);
       toast.error("An error occured");

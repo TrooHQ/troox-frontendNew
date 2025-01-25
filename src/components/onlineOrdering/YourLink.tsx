@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ContentCopy } from "@mui/icons-material";
 
 const YourLink = () => {
@@ -45,33 +45,31 @@ const YourLink = () => {
 
       {isCustomizing && (
         <div className="flex flex-col items-center mt-8 gap-4">
-        <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-[60%]">
-          <span className="bg-gray-100 text-gray-500 px-3 py-2">
-            https://gogrub.co/
-          </span>
-          <input
-            type="text"
-            placeholder="Please enter your preferred URL"
-            value={customLink}
-            onChange={(e) => setCustomLink(e.target.value)}
-            className="focus:outline-none px-2 py-2 text-gray-500 w-full"
-          />
+          <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-[60%]">
+            <span className="bg-gray-100 text-gray-500 px-3 py-2">https://gogrub.co/</span>
+            <input
+              type="text"
+              placeholder="Please enter your preferred URL"
+              value={customLink}
+              onChange={(e) => setCustomLink(e.target.value)}
+              className="focus:outline-none px-2 py-2 text-gray-500 w-full"
+            />
+          </div>
+          <div className="flex gap-4">
+            <button
+              className="bg-purple500 text-white py-2 px-4 rounded"
+              onClick={handleGenerateClick}
+            >
+              Generate link
+            </button>
+            <button
+              className="bg-white text-purple500 border border-purple-500 py-2 px-4 rounded"
+              onClick={handleCancelClick}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
-        <div className="flex gap-4">
-          <button
-            className="bg-purple500 text-white py-2 px-4 rounded"
-            onClick={handleGenerateClick}
-          >
-            Generate link
-          </button>
-          <button
-            className="bg-white text-purple500 border border-purple-500 py-2 px-4 rounded"
-            onClick={handleCancelClick}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
       )}
     </div>
   );

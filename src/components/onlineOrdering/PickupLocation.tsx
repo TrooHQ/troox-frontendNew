@@ -71,7 +71,7 @@ const PickupLocation = () => {
       </div>
 
       {isPickupEnabled && (
-        <div style={{ marginTop: "20px" }}>
+        <div className="mt-5 pr-[40%]">
           <form className="space-y-6">
             <CustomSelect5
               label="Select a state"

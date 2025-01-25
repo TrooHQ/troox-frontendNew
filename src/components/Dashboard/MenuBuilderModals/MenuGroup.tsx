@@ -56,11 +56,6 @@ const MenuGroup: React.FC<Props> = ({
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const paginatedItems = subMenuContent.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   return (
     <div className="mt-[24px] w-full border p-[16px]">
       <div className=" flex gap-[16px] items-start">
@@ -85,7 +80,7 @@ const MenuGroup: React.FC<Props> = ({
                       handleFetchMenuItems(group);
                     }}
                   >
-                    {truncateText(group.name, 15)}
+                    {truncateText(group.name, 12)}
                     {activeGroup?.name === group.name && (
                       <IconButton
                         aria-controls="simple-menu"
@@ -251,7 +246,23 @@ const MenuGroup: React.FC<Props> = ({
                   count={totalPages}
                   page={currentPage}
                   onChange={handlePageChange}
-                  color="primary"
+                  sx={{
+                    "& .Mui-selected": {
+                      backgroundColor: "#5955b3",
+                      color: "#fff",
+                    },
+                    "& .MuiPaginationItem-root": {
+                      "&.Mui-selected:hover": {
+                        backgroundColor: "#5955b3",
+                      },
+                    },
+                    "& .MuiPaginationItem-page": {
+                      "&.Mui-selected": {
+                        backgroundColor: "#5955b3",
+                        color: "#fff",
+                      },
+                    },
+                  }}
                 />
               </div>
             )}

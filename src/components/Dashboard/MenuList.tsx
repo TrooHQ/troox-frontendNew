@@ -19,7 +19,7 @@ import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
-import { fetchMenuItems2, fetchMenuItemsWithoutStatus } from "../../slices/menuSlice";
+import { fetchMenuItemsWithoutStatus } from "../../slices/menuSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";

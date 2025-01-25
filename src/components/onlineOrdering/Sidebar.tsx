@@ -1,9 +1,4 @@
-import {
-  AccountCircleOutlined,
-  ChevronRight,
-  LocationCityOutlined,
-  Password,
-} from "@mui/icons-material";
+import { ChevronRight } from "@mui/icons-material";
 import React from "react";
 
 interface SidebarProps {

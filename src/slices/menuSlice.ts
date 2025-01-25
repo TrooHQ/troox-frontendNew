@@ -206,12 +206,12 @@ export const fetchMenuItems2 = createAsyncThunk<
 });
 
 export const fetchMenuItemsWithoutStatus = createAsyncThunk<
-  MenuItem[],
-  { branch_id: string; menu_group_name?: any },
+  MenuItemsByGroupResponse,
+  { branch_id: string; menu_group_name?: string; page?: number },
   { rejectValue: string }
 >(
   "menu/fetchMenuItemsWithoutStatus",
-  async ({ branch_id, menu_group_name }, { rejectWithValue }) => {
+  async ({ branch_id, menu_group_name, page }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
 
@@ -220,8 +220,11 @@ export const fetchMenuItemsWithoutStatus = createAsyncThunk<
       if (menu_group_name !== undefined && menu_group_name !== null) {
         queryString += `&menu_group_name=${menu_group_name}`;
       }
+      if (page !== undefined && page !== null) {
+        queryString += `&page=${page}`;
+      }
 
-      const response = await axios.get<MenuItemResponse>(
+      const response = await axios.get<MenuItemsByGroupResponse>(
         `${SERVER_DOMAIN}/menu/filterMenuItemsWithoutStatus/?${queryString}`,
         {
           headers: {
@@ -229,7 +232,7 @@ export const fetchMenuItemsWithoutStatus = createAsyncThunk<
           },
         }
       );
-      return response.data.data;
+      return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data.message);
@@ -242,35 +245,42 @@ export const fetchMenuItemsWithoutStatus = createAsyncThunk<
 
 export const fetchMenuItemsByMenuGroup = createAsyncThunk<
   MenuItemsByGroupResponse,
-  { branch_id: string; menu_group_name?: any },
+  { branch_id: string; menu_group_name?: string; page: number },
   { rejectValue: string }
->("menu/fetchMenuItemsByMenuGroup", async ({ branch_id, menu_group_name }, { rejectWithValue }) => {
-  try {
-    const token = localStorage.getItem("token");
+>(
+  "menu/fetchMenuItemsByMenuGroup",
+  async ({ branch_id, menu_group_name, page }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
 
-    // Construct the query string
-    let queryString = `branch_id=${branch_id}`;
-    if (menu_group_name !== undefined && menu_group_name !== null) {
-      queryString += `&menu_group_name=${menu_group_name}`;
-    }
-
-    const response = await axios.get<MenuItemsByGroupResponse>(
-      `${SERVER_DOMAIN}/menu/filterMenuItems/?${queryString}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      // Construct the query string
+      let queryString = `branch_id=${branch_id}`;
+      if (menu_group_name !== undefined && menu_group_name !== null) {
+        queryString += `&menu_group_name=${menu_group_name}`;
       }
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue(error.response.data.message);
-    } else {
-      return rejectWithValue("An error occurred. Please try again later.");
+
+      if (page !== undefined && page !== null) {
+        queryString += `&page=${page}`;
+      }
+
+      const response = await axios.get<MenuItemsByGroupResponse>(
+        `${SERVER_DOMAIN}/menu/filterMenuItems/?${queryString}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue("An error occurred. Please try again later.");
+      }
     }
   }
-});
+);
 
 const menuSlice = createSlice({
   name: "menu",
@@ -332,9 +342,12 @@ const menuSlice = createSlice({
       })
       .addCase(
         fetchMenuItemsWithoutStatus.fulfilled,
-        (state, action: PayloadAction<MenuItem[]>) => {
+        (state, action: PayloadAction<MenuItemsByGroupResponse>) => {
           state.loading = false;
-          state.menuItemsWithoutStatus = action.payload;
+          state.menuItemsWithoutStatus = action.payload.data;
+          state.totalItems = action.payload.totalItems;
+          state.totalPages = action.payload.totalPages;
+          state.currentPage = action.payload.currentPage;
         }
       )
       .addCase(
@@ -353,9 +366,6 @@ const menuSlice = createSlice({
         (state, action: PayloadAction<MenuItemsByGroupResponse>) => {
           state.loading = false;
           state.menuItemsByGroup = action.payload.data;
-          state.totalItems = action.payload.totalItems;
-          state.totalPages = action.payload.totalPages;
-          state.currentPage = action.payload.currentPage;
         }
       )
       .addCase(
