@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Delivery from "../assets/delivery.svg";
 import Pickup from "../assets/pickup.svg";
 import {
+  clearBasket,
   removeItemFromBasket,
   setDeliveryFee,
   updateCustomerAddress,
@@ -18,6 +19,7 @@ import Back from "../assets/Cancel.svg";
 import { useState } from "react";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 import CustomSelect3 from "../inputFields/CustomSelect3";
+import RadioInput from "../inputFields/RadioInput";
 
 // interface Option {
 //   value: string;
@@ -30,7 +32,10 @@ export const OnlineOrderingBasket = () => {
   const dispatch = useDispatch();
   const [deliveryModal, setDeliveryModal] = useState(false);
   const [pickupModal, setPickupModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+
   const [selectedOption, setSelectedOption] = useState("");
+  // const [selectedAddress, setSelectedAddress] = useState("");
 
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
@@ -46,10 +51,10 @@ export const OnlineOrderingBasket = () => {
     setSelectedOption(value);
 
     if (value === "delivery") {
-      setPickupModal(true);
+      // setPickupModal(true);
       dispatch(setDeliveryFee(DELIVERY_PRICE));
     } else if (value === "pickup") {
-      setDeliveryModal(true);
+      // setDeliveryModal(true);
       dispatch(setDeliveryFee(0));
     }
   };
@@ -59,6 +64,16 @@ export const OnlineOrderingBasket = () => {
     setPickupModal(false);
     setSelectedOption("");
   };
+
+  const handleCancelModal = () => {
+    setCancelModal(false);
+    dispatch(clearBasket());
+  };
+
+  // const handleOptionChange = (option: string) => {
+  //   setSelectedAddress(option);
+  // };
+  const options = ["Lekki", "Ikeja", "Ikoyi", "Yaba", "Lagos"];
 
   // const handleAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const addressLocation = event.target.value;
@@ -70,6 +85,8 @@ export const OnlineOrderingBasket = () => {
     setAddressvalue(addressLocation);
     dispatch(updateCustomerAddress(addressLocation));
   };
+
+  console.log(addressvalue);
 
   const handleAddressSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -231,60 +248,131 @@ export const OnlineOrderingBasket = () => {
       </div>
 
       {basketDetails?.items.length > 0 && (
-        <div className="mt-[40px]">
-          <div className="py-[20px] mx-[24px] grid gap-[10px] border-t-[#E7E7E7] border-t">
-            <p
-              className="font-[400] text-[14px]"
-              style={{
-                color: colorScheme || "#414141",
-              }}
-            >
-              Choose your pickup option
-            </p>
-            <div className="py-[25px] flex items-center border-b justify-center">
-              <label className="flex items-center gap-[12px] px-[24px] border-r cursor-pointer">
-                <input
-                  type="radio"
-                  name="deliveryOption"
-                  value="pickup"
-                  checked={selectedOption === "pickup"}
-                  onChange={handleDeliveryOptionChange}
-                  className=""
-                />
-                <img src={Pickup} alt="Pickup" />
-                <p
-                  className="font-[500] text-[16px] "
-                  style={{
-                    color: colorScheme || "#414141",
-                  }}
-                >
-                  Pickup
-                </p>
-              </label>
+        <>
+          <div className="mt-[40px]">
+            <div className="py-[20px] mx-[24px] grid gap-[10px] border-t-[#E7E7E7] border-t">
+              <p
+                className="font-[400] text-[14px]"
+                style={{
+                  color: colorScheme || "#414141",
+                }}
+              >
+                Choose your pickup option
+              </p>
+              <div className="py-[25px] flex items-center border-b ">
+                <label className="flex items-center gap-[12px] pr-[24px] border-r cursor-pointer">
+                  <input
+                    type="radio"
+                    name="deliveryOption"
+                    value="pickup"
+                    checked={selectedOption === "pickup"}
+                    onChange={handleDeliveryOptionChange}
+                    className=""
+                  />
+                  <img src={Pickup} alt="Pickup" />
+                  <p
+                    className="font-[500] text-[16px] "
+                    style={{
+                      color: colorScheme || "#414141",
+                    }}
+                  >
+                    Pickup
+                  </p>
+                </label>
 
-              <label className="flex items-center gap-[12px] px-[24px] cursor-pointer">
-                <input
-                  type="radio"
-                  name="deliveryOption"
-                  value="delivery"
-                  checked={selectedOption === "delivery"}
-                  onChange={handleDeliveryOptionChange}
-                  className=""
-                />
-                <img src={Delivery} alt="Delivery" />
-                <p
-                  className="font-[500] text-[16px] "
-                  style={{
-                    color: colorScheme || "#414141",
-                  }}
-                >
-                  Delivery
-                </p>
-              </label>
+                <label className="flex items-center gap-[12px] pl-[24px] cursor-pointer">
+                  <input
+                    type="radio"
+                    name="deliveryOption"
+                    value="delivery"
+                    checked={selectedOption === "delivery"}
+                    onChange={handleDeliveryOptionChange}
+                    className=""
+                  />
+                  <img src={Delivery} alt="Delivery" />
+                  <p
+                    className="font-[500] text-[16px] "
+                    style={{
+                      color: colorScheme || "#414141",
+                    }}
+                  >
+                    Delivery
+                  </p>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
+
+          <div className="mt-[24px] mx-[24px] flex items-center justify-center gap-[16px]">
+            <p
+              className=" w-full text-center cursor-pointer font-[500] border border-[#B11111] rounded-[5px] text-[16px] text-[#B11111] py-[10px] px-[24px]"
+              onClick={() => setCancelModal(true)}
+            >
+              Cancel
+            </p>
+
+            <button
+              disabled={selectedOption === ""}
+              onClick={() => {
+                if (selectedOption === "delivery") {
+                  setDeliveryModal(true);
+                } else if (selectedOption === "pickup") {
+                  setPickupModal(true);
+                }
+              }}
+              className={` w-full text-center font-[500] text-[16px]   rounded-[5px]  text-white py-[10px] px-[24px] ${
+                selectedOption === "" ? " bg-[#B6B6B6]" : "border"
+              }`}
+              style={{
+                backgroundColor:
+                  selectedOption == ""
+                    ? "bg-[#B6B6B6]"
+                    : colorScheme || "#11AE16",
+                borderColor: colorScheme || "#11AE16",
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </>
       )}
+
+      <MenuModal isOpen={cancelModal} onClose={() => setCancelModal(false)}>
+        <form action="" onSubmit={handleAddressSubmit}>
+          <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+            <div>
+              <p
+                className=" text-center text-[18px] font-[500]"
+                style={{
+                  color: colorScheme || "#121212",
+                }}
+              >
+                Are you sure you want to cancel this order?
+              </p>
+
+              <div className="mt-[44px] flex items-center justify-center gap-[16px]">
+                <p
+                  className=" w-full text-center cursor-pointer font-[500] border border-[#B11111] rounded-[5px] text-[16px] text-[#B11111] py-[10px] px-[24px]"
+                  onClick={handleCancelModal}
+                >
+                  Yes
+                </p>
+
+                <button
+                  onClick={() => setCancelModal(false)}
+                  className="text-center w-full font-[500] text-[16px] border  rounded-[5px]  text-white py-[10px] px-[24px]"
+                  style={{
+                    backgroundColor: colorScheme || "#11AE16",
+                    borderColor: colorScheme || "#11AE16",
+                  }}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </MenuModal>
 
       <MenuModal isOpen={deliveryModal} onClose={handleCloseDeliveryModal}>
         <form action="" onSubmit={handleAddressSubmit}>
@@ -297,12 +385,12 @@ export const OnlineOrderingBasket = () => {
             </div>
             <div>
               <p
-                className=" text-center text-[18px] font-[500]"
+                className="  text-[18px] font-[500]"
                 style={{
                   color: colorScheme || "#121212",
                 }}
               >
-                Enter Details
+                Enter your details
               </p>
 
               <div className="py-[25px] grid gap-[16px]">
@@ -312,6 +400,29 @@ export const OnlineOrderingBasket = () => {
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
                   placeholder="Enter Full Name"
+                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
+                />
+
+                <input
+                  type="tel"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^[\d\s\-()+]*$/.test(value)) {
+                      setPhone(value);
+                    }
+                  }}
+                  placeholder="Phone Number"
+                  className="bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full"
+                  inputMode="tel"
+                />
+                <input
+                  type="text"
+                  id="name"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                  placeholder="Street Address"
                   className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
                 />
 
@@ -362,45 +473,18 @@ export const OnlineOrderingBasket = () => {
                   color: colorScheme || "#121212",
                 }}
               >
-                Enter your details
+                Choose your preferred pickup location
               </p>
 
-              <div className="py-[25px] grid gap-[16px]">
-                <input
-                  type="text"
-                  id="name"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Enter Full Name"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
-                <input
-                  type="tel"
-                  id="phone"
-                  value={phone}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^[\d\s\-()+]*$/.test(value)) {
-                      setPhone(value);
-                    }
-                  }}
-                  placeholder="Phone Number"
-                  className="bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full"
-                  inputMode="tel"
-                />
-                <input
-                  type="text"
-                  id="name"
-                  value={streetAddress}
-                  onChange={(e) => setStreetAddress(e.target.value)}
-                  placeholder="Street Address"
-                  className={`bg-transparent placeholder:text-[14px] border border-black border-opacity-35 rounded-md pl-2 pr-2 py-4 w-full `}
-                />
-                <CustomSelect3
-                  options={["Abuja", "Lagos"]}
-                  placeholder="City"
+              <div className=" grid gap-[20px] mt-[20px]">
+                <RadioInput
+                  className="grid gap-[20px] text-[18px] font-[400] text-[#121212]"
+                  options={options}
+                  onChange={handleAddress}
+                  selectedOption={addressvalue}
                 />
               </div>
+
               <div className="mt-[24px] flex items-center justify-center gap-[16px]">
                 <p
                   className="cursor-pointer font-[500] border border-[#B11111] rounded-[5px] text-[16px] text-[#B11111] py-[10px] px-[24px]"
@@ -418,7 +502,7 @@ export const OnlineOrderingBasket = () => {
                     borderColor: colorScheme || "#11AE16",
                   }}
                 >
-                  Proceed to Pay
+                  Continue
                 </button>
               </div>
             </div>

@@ -11,6 +11,7 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
+import Customer from "../assets/streamline_customer-support-1-solid.svg";
 
 export const OnlineOrderingSelectPayment = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -197,6 +198,14 @@ export const OnlineOrderingSelectPayment = () => {
                   Proceed to Pay
                 </p>
               </div>
+              <div className=" inset-x-0 flex justify-center">
+                <div className="flex flex-wrap items-center gap-[2px] mt-[32px]">
+                  <img src={Customer} alt="Customer" />
+                  <p className="font-[400] text-center text-[12px] text-[#000000]">
+                    Contact Support
+                  </p>
+                </div>
+              </div>
             </div>
           )}
           {selectedOption === "WebPay" && (
@@ -228,6 +237,15 @@ export const OnlineOrderingSelectPayment = () => {
                   Proceed to Pay
                 </p>
               </div>
+
+              <div className=" inset-x-0 flex justify-center">
+                <div className="flex flex-wrap items-center gap-[2px] mt-[32px]">
+                  <img src={Customer} alt="Customer" />
+                  <p className="font-[400] text-center text-[12px] text-[#000000]">
+                    Contact Support
+                  </p>
+                </div>
+              </div>
             </div>
           )}
           {selectedOption === "Terminals" && (
@@ -258,6 +276,14 @@ export const OnlineOrderingSelectPayment = () => {
                 >
                   Proceed to Pay
                 </p>
+              </div>
+              <div className="inset-x-0 flex justify-center">
+                <div className="flex flex-wrap items-center gap-[2px] mt-[32px]">
+                  <img src={Customer} alt="Customer" />
+                  <p className="font-[400] text-center text-[12px] text-[#000000]">
+                    Contact Support
+                  </p>
+                </div>
               </div>
             </div>
           )}
