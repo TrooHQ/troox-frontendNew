@@ -17,7 +17,13 @@ import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
 import OtherSettings from "./OtherSettings";
 
-const DropdownMenu = ({ onClose, onDelete }: { onClose: () => void; onDelete: () => void }) => {
+const DropdownMenu = ({
+  onClose,
+  onDelete,
+}: {
+  onClose: () => void;
+  onDelete: () => void;
+}) => {
   const [isEnabled, setIsEnabled] = useState(false);
 
   const handleItemClick = (action: string) => {
@@ -40,7 +46,9 @@ const DropdownMenu = ({ onClose, onDelete }: { onClose: () => void; onDelete: ()
       </li>
       <li
         onClick={() => handleItemClick("Enable Table")}
-        className={`font-[400] cursor-pointer ${!isEnabled ? "  text-slate-300" : " text-black"}`}
+        className={`font-[400] cursor-pointer ${
+          !isEnabled ? "  text-slate-300" : " text-black"
+        }`}
       >
         {isEnabled ? (
           <ToggleOn className="mr-2 text-[#5955eb]" />
@@ -93,14 +101,18 @@ const ManageTables: React.FC = () => {
 
   const roomData = useSelector((state: any) => state.tables.rooms);
   const tableData = useSelector((state: any) => state.tables.tables);
-  const { selectedBranch: selectedOutlet } = useSelector((state: RootState) => state.branches);
+  const { selectedBranch: selectedOutlet } = useSelector(
+    (state: RootState) => state.branches
+  );
 
   console.log(selectedOutlet, selectedBranchId);
 
   const handleBranchSelect = (branchId: string) => {
     setSelectedBranch(branchId);
 
-    const selectedBranchObj = branches.find((branch: any) => branch._id === branchId);
+    const selectedBranchObj = branches.find(
+      (branch: any) => branch._id === branchId
+    );
     if (selectedBranchObj) {
       setSelectedBranchId(selectedBranchObj._id);
     }
@@ -165,9 +177,10 @@ const ManageTables: React.FC = () => {
   };
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<{ group_name: string; branch: any } | null>(
-    null
-  );
+  const [itemToDelete, setItemToDelete] = useState<{
+    group_name: string;
+    branch: any;
+  } | null>(null);
 
   // Combine roomData and tableData into a single structure
   const combinedData = {
@@ -231,7 +244,9 @@ const ManageTables: React.FC = () => {
           {Object.entries(combinedData).map(([category, items]) => (
             <div key={category}>
               <div className="mt-3 cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
-                <h2 className="text-[#5855B3] text-[20px] font-[400]">{category?.toUpperCase()}</h2>
+                <h2 className="text-[#5855B3] text-[20px] font-[400]">
+                  {category?.toUpperCase()}
+                </h2>
                 <div>
                   <img
                     onClick={() => toggleOwner(category)}
@@ -255,7 +270,12 @@ const ManageTables: React.FC = () => {
                     <ul>
                       {items.map(
                         (
-                          item: { number: any; group_name: any; qrcode: any; branch: any },
+                          item: {
+                            number: any;
+                            group_name: any;
+                            qrcode: any;
+                            branch: any;
+                          },
                           index: any
                         ) => (
                           <li
@@ -264,29 +284,42 @@ const ManageTables: React.FC = () => {
                               index % 2 === 0 ? "bg-[#F8F8F8]" : ""
                             }`}
                           >
-                            <p className="col-span-2 px-3 py-2">{item.number}</p>
-                            <p className="col-span-2 px-3 py-2">{item.group_name}</p>
+                            <p className="col-span-2 px-3 py-2">
+                              {item.number}
+                            </p>
+                            <p className="col-span-2 px-3 py-2">
+                              {item.group_name}
+                            </p>
                             <p className="px-3 py-2">
                               {item.qrcode && <img src={item.qrcode} alt="" />}
                             </p>
                             <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
                               <div
                                 className={`${
-                                  activeMenuIndex === index ? "bg-slate-200" : ""
+                                  activeMenuIndex === index
+                                    ? "bg-slate-200"
+                                    : ""
                                 } py-[10px] px-[20px] rounded-full`}
                               >
                                 <div
                                   className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                                   onClick={() => toggleMenu(index)}
                                 >
-                                  <img src={More} alt="" className="cursor-pointer w-[5px]" />
+                                  <img
+                                    src={More}
+                                    alt=""
+                                    className="cursor-pointer w-[5px]"
+                                  />
                                 </div>
                               </div>
                               {activeMenuIndex === index && (
                                 <DropdownMenu
                                   onClose={() => toggleMenu(index)}
                                   onDelete={() =>
-                                    handleDeleteConfirmation(item.group_name, item.branch)
+                                    handleDeleteConfirmation(
+                                      item.group_name,
+                                      item.branch
+                                    )
                                   }
                                 />
                               )}
@@ -305,10 +338,15 @@ const ManageTables: React.FC = () => {
         <OtherSettings selectedOutlet={selectedOutlet} />
 
         {/* Modals */}
-        <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
+        <Modal
+          isOpen={addModifierModar}
+          onClose={() => setAddModifierModal(false)}
+        >
           <div className=" w-[539px] py-[32px] px-[52px]">
             <div className="">
-              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Asset Arrangement</p>
+              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
+                Asset Arrangement
+              </p>
               <hr className="border my-[24px] border-[#E7E7E7]" />
               <div className=" flex flex-col gap-[8px] justify-center">
                 <CustomSelect5
@@ -353,7 +391,9 @@ const ManageTables: React.FC = () => {
                   className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 
@@ -370,11 +410,16 @@ const ManageTables: React.FC = () => {
         </Modal>
 
         {isDeleteModalOpen && (
-          <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+          <Modal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+          >
             <div className="">
               <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
                 <div className="flex flex-col justify-center items-center gap-6">
-                  <p className="text-[24px] font-[500] text-purple500">Delete Table</p>{" "}
+                  <p className="text-[24px] font-[500] text-purple500">
+                    Delete Table
+                  </p>{" "}
                   <p className="text-[16px] font-[400] text-grey500">
                     Are you sure you want to delete this?
                   </p>
@@ -383,15 +428,23 @@ const ManageTables: React.FC = () => {
                       className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
                       onClick={() => setIsDeleteModalOpen(false)}
                     >
-                      <p className="font-[500] text-[16px] text-purple500 cursor-pointer">No</p>
+                      <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                        No
+                      </p>
                     </div>
                     <div
                       className="border border-[#ED5048] bg-[#ED5048] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
                       onClick={() =>
-                        itemToDelete && handleDelete(itemToDelete.group_name, itemToDelete.branch)
+                        itemToDelete &&
+                        handleDelete(
+                          itemToDelete.group_name,
+                          itemToDelete.branch
+                        )
                       }
                     >
-                      <button className="text-[16px]">{loading ? "Deleting..." : "Delete"}</button>
+                      <button className="text-[16px]">
+                        {loading ? "Deleting..." : "Delete"}
+                      </button>
                     </div>
                   </div>
                 </div>

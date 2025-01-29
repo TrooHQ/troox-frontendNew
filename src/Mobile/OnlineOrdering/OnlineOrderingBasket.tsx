@@ -312,6 +312,7 @@ export const OnlineOrderingBasket = () => {
             </p>
 
             <button
+              type="submit"
               disabled={selectedOption === ""}
               onClick={() => {
                 if (selectedOption === "delivery") {
@@ -495,7 +496,7 @@ export const OnlineOrderingBasket = () => {
 
                 <button
                   type="submit"
-                  disabled={!streetAddress || !userName || !phone}
+                  disabled={!addressvalue}
                   className=" font-[500] text-[16px] border rounded-[5px]  text-white py-[10px] px-[24px]"
                   style={{
                     backgroundColor: colorScheme || "#11AE16",

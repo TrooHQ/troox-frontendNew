@@ -6,7 +6,12 @@ import CustomInput from "../inputFields/CustomInput.js";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { setEmail, setPassword, selectEmail, selectPassword } from "../../slices/authSlice.js";
+import {
+  setEmail,
+  setPassword,
+  selectEmail,
+  selectPassword,
+} from "../../slices/authSlice.js";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api.js";
 import { setUserData } from "../../slices/UserSlice.js";
@@ -40,7 +45,6 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
-      console.log(response, "qqqq");
       dispatch(setUserData(response.data));
       localStorage.setItem("token", response.data.token);
       const userType = response.data.user_role;
@@ -114,7 +118,9 @@ const Login = () => {
         </div>
         <div className=" mt-[40px]">
           <Link to="/business-profile">
-            <p className="font-[500] text-[16px] text-purple500">Create a business account</p>
+            <p className="font-[500] text-[16px] text-purple500">
+              Create a business account
+            </p>
           </Link>
         </div>
       </div>

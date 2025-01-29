@@ -23,7 +23,6 @@ export const Basket = () => {
   const backetDetails = useSelector((state: RootState) => state.basket);
   const tip = useSelector((state: RootState) => state.basket?.tip);
   const tipPercentages = [0.1, 0.125, 0.15];
-  console.log(backetDetails);
   const [selectedPercentage, setSelectedPercentage] = useState<number | null>(
     null
   );
@@ -51,13 +50,10 @@ export const Basket = () => {
   useEffect(() => {
     if (selectedPercentage !== null) {
       const tipAmount = totalPrice * selectedPercentage;
-      console.log("Selected tip amount:", tipAmount);
       dispatch(setTip(tipAmount));
     } else if (customAmount !== null) {
-      console.log("Custom tip amount:", customAmount);
       dispatch(setTip(customAmount));
     } else {
-      console.log("Selected tip: None");
       dispatch(setTip(null));
     }
   }, [selectedPercentage, customAmount, totalPrice]);

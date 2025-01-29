@@ -43,7 +43,7 @@ export const OnlineOrderingGetReceipt = () => {
           {/* </Link> */}
           <Link to={`${url}`}>
             <div className=" flex items-center justify-center">
-              <p className=" border border-[#606060] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#606060]">
+              <p className=" border border-[#606060] rounded-[5px] py-[10px] px-[41px] text-center cursor-pointer inline text-[16px] font-[500] text-[#121212]">
                 Order more
               </p>
             </div>
