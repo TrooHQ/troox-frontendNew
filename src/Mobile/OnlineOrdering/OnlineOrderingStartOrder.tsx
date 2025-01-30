@@ -11,6 +11,9 @@ import {
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
 import NotFound from "../NotFound";
+import Logo from "../assets/goGrubLOGO.svg";
+import Sample1 from "../assets/sampleImage.svg";
+import Sample2 from "../assets/sampleImage1.svg";
 
 const OnlineOrderingStartOrder = () => {
   const location = useLocation();
@@ -71,8 +74,11 @@ const OnlineOrderingStartOrder = () => {
   }
 
   return (
-    <div className={`mx-[22px] `} style={{ color: color || "#606060" }}>
-      <div className="flex flex-col items-center justify-center mt-[64px]">
+    <div
+      className={`mx-[22px] relative `}
+      style={{ color: color || "#606060" }}
+    >
+      <div className="flex flex-col items-center justify-center ">
         <div className="mb-[10px] max-w-[200px] h-[200px]">
           <img
             src={businessDetails?.business_logo}
@@ -80,13 +86,13 @@ const OnlineOrderingStartOrder = () => {
             className=" w-full object-cover h-full"
           />
         </div>
-        <p>
-          Welcome to{" "}
+        <p className=" font-[400] text-[18px] text-center">
+          You’re Welcome to{" "}
           <span className="font-bold">{businessDetails?.business_name}</span>{" "}
           Page
         </p>
         <p className="mt-[24px] text-[16px] font-[400] text-center">
-          Food ready in <span className="font-bold">8-13 minutes</span> after
+          Food ready in <span className="font-[600]">8-13 minutes</span> after
           placing order
         </p>
 
@@ -101,17 +107,8 @@ const OnlineOrderingStartOrder = () => {
               Start Your Order
             </p>
           </Link>
-          <a href="">
-            <p
-              className={`text-center ${
-                color ? `text-[${color}]` : "text-[#606060]"
-              } underline text-[16px] mt-[24px]`}
-            >
-              Click here for menu and nutrition information
-            </p>
-          </a>
 
-          <p className="italic text-center text-[16px] mt-[32px]">
+          <p className=" font-[400] text-center text-[12px] mt-[32px]">
             By clicking “Start Your Order” you agree to our{" "}
             <a href="">
               <span
@@ -123,6 +120,20 @@ const OnlineOrderingStartOrder = () => {
               </span>
             </a>
           </p>
+        </div>
+      </div>
+
+      <div className="fixed bottom-[5px] inset-x-0 -z-20 flex justify-between items-end mt-[20px]">
+        <img src={Sample2} alt="" className="-ml-0" />
+        <img src={Sample1} alt="" className="-mr-0" />
+      </div>
+
+      <div className="fixed bottom-[20px] inset-x-0 flex justify-center">
+        <div className="flex flex-wrap items-center gap-[2px] mt-[32px]">
+          <p className="font-[400] text-center text-[12px] text-[#000000]">
+            Powered By
+          </p>
+          <img src={Logo} alt="Logo" />
         </div>
       </div>
     </div>

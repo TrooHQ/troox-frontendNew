@@ -43,7 +43,6 @@ const BeginOrder = () => {
   const color = businessDetails?.colour_scheme || "#FF0000";
 
   const queryParams = new URLSearchParams(location.search);
-  console.log(queryParams);
 
   const fullUrl =
     window.location.origin +
@@ -79,10 +78,7 @@ const BeginOrder = () => {
         `${SERVER_DOMAIN}/business/getBusinessDetails/?business_identifier=${business_identifier}&branch=${BranchId}`,
         headers
       );
-      console.log(
-        "Business Details Retrieved successfully:",
-        response.data.data
-      );
+
       dispatch(setBusinessDetails(response.data.data));
     } catch (error) {
       console.error("Error getting Business Details:", error);
