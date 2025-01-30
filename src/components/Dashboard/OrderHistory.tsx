@@ -7,12 +7,17 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { CalendarMonth } from "@mui/icons-material";
+import * as XLSX from "xlsx"; // For Excel export
+import { saveAs } from "file-saver"; // To save files locally
+import Papa from "papaparse"; // For CSV export
+import { truncateText } from "../../utils/truncateText";
 
 const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
   console.log(selectedBranch);
 
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
 
   const userDetails = useSelector((state: any) => state.user);
@@ -51,6 +56,58 @@ const OrderHistory = () => {
     getTickets();
   };
 
+  // Function to export data as Excel
+  // Function to export selected data as Excel
+  const exportToExcel = () => {
+    // Create an array with only the desired fields
+    const selectedData = data.map((item) => ({
+      order_number: item.order_number,
+      date: item.createdAt.slice(0, 10),
+      time: item.createdAt.slice(11, 16),
+      customer_name: item.customer_name,
+      channel: item.channel,
+      total_price: item.total_price,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(selectedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, "order_history.xlsx");
+  };
+
+  // Function to export selected data as CSV
+  const exportToCSV = () => {
+    // Create an array with only the desired fields
+    const selectedData = data.map((item) => ({
+      order_number: item.order_number,
+      date: item.createdAt.slice(0, 10),
+      time: item.createdAt.slice(11, 16),
+      customer_name: item.customer_name,
+      channel: item.channel,
+      total_price: item.total_price,
+    }));
+
+    const csv = Papa.unparse(selectedData);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "order_history.csv");
+  };
+
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const handleDownloadCSV = () => {
+    setDropdownVisible(false);
+    exportToCSV();
+  };
+
+  const handleDownloadExcel = () => {
+    setDropdownVisible(false);
+    exportToExcel();
+  };
+
   return (
     <div>
       <DashboardLayout>
@@ -75,9 +132,7 @@ const OrderHistory = () => {
               </div> */}
               <div className="flex items-center gap-[32px]">
                 <div className="">
-                  <p className="font-[500] text-[16px] text-[#121212]">
-                    Filter by:
-                  </p>
+                  <p className="font-[500] text-[16px] text-[#121212]">Filter by:</p>
                 </div>
                 <div className="flex items-center gap-[8px]">
                   <div className="border border-purple500 bg-purple500 rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
@@ -106,18 +161,41 @@ const OrderHistory = () => {
                   </div>
                 </div>
               </div>
+              {/* Export buttons */}
+              <div className="flex items-center gap-[12px]">
+                <div className="relative">
+                  <button
+                    onClick={toggleDropdown}
+                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
+                  >
+                    Download
+                  </button>
+                  {dropdownVisible && (
+                    <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                      <button
+                        onClick={handleDownloadCSV}
+                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                      >
+                        Download CSV
+                      </button>
+                      <button
+                        onClick={handleDownloadExcel}
+                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                      >
+                        Download Excel
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
-                  Orders
-                </p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Orders</p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
-                  <p className="text-start text-[14px] text-[#121212]">
-                    Order No
-                  </p>
+                  <p className="text-start text-[14px] text-[#121212]">Order No</p>
                   <p className=" text-[14px] text-[#121212]">Date</p>
                   <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
@@ -133,7 +211,7 @@ const OrderHistory = () => {
                     key={index}
                   >
                     <p className="text-start" onClick={handleTicketMenu}>
-                      {item.orderID || "-"}
+                      {item.order_number || "-"}
                     </p>
                     <p className=" " onClick={handleTicketMenu}>
                       {item.createdAt.slice(0, 10)}
@@ -141,15 +219,18 @@ const OrderHistory = () => {
                     <p className=" " onClick={handleTicketMenu}>
                       {item.createdAt.slice(11, 16)}
                     </p>
+                    <p onClick={handleTicketMenu}>
+                      {item.customer_name
+                        ? truncateText(
+                            item.customer_name.charAt(0).toUpperCase() +
+                              item.customer_name.slice(1),
+                            12
+                          )
+                        : ""}
+                    </p>
 
                     <p>{item.channel}</p>
 
-                    <p onClick={handleTicketMenu}>
-                      {item.customer_name
-                        ? item.customer_name.charAt(0).toUpperCase() +
-                          item.customer_name.slice(1)
-                        : ""}
-                    </p>
                     <p>&#x20A6;{item.total_price.toLocaleString()}</p>
                   </div>
                 ))}

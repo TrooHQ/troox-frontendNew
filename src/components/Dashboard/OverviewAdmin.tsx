@@ -112,11 +112,13 @@ const OverviewAdmin: React.FC = () => {
             variant="contained"
             onClick={handleButtonClick}
             sx={{
-              backgroundColor: "#5955B3",
-              color: "white",
+              backgroundColor: "#ffffff",
+              border: "1px solid #5955B3",
+              color: "#5955B3",
               ml: 2,
               "&:hover": {
                 backgroundColor: "#4842a3",
+                color: "white",
               },
             }}
           >
@@ -157,7 +159,7 @@ const OverviewAdmin: React.FC = () => {
         </div>
 
         {/* Second div */}
-        <BalanceComp storeData={storeData} />
+        <BalanceComp />
 
         {/* Third div */}
         <div className="mt-9">

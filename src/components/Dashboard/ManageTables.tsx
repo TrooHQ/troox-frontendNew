@@ -1,14 +1,12 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Add from "../../assets/add.svg";
-import CustomInput from "../inputFields/CustomInput";
 import Modal from "../Modal";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import More from "../../assets/more_vert.svg";
 import ArrowToggle from "../../assets/chevron-down2.svg";
 import { ToggleOff, ToggleOn } from "@mui/icons-material";
-import CustomSelect5 from "../inputFields/CustomSelect5";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { fetchBranches } from "../../slices/branchSlice";
@@ -16,6 +14,7 @@ import { AppDispatch, RootState } from "../../store/store";
 import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
 import OtherSettings from "./OtherSettings";
+import AddModifierModal from "./AddModifierModal";
 
 const DropdownMenu = ({
   onClose,
@@ -74,8 +73,13 @@ const ManageTables: React.FC = () => {
 
   const [activeMenuIndex, setActiveMenuIndex] = useState(null);
   const [expandedOwner, setExpandedOwner] = useState("");
+  const [expandedGroups, setExpandedGroups] = useState<{
+    [key: string]: boolean;
+  }>({}); // Track expanded groups by group_name
+
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
+  const [tableArr, setTableArr] = useState([{ table_number: 1, guests: 1 }]);
   const businessType = [
     {
       value: "In-room dining",
@@ -105,7 +109,10 @@ const ManageTables: React.FC = () => {
     (state: RootState) => state.branches
   );
 
-  console.log(selectedOutlet, selectedBranchId);
+  const [addModifierModar, setAddModifierModal] = useState(false);
+  const handleAddModifier = () => {
+    setAddModifierModal(true);
+  };
 
   const handleBranchSelect = (branchId: string) => {
     setSelectedBranch(branchId);
@@ -139,6 +146,7 @@ const ManageTables: React.FC = () => {
       type: selectedType === "QR Scan at Table" ? "table" : "room",
       group_name: location,
       number: Number(tableNumber),
+      table_arr: tableArr,
     };
     try {
       setLoading(true);
@@ -147,13 +155,9 @@ const ManageTables: React.FC = () => {
         payload,
         headers
       );
-      setAddModifierModal(false);
       dispatch(getRooms());
       dispatch(getTables());
-      setLocation("");
-      setSelectedBranch("");
-      setSelectedType("");
-      setTableNumber("1");
+      resetModalState();
       toast.success(response.data.message || "Created successfully");
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -171,9 +175,13 @@ const ManageTables: React.FC = () => {
     setExpandedOwner((prevOwner) => (prevOwner === owner ? "" : owner));
   };
 
-  const [addModifierModar, setAddModifierModal] = useState(false);
-  const handleAddModifier = () => {
-    setAddModifierModal(true);
+  // Toggle group expansion (e.g., Rooftop, Top floor)
+  //@ts-ignore
+  const toggleGroup = (groupName) => {
+    setExpandedGroups((prev) => ({
+      ...prev,
+      [groupName]: !prev[groupName],
+    }));
   };
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -186,6 +194,17 @@ const ManageTables: React.FC = () => {
   const combinedData = {
     rooms: roomData,
     tables: tableData,
+  };
+
+  console.log("combinedData", combinedData);
+
+  const resetModalState = () => {
+    setAddModifierModal(false);
+    setLocation("");
+    setSelectedBranch("");
+    setSelectedType("");
+    setTableNumber("1");
+    setTableArr([{ table_number: 1, guests: 1 }]);
   };
 
   const handleDelete = async (group_name: string, branch: any) => {
@@ -225,7 +244,7 @@ const ManageTables: React.FC = () => {
         <TopMenuNav pathName="Manage Branch Assets" />
         <div className=" mt-[40px]">
           <div
-            className="border inline-block border-purple500 bg-purple500  rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
+            className="border inline-block border-purple500 bg-white  rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500"
             onClick={handleAddModifier}
           >
             <button className="text-[16px] flex items-center gap-[8px]">
@@ -260,10 +279,15 @@ const ManageTables: React.FC = () => {
               </div>
               {expandedOwner === category && (
                 <>
-                  <div className="mt-[32px] grid grid-cols-7 items-center border-b px-5 border-b-grey100 text-grey300 text-[16px] font-[400]">
-                    <p className="col-span-2 px-3 py-2">No.</p>
+                  <div className="mt-[32px] grid grid-cols-9 items-center border-b px-5 border-b-grey100 text-grey300 text-[16px] font-[400]">
                     <p className="col-span-2 px-3 py-2">Area/Group Name</p>
-                    <p className="px-3 py-2">QR Code</p>
+                    <p className="col-span-2 px-3 py-2 text-center">
+                      Table Number
+                    </p>
+                    <p className="col-span-2 px-3 py-2 text-center">
+                      No. of Guests
+                    </p>
+                    <p className="px-3 py-2 text-center">QR Code</p>
                     <p className="col-span-2 px-3 py-2 text-end">Actions</p>
                   </div>
                   <div>
@@ -327,6 +351,96 @@ const ManageTables: React.FC = () => {
                           </li>
                         )
                       )}
+                      {/* Group items by group_name */}
+                      {Object.entries(
+                        items.reduce(
+                          (
+                            acc: { [x: string]: any[] },
+                            item: { group_name: any }
+                          ) => {
+                            const { group_name } = item;
+                            if (!acc[group_name]) acc[group_name] = [];
+                            acc[group_name].push(item);
+                            return acc;
+                          },
+                          {}
+                        )
+                      ).map(([groupName, groupItems]) => (
+                        <React.Fragment key={groupName}>
+                          {/* Group Header */}
+                          <li
+                            className="grid grid-cols-9 items-center px-5 py-[16px] bg-[rgb(234,234,234)] cursor-pointer mb-1"
+                            onClick={() => toggleGroup(groupName)}
+                          >
+                            <p className="col-span-2 px-3 py-2 font-normal">
+                              {groupName}
+                            </p>
+                            <p className="col-span-7 text-right font-normal px-3 py-2">
+                              {expandedGroups[groupName]
+                                ? "Collapse ▲"
+                                : "Expand ▼"}
+                            </p>
+                          </li>
+                          {/* Group Items - show only if expanded */}
+                          {expandedGroups[groupName] &&
+                            (groupItems as any[]).map(
+                              (item: any, index: number) => (
+                                <li
+                                  key={item._id}
+                                  className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                                    index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                                  }`}
+                                >
+                                  <p className="col-span-2 px-3 py-2">
+                                    {item.group_name}
+                                  </p>
+                                  <p className="col-span-2 px-3 py-2 text-center">
+                                    {item.number}
+                                  </p>
+                                  <p className="col-span-2 px-3 py-2 text-center">
+                                    {item.total_guests}
+                                  </p>
+                                  <p className="px-3 py-2 text-center">
+                                    {item.qrcode && (
+                                      <img src={item.qrcode} alt="" />
+                                    )}
+                                  </p>
+                                  <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
+                                    <div
+                                      className={`${
+                                        activeMenuIndex === item._id
+                                          ? "bg-slate-200"
+                                          : ""
+                                      } py-[10px] px-[20px] rounded-full`}
+                                    >
+                                      <div
+                                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                                        onClick={() => toggleMenu(item._id)}
+                                      >
+                                        <img
+                                          src={More}
+                                          alt=""
+                                          className="cursor-pointer w-[5px]"
+                                        />
+                                      </div>
+                                    </div>
+                                    {activeMenuIndex === item._id && (
+                                      <DropdownMenu
+                                        onClose={() => toggleMenu(item._id)}
+                                        onDelete={() =>
+                                          handleDeleteConfirmation(
+                                            item.group_name as any,
+                                            item.branch
+                                          )
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                </li>
+                              )
+                            )}
+                        </React.Fragment>
+                      ))}
                     </ul>
                   </div>
                 </>

@@ -1,4 +1,5 @@
-import ProfilePic from "../../assets/profilePic.png";
+import Avatar from "@mui/material/Avatar";
+import PersonIcon from "@mui/icons-material/Person";
 import NotificationIcon from "../../assets/notificationIcon.png";
 import SearchIcon from "../../assets/searchIcon.svg";
 import { useSelector } from "react-redux";
@@ -35,7 +36,9 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
               </p>
             </div>
             <div>
-              <img src={ProfilePic} alt="" />
+              <Avatar sx={{ width: 40, height: 40 }}>
+                <PersonIcon />
+              </Avatar>
             </div>
           </div>
         </div>

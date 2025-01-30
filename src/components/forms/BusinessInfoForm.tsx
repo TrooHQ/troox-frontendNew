@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { setField } from "../../slices/registerSlice";
 import CustomInput from "../inputFields/CustomInput";
-import CustomSelect from "../inputFields/CustomSelect";
 import imageIcon from "../../assets/image.svg";
 import { convertToBase64 } from "../../utils/imageToBase64";
+import { useLocation } from "react-router-dom";
+import CustomSelect5 from "../inputFields/CustomSelect5";
+
+const businessTypeOptions = [
+  { value: "Bar and lounge", label: "Bar and lounge" },
+  { value: "Hotel and lodging", label: "Hotel and lodging" },
+  { value: "Restaurant", label: "Restaurant" },
+  { value: "GoGrub", label: "GoGrub" },
+];
 
 const BusinessInfoForm: React.FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const {
     businessName,
     businessEmail,
@@ -25,6 +34,13 @@ const BusinessInfoForm: React.FC = () => {
 
   const [image, setImage] = useState<string>(businessLogo);
   const [imageName, setImageName] = useState<string>("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("coming-from") === "goGrub") {
+      handleInputChange("businessType", "GoGrub");
+    }
+  }, [location.search]);
 
   const handleInputChange = (field: keyof RootState["register"], value: string) => {
     dispatch(setField({ field, value }));
@@ -74,9 +90,9 @@ const BusinessInfoForm: React.FC = () => {
         value={businessPhoneNumber}
         onChange={(newValue) => handleInputChange("businessPhoneNumber", newValue)}
       />
-      <CustomSelect
+      <CustomSelect5
         label="Business type"
-        options={["Bar and lounge", "Hotel and lodging", "Restaurant"]}
+        options={businessTypeOptions}
         value={businessType}
         onChange={(value) => handleInputChange("businessType", value)}
       />

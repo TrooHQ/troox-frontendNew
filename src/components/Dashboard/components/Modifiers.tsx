@@ -82,7 +82,7 @@ const Modifiers = ({
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch?.id}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
         headers
       );
       console.log(response, "response of modi");
@@ -121,8 +121,9 @@ const Modifiers = ({
       branch_id: selectedBranch.id,
       attach_to: "modifier_group",
       modifier_name: modifiers[0].name,
-      modifier_group_name: selectedModifier.modifier_group_name,
+      // modifier_group_name: selectedModifier.modifier_group_name,
       price: parseFloat(modifiers[0].price),
+      modifier_group_id: selectedModifier._id,
     };
 
     const headers = {
@@ -317,6 +318,7 @@ const Modifiers = ({
       branch_id: selectedBranch.id, // Replace with the correct branch ID
       modifier_group_name: modifier.modifier_group_name,
       new_group_name: newGroupName,
+      menu_item_name: selectedMenuItem,
       rule: "single", // Adjust as necessary
     };
 
@@ -523,6 +525,7 @@ const Modifiers = ({
         handleConfirmSave={handleConfirmSave}
         modifiers={modifiers}
         setModifiers={setModifiers}
+        loading={loading}
       />
     </div>
   );

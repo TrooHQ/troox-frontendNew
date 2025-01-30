@@ -139,9 +139,7 @@ const NewRoles = () => {
 
         <div className="my-10 ">
           <div className="flex items-center justify-between">
-            <p className="text-[24px] font-[500] text-purple500">
-              Permissions Setting
-            </p>
+            <p className="text-[24px] font-[500] text-purple500">Permissions Setting</p>
           </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">

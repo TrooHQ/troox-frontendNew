@@ -5,11 +5,9 @@ import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
 import TicketIcon from "../../assets/Tickets.svg";
 import MenuIcon from "../../assets/menuIcon.svg";
-import PaymentIcon from "../../assets/paymentIcon.svg";
-import AccountingIcon from "../../assets/AccountingIcon.svg";
 import RestaurantDetailsIcon from "../../assets/restaurantDetails.svg";
 import ManageTablesIcon from "../../assets/manageTableIcon.svg";
-import PointOfSalesIcon from "../../assets/posIcon.svg";
+import AccountCircleIcon from "../../assets/account_circle.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import HubIcon from "../../assets/hub.svg";
@@ -22,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { clearSelectedBranch, fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
 import { clearUserData } from "../../slices/UserSlice";
+import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
 
 interface MenuItem {
   subTitle?: string;
@@ -67,11 +66,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     id: branch._id,
   }));
 
-  console.log(transformedBranches, selectedBranch, "userData");
   useEffect(() => {
-    const defaultBranch = transformedBranches[0];
-    (selectedBranch === null || selectedBranch === undefined) &&
-      dispatch(userSelectedBranch(defaultBranch as any));
+    if (userData?.user_role === "admin") {
+      const defaultBranch = transformedBranches[0];
+      (selectedBranch === null || selectedBranch === undefined) &&
+        dispatch(userSelectedBranch(defaultBranch as any));
+    } else if (userData?.user_role === "employee") {
+      dispatch(userSelectedBranch(userData?.branch_id));
+    }
   }, [dispatch, transformedBranches, selectedBranch]);
   const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -142,18 +144,18 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         },
       ],
     },
-    {
-      title: "Payment",
-      gap: false,
-      icon: PaymentIcon,
-      link: "/payment",
-    },
-    {
-      title: "Accounting",
-      gap: false,
-      icon: AccountingIcon,
-      link: "/account",
-    },
+    // {
+    //   title: "Payment",
+    //   gap: false,
+    //   icon: PaymentIcon,
+    //   link: "/payment",
+    // },
+    // {
+    //   title: "Accounting",
+    //   gap: false,
+    //   icon: AccountingIcon,
+    //   link: "/account",
+    // },
     {
       subTitle: "SETTINGS",
       Subgap: true,
@@ -191,11 +193,17 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       icon: HubIcon,
       link: "/tenant-settings",
     },
+    // {
+    //   title: "Point of Sales",
+    //   gap: false,
+    //   icon: PointOfSalesIcon,
+    //   link: "/pos",
+    // },
     {
-      title: "Point of Sales",
+      title: "Profile",
       gap: false,
-      icon: PointOfSalesIcon,
-      link: "/pos",
+      icon: AccountCircleIcon,
+      link: "/profile-page",
     },
     // {
     //   title: "Logout",
@@ -207,9 +215,13 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
 
-  const userMenu = [...commonMenu];
+  const userPermissions = userData?.permissions || [];
+  const permittedMenu =
+    userData?.user_role === "admin"
+      ? commonMenu
+      : getPermittedMenuItems(commonMenu, userPermissions);
 
-  const selectedMenu = userType === "admin" ? adminMenu : userMenu;
+  const selectedMenu = userType === "admin" ? adminMenu : permittedMenu;
 
   const handleSubmenuToggle = (index: number) => {
     setOpenSubmenuIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -231,10 +243,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     dispatch(clearUserData());
     dispatch(clearSelectedBranch());
 
-    console.log(transformedBranches, selectedBranch, "userData");
-
     navigate("/");
   };
+  console.log(userData, "userData");
 
   return (
     <div
@@ -269,52 +280,76 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             <h4 className="text-base font-medium mb-0">{userData?.business_name}</h4>
 
             {/* Insert Button and Popper components here */}
-            <Button
-              variant="contained"
-              onClick={handleButtonClick}
-              sx={{
-                backgroundColor: "#5955B3",
-                color: "white",
-                ml: 0,
-                "&:hover": {
-                  backgroundColor: "#4842a3",
-                },
-              }}
-            >
-              {selectedBranch?.label} <ArrowDropDown />
-            </Button>
-            <Popper
-              open={isAutoOpen}
-              anchorEl={anchorEl}
-              placement="bottom-start"
-              sx={{ zIndex: 10, boxShadow: 3 }}
-            >
-              <Paper sx={{ boxShadow: 3 }}>
-                <CustomAutocomplete
-                  disablePortal
-                  options={transformedBranches}
-                  value={selectedBranch ? selectedBranch.label : selectedOutlet.label}
-                  onChange={handleSelect}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      placeholder="Search outlet"
-                      variant="outlined"
-                      style={{ width: "220px", marginLeft: "0px" }}
-                      InputProps={{
-                        ...params.InputProps,
-                        startAdornment: (
-                          <>
-                            <Search style={{ color: "gray", marginRight: "4px" }} />
-                            {params.InputProps.startAdornment}
-                          </>
-                        ),
-                      }}
+            {userData?.user_role === "admin" ? (
+              <div>
+                <Button
+                  variant="contained"
+                  onClick={handleButtonClick}
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #5955B3",
+                    color: "#5955B3",
+                    ml: 0,
+                    "&:hover": {
+                      backgroundColor: "#4842a3",
+                      color: "white",
+                    },
+                  }}
+                >
+                  {selectedBranch?.label} <ArrowDropDown />
+                </Button>
+                <Popper
+                  open={isAutoOpen}
+                  anchorEl={anchorEl}
+                  placement="bottom-start"
+                  sx={{ zIndex: 10, boxShadow: 3 }}
+                >
+                  <Paper sx={{ boxShadow: 3 }}>
+                    <CustomAutocomplete
+                      disablePortal
+                      options={transformedBranches}
+                      value={selectedBranch ? selectedBranch.label : selectedOutlet.label}
+                      onChange={handleSelect}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Search outlet"
+                          variant="outlined"
+                          style={{ width: "220px", marginLeft: "0px" }}
+                          InputProps={{
+                            ...params.InputProps,
+                            startAdornment: (
+                              <>
+                                <Search style={{ color: "gray", marginRight: "4px" }} />
+                                {params.InputProps.startAdornment}
+                              </>
+                            ),
+                          }}
+                        />
+                      )}
                     />
-                  )}
-                />
-              </Paper>
-            </Popper>
+                  </Paper>
+                </Popper>
+              </div>
+            ) : (
+              <div>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #5955B3",
+                    color: "#5955B3",
+                    ml: 0,
+                    "&:hover": {
+                      backgroundColor: "#4842a3",
+                      color: "white",
+                    },
+                  }}
+                >
+                  {userData?.branch_name}
+                </Button>
+              </div>
+            )}
 
             <p className="text-[#606060] text-xs font-normal">{userData?.business_type}</p>
           </div>

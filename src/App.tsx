@@ -42,6 +42,10 @@ import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
 import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
+import CreatePin from "./components/authPages/CreatePin.tsx";
+import PinCreated from "./components/authPages/PinCreated.tsx";
+import UpdateCredentials from "./components/authPages/UpdateCredentials.tsx";
+import ProfilePage from "./pages/profile/ProfilePage.tsx";
 
 export default function App() {
   return (
@@ -51,6 +55,7 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -84,8 +89,14 @@ export default function App() {
           <Route path="/verify-account" element={<VerifyAccount />} />
           <Route path="/checkmail" element={<CheckMail />} />
           <Route path="/password-changed" element={<PasswordChanged />} />
+          <Route path="/pin-created" element={<PinCreated />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/create-pin" element={<CreatePin />} />
+          <Route path="/create-pin" element={<CreatePin />} />
+          <Route path="/update-credentials" element={<UpdateCredentials />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/profile-page" element={<ProfilePage />} />
 
           <Route path="/till" element={<Till />} />
           <Route path="*" element={<NotFound />} />
