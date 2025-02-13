@@ -37,7 +37,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
 
   const commonMenu: MenuItem[] = [
     {
-      subTitle: "MY RESTAURANT",
+      subTitle: "RESTAURANT",
       Subgap: true,
     },
     {
@@ -116,7 +116,9 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
     },
   ];
 
-  const adminMenu: MenuItem[] = [{ title: "AdminHome", gap: false, icon: HomeIcon }];
+  const adminMenu: MenuItem[] = [
+    { title: "AdminHome", gap: false, icon: HomeIcon },
+  ];
 
   const userMenu = [...commonMenu];
 
@@ -129,7 +131,10 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
   // const isMenuItemActive = (menuLink: string) => {
   //   return location.pathname === menuLink;
   // };
-  const isMenuItemActive = (menuLink: string, subMenu?: MenuItem[]): boolean => {
+  const isMenuItemActive = (
+    menuLink: string,
+    subMenu?: MenuItem[]
+  ): boolean => {
     if (location.pathname === menuLink) {
       return true;
     }
@@ -261,11 +266,14 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
                   <p
                     className={`flex relative ${
                       menu.title && " px-[14px] cursor-pointer py-[8px]  "
-                    }  ${menu.subTitle && "text-[12px]"} text-purple200  items-center gap-x-2
+                    }  ${
+                      menu.subTitle && "text-[12px]"
+                    } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                       isMenuItemActive(menu.link || "", menu.subMenu)
                         ? "  bg-selectedState font-[600] text-[16px] text-white "
-                        : !isMenuItemActive(menu.link || "", menu.subMenu) && !menu.subTitle
+                        : !isMenuItemActive(menu.link || "", menu.subMenu) &&
+                          !menu.subTitle
                         ? " hover:bg-[#504EA3] "
                         : ""
                     }`}
@@ -278,7 +286,11 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
                         style={{ width: "20px", marginRight: "8px" }}
                       />
                     )}
-                    <span className={`${!open && "hidden"} origin-left duration-200 `}>
+                    <span
+                      className={`${
+                        !open && "hidden"
+                      } origin-left duration-200 `}
+                    >
                       {menu.title}
                       {menu.subTitle}
                     </span>
@@ -302,7 +314,9 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
                             <li
                               key={subIndex}
                               className={`flex  p-2 cursor-pointer py-2 hover:bg-purple700  text-purple200 text-sm items-center gap-x-4 ${
-                                isMenuItemActive(subMenuItem.link || "") ? "text-white" : ""
+                                isMenuItemActive(subMenuItem.link || "")
+                                  ? "text-white"
+                                  : ""
                               }`}
                             >
                               {subMenuItem.title}

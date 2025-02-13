@@ -1,12 +1,20 @@
-import { ContentCopy } from "@mui/icons-material";
+import { CheckCircle, ContentCopy } from "@mui/icons-material";
 import { useState } from "react";
-import { FaRegCopy } from "react-icons/fa";
-import { IoMdDownload } from "react-icons/io";
-import qrImage from "../../assets/qr-code.png";
+import qrImage from "../../assets/qr-code.svg";
+import fileDownload from "../../assets/file_download.svg";
 
-const UploadedLogoDisplay = ({ logo }: any) => {
+interface UploadedLogoDisplayProps {
+  logo: any;
+  handleUploadLogo: any;
+}
+
+const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
+  logo,
+  handleUploadLogo,
+}) => {
   const [customLink, setCustomLink] = useState("");
   const [isCustomizing, setIsCustomizing] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleCustomizeClick = () => {
     setIsCustomizing(true);
@@ -18,54 +26,89 @@ const UploadedLogoDisplay = ({ logo }: any) => {
   };
 
   const handleGenerateClick = () => {
-    console.log("Generated Link:", customLink);
     setIsCustomizing(false);
   };
 
+  const generatedUrl = customLink
+    ? `https://gogrub.co/${customLink}`
+    : "https://gogrub.co/kitchenexpress";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generatedUrl);
+    setCopied(true);
+
+    // Reset the icon after 2 seconds
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="flex flex-col gap-4 items-start justify-start w-[70%] ml-9 py-10">
+    <div className="flex flex-col gap-4 items-start justify-start w-[70%] m-auto py-10">
       {/* Logo */}
       <div className="flex items-center justify-start gap-7">
-        <img src={URL.createObjectURL(logo)} alt="Uploaded Logo" className="w-[150px] h-auto" />
+        <img
+          src={URL.createObjectURL(logo)}
+          alt="Uploaded Logo"
+          className="w-[150px] h-auto"
+        />
         <button
           className="bg-white text-[#5955B3] border border-[#5955B3] py-2 px-6 rounded"
-          onClick={handleCancelClick}
+          onClick={handleUploadLogo}
         >
           Replace logo
         </button>
       </div>
 
       {/* Text */}
-      <div className="px-6 py-3 border border-[#5955B3] rounded-lg w-[80%] flex gap-[50px] bg-[rgba(238,238,247,0.40)]">
+      <div className="px-6 py-3 border border-[#b6b6b6] rounded-lg w-[80%] flex gap-[50px] bg-[rgba(238,238,247,0.40)] mt-8">
         {/* <div> */}
-        <div>
-          <h3 className="text-[#5955B3] text-center text-[16px] font-medium leading-[26px] tracking-[0.15px]">
+        <div className="min-w-[50%]">
+          <h3 className="text-[#5955B3] text-start text-[16px] font-medium leading-[26px] tracking-[0.15px]">
             Your Generated Link Is below
           </h3>
-          <span className="text-[#5955B3] text-[18px] font-medium">
-            https://gogrub.co/kitchenexpress
-          </span>
-          <ContentCopy className="w-5 h-5 text-[#929292] cursor-pointer" />
+          <div className="flex items-center justify-start gap-2">
+            <span className="text-[#121212] text-[16px] font-normal">
+              {generatedUrl}
+            </span>
+            {copied ? (
+              <CheckCircle className="w-5 h-5 text-green-500" />
+            ) : (
+              <ContentCopy
+                className="w-5 h-5 text-[#929292] cursor-pointer"
+                onClick={handleCopy}
+              />
+            )}{" "}
+          </div>
         </div>
         {/* Generated Link Box */}
-        <div className="rounded-lg p-4 w-full flex items-center justify-between bg-gray-100 shadow-sm">
-          <div className="flex items-center gap-2">
+        <div className="rounded-lg p-0 w-full flex items-center justify-between">
+          <div className="flex items-center gap-4">
             {/* QR Code Placeholder */}
-            <div className="w-[30px] h-[30px] bg-gray-300 flex items-center justify-center rounded-md">
+            <div className="w-[50px] h-[50px] bg-gray-300 flex items-center justify-center rounded-md">
               <img src={qrImage} alt="QR Code" className="w-full h-full" />
             </div>
-            <FaRegCopy className="text-[#5955B3] cursor-pointer text-[20px]" />
-            <IoMdDownload className="text-[#5955B3] cursor-pointer text-[22px]" />
+
+            <div className="border border-[#0D0D0D] rounded-md flex items-center gap-2 px-2 py-1">
+              <img
+                src={fileDownload}
+                alt="QR Code"
+                className="w-[32px] h-[32px]"
+              />
+            </div>
+            {/* <IoMdDownload className="text-[#5955B3] cursor-pointer text-[22px]" /> */}
           </div>
         </div>
         {/* </div> */}
       </div>
 
       {/* Customize Link */}
-      <div className="w-full mt-8">
-        <p className="text-[#504DA3] text-[16px] font-medium mb-2">Customize Your Link</p>
+      <div className="w-[80%] mt-8">
+        <p className="text-[#504DA3] text-[16px] font-medium mb-2">
+          Customize Your Link
+        </p>
         <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-full">
-          <span className="bg-gray-100 text-gray-500 px-3 py-2">https://gogrub.co/</span>
+          <span className="bg-gray-100 text-gray-500 px-3 py-2">
+            https://gogrub.co/
+          </span>
           <input
             type="text"
             placeholder="Please enter your preferred URL"

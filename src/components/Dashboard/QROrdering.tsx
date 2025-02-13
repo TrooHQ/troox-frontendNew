@@ -8,23 +8,22 @@ import PickupLocation from "../onlineOrdering/PickupLocation";
 import YourLink from "../onlineOrdering/YourLink";
 import Sidebar from "../onlineOrdering/Sidebar";
 import Themes from "../onlineOrdering/Themes";
+import InRoomDining from "../onlineOrdering/InRoomDining";
+import QRCodesAtTable from "../onlineOrdering/QRCodesAtTable";
+import QRSidebar from "../onlineOrdering/QRSidebar";
 
-const OnlineOrdering = () => {
+const QROrdering = () => {
   // const dispatch = useDispatch<AppDispatch>();
-  const [activeComponent, setActiveComponent] = useState("pickup location");
+  const [activeComponent, setActiveComponent] = useState("in-room dining");
 
   const renderActiveComponent = () => {
     switch (activeComponent) {
-      case "pickup location":
-        return <PickupLocation />;
-      case "delivery service":
-        return <DeliveryService />;
-      case "your link":
-        return <YourLink />;
-      case "themes":
-        return <Themes />;
+      case "in-room dining":
+        return <InRoomDining />;
+      case "qr code at table":
+        return <QRCodesAtTable />;
       default:
-        return <PickupLocation />;
+        return <InRoomDining />;
     }
   };
 
@@ -32,12 +31,12 @@ const OnlineOrdering = () => {
     <DashboardLayout>
       <TopMenuNav pathName="Online Ordering" />
       <div className="mt-6">
-        <Sidebar
+        <QRSidebar
           activeComponent={activeComponent}
           setActiveComponent={setActiveComponent}
         />
         <div className="flex">
-          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-[700px]">
+          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-fit mim-w-[600px]">
             {renderActiveComponent()}
           </div>
         </div>
@@ -46,4 +45,4 @@ const OnlineOrdering = () => {
   );
 };
 
-export default OnlineOrdering;
+export default QROrdering;

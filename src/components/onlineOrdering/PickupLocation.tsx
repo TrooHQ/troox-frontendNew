@@ -3,11 +3,11 @@ import clsx from "clsx";
 import { useState } from "react";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
-import KantaButton from "../buttons/KantaButton";
-import { Close, CheckCircle } from "@mui/icons-material";
+import { Close, CheckCircle, Clear } from "@mui/icons-material";
 import LocationTable from "./LocationTable";
 import { FaPlus } from "react-icons/fa6";
 
+// const branches = [];
 const branches = [
   {
     state: "Lagos",
@@ -49,17 +49,13 @@ const stateOptions = [
   { label: "Kano", value: "kano" },
 ];
 
-const supportLinkOptions = [
-  { label: "Live chat", value: "live chat" },
-  { label: "Normal link", value: "normal link" },
-];
-
 const PickupLocation = () => {
   const [isPickupEnabled, setIsPickupEnabled] = useState(false);
   const [selectedState, setSelectedState] = useState("");
-  const [address, setAddress] = useState("");
+  const [addresses, setAddresses] = useState([
+    "17, Milly Huston, Victoria Island",
+  ]);
   const [supportLink, setSupportLink] = useState("");
-  const [link, setLink] = useState("");
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     createLocation: false,
@@ -72,10 +68,6 @@ const PickupLocation = () => {
 
   const handleStateChange = (value: string) => {
     setSelectedState(value);
-  };
-
-  const handleSupportLinkChange = (value: string) => {
-    setSupportLink(value);
   };
 
   const handleOpen = () => {
@@ -97,12 +89,26 @@ const PickupLocation = () => {
     });
   };
 
+  const addAddressField = () => {
+    setAddresses([...addresses, ""]);
+  };
+
+  const removeAddressField = (index: number) => {
+    setAddresses(addresses.filter((_, i) => i !== index));
+  };
+
+  const handleAddressChange = (index: number, value: string) => {
+    const newAddresses = [...addresses];
+    newAddresses[index] = value;
+    setAddresses(newAddresses);
+  };
+
   return (
     <div className="h-full">
       {state.showLocation && (
         <div className="flex justify-end mb-4">
           <button
-            className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
+            className="border border-[#0d0d0d] bg-[#0d0d0d] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
             onClick={handleCreateLocation}
           >
             Add New Location
@@ -149,7 +155,7 @@ const PickupLocation = () => {
           </div>
 
           {isPickupEnabled && (
-            <div className="mt-5 pr-[40%]">
+            <div className="mt-[80px] w-[60%] m-auto">
               <form className="space-y-6">
                 <CustomSelect5
                   label="Select a state"
@@ -157,28 +163,52 @@ const PickupLocation = () => {
                   value={selectedState}
                   onChange={handleStateChange}
                 />
+                {addresses.map((address, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <CustomInput
+                      type="text"
+                      label="What is your pickup address?"
+                      value={address}
+                      onChange={(newValue) =>
+                        handleAddressChange(index, newValue)
+                      }
+                      className="border-gray-500"
+                      fullWidth
+                    />
+                    {index > 0 && (
+                      <IconButton
+                        onClick={() => removeAddressField(index)}
+                        className="w-[5%] min-w-[24px] h-[24px]"
+                      >
+                        <Clear className="text-[#f03f3f]" fontSize="small" />
+                      </IconButton>
+                    )}
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  className="border border-[#0d0d0d] text-[#0d0d0d] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] bg-[#ffffff]"
+                  onClick={addAddressField}
+                >
+                  Add more addresses
+                </button>
+
                 <CustomInput
                   type="text"
-                  label="What is your pickup address?"
-                  value={address}
-                  onChange={(newValue) => setAddress(newValue)}
-                  className="border-gray-500"
-                />
-                <CustomSelect5
-                  label="Add your support link to your profile (Optional)"
-                  options={supportLinkOptions}
+                  label="Add your support link to your profile (Optional) WhatsApp, Instagram)"
                   value={supportLink}
-                  onChange={handleSupportLinkChange}
-                />
-                <CustomInput
-                  type="text"
-                  label="Your Link (WhatsApp, Instagram, Facebook)"
-                  value={link}
-                  onChange={(newValue) => setLink(newValue)}
+                  onChange={(newValue) => setSupportLink(newValue)}
                   className="border-gray-500"
                 />
 
-                <KantaButton text="Add Location" buttonType="button" onClick={handleOpen} />
+                <button
+                  type="button"
+                  className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded"
+                  onClick={handleOpen}
+                >
+                  Add Location
+                </button>
               </form>
             </div>
           )}
@@ -212,11 +242,18 @@ const PickupLocation = () => {
               <Box display="flex" flexDirection="column" alignItems="center">
                 <CheckCircle sx={{ fontSize: 60, color: "green" }} />
                 <Typography variant="h6" sx={{ mt: 2 }}>
-                  Location Added
+                  Added
                 </Typography>
-                <Typography variant="body1" sx={{ mt: 1 }}>
-                  Location added successfully.
+                <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
+                  Your pickup location has been published successfully.
                 </Typography>
+                <button
+                  type="button"
+                  className="border border-[#0d0d0d] text-[#0d0d0d] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] mt-6 bg-[#ffffff]"
+                  onClick={handleClose}
+                >
+                  View pickup location
+                </button>
               </Box>
             </Box>
           </Modal>

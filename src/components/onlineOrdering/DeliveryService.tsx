@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { useState } from "react";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
-import KantaButton from "../buttons/KantaButton";
 import { Close, CheckCircle } from "@mui/icons-material";
 import { FaPlus } from "react-icons/fa6";
 import DeliveryTable from "./DeliveryTable";
@@ -49,26 +48,11 @@ const stateOptions = [
   { label: "Kano", value: "kano" },
 ];
 
-const localGovernmentOptions = [
-  { label: "Ikeja", value: "ikeja" },
-  { label: "Lekki", value: "lekki" },
-  { label: "Ajah", value: "ajah" },
-  { label: "Surulere", value: "surulere" },
-  { label: "Yaba", value: "yaba" },
-];
-
-const supportLinkOptions = [
-  { label: "Live chat", value: "live chat" },
-  { label: "Normal link", value: "normal link" },
-];
-
 const PickupLocation = () => {
   const [isPickupEnabled, setIsPickupEnabled] = useState(false);
   const [selectedState, setSelectedState] = useState("");
-  const [selectedLocalGovernment, setSelectedLocalGovernment] = useState("");
   const [fixedPrice, setFixedPrice] = useState("");
   const [supportLink, setSupportLink] = useState("");
-  const [link, setLink] = useState("");
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     createLocation: false,
@@ -81,14 +65,6 @@ const PickupLocation = () => {
 
   const handleStateChange = (value: string) => {
     setSelectedState(value);
-  };
-
-  const handleLocalGovernmentChange = (value: string) => {
-    setSelectedLocalGovernment(value);
-  };
-
-  const handleSupportLinkChange = (value: string) => {
-    setSupportLink(value);
   };
 
   const handleOpen = () => {
@@ -115,7 +91,7 @@ const PickupLocation = () => {
       {state.showLocation && (
         <div className="flex justify-end mb-4">
           <button
-            className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
+            className="border border-[#090909] bg-[#090909] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
             onClick={handleCreateLocation}
           >
             Add New address
@@ -162,19 +138,13 @@ const PickupLocation = () => {
           </div>
 
           {isPickupEnabled && (
-            <div className="mt-5 pr-[40%]">
+            <div className="mt-[80px] w-[60%] m-auto">
               <form className="space-y-6">
                 <CustomSelect5
                   label="Select a state"
                   options={stateOptions}
                   value={selectedState}
                   onChange={handleStateChange}
-                />
-                <CustomSelect5
-                  label="Select LGA/Region"
-                  options={localGovernmentOptions}
-                  value={selectedLocalGovernment}
-                  onChange={handleLocalGovernmentChange}
                 />
                 <CustomInput
                   type="text"
@@ -183,21 +153,21 @@ const PickupLocation = () => {
                   onChange={(newValue) => setFixedPrice(newValue)}
                   className="border-gray-500"
                 />
-                <CustomSelect5
-                  label="Add your support link to your profile (Optional)"
-                  options={supportLinkOptions}
-                  value={supportLink}
-                  onChange={handleSupportLinkChange}
-                />
                 <CustomInput
                   type="text"
-                  label="Your Link (WhatsApp, Instagram, Facebook)"
-                  value={link}
-                  onChange={(newValue) => setLink(newValue)}
+                  label="Add your support link to your profile (Optional) WhatsApp, Instagram)"
+                  value={supportLink}
+                  onChange={(newValue) => setSupportLink(newValue)}
                   className="border-gray-500"
                 />
 
-                <KantaButton text="Save changes" buttonType="button" onClick={handleOpen} />
+                <button
+                  type="button"
+                  className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded"
+                  onClick={handleOpen}
+                >
+                  Save changes
+                </button>
               </form>
             </div>
           )}
@@ -231,11 +201,18 @@ const PickupLocation = () => {
               <Box display="flex" flexDirection="column" alignItems="center">
                 <CheckCircle sx={{ fontSize: 60, color: "green" }} />
                 <Typography variant="h6" sx={{ mt: 2 }}>
-                  Updaated!
+                  Updated
                 </Typography>
                 <Typography variant="body1" sx={{ mt: 1, textAlign: "center" }}>
                   Your delivery location has been published successfully.
                 </Typography>
+                <button
+                  type="button"
+                  className="border border-[#090909] text-[#090909] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] mt-6 bg-[#ffffff]"
+                  onClick={handleClose}
+                >
+                  View delivery
+                </button>
               </Box>
             </Box>
           </Modal>

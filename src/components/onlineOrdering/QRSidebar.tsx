@@ -6,7 +6,7 @@ interface SidebarProps {
   setActiveComponent: (component: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const QRSidebar: React.FC<SidebarProps> = ({
   activeComponent,
   setActiveComponent,
 }) => {
@@ -30,10 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const tabs = [
-    { label: "PICKUP LOCATION", value: "pickup location" },
-    { label: "DELIVERY", value: "delivery service" },
-    { label: "GET YOUR LINK", value: "your link" },
-    { label: "THEMES", value: "themes" },
+    { label: "IN-ROOM DINING", value: "in-room dining" },
+    { label: "QR CODES AT TABLE", value: "qr code at table" },
   ];
 
   return (
@@ -59,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 color: "#fff !important",
               }),
               ...tabStyle,
-              maxWidth: "150px",
+              maxWidth: "200px",
             }}
           />
         ))}
@@ -68,4 +66,4 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 };
 
-export default Sidebar;
+export default QRSidebar;
