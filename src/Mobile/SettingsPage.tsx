@@ -24,11 +24,6 @@ import { toast } from "react-toastify";
 import CustomSelect3 from "./inputFields/CustomSelect3";
 import Loader from "../components/Loader";
 
-// interface FormData extends FieldValues {
-//   employee_name?: string;
-//   employee_email?: string;
-//   employee_phone?: string;
-// }
 interface Option {
   value: string;
   label: string;
