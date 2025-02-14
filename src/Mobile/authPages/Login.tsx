@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
 import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";
@@ -127,7 +127,7 @@ const Login = () => {
           </div>
           <div className="" onClick={handleLogin}>
             <button
-              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              className="bg-grey700 w-full text-center text-white py-3 rounded"
               disabled={loading}
             >
               Login

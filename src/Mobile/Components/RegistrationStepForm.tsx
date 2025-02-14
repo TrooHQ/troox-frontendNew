@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Grey from "../assets/GreyStroke.svg";
 import Purple from "../assets/PurpleStroke.svg";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
+
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -620,7 +621,7 @@ const RegistrationStepForm = () => {
                 {!emailError && !passwordError && !confirmPasswordError && (
                   <div className="" onClick={handleNext}>
                     <button
-                      className="bg-purple500 w-full text-center text-white py-3 rounded"
+                      className="bg-grey700 w-full text-center text-white py-3 rounded"
                       disabled={loading}
                     >
                       {loading ? "Next..." : "Next"}
@@ -628,7 +629,7 @@ const RegistrationStepForm = () => {
                   </div>
                 )}
                 <Link to="/">
-                  <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
+                  <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
                     Cancel
                   </button>
                 </Link>
@@ -707,7 +708,7 @@ const RegistrationStepForm = () => {
                   <div className="" onClick={createBusinessAccount}>
                     <button
                       className={`${
-                        loading ? `bg-gray-400` : `bg-purple500`
+                        loading ? `bg-gray-400` : `bg-grey700`
                       } w-full text-center text-white py-3 rounded`}
                       disabled={loading}
                     >
@@ -717,7 +718,7 @@ const RegistrationStepForm = () => {
                 )}
                 {!loading && (
                   <div onClick={() => setCurrentStep(currentStep - 1)}>
-                    <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
+                    <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
                       Cancel
                     </button>
                   </div>
@@ -795,7 +796,7 @@ const RegistrationStepForm = () => {
                   <div className="" onClick={createAccountDetails}>
                     <button
                       className={`${
-                        loading ? `bg-gray-400` : `bg-purple500`
+                        loading ? `bg-gray-400` : `bg-grey700`
                       } w-full text-center text-white py-3 rounded`}
                       disabled={loading}
                     >
@@ -804,7 +805,7 @@ const RegistrationStepForm = () => {
                   </div>
                 )}
                 <Link to="/">
-                  <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
+                  <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
                     Cancel
                   </button>
                 </Link>

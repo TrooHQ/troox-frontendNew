@@ -31,7 +31,10 @@ const BusinessProfiles: React.FC = () => {
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     const newFAQData = [...faqData];
     newFAQData[index].inputValue = event.target.value;
     console.log(newFAQData);
@@ -43,7 +46,7 @@ const BusinessProfiles: React.FC = () => {
           <img src={Logo} alt="" />
         </div>
         <div className="bg-white grid gap-3 py-[40px] px-8 my-5 w-full md:w-[700px] rounded shadow-md">
-          <p className="text-[24px] font-[500] text-purple500 mb-8">
+          <p className="text-[24px] font-[500] text-grey700 mb-8">
             Business profile | ID:TR89340
           </p>
 
@@ -55,10 +58,10 @@ const BusinessProfiles: React.FC = () => {
           />
 
           <div className=" flex justify-end items-center gap-2 mt-[32px]">
-            <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
+            <div className="border-2 border-grey700 rounded px-[24px] py-[13px] font-[600] text-grey700">
               <div onClick={() => navigate(-1)} className=" ">
                 <button
-                  className=" font-[500] text-[16px] text-purple500 cursor-pointer"
+                  className=" font-[500] text-[16px] text-grey700 cursor-pointer"
                   // disabled={loading}
                 >
                   Cancel
@@ -67,7 +70,7 @@ const BusinessProfiles: React.FC = () => {
               {/* <BackButton text="Cancel" /> */}
             </div>
 
-            <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
+            <div className="border-2 border-grey700 bg-grey700 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
               <Link to="/">
                 <button className="">Save and continue</button>
               </Link>

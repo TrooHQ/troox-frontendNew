@@ -17,16 +17,17 @@ import {
 const BalanceComp = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showBalance, setShowBalance] = useState(true);
-  const { openAndClosedTickets, loading, totalSales, averageOrderValue } = useSelector(
-    (state: RootState) => state.overview
-  );
+  const { openAndClosedTickets, loading, totalSales, averageOrderValue } =
+    useSelector((state: RootState) => state.overview);
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   useEffect(() => {
     dispatch(fetchOpenAndClosedTickets({ date_filter: "today" }));
     dispatch(fetchTotalSales({ date_filter: "today" }));
     dispatch(fetchAverageOrderValue({ date_filter: "today" }));
-    dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" }));
+    dispatch(
+      fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
+    );
   }, [dispatch]);
 
   const changeVisibility = () => {
@@ -40,9 +41,25 @@ const BalanceComp = () => {
     endDate?: string,
     number_of_days?: number
   ) => {
-    dispatch(fetchOpenAndClosedTickets({ date_filter, startDate, endDate, number_of_days }));
-    dispatch(fetchTotalSales({ date_filter, startDate, endDate, number_of_days }));
-    dispatch(fetchAverageOrderValue({ date_filter, startDate, endDate, number_of_days }));
+    dispatch(
+      fetchOpenAndClosedTickets({
+        date_filter,
+        startDate,
+        endDate,
+        number_of_days,
+      })
+    );
+    dispatch(
+      fetchTotalSales({ date_filter, startDate, endDate, number_of_days })
+    );
+    dispatch(
+      fetchAverageOrderValue({
+        date_filter,
+        startDate,
+        endDate,
+        number_of_days,
+      })
+    );
     dispatch(
       fetchTopMenuItems({
         branch_id: selectedBranch.id,

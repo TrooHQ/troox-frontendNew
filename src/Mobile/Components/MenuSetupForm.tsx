@@ -2,7 +2,7 @@ import Logo from "../../assets/trooLogo.svg";
 import { Link } from "react-router-dom";
 import AddWhite from "../../assets/addWhite.svg";
 import info from "../assets/info.svg";
-import CheckCircle from "../assets/check_circle.svg";
+import CheckCircle from "../assets/check_circle_.svg";
 import { useEffect, useState } from "react";
 import CustomInput from "../inputFields/CustomInput";
 import Cancel from "../assets/Cancel.svg";

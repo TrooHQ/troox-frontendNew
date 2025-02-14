@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
+
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";

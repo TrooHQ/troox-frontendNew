@@ -2,7 +2,7 @@ import { useState } from "react";
 import Arrow from "../assets/BackArrow.svg";
 import AccountIcon from "../assets/AccountSettings.svg";
 import MenuModal from "../Components/MenuModal";
-import CheckCircle from "../assets/check_circle.svg";
+import CheckCircle from "../assets/check_circle_.svg";
 
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
