@@ -14,7 +14,8 @@ import { AppDispatch, RootState } from "../../store/store";
 import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
 import OtherSettings from "./OtherSettings";
-import AddModifierModal from "./AddModifierModal";
+import CustomSelect5 from "../inputFields/CustomSelect5";
+import CustomInput from "../inputFields/CustomInput";
 
 const DropdownMenu = ({
   onClose,

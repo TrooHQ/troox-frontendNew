@@ -62,7 +62,6 @@ const SettingsPage = () => {
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
   const [orderingLink, setOrderingLink] = useState(false);
-  const [selfCheckout, setSelfCheckoutLink] = useState(false);
 
   const [ManageQRCodeModal, setManageQRCodeModal] = useState(false);
 
@@ -570,7 +569,7 @@ const SettingsPage = () => {
                 onClick={handleQRCodeModal}
               >
                 {" "}
-                Create QR Code
+                Create QR Ordering
               </p>
               {/* <Link to="/demo/manage-qr/troo-portal"> */}
               <p
@@ -582,10 +581,7 @@ const SettingsPage = () => {
               {/* </Link> */}
               <p className=" hidden text-grey300 text-[16px]">Delete QR Code</p>
 
-              <p
-                className="text-grey300 text-[16px] cursor-pointer"
-                onClick={() => setSelfCheckoutLink(true)}
-              >
+              <p className="text-grey300 text-[16px] cursor-pointer hidden">
                 {" "}
                 {copySuccess ? "Copied!" : "Get Self-Checkout link"}
               </p>
@@ -678,7 +674,7 @@ const SettingsPage = () => {
             </button>
             <div className=" hidden">
               <p className="text-[20px] font-[400] text-grey500">
-                Create QR Code
+                Create QR Ordering
               </p>
             </div>
             <div className=" mt-[24px] grid gap-[16px] hidden">
@@ -719,35 +715,6 @@ const SettingsPage = () => {
             </div>
             <button
               onClick={() => setOrderingLink(false)}
-              className=" mt-[24px] bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
-            >
-              Ok
-            </button>
-          </div>
-        </div>
-      </MenuModal>
-
-      <MenuModal
-        isOpen={selfCheckout}
-        onClose={() => setSelfCheckoutLink(false)}
-      >
-        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
-          <div>
-            <div
-              className=" cursor-pointer flex items-center justify-end"
-              onClick={() => setSelfCheckoutLink(false)}
-            >
-              <img src={Back} alt="" />
-            </div>
-
-            <div className="">
-              <p className=" text-[20px] font-[40px] text-center max-w-[248px] mx-auto">
-                To get <span className=" font-[500]">Self-Checkout link</span>,
-                please login with a PC.
-              </p>
-            </div>
-            <button
-              onClick={() => setSelfCheckoutLink(false)}
               className=" mt-[24px] bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
             >
               Ok
