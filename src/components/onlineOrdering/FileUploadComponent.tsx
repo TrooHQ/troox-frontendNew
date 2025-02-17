@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { Close, TaskOutlined } from "@mui/icons-material";
 import markgif from "../../assets/markgif.gif";
 import { truncateText } from "../../utils/truncateText";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { convertToBase64 } from "../../utils/imageToBase64";
+import { fetchAccountDetails } from "../../slices/businessSlice";
+import { useDispatch } from "react-redux";
 
 interface FileUploadComponentProps {
   backFromSelection: () => void;
@@ -16,10 +20,13 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
   getYourLink,
   logo,
 }) => {
+  const dispatch = useDispatch();
+
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadComplete, setUploadComplete] = useState(false);
   const [showSuccessScreen, setShowSuccessScreen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (uploadProgress < 100) {
@@ -28,18 +35,53 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
           const nextProgress = Math.min(prev + 5, 100);
           if (nextProgress === 100) {
             setUploadComplete(true);
+            // handleFileUpload();
           }
           return nextProgress;
         });
-      }, 300);
+      }, 100);
       return () => clearInterval(timer);
     }
   }, [uploadProgress]);
 
+  const handleFileUpload = async () => {
+    if (!uploadedLogo) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadedLogo);
+    reader.onload = async () => {
+      const base64Logo = reader.result?.toString().split(",")[1];
+      if (!base64Logo) return;
+
+      const base64Image = await convertToBase64(uploadedLogo);
+
+      try {
+        setLoading(true);
+        const response = await fetch(`${SERVER_DOMAIN}/updateBusinessDetails`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ business_logo: base64Image }),
+        });
+        dispatch(fetchAccountDetails() as any);
+
+        if (response.ok) {
+          setShowSuccessScreen(true);
+        } else {
+          console.error("Failed to upload business logo");
+        }
+      } catch (error) {
+        console.error("Error uploading business logo:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  };
+
   const handleUploadClick = () => {
-    if (uploadComplete) {
-      setShowSuccessScreen(true);
-    }
+    handleFileUpload();
   };
 
   const handlePreviewClick = () => {
@@ -132,7 +174,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
             className="px-4 py-2 text-white bg-purple500 rounded-[5px]"
             onClick={handleUploadClick}
           >
-            Upload
+            {loading ? "Uploading..." : "Upload"}
           </button>
         </div>
       </div>

@@ -1,33 +1,58 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle } from "@mui/icons-material";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAccountDetails } from "../../slices/businessSlice";
+import { RootState } from "../../store/store";
+import { SERVER_DOMAIN } from "../../Api/Api";
 
 const Themes = () => {
-  const [colors, setColors] = useState([
-    "#3450B0",
-    "#000000",
-    "#097F7C",
-    "#5955B3",
-    "#FF0000",
-    // "#7C4DFF",
-    // "#FF3D00",
-    // "#FF9100",
-  ]);
-  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const dispatch = useDispatch();
+  const businessColor = useSelector(
+    (state: RootState) => state.business.colour_scheme
+  );
+  const [selectedColor, setSelectedColor] = useState<string | undefined>(
+    businessColor
+  );
 
-  const handleColorClick = (color: any) => {
+  const colors = ["#3450B0", "#000000", "#097F7C", "#5955B3", "#FF0000"];
+
+  useEffect(() => {
+    dispatch(fetchAccountDetails() as any);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (colors.includes(businessColor)) {
+      setSelectedColor(businessColor);
+    }
+  }, [businessColor, colors]);
+
+  const handleColorClick = async (color: string) => {
     setSelectedColor(color);
-  };
-
-  const handleCustomColorSave = () => {
-    if (selectedColor && !colors.includes(selectedColor)) {
-      setColors([...colors, selectedColor]);
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/updateBusinessColourScheme`,
+        { colour_scheme: color },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(fetchAccountDetails() as any);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error("Failed to update color scheme");
     }
   };
 
   return (
-    <div className="p-4 flex gap-[50px]">
+    <div className="p-4 flex gap-12">
       <div>
-        <h2 className="text-[20px] font-medium text-[#5855b3] mb-4">
+        <h2 className="text-2xl font-medium text-[#5855b3] mb-4">
           Brand colors
         </h2>
         <p className="mb-2 text-base text-[#121212] font-normal">
@@ -35,18 +60,16 @@ const Themes = () => {
         </p>
       </div>
       <div>
-        <div className="grid grid-cols-4 gap-6 mb-4 justify-items-center">
+        <div className="grid grid-cols-4 gap-6 mb-4">
           {colors.map((color) => (
             <div
               key={color}
-              className={`w-[80px] h-[80px] flex items-center justify-center cursor-pointer transition-all duration-300
+              className={`w-20 h-20 flex items-center justify-center cursor-pointer transition-all duration-300 
               ${
                 color === selectedColor
                   ? "rounded-lg border-4 rounded-tl-[30px] rounded-tr-[30px] border-blue-500"
                   : "rounded-full border-2 border-gray-300"
-              }
-              hover:w-[100px] hover:h-[100px] filter drop-shadow-[0px_4px_14.8px_rgba(0,0,0,0.25)] bg-[#F8F8F8]
-            `}
+              } hover:scale-110 bg-[#F8F8F8] shadow-md`}
               style={{ backgroundColor: color }}
               onClick={() => handleColorClick(color)}
             >
@@ -57,34 +80,25 @@ const Themes = () => {
           ))}
         </div>
 
-        <div className="flex items-center gap-4 mt-[60px]">
+        <div className="flex items-center gap-4 mt-10">
           <span className="text-[#606060] font-medium text-base">
             Custom color
           </span>
           <input
             type="text"
             value={selectedColor}
-            onChange={(e) => setSelectedColor(e.target.value)}
             readOnly
-            placeholder="#000000"
-            className="border px-3 py-6 rounded-[5px] bg-[#EEEEF7]"
+            className="border px-3 py-2 rounded bg-[#EEEEF7]"
           />
-
           <div
-            className="w-[78px] h-[78px] rounded-full border-4 flex items-center justify-center"
+            className="w-16 h-16 rounded-full border-4 flex items-center justify-center"
             style={{ borderColor: selectedColor }}
           >
             <div
-              className="w-[64px] h-[64px] rounded-full"
+              className="w-14 h-14 rounded-full"
               style={{ backgroundColor: selectedColor }}
             ></div>
           </div>
-          {/* <button
-            onClick={handleCustomColorSave}
-            className="bg-purple500 text-white px-4 py-2 rounded-md"
-          >
-            Save
-          </button> */}
         </div>
       </div>
     </div>

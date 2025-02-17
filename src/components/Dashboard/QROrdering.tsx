@@ -1,13 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { AppDispatch } from "@/src/store/store";
-import { useDispatch } from "react-redux";
-import DeliveryService from "../onlineOrdering/DeliveryService";
-import PickupLocation from "../onlineOrdering/PickupLocation";
-import YourLink from "../onlineOrdering/YourLink";
-import Sidebar from "../onlineOrdering/Sidebar";
-import Themes from "../onlineOrdering/Themes";
 import InRoomDining from "../onlineOrdering/InRoomDining";
 import QRCodesAtTable from "../onlineOrdering/QRCodesAtTable";
 import QRSidebar from "../onlineOrdering/QRSidebar";
@@ -36,7 +29,7 @@ const QROrdering = () => {
           setActiveComponent={setActiveComponent}
         />
         <div className="flex">
-          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-fit mim-w-[600px]">
+          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-fit min-h-[600px]">
             {renderActiveComponent()}
           </div>
         </div>

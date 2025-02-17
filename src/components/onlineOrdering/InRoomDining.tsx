@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Add, Close } from "@mui/icons-material";
 import { Box, IconButton, Modal } from "@mui/material";
-import AddQRCode from "../Dashboard/AddQRCode";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
+import AddQRCode from "../Dashboard/AddQRCode";
 import RoomList from "../Dashboard/RoomList";
 
 const InRoomDining = () => {
@@ -22,7 +22,14 @@ const InRoomDining = () => {
   const [loading, setLoading] = useState(false);
   const [tableNumber, setTableNumber] = useState("1");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedQRCode, setSelectedQRCode] = useState(null);
+  const [selectedQRCode, setSelectedQRCode] = useState<{
+    _id: string;
+    group_name: string;
+    number: string;
+    qrcode?: string;
+    branch?: string;
+    location?: string;
+  } | null>(null);
   const [openDeleteQR, setOpenDeleteQR] = useState(false);
 
   const tableArr = [{ table_number: 1, guests: 1 }];
@@ -114,13 +121,19 @@ const InRoomDining = () => {
   console.log(rooms, "branches");
 
   const handleConfirmDelete = async () => {
-    console.log(selectedQRCode);
     setIsLoading(true);
     const authToken = localStorage.getItem("token");
 
     try {
+      if (!selectedQRCode) {
+        toast.error("No QR code selected.");
+        return;
+      }
+
       await axios.delete(
-        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${selectedQRCode.group_name}&branch_id=${selectedQRCode.branch}`,
+        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${
+          selectedQRCode?.group_name ?? ""
+        }&branch_id=${selectedQRCode?.branch ?? ""}`,
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -132,7 +145,11 @@ const InRoomDining = () => {
       dispatch(getRooms());
     } catch (error) {
       console.error("Error saving QR code:", error);
-      toast.error("Error saving QR code:", error);
+      toast.error(
+        `Error saving QR code: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     } finally {
       setLoading(false);
     }
@@ -193,7 +210,6 @@ const InRoomDining = () => {
           />
         </div>
       )}
-      {/* {state.addNewQR && ( */}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>
         <Box
           sx={{
@@ -235,7 +251,6 @@ const InRoomDining = () => {
           />
         </Box>
       </Modal>
-      {/* )} */}
     </div>
   );
 };

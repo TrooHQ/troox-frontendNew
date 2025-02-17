@@ -7,34 +7,33 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 interface EditQRCodeProps {
   branchOptions: { label: string; value: string }[];
   qrCodeData: {
-    _id: string;
-    group_name: string;
+    branch: string;
     number: string;
-    qrcode?: string;
-    branch?: string;
-    location?: string;
+    location: string;
+    group_name: string;
+    total_guests: string;
   };
   onClose: () => void;
   onSave: () => void;
 }
 
-const EditQRCode: React.FC<EditQRCodeProps> = ({
+const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
   branchOptions,
   qrCodeData,
   onClose,
   onSave,
 }) => {
-  const [selectedBranch, setSelectedBranch] = useState(qrCodeData.branch || "");
-  // const [tableNumber, setTableNumber] = useState(qrCodeData.number);
+  const [selectedBranch, setSelectedBranch] = useState(qrCodeData.branch);
+  const [tableNumber, setTableNumber] = useState(qrCodeData.number);
   const [location, setLocation] = useState(qrCodeData.group_name);
   const [loading, setLoading] = useState(false);
-  const tableNumber = qrCodeData.number;
+  const [totalGuests, setTotalGuests] = useState(qrCodeData.total_guests);
 
   const handleSave = async () => {
     setLoading(true);
     try {
       // Dummy API call
-      await axios.put(`${SERVER_DOMAIN}/editBusinessAsset`, {
+      await axios.post(`${SERVER_DOMAIN}/editBusinessAsset`, {
         branch: selectedBranch,
         number: tableNumber,
         location,
@@ -61,15 +60,15 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             onChange={setSelectedBranch}
           />
         </div>
-        {/* <div className="mt-6 flex-grow">
+        <div className="mt-6 flex-grow">
           <CustomInput
             type="text"
-            label="Enter number of rooms"
+            label="Table number"
             value={tableNumber}
             error=""
             onChange={setTableNumber}
           />
-        </div> */}
+        </div>
         <div className="mt-6 flex-grow">
           <CustomInput
             type="text"
@@ -77,6 +76,15 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             value={location}
             error=""
             onChange={setLocation}
+          />
+        </div>
+        <div className="mt-6 flex-grow">
+          <CustomInput
+            type="text"
+            label="Total Guests"
+            value={totalGuests}
+            error=""
+            onChange={setTotalGuests}
           />
         </div>
         <div className="flex justify-end items-center gap-2 mt-7">
@@ -99,4 +107,4 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
   );
 };
 
-export default EditQRCode;
+export default EditQRCodeForTables;

@@ -1,44 +1,62 @@
-import { useState } from "react";
-import { ContentCopy } from "@mui/icons-material";
-import BusinessInformation from "../Dashboard/BusinessInformation";
+import { useEffect, useState } from "react";
 import YourLinkWithNoLogo from "./YourLinkWithNoLogo";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAccountDetails } from "../../slices/businessSlice";
+import { RootState } from "../../store/store";
+import { fetchOnlineOrderingLink } from "../../slices/assetSlice";
 
 const YourLink = () => {
-  const [isCustomizing, setIsCustomizing] = useState(false);
-  const [customLink, setCustomLink] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const generatedLink = "https://gogrub.co/chickenrepublic";
+  const dispatch = useDispatch();
 
-  const handleCustomizeClick = () => {
-    setIsCustomizing(true);
+  const [businessLogo, setBusinessLogo] = useState("");
+
+  const businessDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+  const { onlineOrderingLink, loading } = useSelector(
+    (state: RootState) => state.asset
+  );
+  console.log(businessDetails, onlineOrderingLink, "pppppp");
+
+  useEffect(() => {
+    dispatch(fetchAccountDetails() as any);
+  }, [dispatch]);
+
+  const generateOnlineOrderingLink = () => {
+    dispatch(fetchOnlineOrderingLink() as any);
   };
 
-  const handleCancelClick = () => {
-    setIsCustomizing(false);
-    setCustomLink("");
-  };
+  useEffect(() => {
+    if (businessDetails) {
+      setBusinessLogo(businessDetails.business_logo);
+    }
+  }, [businessDetails]);
 
-  const handleGenerateClick = () => {
-    console.log("Generated Link:", customLink);
-    setIsCustomizing(false);
-  };
+  // const handleCustomizeClick = () => {
+  //   setIsCustomizing(true);
+  // };
 
-  const handleCopyClick = () => {
-    navigator.clipboard
-      .writeText(generatedLink)
-      .then(() => {
-        console.log("Link copied to clipboard");
-      })
-      .catch((err) => {
-        console.error("Failed to copy the link: ", err);
-      });
-  };
+  // const handleCancelClick = () => {
+  //   setIsCustomizing(false);
+  //   setCustomLink("");
+  // };
+
+  // const handleGenerateClick = () => {
+  //   console.log("Generated Link:", customLink);
+  //   setIsCustomizing(false);
+  // };
 
   return (
     <div>
-      {businessName !== "" ? (
+      {businessLogo !== "" ? (
         <div>
-          <div className="flex flex-col gap-4 items-center justify-center h-full pt-[100px]">
+          <YourLinkWithNoLogo
+            generateOnlineOrderingLink={generateOnlineOrderingLink}
+            businessLogo={businessLogo}
+            onlineOrderingLink={onlineOrderingLink}
+            loading={loading}
+          />
+          {/* <div className="flex flex-col gap-4 items-center justify-center h-full pt-[100px]">
             <h3 className="text-[#5955B3] text-center font-sans text-[20px] not-italic font-medium leading-[26px] tracking-[0.15px]">
               Your Generated Link
             </h3>
@@ -49,9 +67,9 @@ const YourLink = () => {
                 onClick={handleCopyClick}
               />
             </div>
-          </div>
+          </div> */}
 
-          {!isCustomizing && (
+          {/* {!isCustomizing && (
             <div className="mt-11 text-center">
               <button
                 className="text-[#3E3C7F] bg-white py-3 px-6 rounded mt-5 border border-purple500 w-fit"
@@ -60,12 +78,14 @@ const YourLink = () => {
                 Customize Link
               </button>
             </div>
-          )}
+          )} */}
 
-          {isCustomizing && (
+          {/* {isCustomizing && (
             <div className="flex flex-col items-center mt-8 gap-4">
               <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-[60%]">
-                <span className="bg-gray-100 text-gray-500 px-3 py-2">https://gogrub.co/</span>
+                <span className="bg-gray-100 text-gray-500 px-3 py-2">
+                  https://gogrub.com/
+                </span>
                 <input
                   type="text"
                   placeholder="Please enter your preferred URL"
@@ -89,10 +109,15 @@ const YourLink = () => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       ) : (
-        <YourLinkWithNoLogo />
+        <YourLinkWithNoLogo
+          generateOnlineOrderingLink={generateOnlineOrderingLink}
+          businessLogo={businessLogo}
+          onlineOrderingLink={onlineOrderingLink}
+          loading={loading}
+        />
       )}
     </div>
   );

@@ -6,10 +6,10 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Modal } from "@mui/material";
-import EditQRCode from "./EditQRCode";
+import EditQRCodeForTables from "./EditQRCodeForTables";
 import DeleteAlert from "../../assets/mdi_delete.png";
 
-const RoomList = ({
+const TablesList = ({
   rooms,
   branchOptions,
   isLoading,
@@ -19,32 +19,16 @@ const RoomList = ({
   openDeleteQR,
   setOpenDeleteQR,
 }: {
-  rooms: { _id: string; group_name: string; number: any; qrcode?: string }[];
+  rooms: any[];
   branchOptions: any[];
   isLoading: boolean;
   handleConfirmDelete: () => void;
-  selectedQRCode: {
-    _id: string;
-    group_name: string;
-    number: string;
-    qrcode?: string;
-    branch?: string;
-    location?: string;
-  } | null;
-  setSelectedQRCode: (
-    qrCode: {
-      _id: string;
-      group_name: string;
-      number: string;
-      qrcode?: string;
-      branch?: string;
-      location?: string;
-    } | null
-  ) => void;
+  selectedQRCode: any;
+  setSelectedQRCode: (qrCodeData: any) => void;
   openDeleteQR: boolean;
   setOpenDeleteQR: (open: boolean) => void;
 }) => {
-  const groupedRooms = rooms.reduce((acc, room) => {
+  const groupedRooms: Record<string, any[]> = rooms.reduce((acc, room) => {
     if (!acc[room.group_name]) {
       acc[room.group_name] = [];
     }
@@ -112,18 +96,21 @@ const RoomList = ({
           </li>
 
           {expandedGroups[groupName] &&
-            groupItems.map((item: any, index: any) => (
+            (groupItems as any[]).map((item: any, index: number) => (
               <li
                 key={item._id}
-                className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                className={`grid grid-cols-10 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
                   index % 2 === 0 ? "bg-[#F8F8F8]" : ""
                 }`}
               >
-                <p className="text-[#121212] col-span-3 px-3 py-2">
+                <p className="text-[#121212] col-span-2 px-3 py-2">
                   {item.group_name}
                 </p>
                 <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
                   {item.number}
+                </p>
+                <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
+                  {item.total_guests}
                 </p>
                 <p className="px-3 py-2 col-span-2 text-center flex items-center justify-center">
                   {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
@@ -179,7 +166,7 @@ const RoomList = ({
             <Close />
           </IconButton>
           {selectedQRCode && (
-            <EditQRCode
+            <EditQRCodeForTables
               branchOptions={branchOptions}
               qrCodeData={selectedQRCode}
               onClose={() => setOpenEditQR(false)}
@@ -252,4 +239,4 @@ const RoomList = ({
   );
 };
 
-export default RoomList;
+export default TablesList;

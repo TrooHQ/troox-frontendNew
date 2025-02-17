@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../Api/Api";
 
 interface BusinessDetails {
   name: string;
@@ -20,6 +22,8 @@ interface BusinessState {
   URL: string;
   colour_scheme: string;
   businessDetails: BusinessDetails | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: BusinessState = {
@@ -31,7 +35,30 @@ const initialState: BusinessState = {
   URL: "",
   businessDetails: null,
   colour_scheme: "",
+  loading: false,
+  error: null,
 };
+
+// Async thunk to fetch account details
+export const fetchAccountDetails = createAsyncThunk(
+  "business/fetchAccountDetails",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      return response.data.data.business_information;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
+    }
+  }
+);
 
 const businessSlice = createSlice({
   name: "business",
@@ -40,7 +67,6 @@ const businessSlice = createSlice({
     setBusinessIdentifier(state, action: PayloadAction<string>) {
       state.businessIdentifier = action.payload;
     },
-
     setBranchID(state, action: PayloadAction<string>) {
       state.branchID = action.payload;
     },
@@ -63,6 +89,22 @@ const businessSlice = createSlice({
       state.tableNo = initialState.tableNo;
       state.businessDetails = initialState.businessDetails;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAccountDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAccountDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.businessDetails = action.payload;
+        state.colour_scheme = action.payload.colour_scheme;
+      })
+      .addCase(fetchAccountDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 

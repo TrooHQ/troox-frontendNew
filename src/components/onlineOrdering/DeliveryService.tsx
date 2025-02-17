@@ -1,54 +1,23 @@
 import { Switch, Modal, Box, Typography, IconButton } from "@mui/material";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
-import { Close, CheckCircle } from "@mui/icons-material";
+import { Close, CheckCircle, ArrowBack } from "@mui/icons-material";
 import { FaPlus } from "react-icons/fa6";
 import DeliveryTable from "./DeliveryTable";
+import { AppDispatch, RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import {
+  addDeliveryDetails,
+  fetchDeliveryDetails,
+} from "../../slices/assetSlice";
+import { stateOptions } from "../../utils/stateOptions";
 
-const branches = [
-  {
-    state: "Lagos",
-    fixedPrice: 50000,
-    supportLink: "vi@kitchenexpress.com",
-  },
-  {
-    state: "Lagos",
-    fixedPrice: 50000,
-    supportLink: "alimosho@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    fixedPrice: 50000,
-    supportLink: "ajah@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    fixedPrice: 50000,
-    supportLink: "egbeda@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    fixedPrice: 50000,
-    supportLink: "ikeja@chickenrepublic.com",
-  },
-  {
-    state: "Abuja",
-    fixedPrice: 50000,
-    supportLink: "ikoyi@chickenrepublic.com",
-  },
-];
+const DeliveryService = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-const stateOptions = [
-  { label: "Lagos", value: "lagos" },
-  { label: "Abia", value: "abia" },
-  { label: "Abuja", value: "abuja" },
-  { label: "Oyo", value: "oyo" },
-  { label: "Kano", value: "kano" },
-];
-
-const PickupLocation = () => {
   const [isPickupEnabled, setIsPickupEnabled] = useState(false);
   const [selectedState, setSelectedState] = useState("");
   const [fixedPrice, setFixedPrice] = useState("");
@@ -59,6 +28,14 @@ const PickupLocation = () => {
     showLocation: true,
   });
 
+  useEffect(() => {
+    dispatch(fetchDeliveryDetails());
+  }, [dispatch]);
+
+  const { deliveryDetails, loading } = useSelector(
+    (state: RootState) => state.asset
+  );
+
   const handleToggleChange = () => {
     setIsPickupEnabled((prev) => !prev);
   };
@@ -68,7 +45,29 @@ const PickupLocation = () => {
   };
 
   const handleOpen = () => {
-    setOpen(true);
+    // Dispatch action to add new delivery details
+    dispatch(
+      addDeliveryDetails({
+        state: selectedState,
+        fixedPrice: parseFloat(fixedPrice),
+        support_link: supportLink,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        // Reset form fields after adding
+        setSelectedState("");
+        setFixedPrice("");
+        setSupportLink("");
+        setOpen(true);
+      })
+      .catch((error: any) => {
+        console.error("Error adding delivery service:", error);
+        toast.error(error || "Error while submitting. Try again");
+      })
+      .finally(() => {
+        dispatch(fetchDeliveryDetails());
+      });
   };
 
   const handleClose = () => {
@@ -87,8 +86,8 @@ const PickupLocation = () => {
   };
 
   return (
-    <div>
-      {state.showLocation && (
+    <div className="h-full">
+      {state.showLocation && !deliveryDetails && (
         <div className="flex justify-end mb-4">
           <button
             className="border border-[#090909] bg-[#090909] w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
@@ -99,7 +98,7 @@ const PickupLocation = () => {
         </div>
       )}
 
-      {state.showLocation && branches.length === 0 ? (
+      {state.showLocation && !deliveryDetails && !loading ? (
         <div className="flex flex-col gap-6 items-center justify-center h-full w-full mt-[-100px]">
           <p>No location has been set yet</p>
           <div className="border border-purple500 bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
@@ -108,14 +107,30 @@ const PickupLocation = () => {
               onClick={handleCreateLocation}
             >
               <FaPlus className="w-5 h-5 text-purple500" />
-              Add new location
+              Add location
             </button>
           </div>
         </div>
-      ) : state.showLocation && branches.length > 0 ? (
-        <DeliveryTable branches={branches} />
+      ) : state.showLocation && deliveryDetails ? (
+        <DeliveryTable deliveryDetails={deliveryDetails} />
       ) : state.createLocation ? (
         <div className="">
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setState((prev: any) => ({
+                ...prev,
+                createLocation: false,
+                showLocation: true,
+              }));
+              setSelectedState("");
+              setFixedPrice("");
+              setSupportLink("");
+            }}
+          >
+            <ArrowBack />
+            Back
+          </div>
           <div className="flex items-center g-2.5">
             <span className="text-[#121212] text-base font-normal">
               Do you want to offer delivery service?
@@ -166,7 +181,7 @@ const PickupLocation = () => {
                   className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded"
                   onClick={handleOpen}
                 >
-                  Save changes
+                  {loading ? "Saving..." : "Save changes"}
                 </button>
               </form>
             </div>
@@ -222,4 +237,4 @@ const PickupLocation = () => {
   );
 };
 
-export default PickupLocation;
+export default DeliveryService;

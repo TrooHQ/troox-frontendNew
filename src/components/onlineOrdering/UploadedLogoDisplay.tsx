@@ -1,57 +1,47 @@
 import { CheckCircle, ContentCopy } from "@mui/icons-material";
 import { useState } from "react";
-import qrImage from "../../assets/qr-code.svg";
 import fileDownload from "../../assets/file_download.svg";
+import { truncateText } from "../../utils/truncateText";
 
 interface UploadedLogoDisplayProps {
   logo: any;
   handleUploadLogo: any;
+  onlineOrderingLink: any;
+  loading: any;
 }
 
 const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
   logo,
   handleUploadLogo,
+  onlineOrderingLink,
+  loading,
 }) => {
-  const [customLink, setCustomLink] = useState("");
-  const [isCustomizing, setIsCustomizing] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleCustomizeClick = () => {
-    setIsCustomizing(true);
-  };
-
-  const handleCancelClick = () => {
-    setIsCustomizing(false);
-    setCustomLink("");
-  };
-
-  const handleGenerateClick = () => {
-    setIsCustomizing(false);
-  };
-
-  const generatedUrl = customLink
-    ? `https://gogrub.co/${customLink}`
-    : "https://gogrub.co/kitchenexpress";
-
   const handleCopy = () => {
-    navigator.clipboard.writeText(generatedUrl);
+    navigator.clipboard.writeText(onlineOrderingLink?.url);
     setCopied(true);
 
     // Reset the icon after 2 seconds
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownloadQR = () => {
+    const link = document.createElement("a");
+    link.href = onlineOrderingLink?.qrCode;
+    link.download = "qr-code.png"; // Name for the downloaded file
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="flex flex-col gap-4 items-start justify-start w-[70%] m-auto py-10">
       {/* Logo */}
       <div className="flex items-center justify-start gap-7">
-        <img
-          src={URL.createObjectURL(logo)}
-          alt="Uploaded Logo"
-          className="w-[150px] h-auto"
-        />
+        <img src={logo} alt="Uploaded Logo" className="w-[150px] h-auto" />
         <button
-          className="bg-white text-[#5955B3] border border-[#5955B3] py-2 px-6 rounded"
+          className="bg-white text-[#0d0d0d] border border-[#0d0d0d] py-2 px-6 rounded"
           onClick={handleUploadLogo}
         >
           Replace logo
@@ -67,7 +57,9 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
           </h3>
           <div className="flex items-center justify-start gap-2">
             <span className="text-[#121212] text-[16px] font-normal">
-              {generatedUrl}
+              {loading
+                ? "Loading..."
+                : truncateText(onlineOrderingLink?.url, 30)}
             </span>
             {copied ? (
               <CheckCircle className="w-5 h-5 text-green-500" />
@@ -84,10 +76,17 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
           <div className="flex items-center gap-4">
             {/* QR Code Placeholder */}
             <div className="w-[50px] h-[50px] bg-gray-300 flex items-center justify-center rounded-md">
-              <img src={qrImage} alt="QR Code" className="w-full h-full" />
+              <img
+                src={onlineOrderingLink?.qrCode}
+                alt="QR Code"
+                className="w-full h-full"
+              />
             </div>
 
-            <div className="border border-[#0D0D0D] rounded-md flex items-center gap-2 px-2 py-1">
+            <div
+              className="border border-[#0D0D0D] rounded-md flex items-center gap-2 px-2 py-1 cursor-pointer"
+              onClick={handleDownloadQR}
+            >
               <img
                 src={fileDownload}
                 alt="QR Code"
@@ -101,13 +100,13 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
       </div>
 
       {/* Customize Link */}
-      <div className="w-[80%] mt-8">
+      {/* <div className="w-[80%] mt-8">
         <p className="text-[#504DA3] text-[16px] font-medium mb-2">
           Customize Your Link
         </p>
         <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-full">
           <span className="bg-gray-100 text-gray-500 px-3 py-2">
-            https://gogrub.co/
+            https://gogrub.com/
           </span>
           <input
             type="text"
@@ -131,7 +130,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
             Cancel
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

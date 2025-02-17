@@ -2,88 +2,98 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import Modal from "../Modal";
-import Close from "../../assets/CloseIcon.svg";
-import DeleteAlert from "../../assets/mdi_delete.png";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import {
+  fetchDeliveryDetails,
+  updateDeliveryDetails,
+} from "../../slices/assetSlice";
+import CustomInput from "../inputFields/CustomInput";
+import { toast } from "react-toastify";
 
-interface DeliveryTableProps {
-  branches: {
-    state: string;
-    fixedPrice: number;
-    supportLink: string;
-  }[];
+interface DeliveryDetails {
+  state: string;
+  fixedPrice: number;
+  support_link: string;
 }
 
-const DeliveryTable: React.FC<DeliveryTableProps> = ({ branches }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState<number | null>(null);
+interface DeliveryTableProps {
+  deliveryDetails: DeliveryDetails | null;
+}
 
-  const handleMenuOpen = (
-    event: React.MouseEvent<HTMLElement>,
-    index: number
-  ) => {
+const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveryDetails }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState<DeliveryDetails>(
+    deliveryDetails || { state: "", fixedPrice: 0, support_link: "" }
+  );
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    setSelectedBranch(index);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  const handleDeleteClick = () => {
-    setIsModalOpen(true);
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
     handleMenuClose();
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedBranch(null);
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    console.log("Deleted branch:", selectedBranch);
-    handleCloseModal();
+  const handleSaveChanges = async () => {
+    setIsLoading(true);
+    try {
+      await dispatch(updateDeliveryDetails(formData)).unwrap();
+      dispatch(fetchDeliveryDetails());
+      setIsEditModalOpen(false);
+    } catch (error) {
+      toast.error("Failed to update delivery details. Please try again.");
+      console.error("Error updating delivery details:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div>
-      <div className="overflow-x-auto mt-6">
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-[#606060] text-white text-center text-base font-normal">
-              <th className="py-2 px-4 text-base font-normal min-w-[100px]">
-                State
-              </th>
-              <th className="py-2 px-4 text-base font-normal">Fixed Price</th>
-              <th className="py-2 px-4 text-base font-normal">Support link</th>
-              <th className="py-2 px-4 text-base font-normal">Actions</th>
-            </tr>
-          </thead>
+      {deliveryDetails ? (
+        <div className="overflow-x-auto mt-6">
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="bg-[#606060] text-white text-center text-base font-normal">
+                <th className="py-2 px-4 text-base font-normal min-w-[100px]">
+                  State
+                </th>
+                <th className="py-2 px-4 text-base font-normal">Fixed Price</th>
+                <th className="py-2 px-4 text-base font-normal">
+                  Support Link
+                </th>
+                <th className="py-2 px-4 text-base font-normal">Actions</th>
+              </tr>
+            </thead>
 
-          <hr className="mb-2 text-[#E7E7E7]" />
+            <hr className="mb-2 text-[#E7E7E7]" />
 
-          <tbody>
-            {branches.map((branch, index) => (
-              <tr
-                key={index}
-                className={`${
-                  index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                }`}
-              >
-                <td className="text-base font-normal py-2 px-4">
-                  {branch.state}
+            <tbody>
+              <tr className="bg-[#F8F8F8]">
+                <td className="text-base font-normal py-2 px-4 text-center">
+                  {deliveryDetails.state}
                 </td>
-                <td className="text-base py-2 px-4 break-words text-center font-normal">
-                  {branch.fixedPrice}
+                <td className="text-base py-2 px-4 text-center font-normal">
+                  {deliveryDetails.fixedPrice}
                 </td>
-                <td className="text-base py-2 px-4 break-words font-normal text-center">
-                  {branch.supportLink}
+                <td className="text-base py-2 px-4 text-center font-normal">
+                  {deliveryDetails.support_link || "N/A"}
                 </td>
                 <td className="text-center">
-                  <IconButton
-                    aria-label="more"
-                    onClick={(e) => handleMenuOpen(e, index)}
-                  >
+                  <IconButton aria-label="more" onClick={handleMenuOpen}>
                     <MoreVert />
                   </IconButton>
                   <Menu
@@ -92,45 +102,73 @@ const DeliveryTable: React.FC<DeliveryTableProps> = ({ branches }) => {
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
                   >
-                    <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
-                    <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+                    <MenuItem onClick={handleEditClick}>Edit</MenuItem>
                   </Menu>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
-          <div
-            className="flex items-center justify-end cursor-pointer"
-            onClick={handleCloseModal}
-          >
-            <img src={Close} alt="Close" />
-          </div>
-          <div className="flex flex-col justify-center items-center gap-6">
-            <img src={DeleteAlert} alt="Close" className="w-[64px] h-[64px]" />
-            <p className="text-[16px] font-[400] text-grey500">
-              Are you sure you want to delete this?
-            </p>
-            <div className="flex items-center justify-center gap-4 mt-5">
-              <button
-                className="border cursor-pointer border-[#090909] rounded px-[24px] py-[10px] font-[600] text-[#090909]"
-                onClick={handleCloseModal}
-              >
-                No
-              </button>
-              <button
-                className="border border-[#090909] bg-[#090909] rounded px-[24px] py-[10px] font-[500] text-white"
-                onClick={handleConfirmDelete}
-              >
-                Yes
-              </button>
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
+      ) : (
+        <p className="text-center text-gray-500 mt-4">
+          No delivery details available.
+        </p>
+      )}
+
+      {/* Edit Delivery Details Modal */}
+      <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
+        <form className="p-6 bg-white rounded-[20px] w-[500px]">
+          <h2 className="text-[24px] mb-[24px] font-[500] text-purple500">
+            Edit Delivery Details
+          </h2>
+
+          <div className="mt-6 flex-grow">
+            <CustomInput
+              type="text"
+              label="Location"
+              value={formData.state}
+              onChange={(value) => setFormData({ ...formData, state: value })}
+            />
+          </div>
+
+          <div className="mt-6 flex-grow">
+            <CustomInput
+              type="number"
+              label="Fixed Price"
+              value={formData.fixedPrice}
+              onChange={(value) =>
+                setFormData({ ...formData, fixedPrice: Number(value) })
+              }
+            />
+          </div>
+
+          <div className="mt-6 flex-grow">
+            <CustomInput
+              type="text"
+              label="Support link (Optional)"
+              value={formData.support_link}
+              onChange={(value) =>
+                setFormData({ ...formData, support_link: value })
+              }
+            />
+          </div>
+
+          <div className="flex justify-end items-center gap-2 mt-7">
+            <button
+              className="border border-purple500 text-purple500 px-6 py-2 rounded"
+              onClick={handleCloseEditModal}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="bg-purple500 text-white px-6 py-2.5 rounded"
+              onClick={handleSaveChanges}
+            >
+              {isLoading ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

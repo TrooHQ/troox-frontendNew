@@ -200,10 +200,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           title: "Online Ordering",
           link: "/online-ordering",
         },
-        {
-          title: "Manage Assets",
-          link: "/manage-assets",
-        },
       ],
     },
     {

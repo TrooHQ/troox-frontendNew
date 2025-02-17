@@ -4,26 +4,49 @@ import { MoreVert } from "@mui/icons-material";
 import Modal from "../Modal";
 import Close from "../../assets/CloseIcon.svg";
 import DeleteAlert from "../../assets/mdi_delete.png";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
+import { fetchPickupLocations } from "../../slices/assetSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import CustomInput from "../inputFields/CustomInput";
+import { convertFirstLetterToUppercase } from "../../utils/convertFirstLetterToUppercase";
 
 interface LocationTableProps {
   branches: {
+    _id: string;
+    created_by: string;
     state: string;
     address: string;
-    supportLink: string;
+    support_link: string;
+    createdAt: string;
+    updatedAt: string;
   }[];
 }
 
 const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBranch, setSelectedBranch] = useState<number | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<any | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    state: "",
+    address: "",
+    support_link: "",
+  });
+
+  const token = localStorage.getItem("token");
 
   const handleMenuOpen = (
     event: React.MouseEvent<HTMLElement>,
-    index: number
+    branch: any
   ) => {
     setAnchorEl(event.currentTarget);
-    setSelectedBranch(index);
+    setSelectedBranch(branch);
   };
 
   const handleMenuClose = () => {
@@ -31,18 +54,78 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
   };
 
   const handleDeleteClick = () => {
-    setIsModalOpen(true);
+    setIsDeleteModalOpen(true);
     handleMenuClose();
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
     setSelectedBranch(null);
   };
 
-  const handleConfirmDelete = () => {
-    console.log("Deleted branch:", selectedBranch);
-    handleCloseModal();
+  const handleConfirmDelete = async () => {
+    if (selectedBranch !== null) {
+      const branchId = branches[selectedBranch]._id;
+      try {
+        setLoading(true);
+        await axios.delete(
+          `${SERVER_DOMAIN}/asset/removePickUpLocation/?locationId=${branchId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Deleted branch:", branchId);
+        handleCloseDeleteModal();
+        toast.success("Successfully deleted");
+        dispatch(fetchPickupLocations());
+      } catch (error) {
+        console.error("Error deleting branch:", error);
+        toast.error("Error deleting branch");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  console.log(selectedBranch, "selectedBranch");
+  const handleEditClick = () => {
+    setFormData({
+      state: selectedBranch?.state || "",
+      address: selectedBranch?.address || "",
+      support_link: selectedBranch?.support_link || "",
+    });
+    setIsEditModalOpen(true);
+    handleMenuClose();
+  };
+
+  const handleEditConfirm = async () => {
+    if (selectedBranch !== null) {
+      try {
+        setLoading(true);
+        const response = await axios.put(
+          `${SERVER_DOMAIN}/asset/editPickUpLocation/`,
+          {
+            ...formData,
+            locationId: selectedBranch._id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("Updated branch:", response);
+        dispatch(fetchPickupLocations());
+        toast.success("Successfully edited");
+        setIsEditModalOpen(false);
+      } catch (error) {
+        console.error("Error updating branch:", error);
+        toast.error("Error updating branch");
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -50,11 +133,13 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
       <div className="overflow-x-auto mt-6">
         <table className="min-w-full border-collapse">
           <thead>
-            <tr className="bg-[#606060] text-white text-center text-base font-normal">
-              <th className="py-2 px-4 text-base font-normal min-w-[100px]">
+            <tr className="bg-[#606060] text-white  text-base font-normal">
+              <th className="py-2 px-4 text-base font-normal min-w-[100px] text-start">
                 State
               </th>
-              <th className="py-2 px-4 text-base font-normal">Address</th>
+              <th className="py-2 px-4 text-base font-normal text-start">
+                Address
+              </th>
               <th className="py-2 px-4 text-base font-normal">Support link</th>
               <th className="py-2 px-4 text-base font-normal">Actions</th>
             </tr>
@@ -74,15 +159,15 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
                   {branch.state}
                 </td>
                 <td className="text-base py-2 px-4 break-words font-normal">
-                  {branch.address}
+                  {convertFirstLetterToUppercase(branch.address)}
                 </td>
                 <td className="text-base py-2 px-4 break-words font-normal text-center">
-                  {branch.supportLink}
+                  {branch.support_link}
                 </td>
                 <td className="text-center">
                   <IconButton
                     aria-label="more"
-                    onClick={(e) => handleMenuOpen(e, index)}
+                    onClick={(e) => handleMenuOpen(e, branch)}
                   >
                     <MoreVert />
                   </IconButton>
@@ -92,7 +177,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
                     open={Boolean(anchorEl)}
                     onClose={handleMenuClose}
                   >
-                    <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
+                    <MenuItem onClick={handleEditClick}>Edit</MenuItem>
                     <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
                   </Menu>
                 </td>
@@ -102,11 +187,12 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
         </table>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      {/* Delete Modal */}
+      <Modal isOpen={isDeleteModalOpen} onClose={handleCloseDeleteModal}>
         <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
           <div
             className="flex items-center justify-end cursor-pointer"
-            onClick={handleCloseModal}
+            onClick={handleCloseDeleteModal}
           >
             <img src={Close} alt="Close" />
           </div>
@@ -118,7 +204,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
             <div className="flex items-center justify-center gap-4 mt-5">
               <button
                 className="border cursor-pointer border-[#090909] rounded px-[24px] py-[10px] font-[600] text-[#090909]"
-                onClick={handleCloseModal}
+                onClick={handleCloseDeleteModal}
               >
                 No
               </button>
@@ -126,11 +212,69 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
                 className="border border-[#090909] bg-[#090909] rounded px-[24px] py-[10px] font-[500] text-white"
                 onClick={handleConfirmDelete}
               >
-                Yes
+                {loading ? "Wait..." : "Yes"}
               </button>
             </div>
           </div>
         </div>
+      </Modal>
+
+      {/* Edit Modal */}
+      <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
+        <form>
+          <p className="text-[24px] mb-[24px] font-[500] text-purple500">
+            Edit Pickup Location
+          </p>
+
+          <div>
+            {/* <CustomSelect5
+              label="Select a state"
+              options={stateOptions}
+              value={formData.state}
+              onChange={(value) => setFormData({ ...formData, state: value })}
+            /> */}
+          </div>
+
+          <div className="mt-6 flex-grow">
+            <CustomInput
+              type="text"
+              label="What is your pickup address?"
+              value={formData.address}
+              onChange={(value) => setFormData({ ...formData, address: value })}
+            />
+          </div>
+
+          <div className="mt-6 flex-grow">
+            <CustomInput
+              type="text"
+              label="Support link (Optional)"
+              value={formData.support_link}
+              onChange={(value) =>
+                setFormData({ ...formData, support_link: value })
+              }
+            />
+          </div>
+
+          <div className="flex justify-end items-center gap-2 mt-7">
+            <div
+              className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+              onClick={() => setIsEditModalOpen(false)}
+            >
+              <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                Cancel
+              </p>
+            </div>
+            <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
+              <button
+                type="button"
+                onClick={handleEditConfirm}
+                className="text-[16px]"
+              >
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </form>
       </Modal>
     </div>
   );

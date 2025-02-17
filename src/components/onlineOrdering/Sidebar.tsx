@@ -11,6 +11,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   setActiveComponent,
 }) => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    event.preventDefault();
     setActiveComponent(newValue);
   };
 

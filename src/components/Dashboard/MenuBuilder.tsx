@@ -64,12 +64,16 @@ const MenuBuilder = () => {
 
   const [editCategoryModalOpen, setEditCategoryModalOpen] = useState(false);
   const [editGroupModalOpen, setEditGroupModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<{ id: string; oldName: string } | null>(
-    null
-  );
+  const [editingCategory, setEditingCategory] = useState<{
+    id: string;
+    oldName: string;
+  } | null>(null);
   const [newCategoryName, setNewCategoryName] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
-  const [editingGroup, setEditingGroup] = useState<{ id: string; oldName: string } | null>(null);
+  const [editingGroup, setEditingGroup] = useState<{
+    id: string;
+    oldName: string;
+  } | null>(null);
   const [editLoading, setEditLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState<any | null>(null);
   const [activeGroup, setActiveGroup] = useState<any | null>(null);
@@ -309,7 +313,11 @@ const MenuBuilder = () => {
     };
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuGroup`,
+        payload,
+        headers
+      );
       dispatch(
         fetchMenuGroups({
           branch_id: selectedBranch.id,
@@ -321,7 +329,9 @@ const MenuBuilder = () => {
       setGroupName("");
       setApplyPriceToAll(false);
     } catch (error: any) {
-      toast.error(error.response.data.message || "An error occurred. Please try again.");
+      toast.error(
+        error.response.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setMenuGroupLoading(false);
       setAddMenuGroup(false);
@@ -394,7 +404,9 @@ const MenuBuilder = () => {
       setImage("");
       setAddMenuItem(false);
     } catch (error: any) {
-      toast.error(error.response.data.message || "An error occurred. Please try again.");
+      toast.error(
+        error.response.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setMenuGroupLoading(false);
       setAddMenuGroup(false);
@@ -411,7 +423,11 @@ const MenuBuilder = () => {
   };
 
   // Called when the page changes
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    event.preventDefault();
     setCurrentPage(page);
 
     dispatch(
@@ -433,7 +449,10 @@ const MenuBuilder = () => {
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
-                <button className="text-[16px] flex items-center gap-[8px]" onClick={handleAddMenu}>
+                <button
+                  className="text-[16px] flex items-center gap-[8px]"
+                  onClick={handleAddMenu}
+                >
                   <img src={Add} alt="" /> Add new menu category
                 </button>
               </div>
@@ -556,7 +575,10 @@ const MenuBuilder = () => {
           </Modal>
 
           {/* Edit selected category */}
-          <Modal isOpen={editCategoryModalOpen} onClose={() => setEditCategoryModalOpen(false)}>
+          <Modal
+            isOpen={editCategoryModalOpen}
+            onClose={() => setEditCategoryModalOpen(false)}
+          >
             <EditCategoryNameModal
               newCategoryName={newCategoryName}
               setNewCategoryName={setNewCategoryName}
@@ -567,14 +589,22 @@ const MenuBuilder = () => {
           </Modal>
 
           {/* Edit selected group, visibility and delete */}
-          <Modal isOpen={isVisibilityOpen} onClose={() => setIsVisibilityOpen(false)}>
+          <Modal
+            isOpen={isVisibilityOpen}
+            onClose={() => setIsVisibilityOpen(false)}
+          >
             <VisibilityOpen setIsVisibilityOpen={setIsVisibilityOpen} />
           </Modal>
 
-          <Modal isOpen={editGroupModalOpen} onClose={() => setEditGroupModalOpen(false)}>
+          <Modal
+            isOpen={editGroupModalOpen}
+            onClose={() => setEditGroupModalOpen(false)}
+          >
             {/* <EditOpen setIsEditOpen={setIsEditOpen} /> */}
             <div className=" w-[539px] py-[32px] px-[52px]">
-              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">Edit Group Name</h2>
+              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">
+                Edit Group Name
+              </h2>
               <CustomInput
                 type="text"
                 label=""

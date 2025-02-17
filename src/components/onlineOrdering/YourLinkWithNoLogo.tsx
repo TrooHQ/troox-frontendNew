@@ -7,7 +7,19 @@ import { truncateText } from "../../utils/truncateText";
 import brandLogo from "../../assets/yourlink.png";
 import FileUploadComponent from "./FileUploadComponent";
 
-const YourLinkWithNoLogo = () => {
+const YourLinkWithNoLogo = ({
+  generateOnlineOrderingLink,
+  businessLogo,
+  onlineOrderingLink,
+  loading,
+}: {
+  generateOnlineOrderingLink: any;
+  businessLogo: any;
+  onlineOrderingLink: any;
+  loading: any;
+}) => {
+  console.log(onlineOrderingLink, businessLogo, "qqqqq");
+
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customLink, setCustomLink] = useState("");
@@ -34,10 +46,6 @@ const YourLinkWithNoLogo = () => {
     setUploadedLogo(null);
     setUploadProgress(0);
     setIsUploading(false);
-  };
-
-  const handleCustomizeClick = () => {
-    setIsCustomizing(true);
   };
 
   const handleCancelClick = () => {
@@ -74,30 +82,16 @@ const YourLinkWithNoLogo = () => {
   }, [uploadedLogo]);
   console.log(selectedLogo, "Uploaded Logo:", uploadedLogo, showUploadProgress);
 
-  const simulateUploadProgress = () => {
-    setIsUploading(true);
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      setUploadProgress(progress);
-      if (progress >= 100) {
-        clearInterval(interval);
-        setIsUploading(false);
-        setIsUploadSuccessful(true);
-        setIsModalOpen(false);
-      }
-    }, 300); // Simulate progress every 300ms
-  };
-
   const getYourLink = () => {
     setIsUploadSuccessful(true);
     setIsModalOpen(false);
     setShowUploadProgress(false);
+    generateOnlineOrderingLink();
   };
-
+  console.log(uploadedLogo, "uploadedLogo");
   return (
     <div>
-      {!isUploadSuccessful ? (
+      {!businessLogo && !isUploadSuccessful ? (
         <div className="flex flex-col gap-4 items-center justify-center h-full pt-[100px] w-[45%] m-auto">
           <img src={linkImage} alt="link" className="w-[200px] h-[200px]" />
           <h3 className="text-[#929292] text-center font-sans text-[20px] not-italic font-medium leading-[26px] tracking-[0.15px]">
@@ -121,7 +115,7 @@ const YourLinkWithNoLogo = () => {
             <div className="flex flex-col items-center mt-8 gap-4">
               <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-[60%]">
                 <span className="bg-gray-100 text-gray-500 px-3 py-2">
-                  https://gogrub.co/
+                  https://gogrub.com/
                 </span>
                 <input
                   type="text"
@@ -150,8 +144,10 @@ const YourLinkWithNoLogo = () => {
         </div>
       ) : (
         <UploadedLogoDisplay
-          logo={uploadedLogo}
+          logo={businessLogo}
           handleUploadLogo={handleUploadLogo}
+          onlineOrderingLink={onlineOrderingLink}
+          loading={loading}
         />
       )}
 

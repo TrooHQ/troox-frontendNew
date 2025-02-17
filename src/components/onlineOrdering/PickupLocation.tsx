@@ -1,66 +1,40 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Switch, Modal, Box, Typography, IconButton } from "@mui/material";
 import clsx from "clsx";
-import { useState } from "react";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
-import { Close, CheckCircle, Clear } from "@mui/icons-material";
+import { Close, CheckCircle, Clear, ArrowBack } from "@mui/icons-material";
 import LocationTable from "./LocationTable";
 import { FaPlus } from "react-icons/fa6";
-
-// const branches = [];
-const branches = [
-  {
-    state: "Lagos",
-    address: "17, Milly Huston, Victoria Island",
-    supportLink: "vi@kitchenexpress.com",
-  },
-  {
-    state: "Lagos",
-    address: "18 Alimosho Busstop, Alimosho",
-    supportLink: "alimosho@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    address: "23 Ajah Busstop, Ajah",
-    supportLink: "ajah@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    address: "Egbeda Roundabout Busstop, Egbeda",
-    supportLink: "egbeda@chickenrepublic.com",
-  },
-  {
-    state: "Lagos",
-    address: "123 Ikeja GRA, Ikeja",
-    supportLink: "ikeja@chickenrepublic.com",
-  },
-  {
-    state: "Abuja",
-    address: "12 Falomo Busstop, Ikoyi",
-    supportLink: "ikoyi@chickenrepublic.com",
-  },
-];
-
-const stateOptions = [
-  { label: "Lagos", value: "lagos" },
-  { label: "Abia", value: "abia" },
-  { label: "Abuja", value: "abuja" },
-  { label: "Oyo", value: "oyo" },
-  { label: "Kano", value: "kano" },
-];
+import {
+  fetchPickupLocations,
+  addPickupLocation,
+} from "../../slices/assetSlice";
+import { AppDispatch, RootState } from "../../store/store";
+import Loader from "../Loader";
+import { toast } from "react-toastify";
+import { stateOptions } from "../../utils/stateOptions";
 
 const PickupLocation = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { pickupLocations: locations, loading } = useSelector(
+    (state: RootState) => state.asset
+  );
+
   const [isPickupEnabled, setIsPickupEnabled] = useState(false);
   const [selectedState, setSelectedState] = useState("");
-  const [addresses, setAddresses] = useState([
-    "17, Milly Huston, Victoria Island",
-  ]);
+  const [addresses, setAddresses] = useState([""]);
   const [supportLink, setSupportLink] = useState("");
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     createLocation: false,
     showLocation: true,
   });
+
+  useEffect(() => {
+    dispatch(fetchPickupLocations());
+  }, [dispatch]);
 
   const handleToggleChange = () => {
     setIsPickupEnabled((prev) => !prev);
@@ -103,6 +77,30 @@ const PickupLocation = () => {
     setAddresses(newAddresses);
   };
 
+  const handleSubmit = () => {
+    dispatch(
+      addPickupLocation({
+        state: selectedState,
+        pickup_addresses: addresses,
+        support_link: supportLink,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        handleOpen();
+        setSelectedState("");
+        setAddresses([""]);
+        setSupportLink("");
+      })
+      .catch((error: any) => {
+        console.error("Error adding pickup location:", error);
+        toast.error("Error while submitting. Try again");
+      })
+      .finally(() => {
+        dispatch(fetchPickupLocations());
+      });
+  };
+
   return (
     <div className="h-full">
       {state.showLocation && (
@@ -116,7 +114,9 @@ const PickupLocation = () => {
         </div>
       )}
 
-      {state.showLocation && branches.length === 0 ? (
+      {state.showLocation && loading && locations.length === 0 ? (
+        <Loader />
+      ) : state.showLocation && locations.length === 0 ? (
         <div className="flex flex-col gap-6 items-center justify-center h-full w-full mt-[-100px]">
           <p>No location has been set yet</p>
           <div className="border border-purple500 bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
@@ -129,10 +129,23 @@ const PickupLocation = () => {
             </button>
           </div>
         </div>
-      ) : state.showLocation && branches.length > 0 ? (
-        <LocationTable branches={branches} />
+      ) : state.showLocation && locations.length > 0 ? (
+        <LocationTable branches={locations} />
       ) : state.createLocation ? (
         <div className="">
+          <div
+            className="cursor-pointer"
+            onClick={() =>
+              setState((prev: any) => ({
+                ...prev,
+                createLocation: false,
+                showLocation: true,
+              }))
+            }
+          >
+            <ArrowBack />
+            Back
+          </div>
           <div className="flex items-center g-2.5">
             <span className="text-[#121212] text-base font-normal">
               Do you want to offer pickup service?
@@ -153,7 +166,6 @@ const PickupLocation = () => {
               {isPickupEnabled ? "Enabled" : "Disabled"}
             </span>
           </div>
-
           {isPickupEnabled && (
             <div className="mt-[80px] w-[60%] m-auto">
               <form className="space-y-6">
@@ -205,14 +217,13 @@ const PickupLocation = () => {
                 <button
                   type="button"
                   className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded"
-                  onClick={handleOpen}
+                  onClick={handleSubmit}
                 >
-                  Add Location
+                  {loading ? "Adding..." : "Add Location"}
                 </button>
               </form>
             </div>
           )}
-
           <Modal open={open} onClose={handleClose}>
             <Box
               sx={{
