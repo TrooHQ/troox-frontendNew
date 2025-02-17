@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert } from "@mui/icons-material";
 import Modal from "../Modal";
-import Close from "../../assets/CloseIcon.svg";
+import Close from "../../assets/closeIcon.svg";
 import DeleteAlert from "../../assets/mdi_delete.png";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
