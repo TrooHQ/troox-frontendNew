@@ -16,7 +16,13 @@ import { toast } from "react-toastify";
 import OtherSettings from "./OtherSettings";
 import AddModifierModal from "./AddModifierModal";
 
-const DropdownMenu = ({ onClose, onDelete }: { onClose: () => void; onDelete: () => void }) => {
+const DropdownMenu = ({
+  onClose,
+  onDelete,
+}: {
+  onClose: () => void;
+  onDelete: () => void;
+}) => {
   const [isEnabled, setIsEnabled] = useState(false);
 
   const handleItemClick = (action: string) => {
@@ -39,7 +45,9 @@ const DropdownMenu = ({ onClose, onDelete }: { onClose: () => void; onDelete: ()
       </li>
       <li
         onClick={() => handleItemClick("Enable Table")}
-        className={`font-[400] cursor-pointer ${!isEnabled ? "  text-slate-300" : " text-black"}`}
+        className={`font-[400] cursor-pointer ${
+          !isEnabled ? "  text-slate-300" : " text-black"
+        }`}
       >
         {isEnabled ? (
           <ToggleOn className="mr-2 text-[#5955eb]" />
@@ -65,7 +73,9 @@ const ManageTables: React.FC = () => {
 
   const [activeMenuIndex, setActiveMenuIndex] = useState(null);
   const [expandedOwner, setExpandedOwner] = useState("");
-  const [expandedGroups, setExpandedGroups] = useState<{ [key: string]: boolean }>({}); // Track expanded groups by group_name
+  const [expandedGroups, setExpandedGroups] = useState<{
+    [key: string]: boolean;
+  }>({}); // Track expanded groups by group_name
 
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
@@ -95,7 +105,9 @@ const ManageTables: React.FC = () => {
 
   const roomData = useSelector((state: any) => state.tables.rooms);
   const tableData = useSelector((state: any) => state.tables.tables);
-  const { selectedBranch: selectedOutlet } = useSelector((state: RootState) => state.branches);
+  const { selectedBranch: selectedOutlet } = useSelector(
+    (state: RootState) => state.branches
+  );
 
   const [addModifierModar, setAddModifierModal] = useState(false);
   const handleAddModifier = () => {
@@ -105,7 +117,9 @@ const ManageTables: React.FC = () => {
   const handleBranchSelect = (branchId: string) => {
     setSelectedBranch(branchId);
 
-    const selectedBranchObj = branches.find((branch: any) => branch._id === branchId);
+    const selectedBranchObj = branches.find(
+      (branch: any) => branch._id === branchId
+    );
     if (selectedBranchObj) {
       setSelectedBranchId(selectedBranchObj._id);
     }
@@ -152,18 +166,15 @@ const ManageTables: React.FC = () => {
     }
   };
 
-  //@ts-ignore
-  const toggleMenu = (index) => {
+  const toggleMenu = (index: null) => {
     setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
-  //@ts-ignore
-  const toggleOwner = (owner) => {
+  const toggleOwner = (owner: string) => {
     setExpandedOwner((prevOwner) => (prevOwner === owner ? "" : owner));
   };
 
   // Toggle group expansion (e.g., Rooftop, Top floor)
-  //@ts-ignore
-  const toggleGroup = (groupName) => {
+  const toggleGroup = (groupName: string) => {
     setExpandedGroups((prev) => ({
       ...prev,
       [groupName]: !prev[groupName],
@@ -171,9 +182,10 @@ const ManageTables: React.FC = () => {
   };
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<{ group_name: string; branch: any } | null>(
-    null
-  );
+  const [itemToDelete, setItemToDelete] = useState<{
+    group_name: string;
+    branch: any;
+  } | null>(null);
 
   // Combine roomData and tableData into a single structure
   const combinedData = {
@@ -245,104 +257,138 @@ const ManageTables: React.FC = () => {
             </div>
           )}
 
-          {Object.entries(combinedData).map(([category, items]) => (
-            <div key={category}>
-              <div className="mt-3 cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
-                <h2 className="text-[#5855B3] text-[20px] font-[400]">{category?.toUpperCase()}</h2>
-                <div>
-                  <img
-                    onClick={() => toggleOwner(category)}
-                    src={ArrowToggle}
-                    alt=""
-                    className={`transform inline transition-transform duration-300 ${
-                      expandedOwner === category ? "rotate-180" : ""
-                    }`}
-                  />
-                </div>
-              </div>
-              {expandedOwner === category && (
-                <>
-                  <div className="mt-[32px] grid grid-cols-9 items-center border-b px-5 border-b-grey100 text-grey300 text-[16px] font-[400]">
-                    <p className="col-span-2 px-3 py-2">Area/Group Name</p>
-                    <p className="col-span-2 px-3 py-2 text-center">Table Number</p>
-                    <p className="col-span-2 px-3 py-2 text-center">No. of Guests</p>
-                    <p className="px-3 py-2 text-center">QR Code</p>
-                    <p className="col-span-2 px-3 py-2 text-end">Actions</p>
-                  </div>
+          {Object.entries(combinedData).map(([category, items]) => {
+            console.log(category);
+            console.log(items);
+            return (
+              <div key={category}>
+                <div className="mt-3 cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
+                  <h2 className="text-[#5855B3] text-[20px] font-[400]">
+                    {category?.toUpperCase()}
+                  </h2>
                   <div>
-                    <ul>
-                      {/* Group items by group_name */}
-                      {Object.entries(
-                        items.reduce((acc: { [x: string]: any[] }, item: { group_name: any }) => {
-                          const { group_name } = item;
-                          if (!acc[group_name]) acc[group_name] = [];
-                          acc[group_name].push(item);
-                          return acc;
-                        }, {})
-                      ).map(([groupName, groupItems]) => (
-                        <React.Fragment key={groupName}>
-                          {/* Group Header */}
-                          <li
-                            className="grid grid-cols-9 items-center px-5 py-[16px] bg-[rgb(234,234,234)] cursor-pointer mb-1"
-                            onClick={() => toggleGroup(groupName)}
-                          >
-                            <p className="col-span-2 px-3 py-2 font-normal">{groupName}</p>
-                            <p className="col-span-7 text-right font-normal px-3 py-2">
-                              {expandedGroups[groupName] ? "Collapse ▲" : "Expand ▼"}
-                            </p>
-                          </li>
-                          {/* Group Items - show only if expanded */}
-                          {expandedGroups[groupName] &&
-                            (groupItems as any[]).map((item: any, index: number) => (
-                              <li
-                                key={item._id}
-                                className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                                  index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                                }`}
-                              >
-                                <p className="col-span-2 px-3 py-2">{item.group_name}</p>
-                                <p className="col-span-2 px-3 py-2 text-center">{item.number}</p>
-                                <p className="col-span-2 px-3 py-2 text-center">
-                                  {item.total_guests}
-                                </p>
-                                <p className="px-3 py-2 text-center">
-                                  {item.qrcode && <img src={item.qrcode} alt="" />}
-                                </p>
-                                <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                                  <div
-                                    className={`${
-                                      activeMenuIndex === item._id ? "bg-slate-200" : ""
-                                    } py-[10px] px-[20px] rounded-full`}
-                                  >
-                                    <div
-                                      className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                                      onClick={() => toggleMenu(item._id)}
-                                    >
-                                      <img src={More} alt="" className="cursor-pointer w-[5px]" />
-                                    </div>
-                                  </div>
-                                  {activeMenuIndex === item._id && (
-                                    <DropdownMenu
-                                      onClose={() => toggleMenu(item._id)}
-                                      onDelete={() =>
-                                        handleDeleteConfirmation(
-                                          item.group_name as any,
-                                          item.branch
-                                        )
-                                      }
-                                    />
-                                  )}
-                                </div>
-                              </li>
-                            ))}
-                        </React.Fragment>
-                      ))}
-                    </ul>
+                    <img
+                      onClick={() => toggleOwner(category)}
+                      src={ArrowToggle}
+                      alt=""
+                      className={`transform inline transition-transform duration-300 ${
+                        expandedOwner === category ? "rotate-180" : ""
+                      }`}
+                    />
                   </div>
-                </>
-              )}
-            </div>
-          ))}
+                </div>
+                {expandedOwner === category && (
+                  <>
+                    <div className="mt-[32px] grid grid-cols-9 items-center border-b px-5 border-b-[#929292] text-[#929292] text-[16px] font-[400]">
+                      <p className="col-span-2 px-3 py-2">Area/Group Name</p>
+                      <p className="col-span-2 px-3 py-2 text-center">
+                        Table Number
+                      </p>
+                      <p className="col-span-2 px-3 py-2 text-center">
+                        No. of Guests
+                      </p>
+                      <p className="px-3 py-2 text-center">QR Code</p>
+                      <p className="col-span-2 px-3 py-2 text-end">Actions</p>
+                    </div>
+                    <div>
+                      <ul>
+                        {/* Group items by group_name */}
+                        {Object.entries(
+                          items.reduce(
+                            (
+                              acc: { [x: string]: any[] },
+                              item: { group_name: any }
+                            ) => {
+                              const { group_name } = item;
+                              if (!acc[group_name]) acc[group_name] = [];
+                              acc[group_name].push(item);
+                              return acc;
+                            },
+                            {}
+                          )
+                        ).map(([groupName, groupItems]) => (
+                          <React.Fragment key={groupName}>
+                            {/* Group Header */}
+                            <li
+                              className="grid grid-cols-9 items-center px-5 py-[16px] bg-[rgb(234,234,234)] cursor-pointer mb-1"
+                              onClick={() => toggleGroup(groupName)}
+                            >
+                              <p className="col-span-2 px-3 py-2 font-normal">
+                                {groupName}
+                              </p>
+                              <p className="col-span-7 text-right font-normal px-3 py-2">
+                                {expandedGroups[groupName]
+                                  ? "Collapse ▲"
+                                  : "Expand ▼"}
+                              </p>
+                            </li>
+                            {/* Group Items - show only if expanded */}
+                            {expandedGroups[groupName] &&
+                              (groupItems as any[]).map(
+                                (item: any, index: number) => (
+                                  <li
+                                    key={item._id}
+                                    className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                                      index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                                    }`}
+                                  >
+                                    <p className="col-span-2 px-3 py-2">
+                                      {item.group_name}
+                                    </p>
+                                    <p className="col-span-2 px-3 py-2 text-center">
+                                      {item.number}
+                                    </p>
+                                    <p className="col-span-2 px-3 py-2 text-center">
+                                      {item.total_guests}
+                                    </p>
+                                    <p className="px-3 py-2 text-center">
+                                      {item.qrcode && (
+                                        <img src={item.qrcode} alt="" />
+                                      )}
+                                    </p>
+                                    <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
+                                      <div
+                                        className={`${
+                                          activeMenuIndex === item._id
+                                            ? "bg-slate-200"
+                                            : ""
+                                        } py-[10px] px-[20px] rounded-full`}
+                                      >
+                                        <div
+                                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                                          onClick={() => toggleMenu(item._id)}
+                                        >
+                                          <img
+                                            src={More}
+                                            alt=""
+                                            className="cursor-pointer w-[5px]"
+                                          />
+                                        </div>
+                                      </div>
+                                      {activeMenuIndex === item._id && (
+                                        <DropdownMenu
+                                          onClose={() => toggleMenu(item._id)}
+                                          onDelete={() =>
+                                            handleDeleteConfirmation(
+                                              item.group_name as any,
+                                              item.branch
+                                            )
+                                          }
+                                        />
+                                      )}
+                                    </div>
+                                  </li>
+                                )
+                              )}
+                          </React.Fragment>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <OtherSettings selectedOutlet={selectedOutlet} />
@@ -368,11 +414,16 @@ const ManageTables: React.FC = () => {
         />
 
         {isDeleteModalOpen && (
-          <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}>
+          <Modal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+          >
             <div className="">
               <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
                 <div className="flex flex-col justify-center items-center gap-6">
-                  <p className="text-[24px] font-[500] text-purple500">Delete Table</p>{" "}
+                  <p className="text-[24px] font-[500] text-purple500">
+                    Delete Table
+                  </p>{" "}
                   <p className="text-[16px] font-[400] text-grey500">
                     Are you sure you want to delete this?
                   </p>
@@ -381,15 +432,23 @@ const ManageTables: React.FC = () => {
                       className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
                       onClick={() => setIsDeleteModalOpen(false)}
                     >
-                      <p className="font-[500] text-[16px] text-purple500 cursor-pointer">No</p>
+                      <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                        No
+                      </p>
                     </div>
                     <div
                       className="border border-[#ED5048] bg-[#ED5048] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]"
                       onClick={() =>
-                        itemToDelete && handleDelete(itemToDelete.group_name, itemToDelete.branch)
+                        itemToDelete &&
+                        handleDelete(
+                          itemToDelete.group_name,
+                          itemToDelete.branch
+                        )
                       }
                     >
-                      <button className="text-[16px]">{loading ? "Deleting..." : "Delete"}</button>
+                      <button className="text-[16px]">
+                        {loading ? "Deleting..." : "Delete"}
+                      </button>
                     </div>
                   </div>
                 </div>

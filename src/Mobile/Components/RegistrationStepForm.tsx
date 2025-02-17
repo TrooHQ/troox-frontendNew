@@ -53,7 +53,6 @@ const RegistrationStepForm = () => {
   const [personal_address, setPersonal_address] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [state, setState] = useState<string>("");
-
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [countries, setCountries] = useState<Country[]>([]);
@@ -69,12 +68,14 @@ const RegistrationStepForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [base64String, setBase64String] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  console.log(businessId, userId);
+
   sessionStorage.setItem("businessType", businessType);
   const id = useSelector((state: RootState) => state.user?.userData?.user_id);
   const business_Id = useSelector(
     (state: RootState) => state.user?.userData?.business_id
   );
+
+  console.log(businessId, userId);
 
   const location = useLocation();
 

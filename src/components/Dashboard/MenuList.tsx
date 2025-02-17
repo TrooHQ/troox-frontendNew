@@ -19,7 +19,7 @@ import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
-import { fetchMenuItems2 } from "../../slices/menuSlice";
+import { fetchMenuItemsWithoutStatus } from "../../slices/menuSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
@@ -54,7 +54,7 @@ const MenuList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const branches = useSelector((state: any) => state.branches.branches);
-  const { menuItems2: menuItems, loading } = useSelector((state: any) => state.menu);
+  const { menuItemsWithoutStatus: menuItems, loading } = useSelector((state: any) => state.menu);
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(null);
@@ -127,7 +127,7 @@ const MenuList = () => {
         if (response.status === 200) {
           // Optionally refresh the list of menu items
           toast.success("Menu item updated successfully");
-          dispatch(fetchMenuItems2({ branch_id: viewingBranch?._id as any }));
+          dispatch(fetchMenuItemsWithoutStatus({ branch_id: viewingBranch?._id as any }));
         }
       } catch (error) {
         console.error("Error editing menu item:", error);
@@ -249,8 +249,10 @@ const MenuList = () => {
       },
     };
     try {
+      const encodedName = encodeURIComponent(selectedMenuItem);
+
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem}&branch_id=${selectedBranch}`,
+        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${encodedName}&branch_id=${selectedBranch}`,
         headers
       );
 
@@ -281,7 +283,7 @@ const MenuList = () => {
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Deleted successfully");
-        dispatch(fetchMenuItems2({ branch_id: viewingBranch?._id as any }));
+        dispatch(fetchMenuItemsWithoutStatus({ branch_id: viewingBranch?._id as any }));
       } else {
         alert("Failed to delete modifier");
       }
@@ -309,7 +311,7 @@ const MenuList = () => {
 
   const handleViewMore = (branch: Branch) => {
     setViewingBranch(branch);
-    dispatch(fetchMenuItems2({ branch_id: branch._id }));
+    dispatch(fetchMenuItemsWithoutStatus({ branch_id: branch._id }));
   };
 
   const handleBackToBranches = () => {

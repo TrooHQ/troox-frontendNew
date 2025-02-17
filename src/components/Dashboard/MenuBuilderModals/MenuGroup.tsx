@@ -1,4 +1,4 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Pagination } from "@mui/material";
 import AddWhite from "../../../assets/addWhite.svg";
 import { CancelOutlined, EditOutlined, MoreVert, VisibilityOutlined } from "@mui/icons-material";
 import chevron_right from "../../../assets/chevron_right.svg";
@@ -24,6 +24,10 @@ interface Props {
   handleGroupEdit: (group: any) => void;
   handleGroupDeleteClick: (group: any) => void;
   activeCategory: any;
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
 const MenuGroup: React.FC<Props> = ({
@@ -45,7 +49,13 @@ const MenuGroup: React.FC<Props> = ({
   handleGroupEdit,
   handleGroupDeleteClick,
   activeCategory,
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  handlePageChange,
 }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   return (
     <div className="mt-[24px] w-full border p-[16px]">
       <div className=" flex gap-[16px] items-start">
@@ -70,7 +80,7 @@ const MenuGroup: React.FC<Props> = ({
                       handleFetchMenuItems(group);
                     }}
                   >
-                    {truncateText(group.name, 15)}
+                    {truncateText(group.name, 12)}
                     {activeGroup?.name === group.name && (
                       <IconButton
                         aria-controls="simple-menu"
@@ -178,6 +188,10 @@ const MenuGroup: React.FC<Props> = ({
               <div className="flex justify-center items-center h-[200px]">
                 <p className="text-[16px] font-[400] text-grey500">Loading menu items...</p>
               </div>
+            ) : subMenuContent.length === 0 ? (
+              <div className="flex justify-center items-center h-[200px]">
+                <span>No item available</span>
+              </div>
             ) : (
               subMenuContent?.map((item, index) => {
                 return (
@@ -224,6 +238,33 @@ const MenuGroup: React.FC<Props> = ({
                   </div>
                 );
               })
+            )}
+
+            {totalPages > 1 && (
+              <div className="flex justify-end">
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  sx={{
+                    "& .Mui-selected": {
+                      backgroundColor: "#5955b3",
+                      color: "#fff",
+                    },
+                    "& .MuiPaginationItem-root": {
+                      "&.Mui-selected:hover": {
+                        backgroundColor: "#5955b3",
+                      },
+                    },
+                    "& .MuiPaginationItem-page": {
+                      "&.Mui-selected": {
+                        backgroundColor: "#5955b3",
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                />
+              </div>
             )}
 
             {subMenuContent.length > 1 && (
