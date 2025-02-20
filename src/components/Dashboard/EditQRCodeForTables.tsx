@@ -7,6 +7,7 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 interface EditQRCodeProps {
   branchOptions: { label: string; value: string }[];
   qrCodeData: {
+    _id: string;
     branch: string;
     number: string;
     location: string;
@@ -32,12 +33,21 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
   const handleSave = async () => {
     setLoading(true);
     try {
-      // Dummy API call
-      await axios.post(`${SERVER_DOMAIN}/editBusinessAsset`, {
-        branch: selectedBranch,
-        number: tableNumber,
-        location,
-      });
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      await axios.put(
+        `${SERVER_DOMAIN}/asset/updateTableNumberOfGuests`,
+        {
+          tableId: qrCodeData._id,
+          numberOfGuests: Number(totalGuests),
+        },
+        {
+          headers,
+        }
+      );
       onSave();
     } catch (error) {
       console.error("Error saving QR code:", error);
@@ -58,6 +68,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             label="Branch"
             value={selectedBranch}
             onChange={setSelectedBranch}
+            readonly={true}
           />
         </div>
         <div className="mt-6 flex-grow">
@@ -67,6 +78,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             value={tableNumber}
             error=""
             onChange={setTableNumber}
+            readOnly={true}
           />
         </div>
         <div className="mt-6 flex-grow">
@@ -76,6 +88,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             value={location}
             error=""
             onChange={setLocation}
+            readOnly={true}
           />
         </div>
         <div className="mt-6 flex-grow">

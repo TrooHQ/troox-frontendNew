@@ -5,7 +5,10 @@ import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { convertToBase64 } from "../../utils/imageToBase64";
 import { fetchAccountDetails } from "../../slices/businessSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../../slices/UserSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface FileUploadComponentProps {
   backFromSelection: () => void;
@@ -21,6 +24,8 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
   logo,
 }) => {
   const dispatch = useDispatch();
+
+  const userData = useSelector((state: any) => state.user.userData);
 
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadComplete, setUploadComplete] = useState(false);
@@ -57,28 +62,39 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
 
       try {
         setLoading(true);
-        const response = await fetch(`${SERVER_DOMAIN}/updateBusinessDetails`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ business_logo: base64Image }),
-        });
+        const response = await axios.put(
+          `${SERVER_DOMAIN}/updateBusinessDetails`,
+          { business_logo: base64Image },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log(response, "uuuu");
         dispatch(fetchAccountDetails() as any);
+        dispatch(
+          setUserData({
+            ...userData,
+            business_logo: response.data.data.business_logo,
+          })
+        );
 
-        if (response.ok) {
+        if (response.status === 200) {
           setShowSuccessScreen(true);
         } else {
           console.error("Failed to upload business logo");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error uploading business logo:", error);
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
     };
   };
+  console.log(userData, "ssss");
 
   const handleUploadClick = () => {
     handleFileUpload();

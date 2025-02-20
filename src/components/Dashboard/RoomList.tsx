@@ -93,64 +93,74 @@ const RoomList = ({
 
   return (
     <ul>
-      {Object.entries(groupedRooms).map(([groupName, groupItems]) => (
-        <div key={groupName}>
-          <li
-            className="grid grid-cols-9 items-center px-5 py-[16px] bg-[#eeeef7] cursor-pointer mb-1 mt-3"
-            onClick={() => toggleGroup(groupName)}
-          >
-            <p className="col-span-2 px-3 py-2 font-normal text-[#121212]">
-              {groupName}
-            </p>
-            <p className="col-span-7 text-right font-normal px-3 py-2">
-              {expandedGroups[groupName] ? (
-                <KeyboardArrowUp className="text-[24px] w-6 h-6" />
-              ) : (
-                <KeyboardArrowDown className="text-[24px] w-6 h-6" />
-              )}
-            </p>
-          </li>
+      {Object.entries(groupedRooms).map(([groupName, groupItems]) => {
+        return (
+          <div key={groupName}>
+            <li
+              className="grid grid-cols-9 items-center px-5 py-[16px] bg-[#eeeef7] cursor-pointer mb-1 mt-3"
+              onClick={() => toggleGroup(groupName)}
+            >
+              <p className="col-span-2 px-3 py-2 font-normal text-[#121212]">
+                {groupName}
+              </p>
+              <p className="col-span-7 text-right font-normal px-3 py-2">
+                {expandedGroups[groupName] ? (
+                  <KeyboardArrowUp className="text-[24px] w-6 h-6" />
+                ) : (
+                  <KeyboardArrowDown className="text-[24px] w-6 h-6" />
+                )}
+              </p>
+            </li>
 
-          {expandedGroups[groupName] &&
-            groupItems.map((item: any, index: any) => (
-              <li
-                key={item._id}
-                className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                  index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                }`}
-              >
-                <p className="text-[#121212] col-span-3 px-3 py-2">
-                  {item.group_name}
-                </p>
-                <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
-                  {item.number}
-                </p>
-                <p className="px-3 py-2 col-span-2 text-center flex items-center justify-center">
-                  {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
-                </p>
-                <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                  <IconButton onClick={handleMenuOpen}>
-                    <MoreVert />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                    transformOrigin={{ vertical: "top", horizontal: "left" }}
+            {expandedGroups[groupName] &&
+              groupItems.map((item: any, index: any) =>
+                index === groupItems.length - 1 ? (
+                  <li
+                    key={item._id}
+                    className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                      index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                    }`}
                   >
-                    <MenuItem onClick={() => handleEditClick(item)}>
-                      Edit
-                    </MenuItem>
-                    <MenuItem onClick={() => handleDeleteClick(item)}>
-                      Delete
-                    </MenuItem>
-                  </Menu>
-                </div>
-              </li>
-            ))}
-        </div>
-      ))}
+                    <p className="text-[#121212] col-span-3 px-3 py-2">
+                      {item.group_name}
+                    </p>
+                    <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
+                      {groupItems.length}
+                    </p>
+                    <p className="px-3 py-2 col-span-2 text-center flex items-center justify-center">
+                      {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
+                    </p>
+                    <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
+                      <IconButton onClick={handleMenuOpen}>
+                        <MoreVert />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                      >
+                        <MenuItem onClick={() => handleEditClick(item)}>
+                          Edit
+                        </MenuItem>
+                        <MenuItem onClick={() => handleDeleteClick(item)}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  </li>
+                ) : null
+              )}
+          </div>
+        );
+      })}
 
       <Modal open={openEditQR} onClose={() => setOpenEditQR(false)}>
         <Box

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
 import axios from "axios";
@@ -25,15 +25,21 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
   onSave,
 }) => {
   const [selectedBranch, setSelectedBranch] = useState(qrCodeData.branch || "");
-  // const [tableNumber, setTableNumber] = useState(qrCodeData.number);
+  const [tableNumber, setTableNumber] = useState("");
   const [location, setLocation] = useState(qrCodeData.group_name);
   const [loading, setLoading] = useState(false);
-  const tableNumber = qrCodeData.number;
+  // const tableNumber = qrCodeData.number;
 
+  useEffect(() => {
+    if (qrCodeData) {
+      setTableNumber(qrCodeData.number as any);
+    }
+  }, [qrCodeData]);
+
+  console.error(qrCodeData, "Error saving QR code:", tableNumber);
   const handleSave = async () => {
     setLoading(true);
     try {
-      // Dummy API call
       await axios.put(`${SERVER_DOMAIN}/editBusinessAsset`, {
         branch: selectedBranch,
         number: tableNumber,
@@ -61,7 +67,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             onChange={setSelectedBranch}
           />
         </div>
-        {/* <div className="mt-6 flex-grow">
+        <div className="mt-6 flex-grow">
           <CustomInput
             type="text"
             label="Enter number of rooms"
@@ -69,7 +75,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             error=""
             onChange={setTableNumber}
           />
-        </div> */}
+        </div>
         <div className="mt-6 flex-grow">
           <CustomInput
             type="text"
