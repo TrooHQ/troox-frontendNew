@@ -174,8 +174,8 @@ const InRoomDining = () => {
             : "border-b-[#121212] text-[#121212] "
         )}
       >
-        <p className="col-span-3 px-3 py-2 text-start">Branch/Group Name</p>
-        <p className="col-span-2 px-3 py-2 text-center">Room No.</p>
+        <p className="col-span-3 px-3 py-2 text-start">Location/Group Name</p>
+        <p className="col-span-2 px-3 py-2 text-center">No. of Rooms</p>
         <p className="col-span-2 px-3 py-2 text-center">QR Code</p>
         <p className="col-span-2 px-3 py-2 text-end">Actions</p>
       </div>

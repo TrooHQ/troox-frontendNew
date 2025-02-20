@@ -12,6 +12,7 @@ interface CustomSelectProps {
   error?: string;
   onChange: (value: string) => void;
   disabledOption?: string;
+  readonly?: boolean; // Add readonly as an optional parameter
 }
 
 const CustomSelect5: React.FC<CustomSelectProps> = ({
@@ -21,6 +22,7 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
   error,
   onChange,
   disabledOption,
+  readonly, // Destructure readonly
 }) => {
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -50,6 +52,7 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           ref={selectRef}
+          disabled={readonly}
         >
           {disabledOption && !value && (
             <option value="" disabled>

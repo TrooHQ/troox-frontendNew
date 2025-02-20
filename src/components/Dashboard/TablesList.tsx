@@ -8,6 +8,10 @@ import { useState } from "react";
 import { Box, IconButton, Menu, MenuItem, Modal } from "@mui/material";
 import EditQRCodeForTables from "./EditQRCodeForTables";
 import DeleteAlert from "../../assets/mdi_delete.png";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { getTables } from "../../slices/TableSlice";
 
 const TablesList = ({
   rooms,
@@ -28,6 +32,8 @@ const TablesList = ({
   openDeleteQR: boolean;
   setOpenDeleteQR: (open: boolean) => void;
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const groupedRooms: Record<string, any[]> = rooms.reduce((acc, room) => {
     if (!acc[room.group_name]) {
       acc[room.group_name] = [];
@@ -71,8 +77,9 @@ const TablesList = ({
   };
 
   const handleSave = () => {
+    dispatch(getTables());
     setOpenEditQR(false);
-    // toast.success("Successful")
+    toast.success("Successful");
   };
 
   return (
