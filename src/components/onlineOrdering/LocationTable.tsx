@@ -65,7 +65,8 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
 
   const handleConfirmDelete = async () => {
     if (selectedBranch !== null) {
-      const branchId = branches[selectedBranch]._id;
+      console.log(selectedBranch, "selectedBranch");
+      const branchId = selectedBranch._id;
       try {
         setLoading(true);
         await axios.delete(
