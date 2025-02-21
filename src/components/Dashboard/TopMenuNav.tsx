@@ -3,7 +3,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import NotificationIcon from "../../assets/notificationIcon.png";
 import SearchIcon from "../../assets/searchIcon.svg";
 import { useSelector } from "react-redux";
-import { RootState } from "@/src/store/store";
 interface TopMenuNavProps {
   pathName: string;
 }
