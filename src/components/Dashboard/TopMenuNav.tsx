@@ -9,19 +9,29 @@ interface TopMenuNavProps {
 }
 
 const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
-  const { userData } = useSelector((state: RootState) => state.user);
+  const { userData, userDetails } = useSelector((state: any) => state.user);
 
   return (
     <div className="">
       <div className="w-full">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[28px] font-[500] Capitalize text-purple500">{pathName}</p>
+            <p className="text-[28px] font-[500] Capitalize text-purple500">
+              {pathName}
+            </p>
           </div>
           <div className="flex gap-5 items-center">
             <div className="relative">
-              <input type="text" className="bg-[#F8F8F8] rounded p-2 pl-14" placeholder="Search" />
-              <img src={SearchIcon} alt="" className="absolute left-6 top-3 pointer-events-none" />
+              <input
+                type="text"
+                className="bg-[#F8F8F8] rounded p-2 pl-14"
+                placeholder="Search"
+              />
+              <img
+                src={SearchIcon}
+                alt=""
+                className="absolute left-6 top-3 pointer-events-none"
+              />
             </div>
 
             <div className=" ml-3 mr-5">
@@ -37,7 +47,15 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
             </div>
             <div>
               <Avatar sx={{ width: 40, height: 40 }}>
-                <PersonIcon />
+                {userDetails ? (
+                  <img
+                    src={userDetails?.photo || userDetails?.business_logo || ""}
+                    alt={`${userDetails?.first_name} ${userDetails?.last_name}`}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <PersonIcon />
+                )}
               </Avatar>
             </div>
           </div>
