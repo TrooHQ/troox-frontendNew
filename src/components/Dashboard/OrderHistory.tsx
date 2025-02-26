@@ -12,7 +12,6 @@ import { saveAs } from "file-saver"; // To save files locally
 import Papa from "papaparse"; // For CSV export
 import { truncateText } from "../../utils/truncateText";
 import { DatePicker, Space } from "antd";
-import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -24,9 +23,6 @@ const OrderHistory = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [selectedFilter, setSelectedFilter] = useState("today");
-  const [customDateRange, setCustomDateRange] = useState<
-    [string, string] | null
-  >(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +46,6 @@ const OrderHistory = () => {
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
     if (dates) {
-      setCustomDateRange(dateStrings);
       handleFilterChange(
         "date_range",
         undefined,
@@ -263,18 +258,7 @@ const OrderHistory = () => {
 
                   {showDatePicker && (
                     <Space direction="vertical">
-                      <RangePicker
-                        onChange={handleDateChange}
-                        format="YYYY-MM-DD"
-                        defaultValue={
-                          customDateRange
-                            ? [
-                                moment(customDateRange[0]),
-                                moment(customDateRange[1]),
-                              ]
-                            : undefined
-                        }
-                      />
+                      <RangePicker onChange={handleDateChange} />
                     </Space>
                   )}
                 </div>
