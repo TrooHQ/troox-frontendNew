@@ -1,4 +1,3 @@
-import { ArrowOutwardDownIcon } from "../../components/svgs";
 import {
   ResponsiveContainer,
   BarChart,
@@ -7,69 +6,88 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Label,
 } from "recharts";
-import ArrowDown from "../../assets/ArrowDown.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
-const data = [
-  { name: "8AM", uv: 4000, "Sales Revenue": 2400, amt: 2400 },
-  { name: "9AM", uv: 3000, "Sales Revenue": 1398, amt: 2210 },
-  { name: "10AM", uv: 2000, "Sales Revenue": 3800, amt: 2290 },
-  { name: "11AM", uv: 2000, "Sales Revenue": 2800, amt: 2290 },
-  { name: "12PM", uv: 2000, "Sales Revenue": 4800, amt: 2290 },
-  { name: "1PM", uv: 2000, "Sales Revenue": 3800, amt: 2290 },
-  { name: "2PM", uv: 2000, "Sales Revenue": 1800, amt: 2290 },
-  { name: "3PM", uv: 2000, "Sales Revenue": 2200, amt: 2290 },
-  { name: "4PM", uv: 2000, "Sales Revenue": 3000, amt: 2290 },
-  { name: "5PM", uv: 2000, "Sales Revenue": 4400, amt: 2290 },
-  { name: "6PM", uv: 2000, "Sales Revenue": 5800, amt: 2290 },
-  { name: "7PM", uv: 2000, "Sales Revenue": 6800, amt: 2290 },
-];
+const formatChartData = (data: any[]) => {
+  if (!data || data.length === 0) return [];
 
-const CustomLabel = () => (
-  <div>
-    <ArrowOutwardDownIcon />
-    <span>
-      ₦ 10,500,000 <ArrowOutwardDownIcon />
-    </span>
-  </div>
-);
+  // Extract unique dates from the data
+  const uniqueDates = new Set(
+    data.map(
+      (item: { _id: { day: any; month: any; year: any } }) =>
+        `${item._id.day}-${item._id.month}-${item._id.year}`
+    )
+  );
+
+  // If all data belongs to the same day, format it per hour
+  if (uniqueDates.size === 1) {
+    return Array.from({ length: 24 }, (_, hour) => {
+      const entry = data.find(
+        (item: { _id: { hour: number } }) => item._id.hour === hour
+      );
+      return {
+        name:
+          hour < 12 ? `${hour || 12}AM` : `${hour === 12 ? 12 : hour - 12}PM`,
+        "Sales Revenue": entry ? entry.totalSales : 0,
+      };
+    });
+  }
+
+  // If data spans multiple days, aggregate by day-month
+  const aggregatedData: Record<string, number> = {};
+  data.forEach((item: { _id: { day: any; month: any }; totalSales: any }) => {
+    const key = `${item._id.day} ${getMonthName(item._id.month)}`;
+    aggregatedData[key] = (aggregatedData[key] || 0) + item.totalSales;
+  });
+
+  return Object.entries(aggregatedData).map(([key, totalSales]) => ({
+    name: key,
+    "Sales Revenue": totalSales,
+  }));
+};
+
+const getMonthName = (month: number) => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return months[month - 1];
+};
 
 const Recharts = () => {
+  const { salesRevenueGraph } = useSelector(
+    (state: RootState) => state.overview
+  );
+  const chartData = formatChartData(salesRevenueGraph.data);
+
   return (
     <div>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
           width={500}
           height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
+          data={chartData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          {/* <XAxis dataKey="name" /> */}
-          <XAxis dataKey="name">
-            <Label content={<CustomLabel />} position="insideBottomRight" offset={10} />{" "}
-          </XAxis>
-          <YAxis
-            orientation="left"
-            stroke="#494953"
-            label={{ value: "Quantity", angle: -90, position: "insideLeft" }}
-          />
-          <YAxis orientation="right" stroke="#5855B3" />
-          <Tooltip />
-          <Bar dataKey="Sales Revenue" fill="#5855B3" barSize={20} />{" "}
+          <XAxis dataKey="name" stroke="#494953" />
+          <YAxis stroke="#5855B3" />
+          <Tooltip formatter={(value) => `₦${value.toLocaleString()}`} />
+          <Bar dataKey="Sales Revenue" fill="#5855B3" barSize={20} />
         </BarChart>
       </ResponsiveContainer>
-      <div className="ml-[100px] flex justify-start items-center w-full mt-6 gap-2">
-        <h5>₦ 10,500,000</h5>
-        <p className="text-red-500">-1.5%</p>
-        <img src={ArrowDown} alt="arrow-down" />
-      </div>
     </div>
   );
 };

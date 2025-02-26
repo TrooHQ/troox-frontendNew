@@ -11,6 +11,7 @@ import {
   fetchOpenAndClosedTickets,
   fetchTotalSales,
   fetchAverageOrderValue,
+  fetchSalesRevenueGraph,
   fetchTopMenuItems,
 } from "../../slices/overviewSlice";
 
@@ -26,6 +27,7 @@ const BalanceComp = () => {
     dispatch(fetchOpenAndClosedTickets({ date_filter: "today" }));
     dispatch(fetchTotalSales({ date_filter: "today" }));
     dispatch(fetchAverageOrderValue({ date_filter: "today" }));
+    dispatch(fetchSalesRevenueGraph({ date_filter: "today" }));
     dispatch(
       fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
     );
@@ -54,6 +56,14 @@ const BalanceComp = () => {
     );
     dispatch(
       fetchAverageOrderValue({
+        date_filter,
+        startDate,
+        endDate,
+        number_of_days,
+      })
+    );
+    dispatch(
+      fetchSalesRevenueGraph({
         date_filter,
         startDate,
         endDate,
@@ -92,8 +102,10 @@ const BalanceComp = () => {
           <h2 className={clsx(styles.figure)}>
             {loading
               ? "..."
-              : showBalance
+              : showBalance && totalSales?.data !== undefined
               ? `₦ ${totalSales?.data?.toLocaleString("en-US")}`
+              : showBalance && totalSales?.data === undefined
+              ? "Loading..."
               : "****"}
           </h2>
           {!showBalance ? (

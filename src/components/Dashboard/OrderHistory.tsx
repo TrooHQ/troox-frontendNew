@@ -11,6 +11,10 @@ import * as XLSX from "xlsx"; // For Excel export
 import { saveAs } from "file-saver"; // To save files locally
 import Papa from "papaparse"; // For CSV export
 import { truncateText } from "../../utils/truncateText";
+import { DatePicker, Space } from "antd";
+import moment from "moment";
+
+const { RangePicker } = DatePicker;
 
 const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -19,6 +23,12 @@ const OrderHistory = () => {
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState("today");
+  const [customDateRange, setCustomDateRange] = useState<
+    [string, string] | null
+  >(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const userDetails = useSelector((state: any) => state.user);
 
@@ -28,32 +38,83 @@ const OrderHistory = () => {
     setOpenTicket(!openTicket);
   };
 
-  const getTickets = async () => {
+  const handleFilterChange = (
+    filter: string,
+    number_of_days?: number,
+    startDate?: string,
+    endDate?: string
+  ) => {
+    setSelectedFilter(filter);
+    getTickets({ date_filter: filter, number_of_days, startDate, endDate });
+  };
+
+  const handleDateChange = (dates: any, dateStrings: [string, string]) => {
+    if (dates) {
+      setCustomDateRange(dateStrings);
+      handleFilterChange(
+        "date_range",
+        undefined,
+        dateStrings[0],
+        dateStrings[1]
+      );
+    }
+    setShowDatePicker(false);
+  };
+
+  const getTickets = async ({
+    date_filter,
+    startDate,
+    endDate,
+    number_of_days,
+  }: {
+    date_filter: string;
+    startDate?: string;
+    endDate?: string;
+    number_of_days?: number;
+  }) => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
+
+    const params: any = { date_filter };
+
+    if (date_filter === "date_range") {
+      params.startDate = startDate;
+      params.endDate = endDate;
+    } else if (date_filter !== "today") {
+      params.number_of_days = number_of_days;
+    }
+
     try {
+      setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderByBranch/?branch_id=${selectedBranch.id}`,
-        headers
+        `${SERVER_DOMAIN}/order/getOrderByBranch/`,
+        {
+          ...headers,
+          params: { branch_id: selectedBranch.id, ...params },
+          paramsSerializer: (params) => new URLSearchParams(params).toString(),
+        }
       );
-      console.log(response.data);
+      console.log(response.data, "mmmm");
       setData(response.data);
       // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getTickets();
+    getTickets({ date_filter: "today" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBranch]);
 
   const handleRefresh = () => {
-    getTickets();
+    getTickets({ date_filter: "today" });
   };
 
   // Function to export data as Excel
@@ -72,7 +133,10 @@ const OrderHistory = () => {
     const worksheet = XLSX.utils.json_to_sheet(selectedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, "order_history.xlsx");
   };
@@ -116,49 +180,103 @@ const OrderHistory = () => {
           <div className="mt-[40px]">
             <ChangeBranchForTicket handleRefresh={handleRefresh} />
             <div className="flex items-center justify-between">
-              {/* <div className="flex items-center justify-between">
-                <div className="relative">
-                  <input
-                    type="text"
-                    className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                    placeholder="Search"
-                  />
-                  <img
-                    src={SearchIcon}
-                    alt=""
-                    className="absolute left-6 top-3 pointer-events-none"
-                  />
-                </div>
-              </div> */}
               <div className="flex items-center gap-[32px]">
                 <div className="">
-                  <p className="font-[500] text-[16px] text-[#121212]">Filter by:</p>
+                  <p className="font-[500] text-[16px] text-[#121212]">
+                    Filter by:
+                  </p>
                 </div>
                 <div className="flex items-center gap-[8px]">
-                  <div className="border border-purple500 bg-purple500 rounded-[5px] px-[16px] py-[8px] font-[400] text-[#ffffff]">
-                    <button className="text-[12px]">Today</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[121212]">
-                    <button className="text-[12px]">7 Days</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px]">1 Month</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px]">3 Months</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px]">6 Months</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px]">1 Year</button>
-                  </div>
-                  <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px] flex items-center gap-1">
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "today"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("today")}
+                  >
+                    Today
+                  </button>
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "7_days"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("7_days", 7)}
+                  >
+                    7 Days
+                  </button>
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "1_month"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("1_month", 30)}
+                  >
+                    1 Month
+                  </button>
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "3_months"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("3_months", 90)}
+                  >
+                    3 Months
+                  </button>
+
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "6_months"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("6_months", 180)}
+                  >
+                    6 Months
+                  </button>
+
+                  <button
+                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                      selectedFilter === "1_year"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                    }`}
+                    onClick={() => handleFilterChange("1_year", 365)}
+                  >
+                    1 Year
+                  </button>
+
+                  {/* Custom Date Picker */}
+                  <div
+                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] cursor-pointer"
+                    onClick={() => setShowDatePicker(!showDatePicker)}
+                  >
+                    <span className="text-[12px] flex items-center gap-1">
                       <CalendarMonth className="w-4 h-4" />
                       <span>Custom</span>
-                    </button>
+                    </span>
                   </div>
+
+                  {showDatePicker && (
+                    <Space direction="vertical">
+                      <RangePicker
+                        onChange={handleDateChange}
+                        format="YYYY-MM-DD"
+                        defaultValue={
+                          customDateRange
+                            ? [
+                                moment(customDateRange[0]),
+                                moment(customDateRange[1]),
+                              ]
+                            : undefined
+                        }
+                      />
+                    </Space>
+                  )}
                 </div>
               </div>
               {/* Export buttons */}
@@ -192,10 +310,14 @@ const OrderHistory = () => {
 
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Orders</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                  Orders
+                </p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
-                  <p className="text-start text-[14px] text-[#121212]">Order No</p>
+                  <p className="text-start text-[14px] text-[#121212]">
+                    Order No
+                  </p>
                   <p className=" text-[14px] text-[#121212]">Date</p>
                   <p className=" text-[14px] text-[#121212]">Time</p>
                   <p className=" text-[14px] text-[#121212]">Customer </p>
@@ -203,37 +325,43 @@ const OrderHistory = () => {
                   <p className=" text-[14px] text-[#121212]">Bill </p>
                   {/* <p className=" text-[14px] text-[#121212]">Actions </p> */}
                 </div>
-                {data.map((item, index) => (
-                  <div
-                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${
-                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                    }`}
-                    key={index}
-                  >
-                    <p className="text-start" onClick={handleTicketMenu}>
-                      {item.order_number || "-"}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(0, 10)}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(11, 16)}
-                    </p>
-                    <p onClick={handleTicketMenu}>
-                      {item.customer_name
-                        ? truncateText(
-                            item.customer_name.charAt(0).toUpperCase() +
-                              item.customer_name.slice(1),
-                            12
-                          )
-                        : ""}
-                    </p>
+                {isLoading ? (
+                  <div className="px-8">Loading...</div>
+                ) : data.length === 0 ? (
+                  <div className="px-8">No data during this period</div>
+                ) : (
+                  data.map((item, index) => (
+                    <div
+                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${
+                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                      }`}
+                      key={index}
+                    >
+                      <p className="text-start" onClick={handleTicketMenu}>
+                        {item.order_number || "-"}
+                      </p>
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(0, 10)}
+                      </p>
+                      <p className=" " onClick={handleTicketMenu}>
+                        {item.createdAt.slice(11, 16)}
+                      </p>
+                      <p onClick={handleTicketMenu}>
+                        {item.customer_name
+                          ? truncateText(
+                              item.customer_name.charAt(0).toUpperCase() +
+                                item.customer_name.slice(1),
+                              12
+                            )
+                          : ""}
+                      </p>
 
-                    <p>{item.channel}</p>
+                      <p>{item.channel}</p>
 
-                    <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                  </div>
-                ))}
+                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
