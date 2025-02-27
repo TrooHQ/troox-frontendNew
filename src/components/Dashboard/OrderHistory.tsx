@@ -22,8 +22,12 @@ const OrderHistory = () => {
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
-  const [selectedFilter, setSelectedFilter] = useState("today");
-  const [selectedFilter2, setSelectedFilter2] = useState("today");
+  const [selectedFilter, setSelectedFilter] = useState<string | number>(
+    "today"
+  );
+  const [selectedFilter2, setSelectedFilter2] = useState<string | number>(
+    "today"
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,7 +45,7 @@ const OrderHistory = () => {
     startDate?: string,
     endDate?: string
   ) => {
-    setSelectedFilter(number_of_days);
+    setSelectedFilter(number_of_days as any);
     setSelectedFilter2(filter);
     getTickets({ date_filter: filter, number_of_days, startDate, endDate });
   };
