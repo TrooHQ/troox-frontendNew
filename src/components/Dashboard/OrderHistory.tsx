@@ -23,6 +23,7 @@ const OrderHistory = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [selectedFilter, setSelectedFilter] = useState("today");
+  const [selectedFilter2, setSelectedFilter2] = useState("today");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +41,8 @@ const OrderHistory = () => {
     startDate?: string,
     endDate?: string
   ) => {
-    setSelectedFilter(filter);
+    setSelectedFilter(number_of_days);
+    setSelectedFilter2(filter);
     getTickets({ date_filter: filter, number_of_days, startDate, endDate });
   };
 
@@ -55,7 +57,7 @@ const OrderHistory = () => {
     }
     setShowDatePicker(false);
   };
-
+  console.log(selectedFilter, "selectedFilter");
   const getTickets = async ({
     date_filter,
     startDate,
@@ -184,7 +186,7 @@ const OrderHistory = () => {
                 <div className="flex items-center gap-[8px]">
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "today"
+                      selectedFilter2 === "today"
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
@@ -194,53 +196,53 @@ const OrderHistory = () => {
                   </button>
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "7_days"
+                      selectedFilter === 7
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
-                    onClick={() => handleFilterChange("7_days", 7)}
+                    onClick={() => handleFilterChange("days", 7)}
                   >
                     7 Days
                   </button>
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "1_month"
+                      selectedFilter === 30
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
-                    onClick={() => handleFilterChange("1_month", 30)}
+                    onClick={() => handleFilterChange("days", 30)}
                   >
                     1 Month
                   </button>
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "3_months"
+                      selectedFilter === 90
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
-                    onClick={() => handleFilterChange("3_months", 90)}
+                    onClick={() => handleFilterChange("days", 90)}
                   >
                     3 Months
                   </button>
 
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "6_months"
+                      selectedFilter === 180
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
-                    onClick={() => handleFilterChange("6_months", 180)}
+                    onClick={() => handleFilterChange("days", 180)}
                   >
                     6 Months
                   </button>
 
                   <button
                     className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === "1_year"
+                      selectedFilter === 365
                         ? "bg-purple500 text-white"
                         : "border-gray-400 text-black"
                     }`}
-                    onClick={() => handleFilterChange("1_year", 365)}
+                    onClick={() => handleFilterChange("days", 365)}
                   >
                     1 Year
                   </button>
