@@ -9,6 +9,7 @@ interface BankRegisterState {
   bank: string;
   bankVerificationNumber: string;
   country: string;
+  bankCode: string;
 }
 
 const initialState: BankRegisterState = {
@@ -19,13 +20,17 @@ const initialState: BankRegisterState = {
   bank: "",
   bankVerificationNumber: "",
   country: "",
+  bankCode: "",
 };
 
 const bankRegisterSlice = createSlice({
   name: "bankRegister",
   initialState,
   reducers: {
-    setField: (state, action: PayloadAction<{ field: keyof BankRegisterState; value: string }>) => {
+    setField: (
+      state,
+      action: PayloadAction<{ field: keyof BankRegisterState; value: string }>
+    ) => {
       state[action.payload.field] = action.payload.value;
     },
     setFormData: (state, action: PayloadAction<Partial<BankRegisterState>>) => {
@@ -36,14 +41,17 @@ const bankRegisterSlice = createSlice({
 
 export const { setField, setFormData } = bankRegisterSlice.actions;
 
-export const selectTransformedBankRegisterState = (state: RootState) => ({
-  user_id: state.bankRegister.userId,
-  business_id: state.bankRegister.businessId,
-  account_name: state.bankRegister.bankAccountName,
-  account_number: state.bankRegister.bankAccountNumber,
-  bank_name: state.bankRegister.bank,
-  bank_verification_number: state.bankRegister.bankVerificationNumber,
-  country: state.bankRegister.country,
-});
+export const selectTransformedBankRegisterState = (state: RootState) => {
+  return {
+    user_id: state.bankRegister.userId,
+    business_id: state.bankRegister.businessId,
+    account_name: state.bankRegister.bankAccountName,
+    account_number: state.bankRegister.bankAccountNumber,
+    bank_name: state.bankRegister.bank,
+    bank_verification_number: state.bankRegister.bankVerificationNumber,
+    country: state.bankRegister.country,
+    bank_code: state.bankRegister.bankCode,
+  };
+};
 
 export default bankRegisterSlice.reducer;

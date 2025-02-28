@@ -83,9 +83,9 @@ const Recharts = () => {
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="name" stroke="#494953" />
-          <YAxis stroke="#5855B3" />
+          <YAxis stroke="#121212" />
           <Tooltip formatter={(value) => `₦${value.toLocaleString()}`} />
-          <Bar dataKey="Sales Revenue" fill="#5855B3" barSize={20} />
+          <Bar dataKey="Sales Revenue" fill="#121212" barSize={20} />
         </BarChart>
       </ResponsiveContainer>
     </div>

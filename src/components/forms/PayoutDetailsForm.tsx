@@ -7,12 +7,21 @@ import CustomInput from "../inputFields/CustomInput";
 import axios from "axios";
 import CustomSelect from "../inputFields/CustomSelect";
 
+interface Bank {
+  name: string;
+  code: string;
+}
+
 const PayoutDetailsForm: React.FC = () => {
   const dispatch = useDispatch();
   const [banks, setBanks] = useState<string[]>([]);
-  const { bankAccountName, bankAccountNumber, bank, bankVerificationNumber, country } = useSelector(
-    (state: RootState) => state.bankRegister
-  );
+  const {
+    bankAccountName,
+    bankAccountNumber,
+    bank,
+    bankVerificationNumber,
+    country,
+  } = useSelector((state: RootState) => state.bankRegister);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -29,14 +38,28 @@ const PayoutDetailsForm: React.FC = () => {
       .get(`${SERVER_DOMAIN}/getBanks`)
       .then((response) => {
         // Extract the bank names from the response
-        const bankNames = response.data.data.map((bank: { name: string }) => bank.name);
-        setBanks(bankNames);
+        const bankDetails = response.data.data.map((bank: Bank) => ({
+          name: bank.name,
+          code: bank.code,
+        }));
+        setBanks(bankDetails);
       })
       .catch((error) => console.error("Error fetching banks:", error));
   }, [dispatch]);
 
-  const handleInputChange = (field: keyof RootState["bankRegister"], value: string) => {
+  const handleInputChange = (
+    field: keyof RootState["bankRegister"],
+    value: string
+  ) => {
     dispatch(setField({ field, value }));
+  };
+
+  const handleBankChange = (selectedBankName: string) => {
+    const selectedBank = banks.find((bank) => bank.name === selectedBankName);
+    if (selectedBank) {
+      handleInputChange("bank", selectedBank.name);
+      handleInputChange("bankCode", selectedBank.code);
+    }
   };
 
   return (
@@ -51,20 +74,25 @@ const PayoutDetailsForm: React.FC = () => {
         type="text"
         label="Bank account number"
         value={bankAccountNumber}
-        onChange={(newValue) => handleInputChange("bankAccountNumber", newValue)}
+        onChange={(newValue) =>
+          handleInputChange("bankAccountNumber", newValue)
+        }
       />
       <CustomSelect
         label="Bank"
         value={bank}
-        options={banks}
-        onChange={(newValue) => handleInputChange("bank", newValue)}
+        options={banks.map((bank) => bank.name)}
+        onChange={handleBankChange}
       />
       <CustomInput
         type="text"
         label="Bank verification number"
         value={bankVerificationNumber}
-        onChange={(newValue) => handleInputChange("bankVerificationNumber", newValue)}
+        onChange={(newValue) =>
+          handleInputChange("bankVerificationNumber", newValue)
+        }
       />
+
       <CustomInput
         type="text"
         label="Country"

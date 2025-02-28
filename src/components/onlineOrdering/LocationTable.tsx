@@ -248,6 +248,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
               type="text"
               label="Support link (Optional)"
               value={formData.support_link}
+              readOnly={true}
               onChange={(value) =>
                 setFormData({ ...formData, support_link: value })
               }
