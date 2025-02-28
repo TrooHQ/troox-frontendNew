@@ -11,6 +11,7 @@ import {
   fetchOpenAndClosedTickets,
   fetchTotalSales,
   fetchAverageOrderValue,
+  fetchSalesRevenueGraph,
   fetchTopMenuItems,
 } from "../../slices/overviewSlice";
 
@@ -33,7 +34,6 @@ const BalanceComp = () => {
   const changeVisibility = () => {
     setShowBalance(!showBalance);
   };
-  console.log(averageOrderValue?.data?.averageOrderValue);
 
   const handleDateFilterChange = (
     date_filter: string,
@@ -92,8 +92,10 @@ const BalanceComp = () => {
           <h2 className={clsx(styles.figure)}>
             {loading
               ? "..."
-              : showBalance
+              : showBalance && totalSales?.data !== undefined
               ? `₦ ${totalSales?.data?.toLocaleString("en-US")}`
+              : showBalance && totalSales?.data === undefined
+              ? "Loading..."
               : "****"}
           </h2>
           {!showBalance ? (

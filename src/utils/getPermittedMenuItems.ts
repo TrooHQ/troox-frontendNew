@@ -38,7 +38,7 @@ const permissionToMenuItem: PermissionToMenuItem = {
   "Create QR Codes for Tables": "Manage Assets",
   "Generate Online Ordering Link": "Manage Assets",
   "Generate Self Checkout Link": "Manage Assets",
-  "View Business Report": "Overview",
+  "View Business Report": "Profile",
   "Download Business Report": "Overview",
 };
 

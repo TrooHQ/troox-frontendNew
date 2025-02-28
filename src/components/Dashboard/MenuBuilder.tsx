@@ -12,6 +12,7 @@ import {
   fetchMenuCategories,
   fetchMenuGroups,
   fetchMenuItemsByMenuGroup,
+  fetchMenuItemsWithoutStatus,
 } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -30,18 +31,24 @@ import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categories, menuGroups, menuItemsByGroup, mgLoading } = useSelector(
-    (state: any) => state.menu
-  );
+  const {
+    categories,
+    menuGroups,
+    menuItemsWithoutStatus,
+    totalItems,
+    totalPages,
+    currentPage: theCurrentPage,
+    mgLoading,
+  } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
-
+  const [currentPage, setCurrentPage] = useState(theCurrentPage || 1);
+  console.log(totalItems, totalPages, currentPage, "allP");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
   const [addMenuItem, setAddMenuItem] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
-  const [menuGroupLoading, setMenuGroupLoading] = useState(false); // Loading state for menu groups
-  const [menuItemLoading, setMenuItemLoading] = useState(false); // Loading state for menu items
-
+  const [menuGroupLoading, setMenuGroupLoading] = useState(false);
+  const [menuItemLoading, setMenuItemLoading] = useState(false);
   const [isVisibilityOpen, setIsVisibilityOpen] = useState(false);
 
   const [groupName, setGroupName] = useState("");
@@ -54,23 +61,23 @@ const MenuBuilder = () => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const [editCategoryModalOpen, setEditCategoryModalOpen] = useState(false);
   const [editGroupModalOpen, setEditGroupModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<{ id: string; oldName: string } | null>(
-    null
-  );
+  const [editingCategory, setEditingCategory] = useState<{
+    id: string;
+    oldName: string;
+  } | null>(null);
   const [newCategoryName, setNewCategoryName] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
-  const [editingGroup, setEditingGroup] = useState<{ id: string; oldName: string } | null>(null);
+  const [editingGroup, setEditingGroup] = useState<{
+    id: string;
+    oldName: string;
+  } | null>(null);
   const [editLoading, setEditLoading] = useState(false);
-  const [selectedCategoryForEdit, setSelectedCategoryForEdit] = useState<any>(null);
-  const [selectedGroupForEdit, setSelectedGroupForEdit] = useState<any>(null);
   const [activeCategory, setActiveCategory] = useState<any | null>(null);
   const [activeGroup, setActiveGroup] = useState<any | null>(null);
 
-  console.log(selectedCategory, selectedCategoryForEdit, selectedGroupForEdit);
   // Useeffects
   useEffect(() => {
     if (selectedBranch) {
@@ -85,7 +92,6 @@ const MenuBuilder = () => {
 
   // Get men groups and set active category
   const getSubCategory = (category: any) => {
-    console.log(category, "category");
     setActiveCategory(category);
     dispatch(
       fetchMenuGroups({
@@ -93,13 +99,11 @@ const MenuBuilder = () => {
         menu_category_name: category.name,
       })
     );
-    setSelectedCategory(category);
   };
 
   // Handle edit category and other dropdown functions
-  const handleCategoryDropdown = (event: React.MouseEvent<HTMLElement>, category: any) => {
+  const handleCategoryDropdown = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl2(event.currentTarget);
-    setSelectedCategoryForEdit(category);
   };
 
   const handleClose2 = () => {
@@ -151,9 +155,10 @@ const MenuBuilder = () => {
     setMenuItemLoading(true); // Set loading to true before fetching
     setActiveGroup(group);
     dispatch(
-      fetchMenuItemsByMenuGroup({
+      fetchMenuItemsWithoutStatus({
         branch_id: selectedBranch.id,
         menu_group_name: group.name,
+        page: currentPage || 1,
       })
     ).finally(() => {
       setMenuItemLoading(false); // Set loading to false after fetching
@@ -168,9 +173,8 @@ const MenuBuilder = () => {
     setIsVisibilityOpen(true);
   };
 
-  const handleGroupDropdown = (event: React.MouseEvent<HTMLElement>, group: any) => {
+  const handleGroupDropdown = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    setSelectedGroupForEdit(group);
   };
 
   const handleClose = () => {
@@ -255,7 +259,6 @@ const MenuBuilder = () => {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log(response);
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Item deleted successfully");
@@ -270,7 +273,6 @@ const MenuBuilder = () => {
         alert("Failed to delete item");
       }
     } catch (error) {
-      console.error("Error deleting item:", error);
       alert("An error occurred while deleting the item");
     }
   };
@@ -302,7 +304,7 @@ const MenuBuilder = () => {
       },
     };
 
-    let payload = {
+    const payload = {
       category_name: activeCategory?.name,
       group_name: groupName,
       branch_id: selectedBranch.id,
@@ -311,8 +313,11 @@ const MenuBuilder = () => {
     };
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuGroup`, payload, headers);
-      console.log(response);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuGroup`,
+        payload,
+        headers
+      );
       dispatch(
         fetchMenuGroups({
           branch_id: selectedBranch.id,
@@ -324,8 +329,9 @@ const MenuBuilder = () => {
       setGroupName("");
       setApplyPriceToAll(false);
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message || "An error occurred. Please try again.");
+      toast.error(
+        error.response.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setMenuGroupLoading(false);
       setAddMenuGroup(false);
@@ -355,14 +361,12 @@ const MenuBuilder = () => {
     setMenuName(value);
   };
   const handleMenuDescription = (value: any) => {
-    console.log(value);
     setMenuDescription(value);
   };
   const handleMenuPrice = (value: string) => {
     setMenuPrice(value);
   };
 
-  console.log(activeCategory, activeGroup, "help2");
   const handleSaveMenuItem = async () => {
     setMenuGroupLoading(true);
 
@@ -372,7 +376,6 @@ const MenuBuilder = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    console.log(activeCategory, activeGroup, "help");
     try {
       const response = await axios.post(
         `${SERVER_DOMAIN}/menu/addMenuItem`,
@@ -387,11 +390,11 @@ const MenuBuilder = () => {
         },
         headers
       );
-      console.log(response);
       dispatch(
         fetchMenuItemsByMenuGroup({
           branch_id: selectedBranch.id,
           menu_group_name: activeGroup?.name,
+          page: currentPage || 1,
         })
       );
       toast.success(response.data.message || "Menu group added successfully.");
@@ -401,8 +404,9 @@ const MenuBuilder = () => {
       setImage("");
       setAddMenuItem(false);
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message || "An error occurred. Please try again.");
+      toast.error(
+        error.response.data.message || "An error occurred. Please try again."
+      );
     } finally {
       setMenuGroupLoading(false);
       setAddMenuGroup(false);
@@ -418,7 +422,24 @@ const MenuBuilder = () => {
     setAddModifierModal(true);
   };
 
-  console.log(selectedMenuItem, menuItemsByGroup, "menuItemsByGroup", activeGroup);
+  // Called when the page changes
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    event.preventDefault();
+    setCurrentPage(page);
+
+    dispatch(
+      fetchMenuItemsWithoutStatus({
+        branch_id: selectedBranch.id,
+        menu_group_name: activeGroup?.name,
+        page: page,
+      })
+    );
+    console.log(`Fetching menu items for page ${page}`);
+  };
+
   return (
     <div>
       {" "}
@@ -428,7 +449,10 @@ const MenuBuilder = () => {
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
-                <button className="text-[16px] flex items-center gap-[8px]" onClick={handleAddMenu}>
+                <button
+                  className="text-[16px] flex items-center gap-[8px]"
+                  onClick={handleAddMenu}
+                >
                   <img src={Add} alt="" /> Add new menu category
                 </button>
               </div>
@@ -445,14 +469,14 @@ const MenuBuilder = () => {
                       className={`${
                         activeCategory?.name === category?.name &&
                         "bg-purple100 text-purple600 font-[500]"
-                      } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                      } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] cursor-pointer`}
                     >
-                      {truncateText(category.name, 13)}
+                      {truncateText(category.name, 10)}
                       {activeCategory?.name === category.name && (
                         <IconButton
                           aria-controls="simple-menu"
                           aria-haspopup="true"
-                          onClick={(event) => handleCategoryDropdown(event, category)}
+                          onClick={(event) => handleCategoryDropdown(event)}
                         >
                           <MoreVert />
                         </IconButton>
@@ -523,10 +547,14 @@ const MenuBuilder = () => {
                     handleGroupDeleteClick={handleGroupDeleteClick}
                     activeCategory={activeCategory}
                     handleAddMenuGroup={handleAddMenuGroup}
-                    subMenuContent={menuItemsByGroup}
+                    subMenuContent={menuItemsWithoutStatus}
                     selectedMenuItem={selectedMenuItem}
                     handleMenuItemClick={handleMenuItemClick}
                     handleAddMenuItem={handleAddMenuItem}
+                    totalItems={totalItems}
+                    currentPage={currentPage}
+                    itemsPerPage={10}
+                    handlePageChange={handlePageChange}
                   />
                 </>
                 <Modifiers
@@ -547,7 +575,10 @@ const MenuBuilder = () => {
           </Modal>
 
           {/* Edit selected category */}
-          <Modal isOpen={editCategoryModalOpen} onClose={() => setEditCategoryModalOpen(false)}>
+          <Modal
+            isOpen={editCategoryModalOpen}
+            onClose={() => setEditCategoryModalOpen(false)}
+          >
             <EditCategoryNameModal
               newCategoryName={newCategoryName}
               setNewCategoryName={setNewCategoryName}
@@ -558,14 +589,22 @@ const MenuBuilder = () => {
           </Modal>
 
           {/* Edit selected group, visibility and delete */}
-          <Modal isOpen={isVisibilityOpen} onClose={() => setIsVisibilityOpen(false)}>
+          <Modal
+            isOpen={isVisibilityOpen}
+            onClose={() => setIsVisibilityOpen(false)}
+          >
             <VisibilityOpen setIsVisibilityOpen={setIsVisibilityOpen} />
           </Modal>
 
-          <Modal isOpen={editGroupModalOpen} onClose={() => setEditGroupModalOpen(false)}>
+          <Modal
+            isOpen={editGroupModalOpen}
+            onClose={() => setEditGroupModalOpen(false)}
+          >
             {/* <EditOpen setIsEditOpen={setIsEditOpen} /> */}
             <div className=" w-[539px] py-[32px] px-[52px]">
-              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">Edit Group Name</h2>
+              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">
+                Edit Group Name
+              </h2>
               <CustomInput
                 type="text"
                 label=""

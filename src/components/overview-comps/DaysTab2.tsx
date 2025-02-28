@@ -33,12 +33,10 @@ const DaysTab2 = ({
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<[string | null, string | null]>([null, null]);
-  console.log(dateRange);
 
   const handleChange = (event: any, newValue: number) => {
     event.preventDefault();
     setValue(newValue);
-    console.log("jjjj", newValue);
     const date_filter = newValue === 0 ? "today" : "days";
     const number_of_days = parseInt(days[newValue]);
     newValue === 0

@@ -59,7 +59,6 @@ const Modifiers = ({
   }, [dispatch]);
 
   const handleKeepModifierGroupDetail = (modifier: any) => {
-    console.log(modifier, "modifieraaa");
     setSelectedModifier(modifier);
   };
 
@@ -85,7 +84,6 @@ const Modifiers = ({
         `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
         headers
       );
-      console.log(response, "response of modi");
       setFetchedModifierGroups(response.data.data || []);
       // toast.success("Modifier groups fetched successfully.");
     } catch (error) {
@@ -111,11 +109,9 @@ const Modifiers = ({
   const saveModifiers = () => {
     setConfirmSaveModal(true); // Open the confirmation modal
   };
-  console.log(selectedModifier, "pppp");
 
   const handleConfirmSave = async () => {
     setLoading(true);
-    console.log(modifiers, "modifiers");
     // Create the payload with branch_id, modifier_group_name, and modifiers array
     const payload = {
       branch_id: selectedBranch.id,
@@ -135,7 +131,6 @@ const Modifiers = ({
 
     try {
       const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers);
-      console.log(response, "responselll");
       toast.success(response.data.message || "Modifiers added successfully.");
       setAddModifierModal(false);
       fetchModifierGroups();
@@ -148,7 +143,6 @@ const Modifiers = ({
     }
   };
 
-  console.log(modifiers, "llllll");
   const handleRuleChange = (rule: keyof ModifierRules) => {
     setModifierRules((prevRules) => ({
       ...prevRules,
@@ -179,7 +173,6 @@ const Modifiers = ({
   };
 
   const handleConfirmDelete = async () => {
-    console.log(confirmationDialog, "confirmationDialog.id");
     if (confirmationDialog.id) {
       await handleDeleteModifier(confirmationDialog.id);
       setConfirmationDialog({ open: false, id: "" });
@@ -195,7 +188,6 @@ const Modifiers = ({
   const handleDeleteModifierGroup = async (modifierName: string) => {
     try {
       const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
-      console.log(modifierName, "ooop");
       const response = await axios.delete(
         `${SERVER_DOMAIN}/menu/deleteModifierGroup/?branch_id=${selectedBranch.id}&modifier_group_name=${modifierName}`,
         {
@@ -292,7 +284,6 @@ const Modifiers = ({
         payload,
         headers
       );
-      console.log(response, "eeee");
       toast.success(response.data.message || "Successful");
       fetchModifierGroups();
       setGroupName("");
@@ -302,8 +293,6 @@ const Modifiers = ({
       setModGroupLoading(false);
     }
   };
-
-  console.log(fetchedModifierGroups);
 
   const [editId, setEditId] = useState(null); // Track the currently edited modifier
   const [newGroupName, setNewGroupName] = useState(""); // Store the new group name

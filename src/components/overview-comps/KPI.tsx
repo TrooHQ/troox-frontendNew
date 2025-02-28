@@ -24,7 +24,6 @@ const KPI = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { topMenuItems, loading } = useSelector((state: RootState) => state.overview);
-  console.log(topMenuItems, "topMenuItems");
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   useEffect(() => {

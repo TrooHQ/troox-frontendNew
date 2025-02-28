@@ -81,8 +81,6 @@ const EditBranchDetailsModal: React.FC<EditBranchDetailsModalProps> = ({
       updatedData.photo = photo; // Add Base64 encoded image if changed
     }
 
-    console.log(updatedData, "qqqqq");
-
     if (Object.keys(updatedData).length > 0) {
       await dispatch(updateUserDetails(updatedData)); // Dispatch Redux action to update user details
     }

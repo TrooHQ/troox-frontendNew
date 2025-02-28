@@ -7,6 +7,7 @@ interface OverviewState {
   topMenuItems: any;
   totalSales: any;
   averageOrderValue: any;
+  salesRevenueGraph: any;
   salesGrowthRate: any;
   loading: boolean;
   error: string | null;
@@ -18,6 +19,7 @@ const initialState: OverviewState = {
   salesGrowthRate: "",
   totalSales: 0,
   averageOrderValue: "",
+  salesRevenueGraph: "",
   loading: false,
   error: null,
 };
@@ -31,7 +33,12 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
-    }: { date_filter: string; startDate?: string; endDate?: string; number_of_days?: number },
+    }: {
+      date_filter: string;
+      startDate?: string;
+      endDate?: string;
+      number_of_days?: number;
+    },
     { rejectWithValue }
   ) => {
     try {
@@ -46,12 +53,15 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/getOpenAndClosedTickets`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/getOpenAndClosedTickets`,
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -94,12 +104,15 @@ export const fetchTopMenuItems = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/order/getTopMenuItems/`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/order/getTopMenuItems/`,
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -120,7 +133,12 @@ export const fetchTotalSales = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
-    }: { date_filter: string; startDate?: string; endDate?: string; number_of_days?: number },
+    }: {
+      date_filter: string;
+      startDate?: string;
+      endDate?: string;
+      number_of_days?: number;
+    },
     { rejectWithValue }
   ) => {
     try {
@@ -160,7 +178,12 @@ export const fetchAverageOrderValue = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
-    }: { date_filter: string; startDate?: string; endDate?: string; number_of_days?: number },
+    }: {
+      date_filter: string;
+      startDate?: string;
+      endDate?: string;
+      number_of_days?: number;
+    },
     { rejectWithValue }
   ) => {
     try {
@@ -191,24 +214,73 @@ export const fetchAverageOrderValue = createAsyncThunk(
   }
 );
 
-export const fetchSalesGrowthRate = createAsyncThunk("overview/fetchSalesGrowthRate", async () => {
-  try {
-    const token = localStorage.getItem("token");
+// Create async thunk for fetching sales revenue graph data
+export const fetchSalesRevenueGraph = createAsyncThunk(
+  "overview/fetchSalesRevenueGraph",
+  async (
+    {
+      date_filter,
+      startDate,
+      endDate,
+      number_of_days,
+    }: {
+      date_filter: string;
+      startDate?: string;
+      endDate?: string;
+      number_of_days?: number;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
 
-    const response = await axios.get(`${SERVER_DOMAIN}/salesGrowthRate`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      return error.response.data;
-    } else {
-      return "An unknown error occurred";
+      const params: any = { date_filter };
+      if (date_filter === "date_range") {
+        params.startDate = startDate;
+        params.endDate = endDate;
+      } else if (date_filter !== "today") {
+        params.number_of_days = number_of_days;
+      }
+
+      const response = await axios.get(`${SERVER_DOMAIN}/salesRevenueGraph`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("response data", response.data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue("An unknown error occurred");
+      }
     }
   }
-});
+);
+
+export const fetchSalesGrowthRate = createAsyncThunk(
+  "overview/fetchSalesGrowthRate",
+  async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(`${SERVER_DOMAIN}/salesGrowthRate`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      } else {
+        return "An unknown error occurred";
+      }
+    }
+  }
+);
 
 const overviewSlice = createSlice({
   name: "overview",
@@ -220,10 +292,13 @@ const overviewSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchOpenAndClosedTickets.fulfilled, (state, action: PayloadAction<any[]>) => {
-        state.loading = false;
-        state.openAndClosedTickets = action.payload;
-      })
+      .addCase(
+        fetchOpenAndClosedTickets.fulfilled,
+        (state, action: PayloadAction<any[]>) => {
+          state.loading = false;
+          state.openAndClosedTickets = action.payload;
+        }
+      )
       .addCase(fetchOpenAndClosedTickets.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -232,10 +307,13 @@ const overviewSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTopMenuItems.fulfilled, (state, action: PayloadAction<any[]>) => {
-        state.loading = false;
-        state.topMenuItems = action.payload;
-      })
+      .addCase(
+        fetchTopMenuItems.fulfilled,
+        (state, action: PayloadAction<any[]>) => {
+          state.loading = false;
+          state.topMenuItems = action.payload;
+        }
+      )
       .addCase(fetchTopMenuItems.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -244,10 +322,13 @@ const overviewSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchTotalSales.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.totalSales = action.payload;
-      })
+      .addCase(
+        fetchTotalSales.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.totalSales = action.payload;
+        }
+      )
       .addCase(fetchTotalSales.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -256,10 +337,13 @@ const overviewSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchSalesGrowthRate.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.salesGrowthRate = action.payload;
-      })
+      .addCase(
+        fetchSalesGrowthRate.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.salesGrowthRate = action.payload;
+        }
+      )
       .addCase(fetchSalesGrowthRate.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -268,11 +352,29 @@ const overviewSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchAverageOrderValue.fulfilled, (state, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.averageOrderValue = action.payload;
-      })
+      .addCase(
+        fetchAverageOrderValue.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.averageOrderValue = action.payload;
+        }
+      )
       .addCase(fetchAverageOrderValue.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchSalesRevenueGraph.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchSalesRevenueGraph.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.salesRevenueGraph = action.payload;
+        }
+      )
+      .addCase(fetchSalesRevenueGraph.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
