@@ -59,7 +59,9 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
             <span className="text-[#121212] text-[16px] font-normal">
               {loading
                 ? "Loading..."
-                : truncateText(onlineOrderingLink?.url, 30)}
+                : onlineOrderingLink?.url
+                ? truncateText(onlineOrderingLink?.url, 30)
+                : "No link generated yet"}
             </span>
             {copied ? (
               <CheckCircle className="w-5 h-5 text-green-500" />

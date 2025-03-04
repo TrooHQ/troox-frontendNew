@@ -20,6 +20,7 @@ const YourLink = () => {
 
   useEffect(() => {
     dispatch(fetchAccountDetails() as any);
+    generateOnlineOrderingLink();
   }, [dispatch]);
 
   const generateOnlineOrderingLink = () => {

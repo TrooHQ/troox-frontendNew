@@ -13,6 +13,7 @@ import {
   fetchAverageOrderValue,
   fetchSalesRevenueGraph,
   fetchTopMenuItems,
+  fetchCustomerTransaction,
 } from "../../slices/overviewSlice";
 
 const BalanceComp = () => {
@@ -31,6 +32,7 @@ const BalanceComp = () => {
     dispatch(
       fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
     );
+    dispatch(fetchCustomerTransaction({ date_filter: "today" }));
   }, [dispatch]);
 
   const changeVisibility = () => {
@@ -64,6 +66,14 @@ const BalanceComp = () => {
     );
     dispatch(
       fetchSalesRevenueGraph({
+        date_filter,
+        startDate,
+        endDate,
+        number_of_days,
+      })
+    );
+    dispatch(
+      fetchCustomerTransaction({
         date_filter,
         startDate,
         endDate,

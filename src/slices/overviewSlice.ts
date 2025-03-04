@@ -6,6 +6,7 @@ interface OverviewState {
   openAndClosedTickets: any;
   topMenuItems: any;
   totalSales: any;
+  totalCustomerTransaction: any;
   averageOrderValue: any;
   salesRevenueGraph: any;
   salesGrowthRate: any;
@@ -18,6 +19,7 @@ const initialState: OverviewState = {
   topMenuItems: [],
   salesGrowthRate: "",
   totalSales: 0,
+  totalCustomerTransaction: 0,
   averageOrderValue: "",
   salesRevenueGraph: "",
   loading: false,
@@ -153,6 +155,51 @@ export const fetchTotalSales = createAsyncThunk(
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/getTotalSales`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue("An unknown error occurred");
+      }
+    }
+  }
+);
+
+// Create async thunk for fetching customer transaction
+export const fetchCustomerTransaction = createAsyncThunk(
+  "overview/fetchCustomerTransaction",
+  async (
+    {
+      date_filter,
+      startDate,
+      endDate,
+      number_of_days,
+    }: {
+      date_filter: string;
+      startDate?: string;
+      endDate?: string;
+      number_of_days?: number;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const params: any = { date_filter };
+      if (date_filter === "date_range") {
+        params.startDate = startDate;
+        params.endDate = endDate;
+      } else if (date_filter !== "today") {
+        params.number_of_days = number_of_days;
+      }
+
+      const response = await axios.get(`${SERVER_DOMAIN}/customerTransaction`, {
         params,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -330,6 +377,21 @@ const overviewSlice = createSlice({
         }
       )
       .addCase(fetchTotalSales.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchCustomerTransaction.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchCustomerTransaction.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.totalCustomerTransaction = action.payload;
+        }
+      )
+      .addCase(fetchCustomerTransaction.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
