@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../assets/TrooGrey.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import BusinessInfoForm from "../forms/BusinessInfoForm";

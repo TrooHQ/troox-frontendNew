@@ -14,7 +14,7 @@ interface Bank {
 
 const PayoutDetailsForm: React.FC = () => {
   const dispatch = useDispatch();
-  const [banks, setBanks] = useState<string[]>([]);
+  const [banks, setBanks] = useState<Bank[]>([]);
   const {
     bankAccountName,
     bankAccountNumber,
@@ -54,7 +54,7 @@ const PayoutDetailsForm: React.FC = () => {
     dispatch(setField({ field, value }));
   };
 
-  const handleBankChange = (selectedBankName: string) => {
+  const handleBankChange = (selectedBankName: any) => {
     const selectedBank = banks.find((bank) => bank.name === selectedBankName);
     if (selectedBank) {
       handleInputChange("bank", selectedBank.name);

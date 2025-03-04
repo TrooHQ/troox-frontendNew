@@ -12,9 +12,12 @@ import { useEffect } from "react";
 const SalesActivities = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { salesGrowthRate, totalSales, averageOrderValue } = useSelector(
-    (state: RootState) => state.overview
-  );
+  const {
+    salesGrowthRate,
+    totalSales,
+    averageOrderValue,
+    totalCustomerTransaction,
+  } = useSelector((state: RootState) => state.overview);
 
   useEffect(() => {
     dispatch(fetchSalesGrowthRate());
@@ -34,7 +37,8 @@ const SalesActivities = () => {
   let percentageChange = 0;
 
   if (prevDayTotalSales !== 0) {
-    percentageChange = ((getTotalSalesToday - prevDayTotalSales) / prevDayTotalSales) * 100;
+    percentageChange =
+      ((getTotalSalesToday - prevDayTotalSales) / prevDayTotalSales) * 100;
     if (percentageChange > 0) {
       status = `${percentageChange.toFixed(2)}% up from yesterday`;
       statusIcon = ArrowUp;
@@ -58,7 +62,9 @@ const SalesActivities = () => {
         icon: statusIcon,
         title: "Sales Growth Rate",
         time: "12:45 PM",
-        amount: `${salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0}%`,
+        amount: `${
+          salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0
+        }%`,
         statusIcon: statusIcon,
         status: status,
       },
@@ -66,18 +72,24 @@ const SalesActivities = () => {
         icon: ArrowUp,
         title: "Average Order Value",
         time: "12:45 PM",
-        amount: `₦ ${averageOrderValue?.data?.averageOrderValue?.toLocaleString("en-US") || 0}`,
+        amount: `₦ ${Number(
+          averageOrderValue?.data?.averageOrderValue || 0
+        ).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`,
         statusIcon: ArrowUp,
         status: "10% from yesterday",
       },
-      // {
-      //   icon: ArrowDown,
-      //   title: "Gross Profit",
-      //   time: "12:45 PM",
-      //   amount: "₦ 8,250,000",
-      //   statusIcon: ArrowDown,
-      //   status: "10% from yesterday",
-      // },
+      {
+        icon: ArrowDown,
+        title: "Customer Count Card",
+        time: "12:45 PM",
+        amount:
+          totalCustomerTransaction?.totalOrders?.toLocaleString("en-US") || 0,
+        statusIcon: ArrowDown,
+        status: "10% from yesterday",
+      },
     ],
   };
   return (

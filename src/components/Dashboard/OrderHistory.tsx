@@ -19,7 +19,6 @@ const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
   console.log(selectedBranch);
 
-  const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<string | number>(
@@ -29,6 +28,7 @@ const OrderHistory = () => {
     "today"
   );
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showCustomerDetail, setShowCustomerDetail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const userDetails = useSelector((state: any) => state.user);
@@ -36,7 +36,11 @@ const OrderHistory = () => {
   const token = userDetails?.userData?.token;
 
   const handleTicketMenu = () => {
-    setOpenTicket(!openTicket);
+    setShowCustomerDetail(true);
+  };
+
+  const handleCustomerMenu = () => {
+    setShowCustomerDetail(true);
   };
 
   const handleFilterChange = (
@@ -173,189 +177,251 @@ const OrderHistory = () => {
     exportToExcel();
   };
 
+  const handleBack = () => {
+    setShowCustomerDetail(false);
+  };
+
   return (
     <div>
       <DashboardLayout>
         <TopMenuNav pathName="Tickets" />
-        <div className="">
-          <div className="mt-[40px]">
-            <ChangeBranchForTicket handleRefresh={handleRefresh} />
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-[32px]">
-                <div className="">
-                  <p className="font-[500] text-[16px] text-[#121212]">
-                    Filter by:
-                  </p>
-                </div>
-                <div className="flex items-center gap-[8px]">
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter2 === "today"
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("today")}
-                  >
-                    Today
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 7
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 7)}
-                  >
-                    7 Days
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 30
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 30)}
-                  >
-                    1 Month
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 90
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 90)}
-                  >
-                    3 Months
-                  </button>
+        {showCustomerDetail ? (
+          <div className="mt-8">
+            <button
+              className="border border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+              onClick={handleBack}
+            >
+              Back
+            </button>
+            <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
+              <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                Customer Details
+              </p>
 
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 180
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 180)}
-                  >
-                    6 Months
-                  </button>
-
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 365
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 365)}
-                  >
-                    1 Year
-                  </button>
-
-                  {/* Custom Date Picker */}
-                  <div
-                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] cursor-pointer"
-                    onClick={() => setShowDatePicker(!showDatePicker)}
-                  >
-                    <span className="text-[12px] flex items-center gap-1">
-                      <CalendarMonth className="w-4 h-4" />
-                      <span>Custom</span>
-                    </span>
-                  </div>
-
-                  {showDatePicker && (
-                    <Space direction="vertical">
-                      <RangePicker onChange={handleDateChange} />
-                    </Space>
-                  )}
-                </div>
-              </div>
-              {/* Export buttons */}
-              <div className="flex items-center gap-[12px]">
-                <div className="relative">
-                  <button
-                    onClick={toggleDropdown}
-                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
-                  >
-                    Download
-                  </button>
-                  {dropdownVisible && (
-                    <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
-                      <button
-                        onClick={handleDownloadCSV}
-                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                      >
-                        Download CSV
-                      </button>
-                      <button
-                        onClick={handleDownloadExcel}
-                        className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                      >
-                        Download Excel
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="">
-              <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
-                  Orders
+              <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-4 border-b">
+                <p className="text-start text-[14px] text-[#121212]">
+                  Customer Name
                 </p>
-
-                <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
-                  <p className="text-start text-[14px] text-[#121212]">
-                    Order No
-                  </p>
-                  <p className=" text-[14px] text-[#121212]">Date</p>
-                  <p className=" text-[14px] text-[#121212]">Time</p>
-                  <p className=" text-[14px] text-[#121212]">Customer </p>
-                  <p className=" text-[14px] text-[#121212]">Channel </p>
-                  <p className=" text-[14px] text-[#121212]">Bill </p>
-                  {/* <p className=" text-[14px] text-[#121212]">Actions </p> */}
-                </div>
-                {isLoading ? (
-                  <div className="px-8">Loading...</div>
-                ) : data.length === 0 ? (
-                  <div className="px-8">No data during this period</div>
-                ) : (
-                  data.map((item, index) => (
-                    <div
-                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${
-                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                <p className=" text-[14px] text-[#121212]">Email</p>
+                <p className=" text-[14px] text-[#121212]">Phone Number</p>
+                <p className=" text-[14px] text-[#121212]">Address</p>
+              </div>
+              {isLoading ? (
+                <div className="px-8">Loading...</div>
+              ) : data.length === 0 ? (
+                <div className="px-8">No data during this period</div>
+              ) : (
+                data.map((item, index) => (
+                  <div
+                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-4 items-center  font-base text-[14px] text-[#414141] ${
+                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                    }`}
+                    key={index}
+                  >
+                    <p onClick={handleTicketMenu}>
+                      {item.customer_name
+                        ? truncateText(
+                            item.customer_name.charAt(0).toUpperCase() +
+                              item.customer_name.slice(1),
+                            12
+                          )
+                        : ""}
+                    </p>
+                    <p className="" onClick={handleCustomerMenu}>
+                      {item.order_number || "-"}
+                    </p>
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.createdAt.slice(0, 10)}
+                    </p>
+                    <p className=" " onClick={handleTicketMenu}>
+                      {item.createdAt.slice(11, 16)}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="">
+            <div className="mt-[40px]">
+              <ChangeBranchForTicket handleRefresh={handleRefresh} />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-[32px]">
+                  <div className="">
+                    <p className="font-[500] text-[16px] text-[#121212]">
+                      Filter by:
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-[8px]">
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter2 === "today"
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
                       }`}
-                      key={index}
+                      onClick={() => handleFilterChange("today")}
                     >
-                      <p className="text-start" onClick={handleTicketMenu}>
-                        {item.order_number || "-"}
-                      </p>
-                      <p className=" " onClick={handleTicketMenu}>
-                        {item.createdAt.slice(0, 10)}
-                      </p>
-                      <p className=" " onClick={handleTicketMenu}>
-                        {item.createdAt.slice(11, 16)}
-                      </p>
-                      <p onClick={handleTicketMenu}>
-                        {item.customer_name
-                          ? truncateText(
-                              item.customer_name.charAt(0).toUpperCase() +
-                                item.customer_name.slice(1),
-                              12
-                            )
-                          : ""}
-                      </p>
+                      Today
+                    </button>
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter === 7
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
+                      }`}
+                      onClick={() => handleFilterChange("days", 7)}
+                    >
+                      7 Days
+                    </button>
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter === 30
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
+                      }`}
+                      onClick={() => handleFilterChange("days", 30)}
+                    >
+                      1 Month
+                    </button>
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter === 90
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
+                      }`}
+                      onClick={() => handleFilterChange("days", 90)}
+                    >
+                      3 Months
+                    </button>
 
-                      <p>{item.channel}</p>
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter === 180
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
+                      }`}
+                      onClick={() => handleFilterChange("days", 180)}
+                    >
+                      6 Months
+                    </button>
 
-                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                    <button
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
+                        selectedFilter === 365
+                          ? "bg-purple500 text-white"
+                          : "border-gray-400 text-black"
+                      }`}
+                      onClick={() => handleFilterChange("days", 365)}
+                    >
+                      1 Year
+                    </button>
+
+                    {/* Custom Date Picker */}
+                    <div
+                      className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] cursor-pointer"
+                      onClick={() => setShowDatePicker(!showDatePicker)}
+                    >
+                      <span className="text-[12px] flex items-center gap-1">
+                        <CalendarMonth className="w-4 h-4" />
+                        <span>Custom</span>
+                      </span>
                     </div>
-                  ))
-                )}
+
+                    {showDatePicker && (
+                      <Space direction="vertical">
+                        <RangePicker onChange={handleDateChange} />
+                      </Space>
+                    )}
+                  </div>
+                </div>
+                {/* Export buttons */}
+                <div className="flex items-center gap-[12px]">
+                  <div className="relative">
+                    <button
+                      onClick={toggleDropdown}
+                      className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
+                    >
+                      Download
+                    </button>
+                    {dropdownVisible && (
+                      <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                        <button
+                          onClick={handleDownloadCSV}
+                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                        >
+                          Download CSV
+                        </button>
+                        <button
+                          onClick={handleDownloadExcel}
+                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                        >
+                          Download Excel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="">
+                <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
+                  <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                    Orders
+                  </p>
+
+                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
+                    <p className="text-start text-[14px] text-[#121212]">
+                      Order No
+                    </p>
+                    <p className=" text-[14px] text-[#121212]">Date</p>
+                    <p className=" text-[14px] text-[#121212]">Time</p>
+                    <p className=" text-[14px] text-[#121212]">Customer </p>
+                    <p className=" text-[14px] text-[#121212]">Channel </p>
+                    <p className=" text-[14px] text-[#121212]">Bill </p>
+                    {/* <p className=" text-[14px] text-[#121212]">Actions </p> */}
+                  </div>
+                  {isLoading ? (
+                    <div className="px-8">Loading...</div>
+                  ) : data.length === 0 ? (
+                    <div className="px-8">No data during this period</div>
+                  ) : (
+                    data.map((item, index) => (
+                      <div
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${
+                          index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        }`}
+                        key={index}
+                      >
+                        <p className="text-start" onClick={handleCustomerMenu}>
+                          {item.order_number || "-"}
+                        </p>
+                        <p className=" " onClick={handleTicketMenu}>
+                          {item.createdAt.slice(0, 10)}
+                        </p>
+                        <p className=" " onClick={handleTicketMenu}>
+                          {item.createdAt.slice(11, 16)}
+                        </p>
+                        <p onClick={handleTicketMenu}>
+                          {item.customer_name
+                            ? truncateText(
+                                item.customer_name.charAt(0).toUpperCase() +
+                                  item.customer_name.slice(1),
+                                12
+                              )
+                            : ""}
+                        </p>
+
+                        <p>{item.channel}</p>
+
+                        <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </DashboardLayout>
     </div>
   );
