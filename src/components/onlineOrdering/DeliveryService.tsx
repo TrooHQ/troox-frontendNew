@@ -27,6 +27,7 @@ const DeliveryService = () => {
     createLocation: false,
     showLocation: true,
   });
+  const [isSchedulingEnabled, setIsSchedulingEnabled] = useState(false);
 
   useEffect(() => {
     dispatch(fetchDeliveryDetails());
@@ -40,6 +41,10 @@ const DeliveryService = () => {
     setIsPickupEnabled((prev) => !prev);
   };
 
+  const handleScheduleToggleChange = () => {
+    setIsSchedulingEnabled((prev) => !prev);
+  };
+
   const handleStateChange = (value: string) => {
     setSelectedState(value);
   };
@@ -51,6 +56,7 @@ const DeliveryService = () => {
         state: selectedState,
         fixedPrice: parseFloat(fixedPrice),
         support_link: supportLink,
+        canScheduleOrder: isSchedulingEnabled,
       })
     )
       .unwrap()
@@ -175,6 +181,30 @@ const DeliveryService = () => {
                   onChange={(newValue) => setSupportLink(newValue)}
                   className="border-gray-500"
                 />
+
+                <div className="flex items-center g-2.5">
+                  <span className="text-[#121212] text-base font-normal">
+                    Do you want to enable scheduling of delivery for your
+                    customers?
+                  </span>
+                  <Switch
+                    checked={isSchedulingEnabled}
+                    onChange={handleScheduleToggleChange}
+                    color="primary"
+                    style={{
+                      color: isSchedulingEnabled ? "#5855B3" : "#929292",
+                    }}
+                  />
+                  <span
+                    className={clsx({
+                      "text-[#5855B3]": isSchedulingEnabled,
+                      "text-[#929292]": !isSchedulingEnabled,
+                      "text-base font-medium": true,
+                    })}
+                  >
+                    {isSchedulingEnabled ? "Enabled" : "Disabled"}
+                  </span>
+                </div>
 
                 <button
                   type="button"

@@ -65,15 +65,15 @@ const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
   );
 
   // Map the data to include percentages
-  const data = topMenuItems.map((item, index) => ({
+  const data = topMenuItems.slice(0, 5).map((item, index) => ({
     value: parseFloat(((item.totalRevenue / totalValue) * 100).toFixed(2)),
     // label: `${item.menuItemName}: ${((item.totalRevenue / totalValue) * 100).toFixed(2)}%`, // Add `%` to the label
     color: [
-      "#000000", // Black
-      "#111111",
-      "#222222",
-      "#333333", // Dark Gray
-      "#444444",
+      "#3E53F4", // Black
+      "#5B65FF",
+      "#8F99FF",
+      "#1E35E5", // Dark Gray
+      "#8792E7",
       "#555555",
       "#666666", // Medium Gray
       "#777777",
@@ -89,7 +89,7 @@ const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
       series={[
         {
           data,
-          innerRadius: 125,
+          innerRadius: 100,
         },
       ]}
       {...size}

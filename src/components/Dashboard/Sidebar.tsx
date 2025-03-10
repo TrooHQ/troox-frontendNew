@@ -135,6 +135,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           title: "Order history",
           link: "/order-history",
         },
+        {
+          title: "Customer Data",
+          link: "/customer-data",
+        },
       ],
     },
     {
@@ -277,7 +281,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     <div
       className={`p-2 ${
         open ? "w-[230px]" : "w-20"
-      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
+      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#f8f8f8]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div className="grid gap-3 items-center">
@@ -416,7 +420,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
-                    ? "  bg-[#d3d3d3] font-bold text-[16px] text-black "
+                    ? "  bg-[#d3d3d3] font-semibold text-[16px] text-[#606060] "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) &&
                       !menu.subTitle
                     ? " "
@@ -438,7 +442,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                         ? "bold"
                         : "normal",
                       color: isMenuItemActive(menu.link || "", menu.subMenu)
-                        ? "black"
+                        ? ""
                         : "initial",
                     }}
                   />

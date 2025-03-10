@@ -6,11 +6,26 @@ import styles from "./Header.module.css";
 import { fetchSalesGrowthRate } from "../../slices/overviewSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { MoreVert } from "@mui/icons-material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 // import { ArrowDownward, ArrowUpward, Remove } from "@mui/icons-material";
 
 const SalesActivities = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const {
     salesGrowthRate,
@@ -83,7 +98,7 @@ const SalesActivities = () => {
       },
       {
         icon: ArrowDown,
-        title: "Customer Count Card",
+        title: "Customer Transaction Count",
         time: "12:45 PM",
         amount:
           totalCustomerTransaction?.totalOrders?.toLocaleString("en-US") || 0,
@@ -92,18 +107,15 @@ const SalesActivities = () => {
       },
     ],
   };
+
+  const handleOptionClick = () => {
+    navigate("/customer-data");
+  };
+
   return (
     <div className="border border-[#C7C6CF] p-6 rounded-2xl mb-12">
       <div className={clsx("flex justify-between items-center w-full mb-9")}>
         <h5 className={clsx(styles.salesActivitiesH4)}>Sales Activities</h5>
-        {/* <DaysTab2
-          backgroundColor="initial"
-          selectedBackgroundColor="#f38d41"
-          selectedColor="white"
-          nonSelectedColor="#606060"
-          iconClassName={clsx("text-[#ADADB9]")}
-          border="1px solid var(--Kanta-Neutral-200, #C7C6CF)"
-        /> */}
       </div>{" "}
       <div className="grid grid-cols-4 gap-6">
         {state.salesActivities.map((activity, index) => (
@@ -111,10 +123,30 @@ const SalesActivities = () => {
             key={index}
             className={clsx(
               styles.activityDiv,
-              "flex flex-col items-start justify-center border border-[#C7C6CF] rounded-[10px] overflow-auto py-4 px-3 gap-3"
+              "flex flex-col items-start justify-center border border-[#C7C6CF] rounded-[10px] overflow-auto py-4 px-3 gap-3 relative"
             )}
           >
-            <h5>{activity.title}</h5>
+            {activity.title === "Customer Transaction Count" && (
+              <div className="absolute top-2 right-2">
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  onClick={(event) => handleMenuClick(event)}
+                >
+                  <MoreVert />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={openMenu}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleOptionClick}>View Details</MenuItem>
+                </Menu>
+              </div>
+            )}
+            <h5 className="text-base font-medium">{activity.title}</h5>
             <span>{activity.amount}</span>
             <div className="flex items-center justify-start gap-2">
               <img src={activity.icon} alt="icon" />

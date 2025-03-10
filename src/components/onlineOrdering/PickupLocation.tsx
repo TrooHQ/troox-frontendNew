@@ -23,6 +23,7 @@ const PickupLocation = () => {
   );
 
   const [isPickupEnabled, setIsPickupEnabled] = useState(false);
+  const [isSchedulingEnabled, setIsSchedulingEnabled] = useState(false);
   const [selectedState, setSelectedState] = useState("");
   const [addresses, setAddresses] = useState([""]);
   const [supportLink, setSupportLink] = useState("");
@@ -38,6 +39,10 @@ const PickupLocation = () => {
 
   const handleToggleChange = () => {
     setIsPickupEnabled((prev) => !prev);
+  };
+
+  const handleScheduleToggleChange = () => {
+    setIsSchedulingEnabled((prev) => !prev);
   };
 
   const handleStateChange = (value: string) => {
@@ -83,6 +88,7 @@ const PickupLocation = () => {
         state: selectedState,
         pickup_addresses: addresses,
         support_link: supportLink,
+        canScheduleOrder: isSchedulingEnabled,
       })
     )
       .unwrap()
@@ -213,6 +219,30 @@ const PickupLocation = () => {
                   onChange={(newValue) => setSupportLink(newValue)}
                   className="border-gray-500"
                 />
+
+                <div className="flex items-center g-2.5">
+                  <span className="text-[#121212] text-base font-normal">
+                    Do you want to enable scheduling of pickup for your
+                    customers?
+                  </span>
+                  <Switch
+                    checked={isSchedulingEnabled}
+                    onChange={handleScheduleToggleChange}
+                    color="primary"
+                    style={{
+                      color: isSchedulingEnabled ? "#5855B3" : "#929292",
+                    }}
+                  />
+                  <span
+                    className={clsx({
+                      "text-[#5855B3]": isSchedulingEnabled,
+                      "text-[#929292]": !isSchedulingEnabled,
+                      "text-base font-medium": true,
+                    })}
+                  >
+                    {isSchedulingEnabled ? "Enabled" : "Disabled"}
+                  </span>
+                </div>
 
                 <button
                   type="button"
