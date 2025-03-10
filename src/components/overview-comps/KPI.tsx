@@ -9,11 +9,11 @@ import PieCharts from "./PieChart";
 
 // Predefined color palette
 const colors = [
-  "#000000", // Black
-  "#111111",
-  "#222222",
-  "#333333", // Dark Gray
-  "#444444",
+  "#3E53F4", // Black
+  "#5B65FF",
+  "#8F99FF",
+  "#1E35E5", // Dark Gray
+  "#8792E7",
   "#555555",
   "#666666", // Medium Gray
   "#777777",
@@ -78,7 +78,7 @@ const KPI = () => {
         </div>
 
         <div className="bg-white rounded-[10px] px-5 py-[48px] flex-grow flex flex-col gap-[22px]">
-          {topMenuItems?.data?.map((product: any, index: any) => {
+          {topMenuItems?.data?.slice(0, 5).map((product: any, index: any) => {
             const indicator = colors[index % colors.length];
             return (
               <div key={index} className="flex items-center justify-between">

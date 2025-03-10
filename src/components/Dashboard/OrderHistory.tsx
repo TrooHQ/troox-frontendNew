@@ -1,6 +1,6 @@
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -30,12 +30,18 @@ const OrderHistory = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showCustomerDetail, setShowCustomerDetail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<any>();
 
   const userDetails = useSelector((state: any) => state.user);
 
   const token = userDetails?.userData?.token;
 
   const handleTicketMenu = () => {
+    setShowCustomerDetail(true);
+  };
+
+  const handleCustomerShow = (item: SetStateAction<undefined>) => {
+    setSelectedCustomer(item);
     setShowCustomerDetail(true);
   };
 
@@ -180,11 +186,12 @@ const OrderHistory = () => {
   const handleBack = () => {
     setShowCustomerDetail(false);
   };
+  console.log(data, "llllll");
 
   return (
     <div>
       <DashboardLayout>
-        <TopMenuNav pathName="Tickets" />
+        <TopMenuNav pathName="Order History" />
         {showCustomerDetail ? (
           <div className="mt-8">
             <button
@@ -199,7 +206,7 @@ const OrderHistory = () => {
               </p>
 
               <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-4 border-b">
-                <p className="text-start text-[14px] text-[#121212]">
+                <p className="text-center text-[14px] text-[#121212]">
                   Customer Name
                 </p>
                 <p className=" text-[14px] text-[#121212]">Email</p>
@@ -210,34 +217,33 @@ const OrderHistory = () => {
                 <div className="px-8">Loading...</div>
               ) : data.length === 0 ? (
                 <div className="px-8">No data during this period</div>
+              ) : selectedCustomer ? (
+                <div
+                  className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-4 items-center  font-base text-[14px] text-[#414141] bg-white`}
+                >
+                  <p className="items-start">
+                    {selectedCustomer.customer_name
+                      ? truncateText(
+                          selectedCustomer.customer_name
+                            .charAt(0)
+                            .toUpperCase() +
+                            selectedCustomer.customer_name.slice(1),
+                          12
+                        )
+                      : ""}
+                  </p>
+                  <p className="" onClick={handleCustomerMenu}>
+                    {selectedCustomer.customerData.email || "-"}
+                  </p>
+                  <p className="" onClick={handleCustomerMenu}>
+                    {selectedCustomer.customerData.phoneNumber || "-"}
+                  </p>
+                  <p className="" onClick={handleCustomerMenu}>
+                    {selectedCustomer.customerData.address || "-"}
+                  </p>
+                </div>
               ) : (
-                data.map((item, index) => (
-                  <div
-                    className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-4 items-center  font-base text-[14px] text-[#414141] ${
-                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                    }`}
-                    key={index}
-                  >
-                    <p onClick={handleTicketMenu}>
-                      {item.customer_name
-                        ? truncateText(
-                            item.customer_name.charAt(0).toUpperCase() +
-                              item.customer_name.slice(1),
-                            12
-                          )
-                        : ""}
-                    </p>
-                    <p className="" onClick={handleCustomerMenu}>
-                      {item.order_number || "-"}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(0, 10)}
-                    </p>
-                    <p className=" " onClick={handleTicketMenu}>
-                      {item.createdAt.slice(11, 16)}
-                    </p>
-                  </div>
-                ))
+                <div className="px-8">No data during this period</div>
               )}
             </div>
           </div>
@@ -401,7 +407,7 @@ const OrderHistory = () => {
                         <p className=" " onClick={handleTicketMenu}>
                           {item.createdAt.slice(11, 16)}
                         </p>
-                        <p onClick={handleTicketMenu}>
+                        <p onClick={() => handleCustomerShow(item)}>
                           {item.customer_name
                             ? truncateText(
                                 item.customer_name.charAt(0).toUpperCase() +

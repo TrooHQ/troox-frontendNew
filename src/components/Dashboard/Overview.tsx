@@ -118,8 +118,8 @@ const Overview: React.FC = () => {
             onClick={handleButtonClick}
             sx={{
               backgroundColor: "#ffffff",
-              border: "1px solid #5955B3",
-              color: "#5955B3",
+              border: "1px solid #ffffff",
+              color: "#000000",
               ml: 2,
               "&:hover": {
                 backgroundColor: "#4842a3",

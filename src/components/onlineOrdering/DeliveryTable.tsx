@@ -15,20 +15,22 @@ interface DeliveryDetails {
   state: string;
   fixedPrice: number;
   support_link: string;
+  canScheduleOrder: boolean;
 }
 
-interface DeliveryTableProps {
-  deliveryDetails: DeliveryDetails | null;
-}
-
-const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveryDetails }) => {
+const DeliveryTable = ({ deliveryDetails }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<DeliveryDetails>(
-    deliveryDetails || { state: "", fixedPrice: 0, support_link: "" }
+    deliveryDetails || {
+      state: "",
+      fixedPrice: 0,
+      support_link: "",
+      canScheduleOrder: false,
+    }
   );
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
