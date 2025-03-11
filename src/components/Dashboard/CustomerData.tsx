@@ -13,16 +13,12 @@ import {
 import ArrowDown from "../../assets/ArrowDown.svg";
 import ArrowUp from "../../assets/ArrowUp.svg";
 import ArrowNeutral from "../../assets/activeArrow.svg";
-import { CalendarMonth } from "@mui/icons-material";
-import { DatePicker, Space } from "antd";
 import { saveAs } from "file-saver";
-import * as XLSX from "xlsx"; // For Excel export
+import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
 
 import chip from "../../assets/chip.svg";
-
-const { RangePicker } = DatePicker;
 
 const CustomerData = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,18 +31,7 @@ const CustomerData = () => {
   const { customerData, customerDataLoading, totalCustomerTransaction } =
     useSelector((state: RootState) => state.overview);
 
-  const [selectedFilter2, setSelectedFilter2] = useState<string | number>(
-    "today"
-  );
-  const [selectedFilter, setSelectedFilter] = useState<string | number>(
-    "today"
-  );
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  console.log(customerData, "customer data:", totalCustomerTransaction);
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -71,30 +56,9 @@ const CustomerData = () => {
     if (!businessIdentifier) return;
 
     dispatch(
-      fetchCustomerTransaction({
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-  };
-
-  const handleFilterChange = (
-    filter: string,
-    number_of_days?: number,
-    startDate?: string,
-    endDate?: string
-  ) => {
-    setSelectedFilter(number_of_days as any);
-    setSelectedFilter2(filter);
-    setStartDate("");
-    setEndDate("");
-    if (!businessIdentifier) return;
-    dispatch(
       fetchCustomerData({
         businessIdentifier: businessIdentifier.toString(),
-        date_filter: filter,
+        date_filter,
         startDate,
         endDate,
         number_of_days,
@@ -103,21 +67,16 @@ const CustomerData = () => {
       .unwrap()
       .then(() => {
         toast.success("Successful");
-        startDate && setStartDate(startDate);
-        endDate && setEndDate(endDate);
       });
-  };
 
-  const handleDateChange = (dates: any, dateStrings: [string, string]) => {
-    if (dates) {
-      handleFilterChange(
-        "date_range",
-        undefined,
-        dateStrings[0],
-        dateStrings[1]
-      );
-    }
-    setShowDatePicker(false);
+    dispatch(
+      fetchCustomerTransaction({
+        date_filter,
+        startDate,
+        endDate,
+        number_of_days,
+      })
+    );
   };
 
   const exportToExcel = () => {
@@ -189,8 +148,7 @@ const CustomerData = () => {
         icon: statusIcon,
         title: "In-Room Dining Customers",
         time: "12:45 PM",
-        amount:
-          totalCustomerTransaction?.channelCounts?.["in-room-dining"] || "0",
+        amount: totalCustomerTransaction?.channelCounts?.["Online"] || "0",
         statusIcon: statusIcon,
         status: status,
       },
@@ -206,7 +164,8 @@ const CustomerData = () => {
         icon: ArrowDown,
         title: "QR Ordering Customers",
         time: "12:45 PM",
-        amount: `${totalCustomerTransaction?.channelCounts?.["online-ordering"]}`,
+        amount:
+          totalCustomerTransaction?.channelCounts?.["online-ordering"] || "0",
         statusIcon: ArrowDown,
         status: "10% from yesterday",
       },
@@ -258,104 +217,6 @@ const CustomerData = () => {
         {/* Filter and table */}
         <div className="">
           <div className="mt-[40px]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-[32px]">
-                <div className="">
-                  <p className="font-[500] text-[16px] text-[#121212]">
-                    Filter by:
-                  </p>
-                </div>
-                <div className="flex items-center gap-[8px]">
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter2 === "today"
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("today")}
-                  >
-                    Today
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 7
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 7)}
-                  >
-                    7 Days
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 30
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 30)}
-                  >
-                    1 Month
-                  </button>
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 90
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 90)}
-                  >
-                    3 Months
-                  </button>
-
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 180
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 180)}
-                  >
-                    6 Months
-                  </button>
-
-                  <button
-                    className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                      selectedFilter === 365
-                        ? "bg-purple500 text-white"
-                        : "border-gray-400 text-black"
-                    }`}
-                    onClick={() => handleFilterChange("days", 365)}
-                  >
-                    1 Year
-                  </button>
-
-                  {/* Custom Date Picker */}
-                  <div
-                    className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] cursor-pointer"
-                    onClick={() => setShowDatePicker(!showDatePicker)}
-                  >
-                    <span className="text-[12px] flex items-center gap-1">
-                      <CalendarMonth className="w-4 h-4" />
-                      <span>Custom</span>
-                    </span>
-                  </div>
-                  {!showDatePicker && startDate && (
-                    <div className="flex gap-2 items-center justify-start border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                      {startDate && <div>{startDate}</div>}{" "}
-                      {startDate && <span>to</span>}{" "}
-                      {endDate && <div>{endDate}</div>}
-                    </div>
-                  )}
-
-                  {showDatePicker && (
-                    <Space direction="vertical">
-                      <RangePicker onChange={handleDateChange} />
-                    </Space>
-                  )}
-                </div>
-              </div>
-            </div>
-
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
                 <div className="flex items-center justify-between pr-8">

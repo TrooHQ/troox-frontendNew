@@ -85,7 +85,7 @@ const Recharts = () => {
           <XAxis dataKey="name" stroke="#494953" />
           <YAxis stroke="#121212" />
           <Tooltip formatter={(value) => `₦${value.toLocaleString()}`} />
-          <Bar dataKey="Sales Revenue" fill="#0252F2" barSize={20} />
+          <Bar dataKey="Sales Revenue" fill="#0252F2" barSize={30} />
         </BarChart>
       </ResponsiveContainer>
     </div>

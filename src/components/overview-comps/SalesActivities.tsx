@@ -69,7 +69,9 @@ const SalesActivities = () => {
         icon: ArrowDown,
         title: "Total Sales Revenue",
         time: "12:45 PM",
-        amount: `₦ ${totalSales?.data?.toLocaleString("en-US") || 0}`,
+        amount: `₦ ${Number(totalSales?.data || 0).toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+        })}`,
         statusIcon: ArrowDown,
         status: "-25% from yesterday",
       },
