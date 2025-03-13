@@ -415,7 +415,7 @@ export default function InformationAccordion() {
             <div>
               <label
                 htmlFor="fileInput"
-                className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
+                className="text-[#121212] font-[500] text-[16px] mb-[8px] cursor-pointer"
               >
                 Click to upload image
               </label>
