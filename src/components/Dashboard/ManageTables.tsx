@@ -193,8 +193,6 @@ const ManageTables: React.FC = () => {
     tables: tableData,
   };
 
-  console.log("combinedData", combinedData);
-
   const resetModalState = () => {
     setAddModifierModal(false);
     setLocation("");

@@ -1,7 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
 import NotificationIcon from "../../assets/notificationIcon.png";
-import SearchIcon from "../../assets/searchIcon.svg";
+// import SearchIcon from "../../assets/searchIcon.svg";
 import { useSelector } from "react-redux";
 interface TopMenuNavProps {
   pathName: string;
@@ -20,7 +20,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
             </p>
           </div>
           <div className="flex gap-5 items-center">
-            <div className="relative">
+            {/* <div className="relative">
               <input
                 type="text"
                 className="bg-[#F8F8F8] rounded p-2 pl-14"
@@ -31,7 +31,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
                 alt=""
                 className="absolute left-6 top-3 pointer-events-none"
               />
-            </div>
+            </div> */}
 
             <div className=" ml-3 mr-5">
               <img src={NotificationIcon} alt="" />

@@ -350,7 +350,7 @@ const OrderHistory = () => {
                       Download
                     </button>
                     {dropdownVisible && (
-                      <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                      <div className="absolute mt-2 right-0 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
                         <button
                           onClick={handleDownloadCSV}
                           className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"

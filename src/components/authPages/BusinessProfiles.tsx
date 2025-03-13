@@ -18,7 +18,6 @@ const BusinessProfiles: React.FC = () => {
   const transformedState = useSelector(selectTransformedRegisterState);
   const transformedState2 = useSelector(selectTransformedBankRegisterState);
   const handleNext = async () => {
-    console.log(currentStep, "currentStep");
     currentStep === 0 && setCurrentStep((prevStep) => prevStep + 1);
     if (currentStep === 1) {
       setLoading(true);
