@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "../../inputFields/CustomInput";
 import Modal from "../../Modal";
-import { fetchBranchById, updateBranch, resetBranchNotFound } from "../../../slices/branchSlice";
+import {
+  fetchBranchById,
+  updateBranch,
+  resetBranchNotFound,
+} from "../../../slices/branchSlice";
 import { AppDispatch } from "@/src/store/store";
 
 interface EditBranchModalProps {
@@ -17,9 +21,8 @@ const EditBranchModal: React.FC<EditBranchModalProps> = ({
   branchId,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedBranch, loading, error, branches, branchNotFound } = useSelector(
-    (state: any) => state.branches
-  );
+  const { selectedBranch, loading, error, branches, branchNotFound } =
+    useSelector((state: any) => state.branches);
 
   const [branchData, setBranchData] = useState({
     branch_name: "",
@@ -36,7 +39,9 @@ const EditBranchModal: React.FC<EditBranchModalProps> = ({
 
   useEffect(() => {
     if (branchNotFound && branchId) {
-      const fallbackBranch = branches.find((branch: { _id: string }) => branch._id === branchId);
+      const fallbackBranch = branches.find(
+        (branch: { _id: string }) => branch._id === branchId
+      );
       if (fallbackBranch) {
         setBranchData({
           branch_name: fallbackBranch.branch_name,
@@ -118,36 +123,46 @@ const EditBranchModal: React.FC<EditBranchModalProps> = ({
               />
             </svg>
           </button>
-          <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">Edit Branch</p>
+          <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
+            Edit Branch
+          </p>
           <div className="grid gap-[32px] text-[16px] font-[400] text-grey200">
             <CustomInput
               label="Branch Name"
               type="text"
               value={branchData.branch_name}
-              onChange={(value: string) => handleInputChange("branch_name", value)}
+              onChange={(value: string) =>
+                handleInputChange("branch_name", value)
+              }
             />
             <CustomInput
               label="Address"
               type="text"
               value={branchData.branch_address}
-              onChange={(value: string) => handleInputChange("branch_address", value)}
+              onChange={(value: string) =>
+                handleInputChange("branch_address", value)
+              }
             />
             <CustomInput
               label="Email"
               type="email"
               value={branchData.branch_email}
-              onChange={(value: string) => handleInputChange("branch_email", value)}
+              onChange={(value: string) =>
+                handleInputChange("branch_email", value)
+              }
             />
             <CustomInput
               label="Phone Number"
               type="tel"
               value={branchData.branch_phone_number}
-              onChange={(value: string) => handleInputChange("branch_phone_number", value)}
+              onChange={(value: string) =>
+                handleInputChange("branch_phone_number", value)
+              }
             />
           </div>
           <button
             style={{
-              backgroundColor: "#5955b3",
+              backgroundColor: "#121212",
               color: "white",
               width: "100%",
               padding: "10px 0",

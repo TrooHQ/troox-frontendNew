@@ -52,7 +52,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
       <div className="px-6 py-3 border border-[#b6b6b6] rounded-lg w-[80%] flex gap-[50px] bg-[rgba(238,238,247,0.40)] mt-8">
         {/* <div> */}
         <div className="min-w-[50%]">
-          <h3 className="text-[#5955B3] text-start text-[16px] font-medium leading-[26px] tracking-[0.15px]">
+          <h3 className="text-[#121212] text-start text-[16px] font-medium leading-[26px] tracking-[0.15px]">
             Your Generated Link Is below
           </h3>
           <div className="flex items-center justify-start gap-2">
@@ -95,7 +95,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
                 className="w-[32px] h-[32px]"
               />
             </div>
-            {/* <IoMdDownload className="text-[#5955B3] cursor-pointer text-[22px]" /> */}
+            {/* <IoMdDownload className="text-[#121212] cursor-pointer text-[22px]" /> */}
           </div>
         </div>
         {/* </div> */}
@@ -120,13 +120,13 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
         </div>
         <div className="flex gap-4 mt-4">
           <button
-            className="bg-[#5955B3] text-white py-2 px-6 rounded"
+            className="bg-[#121212] text-white py-2 px-6 rounded"
             onClick={handleGenerateClick}
           >
             Generate link
           </button>
           <button
-            className="bg-white text-[#5955B3] border border-[#5955B3] py-2 px-6 rounded"
+            className="bg-white text-[#121212] border border-[#121212] py-2 px-6 rounded"
             onClick={handleCancelClick}
           >
             Cancel

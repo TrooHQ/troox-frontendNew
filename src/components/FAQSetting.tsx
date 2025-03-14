@@ -57,7 +57,7 @@ const FAQSetting: React.FC<FAQProps> = ({
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`bg-purple500 border  border-purple500 focus:outline-[#5955B3] w-full rounded `}
+          className={`bg-purple500 border  border-purple500 focus:outline-[#121212] w-full rounded `}
         >
           <div
             className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
@@ -172,7 +172,7 @@ const FAQSetting: React.FC<FAQProps> = ({
                     {faqDataInner.map((innerFaq, innerIndex) => (
                       <div
                         key={innerIndex}
-                        className="bg-[#EEEEF7] border mt-4   focus:outline-[#5955B3] w-full rounded my-2"
+                        className="bg-[#EEEEF7] border mt-4   focus:outline-[#121212] w-full rounded my-2"
                       >
                         <div
                           className="flex items-center justify-between cursor-pointer py-[12px] px-[12px] font-bold"

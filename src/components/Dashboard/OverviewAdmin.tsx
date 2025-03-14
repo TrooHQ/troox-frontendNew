@@ -53,10 +53,10 @@ const CustomAutocomplete = styled(Autocomplete)({
     },
   },
   "& .MuiAutocomplete-popupIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-clearIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-endAdornment": {
     right: "8px",
@@ -77,7 +77,9 @@ const OverviewAdmin: React.FC = () => {
   const { branches } = useSelector((state: any) => state.branches);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState({ label: "All outlets" });
+  const [selectedOutlet, setSelectedOutlet] = useState({
+    label: "All outlets",
+  });
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -106,15 +108,18 @@ const OverviewAdmin: React.FC = () => {
         {/* First div */}
         <div className="flex items-center my-10">
           <h3 className="text-[#606060] text-[20px] font-normal">
-            Hello, <span className="text-[#121212] text-[24px] font-medium">{storeData.name}</span>
+            Hello,{" "}
+            <span className="text-[#121212] text-[24px] font-medium">
+              {storeData.name}
+            </span>
           </h3>
           <Button
             variant="contained"
             onClick={handleButtonClick}
             sx={{
               backgroundColor: "#ffffff",
-              border: "1px solid #5955B3",
-              color: "#5955B3",
+              border: "1px solid #121212",
+              color: "#121212",
               ml: 2,
               "&:hover": {
                 backgroundColor: "#4842a3",
@@ -146,7 +151,9 @@ const OverviewAdmin: React.FC = () => {
                       ...params.InputProps,
                       startAdornment: (
                         <>
-                          <Search style={{ color: "gray", marginRight: "4px" }} />
+                          <Search
+                            style={{ color: "gray", marginRight: "4px" }}
+                          />
                           {params.InputProps.startAdornment}
                         </>
                       ),
@@ -176,7 +183,9 @@ const OverviewAdmin: React.FC = () => {
         </div>
         {/* 5th div */}
         <div className="mt-9">
-          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">Sales Trend</h3>
+          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">
+            Sales Trend
+          </h3>
           <KPI />
         </div>
       </DashboardLayout>

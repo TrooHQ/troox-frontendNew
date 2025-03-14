@@ -58,7 +58,7 @@ const YourLink = () => {
             loading={loading}
           />
           {/* <div className="flex flex-col gap-4 items-center justify-center h-full pt-[100px]">
-            <h3 className="text-[#5955B3] text-center font-sans text-[20px] not-italic font-medium leading-[26px] tracking-[0.15px]">
+            <h3 className="text-[#121212] text-center font-sans text-[20px] not-italic font-medium leading-[26px] tracking-[0.15px]">
               Your Generated Link
             </h3>
             <div className="flex items-center gap-1">

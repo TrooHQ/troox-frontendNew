@@ -17,7 +17,7 @@ const Themes = () => {
     businessColor
   );
 
-  const colors = ["#3450B0", "#000000", "#097F7C", "#5955B3", "#FF0000"];
+  const colors = ["#3450B0", "#000000", "#097F7C", "#121212", "#FF0000"];
 
   useEffect(() => {
     dispatch(fetchAccountDetails() as any);
