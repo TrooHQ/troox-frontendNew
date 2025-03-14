@@ -20,7 +20,7 @@ const HeroSection = () => {
         </p>
         <Link to="/request-demo">
           <div className=" flex items-center justify-center md:justify-start md:mt-[10px]">
-            <p className="  px-[24px] py-[10px] bg-[#5955B3] text-white rounded-[5px] inline cursor-pointer z-50">
+            <p className="  px-[24px] py-[10px] bg-[#121212] text-white rounded-[5px] inline cursor-pointer z-50">
               Learn More
             </p>
           </div>

@@ -19,7 +19,7 @@ const ManageThemes = ({ userDetails }: any) => {
     { name: "Blue", colorCode: "#3450B0" },
     { name: "Black", colorCode: "#000000" },
     { name: "Green", colorCode: "#097F7C" },
-    { name: "Purple", colorCode: "#5955B3" },
+    { name: "Purple", colorCode: "#121212" },
     { name: "Red", colorCode: "#FF0000" },
   ];
 
@@ -61,7 +61,9 @@ const ManageThemes = ({ userDetails }: any) => {
 
       const colorScheme = response.data.data.colour_scheme;
 
-      const defaultColor = colors.find((color) => color.colorCode === colorScheme);
+      const defaultColor = colors.find(
+        (color) => color.colorCode === colorScheme
+      );
 
       if (defaultColor) {
         setSelectedColor(defaultColor);
@@ -97,9 +99,15 @@ const ManageThemes = ({ userDetails }: any) => {
               className="h-[24px] w-[24px] rounded-full"
               style={{ backgroundColor: color.colorCode }}
             ></div>
-            <p className="text-[16px] font-[500] text-[#000000] flex-1">{color.name}</p>
+            <p className="text-[16px] font-[500] text-[#000000] flex-1">
+              {color.name}
+            </p>
             <div className="text-[24px]">
-              {selectedColor?.name === color.name ? <FaRegCircleCheck /> : <FaRegCircle />}
+              {selectedColor?.name === color.name ? (
+                <FaRegCircleCheck />
+              ) : (
+                <FaRegCircle />
+              )}
             </div>
           </div>
         ))}

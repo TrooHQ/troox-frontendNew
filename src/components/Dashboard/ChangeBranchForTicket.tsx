@@ -25,10 +25,10 @@ export const CustomAutocomplete = styled(Autocomplete)({
     },
   },
   "& .MuiAutocomplete-popupIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-clearIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-endAdornment": {
     right: "8px",
@@ -94,7 +94,7 @@ const ChangeBranchForTicket = ({ handleRefresh }: any) => {
             color: "#121212",
             fontSize: "14px",
             fontWeight: 500,
-            ml: 2,
+            ml: 0,
             "&:hover": {
               backgroundColor: "transparent",
               color: "#121212",

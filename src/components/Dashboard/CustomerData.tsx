@@ -181,7 +181,7 @@ const CustomerData = () => {
         <div className="rounded-[10px] border border-[#f1f0f0] bg-white px-6 py-7 mt-10">
           <div className="flex items-center justify-between ">
             <h3 className="text-2xl font-normal text-[#121212]">
-              Customer Counts
+              Customer Transaction Counts
             </h3>
             <DaysTab2
               backgroundColor="initial"

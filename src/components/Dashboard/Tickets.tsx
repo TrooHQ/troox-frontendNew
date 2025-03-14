@@ -4,7 +4,6 @@ import red from "../../assets/red.svg";
 import orange from "../../assets/orange.svg";
 import green from "../../assets/green.svg";
 import More from "../../assets/more_vert.svg";
-import SearchIcon from "../../assets/searchIcon.svg";
 import Refresh from "../../assets/refresh.svg";
 import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -194,20 +193,6 @@ const Tickets = () => {
           <div className="mt-[40px]">
             <ChangeBranchForTicket handleRefresh={handleRefresh} />
             <div className="flex items-center justify-between">
-              <div className="flex items-center justify-between">
-                <div className="relative">
-                  <input
-                    type="text"
-                    className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-purple500"
-                    placeholder="Search"
-                  />
-                  <img
-                    src={SearchIcon}
-                    alt=""
-                    className="absolute left-6 top-3 pointer-events-none"
-                  />
-                </div>
-              </div>
               <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-purple500">
                 <button
                   onClick={handleRefresh}

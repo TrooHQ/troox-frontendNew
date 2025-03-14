@@ -3,7 +3,6 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
-import SearchIcon from "../../assets/searchIcon.svg";
 import { fetchMenuItems2 } from "../../slices/menuSlice";
 // import Publish from "../../assets/publish.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +13,9 @@ import { toast } from "react-toastify";
 
 const PriceList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { menuItems2: menuItems, loading } = useSelector((state: any) => state.menu);
+  const { menuItems2: menuItems, loading } = useSelector(
+    (state: any) => state.menu
+  );
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   // New states for handling price edits
@@ -98,32 +99,20 @@ const PriceList = () => {
             </div>
 
             <div className="my-[40px]">
-              <div className="flex items-center justify-between">
-                <div></div>
-                <div className="flex items-center justify-between">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                      placeholder="Search"
-                    />
-                    <img
-                      src={SearchIcon}
-                      alt="Search icon"
-                      className="absolute left-6 top-3 pointer-events-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
               <div className="overflow-x-auto mt-6">
                 <table className="min-w-full border-collapse">
                   <thead>
                     <tr className="bg-[#606060] text-white text-center text-base font-normal">
-                      <th className="py-2 px-4 text-base font-normal">Menu Group</th>
-                      <th className="py-2 px-4 text-base font-normal text-start">Menu Name</th>
+                      <th className="py-2 px-4 text-base font-normal">
+                        Menu Group
+                      </th>
+                      <th className="py-2 px-4 text-base font-normal text-start">
+                        Menu Name
+                      </th>
                       <th className="py-2 px-4 text-base font-normal">Price</th>
-                      <th className="py-2 px-4 text-base font-normal">Actions</th>
+                      <th className="py-2 px-4 text-base font-normal">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <hr className="mb-2 text-[#E7E7E7]" />
@@ -135,12 +124,16 @@ const PriceList = () => {
                       {menuItems.map((item: any, index: number) => (
                         <tr
                           key={item._id}
-                          className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"}`}
+                          className={`${
+                            index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                          }`}
                         >
                           <td className="text-base font-normal py-2 px-4">
                             {item.menu_group_name}
                           </td>
-                          <td className="text-base font-normal py-2 px-4">{item.menu_item_name}</td>
+                          <td className="text-base font-normal py-2 px-4">
+                            {item.menu_item_name}
+                          </td>
 
                           {/* Conditional rendering for editing price */}
                           <td className="text-base font-normal text-center py-2 px-4 break-words">
@@ -152,17 +145,25 @@ const PriceList = () => {
                                 className="border border-gray-300 p-1 rounded"
                               />
                             ) : (
-                              `₦${parseFloat(item.menu_item_price).toLocaleString()}`
+                              `₦${parseFloat(
+                                item.menu_item_price
+                              ).toLocaleString()}`
                             )}
                           </td>
 
                           <td className="flex items-center justify-center text-center gap-4">
                             {editMode === item._id ? (
                               <div className="flex items-center gap-2 mt-2.5">
-                                <button className="text-purple500" onClick={() => handleSave(item)}>
+                                <button
+                                  className="text-purple500"
+                                  onClick={() => handleSave(item)}
+                                >
                                   {isSubmitting ? "Saving..." : "Save"}
                                 </button>
-                                <button className="text-red-500" onClick={handleCancelEdit}>
+                                <button
+                                  className="text-red-500"
+                                  onClick={handleCancelEdit}
+                                >
                                   Cancel
                                 </button>
                               </div>
@@ -181,7 +182,9 @@ const PriceList = () => {
                     </tbody>
                   ) : (
                     <div>
-                      <p className="text-center min-w-full">No menu items found</p>
+                      <p className="text-center min-w-full">
+                        No menu items found
+                      </p>
                     </div>
                   )}
                 </table>

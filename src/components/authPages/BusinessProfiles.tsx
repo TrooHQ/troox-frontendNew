@@ -127,7 +127,7 @@ const BusinessProfiles: React.FC = () => {
   return (
     <div className="bg-[#fff] h-screen flex flex-col items-center justify-center">
       <img src={Logo} alt="Logo" className="mb-8" />
-      <div className="bg-white py-10 px-8 w-full md:w-3/5 rounded shadow-md h-[85vh] overflow-y-auto border-[1.5px] border-[#5955b3]">
+      <div className="bg-white py-10 px-8 w-full md:w-3/5 rounded shadow-md h-[85vh] overflow-y-auto border-[1.5px] border-[#121212]">
         {renderStepProgress()}
         <p className="text-2xl font-medium text-purple500 mb-2">
           {stepTitles[currentStep]}

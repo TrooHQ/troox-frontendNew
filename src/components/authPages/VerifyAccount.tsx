@@ -101,11 +101,13 @@ const VerifyAccount = () => {
         <div className="bg-white grid  p-[40px] mt-[32px] mb-[40px] w-full md:w-[530px] rounded shadow-md">
           <p className=" text-red-500">{error}</p>
           <div className=" flex flex-col text-center justify-center items-center gap-[24px] mt-[28px] mb-[40px]">
-            <p className=" font-[500] text-[20px] text-[#121212]">Verify Account</p>
+            <p className=" font-[500] text-[20px] text-[#121212]">
+              Verify Account
+            </p>
             <p className=" text-[16px] font-[400] text-[#121212]">
               {" "}
-              A verification code has been sent to your email. Please enter the six-digit OTP that
-              was sent to your email
+              A verification code has been sent to your email. Please enter the
+              six-digit OTP that was sent to your email
             </p>
           </div>
 
@@ -125,7 +127,10 @@ const VerifyAccount = () => {
             className=" mt-[24px] flex items-center justify-start cursor-pointer"
             onClick={resendOTP}
           >
-            <button className=" font-[400] text-[16px] text-[#5955B3]" disabled={loading}>
+            <button
+              className=" font-[400] text-[16px] text-[#121212]"
+              disabled={loading}
+            >
               Resend Code
             </button>
           </div>

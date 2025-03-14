@@ -148,7 +148,15 @@ const SalesActivities = () => {
                 </Menu>
               </div>
             )}
-            <h5 className="text-base font-medium">{activity.title}</h5>
+            <h5
+              className={clsx(
+                activity.title === "Customer Transaction Count"
+                  ? "!text-[12px]"
+                  : "text-base font-medium"
+              )}
+            >
+              {activity.title}
+            </h5>
             <span>{activity.amount}</span>
             <div className="flex items-center justify-start gap-2">
               <img src={activity.icon} alt="icon" />

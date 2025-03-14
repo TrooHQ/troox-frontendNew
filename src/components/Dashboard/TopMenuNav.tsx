@@ -1,14 +1,21 @@
 import Avatar from "@mui/material/Avatar";
 import PersonIcon from "@mui/icons-material/Person";
 import NotificationIcon from "../../assets/notificationIcon.png";
-// import SearchIcon from "../../assets/searchIcon.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { fetchUserDetails } from "../../slices/UserSlice";
+import { useEffect } from "react";
 interface TopMenuNavProps {
   pathName: string;
 }
 
 const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { userData, userDetails } = useSelector((state: any) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+  }, []);
 
   return (
     <div className="">
