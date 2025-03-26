@@ -45,7 +45,6 @@ const Login = () => {
         password: Password,
       });
       setLoading(false);
-      console.log(response, "qqqq");
       dispatch(setUserData(response.data));
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user_data", JSON.stringify(response.data));

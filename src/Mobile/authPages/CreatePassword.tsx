@@ -107,7 +107,7 @@ const CreatePassword = () => {
 
           <div className=" mt-[40px]" onClick={handleButtonClick}>
             <button
-              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              className="bg-grey700 w-full text-center text-white py-3 rounded"
               disabled={loading}
             >
               Create password

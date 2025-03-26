@@ -6,7 +6,7 @@ import AddWhite from "../../assets/addWhite.svg";
 import EditIcon from "../../assets/EditIcon.svg";
 import imageIcon from "../../assets/image.svg";
 import MenuIcon from "../../assets/MenuIcon2.svg";
-import CheckCircle from "../../assets/check_circle.svg";
+import CheckCircle from "../../assets/check_circle_.svg";
 import WarningIcon from "../../assets/WarningModal.svg";
 import DeleteSuccess from "../../assets/DeleteSuccess.svg";
 import Trash from "../../assets/delete.svg";

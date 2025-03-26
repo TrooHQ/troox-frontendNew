@@ -4,6 +4,7 @@ import TopMenuNav from "./OnlineOrderingTopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { setTip } from "../../slices/BasketSlice";
+import Customer from "../assets/streamline_customer-support-1-solid.svg";
 
 export const OnlineOrderingTip = () => {
   const navigate = useNavigate();
@@ -121,6 +122,15 @@ export const OnlineOrderingTip = () => {
               Add Tip
             </p>
           </Link>
+        </div>
+
+        <div className="fixed bottom-[20px] inset-x-0 flex justify-center">
+          <div className="flex flex-wrap items-center gap-[2px] mt-[32px]">
+            <img src={Customer} alt="Customer" />
+            <p className="font-[400] text-center text-[12px] text-[#000000]">
+              Contact Support
+            </p>
+          </div>
         </div>
       </div>
     </div>

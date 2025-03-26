@@ -16,6 +16,7 @@ export default {
         purple600: "#504DA3",
         purple700: "#3E3C7F",
         selectedState: "#8580F0",
+        grey700: "#0D0D0D",
         grey500: "#121212",
         grey300: "#606060",
         grey200: "#929292",

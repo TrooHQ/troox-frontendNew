@@ -24,11 +24,6 @@ import { toast } from "react-toastify";
 import CustomSelect3 from "./inputFields/CustomSelect3";
 import Loader from "../components/Loader";
 
-// interface FormData extends FieldValues {
-//   employee_name?: string;
-//   employee_email?: string;
-//   employee_phone?: string;
-// }
 interface Option {
   value: string;
   label: string;
@@ -61,6 +56,7 @@ const SettingsPage = () => {
   const [number, setNumber] = useState("");
 
   const [QRCodeModal, setQRCodeModal] = useState(false);
+  const [orderingLink, setOrderingLink] = useState(false);
 
   const [ManageQRCodeModal, setManageQRCodeModal] = useState(false);
 
@@ -236,6 +232,8 @@ const SettingsPage = () => {
     const urlToCopy = attachBusinessIdToHost2(businessId, selectedOutletID);
     copyToClipboard2(urlToCopy);
   };
+
+  console.log(handleClick, handleClick2);
 
   const businessId = userDetails?.userData?.business_identifier;
   // const attachedUrl = attachBusinessIdToHost(businessId, selectedOutletID);
@@ -566,28 +564,25 @@ const SettingsPage = () => {
                 onClick={handleQRCodeModal}
               >
                 {" "}
-                Create QR Code
+                Create QR Ordering
               </p>
               {/* <Link to="/demo/manage-qr/troo-portal"> */}
               <p
-                className=" cursor-pointer text-grey300 text-[16px]"
+                className=" hidden cursor-pointer text-grey300 text-[16px]"
                 onClick={handleManageQRCodeModal}
               >
                 Manage QR Code
               </p>
               {/* </Link> */}
-              <p className="text-grey300 text-[16px]">Delete QR Code</p>
+              <p className=" hidden text-grey300 text-[16px]">Delete QR Code</p>
 
-              <p
-                className="text-grey300 text-[16px] cursor-pointer"
-                onClick={handleClick}
-              >
+              <p className="text-grey300 text-[16px] cursor-pointer hidden">
                 {" "}
                 {copySuccess ? "Copied!" : "Get Self-Checkout link"}
               </p>
               <p
                 className="text-grey300 text-[16px] cursor-pointer"
-                onClick={handleClick2}
+                onClick={() => setOrderingLink(true)}
               >
                 {" "}
                 {copySuccess2 ? "Copied!" : "Get Online-Ordering link"}
@@ -641,7 +636,7 @@ const SettingsPage = () => {
                 <button
                   disabled={loading}
                   type="submit"
-                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                  className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
                 </button>
@@ -662,26 +657,63 @@ const SettingsPage = () => {
             </div>
 
             <div className="">
-              <p className="text-[20px] font-[400] text-grey500">
-                Create QR Code
+              <p className=" text-[20px] font-[40px] text-center max-w-[248px] mx-auto">
+                To create QR code, please login with a PC.
               </p>
             </div>
-            <div className=" mt-[24px] grid gap-[16px]">
+            <button
+              onClick={() => setQRCodeModal(false)}
+              className=" mt-[24px] bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
+            >
+              Ok
+            </button>
+            <div className=" hidden">
+              <p className="text-[20px] font-[400] text-grey500">
+                Create QR Ordering
+              </p>
+            </div>
+            <div className=" mt-[24px] grid gap-[16px] hidden">
               <div className=" grid gap-[12px]">
                 <button
                   onClick={handleRoomQRCodeModal}
-                  className="bg-purple500 w-full font-[500] text-center text-white py-3 rounded"
+                  className="bg-[#1E1E1E] w-full font-[500] text-center text-white py-3 rounded"
                 >
                   Create QR Code for Rooms
                 </button>
                 <button
                   onClick={handleTableQRCodeModal}
-                  className="bg-purple500 text-[16px] font-[500] w-full text-center text-white py-3 rounded"
+                  className="bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
                 >
                   Create QR Code for Tables
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </MenuModal>
+
+      <MenuModal isOpen={orderingLink} onClose={() => setOrderingLink(false)}>
+        <div className="w-full py-[32px] px-[16px] absolute bottom-0 bg-white rounded-tr-[20px] rounded-tl-[20px]">
+          <div>
+            <div
+              className=" cursor-pointer flex items-center justify-end"
+              onClick={() => setOrderingLink(false)}
+            >
+              <img src={Back} alt="" />
+            </div>
+
+            <div className="">
+              <p className=" text-[20px] font-[40px] text-center max-w-[248px] mx-auto">
+                To get <span className=" font-[500]">Online Ordering link</span>
+                , please login with a PC.
+              </p>
+            </div>
+            <button
+              onClick={() => setOrderingLink(false)}
+              className=" mt-[24px] bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
+            >
+              Ok
+            </button>
           </div>
         </div>
       </MenuModal>
@@ -703,13 +735,13 @@ const SettingsPage = () => {
               <div className=" grid gap-[12px]">
                 <button
                   onClick={handleManageRoomQRCodeModal}
-                  className="bg-purple500 w-full font-[500] text-center text-white py-3 rounded"
+                  className="bg-[#1E1E1E] w-full font-[500] text-center text-white py-3 rounded"
                 >
                   Manage QR Code for Rooms
                 </button>
                 <button
                   onClick={handleManageTableQRCodeModal}
-                  className="bg-purple500 text-[16px] font-[500] w-full text-center text-white py-3 rounded"
+                  className="bg-[#1E1E1E] text-[16px] font-[500] w-full text-center text-white py-3 rounded"
                 >
                   Manage QR Code for Tables
                 </button>
@@ -747,7 +779,7 @@ const SettingsPage = () => {
               {number && (
                 <button
                   onClick={handleSaveTableGroupModal}
-                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                  className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Next
                 </button>
@@ -785,7 +817,7 @@ const SettingsPage = () => {
               {number && (
                 <button
                   onClick={handleSaveTableGroupModal}
-                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                  className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Next
                 </button>
@@ -825,7 +857,7 @@ const SettingsPage = () => {
                 {!loading && (
                   <div className=" flex items-center gap-[8px] mt-[16px]">
                     <button
-                      className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                      className="border-2 border-[#1E1E1E] w-full font-[500] text-center text-[#0D0D0D] py-[10px] rounded"
                       onClick={() => navigate(-1)}
                     >
                       Cancel
@@ -834,7 +866,7 @@ const SettingsPage = () => {
                     <button
                       type="submit"
                       disabled={!group_name}
-                      className="bg-purple500 text-[16px] border-2 border-purple500 font-[500] w-full text-center text-white py-[10px] rounded"
+                      className="bg-[#1E1E1E] text-[16px] border-2 border-[#1E1E1E] font-[500] w-full text-center text-white py-[10px] rounded"
                     >
                       Save
                     </button>
@@ -865,15 +897,15 @@ const SettingsPage = () => {
               <p className="text-red-500 text-sm mt-1"></p>
 
               <div className=" flex items-center gap-[8px]">
-                <button className=" flex items-center justify-center  gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                <button className=" flex items-center justify-center  gap-[4px] border-2 border-[#1E1E1E] w-full font-[500] text-center text-[#0D0D0D] py-[10px] rounded">
                   <img src={downloadIcon} alt="" />
                   Download
                 </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                <button className="flex items-center justify-center gap-[4px] border-2 border-[#1E1E1E] w-full font-[500] text-center text-[#0D0D0D] py-[10px] rounded">
                   <img src={copyIcon} alt="" />
                   Copy
                 </button>
-                <button className="flex items-center justify-center gap-[4px] border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded">
+                <button className="flex items-center justify-center gap-[4px] border-2 border-[#1E1E1E] w-full font-[500] text-center text-[#0D0D0D] py-[10px] rounded">
                   <img src={printIcon} alt="" />
                   Print
                 </button>
@@ -926,14 +958,14 @@ const SettingsPage = () => {
               <div className=" mt-[32px] flex items-center gap-[16px]">
                 <button
                   onClick={() => setRoomQRCodeModal(false)}
-                  className="border-2 border-purple500 w-full font-[500] text-center text-[#5855B3] py-[10px] rounded"
+                  className="border-2 border-[#1E1E1E] w-full font-[500] text-center text-[#0D0D0D] py-[10px] rounded"
                 >
                   No
                 </button>
                 <button
                   type="submit"
                   onClick={handleSaveTableGroupModal}
-                  className="bg-purple500 w-full text-center text-white py-3 rounded "
+                  className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded "
                 >
                   Yes
                 </button>
@@ -1016,7 +1048,7 @@ const SettingsPage = () => {
                   placeholder="Roles"
                   BG=" bg-[#ffffff]"
                   text=" text-black"
-                  hover="hover:bg-[#5855B3] hover:text-white"
+                  hover="hover:bg-[#0D0D0D] hover:text-white"
                   searchable={false}
                   onSelect={handleSelect}
                 />
@@ -1024,7 +1056,7 @@ const SettingsPage = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                  className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded mt-[32px]"
                 >
                   Save
                 </button>
@@ -1115,7 +1147,7 @@ const SettingsPage = () => {
               <button
                 type="submit"
                 onClick={handleDeleteSuccessModal}
-                className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
+                className="bg-[#1E1E1E] w-full text-center text-white py-3 rounded mt-[66px]"
               >
                 Proceed
               </button>

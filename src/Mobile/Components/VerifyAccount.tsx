@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
+
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
@@ -83,8 +84,8 @@ const VerifyAccount = () => {
       });
       setLoading(false);
       console.log(response.data);
-      toast.success("User verified successfully");
-      history("/demo/login/troo-portal");
+      // toast.success("User verified successfully");
+      history("/demo/verified/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -154,7 +155,7 @@ const VerifyAccount = () => {
           {allInputsFilled() ? (
             <div className=" mt-[16px]" onClick={verify}>
               <button
-                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                className="bg-grey700 w-full text-center text-white py-3 rounded"
                 disabled={loading}
               >
                 Activate Account

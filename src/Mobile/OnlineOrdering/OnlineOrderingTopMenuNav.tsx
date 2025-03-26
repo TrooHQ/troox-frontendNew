@@ -16,8 +16,8 @@ interface TopMenuNavProps {
 
 const OnlineOrderingTopMenuNav: React.FC<TopMenuNavProps> = ({
   exploreMenuText = "Explore Menu",
-  bgColor = "#606060",
-  textColor = "#000000",
+  bgColor = "#FFF5F0",
+  textColor = "#121212",
   children,
 }) => {
   const navigate = useNavigate();

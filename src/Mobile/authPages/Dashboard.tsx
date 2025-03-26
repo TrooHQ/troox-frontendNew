@@ -18,7 +18,13 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
-
+import Icon from "../assets/Icon (1).svg";
+import Icon2 from "../assets/Icon (2).svg";
+import Icon3 from "../assets/Icon (3).svg";
+import Arrow1 from "../assets/Vector (1).svg";
+import Arrow2 from "../assets/Vector (2).svg";
+import Arrow3 from "../assets/Vector (3).svg";
+import Arrow4 from "../assets/Vector (4).svg";
 interface Option {
   value: string;
   label: string;
@@ -134,7 +140,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="py-[16px] px-[24px] bg-[#3e3e43] rounded-[5px] mt-[16px]">
+        <div className="py-[16px] px-[24px] bg-grey700 rounded-[5px] mt-[16px]">
           <div className="flex items-center justify-between">
             <p className="font-[400] text-[12px] text-white">Total sales</p>
 
@@ -150,57 +156,94 @@ const Dashboard = () => {
             N250,000.00
           </p>
 
-          <div className=" flex items-end justify-between">
-            <div className="grid gap-[5px] mt-[16px]">
-              <p className="text-[14px] font-[400] text-white leading-[21px]">
-                30 Processed orders
+          <div className="mt-[16px] grid grid-cols-3 mb-[20px]">
+            <div className="grid gap-[5px] ">
+              <img src={Icon} />
+              <p className="text-[10px] font-[400] text-white leading-[21px]">
+                Total Orders
               </p>
-              <p className="text-[14px] font-[400] text-white leading-[21px]">
-                30 Processed orders
+              <p className="text-[16px] font-[600] text-white leading-[21px]">
+                150
               </p>
             </div>
-
-            <Link to="/demo/order-history/troo-portal">
-              <div className=" cursor-pointer inline-block text-white py-[8px] px-[8px] rounded-[4px] border">
-                <p>Order History</p>
-              </div>
-            </Link>
+            <div className="grid gap-[5px] ">
+              <img src={Icon2} />
+              <p className="text-[10px] font-[400] text-white leading-[21px]">
+                Closed Tickets
+              </p>
+              <p className="text-[16px] font-[600] text-white leading-[21px]">
+                150
+              </p>
+            </div>
+            <div className="grid gap-[5px] ">
+              <img src={Icon3} />
+              <p className="text-[10px] font-[400] text-white leading-[21px]">
+                Canceled Orders
+              </p>
+              <p className="text-[16px] font-[600] text-white leading-[21px]">
+                150
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="mt-[16px] grid grid-cols-2 gap-[16px]">
+        <div className="mt-[16px] grid gap-[16px]">
           <Link to="/demo/ticket/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#AEE1D8] rounded-[5px]">
-              <div className="flex flex-col gap-[8px] items-center justify-center">
-                <img src={Confirmation} alt="" />
-                <p className="text-[20px] font-[400] text-grey500">Tickets</p>
+            <div className="px-[28px] py-[47px] bg-[#EEEEF7] rounded-[5px]">
+              <div className=" flex items-center justify-between">
+                <div className="flex gap-[8px] items-center justify-start">
+                  <img src={Confirmation} alt="" />
+                  <p className="text-[20px] font-[400] text-grey500">Tickets</p>
+                </div>
+                <img src={Arrow1} alt="" />
               </div>
             </div>
           </Link>
 
           <Link to="/demo/admin-menu/troo-portal">
-            <div className="px-[28px] py-[47px]  bg-[#E5BFD0] rounded-[5px]">
-              <div className="flex flex-col gap-[8px] items-center justify-center">
-                <img src={restaurantIcon} alt="" />
-                <p className="text-[20px] font-[400] text-grey500">Menu</p>
+            <div className="px-[28px] py-[47px] bg-[#F4DBE6] rounded-[5px]">
+              <div className=" flex items-center justify-between">
+                <div className="flex gap-[8px] items-center justify-start">
+                  <img src={restaurantIcon} alt="" />
+                  <p className="text-[20px] font-[400] text-grey500">Menu</p>
+                </div>
+                <img src={Arrow2} alt="" />
               </div>
             </div>
           </Link>
 
           <Link to="/demo/order/troo-portal">
-            <div className="px-[28px] py-[47px]  bg-[#E8DEB4] rounded-[5px]">
-              <div className="flex flex-col gap-[8px] items-center justify-center">
-                <img src={orderIcon} alt="" />
-                <p className="text-[20px] font-[400] text-grey500">Orders</p>
+            <div className="px-[28px] py-[47px] bg-[#FFF5D9] rounded-[5px]">
+              <div className=" flex items-center justify-between">
+                <div className="flex gap-[8px] items-center justify-start">
+                  <img src={orderIcon} alt="" />
+                  <p className="text-[20px] font-[400] text-grey500">Orders</p>
+                </div>
+                <img src={Arrow3} alt="" />
               </div>
             </div>
           </Link>
 
           <Link to="/demo/settings/troo-portal">
-            <div className="px-[28px] py-[47px] bg-[#F9D9CA] rounded-[5px]">
-              <div className="flex flex-col gap-[8px] items-center justify-center">
-                <img src={setting} alt="" />
-                <p className="text-[20px] font-[400] text-grey500">Settings</p>
+            <div className="px-[28px] py-[47px] bg-[#F8EAE3] rounded-[5px]">
+              <div className=" flex items-center justify-between">
+                <div className="flex gap-[8px] items-center justify-start">
+                  <img src={setting} alt="" />
+                  <p className="text-[20px] font-[400] text-grey500">
+                    Settings
+                  </p>
+                </div>
+                <img src={Arrow4} alt="" />
+              </div>
+            </div>
+          </Link>
+          <Link to="/demo/order-history/troo-portal">
+            <div className="px-[28px] py-[47px] bg-[#ebc1ac] rounded-[5px]">
+              <div className=" flex items-center justify-between">
+                <p className="text-[20px] font-[400] text-grey500">
+                  Order History
+                </p>
+                <img src={Arrow4} alt="" />
               </div>
             </div>
           </Link>
