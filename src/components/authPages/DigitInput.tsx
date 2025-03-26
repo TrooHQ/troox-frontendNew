@@ -7,7 +7,12 @@ interface DigitInputProps {
   onBlur?: () => void;
 }
 
-const DigitInput: React.FC<DigitInputProps> = ({ value, onChange, onFocus, onBlur }) => {
+const DigitInput: React.FC<DigitInputProps> = ({
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+}) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/\D/g, "");
     onChange(newValue);
@@ -21,7 +26,7 @@ const DigitInput: React.FC<DigitInputProps> = ({ value, onChange, onFocus, onBlu
       onChange={handleChange}
       onFocus={onFocus}
       onBlur={onBlur}
-      className="w-14 h-14 text-center border rounded-md border-gray-300 focus:border-blue-500 focus:outline-none"
+      className="w-14 h-14 text-center border rounded-md border-gray-300 focus:border-[#121212] focus:outline-none"
     />
   );
 };

@@ -29,7 +29,6 @@ const StyledSum = styled(StyledText)({
 });
 
 function formatNumber(num: number): string {
-  console.log(num, "num");
   if (num < 1000) {
     return num.toString(); // Show full number for values below 1000
   } else if (num >= 1000 && num < 1000000) {
@@ -60,23 +59,26 @@ function PieCenterLabel({ total }: { total: number }) {
 }
 
 const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
-  const totalValue = topMenuItems.reduce((sum, item) => sum + item.totalRevenue, 0);
+  const totalValue = topMenuItems.reduce(
+    (sum, item) => sum + item.totalRevenue,
+    0
+  );
 
   // Map the data to include percentages
-  const data = topMenuItems.map((item, index) => ({
+  const data = topMenuItems.slice(0, 5).map((item, index) => ({
     value: parseFloat(((item.totalRevenue / totalValue) * 100).toFixed(2)),
     // label: `${item.menuItemName}: ${((item.totalRevenue / totalValue) * 100).toFixed(2)}%`, // Add `%` to the label
     color: [
-      "#9787FF",
-      "#FFA5DA",
-      "#0096FF",
-      "#5BD222",
-      "#FDB600",
-      "#FF5733",
-      "#33FF57",
-      "#3357FF",
-      "#FF33A5",
-      "#A533FF",
+      "#3E53F4", // Black
+      "#5B65FF",
+      "#8F99FF",
+      "#1E35E5", // Dark Gray
+      "#8792E7",
+      "#555555",
+      "#666666", // Medium Gray
+      "#777777",
+      "#888888",
+      "#999999", // Lightest Gray in this list
     ][index % 10],
   }));
 
@@ -87,7 +89,7 @@ const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
       series={[
         {
           data,
-          innerRadius: 125,
+          innerRadius: 100,
         },
       ]}
       {...size}

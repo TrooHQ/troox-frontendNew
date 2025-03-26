@@ -58,7 +58,9 @@ export default function InformationAccordion() {
   const userData = useSelector((state: any) => state.user.userData);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(null);
+  const [selectedFileBase64, setSelectedFileBase64] = useState<string | null>(
+    null
+  );
   const [expanded, setExpanded] = useState<string | boolean>(false);
   const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({
     businessName: false,
@@ -121,7 +123,10 @@ export default function InformationAccordion() {
     };
 
     try {
-      const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, headers);
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/getAccountDetails`,
+        headers
+      );
       const { data } = response.data;
 
       setFormData({
@@ -170,7 +175,9 @@ export default function InformationAccordion() {
   // Update Logo
 
   // Update handleFileChange to handle logo upload
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file); // Store the selected file temporarily
@@ -221,8 +228,8 @@ export default function InformationAccordion() {
         // Dispatch setUserData with sorted user data
         dispatch(
           setUserData({
-            ...userData, // Spread existing user data
-            [toSnakeCase(field)]: response.data.data[toSnakeCase(field)], // Update only the changed field
+            ...userData,
+            [toSnakeCase(field)]: response.data.data[toSnakeCase(field)],
           })
         );
       } catch (error) {
@@ -260,9 +267,13 @@ export default function InformationAccordion() {
       };
 
       // Send the request to update the logo
-      const response = await axios.put(`${SERVER_DOMAIN}/updateBusinessDetails`, payload, {
-        headers,
-      });
+      const response = await axios.put(
+        `${SERVER_DOMAIN}/updateBusinessDetails`,
+        payload,
+        {
+          headers,
+        }
+      );
 
       console.log("Logo updated successfully:", response.data);
 
@@ -343,13 +354,18 @@ export default function InformationAccordion() {
 
   return (
     <>
-      <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
         <AccordionSummary
           expandIcon={<KeyboardArrowDown />}
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <div className="flex gap-3 font-base text-normal text-blackish">Business Information</div>
+          <div className="flex gap-3 font-base text-normal text-blackish">
+            Business Information
+          </div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("businessInfo", [
@@ -362,7 +378,10 @@ export default function InformationAccordion() {
           ])}
 
           {/* Business Logo Section */}
-          <label htmlFor="logo" className="text-base font-medium text-[#121212] p-4">
+          <label
+            htmlFor="logo"
+            className="text-base font-medium text-[#121212] p-4"
+          >
             Add Business Logo
           </label>
           <div className="flex items-center px-4 py-1 gap-[16px]">
@@ -396,11 +415,13 @@ export default function InformationAccordion() {
             <div>
               <label
                 htmlFor="fileInput"
-                className="text-[#5855B3] font-[500] text-[16px] mb-[8px] cursor-pointer"
+                className="text-[#121212] font-[500] text-[16px] mb-[8px] cursor-pointer"
               >
                 Click to upload image
               </label>
-              <p className="text-[14px] font-[400] text-grey300">Max. file size: 2MB</p>
+              <p className="text-[14px] font-[400] text-grey300">
+                Max. file size: 2MB
+              </p>
             </div>
           </div>
 
@@ -424,13 +445,18 @@ export default function InformationAccordion() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
+      <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleChange("panel2")}
+      >
         <AccordionSummary
           expandIcon={<KeyboardArrowDown />}
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <div className="flex gap-3 font-base text-normal text-blackish">Personal Information</div>
+          <div className="flex gap-3 font-base text-normal text-blackish">
+            Personal Information
+          </div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("personalInfo", [
@@ -444,13 +470,18 @@ export default function InformationAccordion() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
+      <Accordion
+        expanded={expanded === "panel3"}
+        onChange={handleChange("panel3")}
+      >
         <AccordionSummary
           expandIcon={<KeyboardArrowDown />}
           aria-controls="panel3-content"
           id="panel3-header"
         >
-          <div className="flex gap-3 font-base text-normal text-blackish">Bank Information</div>
+          <div className="flex gap-3 font-base text-normal text-blackish">
+            Bank Information
+          </div>
         </AccordionSummary>
         <AccordionDetails className="flex flex-col gap-4">
           {renderFields("payoutBankDetails", [

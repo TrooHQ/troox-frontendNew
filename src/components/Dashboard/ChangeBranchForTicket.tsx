@@ -25,10 +25,10 @@ export const CustomAutocomplete = styled(Autocomplete)({
     },
   },
   "& .MuiAutocomplete-popupIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-clearIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-endAdornment": {
     right: "8px",
@@ -46,7 +46,9 @@ export const CustomAutocomplete = styled(Autocomplete)({
 
 const ChangeBranchForTicket = ({ handleRefresh }: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches, selectedBranch } = useSelector((state: any) => state.branches);
+  const { branches, selectedBranch } = useSelector(
+    (state: any) => state.branches
+  );
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -87,23 +89,31 @@ const ChangeBranchForTicket = ({ handleRefresh }: any) => {
           variant="contained"
           onClick={handleButtonClick}
           sx={{
-            backgroundColor: "#ffffff",
-            border: "1px solid #5955B3",
-            color: "#5955B3",
-            ml: 2,
+            backgroundColor: "transparent",
+            border: "none",
+            color: "#121212",
+            fontSize: "14px",
+            fontWeight: 500,
+            ml: 0,
             "&:hover": {
-              backgroundColor: "#4842a3",
-              color: "white",
+              backgroundColor: "transparent",
+              color: "#121212",
+              fontSize: "14px",
+              fontWeight: 500,
+            },
+            "&:focus": {
+              outline: "none",
             },
           }}
         >
-          {selectedBranch?.label || selectedOutlet?.label || "All outlets"} <ArrowDropDown />
+          {selectedBranch?.label || selectedOutlet?.label || "All outlets"}{" "}
+          <ArrowDropDown />
         </Button>
         <Popper
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
-          sx={{ zIndex: 10, boxShadow: 3 }} // Added boxShadow
+          sx={{ zIndex: 10, boxShadow: 3 }}
         >
           <Paper sx={{ boxShadow: 3 }}>
             <CustomAutocomplete

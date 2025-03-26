@@ -58,7 +58,7 @@ const TableOrderingPage = () => {
             Book a demo TODAY to learn how this works for your business.
           </p>
           <Link to="/request-demo">
-            <p className="  inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+            <p className="  inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#121212] rounded-[5px] text-white">
               Schedule A Demo
             </p>
           </Link>

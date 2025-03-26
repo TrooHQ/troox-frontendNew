@@ -42,7 +42,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     business_email: userDetails?.business_email || "",
     business_address: userDetails?.business_address || "",
   });
-  const [photo, setPhoto] = useState<string | null>(userDetails?.business_logo || null);
+  const [photo, setPhoto] = useState<string | null>(
+    userDetails?.photo || userDetails?.photo || null
+  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   // Handle form input changes
@@ -71,7 +73,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     // Only include changed fields
     const updatedData: any = {};
     Object.keys(formData).forEach((key) => {
-      if (formData[key as keyof typeof formData] !== userDetails[key as keyof typeof userDetails]) {
+      if (
+        formData[key as keyof typeof formData] !==
+        userDetails[key as keyof typeof userDetails]
+      ) {
         updatedData[key] = formData[key as keyof typeof formData];
       }
     });
@@ -80,7 +85,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
       updatedData.photo = photo; // Add Base64 encoded image if changed
     }
 
-    console.log(updatedData, "qqqqq");
+    console.log(updatedData, "update the data:");
 
     if (Object.keys(updatedData).length > 0) {
       await dispatch(updateUserDetails(updatedData)); // Dispatch Redux action to update user details
@@ -210,7 +215,10 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
             >
               Cancel
             </button>
-            <button type="submit" className="px-4 py-2 bg-purple500 text-white rounded-md">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-purple500 text-white rounded-md"
+            >
               {loading ? "Saving..." : "Save"}
             </button>
           </div>

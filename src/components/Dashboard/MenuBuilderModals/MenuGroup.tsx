@@ -1,6 +1,11 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Pagination } from "@mui/material";
 import AddWhite from "../../../assets/addWhite.svg";
-import { CancelOutlined, EditOutlined, MoreVert, VisibilityOutlined } from "@mui/icons-material";
+import {
+  CancelOutlined,
+  EditOutlined,
+  MoreVert,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import chevron_right from "../../../assets/chevron_right.svg";
 import activeArrow from "../../../assets/activeArrow.svg";
 import CoffeeImg from "../../../assets/coffeeImg.png";
@@ -20,10 +25,17 @@ interface Props {
   handleAddMenuItem: () => void;
   truncateText: (text: string, maxLength: number) => string;
   activeGroup: any;
-  handleGroupDropdown: (event: React.MouseEvent<HTMLElement>, group: any) => void;
+  handleGroupDropdown: (
+    event: React.MouseEvent<HTMLElement>,
+    group: any
+  ) => void;
   handleGroupEdit: (group: any) => void;
   handleGroupDeleteClick: (group: any) => void;
   activeCategory: any;
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
 const MenuGroup: React.FC<Props> = ({
@@ -45,7 +57,13 @@ const MenuGroup: React.FC<Props> = ({
   handleGroupEdit,
   handleGroupDeleteClick,
   activeCategory,
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  handlePageChange,
 }) => {
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   return (
     <div className="mt-[24px] w-full border p-[16px]">
       <div className=" flex gap-[16px] items-start">
@@ -54,11 +72,16 @@ const MenuGroup: React.FC<Props> = ({
           <div className="">
             {mgLoading ? (
               <div className="flex justify-center items-center h-[200px]">
-                <p className="text-[16px] font-[400] text-grey500">Loading menu groups...</p>
+                <p className="text-[16px] font-[400] text-grey500">
+                  Loading menu groups...
+                </p>
               </div>
             ) : activeCategory ? (
               menuGroups.map((group: any) => (
-                <div key={group._id} className="flex items-center justify-between">
+                <div
+                  key={group._id}
+                  className="flex items-center justify-between"
+                >
                   <p
                     className={`${
                       activeGroup?.name === group?.name
@@ -70,7 +93,7 @@ const MenuGroup: React.FC<Props> = ({
                       handleFetchMenuItems(group);
                     }}
                   >
-                    {truncateText(group.name, 15)}
+                    {truncateText(group.name, 12)}
                     {activeGroup?.name === group.name && (
                       <IconButton
                         aria-controls="simple-menu"
@@ -102,7 +125,9 @@ const MenuGroup: React.FC<Props> = ({
                               fontWeight: "300",
                             }}
                           />
-                          <span style={{ fontWeight: "300" }}>Menu Visibility</span>
+                          <span style={{ fontWeight: "300" }}>
+                            Menu Visibility
+                          </span>
                         </MenuItem>
                         <MenuItem
                           onClick={() => handleGroupEdit(group)}
@@ -176,7 +201,13 @@ const MenuGroup: React.FC<Props> = ({
             </div>
             {menuItemLoading ? (
               <div className="flex justify-center items-center h-[200px]">
-                <p className="text-[16px] font-[400] text-grey500">Loading menu items...</p>
+                <p className="text-[16px] font-[400] text-grey500">
+                  Loading menu items...
+                </p>
+              </div>
+            ) : subMenuContent.length === 0 ? (
+              <div className="flex justify-center items-center h-[200px]">
+                <span>No item available</span>
               </div>
             ) : (
               subMenuContent?.map((item, index) => {
@@ -218,7 +249,9 @@ const MenuGroup: React.FC<Props> = ({
 
                     {subMenuContent.length === 0 && (
                       <div className=" flex justify-center items-center h-[200px]">
-                        <p className="text-[16px] font-[400] text-grey500">No menu items</p>
+                        <p className="text-[16px] font-[400] text-grey500">
+                          No menu items
+                        </p>
                       </div>
                     )}
                   </div>
@@ -226,10 +259,37 @@ const MenuGroup: React.FC<Props> = ({
               })
             )}
 
+            {totalPages > 1 && (
+              <div className="flex justify-end">
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  sx={{
+                    "& .Mui-selected": {
+                      backgroundColor: "#121212",
+                      color: "#fff",
+                    },
+                    "& .MuiPaginationItem-root": {
+                      "&.Mui-selected:hover": {
+                        backgroundColor: "#121212",
+                      },
+                    },
+                    "& .MuiPaginationItem-page": {
+                      "&.Mui-selected": {
+                        backgroundColor: "#121212",
+                        color: "#fff",
+                      },
+                    },
+                  }}
+                />
+              </div>
+            )}
+
             {subMenuContent.length > 1 && (
               <div className=" flex items-center justify-end">
                 <button
-                  className="w-[196px] border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className="w-[196px] border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddMenuItem}
                 >
                   <img src={AddWhite} alt="" /> Add Menu Item

@@ -10,7 +10,10 @@ interface BranchModalProps {
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
-const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }) => {
+const BranchModal: React.FC<BranchModalProps> = ({
+  isModalOpen,
+  setIsModalOpen,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: any) => state.branches);
 
@@ -97,13 +100,17 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
               />
             </svg>
           </button>
-          <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">New Branch</p>
+          <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
+            New Branch
+          </p>
           <div className="grid gap-[32px] text-[16px] font-[400] text-grey200">
             <CustomInput
               label="Branch Name"
               type="text"
               value={branchName}
-              onChange={(value: string) => handleInputChange("branchName", value)}
+              onChange={(value: string) =>
+                handleInputChange("branchName", value)
+              }
             />
             <CustomInput
               label="Address"
@@ -122,12 +129,14 @@ const BranchModal: React.FC<BranchModalProps> = ({ isModalOpen, setIsModalOpen }
               label="Phone Number"
               type="tel"
               value={phoneNumber}
-              onChange={(value: string) => handleInputChange("phoneNumber", value)}
+              onChange={(value: string) =>
+                handleInputChange("phoneNumber", value)
+              }
             />
           </div>
           <button
             style={{
-              backgroundColor: "#5955b3",
+              backgroundColor: "#121212",
               color: "white",
               width: "100%",
               padding: "10px 0",

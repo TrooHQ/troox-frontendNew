@@ -38,7 +38,9 @@ const Modifiers = ({
 }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [modifiers, setModifiers] = useState<Modifier[]>([{ id: 1, name: "", price: "" }]);
+  const [modifiers, setModifiers] = useState<Modifier[]>([
+    { id: 1, name: "", price: "" },
+  ]);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [modifierRules, setModifierRules] = useState<ModifierRules>({
@@ -59,7 +61,6 @@ const Modifiers = ({
   }, [dispatch]);
 
   const handleKeepModifierGroupDetail = (modifier: any) => {
-    console.log(modifier, "modifieraaa");
     setSelectedModifier(modifier);
   };
 
@@ -85,7 +86,6 @@ const Modifiers = ({
         `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
         headers
       );
-      console.log(response, "response of modi");
       setFetchedModifierGroups(response.data.data || []);
       // toast.success("Modifier groups fetched successfully.");
     } catch (error) {
@@ -111,11 +111,9 @@ const Modifiers = ({
   const saveModifiers = () => {
     setConfirmSaveModal(true); // Open the confirmation modal
   };
-  console.log(selectedModifier, "pppp");
 
   const handleConfirmSave = async () => {
     setLoading(true);
-    console.log(modifiers, "modifiers");
     // Create the payload with branch_id, modifier_group_name, and modifiers array
     const payload = {
       branch_id: selectedBranch.id,
@@ -134,8 +132,11 @@ const Modifiers = ({
     };
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuModifier`, payload, headers);
-      console.log(response, "responselll");
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/menu/addMenuModifier`,
+        payload,
+        headers
+      );
       toast.success(response.data.message || "Modifiers added successfully.");
       setAddModifierModal(false);
       fetchModifierGroups();
@@ -148,7 +149,6 @@ const Modifiers = ({
     }
   };
 
-  console.log(modifiers, "llllll");
   const handleRuleChange = (rule: keyof ModifierRules) => {
     setModifierRules((prevRules) => ({
       ...prevRules,
@@ -179,7 +179,6 @@ const Modifiers = ({
   };
 
   const handleConfirmDelete = async () => {
-    console.log(confirmationDialog, "confirmationDialog.id");
     if (confirmationDialog.id) {
       await handleDeleteModifier(confirmationDialog.id);
       setConfirmationDialog({ open: false, id: "" });
@@ -195,7 +194,6 @@ const Modifiers = ({
   const handleDeleteModifierGroup = async (modifierName: string) => {
     try {
       const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
-      console.log(modifierName, "ooop");
       const response = await axios.delete(
         `${SERVER_DOMAIN}/menu/deleteModifierGroup/?branch_id=${selectedBranch.id}&modifier_group_name=${modifierName}`,
         {
@@ -222,15 +220,18 @@ const Modifiers = ({
     try {
       const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
 
-      const response = await axios.delete(`${SERVER_DOMAIN}/menu/deleteMenuModifier/`, {
-        params: {
-          branch_id: selectedBranch.id,
-          modifier_id: modifierId,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await axios.delete(
+        `${SERVER_DOMAIN}/menu/deleteMenuModifier/`,
+        {
+          params: {
+            branch_id: selectedBranch.id,
+            modifier_id: modifierId,
+          },
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         // Optionally refresh the list of modifiers after deletion
@@ -292,7 +293,6 @@ const Modifiers = ({
         payload,
         headers
       );
-      console.log(response, "eeee");
       toast.success(response.data.message || "Successful");
       fetchModifierGroups();
       setGroupName("");
@@ -302,8 +302,6 @@ const Modifiers = ({
       setModGroupLoading(false);
     }
   };
-
-  console.log(fetchedModifierGroups);
 
   const [editId, setEditId] = useState(null); // Track the currently edited modifier
   const [newGroupName, setNewGroupName] = useState(""); // Store the new group name
@@ -330,7 +328,11 @@ const Modifiers = ({
     };
 
     try {
-      await axios.put(`${SERVER_DOMAIN}/menu/updateModifierGroup/`, payload, headers);
+      await axios.put(
+        `${SERVER_DOMAIN}/menu/updateModifierGroup/`,
+        payload,
+        headers
+      );
       // Handle success (e.g., refetch data or update UI)
       setEditId(null); // Exit edit mode
       fetchModifierGroups();
@@ -344,7 +346,9 @@ const Modifiers = ({
   return (
     <div className="">
       <div className=" mt-[32px] max-w-[628px]">
-        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">Modifiers</p>
+        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
+          Modifiers
+        </p>
         <hr className=" border-[#B6B6B6]" />
       </div>
 
@@ -372,7 +376,7 @@ const Modifiers = ({
             <div key={modifier.id} className="grid gap-[8px]">
               {/* <div className=" mt-[32px] flex items-center gap-[8px]"> */}
               {/* <button
-                  className="w-[196px] border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className="w-[196px] border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddModifierGroup}
                 >
                   {modGroupLoading ? "Loading..." : "Save Modifier Group"}
@@ -410,13 +414,15 @@ const Modifiers = ({
                 />
 
                 <button
-                  className=" border border-[#5955B3] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className=" border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddModifierGroup}
                 >
                   {modGroupLoading ? "Loading..." : "Save"}
                 </button>
                 <div className="flex items-center">
-                  {modifiers.length > 1 && <Close onClick={() => removeModifier(modifier.id)} />}
+                  {modifiers.length > 1 && (
+                    <Close onClick={() => removeModifier(modifier.id)} />
+                  )}
                 </div>
                 {/* <button
                   className="px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
@@ -442,11 +448,16 @@ const Modifiers = ({
 
         <div className="">
           <div className=" mt-[32px] max-w-[628px]">
-            <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">Modifier Rules</p>
+            <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
+              Modifier Rules
+            </p>
             <hr className=" border-[#B6B6B6]" />
             <div>
               {rules.map((rule) => (
-                <div key={rule.key} className="flex items-center gap-[16px] my-[16px]">
+                <div
+                  key={rule.key}
+                  className="flex items-center gap-[16px] my-[16px]"
+                >
                   <input
                     type="checkbox"
                     id={rule.key}
@@ -454,7 +465,10 @@ const Modifiers = ({
                     checked={modifierRules[rule.key]}
                     onChange={() => handleRuleChange(rule.key)}
                   />
-                  <label htmlFor={rule.key} className="text-[16px] font-[400] text-[#000000]">
+                  <label
+                    htmlFor={rule.key}
+                    className="text-[16px] font-[400] text-[#000000]"
+                  >
                     {rule.label}
                   </label>
                 </div>
@@ -487,7 +501,10 @@ const Modifiers = ({
       />
 
       {confirmSaveModal && (
-        <Modal isOpen={confirmSaveModal} onClose={() => setConfirmSaveModal(false)}>
+        <Modal
+          isOpen={confirmSaveModal}
+          onClose={() => setConfirmSaveModal(false)}
+        >
           <div className="w-[443px] px-[32px] py-[32px]">
             <div
               className="flex items-center justify-end cursor-pointer"
@@ -496,7 +513,9 @@ const Modifiers = ({
               <Close />
             </div>
             <div className="flex flex-col gap-[24px] items-center justify-center">
-              <p className="text-grey500 text-[22px] font-[500]">Save modifier(s)</p>
+              <p className="text-grey500 text-[22px] font-[500]">
+                Save modifier(s)
+              </p>
               <p className="text-[16px] font-[400] text-grey500">
                 Are you sure you want to save the modifier(s)?
               </p>
@@ -504,7 +523,9 @@ const Modifiers = ({
                 className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                 onClick={handleConfirmSave}
               >
-                <button className="text-[16px]">{loading ? "Sending..." : "Yes"}</button>
+                <button className="text-[16px]">
+                  {loading ? "Sending..." : "Yes"}
+                </button>
               </div>
             </div>
           </div>

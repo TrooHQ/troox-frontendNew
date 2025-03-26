@@ -5,15 +5,13 @@ import ProfileDetails from "./ProfileDetails";
 import BranchDetails from "./BranchDetails";
 import Security from "./Security";
 import Sidebar from "../../components/Dashboard/Profile/Sidebar";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { fetchUserDetails } from "../../slices/UserSlice";
 
 const ProfilePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { userDetails, loading, error } = useSelector((state: any) => state.user);
-
-  console.log(userDetails, loading, error);
+  // const { userDetails, loading, error } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     // Fetch user details

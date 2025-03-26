@@ -11,7 +11,7 @@ export default {
       },
       colors: {
         purple100: "#CBCAE7",
-        purple500: "#5955B3",
+        purple500: "#121212",
         purple200: "#B2B1DC",
         purple600: "#504DA3",
         purple700: "#3E3C7F",

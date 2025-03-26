@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../assets/TrooGrey.svg";
 import PasswordInput from "../inputFields/PasswordInput.js";
 import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../inputFields/CustomInput.js";

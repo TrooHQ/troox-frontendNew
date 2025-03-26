@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Tab, Tabs, Box, IconButton } from "@mui/material";
-import { DateRangeOutlined, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { Tab, Tabs, Box, IconButton, Typography } from "@mui/material";
+import {
+  DateRangeOutlined,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+} from "@mui/icons-material";
 import { DatePicker, Space } from "antd";
-// import "antd/dist/antd.css";
 const { RangePicker } = DatePicker;
 const days = ["Today", "7 Days", "30 Days", "60 Days", "90 Days"];
 
@@ -32,15 +35,18 @@ const DaysTab2 = ({
 }: DaysTabProps) => {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
-  const [dateRange, setDateRange] = useState<[string | null, string | null]>([null, null]);
-  console.log(dateRange);
+  const [dateRange, setDateRange] = useState<[string | null, string | null]>([
+    null,
+    null,
+  ]);
+  const [displayDateRange, setDisplayDateRange] = useState<string>("");
 
   const handleChange = (event: any, newValue: number) => {
     event.preventDefault();
     setValue(newValue);
-    console.log("jjjj", newValue);
     const date_filter = newValue === 0 ? "today" : "days";
     const number_of_days = parseInt(days[newValue]);
+    setDisplayDateRange("");
     newValue === 0
       ? onDateFilterChange(date_filter)
       : onDateFilterChange(date_filter, undefined, undefined, number_of_days);
@@ -53,6 +59,7 @@ const DaysTab2 = ({
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
     setDateRange(dateStrings);
     console.log(dates);
+    setDisplayDateRange(`${dateStrings[0]} - ${dateStrings[1]}`);
     onDateFilterChange("date_range", dateStrings[0], dateStrings[1]);
     setOpen(false);
   };
@@ -108,6 +115,11 @@ const DaysTab2 = ({
             <KeyboardArrowDown className={iconClassName} />
           ) : (
             <KeyboardArrowUp className={iconClassName} />
+          )}
+          {displayDateRange && (
+            <Typography variant="body2" ml={1}>
+              {displayDateRange}
+            </Typography>
           )}
         </IconButton>
       </Box>

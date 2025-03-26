@@ -4,7 +4,6 @@ import red from "../../assets/red.svg";
 import orange from "../../assets/orange.svg";
 import green from "../../assets/green.svg";
 import More from "../../assets/more_vert.svg";
-import SearchIcon from "../../assets/searchIcon.svg";
 import Refresh from "../../assets/refresh.svg";
 import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -52,6 +51,11 @@ const Tickets = () => {
   };
   const handleTicketMenu = () => {
     setOpenTicket(!openTicket);
+  };
+  const [openTicketData, setopenTicketData] = useState<any>();
+  const handleTicketMenu2 = (item: any) => {
+    setOpenTicket(!openTicket);
+    setopenTicketData(item);
   };
 
   const toggleMenu = (index: number) => {
@@ -194,22 +198,11 @@ const Tickets = () => {
           <div className="mt-[40px]">
             <ChangeBranchForTicket handleRefresh={handleRefresh} />
             <div className="flex items-center justify-between">
-              <div className="flex items-center justify-between">
-                <div className="relative">
-                  <input
-                    type="text"
-                    className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                    placeholder="Search"
-                  />
-                  <img
-                    src={SearchIcon}
-                    alt=""
-                    className="absolute left-6 top-3 pointer-events-none"
-                  />
-                </div>
-              </div>
-              <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-[#5955B3]">
-                <button onClick={handleRefresh} className="text-[16px] flex items-center gap-[8px]">
+              <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-purple500">
+                <button
+                  onClick={handleRefresh}
+                  className="text-[16px] flex items-center gap-[8px]"
+                >
                   <img src={Refresh} alt="" />
                   {isLoading ? "Fetching..." : "Refresh Tickets"}
                 </button>
@@ -218,7 +211,9 @@ const Tickets = () => {
 
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Open tickets</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                  Open tickets
+                </p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
                   <p className=" text-[14px] text-[#121212]">Date</p>
@@ -250,8 +245,12 @@ const Tickets = () => {
                       <p className=" " onClick={handleTicketMenu}>
                         {item.createdAt.slice(11, 16)}
                       </p>
-                      <p onClick={handleTicketMenu}>{item.table_number || "-"}</p>
-                      <p onClick={handleTicketMenu}>{item.order_number || "-"}</p>
+                      <p onClick={handleTicketMenu}>
+                        {item.table_number || "-"}
+                      </p>
+                      <p onClick={handleTicketMenu}>
+                        {item.order_number || "-"}
+                      </p>
 
                       {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
@@ -274,13 +273,25 @@ const Tickets = () => {
                           <img src={red} alt="" className="w-[12px] h-[12px]" />
                         )}
                         {item.status === "Served" && (
-                          <img src={green} alt="" className="w-[12px] h-[12px]" />
+                          <img
+                            src={green}
+                            alt=""
+                            className="w-[12px] h-[12px]"
+                          />
                         )}
                         {item.status === "Ready" && (
-                          <img src={orange} alt="" className="w-[12px] h-[12px]" />
+                          <img
+                            src={orange}
+                            alt=""
+                            className="w-[12px] h-[12px]"
+                          />
                         )}
                         {item.status === "Pending" && (
-                          <img src={orange} alt="" className="w-[12px] h-[12px]" />
+                          <img
+                            src={orange}
+                            alt=""
+                            className="w-[12px] h-[12px]"
+                          />
                         )}
                         <p className="capitalize">{item.status}</p>
                       </div>
@@ -290,10 +301,16 @@ const Tickets = () => {
                           className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
                           onClick={() => toggleMenu(index)}
                         >
-                          <img src={More} alt="More Options" className="w-[5px]" />
+                          <img
+                            src={More}
+                            alt="More Options"
+                            className="w-[5px]"
+                          />
                         </div>
                         {activeMenuIndex === index && (
-                          <DropdownMenu handleVoidOrderMenu={() => handleVoidOrderMenu()} />
+                          <DropdownMenu
+                            handleVoidOrderMenu={() => handleVoidOrderMenu()}
+                          />
                         )}
                       </div>
                     </div>
@@ -318,7 +335,9 @@ const Tickets = () => {
               )}
 
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">Closed tickets</p>
+                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                  Closed tickets
+                </p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
                   <p className=" text-[14px] text-[#121212]">Date</p>
@@ -350,9 +369,16 @@ const Tickets = () => {
                       <p className=" " onClick={handleTicketMenu}>
                         {item.createdAt.slice(11, 16)}
                       </p>
-                      <p onClick={handleTicketMenu}>{item.table_number || "-"}</p>
-                      <p onClick={handleTicketMenu}>{item.order_number || "-"}</p>
                       <p onClick={handleTicketMenu}>
+                        {item.table_number || "-"}
+                      </p>
+                      <p onClick={handleTicketMenu}>
+                        {item.order_number || "-"}
+                      </p>
+                      <p
+                        onClick={() => handleTicketMenu2(item)}
+                        className="cursor-pointer"
+                      >
                         {item.customer_name
                           ? truncateText(
                               item.customer_name.charAt(0).toUpperCase() +
@@ -378,7 +404,9 @@ const Tickets = () => {
                         {activeMenuIndex2 === index && (
                           <DropdownMenuClosedTickets
                             handleVoidOrderMenu={() => handleVoidOrderMenu()}
-                            handleVacateTableMenu={() => handleVacateTableMenu()}
+                            handleVacateTableMenu={() =>
+                              handleVacateTableMenu()
+                            }
                             handleRefundMenu={() => handleRefundMenu()}
                           />
                         )}
@@ -411,6 +439,7 @@ const Tickets = () => {
                 handleTicketMenu={handleTicketMenu}
                 setOpenTicket={setOpenTicket}
                 data={data}
+                openTicketData={openTicketData}
               />
             </div>
           </div>

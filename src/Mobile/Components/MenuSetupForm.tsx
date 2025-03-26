@@ -914,7 +914,7 @@ const MenuSetupForm: React.FC<Props> = () => {
                 <div className="flex items-center gap-[16px]">
                   <label
                     htmlFor="fileInput"
-                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                    className="w-[72px] border border-dashed p-[20px] border-[#121212] cursor-pointer"
                   >
                     <input
                       type="file"
@@ -1149,7 +1149,7 @@ const MenuSetupForm: React.FC<Props> = () => {
                 <div className="flex items-center gap-[16px]">
                   <label
                     htmlFor="fileInput"
-                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                    className="w-[72px] border border-dashed p-[20px] border-[#121212] cursor-pointer"
                   >
                     <input
                       type="file"
@@ -1262,7 +1262,7 @@ const MenuSetupForm: React.FC<Props> = () => {
                 <div className="flex items-center gap-[16px]">
                   <label
                     htmlFor="fileInput"
-                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                    className="w-[72px] border border-dashed p-[20px] border-[#121212] cursor-pointer"
                   >
                     <input
                       type="file"

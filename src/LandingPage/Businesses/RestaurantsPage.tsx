@@ -62,7 +62,7 @@ const RestaurantsPage = () => {
                 </div>
                 <div className=" flex items-center justify-center md:justify-normal">
                   <Link to="/request-demo">
-                    <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+                    <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#121212] rounded-[5px] text-white">
                       Learn More
                     </p>
                   </Link>
@@ -92,7 +92,7 @@ const RestaurantsPage = () => {
 
               <div className="hidden md:flex items-center">
                 <Link to="/request-demo">
-                  <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#5955B3] rounded-[5px] text-white">
+                  <p className=" inline text-[14px] font-[500]  py-[10px] px-[24px] bg-[#121212] rounded-[5px] text-white">
                     Learn More
                   </p>
                 </Link>

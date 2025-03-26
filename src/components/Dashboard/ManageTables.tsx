@@ -167,18 +167,15 @@ const ManageTables: React.FC = () => {
     }
   };
 
-  //@ts-ignore
-  const toggleMenu = (index) => {
+  const toggleMenu = (index: null) => {
     setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
-  //@ts-ignore
-  const toggleOwner = (owner) => {
+  const toggleOwner = (owner: string) => {
     setExpandedOwner((prevOwner) => (prevOwner === owner ? "" : owner));
   };
 
   // Toggle group expansion (e.g., Rooftop, Top floor)
-  //@ts-ignore
-  const toggleGroup = (groupName) => {
+  const toggleGroup = (groupName: string) => {
     setExpandedGroups((prev) => ({
       ...prev,
       [groupName]: !prev[groupName],
@@ -196,8 +193,6 @@ const ManageTables: React.FC = () => {
     rooms: roomData,
     tables: tableData,
   };
-
-  console.log("combinedData", combinedData);
 
   const resetModalState = () => {
     setAddModifierModal(false);
@@ -293,65 +288,6 @@ const ManageTables: React.FC = () => {
                   </div>
                   <div>
                     <ul>
-                      {items.map(
-                        (
-                          item: {
-                            number: any;
-                            group_name: any;
-                            qrcode: any;
-                            branch: any;
-                          },
-                          index: any
-                        ) => (
-                          <li
-                            key={index}
-                            className={`grid grid-cols-7 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                              index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                            }`}
-                          >
-                            <p className="col-span-2 px-3 py-2">
-                              {item.number}
-                            </p>
-                            <p className="col-span-2 px-3 py-2">
-                              {item.group_name}
-                            </p>
-                            <p className="px-3 py-2">
-                              {item.qrcode && <img src={item.qrcode} alt="" />}
-                            </p>
-                            <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                              <div
-                                className={`${
-                                  activeMenuIndex === index
-                                    ? "bg-slate-200"
-                                    : ""
-                                } py-[10px] px-[20px] rounded-full`}
-                              >
-                                <div
-                                  className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                                  onClick={() => toggleMenu(index)}
-                                >
-                                  <img
-                                    src={More}
-                                    alt=""
-                                    className="cursor-pointer w-[5px]"
-                                  />
-                                </div>
-                              </div>
-                              {activeMenuIndex === index && (
-                                <DropdownMenu
-                                  onClose={() => toggleMenu(index)}
-                                  onDelete={() =>
-                                    handleDeleteConfirmation(
-                                      item.group_name,
-                                      item.branch
-                                    )
-                                  }
-                                />
-                              )}
-                            </div>
-                          </li>
-                        )
-                      )}
                       {/* Group items by group_name */}
                       {Object.entries(
                         items.reduce(

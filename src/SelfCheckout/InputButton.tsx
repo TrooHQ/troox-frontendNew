@@ -92,13 +92,13 @@ const InputButton: React.FC = () => {
       </div>
 
       <div className="flex items-center justify-center gap-0 mt-10 mb-20">
-        <p className="border-r-[2px] border-r-[#5855B3] py-1.5 pr-6 pl-2 text-[#5955B3] text-sm font-normal cursor-pointer">
+        <p className="border-r-[2px] border-r-[#5855B3] py-1.5 pr-6 pl-2 text-[#121212] text-sm font-normal cursor-pointer">
           Create new PIN
         </p>
-        <p className="border-r-[2px] border-r-[#5855B3] py-1.5 pr-6 pl-2 text-[#5955B3] text-sm font-normal cursor-pointer">
+        <p className="border-r-[2px] border-r-[#5855B3] py-1.5 pr-6 pl-2 text-[#121212] text-sm font-normal cursor-pointer">
           Forgot PIN
         </p>
-        <p className="py-2 pr-6 pl-2 text-[#5955B3] text-sm font-normal cursor-pointer">
+        <p className="py-2 pr-6 pl-2 text-[#121212] text-sm font-normal cursor-pointer">
           Change PIN
         </p>
       </div>

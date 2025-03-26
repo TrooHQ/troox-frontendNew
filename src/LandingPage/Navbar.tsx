@@ -37,10 +37,19 @@ const Navbar = () => {
   }, []);
   const [menu, setMenu] = useState(false);
   const [menu2, setMenu2] = useState(false);
-  const terms2 = ["restaurant", "hotel", "lounges", "cafe", "fast-food", "food-truck"];
+  const terms2 = [
+    "restaurant",
+    "hotel",
+    "lounges",
+    "cafe",
+    "fast-food",
+    "food-truck",
+  ];
   const terms = ["pos", "kds", "table-ordering", "digital-ordering", "payment"];
   const includesTerm = terms.some((term) => location.pathname.includes(term));
-  const includesTerm2 = terms2.some((term2) => location.pathname.includes(term2));
+  const includesTerm2 = terms2.some((term2) =>
+    location.pathname.includes(term2)
+  );
   const handleToggleMenu = () => {
     setMenu(!menu);
     setMenu2(false);
@@ -52,7 +61,11 @@ const Navbar = () => {
   };
   return (
     <div className=" pb-[120px]">
-      <div className={`fixed top-0 w-full  z-[99999999999] ${!scroll && "shadow-md bg-slate-50"}`}>
+      <div
+        className={`fixed top-0 w-full  z-[99999999999] ${
+          !scroll && "shadow-md bg-slate-50"
+        }`}
+      >
         <div className="  py-[35px] lg:mx-[158px] md:border-b border-[#CBCAE7] grid md:flex items-center justify-between gap-[20px] md:gap-0">
           <div className=" mx-[10px] md:mx-0">
             <Link to="/">
@@ -104,7 +117,7 @@ const Navbar = () => {
               </NavLink>
 
               <NavLink to="/request-demo">
-                <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+                <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#121212] rounded-[5px] text-white">
                   Schedule A Demo
                 </li>
               </NavLink>
@@ -126,11 +139,15 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/lounges` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/lounges`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Bars</p>
-                    <p className={`text-[14px] font-[400]`}>Sell more and improve service</p>
+                    <p className={`text-[14px] font-[400]`}>
+                      Sell more and improve service
+                    </p>
                   </div>
                   <div className="">
                     {location.pathname === "/lounges" ? (
@@ -146,7 +163,9 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/restaurant` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/restaurant`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Restaurants</p>
@@ -168,10 +187,14 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/cafe` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/cafe`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
-                    <p className={`text-[16px] font-[500] `}>Cafes & Bakeries</p>
+                    <p className={`text-[16px] font-[500] `}>
+                      Cafes & Bakeries
+                    </p>
                     <p className={`text-[14px] font-[400]`}>
                       Increase turnover and streamline processes
                     </p>
@@ -189,11 +212,15 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/fast-food` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/fast-food`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Fast food</p>
-                    <p className={`text-[14px] font-[400]`}>Boost your business sales</p>
+                    <p className={`text-[14px] font-[400]`}>
+                      Boost your business sales
+                    </p>
                   </div>
                   <div className="">
                     {location.pathname === "/fast-food" ? (
@@ -208,7 +235,9 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/hotel` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/hotel`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Hotels</p>
@@ -229,7 +258,9 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/food-truck` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/food-truck`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Food Trucks</p>
@@ -256,11 +287,15 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/pos` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/pos`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>POS</p>
-                    <p className={`text-[14px] font-[400]`}>Restaurant-grade ePOS register</p>
+                    <p className={`text-[14px] font-[400]`}>
+                      Restaurant-grade ePOS register
+                    </p>
                   </div>
                   <div className="">
                     {location.pathname === "/pos" ? (
@@ -281,7 +316,9 @@ const Navbar = () => {
                         : "text-[#414141] "
                     }`}
                   >
-                    <p className={`text-[16px] font-[500] `}>Digital Ordering</p>
+                    <p className={`text-[16px] font-[500] `}>
+                      Digital Ordering
+                    </p>
                     <p className={`text-[14px] font-[400]`}>
                       Drive sales with online ordering workflows
                     </p>
@@ -300,7 +337,9 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/kds` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/kds`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>KDS</p>
@@ -321,11 +360,17 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/payment` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/payment`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
-                    <p className={`text-[16px] font-[500] `}>Payment Processing</p>
-                    <p className={`text-[14px] font-[400]`}>Receive payments faster and smarter</p>
+                    <p className={`text-[16px] font-[500] `}>
+                      Payment Processing
+                    </p>
+                    <p className={`text-[14px] font-[400]`}>
+                      Receive payments faster and smarter
+                    </p>
                   </div>
                   <div className="">
                     {location.pathname === "/payment" ? (
@@ -340,11 +385,15 @@ const Navbar = () => {
                 <div className=" flex items-center justify-between w-[301px]">
                   <div
                     className={`${
-                      location.pathname === `/table-ordering` ? `text-[#5855B3]` : "text-[#414141] "
+                      location.pathname === `/table-ordering`
+                        ? `text-[#5855B3]`
+                        : "text-[#414141] "
                     }`}
                   >
                     <p className={`text-[16px] font-[500] `}>Table Ordering</p>
-                    <p className={`text-[14px] font-[400]`}>Order from anywhere in-store</p>
+                    <p className={`text-[14px] font-[400]`}>
+                      Order from anywhere in-store
+                    </p>
                   </div>
                   <div className="">
                     {location.pathname === "/table-ordering" ? (
@@ -375,7 +424,7 @@ const Navbar = () => {
           </div>
           <div className="">
             <NavLink to="/demo/login/troo-portal">
-              <li className=" list-none text-center gap-[5px] text-[14px] font-[500] py-[10px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+              <li className=" list-none text-center gap-[5px] text-[14px] font-[500] py-[10px] px-[16px] bg-[#121212] rounded-[5px] text-white">
                 Log in
               </li>
             </NavLink>
@@ -387,60 +436,91 @@ const Navbar = () => {
                     className="flex items-center justify-between cursor-pointer"
                     onClick={handleToggle1}
                   >
-                    <p className="font-[500] text-[18px] text-[#414141]">Troo for</p>
+                    <p className="font-[500] text-[18px] text-[#414141]">
+                      Troo for
+                    </p>
                     <img
                       src={ArrowDown}
                       alt=""
-                      className={`transition-all ${toggle1 ? "rotate-180" : ""}`}
+                      className={`transition-all ${
+                        toggle1 ? "rotate-180" : ""
+                      }`}
                     />
                   </div>
                   {toggle1 && (
                     <div className=" my-[16px] grid gap-[16px] px-[16px] md:px-0">
                       <NavLink to="/lounges">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Bars</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Bars
+                        </p>
                       </NavLink>
                       <NavLink to="/cafe">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Cafes & Bakeries</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Cafes & Bakeries
+                        </p>
                       </NavLink>
                       <NavLink to="/hotel">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Hotels</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Hotels
+                        </p>
                       </NavLink>
                       <NavLink to="/restaurant">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Restaurants</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Restaurants
+                        </p>
                       </NavLink>
                       <NavLink to="/fast-food">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Fast Foods</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Fast Foods
+                        </p>
                       </NavLink>
                       <NavLink to="/food-truck">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Food Trucks</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Food Trucks
+                        </p>
                       </NavLink>
                     </div>
                   )}
                 </div>
 
-                <div className="cursor-pointer py-[16px] border-[#B6B6B6]" onClick={handleToggle2}>
+                <div
+                  className="cursor-pointer py-[16px] border-[#B6B6B6]"
+                  onClick={handleToggle2}
+                >
                   <div className="flex items-center justify-between">
-                    <p className="font-[500] text-[18px] text-[#414141]">Products</p>
+                    <p className="font-[500] text-[18px] text-[#414141]">
+                      Products
+                    </p>
                     <img
                       src={ArrowDown}
                       alt=""
-                      className={`transition-all ${toggle2 ? "rotate-180" : ""}`}
+                      className={`transition-all ${
+                        toggle2 ? "rotate-180" : ""
+                      }`}
                     />
                   </div>
                   {toggle2 && (
                     <div className=" my-[16px] grid gap-[16px] px-[16px] md:px-0">
                       <NavLink to="/pos">
                         {" "}
-                        <p className=" text-[#000000] text-[16px] font-[400]">POS</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          POS
+                        </p>
                       </NavLink>
                       <NavLink to="/kds">
-                        <p className=" text-[#000000] text-[16px] font-[400]">KDS</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          KDS
+                        </p>
                       </NavLink>
                       <NavLink to="/table-ordering">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Table Ordering</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Table Ordering
+                        </p>
                       </NavLink>
                       <NavLink to="/digital-ordering">
-                        <p className=" text-[#000000] text-[16px] font-[400]">Digital Ordering</p>
+                        <p className=" text-[#000000] text-[16px] font-[400]">
+                          Digital Ordering
+                        </p>
                       </NavLink>
 
                       <NavLink to="/payment">
@@ -452,7 +532,9 @@ const Navbar = () => {
                   )}
                 </div>
                 <div className=" py-[16px]">
-                  <p className="font-[500] text-[18px] text-[#414141]">About Us</p>
+                  <p className="font-[500] text-[18px] text-[#414141]">
+                    About Us
+                  </p>
                 </div>
               </div>
             </div>
