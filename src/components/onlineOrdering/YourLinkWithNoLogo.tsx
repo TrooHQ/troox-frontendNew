@@ -6,6 +6,10 @@ import { ExpandLessOutlined, TaskOutlined } from "@mui/icons-material";
 import { truncateText } from "../../utils/truncateText";
 import brandLogo from "../../assets/yourlink.png";
 import FileUploadComponent from "./FileUploadComponent";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const YourLinkWithNoLogo = ({
   generateOnlineOrderingLink,
@@ -18,7 +22,9 @@ const YourLinkWithNoLogo = ({
   onlineOrderingLink: any;
   loading: any;
 }) => {
-  console.log(onlineOrderingLink, businessLogo, "qqqqq");
+  const { userData } = useSelector((state: RootState) => state.user);
+
+  console.log(onlineOrderingLink, businessLogo, "qqqqq", userData);
 
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +34,13 @@ const YourLinkWithNoLogo = ({
   const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+
+  const [businessFullName, setBusinessFullName] = useState("");
+  const [simpleDescription, setSimpleDescription] = useState("");
+  const [instruction, setInstruction] = useState("");
+  const [addLoading, setAddLoading] = useState(false);
+
+  const [showForm, setShowForm] = useState(true);
 
   const handleUploadLogo = () => {
     setIsModalOpen(true);
@@ -80,13 +93,50 @@ const YourLinkWithNoLogo = ({
       setSelectedLogo(true);
     }
   }, [uploadedLogo]);
-  console.log(selectedLogo, "Uploaded Logo:", uploadedLogo, showUploadProgress);
+  console.log(selectedLogo, "Uploaded Logo:", loading, showUploadProgress);
 
   const getYourLink = () => {
     setIsUploadSuccessful(true);
     setIsModalOpen(false);
     setShowUploadProgress(false);
-    generateOnlineOrderingLink();
+  };
+
+  const getYourLinkNow = async () => {
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    try {
+      setAddLoading(true);
+      // Make the API call to add ordering details
+      const response = await axios.post(
+        "https://troox-backend-new.vercel.app/api/asset/addOrderingDetails",
+        {
+          businessFullName: businessFullName,
+          orderingDescription: simpleDescription,
+          orderingInstruction: instruction,
+        },
+        headers
+      );
+      console.log(response, "response here:");
+      if (response.status === 200) {
+        console.log("Ordering details added successfully:", response.data);
+        toast.success("Ordering details added successfully");
+
+        // Call generateOnlineOrderingLink() if the API call is successful
+        setShowForm(false);
+        generateOnlineOrderingLink();
+      } else {
+        console.error("Failed to add ordering details:", response.data);
+      }
+    } catch (error) {
+      console.error("Error adding ordering details:", error);
+      toast.error("Error adding ordering details");
+    } finally {
+      setAddLoading(false);
+    }
   };
   console.log(uploadedLogo, "uploadedLogo");
   return (
@@ -144,10 +194,18 @@ const YourLinkWithNoLogo = ({
         </div>
       ) : (
         <UploadedLogoDisplay
-          logo={businessLogo}
+          logo={businessLogo || userData?.business_logo}
           handleUploadLogo={handleUploadLogo}
           onlineOrderingLink={onlineOrderingLink}
-          loading={loading}
+          loading={addLoading}
+          handleGenerateClick={getYourLinkNow}
+          businessFullName={businessFullName}
+          setBusinessFullName={setBusinessFullName}
+          simpleDescription={simpleDescription}
+          setSimpleDescription={setSimpleDescription}
+          instruction={instruction}
+          setInstruction={setInstruction}
+          showForm={showForm}
         />
       )}
 

@@ -1,21 +1,20 @@
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 
-interface CustomInputProps {
+interface CustomTextareaProps {
   label: string;
-  type: string;
-  value: string | number;
+  value: string;
   error?: string;
   maxLength?: number;
   onChange: (value: string) => void;
   className?: string;
   fullWidth?: boolean;
   readOnly?: boolean;
+  rows?: number;
   placeholder?: string;
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({
+const CustomTextarea: React.FC<CustomTextareaProps> = ({
   label,
-  type,
   value,
   error,
   maxLength,
@@ -23,13 +22,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
   className,
   fullWidth = false,
   readOnly = false,
+  rows = 3,
   placeholder,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
-    // Update isFocused based on the value to ensure the label position is correct
     setIsFocused(value !== "");
   }, [value]);
 
@@ -42,27 +41,27 @@ const CustomInput: React.FC<CustomInputProps> = ({
   };
 
   const handleLabelClick = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (textareaRef.current) {
+      textareaRef.current.focus();
     }
   };
 
   return (
     <div className={`relative ${fullWidth ? "w-full" : ""}`}>
-      <input
-        type={type}
-        className={`border outline-grey200 p-2 text-grey500 border-gray-500 text-[16px] py-3 focus:outline-[#101010] focus:border-none w-full rounded ${
+      <textarea
+        className={`border outline-grey200 p-2 text-grey500 border-gray-500 text-[16px] py-3 focus:outline-[#101010] focus:border-none w-full rounded resize-none ${
           error ? "border-red-500" : ""
-        } ${className}`} // Apply className prop
+        } ${className}`}
         value={value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
           onChange(e.target.value)
         }
         onFocus={handleFocus}
         onBlur={handleBlur}
         maxLength={maxLength}
-        ref={inputRef}
+        ref={textareaRef}
         readOnly={readOnly}
+        rows={rows}
         placeholder={placeholder}
       />
       <label
@@ -79,4 +78,4 @@ const CustomInput: React.FC<CustomInputProps> = ({
   );
 };
 
-export default CustomInput;
+export default CustomTextarea;

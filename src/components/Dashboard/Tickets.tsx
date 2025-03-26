@@ -52,6 +52,11 @@ const Tickets = () => {
   const handleTicketMenu = () => {
     setOpenTicket(!openTicket);
   };
+  const [openTicketData, setopenTicketData] = useState<any>();
+  const handleTicketMenu2 = (item: any) => {
+    setOpenTicket(!openTicket);
+    setopenTicketData(item);
+  };
 
   const toggleMenu = (index: number) => {
     setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
@@ -370,7 +375,10 @@ const Tickets = () => {
                       <p onClick={handleTicketMenu}>
                         {item.order_number || "-"}
                       </p>
-                      <p onClick={handleTicketMenu}>
+                      <p
+                        onClick={() => handleTicketMenu2(item)}
+                        className="cursor-pointer"
+                      >
                         {item.customer_name
                           ? truncateText(
                               item.customer_name.charAt(0).toUpperCase() +
@@ -431,6 +439,7 @@ const Tickets = () => {
                 handleTicketMenu={handleTicketMenu}
                 setOpenTicket={setOpenTicket}
                 data={data}
+                openTicketData={openTicketData}
               />
             </div>
           </div>

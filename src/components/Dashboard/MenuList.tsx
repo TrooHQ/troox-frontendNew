@@ -15,7 +15,6 @@ import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import clsx from "clsx";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Menu, MenuItem, Tooltip } from "@mui/material";
-import SearchIcon from "../../assets/searchIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
 import { AppDispatch } from "../../store/store";
@@ -25,6 +24,19 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+
+const CustomPagination = styled(Pagination)(() => ({
+  "& .Mui-selected": {
+    backgroundColor: "#000000", // Set the background color to black
+    color: "#ffffff", // Set the text color to white for better contrast
+    "&:hover": {
+      backgroundColor: "#000000", // Ensure hover doesn't change the color
+    },
+  },
+}));
 
 interface Modifier {
   name: string;
@@ -54,9 +66,20 @@ const MenuList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const branches = useSelector((state: any) => state.branches.branches);
-  const { menuItemsWithoutStatus: menuItems, loading } = useSelector(
-    (state: any) => state.menu
-  );
+  const {
+    menuItemsWithoutStatus: menuItems,
+    totalPages,
+    loading,
+  } = useSelector((state: any) => state.menu);
+
+  const [page, setPage] = useState<number>(1);
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
 
   const [openModal, setOpenModal] = useState(false);
   const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(
@@ -95,6 +118,18 @@ const MenuList = () => {
     oldName: string;
   } | null>(null);
   const [newMenuName, setNewMenuName] = useState<string>("");
+
+  // Fetch menu items whenever the page or branch changes
+  useEffect(() => {
+    if (viewingBranch) {
+      dispatch(
+        fetchMenuItemsWithoutStatus({
+          branch_id: viewingBranch._id,
+          page,
+        })
+      );
+    }
+  }, [dispatch, viewingBranch, page]);
 
   // Delete function
   const handleDeleteClick = (item: any) => {
@@ -143,6 +178,7 @@ const MenuList = () => {
           dispatch(
             fetchMenuItemsWithoutStatus({
               branch_id: viewingBranch?._id as any,
+              page,
             })
           );
         }
@@ -301,7 +337,10 @@ const MenuList = () => {
         // Optionally refresh the list of modifiers after deletion
         toast.success("Deleted successfully");
         dispatch(
-          fetchMenuItemsWithoutStatus({ branch_id: viewingBranch?._id as any })
+          fetchMenuItemsWithoutStatus({
+            branch_id: viewingBranch?._id as any,
+            page,
+          })
         );
       } else {
         alert("Failed to delete modifier");
@@ -330,7 +369,7 @@ const MenuList = () => {
 
   const handleViewMore = (branch: Branch) => {
     setViewingBranch(branch);
-    dispatch(fetchMenuItemsWithoutStatus({ branch_id: branch._id }));
+    dispatch(fetchMenuItemsWithoutStatus({ branch_id: branch._id, page }));
   };
 
   const handleBackToBranches = () => {
@@ -412,20 +451,7 @@ const MenuList = () => {
                 <ArrowBack />
                 Back
               </button>
-              <div className="flex items-center justify-between">
-                <div className="relative">
-                  <input
-                    type="text"
-                    className="bg-[#F8F8F8] rounded p-2 pl-14 outline-none border border-[#5855B3]"
-                    placeholder="Search"
-                  />
-                  <img
-                    src={SearchIcon}
-                    alt=""
-                    className="absolute left-6 top-3 pointer-events-none"
-                  />
-                </div>
-              </div>
+              <div className="flex items-center justify-between"></div>
             </div>
 
             <div className="overflow-x-auto mt-6">
@@ -448,10 +474,11 @@ const MenuList = () => {
                 </thead>
 
                 <hr className="mb-2 text-[#E7E7E7]" />
-
-                {loading ? (
+                {loading && (
                   <div className="text-center min-w-full">Loading...</div>
-                ) : menuItems.length !== 0 ? (
+                )}
+
+                {menuItems.length !== 0 ? (
                   <tbody>
                     {menuItems.map((item: any, index: number) => (
                       <tr
@@ -484,20 +511,6 @@ const MenuList = () => {
                             <span>{item.menu_item_name}</span>
                           </div>
                         </td>
-                        {/* <td className="text-base font-medium text-center py-2 px-4 break-words">
-                          <div className="flex justify-start gap-0 items-center pl-[60px]">
-                            <span className="w-[60px] ml-0">{item.qty}</span>
-                            {item.status !== "Restocked" && (
-                              <span
-                                className={`inline-block py-1 px-2 rounded-full text-xs ${getStatusBgColor(
-                                  item.status
-                                )}`}
-                              >
-                                {item.status}
-                              </span>
-                            )}
-                          </div>
-                        </td> */}
                         <td className="text-base font-normal text-center py-2 px-4 break-words">
                           &#8358;
                           {parseFloat(item.menu_item_price).toLocaleString()}
@@ -668,6 +681,19 @@ const MenuList = () => {
                   </div>
                 )}
               </table>
+              {totalPages > 1 && !loading && (
+                <Stack
+                  spacing={2}
+                  className="flex justify-center items-center mt-8"
+                >
+                  <CustomPagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                  />
+                </Stack>
+              )}
             </div>
           </div>
         )}

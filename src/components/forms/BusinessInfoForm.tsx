@@ -37,7 +37,7 @@ const BusinessInfoForm: React.FC = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    if (params.get("coming-from") === "goGrub") {
+    if (params.get("coming-from") === "gogrub") {
       handleInputChange("businessType", "GoGrub");
     }
   }, [location.search]);

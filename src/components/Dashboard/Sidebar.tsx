@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink, useNavigate } from "react-router-dom";
+import { useLocation, NavLink, useNavigate, Link } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
@@ -29,6 +29,7 @@ import {
 } from "../../slices/branchSlice";
 import { clearUserData } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
+import BlinkerSubscribe from "../BlinkerSubscribe";
 
 interface MenuItem {
   subTitle?: string;
@@ -408,6 +409,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <hr className="h-[2px] bg-[#929292] my-3" />
         </div>
       </div>
+
+      {/* Subscribe */}
+      <Link to="/subscription-plan">
+        <div className="flex items-center gap-3 justify-start">
+          <span className="text-[16px] font-medium ml-3.5">Subscribe</span>
+          <BlinkerSubscribe />
+        </div>
+      </Link>
       <ul className="pt-2 pl-[1px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
@@ -451,7 +460,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   <span
                     className={`${
                       !open && "hidden"
-                    } origin-left duration-200 text-[#000]`}
+                    } origin-left duration-200 text-[#606060]`}
                   >
                     {menu.title}
                     {menu.subTitle}
@@ -498,11 +507,13 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
       <div className="mb-10">
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
-        <p className="text-[10px] font-medium ml-3.5">You are using the</p>
-        <button className="ml-0 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1">
-          <span className="text-white text-base font-semibold mr-2">
-            Standard Plan
-          </span>
+        <p className="text-[10px] font-medium ml-3.5"></p>
+        <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
+          <Link to="/subscription-plan">
+            <span className="text-white text-base font-semibold mr-2">
+              Subscribe
+            </span>
+          </Link>
           <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
         </button>
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
