@@ -10,13 +10,30 @@ import axios from "axios";
 import { AppDispatch } from "../../store/store";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
+
+const CustomPagination = styled(Pagination)(() => ({
+  "& .Mui-selected": {
+    backgroundColor: "#000000", // Set the background color to black
+    color: "#ffffff", // Set the text color to white for better contrast
+    "&:hover": {
+      backgroundColor: "#000000", // Ensure hover doesn't change the color
+    },
+  },
+}));
 
 const PriceList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { menuItems2: menuItems, loading } = useSelector(
-    (state: any) => state.menu
-  );
+  const {
+    menuItems2: menuItems,
+    loading,
+    totalPages,
+  } = useSelector((state: any) => state.menu);
   const { selectedBranch } = useSelector((state: any) => state.branches);
+
+  const [page, setPage] = useState<number>(1);
 
   // New states for handling price edits
   const [editMode, setEditMode] = useState<string | null>(null); // Track which item is being edited
@@ -27,8 +44,15 @@ const PriceList = () => {
   const token = userDetails?.userData?.token;
 
   useEffect(() => {
-    dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id }));
-  }, [dispatch, selectedBranch]);
+    dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id, page }));
+  }, [dispatch, selectedBranch, page]);
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
 
   // Handle the edit button click
   const handleEditClick = (item: any) => {
@@ -188,6 +212,19 @@ const PriceList = () => {
                     </div>
                   )}
                 </table>
+                {totalPages > 1 && !loading && (
+                  <Stack
+                    spacing={2}
+                    className="flex justify-center items-center mt-8"
+                  >
+                    <CustomPagination
+                      count={totalPages}
+                      page={page}
+                      onChange={handlePageChange}
+                      color="primary"
+                    />
+                  </Stack>
+                )}
               </div>
             </div>
           </div>
