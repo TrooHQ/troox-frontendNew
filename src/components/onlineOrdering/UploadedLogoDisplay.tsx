@@ -146,19 +146,17 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
 
           <CustomTextarea
             label="Add a simple description  *"
-            placeholder="E.g. Delicious meals delivered fast"
+            placeholder="E.g.  A top-rated restaurant serving fresh and delicious meals daily"
             value={simpleDescription}
             maxLength={4}
             onChange={handleSimpleDescriptionChange}
           />
-          <CustomInput
-            type="text"
+          <CustomTextarea
             label="Add your instruction *"
-            placeholder="E.g. Click the link to place your order"
+            placeholder="E.g. Orders are accepted from 12 PM to 5 PM, Monday to Friday. Tap the link to start receiving online orders."
             value={instruction}
             onChange={handleInstructionChange}
-            className="border-gray-500"
-            fullWidth
+            maxLength={4}
           />
 
           <button

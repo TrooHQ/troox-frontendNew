@@ -152,7 +152,7 @@ const PricingPage = () => {
                   </div>
                 </div>
 
-                <button className="mt-[60px] border border-[#000000] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#121212] text-center absolute bottom-10 w-[225px]">
+                <button className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]">
                   {plan.buttonText}
                 </button>
               </div>
