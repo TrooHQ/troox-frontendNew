@@ -146,7 +146,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
 
           <CustomTextarea
             label="Add a simple description  *"
-            placeholder="E.g This and that"
+            placeholder="E.g. Delicious meals delivered fast"
             value={simpleDescription}
             maxLength={4}
             onChange={handleSimpleDescriptionChange}
@@ -154,7 +154,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
           <CustomInput
             type="text"
             label="Add your instruction *"
-            placeholder="E.g Click on the link to order"
+            placeholder="E.g. Click the link to place your order"
             value={instruction}
             onChange={handleInstructionChange}
             className="border-gray-500"
