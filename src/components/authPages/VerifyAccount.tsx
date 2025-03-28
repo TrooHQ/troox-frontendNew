@@ -1,6 +1,8 @@
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "../../store/store";
 import axios from "axios";
+import Logo from "../../assets/TrooGrey.svg";
+import GoGrubLogo from "../../assets/business_logo.svg";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,13 +10,23 @@ import { toast } from "react-toastify";
 import DigitInput from "./DigitInput";
 
 const VerifyAccount = () => {
+  const [isFromGoGrub, setIsFromGoGrub] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const history = useNavigate();
 
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
   const userDetails = useSelector((state: RootState) => state.user);
-  const email = userDetails?.userData?.business_email;
+  console.log(userDetails, "userDetails:");
+
+  const userEmail = localStorage.getItem("registeredUserEmail");
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("coming-from") === "gogrub") {
+      setIsFromGoGrub(true);
+    }
+  }, []);
 
   const handleChange = (index: number, newValue: string) => {
     const newDigits = [...digits];
@@ -42,7 +54,7 @@ const VerifyAccount = () => {
     try {
       setLoading(true);
       const response = await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
-        email,
+        email: userEmail,
       });
       setLoading(false);
       toast.success(response.data.message || "Token has been resent");
@@ -98,14 +110,21 @@ const VerifyAccount = () => {
   return (
     <div className="bg-[#EFEFEF] h-screen">
       <div className="flex flex-col items-center justify-center h-screen my-auto">
+        {!isFromGoGrub ? (
+          <img src={Logo} alt="Logo" className="mb-0" />
+        ) : (
+          <img src={GoGrubLogo} alt="Logo" className="mb-0" />
+        )}
         <div className="bg-white grid  p-[40px] mt-[32px] mb-[40px] w-full md:w-[530px] rounded shadow-md">
           <p className=" text-red-500">{error}</p>
           <div className=" flex flex-col text-center justify-center items-center gap-[24px] mt-[28px] mb-[40px]">
-            <p className=" font-[500] text-[20px] text-[#121212]">Verify Account</p>
+            <p className=" font-[500] text-[20px] text-[#121212]">
+              Verify Account
+            </p>
             <p className=" text-[16px] font-[400] text-[#121212]">
               {" "}
-              A verification code has been sent to your email. Please enter the six-digit OTP that
-              was sent to your email
+              A verification code has been sent to your email. Please enter the
+              six-digit OTP that was sent to your email
             </p>
           </div>
 
@@ -125,7 +144,10 @@ const VerifyAccount = () => {
             className=" mt-[24px] flex items-center justify-start cursor-pointer"
             onClick={resendOTP}
           >
-            <button className=" font-[400] text-[16px] text-[#5955B3]" disabled={loading}>
+            <button
+              className=" font-[400] text-[16px] text-[#121212]"
+              disabled={loading}
+            >
               Resend Code
             </button>
           </div>
@@ -137,8 +159,6 @@ const VerifyAccount = () => {
               >
                 {loading ? "Loading..." : "Activate Account"}
               </button>
-
-              {/* <Button text="Activate account" loading={loading} /> */}
             </div>
           ) : (
             <div className=" mt-[16px]">

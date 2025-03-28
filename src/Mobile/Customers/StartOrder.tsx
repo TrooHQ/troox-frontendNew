@@ -39,6 +39,7 @@ const StartOrder = () => {
   const business_identifier = queryParams.get("business_identifier");
   const branch = queryParams.get("branch");
   const tableNo = queryParams.get("table");
+  const comingFrom = queryParams.get("coming-from");
   const type = queryParams.get("type");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
@@ -112,7 +113,7 @@ const StartOrder = () => {
         location.pathname + location.search + location.hash
       }`
     );
-  } else if (!business_identifier || !tableNo) {
+  } else if (!business_identifier || !tableNo || !comingFrom) {
     navigate("/demo/login/troo-portal");
     // return <NotFound />;
   }

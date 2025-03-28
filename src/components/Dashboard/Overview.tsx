@@ -44,10 +44,10 @@ export const CustomAutocomplete = styled(Autocomplete)({
     },
   },
   "& .MuiAutocomplete-popupIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-clearIndicator": {
-    color: "#5955B3",
+    color: "#121212",
   },
   "& .MuiAutocomplete-endAdornment": {
     right: "8px",
@@ -65,7 +65,9 @@ export const CustomAutocomplete = styled(Autocomplete)({
 
 const Overview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { branches, selectedBranch } = useSelector((state: any) => state.branches);
+  const { branches, selectedBranch } = useSelector(
+    (state: any) => state.branches
+  );
   const { userData } = useSelector((state: RootState) => state.user);
 
   const [open, setOpen] = useState(false);
@@ -107,25 +109,26 @@ const Overview: React.FC = () => {
         <div className="flex items-end my-10">
           <h3 className="text-[#606060] text-[20px] font-normal">
             Hello,{" "}
-            <h5 className="text-[#121212] text-[24px] font-medium">
+            <span className="text-[#121212] text-[24px] font-medium">
               {userData?.business_name} {""}
-            </h5>
+            </span>
           </h3>
           <Button
             variant="contained"
             onClick={handleButtonClick}
             sx={{
               backgroundColor: "#ffffff",
-              border: "1px solid #5955B3",
-              color: "#5955B3",
+              border: "1px solid #ffffff",
+              color: "#000000",
               ml: 2,
               "&:hover": {
-                backgroundColor: "#4842a3",
+                backgroundColor: "#ffffff",
                 color: "white",
               },
             }}
           >
-            {selectedBranch?.label || selectedOutlet?.label || "All outlets"} <ArrowDropDown />
+            {selectedBranch?.label || selectedOutlet?.label || "All outlets"}{" "}
+            <ArrowDropDown />
           </Button>
           <Popper
             open={open}
@@ -149,7 +152,9 @@ const Overview: React.FC = () => {
                       ...params.InputProps,
                       startAdornment: (
                         <>
-                          <Search style={{ color: "gray", marginRight: "4px" }} />
+                          <Search
+                            style={{ color: "gray", marginRight: "4px" }}
+                          />
                           {params.InputProps.startAdornment}
                         </>
                       ),
@@ -172,7 +177,9 @@ const Overview: React.FC = () => {
         </div>
         {/* 5th div */}
         <div className="mt-9">
-          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">Sales Trend</h3>
+          <h3 className="text-[#012320] text-[20px] font-semibold mb-9">
+            Sales Trend
+          </h3>
           <KPI />
         </div>
         {/* 6th div */}

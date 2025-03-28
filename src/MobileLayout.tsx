@@ -53,6 +53,7 @@ import { OnlineOrderingReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingRec
 import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrderingGetReceipt";
 import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 import OrderHistory from "./Mobile/Components/OrderHistory";
+import AccountVerified from "./Mobile/Components/AccountVerified";
 
 const MobileLayout = () => {
   return (
@@ -194,6 +195,10 @@ const MobileLayout = () => {
             element={<RegistrationStepForm />}
           />
           <Route path="/demo/verify/troo-portal" element={<VerifyAccount />} />
+          <Route
+            path="/demo/verified/troo-portal"
+            element={<AccountVerified />}
+          />
           <Route path="/demo/menu/troo-portal" element={<MenuSetupForm />} />
           <Route path="/demo/settings/troo-portal" element={<SettingsPage />} />
           <Route

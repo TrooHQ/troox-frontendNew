@@ -46,14 +46,14 @@ const RoomSetupForm2 = () => {
           <div className=" grid mt-[32px] gap-[8px]">
             <div
               className={`${
-                menuData.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
+                menuData.length > 0 ? " bg-grey700" : "bg-[#B6B6B6]"
               } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
             >
               <p>Save Rooms</p>
             </div>
 
             <Link to="/">
-              <button className=" text-[16px] font-[500] text-purple500  w-full text-center py-3 rounded">
+              <button className=" text-[16px] font-[500] text-grey700  w-full text-center py-3 rounded">
                 Skip
               </button>
             </Link>

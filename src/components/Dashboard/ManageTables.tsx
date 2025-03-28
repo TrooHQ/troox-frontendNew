@@ -14,7 +14,8 @@ import { AppDispatch, RootState } from "../../store/store";
 import { getRooms, getTables } from "../../slices/TableSlice";
 import { toast } from "react-toastify";
 import OtherSettings from "./OtherSettings";
-import AddModifierModal from "./AddModifierModal";
+import CustomSelect5 from "../inputFields/CustomSelect5";
+import CustomInput from "../inputFields/CustomInput";
 
 const DropdownMenu = ({
   onClose,
@@ -193,8 +194,6 @@ const ManageTables: React.FC = () => {
     tables: tableData,
   };
 
-  console.log("combinedData", combinedData);
-
   const resetModalState = () => {
     setAddModifierModal(false);
     setLocation("");
@@ -257,161 +256,209 @@ const ManageTables: React.FC = () => {
             </div>
           )}
 
-          {Object.entries(combinedData).map(([category, items]) => {
-            console.log(category);
-            console.log(items);
-            return (
-              <div key={category}>
-                <div className="mt-3 cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
-                  <h2 className="text-[#5855B3] text-[20px] font-[400]">
-                    {category?.toUpperCase()}
-                  </h2>
-                  <div>
-                    <img
-                      onClick={() => toggleOwner(category)}
-                      src={ArrowToggle}
-                      alt=""
-                      className={`transform inline transition-transform duration-300 ${
-                        expandedOwner === category ? "rotate-180" : ""
-                      }`}
-                    />
-                  </div>
+          {Object.entries(combinedData).map(([category, items]) => (
+            <div key={category}>
+              <div className="mt-3 cursor-pointer flex items-center justify-between border-b py-[16px] border-[#E7E7E7]">
+                <h2 className="text-[#5855B3] text-[20px] font-[400]">
+                  {category?.toUpperCase()}
+                </h2>
+                <div>
+                  <img
+                    onClick={() => toggleOwner(category)}
+                    src={ArrowToggle}
+                    alt=""
+                    className={`transform inline transition-transform duration-300 ${
+                      expandedOwner === category ? "rotate-180" : ""
+                    }`}
+                  />
                 </div>
-                {expandedOwner === category && (
-                  <>
-                    <div className="mt-[32px] grid grid-cols-9 items-center border-b px-5 border-b-[#929292] text-[#929292] text-[16px] font-[400]">
-                      <p className="col-span-2 px-3 py-2">Area/Group Name</p>
-                      <p className="col-span-2 px-3 py-2 text-center">
-                        Table Number
-                      </p>
-                      <p className="col-span-2 px-3 py-2 text-center">
-                        No. of Guests
-                      </p>
-                      <p className="px-3 py-2 text-center">QR Code</p>
-                      <p className="col-span-2 px-3 py-2 text-end">Actions</p>
-                    </div>
-                    <div>
-                      <ul>
-                        {/* Group items by group_name */}
-                        {Object.entries(
-                          items.reduce(
-                            (
-                              acc: { [x: string]: any[] },
-                              item: { group_name: any }
-                            ) => {
-                              const { group_name } = item;
-                              if (!acc[group_name]) acc[group_name] = [];
-                              acc[group_name].push(item);
-                              return acc;
-                            },
-                            {}
-                          )
-                        ).map(([groupName, groupItems]) => (
-                          <React.Fragment key={groupName}>
-                            {/* Group Header */}
-                            <li
-                              className="grid grid-cols-9 items-center px-5 py-[16px] bg-[rgb(234,234,234)] cursor-pointer mb-1"
-                              onClick={() => toggleGroup(groupName)}
-                            >
-                              <p className="col-span-2 px-3 py-2 font-normal">
-                                {groupName}
-                              </p>
-                              <p className="col-span-7 text-right font-normal px-3 py-2">
-                                {expandedGroups[groupName]
-                                  ? "Collapse ▲"
-                                  : "Expand ▼"}
-                              </p>
-                            </li>
-                            {/* Group Items - show only if expanded */}
-                            {expandedGroups[groupName] &&
-                              (groupItems as any[]).map(
-                                (item: any, index: number) => (
-                                  <li
-                                    key={item._id}
-                                    className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                                      index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                                    }`}
-                                  >
-                                    <p className="col-span-2 px-3 py-2">
-                                      {item.group_name}
-                                    </p>
-                                    <p className="col-span-2 px-3 py-2 text-center">
-                                      {item.number}
-                                    </p>
-                                    <p className="col-span-2 px-3 py-2 text-center">
-                                      {item.total_guests}
-                                    </p>
-                                    <p className="px-3 py-2 text-center">
-                                      {item.qrcode && (
-                                        <img src={item.qrcode} alt="" />
-                                      )}
-                                    </p>
-                                    <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
-                                      <div
-                                        className={`${
-                                          activeMenuIndex === item._id
-                                            ? "bg-slate-200"
-                                            : ""
-                                        } py-[10px] px-[20px] rounded-full`}
-                                      >
-                                        <div
-                                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                                          onClick={() => toggleMenu(item._id)}
-                                        >
-                                          <img
-                                            src={More}
-                                            alt=""
-                                            className="cursor-pointer w-[5px]"
-                                          />
-                                        </div>
-                                      </div>
-                                      {activeMenuIndex === item._id && (
-                                        <DropdownMenu
-                                          onClose={() => toggleMenu(item._id)}
-                                          onDelete={() =>
-                                            handleDeleteConfirmation(
-                                              item.group_name as any,
-                                              item.branch
-                                            )
-                                          }
-                                        />
-                                      )}
-                                    </div>
-                                  </li>
-                                )
-                              )}
-                          </React.Fragment>
-                        ))}
-                      </ul>
-                    </div>
-                  </>
-                )}
               </div>
-            );
-          })}
+              {expandedOwner === category && (
+                <>
+                  <div className="mt-[32px] grid grid-cols-9 items-center border-b px-5 border-b-grey100 text-grey300 text-[16px] font-[400]">
+                    <p className="col-span-2 px-3 py-2">Area/Group Name</p>
+                    <p className="col-span-2 px-3 py-2 text-center">
+                      Table Number
+                    </p>
+                    <p className="col-span-2 px-3 py-2 text-center">
+                      No. of Guests
+                    </p>
+                    <p className="px-3 py-2 text-center">QR Code</p>
+                    <p className="col-span-2 px-3 py-2 text-end">Actions</p>
+                  </div>
+                  <div>
+                    <ul>
+                      {/* Group items by group_name */}
+                      {Object.entries(
+                        items.reduce(
+                          (
+                            acc: { [x: string]: any[] },
+                            item: { group_name: any }
+                          ) => {
+                            const { group_name } = item;
+                            if (!acc[group_name]) acc[group_name] = [];
+                            acc[group_name].push(item);
+                            return acc;
+                          },
+                          {}
+                        )
+                      ).map(([groupName, groupItems]) => (
+                        <React.Fragment key={groupName}>
+                          {/* Group Header */}
+                          <li
+                            className="grid grid-cols-9 items-center px-5 py-[16px] bg-[rgb(234,234,234)] cursor-pointer mb-1"
+                            onClick={() => toggleGroup(groupName)}
+                          >
+                            <p className="col-span-2 px-3 py-2 font-normal">
+                              {groupName}
+                            </p>
+                            <p className="col-span-7 text-right font-normal px-3 py-2">
+                              {expandedGroups[groupName]
+                                ? "Collapse ▲"
+                                : "Expand ▼"}
+                            </p>
+                          </li>
+                          {/* Group Items - show only if expanded */}
+                          {expandedGroups[groupName] &&
+                            (groupItems as any[]).map(
+                              (item: any, index: number) => (
+                                <li
+                                  key={item._id}
+                                  className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
+                                    index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                                  }`}
+                                >
+                                  <p className="col-span-2 px-3 py-2">
+                                    {item.group_name}
+                                  </p>
+                                  <p className="col-span-2 px-3 py-2 text-center">
+                                    {item.number}
+                                  </p>
+                                  <p className="col-span-2 px-3 py-2 text-center">
+                                    {item.total_guests}
+                                  </p>
+                                  <p className="px-3 py-2 text-center">
+                                    {item.qrcode && (
+                                      <img src={item.qrcode} alt="" />
+                                    )}
+                                  </p>
+                                  <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
+                                    <div
+                                      className={`${
+                                        activeMenuIndex === item._id
+                                          ? "bg-slate-200"
+                                          : ""
+                                      } py-[10px] px-[20px] rounded-full`}
+                                    >
+                                      <div
+                                        className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                                        onClick={() => toggleMenu(item._id)}
+                                      >
+                                        <img
+                                          src={More}
+                                          alt=""
+                                          className="cursor-pointer w-[5px]"
+                                        />
+                                      </div>
+                                    </div>
+                                    {activeMenuIndex === item._id && (
+                                      <DropdownMenu
+                                        onClose={() => toggleMenu(item._id)}
+                                        onDelete={() =>
+                                          handleDeleteConfirmation(
+                                            item.group_name as any,
+                                            item.branch
+                                          )
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                </li>
+                              )
+                            )}
+                        </React.Fragment>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
         </div>
 
         <OtherSettings selectedOutlet={selectedOutlet} />
 
         {/* Modals */}
-        <AddModifierModal
+        <Modal
           isOpen={addModifierModar}
           onClose={() => setAddModifierModal(false)}
-          businessType={businessType}
-          branchOptions={branchOptions}
-          handleCreateAsset={handleCreateAsset}
-          loading={loading}
-          selectedType={selectedType}
-          handleTypeSelect={handleTypeSelect}
-          selectedBranch={selectedBranch}
-          handleBranchSelect={handleBranchSelect}
-          location={location}
-          setLocation={setLocation}
-          tableNumber={tableNumber}
-          setTableNumber={setTableNumber}
-          tableArr={tableArr}
-          setTableArr={setTableArr}
-        />
+        >
+          <div className=" w-[539px] py-[32px] px-[52px]">
+            <div className="">
+              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
+                Asset Arrangement
+              </p>
+              <hr className="border my-[24px] border-[#E7E7E7]" />
+              <div className=" flex flex-col gap-[8px] justify-center">
+                <CustomSelect5
+                  options={businessType}
+                  label="Type"
+                  value={selectedType}
+                  onChange={handleTypeSelect}
+                />
+                <div className="mt-3">
+                  <CustomSelect5
+                    options={branchOptions}
+                    label="Branch"
+                    value={selectedBranch}
+                    onChange={handleBranchSelect}
+                  />
+                </div>
+                {selectedType === "QR Scan at Table" && (
+                  <div className="mt-3 flex-grow  ">
+                    <CustomInput
+                      type="text"
+                      label="How many tables do you have?"
+                      value={tableNumber}
+                      error=""
+                      onChange={(newValue) => setTableNumber(newValue)}
+                    />
+                  </div>
+                )}
+                <div className="mt-3 flex-grow  ">
+                  <CustomInput
+                    type="text"
+                    label="Location"
+                    value={location}
+                    error=""
+                    onChange={(newValue) => setLocation(newValue)}
+                  />
+                </div>
+              </div>
+              <hr className="border mb-[16px] mt-[24px] border-[#E7E7E7]" />
+
+              <div className=" flex justify-end items-center  gap-2">
+                <div
+                  className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+                  onClick={() => setAddModifierModal(false)}
+                >
+                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    Cancel
+                  </p>
+                  {/* <CancelButton text="Cancel" /> */}
+                </div>
+
+                {/* <Link to="/table-list"> */}
+                <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
+                  <button onClick={handleCreateAsset} className=" text-[16px]">
+                    {loading ? "Saving..." : "Save"}
+                  </button>
+                </div>
+                {/* </Link> */}
+              </div>
+            </div>
+          </div>
+        </Modal>
 
         {isDeleteModalOpen && (
           <Modal

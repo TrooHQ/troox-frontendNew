@@ -17,7 +17,7 @@ const ChooseColor = () => {
     { name: "Blue", colorCode: "#3450B0" },
     { name: "Black", colorCode: "#000000" },
     { name: "Green", colorCode: "#097F7C" },
-    { name: "Purple", colorCode: "#5955B3" },
+    { name: "Purple", colorCode: "#121212" },
     { name: "Red", colorCode: "#FF0000" },
   ];
 

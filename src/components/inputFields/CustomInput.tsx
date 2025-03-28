@@ -10,6 +10,7 @@ interface CustomInputProps {
   className?: string;
   fullWidth?: boolean;
   readOnly?: boolean;
+  placeholder?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -22,6 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   className,
   fullWidth = false,
   readOnly = false,
+  placeholder,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -61,6 +63,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         maxLength={maxLength}
         ref={inputRef}
         readOnly={readOnly}
+        placeholder={placeholder}
       />
       <label
         className={`absolute transition-all duration-300 cursor-text ${

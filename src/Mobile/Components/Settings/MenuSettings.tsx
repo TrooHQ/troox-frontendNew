@@ -6,7 +6,7 @@ import AddWhite from "../../assets/addWhite.svg";
 import EditIcon from "../../assets/EditIcon.svg";
 import imageIcon from "../../assets/image.svg";
 import MenuIcon from "../../assets/MenuIcon2.svg";
-import CheckCircle from "../../assets/check_circle.svg";
+import CheckCircle from "../../assets/check_circle_.svg";
 import WarningIcon from "../../assets/WarningModal.svg";
 import DeleteSuccess from "../../assets/DeleteSuccess.svg";
 import Trash from "../../assets/delete.svg";
@@ -758,7 +758,7 @@ const MenuSettings = () => {
                 <div className="flex items-center gap-[16px]">
                   <label
                     htmlFor="fileInput"
-                    className="w-[72px] border border-dashed p-[20px] border-[#5855B3] cursor-pointer"
+                    className="w-[72px] border border-dashed p-[20px] border-[#121212] cursor-pointer"
                   >
                     <input
                       type="file"

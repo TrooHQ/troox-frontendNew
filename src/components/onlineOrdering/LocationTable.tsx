@@ -65,7 +65,6 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
 
   const handleConfirmDelete = async () => {
     if (selectedBranch !== null) {
-      console.log(selectedBranch, "selectedBranch");
       const branchId = selectedBranch._id;
       try {
         setLoading(true);
@@ -89,7 +88,6 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
       }
     }
   };
-  console.log(selectedBranch, "selectedBranch");
   const handleEditClick = () => {
     setFormData({
       state: selectedBranch?.state || "",
@@ -250,6 +248,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
               type="text"
               label="Support link (Optional)"
               value={formData.support_link}
+              readOnly={true}
               onChange={(value) =>
                 setFormData({ ...formData, support_link: value })
               }

@@ -91,7 +91,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search outlet"
-            className="p-2 w-full border border-[#929292] bg-[#F8F8F8] focus:outline-none rounded-full"
+            className="p-2 w-full border border-[#929292] bg-grey700 focus:outline-none rounded-full"
             style={{ paddingLeft: "2.5rem" }}
           />
           <IoMdSearch className="absolute text-2xl top-1/2 left-2 transform -translate-y-1/2 text-[#929292]" />
@@ -100,7 +100,7 @@ const CustomSelect3: React.FC<CustomSelect3Props> = ({
       <div
         className={`border border-gray-300 ${
           BG ? BG : "bg-white"
-        } p-2 focus:outline-[#5955B3] ${
+        } p-2 focus:outline-[#121212] ${
           text ? text : "text-black"
         } w-full rounded flex justify-between items-center gap-[8px] cursor-pointer ${
           searchable ? "rounded-b-none" : "rounded"

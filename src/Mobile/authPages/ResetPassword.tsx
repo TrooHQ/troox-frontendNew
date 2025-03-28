@@ -43,7 +43,7 @@ const ResetPassword = () => {
           />
           <p className="  text-[14px]">Both passwords must match</p>
           <Link to="/password-changed">
-            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+            <button className="bg-grey700 w-full text-center text-white py-3 rounded">
               Reset password
             </button>
           </Link>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, NavLink, useNavigate } from "react-router-dom";
+import { useLocation, NavLink, useNavigate, Link } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import LogoMini from "../../assets/logo-mini-icon.svg";
 import OverviewIcon from "../../assets/OverviewIcon.svg";
@@ -19,6 +19,8 @@ import {
   ArrowDropDown,
   Search,
 } from "@mui/icons-material";
+import GoGrubLogo from "../../assets/business_logo.svg";
+
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
@@ -29,6 +31,7 @@ import {
 } from "../../slices/branchSlice";
 import { clearUserData } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
+import BlinkerSubscribe from "../BlinkerSubscribe";
 
 interface MenuItem {
   subTitle?: string;
@@ -134,6 +137,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         {
           title: "Order history",
           link: "/order-history",
+        },
+        {
+          title: "Customer Data",
+          link: "/customer-data",
         },
       ],
     },
@@ -277,27 +284,33 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     <div
       className={`p-2 ${
         open ? "w-[230px]" : "w-20"
-      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#ebebeb]`}
+      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#f8f8f8]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div className="grid gap-3 items-center">
         <div className="flex gap-x-4 mt-4 items-center justify-center">
-          <img
-            src={userData?.business_logo ? userData.business_logo : Logo}
-            alt="logo"
-            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-              !open ? "hidden" : "block"
-            } `}
-            onClick={() => setOpen(!open)}
-          />
-          <img
-            alt="logo-mini"
-            src={LogoMini}
-            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-              !open ? "block" : "hidden"
-            } `}
-            onClick={() => setOpen(!open)}
-          />
+          {userData?.onboarding_type === "gogrub" ? (
+            <img src={GoGrubLogo} alt="Logo" className="mb-8" />
+          ) : (
+            <>
+              <img
+                src={userData?.business_logo ? userData.business_logo : Logo}
+                alt="logo"
+                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+                  !open ? "hidden" : "block"
+                } `}
+                onClick={() => setOpen(!open)}
+              />
+              <img
+                alt="logo-mini"
+                src={LogoMini}
+                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+                  !open ? "block" : "hidden"
+                } `}
+                onClick={() => setOpen(!open)}
+              />
+            </>
+          )}
         </div>
 
         <div
@@ -404,6 +417,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <hr className="h-[2px] bg-[#929292] my-3" />
         </div>
       </div>
+
+      {/* Subscribe */}
+      {/* <Link to="/subscription-plan">
+        <div className="flex items-center gap-3 justify-start">
+          <span className="text-[16px] font-medium ml-3.5">Subscribe</span>
+          <BlinkerSubscribe />
+        </div>
+      </Link> */}
       <ul className="pt-2 pl-[1px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
@@ -416,7 +437,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 } text-purple200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
                   isMenuItemActive(menu.link || "", menu.subMenu)
-                    ? "  bg-[#d3d3d3] font-bold text-[16px] text-black "
+                    ? "  bg-[#d3d3d3] font-semibold text-[16px] text-[#606060] "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) &&
                       !menu.subTitle
                     ? " "
@@ -438,7 +459,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                         ? "bold"
                         : "normal",
                       color: isMenuItemActive(menu.link || "", menu.subMenu)
-                        ? "black"
+                        ? ""
                         : "initial",
                     }}
                   />
@@ -447,7 +468,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   <span
                     className={`${
                       !open && "hidden"
-                    } origin-left duration-200 text-[#000]`}
+                    } origin-left duration-200 text-[#606060]`}
                   >
                     {menu.title}
                     {menu.subTitle}
@@ -494,13 +515,20 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
       <div className="mb-10">
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
-        <p className="text-[10px] font-medium ml-3.5">You are using the</p>
-        <button className="ml-0 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1">
-          <span className="text-white text-base font-semibold mr-2">
-            Standard Plan
-          </span>
-          <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
-        </button>
+        <p className="text-[10px] font-medium ml-3.5"></p>
+        <div className="relative">
+          <Link to="/subscription-plan">
+            <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
+              <span className="text-white text-base font-semibold mr-2">
+                Subscribe
+              </span>
+              <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
+              <div className="absolute left-[64%] top-0 w-2 h-2 bg-red-500 rounded-full animate-blink">
+                <BlinkerSubscribe />
+              </div>
+            </button>
+          </Link>
+        </div>
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
       </div>
       {/* Add the Logout item separately at the bottom */}

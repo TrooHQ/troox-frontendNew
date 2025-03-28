@@ -192,7 +192,7 @@ const DemoPage = () => {
               <button
                 disabled={loading}
                 type="submit"
-                className="text-[16px] font-[500] py-[10px] rounded-[5px] bg-[#5955B3] text-white w-full"
+                className="text-[16px] font-[500] py-[10px] rounded-[5px] bg-[#121212] text-white w-full"
               >
                 Submit
               </button>

@@ -2,12 +2,22 @@ import { CheckCircle, ContentCopy } from "@mui/icons-material";
 import { useState } from "react";
 import fileDownload from "../../assets/file_download.svg";
 import { truncateText } from "../../utils/truncateText";
+import CustomInput from "../inputFields/CustomInput";
+import CustomTextarea from "../inputFields/CustomTextarea";
 
 interface UploadedLogoDisplayProps {
   logo: any;
   handleUploadLogo: any;
   onlineOrderingLink: any;
   loading: any;
+  handleGenerateClick: any;
+  businessFullName: any;
+  setBusinessFullName: any;
+  simpleDescription: any;
+  setSimpleDescription: any;
+  instruction: any;
+  setInstruction: any;
+  showForm: any;
 }
 
 const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
@@ -15,6 +25,14 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
   handleUploadLogo,
   onlineOrderingLink,
   loading,
+  handleGenerateClick,
+  businessFullName,
+  setBusinessFullName,
+  simpleDescription,
+  setSimpleDescription,
+  instruction,
+  setInstruction,
+  showForm,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -35,6 +53,18 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
     document.body.removeChild(link);
   };
 
+  const handleBusinessFullNameChange = (newValue: string) => {
+    setBusinessFullName(newValue);
+  };
+
+  const handleSimpleDescriptionChange = (newValue: string) => {
+    setSimpleDescription(newValue);
+  };
+
+  const handleInstructionChange = (newValue: string) => {
+    setInstruction(newValue);
+  };
+
   return (
     <div className="flex flex-col gap-4 items-start justify-start w-[70%] m-auto py-10">
       {/* Logo */}
@@ -51,15 +81,18 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
       {/* Text */}
       <div className="px-6 py-3 border border-[#b6b6b6] rounded-lg w-[80%] flex gap-[50px] bg-[rgba(238,238,247,0.40)] mt-8">
         {/* <div> */}
+
         <div className="min-w-[50%]">
-          <h3 className="text-[#5955B3] text-start text-[16px] font-medium leading-[26px] tracking-[0.15px]">
+          <h3 className="text-[#121212] text-start text-[16px] font-medium leading-[26px] tracking-[0.15px]">
             Your Generated Link Is below
           </h3>
           <div className="flex items-center justify-start gap-2">
             <span className="text-[#121212] text-[16px] font-normal">
               {loading
                 ? "Loading..."
-                : truncateText(onlineOrderingLink?.url, 30)}
+                : onlineOrderingLink?.url
+                ? truncateText(onlineOrderingLink?.url, 30)
+                : "No link generated yet"}
             </span>
             {copied ? (
               <CheckCircle className="w-5 h-5 text-green-500" />
@@ -93,44 +126,48 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
                 className="w-[32px] h-[32px]"
               />
             </div>
-            {/* <IoMdDownload className="text-[#5955B3] cursor-pointer text-[22px]" /> */}
+            {/* <IoMdDownload className="text-[#121212] cursor-pointer text-[22px]" /> */}
           </div>
         </div>
         {/* </div> */}
       </div>
 
-      {/* Customize Link */}
-      {/* <div className="w-[80%] mt-8">
-        <p className="text-[#504DA3] text-[16px] font-medium mb-2">
-          Customize Your Link
-        </p>
-        <div className="flex gap-2 items-center border border-gray-300 rounded-md overflow-hidden shadow-sm w-full">
-          <span className="bg-gray-100 text-gray-500 px-3 py-2">
-            https://gogrub.com/
-          </span>
-          <input
+      {/* Description and instruction form */}
+      {showForm && (
+        <form className="w-4/5 mt-5 flex flex-col gap-4">
+          <CustomInput
             type="text"
-            placeholder="Please enter your preferred URL"
-            value={customLink}
-            onChange={(e) => setCustomLink(e.target.value)}
-            className="focus:outline-none px-2 py-2 text-gray-500 w-full"
+            label="Add Business Full Name *"
+            value={businessFullName}
+            onChange={handleBusinessFullNameChange}
+            className="border-gray-500"
+            fullWidth
           />
-        </div>
-        <div className="flex gap-4 mt-4">
+
+          <CustomTextarea
+            label="Add a simple description  *"
+            placeholder="E.g.  A top-rated restaurant serving fresh and delicious meals daily"
+            value={simpleDescription}
+            maxLength={4}
+            onChange={handleSimpleDescriptionChange}
+          />
+          <CustomTextarea
+            label="Add your instruction *"
+            placeholder="E.g. Orders are accepted from 12 PM to 5 PM, Monday to Friday. Tap the link to start receiving online orders."
+            value={instruction}
+            onChange={handleInstructionChange}
+            maxLength={4}
+          />
+
           <button
-            className="bg-[#5955B3] text-white py-2 px-6 rounded"
+            type="button"
+            className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded w-fit"
             onClick={handleGenerateClick}
           >
-            Generate link
+            {loading ? "Generating..." : "Generate  Your link"}
           </button>
-          <button
-            className="bg-white text-[#5955B3] border border-[#5955B3] py-2 px-6 rounded"
-            onClick={handleCancelClick}
-          >
-            Cancel
-          </button>
-        </div>
-      </div> */}
+        </form>
+      )}
     </div>
   );
 };

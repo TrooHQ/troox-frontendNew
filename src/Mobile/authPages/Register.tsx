@@ -70,7 +70,7 @@ const Register = () => {
           <div className=" ">
             <Link to="/business-profile">
               <button
-                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                className="bg-grey700 w-full text-center text-white py-3 rounded"
                 // disabled={loading}
               >
                 Create Account
@@ -80,7 +80,7 @@ const Register = () => {
             <div className=" flex items-center justify-center my-5">
               <div onClick={() => navigate(-1)} className=" ">
                 <button
-                  className=" font-[500] text-[16px] text-purple500 cursor-pointer"
+                  className=" font-[500] text-[16px] text-grey700 cursor-pointer"
                   // disabled={loading}
                 >
                   Go Back

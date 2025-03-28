@@ -10,6 +10,7 @@ interface PickupLocation {
   state: string;
   address: string;
   support_link: string;
+  canScheduleOrder?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -19,6 +20,7 @@ interface DeliveryDetails {
   created_by: string;
   fixedPrice: number;
   support_link: string;
+  canScheduleOrder?: boolean;
   state: string;
   createdAt: string;
   updatedAt: string;
@@ -48,12 +50,14 @@ interface AddPickupLocationPayload {
   state: string;
   pickup_addresses: string[];
   support_link: string;
+  canScheduleOrder: boolean;
 }
 
 interface DeliveryDetailsPayload {
   fixedPrice: number;
   support_link: string;
   state: string;
+  canScheduleOrder: boolean;
 }
 
 interface AssetState {

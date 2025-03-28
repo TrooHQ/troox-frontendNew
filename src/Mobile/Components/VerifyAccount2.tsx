@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
+
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
@@ -148,7 +149,7 @@ const VerifyAccount2 = () => {
             onClick={resendOTP}
           >
             <button
-              className=" font-[400] text-[16px] text-[#5955B3]"
+              className=" font-[400] text-[16px] text-[#121212]"
               disabled={loading}
             >
               Resend Code
