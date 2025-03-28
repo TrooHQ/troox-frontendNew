@@ -19,8 +19,6 @@ import {
   ArrowDropDown,
   Search,
 } from "@mui/icons-material";
-import GoGrubLogo from "../../assets/business_logo.svg";
-
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
@@ -289,28 +287,22 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     >
       <div className="grid gap-3 items-center">
         <div className="flex gap-x-4 mt-4 items-center justify-center">
-          {userData?.onboarding_type === "gogrub" ? (
-            <img src={GoGrubLogo} alt="Logo" className="mb-8" />
-          ) : (
-            <>
-              <img
-                src={userData?.business_logo ? userData.business_logo : Logo}
-                alt="logo"
-                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-                  !open ? "hidden" : "block"
-                } `}
-                onClick={() => setOpen(!open)}
-              />
-              <img
-                alt="logo-mini"
-                src={LogoMini}
-                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-                  !open ? "block" : "hidden"
-                } `}
-                onClick={() => setOpen(!open)}
-              />
-            </>
-          )}
+          <img
+            src={userData?.business_logo ? userData.business_logo : Logo}
+            alt="logo"
+            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+              !open ? "hidden" : "block"
+            } `}
+            onClick={() => setOpen(!open)}
+          />
+          <img
+            alt="logo-mini"
+            src={LogoMini}
+            className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
+              !open ? "block" : "hidden"
+            } `}
+            onClick={() => setOpen(!open)}
+          />
         </div>
 
         <div
@@ -519,12 +511,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <div className="flex items-start justify-start gap-0">
           <div>
             <Link to="/subscription-plan">
-              <button className="ml-4 px-2.5 py-[6px] bg-[#fff] border  border-[#DB7F3B] rounded-[4px] mt-1 text-center">
-                <span className="text-[#DB7F3B] text-base font-semibold mr-2">
+              <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
+                <span className="text-white text-base font-semibold mr-2">
                   Subscribe
                 </span>
                 <ArrowCircleRightOutlined
-                  sx={{ color: "var(--white, #DB7F3B)" }}
+                  sx={{ color: "var(--white, #FFF)" }}
                 />{" "}
               </button>
             </Link>
