@@ -50,6 +50,7 @@ import OnlineOrdering from "./components/Dashboard/OnlineOrdering.tsx";
 import QROrdering from "./components/Dashboard/QROrdering.tsx";
 import CustomerData from "./components/Dashboard/CustomerData.tsx";
 import PricingPage from "./pages/pricing/PricingPage.tsx";
+import UpgradeSubscription from "./pages/pricing/UpgradeSubscription.tsx";
 
 export default function App() {
   return (
@@ -88,6 +89,10 @@ export default function App() {
           <Route path="/order-history" element={<OrderHistory />} />
           <Route path="/customer-data" element={<CustomerData />} />
           <Route path="/subscription-plan" element={<PricingPage />} />
+          <Route
+            path="/upgrade-subscription"
+            element={<UpgradeSubscription />}
+          />
           <Route path="/overview" element={<Overview />} />
           <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
