@@ -18,6 +18,7 @@ import { DropdownMenu } from "./DropdownMenuOpenTickets";
 import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { truncateText } from "../../utils/truncateText";
+import { RootState } from "@/src/store/store";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -31,6 +32,7 @@ const Tickets = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userDetails = useSelector((state: any) => state.user);
+  const { userData } = useSelector((state: RootState) => state.user);
 
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [refundType, setRefundType] = useState<string>("");
@@ -210,113 +212,123 @@ const Tickets = () => {
             </div>
 
             <div className="">
-              <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
-                  Open tickets
-                </p>
+              {userData?.onboarding_type !== "gogrub" && (
+                <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
+                  <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
+                    Open tickets
+                  </p>
 
-                <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
-                  <p className=" text-[14px] text-[#121212]">Date</p>
-                  <p className=" text-[14px] text-[#121212]">Time</p>
-                  <p className=" text-[14px] text-[#121212]">Table No</p>
-                  <p className=" text-[14px] text-[#121212]">Order No</p>
-                  <p className=" text-[14px] text-[#121212]">Customer </p>
-                  <p className=" text-[14px] text-[#121212]">Waiter </p>
-                  <p className=" text-[14px] text-[#121212]">Channel </p>
-                  <p className=" text-[14px] text-[#121212]">Status </p>
-                  <p className=" text-[14px] text-[#121212]">Bill </p>
-                  <p className=" text-[14px] text-[#121212]">Actions </p>
-                </div>
-                {isLoading ? (
-                  <p className="px-8">Loading...</p>
-                ) : data.length === 0 ? (
-                  <p className="px-8">No order available</p>
-                ) : (
-                  data.map((item, index) => (
-                    <div
-                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${
-                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                      }`}
-                      key={index}
-                    >
-                      <p className=" " onClick={handleTicketMenu}>
-                        {item.createdAt.slice(0, 10)}
-                      </p>
-                      <p className=" " onClick={handleTicketMenu}>
-                        {item.createdAt.slice(11, 16)}
-                      </p>
-                      <p onClick={handleTicketMenu}>
-                        {item.table_number || "-"}
-                      </p>
-                      <p onClick={handleTicketMenu}>
-                        {item.order_number || "-"}
-                      </p>
+                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
+                    <p className=" text-[14px] text-[#121212]">Date</p>
+                    <p className=" text-[14px] text-[#121212]">Time</p>
+                    <p className=" text-[14px] text-[#121212]">Table No</p>
+                    <p className=" text-[14px] text-[#121212]">Order No</p>
+                    <p className=" text-[14px] text-[#121212]">Customer </p>
+                    <p className=" text-[14px] text-[#121212]">Waiter </p>
+                    <p className=" text-[14px] text-[#121212]">Channel </p>
+                    <p className=" text-[14px] text-[#121212]">Status </p>
+                    <p className=" text-[14px] text-[#121212]">Bill </p>
+                    <p className=" text-[14px] text-[#121212]">Actions </p>
+                  </div>
+                  {isLoading ? (
+                    <p className="px-8">Loading...</p>
+                  ) : data.length === 0 ? (
+                    <p className="px-8">No order available</p>
+                  ) : (
+                    data.map((item, index) => (
+                      <div
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${
+                          index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        }`}
+                        key={index}
+                      >
+                        <p className=" " onClick={handleTicketMenu}>
+                          {item.createdAt.slice(0, 10)}
+                        </p>
+                        <p className=" " onClick={handleTicketMenu}>
+                          {item.createdAt.slice(11, 16)}
+                        </p>
+                        <p onClick={handleTicketMenu}>
+                          {item.table_number || "-"}
+                        </p>
+                        <p onClick={handleTicketMenu}>
+                          {item.order_number || "-"}
+                        </p>
 
-                      {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
+                        {/* <p onClick={handleTicketMenu}>{item.date}</p> */}
 
-                      <p onClick={handleTicketMenu}>
-                        {item.customer_name
-                          ? truncateText(
-                              item.customer_name.charAt(0).toUpperCase() +
-                                item.customer_name.slice(1),
-                              10
-                            )
-                          : ""}
-                      </p>
-                      <p>{item.waiter || "-"}</p>
-                      <p>{item.channel || ""}</p>
-                      <div className="flex items-center justify-center gap-[10px]">
-                        {item.status?.toLowerCase() === "cancelled" && (
-                          <img src={red} alt="" className="w-[12px] h-[12px]" />
-                        )}
-                        {item.status === "Ordered" && (
-                          <img src={red} alt="" className="w-[12px] h-[12px]" />
-                        )}
-                        {item.status === "Served" && (
-                          <img
-                            src={green}
-                            alt=""
-                            className="w-[12px] h-[12px]"
-                          />
-                        )}
-                        {item.status === "Ready" && (
-                          <img
-                            src={orange}
-                            alt=""
-                            className="w-[12px] h-[12px]"
-                          />
-                        )}
-                        {item.status === "Pending" && (
-                          <img
-                            src={orange}
-                            alt=""
-                            className="w-[12px] h-[12px]"
-                          />
-                        )}
-                        <p className="capitalize">{item.status}</p>
-                      </div>
-                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                      <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                        <div
-                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                          onClick={() => toggleMenu(index)}
-                        >
-                          <img
-                            src={More}
-                            alt="More Options"
-                            className="w-[5px]"
-                          />
+                        <p onClick={handleTicketMenu}>
+                          {item.customer_name
+                            ? truncateText(
+                                item.customer_name.charAt(0).toUpperCase() +
+                                  item.customer_name.slice(1),
+                                10
+                              )
+                            : ""}
+                        </p>
+                        <p>{item.waiter || "-"}</p>
+                        <p>{item.channel || ""}</p>
+                        <div className="flex items-center justify-center gap-[10px]">
+                          {item.status?.toLowerCase() === "cancelled" && (
+                            <img
+                              src={red}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                            />
+                          )}
+                          {item.status === "Ordered" && (
+                            <img
+                              src={red}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                            />
+                          )}
+                          {item.status === "Served" && (
+                            <img
+                              src={green}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                            />
+                          )}
+                          {item.status === "Ready" && (
+                            <img
+                              src={orange}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                            />
+                          )}
+                          {item.status === "Pending" && (
+                            <img
+                              src={orange}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                            />
+                          )}
+                          <p className="capitalize">{item.status}</p>
                         </div>
-                        {activeMenuIndex === index && (
-                          <DropdownMenu
-                            handleVoidOrderMenu={() => handleVoidOrderMenu()}
-                          />
-                        )}
+                        <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                        <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
+                          <div
+                            className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                            onClick={() => toggleMenu(index)}
+                          >
+                            <img
+                              src={More}
+                              alt="More Options"
+                              className="w-[5px]"
+                            />
+                          </div>
+                          {activeMenuIndex === index && (
+                            <DropdownMenu
+                              handleVoidOrderMenu={() => handleVoidOrderMenu()}
+                            />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                )}
-              </div>
+                    ))
+                  )}
+                </div>
+              )}
 
               {activeMenuIndex !== null ? (
                 <VoidOrderMenu
@@ -336,7 +348,9 @@ const Tickets = () => {
 
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
                 <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
-                  Closed tickets
+                  {userData?.onboarding_type !== "gogrub"
+                    ? " Closed tickets"
+                    : "Tickets"}
                 </p>
 
                 <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">

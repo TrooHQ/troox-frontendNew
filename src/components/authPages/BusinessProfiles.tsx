@@ -36,7 +36,9 @@ const BusinessProfiles: React.FC = () => {
             sampleResponse.data.business_email
           );
           localStorage.setItem("userId", sampleResponse.data.user_id);
-          toast.success("Business information saved successfully");
+          toast.success(
+            `Business information saved successfully. Token: ${sampleResponse.data.email_verification_token}`
+          );
 
           // Navigate to verify-account with the query parameter if coming from GoGrub
           if (isFromGoGrub) {
