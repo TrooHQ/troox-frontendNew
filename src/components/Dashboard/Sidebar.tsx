@@ -511,7 +511,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <div className="flex items-start justify-start gap-0">
           <div>
             <Link to="/subscription-plan">
-              <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
+              <button className="ml-4 px-5 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
                 <span className="text-white text-base font-semibold mr-2">
                   Subscribe
                 </span>
