@@ -35,7 +35,7 @@ const OnlineOrdering = () => {
           setActiveComponent={setActiveComponent}
         />
         <div className="flex">
-          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-[700px]">
+          <div className="w-full mt-4 border border-[#B6B6B6] pt-5 px-6 h-[700px] overflow-scroll">
             {renderActiveComponent()}
           </div>
         </div>
