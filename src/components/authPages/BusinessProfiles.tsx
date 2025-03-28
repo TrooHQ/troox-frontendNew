@@ -24,10 +24,10 @@ const BusinessProfiles: React.FC = () => {
       setLoading(true);
       // Send request to sample endpoint
       try {
-        const sampleResponse = await axios.post(
-          `${SERVER_DOMAIN}/onboardBusiness/`,
-          customPayload
-        );
+        const endpoint = isFromGoGrub
+          ? `${SERVER_DOMAIN}/onboardGoGrubBusiness/`
+          : `${SERVER_DOMAIN}/onboardBusiness/`;
+        const sampleResponse = await axios.post(endpoint, customPayload);
 
         if (sampleResponse.status === 200) {
           localStorage.setItem("businessId", sampleResponse.data.business_id);
@@ -62,7 +62,15 @@ const BusinessProfiles: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("coming-from") === "gogrub") {
-      setCustomPayload({ ...transformedState, onboarding_type: "gogrub" });
+      const monthlyAverageSales = params.get("monthlySales");
+      const planName = params.get("selectedPlan");
+
+      setCustomPayload({
+        ...transformedState,
+        onboarding_type: "gogrub",
+        monthlyAverageSales,
+        planName,
+      });
       setIsFromGoGrub(true);
     }
   }, [transformedState]);
