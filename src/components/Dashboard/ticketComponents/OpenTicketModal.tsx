@@ -95,26 +95,27 @@ const OpenTicketModal = ({
                   <p className="text-end text-[14px] text-[#121212]">Price</p>
                   <p className=" text-[14px] text-[#121212]"></p>
                 </div>
-                {openTicketData.menu_items.map((item: any, index: any) => (
-                  <div
-                    className={`text-center py-[14px] px-[32px] grid grid-cols-3 items-center font-[500] text-[14px] text-[#414141] ${
-                      index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                    }`}
-                    key={index}
-                  >
-                    <p className="text-start">{item.name}</p>
-                    <p className="text-end">&#x20A6;{item.totalPrice}</p>
-                    <div className="flex items-center justify-end">
-                      <button
-                        onClick={handleTicketMenu}
-                        className="flex items-center justify-center py-[6px] px-[10px] bg-[#e27da2] text-[12px] font-[500] text-white rounded-[5px] w-[32%]"
-                      >
-                        <RestartAlt className="w-[20px] h-[20px]" />
-                        Refund
-                      </button>
+                {openTicketData &&
+                  openTicketData?.menu_items?.map((item: any, index: any) => (
+                    <div
+                      className={`text-center py-[14px] px-[32px] grid grid-cols-3 items-center font-[500] text-[14px] text-[#414141] ${
+                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                      }`}
+                      key={index}
+                    >
+                      <p className="text-start">{item.name}</p>
+                      <p className="text-end">&#x20A6;{item.totalPrice}</p>
+                      <div className="flex items-center justify-end">
+                        <button
+                          onClick={handleTicketMenu}
+                          className="flex items-center justify-center py-[6px] px-[10px] bg-[#e27da2] text-[12px] font-[500] text-white rounded-[5px] w-[32%]"
+                        >
+                          <RestartAlt className="w-[20px] h-[20px]" />
+                          Refund
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           </div>

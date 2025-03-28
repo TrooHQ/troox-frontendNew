@@ -64,16 +64,18 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
         rows={rows}
         placeholder={placeholder}
       />
-      <label
-        className={`absolute transition-all duration-300 cursor-text ${
-          isFocused
-            ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
-            : "top-2 left-4 bg-white text-grey200"
-        } ${error ? "text-red-500" : ""}`}
-        onClick={handleLabelClick}
-      >
-        {label}
-      </label>
+      {(!placeholder || isFocused || value) && (
+        <label
+          className={`absolute transition-all duration-300 cursor-text ${
+            isFocused
+              ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
+              : "top-2 left-4 bg-white text-grey200"
+          } ${error ? "text-red-500" : ""}`}
+          onClick={handleLabelClick}
+        >
+          {label}
+        </label>
+      )}
     </div>
   );
 };
