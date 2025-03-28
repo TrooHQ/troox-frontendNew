@@ -16,7 +16,7 @@ const PricingPage = () => {
       price: "₦9,000",
       info: "Billed quaterly (N3,000 per month)",
       note: "Note: A 5% transaction fee applies for standalone GoGrub users.",
-      buttonText: "Select Plan",
+      buttonText: "Get Started",
       isEnterprise: false,
     },
     {
@@ -25,7 +25,7 @@ const PricingPage = () => {
       price: "₦15,000",
       info: "Billed quaterly (N5,000 per month)",
       note: "Note: A 5% transaction fee applies for standalone GoGrub users.",
-      buttonText: "Select Plan",
+      buttonText: "Get Started",
       isEnterprise: false,
     },
     {
@@ -35,17 +35,17 @@ const PricingPage = () => {
       price: "₦45,000",
       info: "Billed quaterly (N15,000 per month)",
       note: "Note: A 5% transaction fee applies for standalone GoGrub users.",
-      buttonText: "Select Plan",
+      buttonText: "Get Started",
       isEnterprise: false,
     },
     {
       name: "Enterprise",
       description:
         "Entry-level plan offering core features, ideal for individuals or small teams. Limited access to advanced tools and support.",
-      price: "Contact Us",
-      info: "Select Plan with a simple website, record sales & share invoices/receipts for your new business.",
+      price: "",
+      info: "",
       note: "Note: A 5% transaction fee applies for standalone GoGrub users.",
-      buttonText: "Select Plan",
+      buttonText: "Contact Us",
       isEnterprise: true,
     },
   ];
@@ -120,7 +120,7 @@ const PricingPage = () => {
             {pricingPlans.map((plan) => (
               <div
                 key={plan.name}
-                className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[30px]"
+                className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[30px] md:width[270px] md:h-[350px] relative"
               >
                 <div className="space-y-[20px]">
                   <div className="space-y-[12px]">
@@ -132,29 +132,27 @@ const PricingPage = () => {
                     </p>
                   </div>
                   <div>
-                    <div className="pb-[16px] border-b border-[#000000]">
+                    <div className="pb-[4px]">
                       {plan.isEnterprise ? (
-                        <button className="w-full border border-[#000000] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#121212] text-center">
-                          {plan.price}
-                        </button>
+                        // <button className="w-full border border-[#000000] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#121212] text-center">
+                        //   {plan.price}
+                        // </button>
+                        ""
                       ) : (
                         <>
                           <p className="text-[#121212] text-[28px] font-[500]">
                             {plan.price}
                           </p>
-                          <p className="text-[14px] font-[400]">
-                            Billed {activeTab.toLowerCase()} (N14,000 per month)
-                          </p>
                         </>
                       )}
                     </div>
-                    <p className="pt-[16px] font-[400] text-[14px] text-[#121212]">
+                    <p className="pt-[0px] font-[400] text-[14px] text-[#121212]">
                       {plan.info}
                     </p>
                   </div>
                 </div>
 
-                <button className="w-full mt-[60px] border border-[#000000] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#121212] text-center">
+                <button className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]">
                   {plan.buttonText}
                 </button>
               </div>

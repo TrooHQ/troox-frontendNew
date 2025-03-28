@@ -31,7 +31,7 @@ import {
 } from "../../slices/branchSlice";
 import { clearUserData } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
-import BlinkerSubscribe from "../BlinkerSubscribe";
+// import BlinkerSubscribe from "../BlinkerSubscribe";
 
 interface MenuItem {
   subTitle?: string;
@@ -419,12 +419,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       </div>
 
       {/* Subscribe */}
-      <Link to="/subscription-plan">
+      {/* <Link to="/subscription-plan">
         <div className="flex items-center gap-3 justify-start">
           <span className="text-[16px] font-medium ml-3.5">Subscribe</span>
           <BlinkerSubscribe />
         </div>
-      </Link>
+      </Link> */}
       <ul className="pt-2 pl-[1px] grid gap-[10px]">
         {selectedMenu.map((menu, index) => (
           <div key={index}>
