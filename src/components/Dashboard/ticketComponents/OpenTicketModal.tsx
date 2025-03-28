@@ -95,7 +95,7 @@ const OpenTicketModal = ({
                   <p className="text-end text-[14px] text-[#121212]">Price</p>
                   <p className=" text-[14px] text-[#121212]"></p>
                 </div>
-                {openTicketData.menu_items.map((item: any, index: any) => (
+                {openTicketData?.menu_items.map((item: any, index: any) => (
                   <div
                     className={`text-center py-[14px] px-[32px] grid grid-cols-3 items-center font-[500] text-[14px] text-[#414141] ${
                       index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
