@@ -29,7 +29,7 @@ import {
 } from "../../slices/branchSlice";
 import { clearUserData } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
-// import BlinkerSubscribe from "../BlinkerSubscribe";
+import BlinkerSubscribe from "../BlinkerSubscribe";
 
 interface MenuItem {
   subTitle?: string;
@@ -508,14 +508,19 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       <div className="mb-10">
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
         <p className="text-[10px] font-medium ml-3.5"></p>
-        <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
+        <div className="relative">
           <Link to="/subscription-plan">
-            <span className="text-white text-base font-semibold mr-2">
-              Subscribe
-            </span>
+            <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
+              <span className="text-white text-base font-semibold mr-2">
+                Subscribe
+              </span>
+              <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
+              <div className="absolute left-[64%] top-0 w-2 h-2 bg-red-500 rounded-full animate-blink">
+                <BlinkerSubscribe />
+              </div>
+            </button>
           </Link>
-          <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
-        </button>
+        </div>
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
       </div>
       {/* Add the Logout item separately at the bottom */}
