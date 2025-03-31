@@ -5,7 +5,6 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "@/src/store/store";
 import { useSelector } from "react-redux";
 import Modal from "../../components/Modal";
-import Close from "../../assets/CloseIcon.svg";
 
 interface Plan {
   name: string;
