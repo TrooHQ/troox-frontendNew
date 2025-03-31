@@ -52,6 +52,7 @@ import CustomerData from "./components/Dashboard/CustomerData.tsx";
 import PricingPage from "./pages/pricing/PricingPage.tsx";
 import UpgradeSubscription from "./pages/pricing/UpgradeSubscription.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
+import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 
 export default function App() {
   return (
@@ -95,6 +96,7 @@ export default function App() {
             element={<UpgradeSubscription />}
           />
           <Route path="/verified-payment" element={<VerifiedPayment />} />
+          <Route path="/payout-details" element={<PayoutDetails />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
