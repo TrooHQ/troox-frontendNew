@@ -4,6 +4,8 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "@/src/store/store";
 import { useSelector } from "react-redux";
+import Modal from "../../components/Modal";
+import Close from "../../assets/CloseIcon.svg";
 
 interface Plan {
   name: string;
@@ -14,8 +16,9 @@ interface Plan {
 
 const UpgradeSubscription: React.FC = () => {
   const { userData } = useSelector((state: RootState) => state.user);
-
+  const [isOpen, setIsOpen] = useState(false);
   console.log(userData);
+  const [currentPlan, setCurrentPlan] = useState<string>("");
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [plans, setPlans] = useState<Plan[]>([]);
   const [openFeatures, setOpenFeatures] = useState<string | null>(null);
@@ -63,7 +66,16 @@ const UpgradeSubscription: React.FC = () => {
         const response = await axios.get(
           `${SERVER_DOMAIN}/plan/getPlans?secretKey=trooAdminDev&planType=gogrub`
         );
-        setPlans(response.data.data);
+        const plansData = response.data.data;
+        setPlans(plansData);
+
+        const quarterlyPlan = plansData.find(
+          (plan: Plan) => plan.name === "gogrub quarterly plan"
+        );
+        if (quarterlyPlan) {
+          setCurrentPlan(quarterlyPlan.name);
+          setSelectedPlan(quarterlyPlan.name);
+        }
       } catch (error) {
         console.error("Error fetching plans data:", error);
       }
@@ -77,9 +89,9 @@ const UpgradeSubscription: React.FC = () => {
       <p className="text-[24px] font-[500] text-[#414141]">Loading plans...</p>
     </div>
   ) : (
-    <div className=" h-full transition-all duration-500 ease-in-out bg-[#EFEFEF]">
-      <div className="max-w-[900px] h-[800px]  mx-auto w-full bg-white border border-[#E7E7E7]">
-        <div className="font-GeneralSans   w-full transition-all duration-500 ease-in-out  max-w-[700px]  mx-auto">
+    <div className=" h-full transition-all duration-500 ease-in-out bg-[#EFEFEF] py-[5%]">
+      <div className="max-w-[900px] min-h-[800px] mx-auto w-full bg-white border border-[#E7E7E7] py-[50px]">
+        <div className="font-GeneralSans w-full transition-all duration-500 ease-in-out max-w-[700px] mx-auto">
           <div className="space-y-[28px] text-center">
             <p className="font-[500] text-[#0D0D0D] text-[20px] lg:text-[28px] transition-all duration-500 ease-in-out">
               Upgrade Subscription
@@ -93,7 +105,7 @@ const UpgradeSubscription: React.FC = () => {
             {plans.map((plan, index) => (
               <div
                 key={index}
-                className={`p-[30px] rounded-[10px] border ${
+                className={`px-[30px] py-[22px] rounded-[10px] border ${
                   selectedPlan === plan.name
                     ? "border-[#FF4F00]"
                     : "border-[#929292]"
@@ -128,17 +140,25 @@ const UpgradeSubscription: React.FC = () => {
                           (plan.name.includes("yearly") ? "30,000" : "10,000")}
                       </p>
                     </div>
-                    <p
-                      className="font-[600] text-[18px] text-[#FF4F00] pt-[40px] cursor-pointer transition-all duration-500 ease-in-out"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToggleFeatures(plan.name);
-                      }}
-                    >
-                      {openFeatures === plan.name
-                        ? "Hide Features"
-                        : "View Features"}
-                    </p>
+                    <div className=" pt-[40px] flex items-center justify-between">
+                      <p
+                        className="font-[600] text-[18px] text-[#FF4F00] cursor-pointer transition-all duration-500 ease-in-out"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleFeatures(plan.name);
+                        }}
+                      >
+                        {openFeatures === plan.name
+                          ? "Hide Features"
+                          : "View Features"}
+                      </p>
+
+                      {plan.name === currentPlan && (
+                        <p className=" p-[10px] rounded-full bg-[#FF4F00] font-[700] text-[12px] text-[#FFFFFF]  transition-all duration-500 ease-in-out">
+                          Current Plan
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -192,12 +212,13 @@ const UpgradeSubscription: React.FC = () => {
           </div>
 
           <button
-            className=" mt-[50px] w-full max-w-[500px] mx-auto flex items-center justify-center bg-[#0D0D0D] border border-[#0D0D0D] px-[10px] py-[13px] rounded-[5px] text-white text-[16px] font-[500] transition-all duration-500 ease-in-out"
+            className="mt-[50px] w-full max-w-[500px] mx-auto flex items-center justify-center bg-[#0D0D0D] border border-[#0D0D0D] px-[10px] py-[13px] rounded-[5px] text-white text-[16px] font-[500] transition-all duration-500 ease-in-out"
             disabled={!selectedPlan}
             onClick={() => {
               if (!selectedPlan) {
                 alert("Please select a plan before proceeding.");
-                return;
+              } else {
+                setIsOpen(true);
               }
             }}
           >
@@ -205,6 +226,33 @@ const UpgradeSubscription: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[372px]">
+          <div className=" text-center">
+            <p className="text-[24px] font-[500] text-purple500">Payment</p>
+            <p className="text-[16px] font-[400] text-grey500">
+              Make payment to selected plan
+            </p>
+            <div className="flex items-center justify-center gap-4 mt-[50px]">
+              <div
+                className="border cursor-pointer border-[#FF4F00] rounded px-[24px] py-[10px] font-[600] text-purple500"
+                onClick={() => setIsOpen(false)}
+              >
+                <p className="font-[500] text-[16px] text-[#FF4F00] cursor-pointer">
+                  Cancel
+                </p>
+              </div>
+              <div
+                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+                onClick={() => setIsOpen(true)}
+              >
+                <p className="text-[16px]">Proceed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
