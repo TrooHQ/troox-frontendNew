@@ -51,6 +51,7 @@ import QROrdering from "./components/Dashboard/QROrdering.tsx";
 import CustomerData from "./components/Dashboard/CustomerData.tsx";
 import PricingPage from "./pages/pricing/PricingPage.tsx";
 import UpgradeSubscription from "./pages/pricing/UpgradeSubscription.tsx";
+import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 
 export default function App() {
   return (
@@ -93,6 +94,7 @@ export default function App() {
             path="/upgrade-subscription"
             element={<UpgradeSubscription />}
           />
+          <Route path="/verified-payment" element={<VerifiedPayment />} />
           <Route path="/overview" element={<Overview />} />
           <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />

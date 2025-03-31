@@ -8,6 +8,7 @@ import MenuIcon from "../../assets/menuIcon.svg";
 import RestaurantDetailsIcon from "../../assets/restaurantDetails.svg";
 import ManageTablesIcon from "../../assets/manageTableIcon.svg";
 import AccountCircleIcon from "../../assets/account_circle.svg";
+import Upgrade from "../../assets/upgrade.svg";
 import HomeIcon from "../../assets/troo-logo-white.png";
 import ManageUsersIcon from "../../assets/manageUsers.svg";
 import HubIcon from "../../assets/hub.svg";
@@ -113,7 +114,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       }
     });
   }, [location.pathname]);
-
+  const currentPlanName = sessionStorage.getItem("currentPlanName");
+  console.log(currentPlanName);
   const commonMenu: MenuItem[] = [
     {
       subTitle: "RESTAURANT",
@@ -233,6 +235,16 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       icon: AccountCircleIcon,
       link: "/profile-page",
     },
+    ...(currentPlanName
+      ? [
+          {
+            title: "Upgrade Plan",
+            gap: false,
+            icon: Upgrade,
+            link: "/upgrade-subscription",
+          },
+        ]
+      : []),
     // {
     //   title: "Logout",
     //   gap: true,
@@ -519,13 +531,15 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
           <Link
             to={`${
-              userData?.onboarding_type === "gogrub"
+              userData?.onboarding_type === "gogrub" && !currentPlanName
                 ? "/upgrade-subscription"
                 : "/subscription-plan"
             }`}
           >
-            <span className="text-white text-base font-semibold mr-2">
-              Subscribe
+            <span className="text-white text-base font-semibold mr-2 capitalize">
+              {userData?.onboarding_type === "gogrub" && currentPlanName
+                ? currentPlanName.slice(0, 16)
+                : "Subscribe"}
             </span>
           </Link>
           <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
