@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
-import { RootState } from "@/src/store/store";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/src/store/store";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/Modal";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { setPlanDetails, fetchUserDetails } from "../../slices/UserSlice";
 
 interface Plan {
   _id: string;
@@ -17,10 +18,14 @@ interface Plan {
 }
 
 const UpgradeSubscription: React.FC = () => {
+  const dispatch = useDispatch();
+  const dispatchs = useDispatch<AppDispatch>();
+
   const navigate = useNavigate();
-  const { userData } = useSelector((state: RootState) => state.user);
+  const { userData, userDetails } = useSelector(
+    (state: RootState) => state.user
+  );
   const [isOpen, setIsOpen] = useState(false);
-  console.log(userData);
   const [loading, setLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string>("");
   const [selectedPlan, setSelectedPlan] = useState<{
@@ -30,8 +35,7 @@ const UpgradeSubscription: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [openFeatures, setOpenFeatures] = useState<string | null>(null);
 
-  const currentPlanId = sessionStorage.getItem("currentPlan");
-  console.log(currentPlanId);
+  const currentPlanId = userDetails?.businessPlan.plan._id;
 
   const features: Record<string, string[]> = {
     quarterly: [
@@ -79,9 +83,6 @@ const UpgradeSubscription: React.FC = () => {
         const plansData = response.data.data;
         setPlans(plansData);
 
-        const quarterlyPlan = plansData.find(
-          (plan: Plan) => plan.name === "gogrub quarterly plan"
-        );
         if (currentPlanId) {
           const plan = plansData.find(
             (plan: Plan) => plan._id === currentPlanId
@@ -90,9 +91,6 @@ const UpgradeSubscription: React.FC = () => {
             setCurrentPlan(plan.name);
             setSelectedPlan(plan);
           }
-        } else if (quarterlyPlan) {
-          setCurrentPlan(quarterlyPlan.name);
-          setSelectedPlan(quarterlyPlan);
         }
       } catch (error) {
         console.error("Error fetching plans data:", error);
@@ -102,7 +100,9 @@ const UpgradeSubscription: React.FC = () => {
     fetchPlans();
   }, []);
 
-  console.log(selectedPlan, "selected plan");
+  useEffect(() => {
+    dispatchs(fetchUserDetails());
+  }, [dispatchs]);
   const token = userData?.token;
 
   const SubcribePlan = async () => {
@@ -122,9 +122,7 @@ const UpgradeSubscription: React.FC = () => {
         },
         headers
       );
-
-      sessionStorage.setItem("currentPlan", selectedPlan?._id || "");
-      sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
+      dispatch(setPlanDetails(response.data.data));
 
       toast.success(response.data.message || "Plan subscribed successfully!");
       setIsOpen(false);

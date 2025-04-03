@@ -30,7 +30,7 @@ import {
   fetchBranches,
   userSelectedBranch,
 } from "../../slices/branchSlice";
-import { clearUserData } from "../../slices/UserSlice";
+import { clearUserData, fetchUserDetails } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
 // import BlinkerSubscribe from "../BlinkerSubscribe";
 
@@ -56,7 +56,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const { branches, selectedBranch } = useSelector(
     (state: RootState) => state.branches
   );
-  const { userData } = useSelector((state: RootState) => state.user);
+  const { userData, userDetails } = useSelector(
+    (state: RootState) => state.user
+  );
 
   const [open, setOpen] = useState(true);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
@@ -73,13 +75,13 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   useEffect(() => {
     dispatch(fetchBranches());
+    dispatch(fetchUserDetails());
   }, [dispatch]);
 
   const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,
     id: branch._id,
   }));
-  console.log(userData, "long");
   useEffect(() => {
     if (userData?.user_role === "admin") {
       const defaultBranch = transformedBranches[0];
@@ -114,8 +116,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       }
     });
   }, [location.pathname]);
-  const currentPlanName = sessionStorage.getItem("currentPlanName");
-  console.log(currentPlanName);
+
+  const currentPlanName = userDetails?.businessPlan.plan.name;
+
   const commonMenu: MenuItem[] = [
     {
       subTitle: "RESTAURANT",
@@ -290,7 +293,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
     navigate("/");
   };
-  console.log(userData, "userData");
 
   return (
     <div
