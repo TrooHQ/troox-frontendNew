@@ -117,7 +117,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     });
   }, [location.pathname]);
 
-  const currentPlanName = userDetails?.businessPlan.plan.name;
+  const currentPlanName = userDetails?.businessPlan?.plan?.name ?? null;
 
   const commonMenu: MenuItem[] = [
     {

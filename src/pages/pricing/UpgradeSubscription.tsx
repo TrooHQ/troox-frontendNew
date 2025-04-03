@@ -35,7 +35,7 @@ const UpgradeSubscription: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [openFeatures, setOpenFeatures] = useState<string | null>(null);
 
-  const currentPlanId = userDetails?.businessPlan.plan._id;
+  const currentPlanId = userDetails?.businessPlan?.plan._id ?? null;
 
   const features: Record<string, string[]> = {
     quarterly: [
@@ -124,6 +124,7 @@ const UpgradeSubscription: React.FC = () => {
       );
       dispatch(setPlanDetails(response.data.data));
 
+      sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
       toast.success(response.data.message || "Plan subscribed successfully!");
       setIsOpen(false);
       setLoading(false);
