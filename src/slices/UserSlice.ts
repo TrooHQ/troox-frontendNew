@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 
 interface UserState {
   userData: { [key: string]: any } | null;
+  planDetails: { [key: string]: any } | null;
   userDetails: { [key: string]: any } | null;
   loading: boolean;
   error: string | null;
@@ -24,6 +25,7 @@ interface UpdateUserDetailsPayload {
 
 const initialState: UserState = {
   userData: null,
+  planDetails: null,
   userDetails: null,
   loading: false,
   error: null,
@@ -58,11 +60,15 @@ export const updateUserDetails = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.put(`${SERVER_DOMAIN}/updateUserDetails`, updatedDetails, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.put(
+        `${SERVER_DOMAIN}/updateUserDetails`,
+        updatedDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       toast.success("Successful!");
       return response.data;
     } catch (error) {
@@ -82,6 +88,9 @@ const userSlice = createSlice({
     setUserData: (state, action: PayloadAction<{ [key: string]: any }>) => {
       state.userData = action.payload;
     },
+    setPlanDetails: (state, action: PayloadAction<{ [key: string]: any }>) => {
+      state.planDetails = action.payload;
+    },
     updateUserData: (state, action: PayloadAction<{ [key: string]: any }>) => {
       if (state.userData) {
         state.userData = { ...state.userData, ...action.payload };
@@ -91,6 +100,7 @@ const userSlice = createSlice({
     },
     clearUserData: (state) => {
       state.userData = null;
+      state.planDetails = null;
     },
   },
   extraReducers: (builder) => {
@@ -124,5 +134,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserData, updateUserData, clearUserData } = userSlice.actions;
+export const { setUserData, updateUserData, setPlanDetails, clearUserData } =
+  userSlice.actions;
 export default userSlice.reducer;
