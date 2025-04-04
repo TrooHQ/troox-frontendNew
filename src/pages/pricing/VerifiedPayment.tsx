@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import GoGrubLogo from "../../assets/business_logo.svg";
 import CheckCirle from "../../assets/check_circle.svg";
 import { Link } from "react-router-dom";
+import Logo from "../../assets/troo-logo.png";
 
 const VerifiedPayment: React.FC = () => {
   const { userData } = useSelector((state: RootState) => state.user);
@@ -17,11 +18,19 @@ const VerifiedPayment: React.FC = () => {
     <div className=" h-screen transition-all duration-500 ease-in-out bg-[#EFEFEF] py-[5%]">
       <div className="max-w-[536px] min-h-[541px] mx-auto w-full py-[50px] ">
         <div className="flex items-center justify-center">
-          <img
-            src={GoGrubLogo}
-            alt="GoGrubLogo"
-            className="mb-[100px] flex items-center justify-center"
-          />
+          {userData?.onboarding_type === "gogrub" ? (
+            <img
+              src={GoGrubLogo}
+              alt="GoGrubLogo"
+              className="mb-[100px] flex items-center justify-center"
+            />
+          ) : (
+            <img
+              src={userData?.business_logo ? userData.business_logo : Logo}
+              alt="Logo"
+              className="mb-[100px] flex items-center justify-center"
+            />
+          )}
         </div>
         <div className="font-GeneralSans space-y-[40px] flex flex-col items-center justify-center">
           <img src={CheckCirle} alt="Check" className=" w-[100px] h-[100px] " />
