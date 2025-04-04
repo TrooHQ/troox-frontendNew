@@ -32,7 +32,7 @@ import {
 } from "../../slices/branchSlice";
 import { clearUserData, fetchUserDetails } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
-// import BlinkerSubscribe from "../BlinkerSubscribe";
+import BlinkerSubscribe from "../BlinkerSubscribe";
 
 interface MenuItem {
   subTitle?: string;
@@ -259,7 +259,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const adminMenu: MenuItem[] = [
     { title: "AdminHome", gap: false, icon: HomeIcon },
   ];
-
+  console.log(userData, "userData here:");
   const userPermissions = userData?.permissions || [];
   const permittedMenu =
     userData?.user_role === "admin"
@@ -530,7 +530,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       <div className="mb-10">
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
         <p className="text-[10px] font-medium ml-3.5"></p>
-        <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
+        {/* <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
           <Link
             to={`${
               userData?.onboarding_type === "gogrub" && !currentPlanName
@@ -541,11 +541,43 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             <span className="text-white text-base font-semibold mr-2 capitalize">
               {userData?.onboarding_type === "gogrub" && currentPlanName
                 ? currentPlanName.slice(0, 16)
+                : userData?.onboarding_type === "troo" && currentPlanName
+                ? currentPlanName.slice(0, 16)
                 : "Subscribe"}
             </span>
           </Link>
           <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
-        </button>
+        </button> */}
+
+        <div className="flex items-start justify-start gap-0">
+          <div>
+            <Link
+              to={`${
+                userData?.onboarding_type === "gogrub" && !currentPlanName
+                  ? "/upgrade-subscription"
+                  : "/subscription-plan"
+              }`}
+            >
+              <button className="ml-4 mr-4 px-5 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
+                <span className="text-white text-base font-semibold mr-2 capitalize">
+                  {userData?.onboarding_type === "gogrub" && currentPlanName
+                    ? currentPlanName.slice(0, 16)
+                    : userData?.onboarding_type === "troo" && currentPlanName
+                    ? currentPlanName.slice(0, 20)
+                    : "Subscribe"}
+                </span>
+                <ArrowCircleRightOutlined
+                  sx={{ color: "var(--white, #FFF)" }}
+                />{" "}
+              </button>
+            </Link>
+          </div>
+          {!currentPlanName && (
+            <div className="-ml-[8px] mt-0">
+              <BlinkerSubscribe />
+            </div>
+          )}
+        </div>
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
       </div>
       {/* Add the Logout item separately at the bottom */}
