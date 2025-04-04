@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "@/src/store/store";
 import Modal from "../../components/Modal";
+import { RootState } from "../../store/store";
 
 import TopMenuNav from "../../components/Dashboard/TopMenuNav";
 
@@ -335,10 +336,10 @@ const PricingPage = () => {
 
       // Categorize plans into Quarterly and Yearly
       const quarterlyPlans = combined.filter(
-        (plan) => plan.billingCycle.toLowerCase() === "quarterly"
+        (plan: any) => plan.billingCycle.toLowerCase() === "quarterly"
       );
       const yearlyPlans = combined.filter(
-        (plan) =>
+        (plan: any) =>
           plan.billingCycle.toLowerCase() === "yearly" ||
           plan.billingCycle.toLowerCase() === "biannually" ||
           plan.billingCycle.toLowerCase() === "on request"
