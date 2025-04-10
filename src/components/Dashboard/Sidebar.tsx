@@ -14,13 +14,17 @@ import ManageUsersIcon from "../../assets/manageUsers.svg";
 import HubIcon from "../../assets/hub.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
-import { TextField, Button, Popper, Paper } from "@mui/material";
+import { TextField, Button, Popper, Paper, Modal } from "@mui/material";
 import {
   ArrowCircleRightOutlined,
   ArrowDropDown,
   Search,
 } from "@mui/icons-material";
 import GoGrubLogo from "../../assets/business_logo.svg";
+import AddSquare from "../../assets/add-square.svg";
+import AddSquareWhite from "../../assets/add-square-white.svg";
+import UpgradeSVG from "../../assets/upgrade-svg.svg";
+import UpgradeSVGWhite from "../../assets/upgrade-svg-white.svg";
 
 import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,6 +46,7 @@ interface MenuItem {
   icon?: string;
   subMenu?: MenuItem[];
   link?: string;
+  onClick?: () => void;
 }
 
 interface SideBarProps {
@@ -61,6 +66,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   );
 
   const [open, setOpen] = useState(true);
+  const [hovered, setHovered] = useState<string | null>(null);
   const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -72,6 +78,25 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           id: "",
         }
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleViewAddOns = () => {
+    setIsModalOpen(false);
+    navigate("/subscription-add-ons"); // Navigate to the "View Add-ons" page
+  };
+
+  const handleUpgradePlan = () => {
+    setIsModalOpen(false);
+    navigate("/subscription-plan"); // Navigate to the "Upgrade Plan" page
+  };
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -244,16 +269,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             title: "Upgrade Plan",
             gap: false,
             icon: Upgrade,
-            link: "/upgrade-subscription",
+            onClick: handleOpenModal, // Open the modal on click
           },
         ]
       : []),
-    // {
-    //   title: "Logout",
-    //   gap: true,
-    //   icon: LogoutIcon,
-    //   link: "/logout",
-    // },
   ];
 
   const adminMenu: MenuItem[] = [
@@ -478,7 +497,16 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                     }}
                   />
                 )}
-                <NavLink to={menu.link || "#"} className="flex-grow">
+                <NavLink
+                  to={menu.link || "#"}
+                  className="flex-grow"
+                  onClick={(e) => {
+                    if (menu.onClick) {
+                      e.preventDefault(); // Prevent navigation if onClick is defined
+                      menu.onClick();
+                    }
+                  }}
+                >
                   <span
                     className={`${
                       !open && "hidden"
@@ -530,24 +558,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       <div className="mb-10">
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
         <p className="text-[10px] font-medium ml-3.5"></p>
-        {/* <button className="ml-4 px-2.5 py-[6px] bg-[#DB7F3B] rounded-[100px] mt-1 text-center">
-          <Link
-            to={`${
-              userData?.onboarding_type === "gogrub" && !currentPlanName
-                ? "/upgrade-subscription"
-                : "/subscription-plan"
-            }`}
-          >
-            <span className="text-white text-base font-semibold mr-2 capitalize">
-              {userData?.onboarding_type === "gogrub" && currentPlanName
-                ? currentPlanName.slice(0, 16)
-                : userData?.onboarding_type === "troo" && currentPlanName
-                ? currentPlanName.slice(0, 16)
-                : "Subscribe"}
-            </span>
-          </Link>
-          <ArrowCircleRightOutlined sx={{ color: "var(--white, #FFF)" }} />{" "}
-        </button> */}
 
         <div className="flex items-start justify-start gap-0">
           <div>
@@ -558,8 +568,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   : "/subscription-plan"
               }`}
             >
-              <button className="ml-4 mr-4 px-5 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
-                <span className="text-white text-base font-semibold mr-2 capitalize">
+              <button className="ml-4 mr-4 px-2 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
+                <span className="text-white text-xs font-medium mr-2 capitalize">
                   {userData?.onboarding_type === "gogrub" && currentPlanName
                     ? currentPlanName.slice(0, 16)
                     : userData?.onboarding_type === "troo" && currentPlanName
@@ -580,13 +590,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         </div>
         <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
       </div>
-      {/* Add the Logout item separately at the bottom */}
-      {/* <div
-        className="absolute bottom-0 w-full p-2 mt-6"
-        style={{
-          backgroundColor: isMenuItemActive("/logout") ? "#d3d3d3" : "transparent",
-        }}
-      > */}
+
       <div
         className="w-full p-2 mt-6"
         style={{
@@ -612,6 +616,51 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <span className="text-[#000] font-semibold">Logout</span>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="upgrade-plan-modal"
+        aria-describedby="upgrade-plan-options"
+      >
+        <div className="bg-white p-[60px] rounded-[20px] shadow-lg w-[50%] mx-auto my-auto mt-20">
+          <div className="flex flex-col gap-[16px] items-center mb-[30px]">
+            <h2 className="text-[18px] text-[#121212] font-[600]">Plan</h2>
+            <p className="text-[14px] text-[#121212] font-[400]">
+              Choose your Subscription Plan
+            </p>
+          </div>
+          <div className="flex gap-[30px] items-center justify-center mb-[0px] cursor-pointer">
+            <div
+              className="flex flex-col gap-5 items-center border border-[#b6b6b6] rounded-[10px] p-8 hover:bg-[#0d0d0d] text-[#121212] hover:text-white transition-all duration-300 cursor-pointer"
+              onClick={handleViewAddOns}
+              onMouseEnter={() => setHovered("add-ons")}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <img
+                src={hovered === "add-ons" ? AddSquareWhite : AddSquare}
+                alt="Add square"
+                className="w-[40px] h-[40px]"
+              />
+              <p className="text-[16px] font-[500]">View Add-Ons</p>
+            </div>
+            <div
+              className="flex flex-col gap-5 items-center border border-[#b6b6b6] rounded-[10px] p-8 hover:bg-[#0d0d0d] hover:text-white transition-all duration-300 cursor-pointer"
+              onClick={handleUpgradePlan}
+              onMouseEnter={() => setHovered("upgrade")}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <img
+                src={hovered === "upgrade" ? UpgradeSVGWhite : UpgradeSVG}
+                alt="Upgrade"
+                className="w-[40px] h-[40px]"
+              />
+              <p className="text-[16px] font-[500]">Upgrade Plan</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

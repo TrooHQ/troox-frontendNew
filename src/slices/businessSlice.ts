@@ -22,6 +22,7 @@ interface BusinessState {
   URL: string;
   colour_scheme: string;
   businessDetails: BusinessDetails | null;
+  businessPlan: any | null;
   loading: boolean;
   error: string | null;
 }
@@ -34,7 +35,9 @@ const initialState: BusinessState = {
   tableNo: "",
   URL: "",
   businessDetails: null,
+  businessPlan: null,
   colour_scheme: "",
+  business_plan: null,
   loading: false,
   error: null,
 };
@@ -52,6 +55,30 @@ export const fetchAccountDetails = createAsyncThunk(
       });
 
       return response.data.data.business_information;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
+    }
+  }
+);
+
+// Async thunk to fetch business plan
+export const fetchBusinessPlan = createAsyncThunk(
+  "business/fetchBusinessPlan",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/plan/getBusinessPlan`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "An error occurred"
@@ -102,6 +129,18 @@ const businessSlice = createSlice({
         state.colour_scheme = action.payload.colour_scheme;
       })
       .addCase(fetchAccountDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchBusinessPlan.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchBusinessPlan.fulfilled, (state, action) => {
+        state.loading = false;
+        state.businessPlan = action.payload;
+      })
+      .addCase(fetchBusinessPlan.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

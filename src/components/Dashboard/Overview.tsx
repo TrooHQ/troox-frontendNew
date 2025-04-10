@@ -9,6 +9,7 @@ import TopMenuNav from "./TopMenuNav";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { fetchBranches, userSelectedBranch } from "../../slices/branchSlice";
+import { fetchBusinessPlan } from "../../slices/businessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 
@@ -69,6 +70,7 @@ const Overview: React.FC = () => {
     (state: any) => state.branches
   );
   const { userData } = useSelector((state: RootState) => state.user);
+  const { businessPlan } = useSelector((state: RootState) => state.business);
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -82,7 +84,10 @@ const Overview: React.FC = () => {
   );
   useEffect(() => {
     dispatch(fetchBranches());
+    dispatch(fetchBusinessPlan());
   }, [dispatch]);
+
+  console.log(businessPlan, "all out here:");
 
   const transformedBranches = branches.map((branch: any) => ({
     label: branch.branch_name,

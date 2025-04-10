@@ -336,7 +336,9 @@ const PricingPage = () => {
 
       // Categorize plans into Quarterly and Yearly
       const quarterlyPlans = combined.filter(
-        (plan: any) => plan.billingCycle.toLowerCase() === "quarterly"
+        (plan: any) =>
+          plan.billingCycle.toLowerCase() === "quarterly" ||
+          plan.billingCycle.toLowerCase() === "on request"
       );
       const yearlyPlans = combined.filter(
         (plan: any) =>
@@ -405,20 +407,20 @@ const PricingPage = () => {
   return (
     <div>
       <div className="max-w-[92vw] 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
-        <div className="flex items-center gap-4">
-          {/* Back Button */}
-          <button
-            onClick={() => navigate(-1)} // Navigate back to the previous page
-            className="flex items-center gap-2 text-[#121212] text-base font-semibold"
-          >
-            <ArrowBack className="w-[20px] h-[20px]" />
-            Back
-          </button>
-        </div>{" "}
         <TopMenuNav pathName="Pricing Page" />
       </div>
       <div className="relative text-[#121212] bg-[#FFFFFF]">
         <div className="max-w-6xl 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
+          {/* <div className="flex items-center gap-4"> */}
+          {/* Back Button */}
+          <button
+            onClick={() => navigate(-1)} // Navigate back to the previous page
+            className="flex items-center gap-2 text-[#121212] text-[14px] font-[400] mr-auto ml-5"
+          >
+            <ArrowBack className="w-[20px] h-[20px]" />
+            Back
+          </button>
+          {/* </div>{" "} */}
           <div
             className="w-full mx-auto text-center md:mt-[0px]"
             data-aos="fade-up"
