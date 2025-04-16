@@ -52,6 +52,7 @@ const PricingPage = () => {
   );
 
   const currentPlanId = userDetails?.businessPlan?.plan._id ?? null;
+  console.log(userDetails, "userDetails:", selectedPlan);
 
   const pricingPlans = [
     {
@@ -93,15 +94,6 @@ const PricingPage = () => {
       isEnterprise: true,
     },
   ];
-
-  // const updateLocalStorage = (key: string, value: string): void => {
-  //   const storedData = JSON.parse(
-  //     localStorage.getItem("businessInfo") || "{}"
-  //   ) as Record<string, string>;
-  //   storedData[key] = value;
-  //   localStorage.setItem("businessInfo", JSON.stringify(storedData));
-  // };
-
   console.log(currentPlan, "currentPlan");
 
   useEffect(() => {
@@ -395,6 +387,42 @@ const PricingPage = () => {
       toast.success(response.data.message || "Plan subscribed successfully!");
       setIsOpen(false);
       setLoading(false);
+      SubcribePlan2();
+      // navigate("/verified-payment");
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const SubcribePlan2 = async () => {
+    setLoading(true);
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `https://payment.trootab.com/api/v1/transaction/subscription_payment/`,
+        {
+          planId: selectedPlan?._id,
+          business_email: userDetails?.business_email,
+          amount: selectedPlan?.price,
+          plan_description: selectedPlan?.name,
+          callback_url: "https://trootab.com/verified-payment",
+        },
+        headers
+      );
+      dispatch(setPlanDetails(response.data.data));
+      console.log("send it:", response);
+      sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
+      toast.success(response.data.message || "Plan subscribed successfully!");
+      setIsOpen(false);
+      setLoading(false);
       navigate("/verified-payment");
     } catch (error) {
       console.error("Error adding employee:", error);
@@ -465,18 +493,28 @@ const PricingPage = () => {
               )?.map((plan: any) => (
                 <div
                   key={plan._id}
-                  className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative"
+                  className={`border px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative ${
+                    plan.name === currentPlan
+                      ? "bg-[#121212] text-white border-[#606060]" // Highlight styles for the current plan
+                      : "bg-white text-[#121212] border-[#B6B6B6]" // Default styles for other plans
+                  }`}
                 >
                   <div className="space-y-[20px]">
                     <div className="space-y-[12px]">
-                      <p className="text-[#121212] capitalize text-[28px] font-[500]">
+                      <p className="capitalize text-[28px] font-[500]">
                         {plan.name
                           .replace(" quarterly plan", "")
                           .replace(" yearly plan", "")
                           .replace(" plan", "")
                           .trim()}
                       </p>
-                      <p className="text-[#606060] text-[14px] font-[400]">
+                      <p
+                        className={` text-[14px] font-[400] ${
+                          plan.name === currentPlan
+                            ? "text-white" // Highlight styles for the current plan
+                            : "text-[#606060]" // Default styles for other plans
+                        }`}
+                      >
                         {plan.description}
                       </p>
                     </div>
@@ -485,19 +523,19 @@ const PricingPage = () => {
                         {plan.isEnterprise ? (
                           ""
                         ) : (
-                          <p className="text-[#121212] text-[28px] font-[500]">
+                          <p className=" text-[28px] font-[500]">
                             {plan.price
                               ? `₦${Number(plan.price).toLocaleString()}`
                               : ""}
                           </p>
                         )}
                       </div>
-                      <p className="pt-[0px] font-[400] text-[14px] text-[#121212]">
+                      <p className="pt-[0px] font-[400] text-[14px] ">
                         {plan.info}
                       </p>
                       <p
                         className={clsx(
-                          "pt-[0px] mt-2.5 font-[400] text-[#606060]",
+                          "pt-[0px] mt-2.5 font-[400]",
                           plan.isEnterprise ? "text-[14px]" : "text-[10px]"
                         )}
                       >
@@ -507,7 +545,11 @@ const PricingPage = () => {
                   </div>
 
                   <button
-                    className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]"
+                    className={`mt-[60px] border py-[10px] rounded-[5px] font-[400] text-[14px] text-center absolute bottom-10 w-[225px] ${
+                      plan.name === currentPlan
+                        ? "bg-white text-[#121212] border-white" // Button styles for the current plan
+                        : "bg-[#0d0d0d] text-white border-[#000000]" // Default button styles
+                    }`}
                     onClick={() => {
                       setSelectedPlan(plan);
                       setAreYouSure(true);

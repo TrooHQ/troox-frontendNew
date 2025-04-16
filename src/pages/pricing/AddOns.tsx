@@ -1,15 +1,8 @@
 import Aos from "aos";
 import "aos/dist/aos.css";
 import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import {
-  ArrowCircleRightOutlined,
-  CheckCircleOutline,
-  Close,
-  AddCircleOutline,
-  ArrowBack,
-} from "@mui/icons-material";
-import { setPlanDetails, fetchUserDetails } from "../../slices/UserSlice";
+import { Close, ArrowBack } from "@mui/icons-material";
+import { fetchUserDetails } from "../../slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
@@ -20,16 +13,6 @@ import Modal from "../../components/Modal";
 import { RootState } from "../../store/store";
 
 import TopMenuNav from "../../components/Dashboard/TopMenuNav";
-
-interface Plan {
-  name: string;
-  description: string;
-  quarterlyPrice: string;
-  yearlyPrice: number;
-  features: string[];
-  _id?: string;
-  note?: string;
-}
 
 const QuarterlyPlans = [
   {
@@ -163,72 +146,17 @@ const PlanCard = ({ plan, isYearly, setSelectedPlan, setAreYouSure }) => (
 );
 
 const AddOns = () => {
-  const dispatch = useDispatch();
   const dispatchs = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("Quarterly");
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currentPlan, setCurrentPlan] = useState<string>("");
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<{
     name: string;
     _id: string;
   } | null>(null);
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [combinedPlans, setCombinedPlans] = useState<any>();
   const [areyousure, setAreYouSure] = useState(false);
 
-  const { userData, userDetails } = useSelector(
-    (state: RootState) => state.user
-  );
-
-  const currentPlanId = userDetails?.businessPlan?.plan._id ?? null;
-
-  const pricingPlans = [
-    {
-      name: "KDS",
-      description:
-        "Collect customers' orders for food preparation and update waiters on the food prep status for pickup.",
-      price: "4,500",
-      info: "Billed quaterly (N3,000 per month)",
-      note: "Save up to N6000 with yearly commitment",
-      buttonText: "Select Plan",
-      isEnterprise: false,
-    },
-    {
-      name: "Essential",
-      description: "Designed for growing businesses that need more control",
-      price: "15,000",
-      info: "Billed quaterly (N5,000 per month)",
-      note: "Save up to N6000 with yearly commitment",
-      buttonText: "Select Plan",
-      isEnterprise: false,
-    },
-    {
-      name: "Premium",
-      description:
-        "Best for established businesses looking for deeper automation",
-      price: "45,000",
-      info: "Billed quaterly (N15,000 per month)",
-      note: "Save up to N3000 with yearly commitment",
-      buttonText: "Select Plan",
-      isEnterprise: false,
-    },
-    {
-      name: "Enterprise",
-      description:
-        "Custom solutions for multi-location and high-volume businesses.",
-      price: "",
-      info: "",
-      note: "Best option for those needing scalability, deep integrations, full-customization, dedicated support, API access",
-      buttonText: "Contact Us",
-      isEnterprise: true,
-    },
-  ];
-
-  console.log(currentPlan, "currentPlan");
+  const { userData } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     Aos.init({ duration: 2000 });
@@ -258,7 +186,6 @@ const AddOns = () => {
       );
       console.log(response, "response for plan subscription");
       toast.success(response.data.message || "Plan subscribed successfully!");
-      setIsOpen(false);
       setLoading(false);
       navigate("/verified-payment");
     } catch (error) {
@@ -321,7 +248,7 @@ const AddOns = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="pb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedPlans.map((plan) => (
               <PlanCard
                 key={plan.name}
@@ -332,7 +259,7 @@ const AddOns = () => {
               />
             ))}
           </div>
-          {!isYearly && (
+          {/* {!isYearly && (
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -375,7 +302,7 @@ const AddOns = () => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 

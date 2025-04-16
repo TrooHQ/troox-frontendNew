@@ -501,8 +501,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   to={menu.link || "#"}
                   className="flex-grow"
                   onClick={(e) => {
-                    if (menu.onClick) {
-                      e.preventDefault(); // Prevent navigation if onClick is defined
+                    if (menu.onClick as any) {
+                      e.preventDefault();
                       menu.onClick();
                     }
                   }}
@@ -569,11 +569,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               }`}
             >
               <button className="ml-4 mr-4 px-2 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
-                <span className="text-white text-xs font-medium mr-2 capitalize">
+                <span
+                  className="text-white text-xs font-medium mr-2 capitalize truncate max-w-[150px] overflow-hidden"
+                  title={currentPlanName.toUpperCase() || "Subscribe"}
+                >
                   {userData?.onboarding_type === "gogrub" && currentPlanName
-                    ? currentPlanName.slice(0, 16)
+                    ? currentPlanName
                     : userData?.onboarding_type === "troo" && currentPlanName
-                    ? currentPlanName.slice(0, 20)
+                    ? currentPlanName
                     : "Subscribe"}
                 </span>
                 <ArrowCircleRightOutlined
