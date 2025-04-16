@@ -284,7 +284,7 @@ const Modifiers = ({
       modifier_group_name: groupName,
       branch_id: selectedBranch.id,
       attach_to: "item",
-      menu_item_name: selectedMenuItem,
+      menu_item_name: selectedMenuItem.menu_item_name,
     };
     try {
       setModGroupLoading(true);
