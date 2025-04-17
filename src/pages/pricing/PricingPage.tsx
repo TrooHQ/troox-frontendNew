@@ -8,6 +8,7 @@ import {
   Close,
   AddCircleOutline,
   ArrowBack,
+  Star,
 } from "@mui/icons-material";
 import { setPlanDetails, fetchUserDetails } from "../../slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,6 +43,7 @@ const PricingPage = () => {
   const [selectedPlan, setSelectedPlan] = useState<{
     name: string;
     _id: string;
+    price: string;
   } | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [combinedPlans, setCombinedPlans] = useState<any>();
@@ -52,6 +54,7 @@ const PricingPage = () => {
   );
 
   const currentPlanId = userDetails?.businessPlan?.plan._id ?? null;
+  console.log(userDetails, "userDetails:", selectedPlan);
 
   const pricingPlans = [
     {
@@ -62,6 +65,7 @@ const PricingPage = () => {
       note: "Save up to N6000 with yearly commitment",
       buttonText: "Select Plan",
       isEnterprise: false,
+      recommended: false,
     },
     {
       name: "Essential",
@@ -71,6 +75,7 @@ const PricingPage = () => {
       note: "Save up to N6000 with yearly commitment",
       buttonText: "Select Plan",
       isEnterprise: false,
+      recommended: true,
     },
     {
       name: "Premium",
@@ -81,6 +86,7 @@ const PricingPage = () => {
       note: "Save up to N3000 with yearly commitment",
       buttonText: "Select Plan",
       isEnterprise: false,
+      recommended: false,
     },
     {
       name: "Enterprise",
@@ -91,17 +97,9 @@ const PricingPage = () => {
       note: "Best option for those needing scalability, deep integrations, full-customization, dedicated support, API access",
       buttonText: "Contact Us",
       isEnterprise: true,
+      recommended: false,
     },
   ];
-
-  // const updateLocalStorage = (key: string, value: string): void => {
-  //   const storedData = JSON.parse(
-  //     localStorage.getItem("businessInfo") || "{}"
-  //   ) as Record<string, string>;
-  //   storedData[key] = value;
-  //   localStorage.setItem("businessInfo", JSON.stringify(storedData));
-  // };
-
   console.log(currentPlan, "currentPlan");
 
   useEffect(() => {
@@ -326,17 +324,20 @@ const PricingPage = () => {
         );
 
         return {
-          ...matchingPlan, // Use existing data from pricingPlans if available
-          ...plan, // Override with data from the fetched plan
-          price: `${plan.price}`, // Format price
-          info: `Billed ${plan.billingCycle}`, // Add billing cycle info
-          buttonText: matchingPlan?.buttonText || "Select Plan", // Default button text
+          ...matchingPlan,
+          ...plan,
+          price: `${plan.price}`,
+          info: `Billed ${plan.billingCycle}`,
+          buttonText: matchingPlan?.buttonText || "Select Plan",
+          recommended: matchingPlan?.recommended || false,
         };
       });
 
       // Categorize plans into Quarterly and Yearly
       const quarterlyPlans = combined.filter(
-        (plan: any) => plan.billingCycle.toLowerCase() === "quarterly"
+        (plan: any) =>
+          plan.billingCycle.toLowerCase() === "quarterly" ||
+          plan.billingCycle.toLowerCase() === "on request"
       );
       const yearlyPlans = combined.filter(
         (plan: any) =>
@@ -393,7 +394,38 @@ const PricingPage = () => {
       toast.success(response.data.message || "Plan subscribed successfully!");
       setIsOpen(false);
       setLoading(false);
-      navigate("/verified-payment");
+      SubcribePlan2();
+      // navigate("/verified-payment");
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const SubcribePlan2 = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `https://payment.trootab.com/api/v1/transaction/subscription_payment/`,
+        {
+          plan_id: selectedPlan?._id,
+          business_email: userDetails?.business_email,
+          amount: selectedPlan?.price,
+          plan_description: selectedPlan?.name,
+          callback_url: "https://trootab.com/verified-payment",
+        }
+      );
+      dispatch(setPlanDetails(response.data.data));
+      console.log("send it:", response);
+      sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
+      toast.success(response.data.message || "Plan subscribed successfully!");
+      setIsOpen(false);
+      setLoading(false);
+      // response.data.data.paystack_data.data.authorization_url
+      window.location.href =
+        response.data.data.paystack_data.data.authorization_url;
     } catch (error) {
       console.error("Error adding employee:", error);
       setLoading(false);
@@ -405,20 +437,20 @@ const PricingPage = () => {
   return (
     <div>
       <div className="max-w-[92vw] 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
-        <div className="flex items-center gap-4">
-          {/* Back Button */}
-          <button
-            onClick={() => navigate(-1)} // Navigate back to the previous page
-            className="flex items-center gap-2 text-[#121212] text-base font-semibold"
-          >
-            <ArrowBack className="w-[20px] h-[20px]" />
-            Back
-          </button>
-        </div>{" "}
         <TopMenuNav pathName="Pricing Page" />
       </div>
       <div className="relative text-[#121212] bg-[#FFFFFF]">
         <div className="max-w-6xl 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
+          {/* <div className="flex items-center gap-4"> */}
+          {/* Back Button */}
+          <button
+            onClick={() => navigate(-1)} // Navigate back to the previous page
+            className="flex items-center gap-2 text-[#121212] text-[14px] font-[400] mr-auto ml-5"
+          >
+            <ArrowBack className="w-[20px] h-[20px]" />
+            Back
+          </button>
+          {/* </div>{" "} */}
           <div
             className="w-full mx-auto text-center md:mt-[0px]"
             data-aos="fade-up"
@@ -463,18 +495,35 @@ const PricingPage = () => {
               )?.map((plan: any) => (
                 <div
                   key={plan._id}
-                  className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative"
+                  className={`border px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative ${
+                    plan.name === currentPlan
+                      ? "bg-[#121212] text-white border-[#606060]"
+                      : plan.recommended
+                      ? "bg-white text-[#121212] border-[#121212] shadow-lg scale-105"
+                      : "bg-white text-[#121212] border-[#B6B6B6]" // Default styles for other plans
+                  }`}
                 >
+                  {plan.recommended && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#121212] text-white px-4 py-1 rounded-full text-sm font-mormal flex items-center">
+                      <Star className="h-4 w-4 mr-1" /> Recommended
+                    </div>
+                  )}
                   <div className="space-y-[20px]">
                     <div className="space-y-[12px]">
-                      <p className="text-[#121212] capitalize text-[28px] font-[500]">
+                      <p className="capitalize text-[28px] font-[500]">
                         {plan.name
                           .replace(" quarterly plan", "")
                           .replace(" yearly plan", "")
                           .replace(" plan", "")
                           .trim()}
                       </p>
-                      <p className="text-[#606060] text-[14px] font-[400]">
+                      <p
+                        className={` text-[14px] font-[400] ${
+                          plan.name === currentPlan
+                            ? "text-white" // Highlight styles for the current plan
+                            : "text-[#606060]" // Default styles for other plans
+                        }`}
+                      >
                         {plan.description}
                       </p>
                     </div>
@@ -483,19 +532,19 @@ const PricingPage = () => {
                         {plan.isEnterprise ? (
                           ""
                         ) : (
-                          <p className="text-[#121212] text-[28px] font-[500]">
+                          <p className=" text-[28px] font-[500]">
                             {plan.price
                               ? `₦${Number(plan.price).toLocaleString()}`
                               : ""}
                           </p>
                         )}
                       </div>
-                      <p className="pt-[0px] font-[400] text-[14px] text-[#121212]">
+                      <p className="pt-[0px] font-[400] text-[14px] ">
                         {plan.info}
                       </p>
                       <p
                         className={clsx(
-                          "pt-[0px] mt-2.5 font-[400] text-[#606060]",
+                          "pt-[0px] mt-2.5 font-[400]",
                           plan.isEnterprise ? "text-[14px]" : "text-[10px]"
                         )}
                       >
@@ -505,7 +554,11 @@ const PricingPage = () => {
                   </div>
 
                   <button
-                    className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]"
+                    className={`mt-[60px] border py-[10px] rounded-[5px] font-[400] text-[14px] text-center absolute bottom-10 w-[225px] ${
+                      plan.name === currentPlan
+                        ? "bg-white text-[#121212] border-white" // Button styles for the current plan
+                        : "bg-[#0d0d0d] text-white border-[#000000]" // Default button styles
+                    }`}
                     onClick={() => {
                       setSelectedPlan(plan);
                       setAreYouSure(true);

@@ -44,6 +44,7 @@ interface MenuItem {
   menu_item_image: string;
   createdAt: string;
   updatedAt: string;
+  onClicks?: () => void;
   __v: number;
 }
 
