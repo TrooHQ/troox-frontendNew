@@ -23,6 +23,7 @@ interface BusinessState {
   colour_scheme: string;
   businessDetails: BusinessDetails | null;
   businessPlan: any | null;
+  business_plan: any | null;
   loading: boolean;
   error: string | null;
 }

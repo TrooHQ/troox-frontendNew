@@ -38,15 +38,15 @@ import { clearUserData, fetchUserDetails } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
 import BlinkerSubscribe from "../BlinkerSubscribe";
 
-interface MenuItem {
+interface MenuItems {
   subTitle?: string;
   title?: string;
   gap?: boolean;
   Subgap?: boolean;
   icon?: string;
-  subMenu?: MenuItem[];
+  subMenu?: MenuItems[];
   link?: string;
-  onClick?: () => void;
+  onClicks?: () => void;
 }
 
 interface SideBarProps {
@@ -144,7 +144,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const currentPlanName = userDetails?.businessPlan?.plan?.name ?? null;
 
-  const commonMenu: MenuItem[] = [
+  const commonMenu: MenuItems[] = [
     {
       subTitle: "RESTAURANT",
       Subgap: true,
@@ -266,16 +266,16 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     ...(currentPlanName
       ? [
           {
-            title: "Upgrade Plan",
+            title: "Manage Plan",
             gap: false,
             icon: Upgrade,
-            onClick: handleOpenModal, // Open the modal on click
-          },
+            onClicks: handleOpenModal, // Open the modal on click
+          } as MenuItems,
         ]
       : []),
   ];
 
-  const adminMenu: MenuItem[] = [
+  const adminMenu: MenuItems[] = [
     { title: "AdminHome", gap: false, icon: HomeIcon },
   ];
   console.log(userData, "userData here:");
@@ -293,7 +293,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   const isMenuItemActive = (
     menuLink: string,
-    subMenu?: MenuItem[]
+    subMenu?: MenuItems[]
   ): boolean => {
     if (location.pathname === menuLink) {
       return true;
@@ -501,9 +501,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   to={menu.link || "#"}
                   className="flex-grow"
                   onClick={(e) => {
-                    if (menu.onClick as any) {
+                    if (menu && menu.onClicks) {
                       e.preventDefault();
-                      menu.onClick();
+                      menu.onClicks();
                     }
                   }}
                 >
@@ -659,7 +659,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                 alt="Upgrade"
                 className="w-[40px] h-[40px]"
               />
-              <p className="text-[16px] font-[500]">Upgrade Plan</p>
+              <p className="text-[16px] font-[500]">Manage Plan</p>
             </div>
           </div>
         </div>

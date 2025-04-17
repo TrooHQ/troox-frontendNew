@@ -1,6 +1,6 @@
 import Aos from "aos";
 import "aos/dist/aos.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Close, ArrowBack } from "@mui/icons-material";
 import { fetchUserDetails } from "../../slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +103,7 @@ const YearlyPlansData = [
   },
 ];
 
-const PlanCard = ({ plan, isYearly, setSelectedPlan, setAreYouSure }) => (
+const PlanCard = ({ plan, isYearly, setSelectedPlan, setAreYouSure }: any) => (
   <div className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[450px] relative">
     <div className="space-y-[20px]">
       <h3 className="text-[28px] font-medium text-gray-800 mb-2">
@@ -198,7 +198,7 @@ const AddOns = () => {
 
   const [isYearly, setIsYearly] = useState(false);
 
-  const handleToggle = (value) => {
+  const handleToggle = (value: any) => {
     setIsYearly(value === "yearly");
   };
 
