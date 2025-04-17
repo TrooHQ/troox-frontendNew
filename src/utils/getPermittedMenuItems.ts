@@ -6,6 +6,7 @@ interface MenuItem {
   icon?: string;
   subMenu?: MenuItem[];
   link?: string;
+  onClicks?: () => void;
 }
 
 interface PermissionToMenuItem {
@@ -42,13 +43,17 @@ const permissionToMenuItem: PermissionToMenuItem = {
   "Download Business Report": "Overview",
 };
 
-const getPermittedMenuItems = (menuItems: MenuItem[], permissions: string[]): MenuItem[] => {
+const getPermittedMenuItems = (
+  menuItems: MenuItem[],
+  permissions: string[]
+): MenuItem[] => {
   return menuItems.filter((menuItem) => {
     // If it's a top-level menu item with a title, check if permission exists
     if (menuItem.title) {
       const hasPermission = Object.keys(permissionToMenuItem).some(
         (permission) =>
-          permissions.includes(permission) && permissionToMenuItem[permission] === menuItem.title
+          permissions.includes(permission) &&
+          permissionToMenuItem[permission] === menuItem.title
       );
       if (hasPermission) return true;
     }
@@ -57,7 +62,8 @@ const getPermittedMenuItems = (menuItems: MenuItem[], permissions: string[]): Me
       menuItem.subMenu = menuItem.subMenu.filter((subItem) =>
         Object.keys(permissionToMenuItem).some(
           (permission) =>
-            permissions.includes(permission) && permissionToMenuItem[permission] === subItem.title
+            permissions.includes(permission) &&
+            permissionToMenuItem[permission] === subItem.title
         )
       );
       // If subMenu has items left after filtering, include the parent
