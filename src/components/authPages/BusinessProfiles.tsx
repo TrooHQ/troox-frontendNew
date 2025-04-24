@@ -14,7 +14,6 @@ const BusinessProfiles: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [isFromGoGrub, setIsFromGoGrub] = useState(false);
-  const [customPayload, setCustomPayload] = useState<any>({});
   const [loading, setLoading] = useState(false);
   const transformedState = useSelector(selectTransformedRegisterState);
 
@@ -27,7 +26,7 @@ const BusinessProfiles: React.FC = () => {
         const endpoint = isFromGoGrub
           ? `${SERVER_DOMAIN}/onboardGoGrubBusiness/`
           : `${SERVER_DOMAIN}/onboardBusiness/`;
-        const sampleResponse = await axios.post(endpoint, customPayload);
+        const sampleResponse = await axios.post(endpoint, transformedState);
 
         if (sampleResponse.status === 200) {
           localStorage.setItem("businessId", sampleResponse.data.business_id);
@@ -60,19 +59,11 @@ const BusinessProfiles: React.FC = () => {
     }
   };
   const handleBack = () => setCurrentStep((prevStep) => prevStep - 1);
+  console.log("customPayload:", transformedState);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("coming-from") === "gogrub") {
-      const monthlyAverageSales = params.get("monthlySales");
-      const planName = params.get("selectedPlan");
-
-      setCustomPayload({
-        ...transformedState,
-        onboarding_type: "gogrub",
-        monthlyAverageSales,
-        planName,
-      });
       setIsFromGoGrub(true);
     }
   }, [transformedState]);
@@ -81,7 +72,7 @@ const BusinessProfiles: React.FC = () => {
   const stepDescriptions = [
     "This information is required in order to verify your business. It will show up on your payout report, invoices and receipts.",
     "Please make sure that your personal details remain up-to-date. Because this information is used to verify your identity. You will need to send our Support Team a message if you need to change it.",
-    "Please enter your bank account information. You’ll receive a four-digit verification code via text message. Once you enter the code Troo will direct all payouts to the account.",
+    "Please enter your bank account information. You will receive a four-digit verification code via text message. Once you enter the code Troo will direct all payouts to the account.",
   ];
 
   const renderStepContent = () => {
