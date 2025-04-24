@@ -8,9 +8,11 @@ import { Link, useLocation } from "react-router-dom";
 import Logo from "../../assets/troo-logo.png";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { SERVER_DOMAIN } from "../../Api/Api";
 
 const VerifiedPayment: React.FC = () => {
   const { userData } = useSelector((state: RootState) => state.user);
+  const token = userData?.token;
   const location = useLocation();
 
   const [loading, setLoading] = useState(true);
@@ -21,34 +23,65 @@ const VerifiedPayment: React.FC = () => {
   const reference = queryParams.get("reference");
   const trxref = queryParams.get("trxref");
 
+  const SubcribePlan = async () => {
+    setLoading(true);
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const selectedPlan = JSON.parse(
+        localStorage.getItem("selectedPlan") || "{}"
+      );
+      const payload = {
+        productAddOns: [selectedPlan?._id],
+      };
+      const response = await axios.put(
+        `${SERVER_DOMAIN}/plan/productAddOn`,
+        payload,
+        headers
+      );
+      toast.success(response.data.message || "Plan subscribed successfully!");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyPayment = async () => {
+    if (!reference || !trxref) {
+      setError("Missing required parameters in the URL.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://payment.trootab.com/api/v1/transaction/verify_subscription_payment/",
+        { reference }
+      );
+
+      if (response.status === 200) {
+        setIsSuccess(true);
+        toast.success("Payment verified successfully!");
+        await SubcribePlan();
+      } else {
+        setError("Payment verification failed.");
+      }
+    } catch (err) {
+      console.error("Verification error:", err);
+      setError("An error occurred while verifying your payment.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const verifyPayment = async () => {
-      if (!reference || !trxref) {
-        setError("Missing required parameters in the URL.");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await axios.post(
-          "https://payment.trootab.com/api/v1/transaction/verify_subscription_payment/",
-          { reference }
-        );
-
-        if (response.status === 200) {
-          setIsSuccess(true);
-          toast.success("Payment verified successfully!");
-        } else {
-          setError("Payment verification failed.");
-        }
-      } catch (err) {
-        console.error("Verification error:", err);
-        setError("An error occurred while verifying your payment.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     verifyPayment();
   }, [reference, trxref]);
 

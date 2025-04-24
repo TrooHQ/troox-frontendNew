@@ -571,7 +571,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <button className="ml-4 mr-4 px-2 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
                 <span
                   className="text-white text-xs font-medium mr-2 capitalize truncate max-w-[150px] overflow-hidden"
-                  title={currentPlanName.toUpperCase() || "Subscribe"}
+                  title={currentPlanName?.toUpperCase() || "Subscribe"}
                 >
                   {userData?.onboarding_type === "gogrub" && currentPlanName
                     ? currentPlanName
