@@ -54,7 +54,6 @@ const PricingPage = () => {
   );
 
   const currentPlanId = userDetails?.businessPlan?.plan._id ?? null;
-  console.log(userDetails, "userDetails:", selectedPlan);
 
   const pricingPlans = [
     {
@@ -100,7 +99,6 @@ const PricingPage = () => {
       recommended: false,
     },
   ];
-  console.log(currentPlan, "currentPlan");
 
   useEffect(() => {
     Aos.init({ duration: 2000 });
@@ -418,7 +416,6 @@ const PricingPage = () => {
         }
       );
       dispatch(setPlanDetails(response.data.data));
-      console.log("send it:", response);
       sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
       toast.success(response.data.message || "Plan subscribed successfully!");
       setIsOpen(false);

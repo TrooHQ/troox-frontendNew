@@ -38,7 +38,6 @@ const AddOns = () => {
   } | null>(null);
   const [areyousure, setAreYouSure] = useState(false);
 
-  console.log(selectedPlan);
   useEffect(() => {
     Aos.init({ duration: 2000 });
   }, []);
@@ -60,7 +59,6 @@ const AddOns = () => {
           callback_url: "https://trootab.com/verified-payment",
         }
       );
-      console.log("send it:", response);
       sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
       toast.success(response.data.message || "Plan subscribed successfully!");
       setLoading(false);
