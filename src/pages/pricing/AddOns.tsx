@@ -14,138 +14,18 @@ import { RootState } from "../../store/store";
 
 import TopMenuNav from "../../components/Dashboard/TopMenuNav";
 
-const QuarterlyPlans = [
-  {
-    name: "KDS",
-    description:
-      "Collect customers orders for food preparation and update waiters on the food prep status for pickup",
-    quarterlyPrice: 4500,
-    yearlyPrice: 4500 * 4 * 0.85, // Example yearly price with 15% discount
-    features: [],
-  },
-  {
-    name: "Flex",
-    description:
-      "Enable waiters to efficiently manage orders, relay them instantly to the kitchen and track status in real time",
-    quarterlyPrice: 4500,
-    yearlyPrice: 4500 * 4 * 0.85,
-    features: [],
-    note: " *a 5% charge is applied on each transaction for customers paying for standalone Flex",
-  },
-  {
-    name: "GoGrub",
-    description:
-      "Manage online food ordering for restaurants including cloud kitchens and food vendors",
-    quarterlyPrice: 7500,
-    yearlyPrice: 7500 * 4 * 0.8, // Example yearly price with 20% discount
-    features: [],
-    note: " *a 5% charge is applied on each transaction for customers paying for standalone GoDeliver",
-  },
-  {
-    name: "Kiosk",
-    description:
-      "Reduce long wait times for customers. Get multiple options to take payments within the kiosk",
-    quarterlyPrice: 7500,
-    yearlyPrice: 7500 * 4 * 0.8,
-    features: [],
-    note: "*a 2.5% charge is applied on each transaction for customers paying for standalone Kiosk",
-  },
-  {
-    name: "viBoards",
-    description:
-      "Display digital menu boards ensuring clear, engaging and easily updatable menus",
-    quarterlyPrice: 7500,
-    yearlyPrice: 7500 * 4 * 0.8,
-    features: [],
-  },
-  {
-    name: "GoDeliver",
-    description:
-      "Choose from different delivery partners to deliver your food quickly",
-    quarterlyPrice: 4500,
-    yearlyPrice: 4500 * 4 * 0.85,
-    features: [],
-    note: "*a 5% charge is applied on each transaction for customers paying for standalone GoDeliver",
-  },
-];
-
-const YearlyPlansData = [
-  {
-    name: "GoGrub",
-    description:
-      "Manage online food ordering for restaurants including cloud kitchens and food vendors",
-    yearlyPrice: 7500 * 4 * 0.75, // Example yearly price with 25% discount
-    features: [],
-    note: " *a 5% charge is applied on each transaction for customers paying for standalone GoDeliver",
-  },
-  {
-    name: "Kiosk",
-    description:
-      "Reduce long wait times for customers. Get multiple options to take payments within the kiosk",
-    yearlyPrice: 7500 * 4 * 0.75,
-    features: [],
-    note: "*a 2.5% charge is applied on each transaction for customers paying for standalone Kiosk",
-  },
-  {
-    name: "viBoards",
-    description:
-      "Display digital menu boards ensuring clear, engaging and easily updatable menus",
-    yearlyPrice: 7500 * 4 * 0.75,
-    features: [],
-  },
-  {
-    name: "GoDeliver",
-    description:
-      "Choose from different delivery partners to deliver your food quickly",
-    yearlyPrice: 4500 * 4 * 0.8, // Example yearly price with 20% discount
-    features: [],
-    note: "*a 5% charge is applied on each transaction for customers paying for standalone GoDeliver",
-  },
-];
-
-const PlanCard = ({ plan, isYearly, setSelectedPlan, setAreYouSure }: any) => (
-  <div className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[450px] relative">
-    <div className="space-y-[20px]">
-      <h3 className="text-[28px] font-medium text-gray-800 mb-2">
-        {plan.name}
-      </h3>
-      <p className="text-[#606060] mb-2 text-sm font-normal min-h-[80px]">
-        {plan.description}
-      </p>
-      <div className="flex flex-col items-start mb-2">
-        <span className="text-[32px] font-medium text-[#121212]">
-          ₦
-          {isYearly
-            ? plan.yearlyPrice.toLocaleString()
-            : plan.quarterlyPrice.toLocaleString()}
-        </span>
-        {!isYearly && (
-          <span className="text-[10px] text-[#121212] font-normal ml-1">
-            Billed monthly (₦{(plan.quarterlyPrice / 3).toLocaleString()} per
-            month)
-          </span>
-        )}
-        {isYearly && (
-          <span className="text-sm text-gray-500 ml-1">Billed yearly</span>
-        )}
-      </div>
-    </div>
-    <p className="mt-[60px] py-[10px] font-[400] text-[14px] text-left absolute bottom-24 w-[225px]">
-      {plan.note}
-    </p>
-    <button
-      className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]"
-      onClick={() => {
-        setSelectedPlan(plan);
-        setAreYouSure(true);
-      }}
-    >
-      Select Plan
-    </button>
-  </div>
-);
-
+interface Plan {
+  _id: string;
+  description: string;
+  billingPerMonth: number;
+  name: string;
+  price: number;
+  billingCycle: string;
+  discount?: string;
+}
 const AddOns = () => {
+  const { userDetails } = useSelector((state: RootState) => state.user);
+  const [addOns, setAddOns] = useState<Plan[]>([]);
   const dispatchs = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -153,11 +33,12 @@ const AddOns = () => {
   const [selectedPlan, setSelectedPlan] = useState<{
     name: string;
     _id: string;
+    price: number;
+    description: string;
   } | null>(null);
   const [areyousure, setAreYouSure] = useState(false);
 
-  const { userData } = useSelector((state: RootState) => state.user);
-
+  console.log(selectedPlan);
   useEffect(() => {
     Aos.init({ duration: 2000 });
   }, []);
@@ -165,32 +46,46 @@ const AddOns = () => {
   useEffect(() => {
     dispatchs(fetchUserDetails());
   }, [dispatchs]);
-  const token = userData?.token;
 
-  const SubcribePlan = async () => {
+  const SubcribePlan2 = async () => {
     setLoading(true);
     try {
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const payload = {
-        productAddOns: [selectedPlan?.name || ""], // Use the selected plan's name
-      };
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/plan/productAddOn`,
-        payload,
-        headers
+      const response = await axios.post(
+        `https://payment.trootab.com/api/v1/transaction/subscription_payment/`,
+        {
+          plan_id: selectedPlan?._id,
+          business_email: userDetails?.business_email,
+          amount: selectedPlan?.price,
+          plan_description: selectedPlan?.description,
+          callback_url: "https://trootab.com/verified-payment",
+        }
       );
-      console.log(response, "response for plan subscription");
+      console.log("send it:", response);
+      sessionStorage.setItem("currentPlanName", selectedPlan?.name || "");
       toast.success(response.data.message || "Plan subscribed successfully!");
       setLoading(false);
-      navigate("/verified-payment");
+      window.location.href =
+        response.data.data.paystack_data.data.authorization_url;
     } catch (error) {
       console.error("Error adding employee:", error);
       setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAddOns = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/plan/getPlanAddons?secretKey=trooAdminDev&billingCycle=${
+          isYearly ? "yearly" : "quarterly"
+        }`
+      );
+      const fetchedPlans = response.data.data;
+      setAddOns(fetchedPlans);
+    } catch (error) {
+      console.error("Error fetching addons data:", error);
     } finally {
       setLoading(false);
     }
@@ -202,8 +97,10 @@ const AddOns = () => {
     setIsYearly(value === "yearly");
   };
 
-  const displayedPlans = isYearly ? YearlyPlansData : QuarterlyPlans;
-  console.log(isYearly, "displayedPlans", displayedPlans);
+  useEffect(() => {
+    fetchAddOns();
+  }, [isYearly]);
+
   return (
     <div>
       <div className="max-w-[92vw] 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
@@ -211,9 +108,8 @@ const AddOns = () => {
       </div>
       <div className="relative text-[#121212] bg-[#FFFFFF]">
         <div className="max-w-6xl 2xl:max-w-7xl md:mx-auto mx-[20px] px-3 mt-8">
-          {/* Back Button */}
           <button
-            onClick={() => navigate(-1)} // Navigate back to the previous page
+            onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-[#121212] text-[14px] font-[400] mr-auto ml-5"
           >
             <ArrowBack className="w-[20px] h-[20px]" />
@@ -249,60 +145,51 @@ const AddOns = () => {
           </div>
 
           <div className="pb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayedPlans.map((plan) => (
-              <PlanCard
-                key={plan.name}
-                plan={plan}
-                isYearly={isYearly}
-                setSelectedPlan={setSelectedPlan}
-                setAreYouSure={setAreYouSure}
-              />
+            {addOns.map((plan) => (
+              <div className="border border-[#B6B6B6] px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[450px] relative">
+                <div className="space-y-[20px]">
+                  <h3 className="text-[28px] font-medium text-gray-800 mb-2">
+                    {plan.name}
+                  </h3>
+                  <p className="text-[#606060] mb-2 text-sm font-normal min-h-[80px]">
+                    {plan.description}
+                  </p>
+                  <div className="flex flex-col items-start mb-2">
+                    <span className="text-[32px] font-medium text-[#121212]">
+                      ₦
+                      {isYearly
+                        ? plan.price.toLocaleString()
+                        : plan.price.toLocaleString()}
+                    </span>
+                    {!isYearly && (
+                      <span className="text-[10px] text-[#121212] font-normal ml-1">
+                        Billed monthly (₦
+                        {plan.billingPerMonth.toLocaleString()} per month)
+                      </span>
+                    )}
+                    {isYearly && (
+                      <span className="text-sm text-gray-500 ml-1">
+                        Billed yearly
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {/* <p className="mt-[60px] py-[10px] font-[400] text-[14px] text-left absolute bottom-24 w-[225px]">
+                  {plan.note}
+                </p> */}
+                <button
+                  className="mt-[60px] border border-[#000000] bg-[#0d0d0d] py-[10px] rounded-[5px] font-[400] text-[14px] text-[#ffffff] text-center absolute bottom-10 w-[225px]"
+                  onClick={() => {
+                    setSelectedPlan(plan);
+                    localStorage.setItem("selectedPlan", JSON.stringify(plan));
+                    setAreYouSure(true);
+                  }}
+                >
+                  Select Plan
+                </button>
+              </div>
             ))}
           </div>
-          {/* {!isYearly && (
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  viBoards
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Display digital menu boards ensuring clear, engaging and
-                  easily updatable menus
-                </p>
-                <div className="flex items-center mb-4">
-                  <span className="text-2xl font-bold text-indigo-600">
-                    ₦7,500
-                  </span>
-                  <span className="text-sm text-gray-500 ml-1">
-                    Billed Quarterly (₦2,500/month)
-                  </span>
-                </div>
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                  Select Plan
-                </button>
-              </div>
-              <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  GoDeliver
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Choose from different delivery partners to deliver your food
-                  quickly
-                </p>
-                <div className="flex items-center mb-4">
-                  <span className="text-2xl font-bold text-indigo-600">
-                    ₦4,500
-                  </span>
-                  <span className="text-sm text-gray-500 ml-1">
-                    Billed Quarterly (₦1,500/month)
-                  </span>
-                </div>
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                  Select Plan
-                </button>
-              </div>
-            </div>
-          )} */}
         </div>
       </div>
 
@@ -333,7 +220,7 @@ const AddOns = () => {
 
                 <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                   <button
-                    onClick={() => SubcribePlan()}
+                    onClick={() => SubcribePlan2()}
                     className=" text-[16px]"
                   >
                     {loading ? "Loading..." : "Yes"}
