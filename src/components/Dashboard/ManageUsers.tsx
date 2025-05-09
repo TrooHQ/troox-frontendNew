@@ -166,6 +166,7 @@ const ManageUsers: React.FC = () => {
         }`,
         phone_number: user.phone_number,
         branch_id: user.branch,
+        role: user.user_role,
       };
 
       const response = await axios.post(
