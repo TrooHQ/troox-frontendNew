@@ -9,13 +9,13 @@ import { useEffect, useState } from "react";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
-import OpenTicketModal from "./ticketComponents/OpenTicketModal";
+// import OpenTicketModal from "./ticketComponents/OpenTicketModal";
 import VacateTableModal from "./ticketComponents/VacateTableModal";
 import RefundMenu from "./ticketComponents/RefundMenu";
 import VoidOrderMenu from "./ticketComponents/VoidOrderMenu";
 import { useSelector } from "react-redux";
 import { DropdownMenu } from "./DropdownMenuOpenTickets";
-import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
+// import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { truncateText } from "../../utils/truncateText";
 import { RootState } from "@/src/store/store";
@@ -28,7 +28,7 @@ const Tickets = () => {
   const [vacateTableMenu, setVacateTableMenu] = useState<boolean>(false);
   const [openTicket, setOpenTicket] = useState<boolean>(false); // to open ticket details modal
   const [data, setData] = useState<any[]>([]);
-  const [closedData, setClosedData] = useState<any[]>([]);
+  // const [closedData, setClosedData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userDetails = useSelector((state: any) => state.user);
@@ -38,7 +38,7 @@ const Tickets = () => {
   const [refundType, setRefundType] = useState<string>("");
   const [refundAmount, setRefundAmount] = useState<string>("");
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
-  const [activeMenuIndex2, setActiveMenuIndex2] = useState<number | null>(null);
+  // const [activeMenuIndex2, setActiveMenuIndex2] = useState<number | null>(null);
 
   const token = userDetails?.userData?.token;
 
@@ -54,19 +54,19 @@ const Tickets = () => {
   const handleTicketMenu = () => {
     setOpenTicket(!openTicket);
   };
-  const [openTicketData, setopenTicketData] = useState<any>();
-  const handleTicketMenu2 = (item: any) => {
-    setOpenTicket(!openTicket);
-    setopenTicketData(item);
-  };
+  // const [openTicketData, setopenTicketData] = useState<any>();
+  // const handleTicketMenu2 = (item: any) => {
+  //   setOpenTicket(!openTicket);
+  //   setopenTicketData(item);
+  // };
 
   const toggleMenu = (index: number) => {
     setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const toggleMenu2 = (index: number) => {
-    setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
-  };
+  // const toggleMenu2 = (index: number) => {
+  //   setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
+  // };
 
   const getTickets = async () => {
     const headers = {
@@ -75,10 +75,13 @@ const Tickets = () => {
         Authorization: `Bearer ${token}`,
       },
     };
+
+    // https://troox-backend.onrender.com/api/order/getOrderbyType/?branch_id=685009df72551c42703c5527&queryType=ticket
+
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOpenTickets/?branch_id=${selectedBranch.id}`,
+        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket`,
         headers
       );
       console.log(response.data);
@@ -105,7 +108,7 @@ const Tickets = () => {
         headers
       );
       console.log(response.data);
-      setClosedData(response.data.data);
+      // setClosedData(response.data.data);
       // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -153,39 +156,39 @@ const Tickets = () => {
     }
   };
 
-  const handleVoidOrder2 = async () => {
-    if (activeMenuIndex2 === null) {
-      toast.error("No active menu selected");
-      return;
-    }
+  // const handleVoidOrder2 = async () => {
+  //   if (activeMenuIndex2 === null) {
+  //     toast.error("No active menu selected");
+  //     return;
+  //   }
 
-    console.log(data[activeMenuIndex2], "pppp");
+  //   console.log(data[activeMenuIndex2], "pppp");
 
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/order/updateBranchOrder/`,
-        {
-          branch_id: selectedBranch.id,
-          order_id: data[activeMenuIndex2]._id,
-          status: "cancel",
-        },
-        headers
-      );
-      console.log(response.data);
-      getTickets();
-      getClosedTickets();
-      setVoidOrderMenu(false);
-      toast.success(response.data.message || "Successful");
-    } catch (error) {
-      toast.error("Error voiding order");
-    }
-  };
+  //   const headers = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   try {
+  //     const response = await axios.put(
+  //       `${SERVER_DOMAIN}/order/updateBranchOrder/`,
+  //       {
+  //         branch_id: selectedBranch.id,
+  //         order_id: data[activeMenuIndex2]._id,
+  //         status: "cancel",
+  //       },
+  //       headers
+  //     );
+  //     console.log(response.data);
+  //     getTickets();
+  //     getClosedTickets();
+  //     setVoidOrderMenu(false);
+  //     toast.success(response.data.message || "Successful");
+  //   } catch (error) {
+  //     toast.error("Error voiding order");
+  //   }
+  // };
 
   const handleRefresh = () => {
     getTickets();
@@ -237,15 +240,14 @@ const Tickets = () => {
                   ) : (
                     data.map((item, index) => (
                       <div
-                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${
-                          index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                        }`}
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                          }`}
                         key={index}
                       >
-                        <p className=" " onClick={handleTicketMenu}>
+                        <p className="" onClick={handleTicketMenu}>
                           {item.createdAt.slice(0, 10)}
                         </p>
-                        <p className=" " onClick={handleTicketMenu}>
+                        <p className="" onClick={handleTicketMenu}>
                           {item.createdAt.slice(11, 16)}
                         </p>
                         <p onClick={handleTicketMenu}>
@@ -260,10 +262,10 @@ const Tickets = () => {
                         <p onClick={handleTicketMenu}>
                           {item.customer_name
                             ? truncateText(
-                                item.customer_name.charAt(0).toUpperCase() +
-                                  item.customer_name.slice(1),
-                                10
-                              )
+                              item.customer_name.charAt(0).toUpperCase() +
+                              item.customer_name.slice(1),
+                              10
+                            )
                             : ""}
                         </p>
                         <p>{item.waiter || "-"}</p>
@@ -342,11 +344,49 @@ const Tickets = () => {
                   voidOrderMenu={voidOrderMenu}
                   handleVoidOrderMenu={handleVoidOrderMenu}
                   setVoidOrderMenu={setVoidOrderMenu}
-                  handleVoidOrder={handleVoidOrder2}
+                  handleVoidOrder={() => { }}
                 />
               )}
 
-              <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
+
+
+              <RefundMenu
+                refundMenu={refundMenu}
+                handleRefundMenu={handleRefundMenu}
+                refundType={refundType}
+                setRefundType={setRefundType}
+                openInput={openInput}
+                setOpenInput={setOpenInput}
+                refundAmount={refundAmount}
+                setRefundAmount={setRefundAmount}
+                setRefundMenu={setRefundMenu}
+              />
+
+              <VacateTableModal
+                vacateTableMenu={vacateTableMenu}
+                handleVacateTableMenu={handleVacateTableMenu}
+                setVacateTableMenu={setVacateTableMenu}
+              />
+
+              {/* <OpenTicketModal
+                openTicket={openTicket}
+                handleTicketMenu={handleTicketMenu}
+                setOpenTicket={setOpenTicket}
+                data={data}
+                openTicketData={() => { }}
+              /> */}
+            </div>
+          </div>
+        </div>
+      </DashboardLayout>
+    </div>
+  );
+};
+
+export default Tickets;
+
+
+{/* <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
                 <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
                   {userData?.onboarding_type !== "gogrub"
                     ? " Closed tickets"
@@ -372,15 +412,14 @@ const Tickets = () => {
                 ) : (
                   closedData.map((item, index) => (
                     <div
-                      className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${
-                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                      }`}
+                      className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        }`}
                       key={index}
                     >
-                      <p className=" " onClick={handleTicketMenu}>
+                      <p className="" onClick={handleTicketMenu}>
                         {item.createdAt.slice(0, 10)}
                       </p>
-                      <p className=" " onClick={handleTicketMenu}>
+                      <p className="" onClick={handleTicketMenu}>
                         {item.createdAt.slice(11, 16)}
                       </p>
                       <p onClick={handleTicketMenu}>
@@ -395,10 +434,10 @@ const Tickets = () => {
                       >
                         {item.customer_name
                           ? truncateText(
-                              item.customer_name.charAt(0).toUpperCase() +
-                                item.customer_name.slice(1),
-                              10
-                            )
+                            item.customer_name.charAt(0).toUpperCase() +
+                            item.customer_name.slice(1),
+                            10
+                          )
                           : ""}
                       </p>
                       <p>{item.waiter || "-"}</p>
@@ -428,39 +467,4 @@ const Tickets = () => {
                     </div>
                   ))
                 )}
-              </div>
-
-              <RefundMenu
-                refundMenu={refundMenu}
-                handleRefundMenu={handleRefundMenu}
-                refundType={refundType}
-                setRefundType={setRefundType}
-                openInput={openInput}
-                setOpenInput={setOpenInput}
-                refundAmount={refundAmount}
-                setRefundAmount={setRefundAmount}
-                setRefundMenu={setRefundMenu}
-              />
-
-              <VacateTableModal
-                vacateTableMenu={vacateTableMenu}
-                handleVacateTableMenu={handleVacateTableMenu}
-                setVacateTableMenu={setVacateTableMenu}
-              />
-
-              <OpenTicketModal
-                openTicket={openTicket}
-                handleTicketMenu={handleTicketMenu}
-                setOpenTicket={setOpenTicket}
-                data={data}
-                openTicketData={openTicketData}
-              />
-            </div>
-          </div>
-        </div>
-      </DashboardLayout>
-    </div>
-  );
-};
-
-export default Tickets;
+              </div> */}

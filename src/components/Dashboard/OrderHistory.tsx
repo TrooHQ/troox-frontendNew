@@ -99,18 +99,20 @@ const OrderHistory = () => {
       params.number_of_days = number_of_days;
     }
 
+
+    // https://troox-backend.onrender.com/api/order/getOrderbyType/?branch_id=685009df72551c42703c5527&queryType=ticket
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderByBranch/`,
+        `${SERVER_DOMAIN}/order/getOrderbyType/`,
         {
           ...headers,
-          params: { branch_id: selectedBranch.id, ...params },
+          params: { branch_id: selectedBranch.id, ...params, queryType: "history" },
           paramsSerializer: (params) => new URLSearchParams(params).toString(),
         }
       );
       console.log(response.data, "mmmm");
-      setData(response.data);
+      setData(response.data?.data);
       // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -224,12 +226,12 @@ const OrderHistory = () => {
                   <p className="items-start">
                     {selectedCustomer.customer_name
                       ? truncateText(
-                          selectedCustomer.customer_name
-                            .charAt(0)
-                            .toUpperCase() +
-                            selectedCustomer.customer_name.slice(1),
-                          12
-                        )
+                        selectedCustomer.customer_name
+                          .charAt(0)
+                          .toUpperCase() +
+                        selectedCustomer.customer_name.slice(1),
+                        12
+                      )
                       : ""}
                   </p>
                   <p className="" onClick={handleCustomerMenu}>
@@ -260,63 +262,57 @@ const OrderHistory = () => {
                   </div>
                   <div className="flex items-center gap-[8px]">
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter2 === "today"
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter2 === "today"
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("today")}
                     >
                       Today
                     </button>
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter === 7
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter === 7
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("days", 7)}
                     >
                       7 Days
                     </button>
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter === 30
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter === 30
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("days", 30)}
                     >
                       1 Month
                     </button>
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter === 90
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter === 90
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("days", 90)}
                     >
                       3 Months
                     </button>
 
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter === 180
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter === 180
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("days", 180)}
                     >
                       6 Months
                     </button>
 
                     <button
-                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${
-                        selectedFilter === 365
-                          ? "bg-purple500 text-white"
-                          : "border-gray-400 text-black"
-                      }`}
+                      className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter === 365
+                        ? "bg-purple500 text-white"
+                        : "border-gray-400 text-black"
+                        }`}
                       onClick={() => handleFilterChange("days", 365)}
                     >
                       1 Year
@@ -393,27 +389,26 @@ const OrderHistory = () => {
                   ) : (
                     data.map((item, index) => (
                       <div
-                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${
-                          index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                        }`}
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                          }`}
                         key={index}
                       >
                         <p className="text-start" onClick={handleCustomerMenu}>
                           {item.order_number || "-"}
                         </p>
-                        <p className=" " onClick={handleTicketMenu}>
+                        <p className="" onClick={handleTicketMenu}>
                           {item.createdAt.slice(0, 10)}
                         </p>
-                        <p className=" " onClick={handleTicketMenu}>
+                        <p className="" onClick={handleTicketMenu}>
                           {item.createdAt.slice(11, 16)}
                         </p>
                         <p onClick={() => handleCustomerShow(item)}>
                           {item.customer_name
                             ? truncateText(
-                                item.customer_name.charAt(0).toUpperCase() +
-                                  item.customer_name.slice(1),
-                                12
-                              )
+                              item.customer_name.charAt(0).toUpperCase() +
+                              item.customer_name.slice(1),
+                              12
+                            )
                             : ""}
                         </p>
 
