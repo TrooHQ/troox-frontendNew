@@ -466,10 +466,9 @@ const MenuBuilder = () => {
                     <div
                       onClick={() => getSubCategory(category)}
                       key={category._id}
-                      className={`${
-                        activeCategory?.name === category?.name &&
+                      className={`${activeCategory?.name === category?.name &&
                         "bg-purple100 text-purple600 font-[500]"
-                      } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] cursor-pointer`}
+                        } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] cursor-pointer`}
                     >
                       {truncateText(category.name, 10)}
                       {activeCategory?.name === category.name && (
@@ -530,7 +529,7 @@ const MenuBuilder = () => {
                   ))}
                 </nav>
               </div>
-              <div className=" flex-grow">
+              <div className="flex-grow ">
                 <>
                   <MenuGroup
                     mgLoading={mgLoading}
