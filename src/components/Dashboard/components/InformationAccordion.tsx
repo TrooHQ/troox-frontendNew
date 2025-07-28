@@ -271,7 +271,7 @@ export default function InformationAccordion() {
     fetchAccountDetails();
     fetchBranchBankAccount();
     dispatch(fetchAccountDetailState());
-  }, [token]);
+  }, [token, selectedBranch?.id]);
 
   // const { accountDetails } = useSelector((state: RootState) => state.business);
 
