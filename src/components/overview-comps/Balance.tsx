@@ -33,7 +33,7 @@ const BalanceComp = () => {
       fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
     );
     dispatch(fetchCustomerTransaction({ date_filter: "today" }));
-  }, [dispatch]);
+  }, [dispatch, selectedBranch?.id]);
 
   const changeVisibility = () => {
     setShowBalance(!showBalance);
@@ -113,10 +113,10 @@ const BalanceComp = () => {
             {loading
               ? "..."
               : showBalance && totalSales?.data !== undefined
-              ? `₦ ${totalSales?.data?.toLocaleString("en-US")}`
-              : showBalance && totalSales?.data === undefined
-              ? "Loading..."
-              : "****"}
+                ? `₦ ${totalSales?.data?.toLocaleString("en-US")}`
+                : showBalance && totalSales?.data === undefined
+                  ? "Loading..."
+                  : "****"}
           </h2>
           {!showBalance ? (
             <Visibility
