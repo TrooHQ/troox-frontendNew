@@ -39,11 +39,13 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      branch_id,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      branch_id?: string;
     },
     { rejectWithValue }
   ) => {
@@ -57,6 +59,11 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
         params.endDate = endDate;
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
+      }
+
+      console.log("branch_id", branch_id);
+      if (branch_id) {
+        params.branch_id = branch_id;
       }
 
       const response = await axios.get(
@@ -190,11 +197,13 @@ export const fetchTotalSales = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      branch_id,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      branch_id?: string;
     },
     { rejectWithValue }
   ) => {
@@ -207,6 +216,9 @@ export const fetchTotalSales = createAsyncThunk(
         params.endDate = endDate;
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
+      }
+      if (branch_id) {
+        params.branch_id = branch_id;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/getTotalSales`, {
@@ -235,11 +247,13 @@ export const fetchCustomerTransaction = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      branch_id,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      branch_id?: string;
     },
     { rejectWithValue }
   ) => {
@@ -252,6 +266,9 @@ export const fetchCustomerTransaction = createAsyncThunk(
         params.endDate = endDate;
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
+      }
+      if (branch_id) {
+        params.branch_id = branch_id;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/customerTransaction`, {
@@ -280,11 +297,13 @@ export const fetchAverageOrderValue = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      branch_id,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      branch_id?: string;
     },
     { rejectWithValue }
   ) => {
@@ -297,6 +316,9 @@ export const fetchAverageOrderValue = createAsyncThunk(
         params.endDate = endDate;
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
+      }
+      if (branch_id) {
+        params.branch_id = branch_id;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/averageOrderValue`, {
@@ -325,11 +347,13 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      branch_id,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      branch_id?: string;
     },
     { rejectWithValue }
   ) => {
@@ -342,6 +366,9 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
         params.endDate = endDate;
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
+      }
+      if (branch_id) {
+        params.branch_id = branch_id;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/salesRevenueGraph`, {

@@ -1,10 +1,16 @@
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { Key, useEffect } from "react";
+import {
+  // useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  // AppDispatch, 
+  RootState
+} from "../../store/store";
+import { Key } from "react";
 import { CircularProgress } from "@mui/material";
-import { fetchTopMenuItems } from "../../slices/overviewSlice";
+// import { fetchTopMenuItems } from "../../slices/overviewSlice";
 import PieCharts from "./PieChart";
 
 // Predefined color palette
@@ -22,18 +28,18 @@ const colors = [
 ];
 
 const KPI = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
 
   const { topMenuItems, loading } = useSelector(
     (state: RootState) => state.overview
   );
-  const { selectedBranch } = useSelector((state: any) => state.branches);
+  // const { selectedBranch } = useSelector((state: any) => state.branches);
 
-  useEffect(() => {
-    dispatch(
-      fetchTopMenuItems({ date_filter: "today", branch_id: selectedBranch?.id })
-    );
-  }, [dispatch, selectedBranch]);
+  // useEffect(() => {
+  //   dispatch(
+  //     fetchTopMenuItems({ date_filter: "today", branch_id: selectedBranch?.id })
+  //   );
+  // }, [dispatch, selectedBranch]);
 
   return (
     <div className="border border-[#C7C6CF] p-6 rounded-2xl mb-12">
@@ -78,7 +84,7 @@ const KPI = () => {
         </div>
 
         <div className="bg-white rounded-[10px] px-5 py-[48px] flex-grow flex flex-col gap-[22px]">
-          {topMenuItems?.data?.slice(0, 5).map((product: any, index: any) => {
+          {topMenuItems?.data?.map((product: any, index: any) => {
             const indicator = colors[index % colors.length];
             return (
               <div key={index} className="flex items-center justify-between">

@@ -25,14 +25,14 @@ const BalanceComp = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
   useEffect(() => {
-    dispatch(fetchOpenAndClosedTickets({ date_filter: "today" }));
-    dispatch(fetchTotalSales({ date_filter: "today" }));
-    dispatch(fetchAverageOrderValue({ date_filter: "today" }));
-    dispatch(fetchSalesRevenueGraph({ date_filter: "today" }));
+    dispatch(fetchOpenAndClosedTickets({ date_filter: "today", branch_id: selectedBranch?.id }));
+    dispatch(fetchTotalSales({ date_filter: "today", branch_id: selectedBranch?.id }));
+    dispatch(fetchAverageOrderValue({ date_filter: "today", branch_id: selectedBranch?.id }));
+    dispatch(fetchSalesRevenueGraph({ date_filter: "today", branch_id: selectedBranch?.id }));
     dispatch(
       fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
     );
-    dispatch(fetchCustomerTransaction({ date_filter: "today" }));
+    dispatch(fetchCustomerTransaction({ date_filter: "today", branch_id: selectedBranch?.id }));
   }, [dispatch, selectedBranch?.id]);
 
   const changeVisibility = () => {
