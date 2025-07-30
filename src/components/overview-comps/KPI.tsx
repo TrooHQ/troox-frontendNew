@@ -27,7 +27,9 @@ const colors = [
   "#999999", // Lightest Gray in this list
 ];
 
-const KPI = () => {
+
+
+export default function KPI() {
   // const dispatch = useDispatch<AppDispatch>();
 
   const { topMenuItems, loading } = useSelector(
@@ -111,6 +113,6 @@ const KPI = () => {
       </div>
     </div>
   );
-};
+}
 
-export default KPI;
+// export default KPI;
