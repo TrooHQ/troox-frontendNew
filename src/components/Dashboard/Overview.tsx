@@ -13,18 +13,18 @@ import { fetchBusinessPlan } from "../../slices/businessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 
-export const storeData = {
-  id: 1,
-  name: "Chicken Republic",
-  outlet: "Ajah outlet",
-  address: "No 1, Kanta Street, Lagos",
-  phoneNo: "0817 8901 234",
-  availableBalance: "₦ 10,500,000",
-  noOfWarehouses: "450",
-  noOfProducts: "12,450",
-  noOfTransactions: "N2.25M",
-  noOfReturns: "24",
-};
+// export const storeData = {
+//   id: 1,
+//   name: "Chicken Republic",
+//   outlet: "Ajah outlet",
+//   address: "No 1, Kanta Street, Lagos",
+//   phoneNo: "0817 8901 234",
+//   availableBalance: "₦ 10,500,000",
+//   noOfWarehouses: "450",
+//   noOfProducts: "12,450",
+//   noOfTransactions: "N2.25M",
+//   noOfReturns: "24",
+// };
 
 export const CustomAutocomplete = styled(Autocomplete)({
   "& .MuiOutlinedInput-root": {
@@ -78,9 +78,9 @@ const Overview: React.FC = () => {
     selectedBranch
       ? selectedBranch
       : {
-          label: "All outlets",
-          id: "",
-        }
+        label: "All outlets",
+        id: "",
+      }
   );
   useEffect(() => {
     dispatch(fetchBranches());

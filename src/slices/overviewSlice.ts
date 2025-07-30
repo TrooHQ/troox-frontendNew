@@ -160,7 +160,7 @@ export const fetchTopMenuItems = createAsyncThunk(
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
       }
-
+      console.log("params", params);
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getTopMenuItems/`,
         {
