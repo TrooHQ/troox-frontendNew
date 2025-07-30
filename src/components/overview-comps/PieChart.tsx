@@ -58,7 +58,10 @@ function PieCenterLabel({ total }: { total: number }) {
   );
 }
 
-const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
+export default function PieCharts({ topMenuItems }: { topMenuItems: any[] }) {
+
+  // console.log("topMenuItems", topMenuItems)
+
   const totalValue = topMenuItems.reduce(
     (sum, item) => sum + item.totalRevenue,
     0
@@ -100,6 +103,4 @@ const PieCharts = ({ topMenuItems }: { topMenuItems: any[] }) => {
       <PieCenterLabel total={total} />
     </PieChart>
   );
-};
-
-export default PieCharts;
+}
