@@ -287,9 +287,7 @@ export default function InformationAccordion() {
   }, [banks, formData.payoutBankDetails.bankName]);
 
   useEffect(() => {
-    const shouldVerify =
-      formData.payoutBankDetails.accountNumber &&
-      formData.payoutBankDetails.accountNumber.length >= 10 &&
+    const shouldVerify = formData.payoutBankDetails.accountNumber.length >= 10 &&
       selectedBank?.code;
 
     if (shouldVerify) {
