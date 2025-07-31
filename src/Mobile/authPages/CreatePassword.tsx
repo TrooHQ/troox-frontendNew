@@ -53,7 +53,7 @@ const CreatePassword = () => {
       setLoading(false);
       console.log(response.data);
       toast.success("Password reset successfully");
-      history("/login");
+      history("/demo/login/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -107,7 +107,7 @@ const CreatePassword = () => {
 
           <div className=" mt-[40px]" onClick={handleButtonClick}>
             <button
-              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              className="bg-grey700 w-full text-center text-white py-3 rounded"
               disabled={loading}
             >
               Create password

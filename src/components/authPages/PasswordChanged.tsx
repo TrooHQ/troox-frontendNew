@@ -14,15 +14,18 @@ const PasswordChanged = () => {
             <div className=" flex gap-5 flex-col items-center justify-center text-center">
               <img src={lockIcon} alt="" />
               <div className=" max-w-[355px] mx-auto">
-                <p className=" text-grey500 text-[24px] font-[600]">
-                  Well done!
-                </p>
+                <p className=" text-grey500 text-[24px] font-[600]">Well done!</p>
                 <p className=" text-grey500 text-[16px] font-[500] py-3">
-                  You have successfully changed your password. Please use your
-                  new password when logging in
+                  You have successfully changed your password. Please use your new password when
+                  logging in
                 </p>
               </div>
             </div>
+            <Link to="/create-pin">
+              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+                Click to create pin
+              </button>
+            </Link>
             <Link to="/">
               <button className="bg-purple500 w-full text-center text-white py-3 rounded">
                 Login to Continue

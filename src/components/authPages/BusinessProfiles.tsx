@@ -1,77 +1,173 @@
-import { useState, ChangeEvent } from "react";
-import Logo from "../../assets/trooLogo.svg";
-import FAQ from "../FAQ";
+import { useState, useEffect } from "react";
+import Logo from "../../assets/TrooGrey.svg";
+import GoGrubLogo from "../../assets/business_logo.svg";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import BusinessInfoForm from "../forms/BusinessInfoForm";
+import PersonalInfoForm from "../forms/PersonalInfoForm";
+import { selectTransformedRegisterState } from "../../slices/registerSlice";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-interface FAQItem {
-  question: string;
-  inputValue?: string;
-}
 const BusinessProfiles: React.FC = () => {
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isFromGoGrub, setIsFromGoGrub] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const transformedState = useSelector(selectTransformedRegisterState);
 
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const handleNext = async () => {
+    currentStep === 0 && setCurrentStep((prevStep) => prevStep + 1);
+    if (currentStep === 1) {
+      setLoading(true);
+      // Send request to sample endpoint
+      try {
+        const endpoint = isFromGoGrub
+          ? `${SERVER_DOMAIN}/onboardGoGrubBusiness/`
+          : `${SERVER_DOMAIN}/onboardBusiness/`;
+        const sampleResponse = await axios.post(endpoint, transformedState);
 
-  const faqData: FAQItem[] = [
-    {
-      question: "Business information",
-      inputValue: "Input 1",
-    },
-    {
-      question: "Personal information",
-      inputValue: "Input 2",
-    },
-    {
-      question: "Payout & bank details",
-      inputValue: "Input 3",
-    },
+        if (sampleResponse.status === 200) {
+          localStorage.setItem("businessId", sampleResponse.data.business_id);
+          localStorage.setItem(
+            "registeredUserEmail",
+            sampleResponse.data.business_email
+          );
+          localStorage.setItem("userId", sampleResponse.data.user_id);
+          toast.success(
+            `Business information saved successfully. Token: ${sampleResponse.data.email_verification_token}`
+          );
+
+          // Navigate to verify-account with the query parameter if coming from GoGrub
+          if (isFromGoGrub) {
+            navigate("/verify-account?coming-from=gogrub");
+          } else {
+            navigate("/verify-account");
+          }
+        } else {
+          toast.error("Error submitting business information");
+        }
+      } catch (error: any) {
+        console.error("Error submitting sample data:", error);
+        toast.error(
+          error.response.data.message || "Error submitting business information"
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  const handleBack = () => setCurrentStep((prevStep) => prevStep - 1);
+  console.log("customPayload:", transformedState);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("coming-from") === "gogrub") {
+      setIsFromGoGrub(true);
+    }
+  }, [transformedState]);
+
+  const stepTitles = ["Business Information", "Personal Information"];
+  const stepDescriptions = [
+    "This information is required in order to verify your business. It will show up on your payout report, invoices and receipts.",
+    "Please make sure that your personal details remain up-to-date. Because this information is used to verify your identity. You will need to send our Support Team a message if you need to change it.",
+    "Please enter your bank account information. You will receive a four-digit verification code via text message. Once you enter the code Troo will direct all payouts to the account.",
   ];
 
-  const toggleAnswer = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0:
+        return <BusinessInfoForm />;
+      case 1:
+        return <PersonalInfoForm />;
+      default:
+        return <BusinessInfoForm />;
+    }
   };
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFAQData = [...faqData];
-    newFAQData[index].inputValue = event.target.value;
-    console.log(newFAQData);
-  };
-  return (
-    <div className="bg-[#EFEFEF] ">
-      <div className="flex flex-col items-center justify-center h-screen my-auto">
-        <div>
-          <img src={Logo} alt="" />
-        </div>
-        <div className="bg-white grid gap-3 py-[40px] px-8 my-5 w-full md:w-[700px] rounded shadow-md">
-          <p className="text-[24px] font-[500] text-purple500 mb-8">
-            Business profile | ID:TR89340
-          </p>
 
-          <FAQ
-            faqData={faqData}
-            openIndex={openIndex}
-            toggleAnswer={toggleAnswer}
-            handleInputChange={handleInputChange}
-          />
-
-          <div className=" flex justify-end items-center gap-2 mt-[32px]">
-            <div className="border-2 border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500">
-              <div onClick={() => navigate(-1)}>
-                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">
-                  Cancel
-                </p>
-              </div>
+  const renderStepProgress = () => {
+    return (
+      <div className="flex justify-center mb-8 gap-[8px]">
+        {stepTitles.map((_, index) => (
+          <div key={index} className="flex items-center">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                currentStep >= index
+                  ? "bg-purple500 text-white"
+                  : "bg-gray-300 text-gray-600"
+              }`}
+            >
+              {index + 1}
             </div>
-
-            <div className="border-2 border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[600] text-[#ffffff]">
-              <Link to="/">
-                <button className="">Save and continue</button>
-              </Link>
-            </div>
+            {index < stepTitles.length - 1 && (
+              <div
+                className={`flex-1 h-1 ${
+                  currentStep > index ? "bg-purple500" : "bg-gray-300"
+                }`}
+              ></div>
+            )}
           </div>
-        </div>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="bg-[#fff] h-screen flex flex-col items-center justify-center">
+      {!isFromGoGrub ? (
+        <img src={Logo} alt="Logo" className="mb-8" />
+      ) : (
+        <img src={GoGrubLogo} alt="Logo" className="mb-8" />
+      )}
+      <div className="bg-white py-10 px-8 w-full md:w-3/5 rounded shadow-md h-[85vh] overflow-y-auto border-[1.5px] border-[#121212]">
+        {renderStepProgress()}
+        <p className="text-2xl font-medium text-purple500 mb-2">
+          {stepTitles[currentStep]}
+        </p>
+        <p className="text-gray-600 mb-8">{stepDescriptions[currentStep]}</p>
+        {renderStepContent()}
+      </div>
+      <div className="mt-4 flex justify-end w-full md:w-3/5">
+        {currentStep > 0 ? (
+          <button
+            onClick={handleBack}
+            className="border-2 border-purple500 rounded px-6 py-3 font-semibold text-purple500"
+            disabled={loading}
+          >
+            Back
+          </button>
+        ) : (
+          <Link to="/">
+            <button
+              className="border-2 border-purple500 rounded px-6 py-3 font-semibold text-purple500"
+              disabled={loading}
+            >
+              Back
+            </button>
+          </Link>
+        )}
+        {currentStep < stepTitles.length - 1 ? (
+          <button
+            onClick={handleNext}
+            className="ml-auto border-2 border-purple500 bg-purple500 rounded px-6 py-3 font-semibold text-white"
+            disabled={loading}
+          >
+            {loading
+              ? "Loading..."
+              : currentStep === 0
+              ? "Next"
+              : "Save and continue"}
+          </button>
+        ) : (
+          <button
+            onClick={handleNext}
+            className="ml-auto border-2 border-purple500 bg-purple500 rounded px-6 py-3 font-semibold text-white"
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Save and continue"}
+          </button>
+        )}
       </div>
     </div>
   );

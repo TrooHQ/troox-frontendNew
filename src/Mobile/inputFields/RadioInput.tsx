@@ -4,15 +4,17 @@ interface RadioInputProps {
   options: string[];
   selectedOption?: string | null;
   onChange: (value: string) => void;
+  className?: string;
 }
 
 const RadioInput: React.FC<RadioInputProps> = ({
   options,
   selectedOption,
   onChange,
+  className = "",
 }) => {
   return (
-    <div className="flex items-center gap-[32px]">
+    <div className={`gap-[32px] ${className}`}>
       {options.map((option, index) => (
         <div key={index} className="flex items-center">
           <input

@@ -44,7 +44,7 @@ const EmployeeLogin = () => {
       console.log(response.data.account_details);
       console.log(response.data.message);
       toast.success(response.data.message);
-      history("/login");
+      history("/demo/login/troo-portal");
     } catch (error: any) {
       console.error("Error occurred:", error);
       if (error.response) {
@@ -85,13 +85,13 @@ const EmployeeLogin = () => {
           </div>
 
           <div className="flex justify-end mt-[16px] mb-[32px]">
-            <Link to="/forgot-password">
+            <Link to="/demo/forgot-password/troo-portal">
               <p className="text-purple500">Forgot password?</p>
             </Link>
           </div>
           <div className="" onClick={handleLogin}>
             <button
-              className="bg-purple500 w-full text-center text-white py-3 rounded"
+              className="bg-grey700 w-full text-center text-white py-3 rounded"
               disabled={loading}
             >
               Login
@@ -99,7 +99,7 @@ const EmployeeLogin = () => {
           </div>
         </div>
         <div className=" mt-[150px]">
-          <Link to="/register">
+          <Link to="/demo/register/troo-portal">
             <p className="font-[500] text-[16px] text-purple500">
               Create a business account
             </p>

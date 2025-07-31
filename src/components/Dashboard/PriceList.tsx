@@ -1,15 +1,112 @@
+import { useState, useEffect } from "react";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Print from "../../assets/print.svg";
 import edit from "../../assets/edit.png";
-import download from "../../assets/download.png";
+import { fetchMenuItems2 } from "../../slices/menuSlice";
+// import Publish from "../../assets/publish.svg";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { AppDispatch } from "../../store/store";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { toast } from "react-toastify";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { styled } from "@mui/material/styles";
 
-import Publish from "../../assets/publish.svg";
+const CustomPagination = styled(Pagination)(() => ({
+  "& .Mui-selected": {
+    backgroundColor: "#000000", // Set the background color to black
+    color: "#ffffff", // Set the text color to white for better contrast
+    "&:hover": {
+      backgroundColor: "#000000", // Ensure hover doesn't change the color
+    },
+  },
+}));
+
 const PriceList = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const {
+    menuItems2: menuItems,
+    loading,
+    totalPages,
+  } = useSelector((state: any) => state.menu);
+  const { selectedBranch } = useSelector((state: any) => state.branches);
+
+  const [page, setPage] = useState<number>(1);
+
+  // New states for handling price edits
+  const [editMode, setEditMode] = useState<string | null>(null); // Track which item is being edited
+  const [newPrice, setNewPrice] = useState<number | null>(null); // Store the new price input
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const userDetails = useSelector((state: any) => state.user);
+  const token = userDetails?.userData?.token;
+
+  useEffect(() => {
+    dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id, page }));
+  }, [dispatch, selectedBranch, page]);
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
+
+  // Handle the edit button click
+  const handleEditClick = (item: any) => {
+    setEditMode(item._id); // Set the current item in edit mode
+    setNewPrice(item.menu_item_price); // Prepopulate the price with the current item's price
+  };
+
+  // Handle the cancel button click
+  const handleCancelEdit = () => {
+    setEditMode(null); // Exit edit mode without saving
+    setNewPrice(null); // Reset the new price value
+  };
+
+  // Handle the price input change
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewPrice(parseFloat(e.target.value)); // Update the new price
+  };
+
+  const handleSave = async (item: any) => {
+    if (newPrice === null) return;
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const payload = {
+      menu_item_id: item._id,
+      name: item.menu_item_name,
+      price: newPrice,
+      description: item.description || "",
+      is_recommended: item.is_recommended,
+      is_frozen: item.is_frozen,
+    };
+
+    setIsSubmitting(true);
+    try {
+      await axios.put(`${SERVER_DOMAIN}/menu/editMenuItem`, payload, headers);
+      dispatch(fetchMenuItems2({ branch_id: selectedBranch?.id })); // Refetch menu items after editing
+      setEditMode(null); // Exit edit mode
+    } catch (error) {
+      console.error("Error editing price:", error);
+      toast.error("Error editing price");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div>
       <DashboardLayout>
-        <TopMenuNav pathName="Menu" />
+        <TopMenuNav pathName="Price List" />
         <div className="">
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
@@ -18,59 +115,116 @@ const PriceList = () => {
                   <img src={Print} alt="" /> Print price list
                 </button>
               </div>
-              <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
+              {/* <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
                 <button className="text-[14px] flex items-center gap-[8px]">
                   <img src={Publish} alt="" /> Publish changes
                 </button>
-              </div>
+              </div> */}
             </div>
 
-            <div className=" mt-[32px] grid grid-cols-6 items-center border-b px-5 border-b-grey100 text-grey300 text-[16px] font-[400]">
-              <p className="col-span-2 px-3 py-2">Menu Group</p>
-              <p className=" col-span-2 px-3 py-2">Menu Items</p>
-              <p className="  px-3 py-2 ">Price</p>
-              <p className="  px-3 py-2 text-end">Actions </p>
-            </div>
-            <div className=" grid mt-[16px] gap-[8px]">
-              <div className=" grid grid-cols-6 items-center px-5 py-4 font-[500] bg-[#F8F8F8] text-[16px] text-grey500  ">
-                <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
-                  <p className=" text-[#5855B3]"> Coffee</p>
-                </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
-                <p className=" px-3 py-2 ">N1800 - N2000 </p>
-                <p className=" flex items-center justify-end gap-[16px]">
-                  <img src={edit} alt="" />
-                  <img src={download} alt="" />
-                </p>
-              </div>
-              <div className=" grid grid-cols-6 items-center px-5 py-4 font-[500] bg-[#ffffff] text-[16px] text-grey500  ">
-                <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
-                  <p className=" text-[#5855B3]"> Coffee</p>
-                </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
-                <p className=" px-3 py-2 ">N1800 - N2000 </p>
-                <p className=" flex items-center justify-end gap-[16px]">
-                  <img src={edit} alt="" />
-                  <img src={download} alt="" />
-                </p>
-              </div>
+            <div className="my-[40px]">
+              <div className="overflow-x-auto mt-6">
+                <table className="min-w-full border-collapse">
+                  <thead>
+                    <tr className="bg-[#606060] text-white text-center text-base font-normal">
+                      <th className="py-2 px-4 text-base font-normal">
+                        Menu Group
+                      </th>
+                      <th className="py-2 px-4 text-base font-normal text-start">
+                        Menu Name
+                      </th>
+                      <th className="py-2 px-4 text-base font-normal">Price</th>
+                      <th className="py-2 px-4 text-base font-normal">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <hr className="mb-2 text-[#E7E7E7]" />
 
-              <div className=" grid grid-cols-6 items-center px-5 py-4 font-[500] bg-[#F8F8F8] text-[16px] text-grey500  ">
-                <div className="col-span-2 px-3 py-2 flex items-center gap-[16px]">
-                  <p className=" text-[#5855B3]"> Coffee</p>
-                </div>
-                <p className="col-span-2 px-3 py-2 text-[#5855B3]">
-                  Cappuccino
-                </p>
-                <p className=" px-3 py-2 ">N1800 - N2000 </p>
-                <p className=" flex items-center justify-end gap-[16px]">
-                  <img src={edit} alt="" />
-                  <img src={download} alt="" />
-                </p>
+                  {loading ? (
+                    <div className="text-center min-w-full">Loading...</div>
+                  ) : menuItems.length !== 0 ? (
+                    <tbody>
+                      {menuItems.map((item: any, index: number) => (
+                        <tr
+                          key={item._id}
+                          className={`${
+                            index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                          }`}
+                        >
+                          <td className="text-base font-normal py-2 px-4">
+                            {item.menu_group_name}
+                          </td>
+                          <td className="text-base font-normal py-2 px-4">
+                            {item.menu_item_name}
+                          </td>
+
+                          {/* Conditional rendering for editing price */}
+                          <td className="text-base font-normal text-center py-2 px-4 break-words">
+                            {editMode === item._id ? (
+                              <input
+                                type="number"
+                                value={newPrice ?? item.menu_item_price}
+                                onChange={handlePriceChange}
+                                className="border border-gray-300 p-1 rounded"
+                              />
+                            ) : (
+                              `₦${parseFloat(
+                                item.menu_item_price
+                              ).toLocaleString()}`
+                            )}
+                          </td>
+
+                          <td className="flex items-center justify-center text-center gap-4">
+                            {editMode === item._id ? (
+                              <div className="flex items-center gap-2 mt-2.5">
+                                <button
+                                  className="text-purple500"
+                                  onClick={() => handleSave(item)}
+                                >
+                                  {isSubmitting ? "Saving..." : "Save"}
+                                </button>
+                                <button
+                                  className="text-red-500"
+                                  onClick={handleCancelEdit}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                className="flex items-center gap-2 mt-2.5"
+                                onClick={() => handleEditClick(item)}
+                              >
+                                <img src={edit} alt="" />
+                                Edit
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <div>
+                      <p className="text-center min-w-full">
+                        No menu items found
+                      </p>
+                    </div>
+                  )}
+                </table>
+                {totalPages > 1 && !loading && (
+                  <Stack
+                    spacing={2}
+                    className="flex justify-center items-center mt-8"
+                  >
+                    <CustomPagination
+                      count={totalPages}
+                      page={page}
+                      onChange={handlePageChange}
+                      color="primary"
+                    />
+                  </Stack>
+                )}
               </div>
             </div>
           </div>

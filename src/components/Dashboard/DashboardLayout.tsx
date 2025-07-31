@@ -6,8 +6,8 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
-    <div className="bg-purple500">
-      <div className=" flex ">
+    <div className="bg-[#ebebeb]">
+      <div className="flex ">
         <Sidebar userType="user" />
 
         <div
@@ -15,8 +15,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div
-            className={`container mx-auto px-6 py-8 bg-white h-[100vh] overflow-y-scroll rounded-2xl`}
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className={`container mx-auto px-6 py-8 bg-[#f8f8f8] h-[100vh] overflow-y-scroll rounded-2xl`}
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              overflowX: "hidden",
+            }}
           >
             {children}
           </div>

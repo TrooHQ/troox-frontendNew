@@ -37,7 +37,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
 
   const commonMenu: MenuItem[] = [
     {
-      subTitle: "MY RESTAURANT",
+      subTitle: "RESTAURANT",
       Subgap: true,
     },
     {
@@ -56,7 +56,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
     {
       title: "Menu",
       icon: MenuIcon,
-      link: "",
+      link: "/menu-home",
       subMenu: [
         {
           title: "Menu Builder",
@@ -91,10 +91,10 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
       link: "/restaurant-details",
     },
     {
-      title: "Manage Tables",
+      title: "Manage Assets",
       gap: false,
       icon: ManageTablesIcon,
-      link: "/manage-tables",
+      link: "/manage-assets",
     },
     {
       title: "Manage Users",
@@ -166,6 +166,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
         <div className=" grid gap-10 items-center">
           <div className="flex gap-x-4  items-center justify-center">
             <img
+              alt="logo"
               src={Logo}
               className={`cursor-pointer duration-500  `}
               // ${
@@ -174,6 +175,7 @@ const EmployeeSidebar: React.FC<EmployeeSidebarProps> = ({ userType }) => {
           </div>
           <div className="flex gap-x-4 items-center justify-center">
             <img
+              alt="logo"
               src={RestaurantLogo}
               className={`cursor-pointer duration-500`}
               // ${

@@ -117,7 +117,7 @@ const Navbar = () => {
               </NavLink>
 
               <NavLink to="/request-demo">
-                <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+                <li className=" flex items-center gap-[5px] text-[14px] font-[500]  py-[8px] px-[16px] bg-[#121212] rounded-[5px] text-white">
                   Schedule A Demo
                 </li>
               </NavLink>
@@ -423,8 +423,8 @@ const Navbar = () => {
             <CloseLineIcon />
           </div>
           <div className="">
-            <NavLink to="/login">
-              <li className=" list-none text-center gap-[5px] text-[14px] font-[500] py-[10px] px-[16px] bg-[#5955B3] rounded-[5px] text-white">
+            <NavLink to="/demo/login/troo-portal">
+              <li className=" list-none text-center gap-[5px] text-[14px] font-[500] py-[10px] px-[16px] bg-[#121212] rounded-[5px] text-white">
                 Log in
               </li>
             </NavLink>

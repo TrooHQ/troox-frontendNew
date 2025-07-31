@@ -1,8 +1,11 @@
 import { useState, ChangeEvent } from "react";
-
+import axios from "axios";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
-import FAQSetting from "../FAQSetting";
+import RolesAndPermission from "../RolesAndPermission";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface FAQItem {
   question: string;
@@ -10,61 +13,83 @@ interface FAQItem {
 }
 
 const NewRoles = () => {
+  const navigate = useNavigate();
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [openIndexInner, setOpenIndexInner] = useState<number | null>(null);
+  const [roleName, setRoleName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const faqData: FAQItem[] = [
-    {
-      question: "Menu settings",
-      inputValue: "Input 1",
-    },
-    {
-      question: "Cash register",
-      inputValue: "Input 2",
-    },
-    {
-      question: "Tickets",
-      inputValue: "Input 3",
-    },
-    {
-      question: "Table ordering",
-      inputValue: "Input 4",
-    },
-    {
-      question: "Kitchen display system",
-      inputValue: "Input 5",
-    },
+    { question: "Level 1 User", inputValue: "Input 1" },
+    { question: "Level 2 User", inputValue: "Input 2" },
+    { question: "Level 3 User", inputValue: "Input 3" },
   ];
 
-  const faqDataInner: FAQItem[] = [
-    {
-      question: "Till",
-      inputValue: "Input 1",
-    },
-  ];
+  const [checkedGeneral, setCheckedGeneral] = useState<string[]>([]);
+  const [checkedInventory, setCheckedInventory] = useState<string[]>([]);
+  const [checkedTickets, setCheckedTickets] = useState<string[]>([]);
 
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-  const toggleAnswer2 = (index2: number) => {
-    setOpenIndexInner(openIndexInner === index2 ? null : index2);
+
+  const handleRoleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRoleName(event.target.value);
   };
 
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFAQData = [...faqData];
-    newFAQData[index].inputValue = event.target.value;
-    console.log(newFAQData);
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
   };
-  const handleInputChange2 = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    const newFAQData2 = [...faqDataInner];
-    newFAQData2[index].inputValue = event.target.value;
-    console.log(newFAQData2);
+
+  const handleSaveAndContinue = async () => {
+    try {
+      setSaveLoading(true);
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+      // 1. Create a new role
+      const roleResponse = await axios.post(
+        `${SERVER_DOMAIN}/role/createRole/`,
+        {
+          role_name: roleName,
+          description,
+        },
+        headers
+      );
+
+      toast.success("Role created successfully.");
+      navigate(-1);
+
+      const { _id: role_id, name: role_name } = roleResponse.data.data;
+
+      // 2. Assign permissions to the role
+      await axios.post(
+        `${SERVER_DOMAIN}/role/assignPermtoRole`,
+        {
+          role_name,
+          role_id,
+          permissions: selectedPermissions,
+        },
+        headers
+      );
+
+      // Handle success (e.g., redirect or display a message)
+      toast.success("Role created and permissions assigned successfully.");
+      setCheckedGeneral([]);
+      setCheckedInventory([]);
+      setCheckedTickets([]);
+    } catch (error: any) {
+      // Handle errors (e.g., display error message)
+      console.error("Error creating role or assigning permissions:", error);
+      toast.error(error.response.data.message);
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
   return (
@@ -85,6 +110,9 @@ const NewRoles = () => {
                 <div className="flex-1">
                   <input
                     type="text"
+                    id="role-name"
+                    value={roleName}
+                    onChange={handleRoleNameChange}
                     className="px-2 w-full h-[48px] rounded-[5px] border border-grey100"
                   />
                 </div>
@@ -97,11 +125,11 @@ const NewRoles = () => {
                   Description
                 </label>
                 <div className="flex-1">
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    className="px-2 w-full h-[128px] rounded-[5px] border border-grey100"
+                  <textarea
+                    id="description"
+                    value={description}
+                    onChange={handleDescriptionChange}
+                    className="px-2 py-2 w-full h-[128px] rounded-[5px] border border-grey100"
                   />
                 </div>
               </div>
@@ -110,22 +138,38 @@ const NewRoles = () => {
         </div>
 
         <div className="my-10 ">
-          <p className="text-[24px] font-[500] text-purple500">
-            Permissions setting
-          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-[24px] font-[500] text-purple500">Permissions Setting</p>
+          </div>
           <div className="my-8 w-full">
             <div className=" grid gap-[48px]">
-              <FAQSetting
+              <RolesAndPermission
                 faqData={faqData}
-                faqDataInner={faqDataInner}
                 openIndex={openIndex}
-                openIndexInner={openIndexInner}
                 toggleAnswer={toggleAnswer}
-                toggleAnswer2={toggleAnswer2}
-                handleInputChange={handleInputChange}
-                handleInputChange2={handleInputChange2}
+                setSelectedPermissions={setSelectedPermissions}
+                checkedGeneral={checkedGeneral}
+                checkedInventory={checkedInventory}
+                checkedTickets={checkedTickets}
+                setCheckedGeneral={setCheckedGeneral}
+                setCheckedInventory={setCheckedInventory}
+                setCheckedTickets={setCheckedTickets}
               />
             </div>
+          </div>
+        </div>
+        <div className="flex justify-end items-center gap-2">
+          <div
+            className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500 cursor-pointer"
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </div>
+          <div
+            className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff] cursor-pointer"
+            onClick={handleSaveAndContinue}
+          >
+            {saveLoading ? "Saving..." : "Save"}
           </div>
         </div>
       </div>

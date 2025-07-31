@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import App from "./App";
 import MobileLayout from "./MobileLayout";
 import SelfCheckoutLayout from "./SelfCheckoutLayout";
 import "./index.css";
+
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 function Root() {
   const [isMobileScreen, setIsMobileScreen] = useState(
@@ -18,9 +21,7 @@ function Root() {
   useEffect(() => {
     function handleResize() {
       setIsMobileScreen(window.matchMedia("(max-width: 768px)").matches);
-      setIsLargeScreen(
-        window.matchMedia("(min-width: 769px) and (max-width: 1090px)").matches
-      );
+      setIsLargeScreen(window.matchMedia("(min-width: 769px) and (max-width: 1090px)").matches);
     }
 
     window.addEventListener("resize", handleResize);
@@ -40,9 +41,12 @@ function Root() {
     rootComponent = <App />;
   }
 
+  let persistor = persistStore(store);
   return (
     <React.StrictMode>
-      <Provider store={store}>{rootComponent}</Provider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>{rootComponent}</PersistGate>
+      </Provider>
     </React.StrictMode>
   );
 }

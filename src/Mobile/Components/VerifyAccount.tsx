@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import Logo from "../../assets/trooLogo.svg";
+import Logo from "../../Mobile/assets/trooLogoDark.svg";
+
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,27 +9,24 @@ import { useNavigate } from "react-router-dom";
 import DigitInput from "../inputFields/DigitInput";
 
 import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
-interface RootState {
-  user: {
-    id: string | null;
-    user_role: string | null;
-    email_verified: boolean | null;
-  };
-}
+// interface RootState {
+//   user: {
+//     id: string | null;
+//     user_role: string | null;
+//     email_verified: boolean | null;
+//   };
+// }
 
 const VerifyAccount = () => {
-  const user = useSelector((state: RootState) => state.user);
-  console.log("user id", user.id);
-  console.log(user.user_role);
-  console.log(user.email_verified);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const history = useNavigate();
 
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
-  const email = sessionStorage.getItem("email");
+  const userDetails = useSelector((state: RootState) => state.user);
+  const email = userDetails?.userData?.business_email;
 
   const handleChange = (index: number, newValue: string) => {
     const newDigits = [...digits];
@@ -86,8 +84,8 @@ const VerifyAccount = () => {
       });
       setLoading(false);
       console.log(response.data);
-      toast.success("User verified successfully");
-      history("/");
+      // toast.success("User verified successfully");
+      history("/demo/verified/troo-portal");
     } catch (error) {
       console.error("Error occurred:", error);
       if (axios.isAxiosError(error)) {
@@ -148,7 +146,7 @@ const VerifyAccount = () => {
             onClick={resendOTP}
           >
             <button
-              className=" font-[400] text-[16px] text-[#5955B3]"
+              className=" font-[400] text-[16px] text-[#121212]"
               disabled={loading}
             >
               Resend Code
@@ -157,13 +155,11 @@ const VerifyAccount = () => {
           {allInputsFilled() ? (
             <div className=" mt-[16px]" onClick={verify}>
               <button
-                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                className="bg-grey700 w-full text-center text-white py-3 rounded"
                 disabled={loading}
               >
                 Activate Account
               </button>
-
-              {/* <Button text="Activate account" loading={loading} /> */}
             </div>
           ) : (
             <div className=" mt-[16px]">

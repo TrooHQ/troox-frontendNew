@@ -36,10 +36,10 @@ const CustomSelect2: React.FC<CustomSelect2Props> = ({
   return (
     <div className="relative z-50">
       <div
-        className="border border-gray-300 bg-white p-2 focus:outline-[#5955B3] w-full rounded flex justify-between items-center"
+        className="border border-gray-300 bg-white p-2 focus:outline-[#121212] w-full rounded flex justify-between items-center"
         onClick={toggleDropdown}
       >
-        <span className="selected-option">{selectedOption}</span>
+        <span className="selected-option text-[#a29795]">{selectedOption}</span>
         <span className={`arrow ${isOpen ? "transform rotate-180" : ""}`}>
           <img src={Arrow} alt="" />
         </span>

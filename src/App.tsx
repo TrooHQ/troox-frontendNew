@@ -9,6 +9,7 @@ import ResetPassword from "./components/authPages/ResetPassword.tsx";
 import PasswordChanged from "./components/authPages/PasswordChanged.tsx";
 import BusinessProfiles from "./components/authPages/BusinessProfiles.tsx";
 import Register from "./components/authPages/Register.tsx";
+import VerifyAccount from "./components/authPages/VerifyAccount.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
 import Overview from "./components/Dashboard/Overview.tsx";
@@ -35,6 +36,23 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Tickets from "./components/Dashboard/Tickets.tsx";
 import Till from "./components/Dashboard/EmployeeDashboard/Till.tsx";
+import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
+import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
+import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
+import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
+import MenuList from "./components/Dashboard/MenuList.tsx";
+import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
+import CreatePin from "./components/authPages/CreatePin.tsx";
+import PinCreated from "./components/authPages/PinCreated.tsx";
+import UpdateCredentials from "./components/authPages/UpdateCredentials.tsx";
+import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import OnlineOrdering from "./components/Dashboard/OnlineOrdering.tsx";
+import QROrdering from "./components/Dashboard/QROrdering.tsx";
+import CustomerData from "./components/Dashboard/CustomerData.tsx";
+import PricingPage from "./pages/pricing/PricingPage.tsx";
+import AddOns from "./pages/pricing/AddOns.tsx";
+import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
+import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 
 export default function App() {
   return (
@@ -44,6 +62,7 @@ export default function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -60,23 +79,48 @@ export default function App() {
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
-          <Route path="/manage-tables" element={<ManageTables />} />
+          <Route path="/tenant-settings" element={<TenantSettings />} />
+          <Route path="/manage-assets" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
+          <Route path="/menu-list" element={<MenuList />} />
+          <Route path="/online-ordering" element={<OnlineOrdering />} />
+          <Route path="/qr-ordering" element={<QROrdering />} />
           <Route path="/price-list" element={<PriceList />} />
           <Route path="/tickets" element={<Tickets />} />
+          <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/customer-data" element={<CustomerData />} />
+          <Route path="/subscription-plan" element={<PricingPage />} />
+          <Route path="/subscription-add-ons" element={<AddOns />} />
+
+          <Route path="/verified-payment" element={<VerifiedPayment />} />
+          <Route path="/payout-details" element={<PayoutDetails />} />
           <Route path="/overview" element={<Overview />} />
+          <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />
           <Route path="/register" element={<Register />} />
           <Route path="/business-profile" element={<BusinessProfiles />} />
+          <Route path="/verify-account" element={<VerifyAccount />} />
           <Route path="/checkmail" element={<CheckMail />} />
           <Route path="/password-changed" element={<PasswordChanged />} />
+          <Route path="/pin-created" element={<PinCreated />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/create-pin" element={<CreatePin />} />
+          <Route path="/create-pin" element={<CreatePin />} />
+          <Route path="/update-credentials" element={<UpdateCredentials />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/profile-page" element={<ProfilePage />} />
 
           <Route path="/till" element={<Till />} />
           <Route path="*" element={<NotFound />} />
+
+          <Route
+            path="/business-information"
+            element={<BusinessInformation />}
+          />
+          <Route path="/manage-branches" element={<ManageBranches />} />
         </Routes>
       </Router>
     </div>

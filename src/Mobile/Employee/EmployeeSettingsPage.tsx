@@ -2,11 +2,13 @@ import { useState } from "react";
 import Arrow from "../assets/BackArrow.svg";
 import AccountIcon from "../assets/AccountSettings.svg";
 import MenuModal from "../Components/MenuModal";
-import CheckCircle from "../assets/check_circle.svg";
+import CheckCircle from "../assets/check_circle_.svg";
 
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 const EmployeeSettingsPage = () => {
   const [resetSuccessModal, setResetSuccessModal] = useState(false);
@@ -20,7 +22,9 @@ const EmployeeSettingsPage = () => {
     setResetPasswordModal(true);
   };
 
-  const token = sessionStorage.getItem("token");
+  const userDetails = useSelector((state: RootState) => state.user);
+
+  const token = userDetails?.userData?.token;
 
   const updatePassword = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

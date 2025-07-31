@@ -43,23 +43,12 @@ const FAQSetting: React.FC<FAQProps> = ({
   const [checkedCategories, setCheckedCategories] = useState<boolean[]>(
     Array(faqData.length).fill(false)
   );
-  // const [checkedInnerCategories, setCheckedInnerCategories] = useState<
-  //   boolean[]
-  // >(Array(faqDataInner.length).fill(false));
 
   const handleCategoryChange = (index: number) => {
     const newCheckedCategories = [...checkedCategories];
     newCheckedCategories[index] = !newCheckedCategories[index];
     setCheckedCategories(newCheckedCategories);
-    console.log("Handling category change...", newCheckedCategories);
   };
-
-  // const handleInnerCategoryChange = (index: number) => {
-  //   const newCheckedInnerCategories = [...checkedInnerCategories];
-  //   newCheckedInnerCategories[index] = !newCheckedInnerCategories[index];
-  //   setCheckedInnerCategories(newCheckedInnerCategories);
-  //   console.log("Handling inner category change...", newCheckedInnerCategories);
-  // };
 
   const navigate = useNavigate();
 
@@ -68,10 +57,10 @@ const FAQSetting: React.FC<FAQProps> = ({
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`bg-purple500 border  border-purple500 focus:outline-[#5955B3] w-full rounded `}
+          className={`bg-purple500 border  border-purple500 focus:outline-[#121212] w-full rounded `}
         >
           <div
-            className="flex items-center justify-between cursor-pointer font-bold py-[24px] px-[24px]"
+            className="flex items-center justify-between cursor-pointer font-bold py-[12px] px-[12px]"
             onClick={() => toggleAnswer(index)}
           >
             <div className="mb-2 cursor-pointer">
@@ -183,10 +172,10 @@ const FAQSetting: React.FC<FAQProps> = ({
                     {faqDataInner.map((innerFaq, innerIndex) => (
                       <div
                         key={innerIndex}
-                        className="bg-[#EEEEF7] border mt-4   focus:outline-[#5955B3] w-full rounded my-2"
+                        className="bg-[#EEEEF7] border mt-4   focus:outline-[#121212] w-full rounded my-2"
                       >
                         <div
-                          className="flex items-center justify-between cursor-pointer py-[24px] px-[24px] font-bold"
+                          className="flex items-center justify-between cursor-pointer py-[12px] px-[12px] font-bold"
                           onClick={() => toggleAnswer2(innerIndex)}
                         >
                           <div className="mb-2 cursor-pointer">

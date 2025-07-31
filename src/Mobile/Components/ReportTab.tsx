@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CustomSelect3 from "../inputFields/CustomSelect3";
 import ProcessedIcon from "../assets/Processed.svg";
 import AcceptedIcon from "../assets/Accepted.svg";
+import CancelledIcon from "../assets/order 4.svg";
 import TotalIcon from "../assets/Total.svg";
 interface TabItem {
   id: number;
@@ -48,6 +49,15 @@ const ReportTab: React.FC = () => {
             <div className="">
               <p className=" text-[16px] text-[#414141]">Fulfilled Orders</p>
               <p className=" text-grey500 text-[28px]">127 orders</p>
+            </div>
+          </div>
+        </div>
+        <div className=" rounded-[10px] px-[16px] py-[20px] border-b grid gap-[17px] bg-[#FFD9D9]">
+          <div className=" flex items-start gap-[9px]">
+            <img src={CancelledIcon} alt="" />
+            <div className="">
+              <p className=" text-[16px] text-[#414141]">Canceled Orders</p>
+              <p className=" text-grey500 text-[28px]">50 orders</p>
             </div>
           </div>
         </div>

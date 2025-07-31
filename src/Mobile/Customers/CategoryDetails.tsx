@@ -1,1181 +1,509 @@
-import { useEffect, useState } from "react";
-
-import fish1 from "../assets/gilled tilapia fish big.png";
-import fish2 from "../assets/chicken suya big.png";
-import fish3 from "../assets/beef suya big.png";
-import fish4 from "../assets/grilled catfish big.png";
-import fish5 from "../assets/grilled plantain big.png";
-// import FriedRice from "../assets/fried rice big.png";
-import water from "../assets/water big.png";
-import cocktail from "../assets/cocktail big.png";
-import orangeJuice from "../assets/orange juice big.png";
-import Chapman from "../assets/chapman big.png";
-import fruitPunch from "../assets/fruit punch big.png";
-// import PoundoYam from "../assets/poundo yam big.png";
-// import semo from "../assets/semo big.png";
-// import VillageRice from "../assets/village jollof rice.png";
-// import OfadaRice from "../assets/ofada rice big.png";
-import Yam from "../assets/yam and tomato sauce big.png";
-import EggYam from "../assets/yam and egg sauce big.png";
-import ToastEgg from "../assets/toast and egg big.png";
-import Sandwich from "../assets/sandwiich.png";
-import image1 from "../assets/image 39.png";
-import image2 from "../assets/image 40.png";
-// import Edit from "../assets/EditIconn.svg";
-import Pap from "../assets/pap and akara 1.png";
-import Add from "../assets/plusIconRound.svg";
-// import Adds from "../assets/plusIconn.svg";
-import Minus from "../assets/MinusRound.svg";
-// import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import TopMenuNav from "./TopMenuNav";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { SERVER_DOMAIN } from "../../Api/Api";
+import { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../components/Loader";
+import {
+  addItemToBasket,
+  removeItemFromBasket,
+  updateItemQuantity,
+} from "../../slices/BasketSlice";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import Swipe from "../assets/swipe.png";
+
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+
+interface MenuItem {
+  _id: string;
+  menu_item_name: string;
+  menu_group_name: string;
+  menu_item_image: string;
+  menu_item_price: number;
+  name: string;
+  business_name: string;
+  description: string;
+  menu_category_name: string;
+}
+
+interface Details extends MenuItem {
+  name: string;
+  _id: string;
+  business_name: string;
+  menu_category_name: string;
+  menu_group_name: string;
+  menu_item_name: string;
+  menu_item_image: string;
+}
+
+interface GroupedMenuItems {
+  [groupName: string]: MenuItem[];
+}
 
 export const CategoryDetails = () => {
-  const { id } = useParams();
+  const [menuItems, setMenuItems] = useState<Details[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  if (id) {
-    sessionStorage.setItem("menuId", id);
-  }
+  const [selectedGroup, setSelectedGroup] = useState("All");
 
-  // const [activeTab, setActiveTab] = useState(0);
-  const [selectedGroup, setSelectedGroup] = useState("");
-  const data = [
-    {
-      category: "Breakfast",
-      image: `${image1}`,
-      group: [
-        {
-          groupCategory: "Breakfast Meal",
-          name: "Toast",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara1",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich1",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce1",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg1",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce1",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          groupCategory: "Breakfast Meal2",
-          name: "Oats and Meal",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          groupCategory: "Breakfast Meal3",
-          name: "Coffee",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          groupCategory: "Breakfast Meal4",
-          name: "Coffee Bread",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+  const handleGroupClick = (groupName: string, index: number) => {
+    setSelectedGroup(groupName);
+
+    if (groupRefs.current[index]) {
+      groupRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
+  const filteredMenuItems =
+    selectedGroup === "All"
+      ? menuItems
+      : menuItems.filter((menu) => menu.menu_group_name === selectedGroup);
+
+  // const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
+  //   (acc: GroupedMenuItems, item: MenuItem) => {
+  //     const { menu_group_name } = item;
+  //     if (!acc[menu_group_name]) {
+  //       acc[menu_group_name] = [];
+  //     }
+  //     acc[menu_group_name].push(item);
+  //     return acc;
+  //   },
+  //   {}
+  // );
+
+  const groupedMenuItems: GroupedMenuItems = filteredMenuItems.reduce(
+    (acc: GroupedMenuItems, item: MenuItem) => {
+      const { menu_group_name } = item;
+      if (menu_group_name) {
+        if (!acc[menu_group_name]) {
+          acc[menu_group_name] = [];
+        }
+        acc[menu_group_name].push(item);
+      }
+      return acc;
     },
-    {
-      category: "Lunch",
-      image: `${image2}`,
-      group: [
-        {
-          groupCategory: "Lunch",
-          name: "Toast",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          groupCategory: "Lunch",
-          name: "Oats and Meal",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          groupCategory: "Lunch",
-          name: "Coffee",
-          items: [
-            {
-              id: 1,
-              title: "Pap and Akara",
-              image: `${Pap}`,
-              price: "1200",
-              details: "Pap served with brown crunchy akara",
-              options: [
-                {
-                  label: "Add Milk (+#500)",
-                  value: "AddMilk",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 2,
-              title: "Sandwich",
-              image: `${Sandwich}`,
-              price: "1100",
-              details: "Spicy Sandwich",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 3,
-              title: "Yam and Egg Sauce",
-              image: `${EggYam}`,
-              price: "1230",
-              details: "Yam served with Egg Sauce",
-              options: [
-                {
-                  label: "Add Tomato Sauce (+#500)",
-                  value: "tomatoSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add Lettuse (+#500)",
-                  value: "lettuse",
-                  price: "500",
-                },
-              ],
-            },
-            {
-              id: 4,
-              title: "Toast and Egg",
-              image: `${ToastEgg}`,
-              price: "1250",
-              details: "Toast Bread served with Egg",
-              options: [
-                {
-                  label: "Add egg Sauce (+#500)",
-                  value: "eggSauce",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-            {
-              id: 5,
-              title: "Yam and Tomato Sauce",
-              image: `${Yam}`,
-              price: "2000",
-              details: "Yam served with Tomato Sauce",
-              options: [
-                {
-                  label: "Add Chicken Fillet (+#500)",
-                  value: "chickenFillet",
-                  price: "500",
-                },
-                {
-                  label: "Add Chicken (+#500)",
-                  value: "chicken",
-                  price: "500",
-                },
-                {
-                  label: "Add More Pepper (+#1000)",
-                  value: "morePepper",
-                  price: "1000",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      // items: [
-      //   {
-      //     id: 33,
-      //     title: "Fried Rice",
-      //     image: `${FriedRice}`,
-      //     price: "2000",
-      //     details: "Fried Rice served with Chicken",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 43,
-      //     title: "Village Jollof Rice",
-      //     image: `${VillageRice}`,
-      //     price: "3000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 44,
-      //     title: "Semo",
-      //     image: `${semo}`,
-      //     price: "1500",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
+    {}
+  );
 
-      //   {
-      //     id: 45,
-      //     title: "Ofada Rice",
-      //     image: `${OfadaRice}`,
-      //     price: "1000",
-      //     details: "Yam served with Tomato Sauce",
-      //     options: [
-      //       {
-      //         label: "Add egg Sauce (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     id: 46,
-      //     title: "Poundo Yam",
-      //     image: `${PoundoYam}`,
-      //     price: "2500",
-      //     details: "Pounded yam with Egusi soup",
-      //     options: [
-      //       {
-      //         label: "Add egg (+#500)",
-      //         value: "eggSauce",
-      //         price: "500",
-      //       },
-      //       {
-      //         label: "Add More Pepper (+#1000)",
-      //         value: "morePepper",
-      //         price: "1000",
-      //       },
-      //     ],
-      //   },
-      // ],
-    },
-    {
-      category: "Grill",
-      image: `${image1}`,
-      items: [
-        {
-          id: 5,
-          title: "Grilled Tilapia Fish",
-          image: `${fish1}`,
-          price: 1500,
-        },
-        {
-          id: 61,
-          title: "Chicken Suya",
-          image: `${fish2}`,
-          price: 5000,
-        },
-        {
-          id: 62,
-          title: "Beef Suya",
-          image: `${fish3}`,
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-          price: 5000,
-        },
-        {
-          id: 63,
-          title: "Grilled Catfish",
-          image: `${fish4}`,
-
-          price: 5000,
-        },
-        {
-          id: 64,
-          title: "Grilled Plantain (Bole)",
-          image: `${fish5}`,
-
-          price: 5000,
-        },
-      ],
-    },
-    {
-      category: "Drink",
-      image: `${image2}`,
-      items: [
-        {
-          id: 7,
-          title: "Chapman",
-          image: `${Chapman}`,
-          price: "1250",
-          details: "Chilled Drink",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
-        },
-        {
-          id: 8,
-          title: "Orange Juice",
-          image: `${orangeJuice}`,
-          price: "1250",
-          details: "Fresh Orange Juice",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
-        },
-        {
-          id: 81,
-          title: "Cocktail",
-          image: `${cocktail}`,
-          price: "1250",
-          details: "French Cocktail",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
-        },
-        {
-          id: 82,
-          title: "Fruit Punch",
-          image: `${fruitPunch}`,
-          price: "1250",
-          details: "Fruit Punch",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
-        },
-        {
-          id: 83,
-          title: "Water",
-          image: `${water}`,
-          price: "1250",
-          details: "Water",
-          // options: [
-          //   {
-          //     label: "Add egg Sauce (+#500)",
-          //     value: "eggSauce",
-          //     price: "500",
-          //   },
-          //   {
-          //     label: "Add More Pepper (+#1000)",
-          //     value: "morePepper",
-          //     price: "1000",
-          //   },
-          // ],
-        },
-      ],
-    },
+  const groupNames = [
+    "All",
+    ...Array.from(
+      new Set(menuItems.map((menu) => menu.menu_group_name))
+    ).filter((groupName) => groupName !== undefined),
   ];
-  const ids = sessionStorage.getItem("ids");
-  const price = sessionStorage.getItem("totalPrice");
-  console.log("Selected Group:", selectedGroup);
-  const [counts, setCounts] = useState<number>(0);
+
+  const handleNextGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const nextIndex = (currentIndex + 1) % groupNames.length;
+    setSelectedGroup(groupNames[nextIndex]);
+
+    if (groupRefs.current[nextIndex]) {
+      groupRefs?.current[nextIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
+
+  const handlePrevGroupClick = () => {
+    const currentIndex = groupNames.indexOf(selectedGroup);
+    const prevIndex =
+      (currentIndex - 1 + groupNames.length) % groupNames.length;
+    setSelectedGroup(groupNames[prevIndex]);
+
+    if (groupRefs.current[prevIndex]) {
+      groupRefs?.current[prevIndex]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
+
+  const ids = useSelector((state: RootState) => state.basket.items);
+  const totalCount = useSelector((state: RootState) => state.basket);
+
+  const businessDetails = useSelector(
+    (state: RootState) => state.business?.businessDetails
+  );
+  const business_identifier = businessDetails?._id;
+  const branchId = useSelector((state: RootState) => state.business?.branchID);
+
+  const colorScheme = businessDetails?.colour_scheme;
+
+  const getItems = async () => {
+    setLoading(true);
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${business_identifier}&branch=${branchId}`,
+        headers
+      );
+      setMenuItems(response?.data?.data);
+    } catch (error) {
+      console.error("Error getting Menu Items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const storedCount = sessionStorage.getItem("count");
-    if (storedCount !== null) {
-      setCounts(Number(storedCount));
-    }
+    getItems();
   }, []);
 
-  const incrementCount = () => {
-    const updatedCount = counts + 1;
-    setCounts(updatedCount);
-    sessionStorage.setItem("count", String(updatedCount));
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 1,
+          arrows: true,
+        },
+      },
+    ],
   };
 
-  const decrementCount = () => {
-    const updatedCount = counts - 1;
-    setCounts(updatedCount);
-    sessionStorage.setItem("count", String(updatedCount));
+  const dispatch = useDispatch();
+
+  const increment = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      dispatch(
+        updateItemQuantity({
+          id: menuItem._id,
+          quantity: itemInBasket.quantity + 1,
+        })
+      );
+    } else {
+      dispatch(
+        addItemToBasket({
+          id: menuItem._id,
+          quantity: 1,
+          selectedOptions: [],
+          totalPrice: menuItem.menu_item_price,
+          name: menuItem.menu_item_name,
+          tableNumber: 1,
+        })
+      );
+    }
   };
 
-  // const handleAddToBasket = () => {
-  //   console.log("Selected Item ID:", id);
-  //   if (id) {
-  //     sessionStorage.setItem("id", id);
-  //   }
-  //   console.log("Selected Options:");
-  //   selectedOptions.forEach((option) => {
-  //     const selectedOption = options.find((opt) => opt.value === option);
-  //     if (selectedOption) {
-  //       console.log(selectedOption.label + " - Price: " + selectedOption.price);
-  //     }
-  //   });
-  // };
-
+  const decrement = (menuItem: Details) => {
+    const itemInBasket = ids.find((item) => item.id === menuItem._id);
+    if (itemInBasket) {
+      if (itemInBasket.quantity > 1) {
+        dispatch(
+          updateItemQuantity({
+            id: menuItem._id,
+            quantity: itemInBasket.quantity - 1,
+          })
+        );
+      } else {
+        dispatch(removeItemFromBasket({ id: menuItem._id }));
+      }
+    }
+  };
   return (
     <div className=" relative ">
+      {loading && <Loader />}
       <div className="  ">
         <TopMenuNav />
 
-        <div className="mt-[24px] mb-[8px] ">
-          {data.map((menu) => (
+        <div className="  mb-[100px]">
+          <div className="text-[16px] flex items-center gap-[20px] justify-between pt-[10px] px-[24px]">
+            <MdKeyboardArrowLeft
+              className=" cursor-pointer"
+              onClick={handlePrevGroupClick}
+            />
+
+            <MdKeyboardArrowRight
+              className=" cursor-pointer"
+              onClick={handleNextGroupClick}
+            />
+          </div>
+
+          <div className=" flex items-center gap-[10px] py-[20px] px-[14px]">
+            <img
+              src={Swipe}
+              alt=""
+              onClick={handleNextGroupClick}
+              className=" ml-[5px] hidden"
+            />
+
             <div
-              key={menu.category}
-              className="flex items-center gap-[8px] text-center  "
-              style={{ overflowX: "auto", whiteSpace: "nowrap" }}
+              className=" flex gap-[8px] items-center  overflow-x-auto whitespace-nowrap text-[14px]"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              {menu.category === id && (
-                <>
-                  {menu.group?.map((menuItem, itemIndex) => (
-                    <div key={itemIndex} className="">
+              <p
+                ref={(el) => (groupRefs.current[0] = el)}
+                className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] ${
+                  selectedGroup === "All"
+                    ? `font-[600] text-[#FFFFFF] border border-[#929292]`
+                    : "text-[#606060] font-[400] border border-[#B6B6B6]"
+                }`}
+                style={{
+                  backgroundColor:
+                    selectedGroup === "All"
+                      ? colorScheme || "#929292"
+                      : "transparent",
+                }}
+                onClick={() => handleGroupClick("All", 0)}
+              >
+                All
+              </p>
+
+              <div className="flex gap-[8px] items-center">
+                {Array.from(
+                  new Set(menuItems.map((menu) => menu.menu_group_name))
+                )
+                  .filter((groupName) => groupName !== undefined)
+                  .map((groupName, index) => (
+                    <div key={index + 1}>
                       <p
-                        className={`px-[12px] py-[8px] ${
-                          selectedGroup === menuItem.groupCategory
-                            ? "bg-[#0B7F7C] text-white font-[600]"
-                            : "border text-[#606060] font-[400]"
-                        }  text-[14px] cursor-pointer`}
-                        onClick={() => setSelectedGroup(menuItem.groupCategory)}
+                        ref={(el) => (groupRefs.current[index + 1] = el)}
+                        className={`cursor-pointer px-[12px] py-[8px] rounded-[4px] border border-[${colorScheme}]`}
+                        style={{
+                          backgroundColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "transparent",
+                          borderColor:
+                            selectedGroup === groupName
+                              ? colorScheme || "#929292"
+                              : "#B6B6B6",
+                          color:
+                            selectedGroup === groupName ? "#FFFFFF" : "#606060",
+                          fontWeight:
+                            selectedGroup === groupName ? "bold" : "400",
+                          borderStyle: "solid",
+                        }}
+                        onClick={() => handleGroupClick(groupName, index + 1)}
                       >
-                        {menuItem.groupCategory}
+                        {groupName}
                       </p>
                     </div>
                   ))}
-                </>
-              )}
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className=" mx-[24px]">
-          {data.map((menu) => (
-            //  ${index !== activeTab ? "hidden" : ""}
-            <div key={menu.category} className={``}>
-              {menu.category === id && (
-                <>
-                  {menu.group?.map((menuItem) => (
-                    <div className="">
-                      {menuItem.groupCategory === selectedGroup && (
-                        <div className="">
-                          <p className="text-[18px] font-[500] uppercase py-[9px] border-b ">
-                            {menuItem.groupCategory}
-                          </p>
-                          {menuItem.items?.map((menuItem, itemsIndex) => (
-                            <div
-                              className=" py-[11px] border-b border-[#E7E7E7] "
-                              key={itemsIndex}
-                            >
-                              <div className="flex items-center justify-between">
-                                <div className=" w-[180px]">
-                                  <p className=" text-[16px] text-[#121212] font-[500]">
-                                    {menuItem.title}
-                                  </p>
-                                  <p className=" text-[12px] text-[#121212]">
-                                    {menuItem.details}
-                                  </p>
-                                </div>
+          <div className=" bg-[#F2F2F2]">
+            <div className=" flex items-center justify-between py-[14px] px-[24px]">
+              <p className=" text-[16px] font-[500]">Most Popular</p>
+              <div className=" text-[16px]">
+                <MdKeyboardArrowRight />
+              </div>
+            </div>
+            <div className="overflow-x-auto mx-[12px]">
+              <Slider {...settings}>
+                {menuItems.map((menu, index) => (
+                  <div
+                    className="max-w-[170px] h-[167px] mx-auto pb-[34px]  p-[5px] rounded-[10px]   border-2 drop-shadow bg-[#FFFFFF] border-[#E7E7E7] flex-shrink-0"
+                    key={index}
+                  >
+                    <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                      <div>
+                        <div className=" w-full h-[112px] relative">
+                          <img
+                            src={menu?.menu_item_image}
+                            alt=""
+                            className="w-full object-cover h-full"
+                          />
 
-                                <div className="">
-                                  <Link to={`/menu-details/${menuItem.id}`}>
-                                    <img
-                                      src={menuItem.image}
-                                      alt=""
-                                      className=" w-[100px]"
-                                    />
-                                  </Link>
-                                </div>
+                          <div
+                            className="absolute -bottom-4 text-white right-0 rounded-full"
+                            style={{
+                              backgroundColor: colorScheme || "#414141",
+                            }}
+                          >
+                            <HiPlusSm className="text-[37px]" />
+                          </div>
+                        </div>
+                        <p className="text-[14px] text-[#121212] font-[500] px-[16px] mt-[8px] text-center">
+                          {menu?.menu_item_name?.length > 10
+                            ? `${menu?.menu_item_name.substring(0, 10)}...`
+                            : menu?.menu_item_name}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          </div>
+
+          <div className=" py-[20px]">
+            {Object.keys(groupedMenuItems).map((groupName) => (
+              <div key={groupName} className="mb-[24px]">
+                {groupName && (
+                  <p
+                    className="mx-[24px] text-[20px] font-bold text-[#ffffff] mb-[12px] px-[8px] py-[8px]"
+                    style={{
+                      borderLeft: `5px solid ${colorScheme || "#414141"}`,
+                      color: colorScheme || "#414141",
+                    }}
+                  >
+                    {groupName && groupName !== "undefined"
+                      ? groupName.length > 20
+                        ? `${groupName.slice(0, 20)}...`
+                        : groupName
+                      : ""}
+                  </p>
+                )}
+
+                {groupedMenuItems[groupName].map((menu) => (
+                  <div key={menu._id} className="mx-[24px]">
+                    <div className="py-[11px] border-b border-[#E7E7E7]">
+                      <div className="flex items-center justify-between">
+                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                          <div className="w-[180px]">
+                            <p className="text-[16px] text-[#121212] font-[500]">
+                              {menu?.menu_item_name?.length > 20
+                                ? `${menu.menu_item_name.slice(0, 20)}...`
+                                : menu.menu_item_name}
+                            </p>
+                            <p className="text-[12px] font-[400] text-[#121212]">
+                              {menu?.description?.length > 50
+                                ? `${menu.description.slice(0, 50)}...`
+                                : menu.description || "A Delicious Delicacy"}
+                            </p>
+                          </div>
+                        </Link>
+
+                        <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                          <div
+                            className="h-[80px] w-[80px] border-4 rounded-[8px] overflow-hidden p-0 m-0 flex items-center justify-center"
+                            style={{
+                              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
+                            }}
+                          >
+                            <img
+                              src={menu?.menu_item_image}
+                              alt={menu?.menu_item_name}
+                              className=" h-full w-full object-cover "
+                            />
+                          </div>
+                        </Link>
+                      </div>
+
+                      <div className="pt-[8px] flex items-center justify-between">
+                        <p className="text-[16px] text-[#121212] font-[500]">
+                          From &#x20A6;{menu.menu_item_price.toLocaleString()}
+                        </p>
+
+                        <div className="w-[100px]">
+                          {ids.find((item) => item.id === menu._id) ? (
+                            <div className="flex items-center justify-end gap-[12px]">
+                              <div
+                                className="cursor-pointer text-white rounded-full"
+                                onClick={() => decrement(menu)}
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiMinusSm className="text-[27px]" />
                               </div>
 
-                              <div className="pt-[8px] flex items-center justify-between">
-                                <p className=" text-[16px] text-[#121212] font-[500] ">
-                                  From &#x20A6;{menuItem.price}
-                                </p>
+                              <p className="text-[16px] font-[500]">
+                                {ids.find((item) => item.id === menu._id)
+                                  ?.quantity || 1}
+                              </p>
 
-                                <div className="w-[100px]">
-                                  {ids?.includes(menuItem.id.toString()) ? (
-                                    <div className=" flex items-center justify-between">
-                                      <img
-                                        src={Minus}
-                                        alt=""
-                                        onClick={decrementCount}
-                                        className=" cursor-pointer"
-                                      />
-                                      <p className=" text-[16px] font-[500]">
-                                        {counts}
-                                      </p>
-                                      <img
-                                        src={Add}
-                                        alt=""
-                                        onClick={incrementCount}
-                                        className=" cursor-pointer"
-                                      />
-                                    </div>
-                                  ) : (
-                                    // <div className=" px-[16px] py-[8px] bg-[#0B7F7C] flex items-center w-[100px] justify-center rounded-bl-[5px] rounded-br-[5px]">
-                                    //   <p className=" text-[12px] font-[500] text-white">
-                                    //     EDIT
-                                    //   </p>
-                                    //   <img src={Edit} alt="" className=" " />
-                                    // </div>
-                                    <div className="">
-                                      <Link to={`/menu-details/${menuItem.id}`}>
-                                        {/* {!ids?.includes(
-                                          menuItem.id.toString()
-                                        ) &&
-                                          ids && ( */}
-                                        <div className=" flex items-center justify-end">
-                                          <img src={Add} alt="" />
-                                        </div>
-                                        {/* )} */}
-                                      </Link>
-                                    </div>
-                                  )}
-                                </div>
+                              <div
+                                className="cursor-pointer text-white rounded-full"
+                                onClick={() => increment(menu)}
+                                style={{
+                                  backgroundColor: colorScheme || "#414141",
+                                }}
+                              >
+                                <HiPlusSm className="text-[27px]" />
                               </div>
                             </div>
-                          ))}
+                          ) : (
+                            <div>
+                              <Link
+                                to={`/demo/menu-details/${menu._id}/orderandpay`}
+                              >
+                                <div className="flex items-center justify-end">
+                                  <div
+                                    className="inline-flex cursor-pointer text-white rounded-full"
+                                    style={{
+                                      backgroundColor: colorScheme || "#414141",
+                                    }}
+                                  >
+                                    <HiPlusSm className="text-[27px]" />
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
-                  ))}
-                </>
-              )}
-            </div>
-          ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
         {ids && (
-          <div className="px-[16px] sticky bottom-[10px] w-full">
-            <div className="flex justify-between items-center py-[13px] px-[24px] bg-[#EFB519] rounded-[3px] cursor-pointer">
+          <div
+            className=" fixed bottom-[10px] left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-32px)] mx-auto"
+            style={{
+              backgroundColor: colorScheme || "#414141",
+            }}
+          >
+            <div className="flex justify-between items-center py-[13px] px-[24px] text-white  rounded-[3px] cursor-pointer">
               <div className="flex items-center gap-[16px]">
-                <p className="bg-white py-[12px] px-[10px] text-[16px] font-[500]">
-                  {counts || 1}
+                <p
+                  className="bg-white rounded-[5px]  py-[2px] px-[10px] text-[16px] font-[500]"
+                  style={{
+                    color: colorScheme || "#414141",
+                  }}
+                >
+                  {totalCount.totalQuantity || 0}
                 </p>
-                <p>#{price}</p>
+
+                <p>&#x20A6;{totalCount.totalPrice.toLocaleString() || 0.0}</p>
               </div>
-              <p className="text-[16px] font-[500]">Add to basket</p>
+              <Link to="/demo/basket/orderandpay">
+                <p className="text-[16px] font-[500]">View Basket</p>
+              </Link>
             </div>
           </div>
         )}

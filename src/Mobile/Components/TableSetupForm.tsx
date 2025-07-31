@@ -1,22 +1,68 @@
 import Logo from "../../assets/trooLogo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CustomInput from "../inputFields/CustomInput";
-
-const menuData = [
-  {
-    category: "Soups",
-    items: [
-      { title: "Egusi Soup", link: "/egusi" },
-      { title: "Okra  Soup", link: "/okra" },
-      { title: "Ogbono Soup", link: "/ogbono" },
-      { title: "White Soup", link: "/white" },
-    ],
-  },
-];
+import { SERVER_DOMAIN } from "../../Api/Api";
+import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const TableSetupForm = () => {
-  const [email, setEmail] = useState<string>("");
+  const userDetails = useSelector((state: RootState) => state.user);
+  const token = userDetails?.userData?.token;
+  const [number, setNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const generateQr = async (
+    event:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/asset/generateBusinessAsset`,
+        {
+          type: "table",
+          group_name: "Default-Table",
+          number: number,
+        },
+        headers
+      );
+      console.log("QR Code generated successfully:", response.data);
+      setNumber("");
+      navigate("/demo/dashboard/troo-portal");
+      toast.success(response.data.message);
+    } catch (error: any) {
+      console.error("Error creating QR Code:", error);
+      if (error.response) {
+        if (
+          error.response.status === 400 &&
+          Array.isArray(error.response.data.errors)
+        ) {
+          error.response.data.errors.forEach((msg: string) => toast.error(msg));
+        } else {
+          toast.error(error.response.data.message);
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className=" bg-[#EFEFEF] h-screen">
@@ -38,21 +84,22 @@ const TableSetupForm = () => {
             <CustomInput
               type="text"
               label="Enter number of tables"
-              value={email}
-              onChange={(newValue) => setEmail(newValue)}
+              value={number}
+              onChange={(newValue) => setNumber(newValue)}
             />
           </div>
 
           <div className=" grid mt-[32px] gap-[8px]">
             <div
               className={`${
-                menuData.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
-              } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
+                loading ? "bg-[#B6B6B6] " : "bg-purple500"
+              } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded cursor-pointer`}
+              onClick={generateQr}
             >
               <p>Save Table</p>
             </div>
 
-            <Link to="/dashboard">
+            <Link to="/demo/dashboard/troo-portal">
               <button className=" text-[16px] font-[500] text-purple500  w-full text-center py-3 rounded">
                 Skip
               </button>
