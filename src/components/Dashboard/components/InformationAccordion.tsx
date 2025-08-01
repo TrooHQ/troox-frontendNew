@@ -286,18 +286,6 @@ export default function InformationAccordion() {
     }
   }, [banks, formData.payoutBankDetails.bankName]);
 
-  useEffect(() => {
-    const shouldVerify = formData.payoutBankDetails.accountNumber.length >= 10 &&
-      selectedBank?.code;
-
-    if (shouldVerify) {
-      const timeoutId = setTimeout(() => {
-        VerifyAccountNumber();
-      }, 1000); // I used Debounce for 1 second to avoid too many API calls
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [formData.payoutBankDetails.accountNumber, selectedBank?.code]);
 
   const handleChange = (panel: string) => (_: any, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
@@ -395,11 +383,11 @@ export default function InformationAccordion() {
   };
 
   //This is the Function to verify account number
-  const VerifyAccountNumber = async () => {
+  const VerifyAccountNumber = async (acc_number?: string, bank_code?: string) => {
     try {
       const payload = {
-        account_number: formData.payoutBankDetails.accountNumber,
-        account_code: selectedBank?.code || "",
+        account_number: acc_number || formData.payoutBankDetails.accountNumber,
+        account_code: bank_code || selectedBank?.code || "",
       };
 
       const headers = {
@@ -645,6 +633,7 @@ export default function InformationAccordion() {
               inputValue={formData.payoutBankDetails.bankName}
               onChange={(_, newValue) => {
                 handleBankChange(newValue);
+                VerifyAccountNumber(formData.payoutBankDetails.accountNumber, newValue?.code);
               }}
               onInputChange={(_, newInputValue, reason) => {
                 // Only update inputValue if the user is typing, not when selecting
