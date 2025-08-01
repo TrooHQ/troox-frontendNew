@@ -16,12 +16,16 @@ interface DaysTabProps {
   nonSelectedColor?: string;
   iconClassName?: string;
   border?: string;
-  onDateFilterChange: (
+  onDateFilterChange?: (
     dateFilter: string,
     startDate?: string,
     endDate?: string,
     number_of_days?: number
   ) => void;
+  setDateFilter?: (value: string) => void;
+  setStartDate?: (value: string | undefined) => void;
+  setEndDate?: (value: string | undefined) => void;
+  setNumberOfDays?: (value: number | undefined) => void;
 }
 
 const DaysTab2 = ({
@@ -32,6 +36,10 @@ const DaysTab2 = ({
   iconClassName,
   border,
   onDateFilterChange,
+  setDateFilter,
+  setStartDate,
+  setEndDate,
+  setNumberOfDays
 }: DaysTabProps) => {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
@@ -47,9 +55,13 @@ const DaysTab2 = ({
     const date_filter = newValue === 0 ? "today" : "days";
     const number_of_days = parseInt(days[newValue]);
     setDisplayDateRange("");
+    setDateFilter?.(date_filter);
+    setStartDate?.(undefined);
+    setEndDate?.(undefined);
+    setNumberOfDays?.(number_of_days);
     newValue === 0
-      ? onDateFilterChange(date_filter)
-      : onDateFilterChange(date_filter, undefined, undefined, number_of_days);
+      ? onDateFilterChange && onDateFilterChange(date_filter)
+      : onDateFilterChange && onDateFilterChange(date_filter, undefined, undefined, number_of_days);
   };
 
   const handleOpen = () => {
@@ -60,7 +72,11 @@ const DaysTab2 = ({
     setDateRange(dateStrings);
     console.log(dates);
     setDisplayDateRange(`${dateStrings[0]} - ${dateStrings[1]}`);
-    onDateFilterChange("date_range", dateStrings[0], dateStrings[1]);
+    setDateFilter?.("date_range");
+    setStartDate?.(dateStrings[0]);
+    setEndDate?.(dateStrings[1]);
+    setNumberOfDays?.(undefined);
+    onDateFilterChange && onDateFilterChange("date_range", dateStrings[0], dateStrings[1]);
     setOpen(false);
   };
   console.log(dateRange);
