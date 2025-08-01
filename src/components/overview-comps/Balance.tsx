@@ -24,72 +24,79 @@ const BalanceComp = () => {
   );
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
+  const [dateFilter, setDateFilter] = useState<string>("today");
+  const [startDate, setStartDate] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
+  const [numberOfDays, setNumberOfDays] = useState<number | undefined>(undefined);
+
   useEffect(() => {
-    dispatch(fetchOpenAndClosedTickets({ date_filter: "today", branch_id: selectedBranch?.id }));
-    dispatch(fetchTotalSales({ date_filter: "today", branch_id: selectedBranch?.id }));
-    dispatch(fetchAverageOrderValue({ date_filter: "today", branch_id: selectedBranch?.id }));
-    dispatch(fetchSalesRevenueGraph({ date_filter: "today", branch_id: selectedBranch?.id }));
-    dispatch(
-      fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: "today" })
-    );
-    dispatch(fetchCustomerTransaction({ date_filter: "today", branch_id: selectedBranch?.id }));
-  }, [dispatch, selectedBranch?.id]);
+    dispatch(fetchOpenAndClosedTickets({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
+    dispatch(fetchTotalSales({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
+    dispatch(fetchAverageOrderValue({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
+    dispatch(fetchSalesRevenueGraph({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
+    dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: dateFilter, number_of_days: numberOfDays }));
+    dispatch(fetchCustomerTransaction({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays }));
+  }, [dispatch, selectedBranch?.id, dateFilter, startDate, endDate, numberOfDays]);
 
   const changeVisibility = () => {
     setShowBalance(!showBalance);
   };
 
-  const handleDateFilterChange = (
-    date_filter: string,
-    startDate?: string,
-    endDate?: string,
-    number_of_days?: number
-  ) => {
-    dispatch(
-      fetchOpenAndClosedTickets({
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-    dispatch(
-      fetchTotalSales({ date_filter, startDate, endDate, number_of_days })
-    );
-    dispatch(
-      fetchAverageOrderValue({
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-    dispatch(
-      fetchSalesRevenueGraph({
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-    dispatch(
-      fetchCustomerTransaction({
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-    dispatch(
-      fetchTopMenuItems({
-        branch_id: selectedBranch.id,
-        date_filter,
-        startDate,
-        endDate,
-        number_of_days,
-      })
-    );
-  };
+  // const handleDateFilterChange = (
+  //   date_filter: string,
+  //   startDate?: string,
+  //   endDate?: string,
+  //   number_of_days?: number
+  // ) => {
+  // dispatch(
+  //   fetchOpenAndClosedTickets({
+  //     date_filter,
+  //     startDate,
+  //     endDate,
+  //     number_of_days,
+  //     branch_id: selectedBranch?.id
+  //   })
+  // );
+  // dispatch(
+  //   fetchTotalSales({ date_filter, startDate, endDate, number_of_days, branch_id: selectedBranch?.id })
+  // );
+  // dispatch(
+  //   fetchAverageOrderValue({
+  //     date_filter,
+  //     startDate,
+  //     endDate,
+  //     number_of_days,
+  //     branch_id: selectedBranch?.id
+  //   })
+  // );
+  // dispatch(
+  //   fetchSalesRevenueGraph({
+  //     date_filter,
+  //     startDate,
+  //     endDate,
+  //     number_of_days,
+  //     branch_id: selectedBranch?.id
+  //   })
+  // );
+  // dispatch(
+  //   fetchCustomerTransaction({
+  //     date_filter,
+  //     startDate,
+  //     endDate,
+  //     number_of_days,
+  //     branch_id: selectedBranch?.id
+  //   })
+  // );
+  // dispatch(
+  //   fetchTopMenuItems({
+  //     branch_id: selectedBranch.id,
+  //     date_filter,
+  //     startDate,
+  //     endDate,
+  //     number_of_days,
+  //   })
+  // );
+  // };
 
   const closedTickets = openAndClosedTickets?.data?.closed_tickets || 0;
   const processedOrders = openAndClosedTickets?.data?.open_tickets || 0;
@@ -105,7 +112,11 @@ const BalanceComp = () => {
             selectedColor="white"
             nonSelectedColor="#C7C6CF"
             iconClassName={clsx("text-white")}
-            onDateFilterChange={handleDateFilterChange}
+            // onDateFilterChange={handleDateFilterChange}
+            setDateFilter={setDateFilter}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            setNumberOfDays={setNumberOfDays}
           />
         </div>
         <div className="flex justify-start gap-10 items-center w-full mb-[55px]">
