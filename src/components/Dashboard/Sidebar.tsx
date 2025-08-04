@@ -46,6 +46,7 @@ interface MenuItems {
   icon?: string;
   subMenu?: MenuItems[];
   link?: string;
+  showMenu?: boolean;
   onClicks?: () => void;
 }
 
@@ -74,9 +75,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     selectedBranch
       ? selectedBranch
       : {
-          label: "All outlets",
-          id: "",
-        }
+        label: "All outlets",
+        id: "",
+      }
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -154,23 +155,28 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       gap: false,
       icon: OverviewIcon,
       link: "/overview",
+      showMenu: true,
     },
     {
       title: "Tickets",
       icon: TicketIcon,
       link: "/tickets",
+      showMenu: true,
       subMenu: [
         {
           title: "Tickets",
           link: "/tickets",
+          showMenu: true,
         },
         {
           title: "Order history",
           link: "/order-history",
+          showMenu: true,
         },
         {
           title: "Customer Data",
           link: "/customer-data",
+          showMenu: true,
         },
       ],
     },
@@ -178,33 +184,25 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       title: "Menu",
       icon: MenuIcon,
       link: "/menu-list",
+      showMenu: true,
       subMenu: [
         {
           title: "Menu List",
           link: "/menu-list",
+          showMenu: true,
         },
         {
           title: "Menu Builder",
           link: "/menu-builder",
+          showMenu: userData?.role === "admin",
         },
         {
           title: "Price List",
           link: "/price-list",
+          showMenu: true,
         },
       ],
     },
-    // {
-    //   title: "Payment",
-    //   gap: false,
-    //   icon: PaymentIcon,
-    //   link: "/payment",
-    // },
-    // {
-    //   title: "Accounting",
-    //   gap: false,
-    //   icon: AccountingIcon,
-    //   link: "/account",
-    // },
     {
       subTitle: "SETTINGS",
       Subgap: true,
@@ -213,14 +211,17 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       title: "Restaurant Details",
       icon: RestaurantDetailsIcon,
       link: "/business-information",
+      showMenu: true,
       subMenu: [
         {
           title: "Business Information",
           link: "/business-information",
+          showMenu: true,
         },
         {
           title: "Manage Branches",
           link: "/manage-branches",
+          showMenu: true,
         },
       ],
     },
@@ -228,14 +229,17 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       title: "Manage Assets",
       icon: ManageTablesIcon,
       link: "/qr-ordering",
+      showMenu: true,
       subMenu: [
         {
           title: "QR Ordering",
           link: "/qr-ordering",
+          showMenu: true,
         },
         {
           title: "Online Ordering",
           link: "/online-ordering",
+          showMenu: true,
         },
       ],
     },
@@ -244,34 +248,31 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       gap: false,
       icon: ManageUsersIcon,
       link: "/manage-users",
+      showMenu: true,
     },
     {
       title: "Tenant Settings",
       gap: false,
       icon: HubIcon,
       link: "/tenant-settings",
+      showMenu: true,
     },
-    // {
-    //   title: "Point of Sales",
-    //   gap: false,
-    //   icon: PointOfSalesIcon,
-    //   link: "/pos",
-    // },
     {
       title: "Profile",
       gap: false,
       icon: AccountCircleIcon,
       link: "/profile-page",
+      showMenu: true,
     },
     ...(currentPlanName
       ? [
-          {
-            title: "Manage Plan",
-            gap: false,
-            icon: Upgrade,
-            onClicks: handleOpenModal, // Open the modal on click
-          } as MenuItems,
-        ]
+        {
+          title: "Manage Plan",
+          gap: false,
+          icon: Upgrade,
+          onClicks: handleOpenModal, // Open the modal on click
+        } as MenuItems,
+      ]
       : []),
   ];
 
@@ -279,11 +280,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     { title: "AdminHome", gap: false, icon: HomeIcon },
   ];
   console.log(userData, "userData here:");
-  const userPermissions = userData?.permissions || [];
+  // const userPermissions = userData?.permissions || [];
   const permittedMenu =
     userData?.user_role === "admin"
       ? commonMenu
-      : getPermittedMenuItems(commonMenu, userPermissions);
+      // : getPermittedMenuItems(commonMenu, userPermissions);
+      : getPermittedMenuItems(commonMenu);
 
   const selectedMenu = userType === "admin" ? adminMenu : permittedMenu;
 
@@ -315,13 +317,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   return (
     <div
-      className={`p-2 ${
-        open ? "w-[230px]" : "w-20"
-      }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#f8f8f8]`}
+      className={`p-2 ${open ? "w-[230px]" : "w-20"
+        }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#f8f8f8]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
-      <div className="grid gap-3 items-center">
-        <div className="flex gap-x-4 mt-4 items-center justify-center">
+      <div className="grid items-center gap-3">
+        <div className="flex items-center justify-center mt-4 gap-x-4">
           {userData?.onboarding_type === "gogrub" ? (
             <img src={GoGrubLogo} alt="Logo" className="mb-8" />
           ) : (
@@ -329,17 +330,15 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <img
                 src={userData?.business_logo ? userData.business_logo : Logo}
                 alt="logo"
-                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-                  !open ? "hidden" : "block"
-                } `}
+                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${!open ? "hidden" : "block"
+                  } `}
                 onClick={() => setOpen(!open)}
               />
               <img
                 alt="logo-mini"
                 src={LogoMini}
-                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${
-                  !open ? "block" : "hidden"
-                } `}
+                className={`cursor-pointer duration-500 w-[100px] h-[100px] object-contain border-2 border-gray-300 rounded-lg shadow-lg p-2 bg-white ${!open ? "block" : "hidden"
+                  } `}
                 onClick={() => setOpen(!open)}
               />
             </>
@@ -347,13 +346,12 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         </div>
 
         <div
-          className={`cursor-pointer duration-500 ${
-            !open ? "hidden" : "block"
-          } `}
+          className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"
+            } `}
         >
           <hr className="h-[2px] bg-[#929292] my-3" />
           <div className="ml-[5px] flex flex-col items-start justify-center gap-2">
-            <h4 className="text-base font-medium mb-0">
+            <h4 className="mb-0 text-base font-medium">
               {userData?.business_name}
             </h4>
 
@@ -453,7 +451,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
       {/* Subscribe */}
       {/* <Link to="/subscription-plan">
-        <div className="flex items-center gap-3 justify-start">
+        <div className="flex items-center justify-start gap-3">
           <span className="text-[16px] font-medium ml-3.5">Subscribe</span>
           <BlinkerSubscribe />
         </div>
@@ -463,19 +461,16 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           <div key={index}>
             <li>
               <div
-                className={`flex relative ${
-                  menu.title && "px-[4px] cursor-pointer py-[8px]"
-                }  ${
-                  menu.subTitle && "text-[12px] font-normal text-[#121212]"
-                } text-purple200  items-center gap-x-2
-            ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${
-                  isMenuItemActive(menu.link || "", menu.subMenu)
+                className={`flex relative ${menu.title && "px-[4px] cursor-pointer py-[8px]"
+                  }  ${menu.subTitle && "text-[12px] font-normal text-[#121212]"
+                  } text-purple200  items-center gap-x-2
+            ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${isMenuItemActive(menu.link || "", menu.subMenu)
                     ? "  bg-[#d3d3d3] font-semibold text-[16px] text-[#606060] "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) &&
                       !menu.subTitle
-                    ? " "
-                    : ""
-                }`}
+                      ? " "
+                      : ""
+                  }`}
                 onClick={() => menu.subMenu && handleSubmenuToggle(index)}
               >
                 {menu.title && (
@@ -508,9 +503,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   }}
                 >
                   <span
-                    className={`${
-                      !open && "hidden"
-                    } origin-left duration-200 text-[#606060]`}
+                    className={`${!open && "hidden"
+                      } origin-left duration-200 text-[#606060]`}
                   >
                     {menu.title}
                     {menu.subTitle}
@@ -520,9 +514,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   <img
                     src={ArrowToggle}
                     alt=""
-                    className={`text-[#606060] absolute right-[10px]  transition-transform ${
-                      openSubmenuIndex === index ? "rotate-180" : ""
-                    }`}
+                    className={`text-[#606060] absolute right-[10px]  transition-transform ${openSubmenuIndex === index ? "rotate-180" : ""
+                      }`}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSubmenuToggle(index);
@@ -537,11 +530,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                     {menu.subMenu.map((subMenuItem, subIndex) => (
                       <NavLink to={subMenuItem.link || "#"} key={subIndex}>
                         <li
-                          className={`flex p-2 cursor-pointer py-2  text-sm items-center gap-x-4 ${
-                            isMenuItemActive(subMenuItem.link || "")
-                              ? "text-[#000] font-bold"
-                              : "text-purple200"
-                          }`}
+                          className={`flex p-2 cursor-pointer py-2  text-sm items-center gap-x-4 ${isMenuItemActive(subMenuItem.link || "")
+                            ? "text-[#000] font-bold"
+                            : "text-purple200"
+                            }`}
                         >
                           {subMenuItem.title}
                         </li>
@@ -562,11 +554,10 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         <div className="flex items-start justify-start gap-0">
           <div>
             <Link
-              to={`${
-                userData?.onboarding_type === "gogrub" && !currentPlanName
-                  ? "/upgrade-subscription"
-                  : "/subscription-plan"
-              }`}
+              to={`${userData?.onboarding_type === "gogrub" && !currentPlanName
+                ? "/upgrade-subscription"
+                : "/subscription-plan"
+                }`}
             >
               <button className="ml-4 mr-4 px-2 py-[6px] bg-[#DB7F3B] rounded-[4px] mt-1 text-center">
                 <span
@@ -576,8 +567,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   {userData?.onboarding_type === "gogrub" && currentPlanName
                     ? currentPlanName
                     : userData?.onboarding_type === "troo" && currentPlanName
-                    ? currentPlanName
-                    : "Subscribe"}
+                      ? currentPlanName
+                      : "Subscribe"}
                 </span>
                 <ArrowCircleRightOutlined
                   sx={{ color: "var(--white, #FFF)" }}
@@ -604,7 +595,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       >
         <div
           onClick={handleLogout}
-          className="flex items-center gap-x-2 cursor-pointer py-2"
+          className="flex items-center py-2 cursor-pointer gap-x-2"
         >
           <img
             src={LogoutIcon}

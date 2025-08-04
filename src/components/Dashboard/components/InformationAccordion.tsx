@@ -132,6 +132,8 @@ export default function InformationAccordion() {
   const userDetails = useSelector((state: any) => state.user);
   const token = userDetails?.userData?.token;
 
+  console.log("userDetails", userDetails);
+
   const getBanks = async () => {
     const headers = {
       headers: {
@@ -592,9 +594,13 @@ export default function InformationAccordion() {
             },
           }}
         />
-        <IconButton onClick={() => handleEditClick(item.field, section)}>
-          {editMode[item.field] ? <SaveIcon /> : <EditIcon />}
-        </IconButton>
+        {(section !== "businessInfo" && (userData?.user_role !== "admin" || userData?.user_role !== "manager")) && (
+          <IconButton
+            onClick={() => handleEditClick(item.field, section)}
+          >
+            {editMode[item.field] ? <SaveIcon /> : <EditIcon />}
+          </IconButton>
+        )}
       </div>
     ));
 
@@ -624,6 +630,7 @@ export default function InformationAccordion() {
             <Autocomplete
               fullWidth
               options={banks}
+              disabled={!(userData?.role === "admin" || userData?.role === "manager")}
               getOptionLabel={(option) => option?.name || ""}
               value={
                 banks.find(
@@ -723,6 +730,7 @@ export default function InformationAccordion() {
             onChange={handleInputChange("payoutBankDetails", item.field)}
             variant="outlined"
             label={item.label}
+            disabled={userData?.role !== "admin" && userData?.role !== "manager"}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "black" },
