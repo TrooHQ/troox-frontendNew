@@ -20,6 +20,7 @@ interface RolesAndPermissionProps {
   setCheckedInventory: any;
   checkedTickets: string[];
   setCheckedTickets: any;
+  selectedPermissions?: string[];
 }
 
 const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
@@ -33,10 +34,12 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   setCheckedInventory,
   checkedTickets,
   setCheckedTickets,
+  selectedPermissions = [],
 }) => {
   const [grantGeneralAccess, setGrantGeneralAccess] = useState(false);
   const [grantInventoryAccess, setGrantInventoryAccess] = useState(false);
   const [grantTicketAccess, setGrantTicketAccess] = useState(false);
+
 
   const generalLabels = [
     { id: "levelOneCheck", label: "Create Menus" },
@@ -122,6 +125,28 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     { id: "levelThreeCheck", label: "Work on Open Tickets on Till" },
   ];
 
+  useEffect(() => {
+
+    console.log("in the effect")
+
+    selectedPermissions.forEach(element => {
+      if (generalLabels.some(labelObj => labelObj.label === element)) {
+        setCheckedGeneral((prev: any) => [...prev, element]);
+
+      }
+    });
+    selectedPermissions.forEach(element => {
+      if (inventoryLabels.some(labelObj => labelObj.label === element)) {
+        // setCheckedInventory((prev: any) => [...prev, element]);
+      }
+    });
+    selectedPermissions.forEach(element => {
+      if (ticketLabels.some(labelObj => labelObj.label === element)) {
+        // setCheckedTickets((prev: any) => [...prev, element]);
+      }
+    });
+  }, []);
+
   const handleMasterCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
     category: "general" | "inventory" | "ticket"
@@ -170,6 +195,10 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     }
   };
 
+  console.log("checkedGeneral", checkedGeneral)
+  console.log("checkedInventory", checkedInventory)
+  console.log("checkedTickets", checkedTickets)
+
   useEffect(() => {
     setGrantGeneralAccess(checkedGeneral.length === generalLabels.length);
   }, [checkedGeneral]);
@@ -200,7 +229,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     labels.map((item, index) => (
       <div
         key={index}
-        className="flex flex-row-reverse justify-between items-center mb-6"
+        className="flex flex-row-reverse items-center justify-between mb-6"
       >
         <input
           type="checkbox"
@@ -236,9 +265,8 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
               <img
                 src={ArrowToggle2}
                 alt=""
-                className={`transform transition-transform duration-300 ${
-                  openIndex === index ? "rotate-180" : ""
-                }`}
+                className={`transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""
+                  }`}
               />
             </div>
           </div>
@@ -247,12 +275,12 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
               {index === 0 && (
                 <div className="flex flex-col">
                   <Tooltip title="Level 1 users have the highest access across the system. They can manage all aspects of the business, including menus, branches, tickets, and user permissions across all locations.">
-                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                    <div className="flex items-start p-4 space-x-2 bg-white border border-gray-200 rounded-md shadow-sm">
                       <div className="text-purple500">
-                        <InfoOutlined className="cursor-pointer text-2xl" />
+                        <InfoOutlined className="text-2xl cursor-pointer" />
                       </div>
                       <div className="text-gray-700">
-                        <span className="font-semibold text-lg">
+                        <span className="text-lg font-semibold">
                           Level 1 Access:
                         </span>
                         <p className="mt-1 text-sm leading-relaxed">
@@ -289,12 +317,12 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
               {index === 1 && (
                 <div className="flex flex-col">
                   <Tooltip title="Level 2 users manage their specific branch. They can handle menus, tickets, QR codes, and user roles within their branch, but cannot oversee other branches.">
-                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                    <div className="flex items-start p-4 space-x-2 bg-white border border-gray-200 rounded-md shadow-sm">
                       <div className="text-purple500">
-                        <InfoOutlined className="cursor-pointer text-2xl" />
+                        <InfoOutlined className="text-2xl cursor-pointer" />
                       </div>
                       <div className="text-gray-700">
-                        <span className="font-semibold text-lg">
+                        <span className="text-lg font-semibold">
                           Level 2 Access:
                         </span>
                         <p className="mt-1 text-sm leading-relaxed">
@@ -334,12 +362,12 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
               {index === 2 && (
                 <div className="flex flex-col">
                   <Tooltip title="Level 3 users have limited access, focusing on daily tasks such as handling tickets, tips, and orders. Their permissions are restricted to specific apps like Troo Till and Troo Waiter.">
-                    <div className="flex items-start space-x-2 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+                    <div className="flex items-start p-4 space-x-2 bg-white border border-gray-200 rounded-md shadow-sm">
                       <div className="text-purple500">
-                        <InfoOutlined className="cursor-pointer text-2xl" />
+                        <InfoOutlined className="text-2xl cursor-pointer" />
                       </div>
                       <div className="text-gray-700">
-                        <span className="font-semibold text-lg">
+                        <span className="text-lg font-semibold">
                           Level 3 Access:
                         </span>
                         <p className="mt-1 text-sm leading-relaxed">

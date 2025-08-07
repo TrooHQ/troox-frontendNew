@@ -91,6 +91,8 @@ export default function InformationAccordion() {
     (state: RootState) => state.user
   );
 
+  console.log("userInfo", userInfo)
+
   const [formData, setFormData] = useState<FormData>({
     businessInfo: {
       businessName:
@@ -745,7 +747,7 @@ export default function InformationAccordion() {
 
   return (
     <>
-      <Accordion
+      {userInfo?.user_role === "admin" && <Accordion
         expanded={expanded === "panel1"}
         onChange={handleChange("panel1")}
       >
@@ -832,7 +834,7 @@ export default function InformationAccordion() {
             </div>
           )}
         </AccordionDetails>
-      </Accordion>
+      </Accordion>}
 
       <Accordion
         expanded={expanded === "panel2"}
@@ -859,7 +861,7 @@ export default function InformationAccordion() {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion
+      {userInfo?.user_role === "admin" && <Accordion
         expanded={expanded === "panel3"}
         onChange={handleChange("panel3")}
       >
@@ -901,7 +903,7 @@ export default function InformationAccordion() {
             </Button>
           </div>
         </AccordionDetails>
-      </Accordion>
+      </Accordion>}
     </>
   );
 }
