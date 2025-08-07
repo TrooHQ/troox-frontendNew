@@ -81,7 +81,7 @@ const Roles = () => {
           <p className="col-span-2">
             {role.description || "No description available"}
           </p>
-          <div className="px-3 py-2 flex items-center col-span-2 justify-end">
+          <div className="flex items-center justify-end col-span-2 px-3 py-2">
             <div className="text-[14px] flex gap-2 items-center border rounded-md border-grey200">
               {["Edit", "Clone", "Delete"].map((action, index) => (
                 <button
@@ -89,12 +89,17 @@ const Roles = () => {
                   onClick={() => {
                     if (action === "Clone") {
                       handleClone(role);
+                    } else if (action === "Edit") {
+                      window.location.href = `/edit-role?_id=${role._id}`;
+                    } else if (action === "Delete") {
+                      // Handle delete action
+                      console.log("Delete action for role:", role);
+                      // You can add a confirmation modal or similar logic here
                     }
                     // You can add handlers for "Edit" and "Delete" actions here if needed
                   }}
-                  className={`px-3 py-2 ${
-                    action === "Delete" ? "text-[#B61C1C]" : "text-purple500"
-                  } ${index > 0 ? "border-l border-grey200" : ""}`}
+                  className={`px-3 py-2 ${action === "Delete" ? "text-[#B61C1C]" : "text-purple500"
+                    } ${index > 0 ? "border-l border-grey200" : ""}`}
                 >
                   {saveLoading && action === "Clone" ? "Loading..." : action}
                 </button>

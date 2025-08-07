@@ -486,10 +486,10 @@ const MenuList = () => {
                       <tr
                         key={item.id}
                         className={`${!toggleStates[item._id]
-                            ? "opacity-50"
-                            : index % 2 === 1
-                              ? "bg-[#ffffff]"
-                              : "bg-[#F8F8F8]"
+                          ? "opacity-50"
+                          : index % 2 === 1
+                            ? "bg-[#ffffff]"
+                            : "bg-[#F8F8F8]"
                           }`}
                       >
                         <td className="px-4 py-2 text-base font-normal">
@@ -518,10 +518,10 @@ const MenuList = () => {
                         </td>
                         <td className="px-4 py-2 text-base font-normal text-center break-words">
                           <button
-                            className="text-blue-500"
+                            className="px-2 py-1 border border-gray-600 rounded-md"
                             onClick={() => handleOpenModal(item)}
                           >
-                            See modifiers
+                            View modifiers
                           </button>
                         </td>
 
@@ -807,9 +807,9 @@ const MenuList = () => {
         onClose={() => setConfirmationDialog({ open: false, id: null })}
         onConfirm={handleConfirmToggleChange}
         message={`Are you sure you want to ${confirmationDialog.id !== null &&
-            toggleStates[confirmationDialog.id as any]
-            ? "freeze"
-            : "unfreeze"
+          toggleStates[confirmationDialog.id as any]
+          ? "freeze"
+          : "unfreeze"
           } this menu item? ${confirmationDialog.id !== null &&
             toggleStates[confirmationDialog.id as any]
             ? "Freezing it will remove it from all your product channels."
@@ -823,9 +823,9 @@ const MenuList = () => {
         onConfirm={handleConfirmToggleRecommendChange}
         isLoading={confirmationLoading}
         message={`Are you sure you want to ${confirmationDialog3.id !== null &&
-            toggleStates2[confirmationDialog3.id as any]
-            ? "unrecommend"
-            : "recommend"
+          toggleStates2[confirmationDialog3.id as any]
+          ? "unrecommend"
+          : "recommend"
           } this menu item?
         `}
       />
