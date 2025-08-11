@@ -11,23 +11,22 @@ import { AppDispatch } from "@/src/store/store";
 import {
   fetchMenuCategories,
   fetchMenuGroups,
-  fetchMenuItemsByMenuGroup,
   fetchMenuItemsWithoutStatus,
 } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { convertToBase64 } from "../../utils/imageToBase64";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import { EditOutlined, MoreVert } from "@mui/icons-material";
 import VisibilityOpen from "./VisibilityOpen";
 import ConfirmationDialog from "./ConfirmationDialog";
 import AddMenuGroup from "./MenuBuilderModals/AddMenuGroup";
 import MenuGroup from "./MenuBuilderModals/MenuGroup";
-import AddMenuItem from "./MenuBuilderModals/AddMenuItem";
+// import AddMenuItem from "./MenuBuilderModals/AddMenuItem";
 import CustomInput from "../inputFields/CustomInput";
 import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
+import MenuItemForm from "./MenuBuilderModals/NewAddMenuModal";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -52,9 +51,6 @@ const MenuBuilder = () => {
   const [isVisibilityOpen, setIsVisibilityOpen] = useState(false);
 
   const [groupName, setGroupName] = useState("");
-  const [menuName, setMenuName] = useState("");
-  const [menuDescription, setMenuDescription] = useState("");
-  const [menuPrice, setMenuPrice] = useState("");
   const [applyPriceToAll, setApplyPriceToAll] = useState(false);
   const [price, setPrice] = useState("");
   const [selectedMenuItem, setSelectedMenuItem] = useState<any | null>(null);
@@ -338,80 +334,30 @@ const MenuBuilder = () => {
     }
   };
 
-  // Menu items
-  const [imageName, setImageName] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-
-  const handleFileChange = async (e: any) => {
-    const file = e.target.files[0];
-    setImageName(file.name);
-    try {
-      const base64 = await convertToBase64(file);
-      setImage(base64 as string);
-    } catch (error) {
-      console.error("Error converting file to base64:", error);
-    }
-  };
+  // const handleFileChange = async (e: any) => {
+  //   const file = e.target.files[0];
+  //   setImageName(file.name);
+  //   try {
+  //     const base64 = await convertToBase64(file);
+  //     setImage(base64 as string);
+  //   } catch (error) {
+  //     console.error("Error converting file to base64:", error);
+  //   }
+  // };
 
   const handleAddMenuItem = () => {
     setAddMenuItem(true);
   };
 
-  const handleMenuName = (value: string) => {
-    setMenuName(value);
-  };
-  const handleMenuDescription = (value: any) => {
-    setMenuDescription(value);
-  };
-  const handleMenuPrice = (value: string) => {
-    setMenuPrice(value);
-  };
-
-  const handleSaveMenuItem = async () => {
-    setMenuGroupLoading(true);
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addMenuItem`,
-        {
-          menu_category_name: activeCategory?.name,
-          branch_id: selectedBranch.id,
-          menu_group_name: activeGroup?.name,
-          menu_item_name: menuName,
-          description: menuDescription,
-          price: Number(menuPrice),
-          image,
-        },
-        headers
-      );
-      dispatch(
-        fetchMenuItemsByMenuGroup({
-          branch_id: selectedBranch.id,
-          menu_group_name: activeGroup?.name,
-          page: currentPage || 1,
-        })
-      );
-      toast.success(response.data.message || "Menu group added successfully.");
-      setMenuName("");
-      setMenuDescription("");
-      setMenuPrice("");
-      setImage("");
-      setAddMenuItem(false);
-    } catch (error: any) {
-      toast.error(
-        error.response.data.message || "An error occurred. Please try again."
-      );
-    } finally {
-      setMenuGroupLoading(false);
-      setAddMenuGroup(false);
-    }
-  };
+  // const handleMenuName = (value: string) => {
+  //   setMenuName(value);
+  // };
+  // const handleMenuDescription = (value: any) => {
+  //   setMenuDescription(value);
+  // };
+  // const handleMenuPrice = (value: string) => {
+  //   setMenuPrice(value);
+  // };
 
   const handleMenuItemClick = (item: any) => {
     setSelectedMenuItem(item);
@@ -653,7 +599,7 @@ const MenuBuilder = () => {
 
           {/* Add menu item */}
           <Modal isOpen={addMenuItem} onClose={() => setAddMenuItem(false)}>
-            <AddMenuItem
+            {/* <AddMenuItem
               setAddMenuItem={setAddMenuItem}
               menuName={menuName}
               handleMenuName={handleMenuName}
@@ -666,6 +612,10 @@ const MenuBuilder = () => {
               imageName={imageName}
               handleSaveMenuItem={handleSaveMenuItem}
               menuGroupLoading={menuGroupLoading}
+            /> */}
+            <MenuItemForm
+              onCancel={() => setAddMenuItem(false)}
+              activeCategory={activeCategory}
             />
           </Modal>
         </div>
