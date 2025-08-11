@@ -4,8 +4,8 @@ import axios from "axios";
 import { SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import Modal from "../../Modal";
-import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
-import { useDispatch, useSelector } from "react-redux";
+// import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store/store";
 import { fetchBranches } from "../../../slices/branchSlice";
 import ConfirmationDialog from "../ConfirmationDialog";
@@ -14,13 +14,6 @@ import { truncateText } from "../../../utils/truncateText";
 import ModifierModal from "./ModifierModal";
 import DisplayModifiers from "./DisplayModifiers";
 
-type ModifierRules = {
-  requireSelection: boolean;
-  optionalShown: boolean;
-  optionalNotShown: boolean;
-  multipleChoices: boolean;
-  singleChoice: boolean;
-};
 
 interface Modifier {
   id: number;
@@ -43,18 +36,10 @@ const Modifiers = ({
   ]);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [modifierRules, setModifierRules] = useState<ModifierRules>({
-    requireSelection: false,
-    optionalShown: false,
-    optionalNotShown: false,
-    multipleChoices: false,
-    singleChoice: false,
-  });
   const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
   const [isGroupFetching, setIsGroupFetching] = useState(false);
   const [selectedModifier, setSelectedModifier] = useState({} as any);
 
-  const { branches } = useSelector((state: any) => state.branches);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -64,10 +49,6 @@ const Modifiers = ({
     setSelectedModifier(modifier);
   };
 
-  const transformedBranches = branches.map((branch: any) => ({
-    label: branch.branch_name,
-    id: branch._id,
-  }));
 
   useEffect(() => {
     // Clear the fetched modifiers when activeSubMenu changes
@@ -83,33 +64,27 @@ const Modifiers = ({
     };
     try {
       const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
+        // /menu/getAllModifierGroups/?branch_id=669e67afbe2d93ee11921119
+        `${SERVER_DOMAIN}/menu/getAllModifierGroups/?branch_id=${selectedBranch?.id}`,
+        // `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
         headers
       );
+      console.log("resp", response);
       setFetchedModifierGroups(response.data.data || []);
       // toast.success("Modifier groups fetched successfully.");
     } catch (error) {
-      toast.error("Failed to fetch modifiers.");
+      // toast.error("Failed to fetch modifiers.");
     } finally {
       setIsGroupFetching(false);
     }
   };
 
   useEffect(() => {
-    if (selectedMenuItem) {
-      const fetchData = async () => {
-        await Promise.all([fetchModifierGroups()]);
-      };
-      fetchData();
-    }
-  }, [selectedMenuItem, selectedBranch?.id, activeSubMenu]);
+    fetchModifierGroups()
+  }, []);
 
   const removeModifier = (id: number) => {
     setModifiers((prev) => prev.filter((modifier) => modifier.id !== id));
-  };
-
-  const saveModifiers = () => {
-    setConfirmSaveModal(true); // Open the confirmation modal
   };
 
   const handleConfirmSave = async () => {
@@ -147,18 +122,6 @@ const Modifiers = ({
       setLoading(false);
       setConfirmSaveModal(false); // Close the confirmation modal
     }
-  };
-
-  const handleRuleChange = (rule: keyof ModifierRules) => {
-    setModifierRules((prevRules) => ({
-      ...prevRules,
-      [rule]: !prevRules[rule],
-    }));
-  };
-
-  // Handle apply changes
-  const handleApplyChanges = (selectedOutletIds: string[]) => {
-    console.log("Selected Outlet IDs:", selectedOutletIds);
   };
 
   const [confirmationDialog, setConfirmationDialog] = useState({
@@ -246,28 +209,28 @@ const Modifiers = ({
     }
   };
 
-  const rules: { label: string; key: keyof ModifierRules }[] = [
-    {
-      label: "Servers must make a selection for this group",
-      key: "requireSelection",
-    },
-    {
-      label: "This group is optional and is shown on add",
-      key: "optionalShown",
-    },
-    {
-      label: "This group is optional and is not shown on add",
-      key: "optionalNotShown",
-    },
-    {
-      label: "More than one modifier can be chosen",
-      key: "multipleChoices",
-    },
-    {
-      label: "Only one modifier can be chosen",
-      key: "singleChoice",
-    },
-  ];
+  // const rules: { label: string; key: keyof ModifierRules }[] = [
+  //   {
+  //     label: "Servers must make a selection for this group",
+  //     key: "requireSelection",
+  //   },
+  //   {
+  //     label: "This group is optional and is shown on add",
+  //     key: "optionalShown",
+  //   },
+  //   {
+  //     label: "This group is optional and is not shown on add",
+  //     key: "optionalNotShown",
+  //   },
+  //   {
+  //     label: "More than one modifier can be chosen",
+  //     key: "multipleChoices",
+  //   },
+  //   {
+  //     label: "Only one modifier can be chosen",
+  //     key: "singleChoice",
+  //   },
+  // ];
 
   const [modGroupLoading, setModGroupLoading] = useState(false);
   const [groupName, setGroupName] = useState("");
@@ -374,36 +337,7 @@ const Modifiers = ({
         <div>
           {modifiers.map((modifier) => (
             <div key={modifier.id} className="grid gap-[8px]">
-              {/* <div className=" mt-[32px] flex items-center gap-[8px]"> */}
-              {/* <button
-                  className="w-[196px] border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
-                  onClick={handleAddModifierGroup}
-                >
-                  {modGroupLoading ? "Loading..." : "Save Modifier Group"}
-                </button> */}
-              {/* <button
-                  className="px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
-                  onClick={handleAddModifierGroup}
-                >
-                  <img src={Add} alt="" /> Add - edit modifier item
-                </button> */}
-              {/* </div> */}
               <div className=" mt-[16px] flex items-center gap-[8px]">
-                {/* <input
-                  type="text"
-                  className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
-                  placeholder=" Enter modifier name "
-                  value={modifier.name}
-                  onChange={(e) => updateModifier(modifier.id, "name", e.target.value)}
-                /> */}
-
-                {/* <input
-                  type="text"
-                  className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[127px] px-[20px]"
-                  placeholder=" Enter price "
-                  value={modifier.price}
-                  onChange={(e) => updateModifier(modifier.id, "price", e.target.value)}
-                /> */}
 
                 <input
                   type="text"
@@ -424,72 +358,15 @@ const Modifiers = ({
                     <Close onClick={() => removeModifier(modifier.id)} />
                   )}
                 </div>
-                {/* <button
-                  className="px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
-                  onClick={handleAddModifierGroup}
-                >
-                  <img src={Add} alt="" /> Add - edit modifier item
-                </button> */}
+
               </div>
             </div>
           ))}
           <div className="mt-4 flex items-center gap-[8px]">
-            {/* <button
-              className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]"
-              onClick={addModifier}
-            >
-              Add
-            </button>
-            <button className=" border border-[#5855B3] px-[16px] py-[8px] font-[500]  rounded-[5px] text-purple500 text-[14px] flex items-center gap-[8px]">
-              Edit
-            </button> */}
+
           </div>
         </div>
 
-        <div className="">
-          <div className=" mt-[32px] max-w-[628px]">
-            <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
-              Modifier Rules
-            </p>
-            <hr className=" border-[#B6B6B6]" />
-            <div>
-              {rules.map((rule) => (
-                <div
-                  key={rule.key}
-                  className="flex items-center gap-[16px] my-[16px]"
-                >
-                  <input
-                    type="checkbox"
-                    id={rule.key}
-                    className="h-6 w-6 border-[#87878780]"
-                    checked={modifierRules[rule.key]}
-                    onChange={() => handleRuleChange(rule.key)}
-                  />
-                  <label
-                    htmlFor={rule.key}
-                    className="text-[16px] font-[400] text-[#000000]"
-                  >
-                    {rule.label}
-                  </label>
-                </div>
-              ))}
-            </div>
-            <hr className=" border-[#B6B6B6]" />
-            <OutletSelectionRadioGroup
-              allOutlets={transformedBranches}
-              onApplyChanges={handleApplyChanges}
-            />
-            <hr className=" border-[#B6B6B6] mt-3" />
-            <div className="flex items-center justify-end py-[16px]">
-              <div
-                className="cursor-pointer inline border mb-5 border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
-                onClick={saveModifiers}
-              >
-                <button className=" text-[16px]">Save Modifier</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Confirmation Modals */}
