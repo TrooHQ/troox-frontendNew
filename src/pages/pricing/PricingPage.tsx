@@ -140,33 +140,33 @@ const PricingPage = () => {
       rows: [
         [
           "Menu Management",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Real Time Analytics",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <AddCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Order, Room & Table Management",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "QR Code Offering",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Tickets",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
       ],
     },
@@ -175,27 +175,27 @@ const PricingPage = () => {
       rows: [
         [
           "Sales Reports",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Menu Analysis",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Real time reporting",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Customer insights",
           <AddCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
       ],
     },
@@ -206,7 +206,7 @@ const PricingPage = () => {
           "Basic API Access",
           <AddCircleOutline />,
           <AddCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
       ],
     },
@@ -215,21 +215,21 @@ const PricingPage = () => {
       rows: [
         [
           "24/7/365 Availability",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Features and Software Upgrades",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Installation & Network Configuration",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
       ],
     },
@@ -238,27 +238,27 @@ const PricingPage = () => {
       rows: [
         [
           "Tably - Desktop Till",
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "KDS",
           <AddCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Flex - Mobile Till",
           <AddCircleOutline />,
-          <CheckCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Online Ordering - Gogrub",
           <AddCircleOutline />,
           <AddCircleOutline />,
-          <CheckCircleOutline />,
+          <CheckCircleOutline className="text-green-500" />,
         ],
         [
           "Kiosk -  Self Checkout",
@@ -299,10 +299,17 @@ const PricingPage = () => {
   const token = userData?.token;
 
   const fetchPlans = async () => {
+    // /api/plan/getBusinessPlan
     try {
       setLoading(true);
       const response = await axios.get(
         `${SERVER_DOMAIN}/plan/getPlans?secretKey=trooAdminDev&planType=troo`
+        // `${SERVER_DOMAIN}/plan/getBusinessPlan`,
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       const fetchedPlans = response.data.data;
       setPlans(fetchedPlans);
@@ -465,11 +472,10 @@ const PricingPage = () => {
               <p
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`text-[16px] font-[500] max-w-[148px] w-full text-center py-[13px] px-[16px] text-[#0D0D0D] cursor-pointer transition-all min-w-[200px] ${
-                  activeTab === tab
-                    ? "border rounded-[5px] border-[#CBCAE7] bg-[#121212] text-white"
-                    : "border-none"
-                }`}
+                className={`text-[16px] font-[500] max-w-[148px] w-full text-center py-[13px] px-[16px] text-[#0D0D0D] cursor-pointer transition-all min-w-[200px] ${activeTab === tab
+                  ? "border rounded-[5px] border-[#CBCAE7] bg-[#121212] text-white"
+                  : "border-none"
+                  }`}
               >
                 {tab}
               </p>
@@ -492,17 +498,16 @@ const PricingPage = () => {
               )?.map((plan: any) => (
                 <div
                   key={plan._id}
-                  className={`border px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative ${
-                    plan.name === currentPlan
-                      ? "bg-[#121212] text-white border-[#606060]"
-                      : plan.recommended
+                  className={`border px-[20px] rounded-[10px] py-[15px] md:width[270px] md:h-[350px] relative ${plan.name === currentPlan
+                    ? "bg-[#121212] text-white border-[#606060]"
+                    : plan.recommended
                       ? "bg-white text-[#121212] border-[#121212] shadow-lg scale-105"
                       : "bg-white text-[#121212] border-[#B6B6B6]" // Default styles for other plans
-                  }`}
+                    }`}
                 >
                   {plan.recommended && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#121212] text-white px-4 py-1 rounded-full text-sm font-mormal flex items-center">
-                      <Star className="h-4 w-4 mr-1" /> Recommended
+                      <Star className="w-4 h-4 mr-1" /> Recommended
                     </div>
                   )}
                   <div className="space-y-[20px]">
@@ -515,11 +520,10 @@ const PricingPage = () => {
                           .trim()}
                       </p>
                       <p
-                        className={` text-[14px] font-[400] ${
-                          plan.name === currentPlan
-                            ? "text-white" // Highlight styles for the current plan
-                            : "text-[#606060]" // Default styles for other plans
-                        }`}
+                        className={` text-[14px] font-[400] ${plan.name === currentPlan
+                          ? "text-white" // Highlight styles for the current plan
+                          : "text-[#606060]" // Default styles for other plans
+                          }`}
                       >
                         {plan.description}
                       </p>
@@ -551,11 +555,10 @@ const PricingPage = () => {
                   </div>
 
                   <button
-                    className={`mt-[60px] border py-[10px] rounded-[5px] font-[400] text-[14px] text-center absolute bottom-10 w-[225px] ${
-                      plan.name === currentPlan
-                        ? "bg-white text-[#121212] border-white" // Button styles for the current plan
-                        : "bg-[#0d0d0d] text-white border-[#000000]" // Default button styles
-                    }`}
+                    className={`mt-[60px] border py-[10px] rounded-[5px] font-[400] text-[14px] text-center absolute bottom-10 w-[225px] ${plan.name === currentPlan
+                      ? "bg-white text-[#121212] border-white" // Button styles for the current plan
+                      : "bg-[#0d0d0d] text-white border-[#000000]" // Default button styles
+                      }`}
                     onClick={() => {
                       setSelectedPlan(plan);
                       setAreYouSure(true);
@@ -580,17 +583,17 @@ const PricingPage = () => {
 
             {isModalOpen && (
               <div
-                className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
                 onClick={() => setIsModalOpen(false)}
               >
                 <div
                   className="bg-white rounded-lg p-6 w-[90%] max-w-4xl max-h-[90vh] overflow-y-auto relative"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="max-w-screen-lg mx-auto p-6 rounded-md">
+                  <div className="max-w-screen-lg p-6 mx-auto rounded-md">
                     {/* Close Button */}
                     {/* <button
-                      className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                      className="absolute text-gray-500 top-4 right-4 hover:text-gray-700"
                       onClick={() => setIsModalOpen(false)}
                     >
                       <span className="material-icons">close</span>
@@ -605,7 +608,7 @@ const PricingPage = () => {
                     </p>
                     <table className="w-full border-collapse">
                       <thead className="border border-gray-300">
-                        <tr className="border-b-1 border-gray-300">
+                        <tr className="border-gray-300 border-b-1">
                           <th className="py-2 px-4 text-left font-[500] text-[20px] text-[#606060]  border-r border-[#606060] bg-white">
                             Comparing
                           </th>
@@ -642,9 +645,8 @@ const PricingPage = () => {
                                 {row.map((cell, cellIndex) => (
                                   <td
                                     key={cellIndex}
-                                    className={`py-3 px-4 text-gray-600 border border-gray-300 text-[13px] font-[500] ${
-                                      cellIndex > 0 ? "text-center" : ""
-                                    }`}
+                                    className={`py-3 px-4 text-gray-600 border border-gray-300 text-[13px] font-[500] ${cellIndex > 0 ? "text-center" : ""
+                                      }`}
                                   >
                                     {cell}
                                   </td>
@@ -665,7 +667,7 @@ const PricingPage = () => {
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[372px]">
-          <div className=" text-center">
+          <div className="text-center ">
             <p className="text-[24px] font-[500] text-purple500">Payment</p>
             <p className="text-[16px] font-[400] text-grey500">
               Make payment to selected plan
@@ -699,7 +701,7 @@ const PricingPage = () => {
           >
             <Close />
           </div>
-          <div className="flex flex-col justify-center items-center gap-6">
+          <div className="flex flex-col items-center justify-center gap-6">
             <p className="text-[24px] font-[500] text-purple500">Subscribe</p>
 
             <div>
