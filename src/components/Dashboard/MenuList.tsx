@@ -17,16 +17,17 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { Menu, MenuItem, Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBranches } from "../../slices/branchSlice";
-import { AppDispatch, RootState } from "../../store/store";
+import { AppDispatch } from "../../store/store";
 import { fetchMenuItemsWithoutStatus } from "../../slices/menuSlice";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { toast } from "react-toastify";
 import Modal from "../Modal";
-import CustomInput from "../inputFields/CustomInput";
+// import CustomInput from "../inputFields/CustomInput";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
+import MenuItemForm from "./MenuBuilderModals/NewAddMenuModal";
 
 const CustomPagination = styled(Pagination)(() => ({
   "& .Mui-selected": {
@@ -39,14 +40,29 @@ const CustomPagination = styled(Pagination)(() => ({
 }));
 
 interface Modifier {
-  name: string;
-  price: string;
+  _id: string;
+  created_by: string;
+  branch: string;
+  modifier_name: string;
+  modifier_price: number;
+  attached_to: string;
+  modifier_group_name: string;
+  modifier_group: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
-interface Modifiers {
-  addOns: Modifier[];
-  proteins: Modifier[];
-  menu_item_name: string;
+interface ModifierGroup {
+  _id: string;
+  created_by: string;
+  branch: string;
+  modifier_group_name: string;
+  modifiers: Modifier[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  rule?: "single" | "multiple" | string; // rule is optional and typed if known
 }
 
 interface Branch {
@@ -63,11 +79,15 @@ interface ConfirmationDialogState {
 }
 
 const MenuList = () => {
+
+  useEffect(() => {
+    document.title = "Browse and Review Your Complete Menu Items in One Place"
+  }, [])
+
+
   const dispatch = useDispatch<AppDispatch>();
 
   const branches = useSelector((state: any) => state.branches.branches);
-  const { userData } = useSelector((state: RootState) => state.user);
-
   const {
     menuItemsWithoutStatus: menuItems,
     totalPages,
@@ -84,9 +104,7 @@ const MenuList = () => {
   };
 
   const [openModal, setOpenModal] = useState(false);
-  const [selectedModifiers, setSelectedModifiers] = useState<Modifiers | null>(
-    null
-  );
+  const [selectedModifiers, setSelectedModifiers] = useState<ModifierGroup[]>([]);
   const [viewingBranch, setViewingBranch] = useState<Branch | null>(null);
 
   const [toggleStates, setToggleStates] = useState<{ [key: string]: boolean }>(
@@ -95,8 +113,8 @@ const MenuList = () => {
   const [toggleStates2, setToggleStates2] = useState<{
     [key: string]: boolean;
   }>({});
-  const [isFetching, setIsFetching] = useState(false);
-  const [fetchedModifiers, setFetchedModifiers] = useState<any>([]);
+  // const [isFetching, setIsFetching] = useState(false);
+  // const [fetchedModifiers, setFetchedModifiers] = useState<any>([]);
   const [confirmationDialog, setConfirmationDialog] =
     useState<ConfirmationDialogState>({
       open: false,
@@ -115,12 +133,12 @@ const MenuList = () => {
     });
 
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<{
-    id: string;
-    oldName: string;
-  } | null>(null);
-  const [newMenuName, setNewMenuName] = useState<string>("");
-
+  // const [editingItem, setEditingItem] = useState<{
+  //   id: string;
+  //   oldName: string;
+  // } | null>(null);
+  // const [newMenuName, setNewMenuName] = useState<string>("");
+  const [editItemId, setEditItemId] = useState()
   // Fetch menu items whenever the page or branch changes
   useEffect(() => {
     if (viewingBranch) {
@@ -148,52 +166,11 @@ const MenuList = () => {
 
   // Edit function
   const handleEditClick = (item: any) => {
-    setEditingItem({ id: item._id, oldName: item.menu_item_name });
-    setNewMenuName(item.menu_item_name); // Set initial value to the current name
+    setEditItemId(item._id)
+    // setEditingItem({ id: item._id, oldName: item.menu_item_name });
+    // setNewMenuName(item.menu_item_name); // Set initial value to the current name
     setEditModalOpen(true);
     setAnchorEl(null);
-  };
-
-  const [editLoading, setEditLoading] = useState(false);
-  const handleEditConfirm = async () => {
-    if (editingItem) {
-      try {
-        setEditLoading(true);
-        const response = await axios.put(
-          `${SERVER_DOMAIN}/menu/editMenu`,
-          {
-            branch_id: viewingBranch?._id,
-            menu_type: "item",
-            old_name: editingItem.oldName,
-            name: newMenuName,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          // Optionally refresh the list of menu items
-          toast.success("Menu item updated successfully");
-          dispatch(
-            fetchMenuItemsWithoutStatus({
-              branch_id: viewingBranch?._id as any,
-              page,
-            })
-          );
-        }
-      } catch (error) {
-        console.error("Error editing menu item:", error);
-        toast.error("Failed to edit menu item.");
-      } finally {
-        setEditModalOpen(false);
-        setEditingItem(null);
-        setNewMenuName("");
-        setEditLoading(false);
-      }
-    }
   };
 
   // Set toggleStates after menuItems are fetched
@@ -295,31 +272,6 @@ const MenuList = () => {
     setConfirmationDialog({ open: false, id: null });
   };
 
-  const fetchModifiers = async ({ selectedMenuItem, selectedBranch }: any) => {
-    setIsFetching(true);
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    try {
-      const encodedName = encodeURIComponent(selectedMenuItem);
-
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${encodedName}&branch_id=${selectedBranch}`,
-        headers
-      );
-
-      setFetchedModifiers(response.data.data || []);
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message || "Failed to fetch modifiers.");
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
   const handleDeleteMenu = async (item: any) => {
     try {
       const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
@@ -353,20 +305,25 @@ const MenuList = () => {
     }
   };
 
-  const handleOpenModal = (modifiers: any) => {
-    fetchModifiers({
-      selectedMenuItem: modifiers.menu_item_name,
-      selectedBranch: viewingBranch?._id,
-    });
+  const [menu_item_name, setMenu_item_name] = useState("");
+  const handleOpenModal = (menuItem: any) => {
+    console.log("menuItem", menuItem)
+    setMenu_item_name(menuItem?.menu_item_name);
+    // fetchModifiers({
+    //   selectedMenuItem: modifiers.menu_item_name,
+    //   selectedBranch: viewingBranch?._id,
+    // });
+    setSelectedModifiers(menuItem?.modifierGroups);
     setOpenModal(true);
   };
 
-  console.log("fetchedModifiers", fetchedModifiers);
+  console.log("menuItems", menuItems);
+  console.log("selectedModifiers", selectedModifiers);
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    setSelectedModifiers(null);
-    setFetchedModifiers([]);
+    // setSelectedModifiers(null);
+    // setFetchedModifiers([]);
   };
 
   const handleViewMore = (branch: Branch) => {
@@ -447,7 +404,7 @@ const MenuList = () => {
             <div className="flex items-center justify-between">
               <button
                 onClick={handleBackToBranches}
-                className="border border-purple500 text-purple500 rounded-[6px] px-2 py-2 flex items-center"
+                className="border border-black text-gray-500 rounded-[6px] px-2 py-2 flex items-center"
               >
                 {" "}
                 <ArrowBack />
@@ -459,12 +416,12 @@ const MenuList = () => {
             <div className="mt-6 overflow-x-auto">
               <table className="min-w-full border-collapse">
                 <thead>
-                  <tr className="bg-[#606060] text-white text-center text-base font-normal">
-                    <th className="px-4 py-2 text-base font-normal">
+                  <tr className="bg-[#606060] text-white text-base font-normal">
+                    <th className="px-4 py-2 text-base font-normal text-start">
                       Menu Group
                     </th>
                     <th className="px-4 py-2 text-base font-normal text-start">
-                      Menu Name
+                      Menu Item
                     </th>
                     {/* <th className="px-4 py-2 text-base font-normal">Quantity</th> */}
                     <th className="px-4 py-2 text-base font-normal">Price</th>
@@ -492,7 +449,7 @@ const MenuList = () => {
                             : "bg-[#F8F8F8]"
                           }`}
                       >
-                        <td className="px-4 py-2 text-base font-normal">
+                        <td className="px-4 py-2 text-base font-normal text-center">
                           {item.menu_group_name}
                         </td>
                         <td className="px-4 py-2 text-base font-normal">
@@ -516,7 +473,7 @@ const MenuList = () => {
                           &#8358;
                           {parseFloat(item.menu_item_price).toLocaleString()}
                         </td>
-                        <td className="px-4 py-2 text-base font-normal text-center break-words">
+                        <td className="px-4 py-2 text-sm font-normal text-center break-words">
                           <button
                             className="px-2 py-1 border border-gray-600 rounded-md"
                             onClick={() => handleOpenModal(item)}
@@ -526,7 +483,7 @@ const MenuList = () => {
                         </td>
 
                         <td className="flex items-center justify-center w-full text-center">
-                          {userData?.user_role === "admin" && <Tooltip title="More options" arrow>
+                          <Tooltip title="More options" arrow>
                             <IconButton
                               onClick={(event) => handleOpenMenu(event, item)}
                               color="default"
@@ -534,7 +491,7 @@ const MenuList = () => {
                             >
                               <MoreVert />
                             </IconButton>
-                          </Tooltip>}
+                          </Tooltip>
                         </td>
                         {/* Menu for More options */}
                         {currentItem && currentItem._id === item._id && (
@@ -566,7 +523,7 @@ const MenuList = () => {
                                   ) : (
                                     <ToggleOnIcon
                                       style={{
-                                        color: "#5855B3",
+                                        color: "#efefef",
                                         fontSize: "40px",
                                       }}
                                     />
@@ -576,8 +533,8 @@ const MenuList = () => {
                               <span
                                 className={clsx(
                                   toggleStates[item._id]
-                                    ? "text-[#5855b3]"
-                                    : "text-gray-700",
+                                    ? "text-[#121212]"
+                                    : "text-gray-500",
                                   "text-base font-medium",
                                   "w-full"
                                 )}
@@ -658,7 +615,7 @@ const MenuList = () => {
                               <span
                                 className={clsx(
                                   toggleStates2[item._id]
-                                    ? "text-[#5855b3]"
+                                    ? "text-[#121212]"
                                     : "text-gray-700",
                                   "text-[14px] font-medium",
                                   "w-full"
@@ -704,21 +661,20 @@ const MenuList = () => {
             <div className="fixed inset-0 bg-black opacity-50"></div>
             <div className="bg-white min-w-[30%] p-6 rounded-lg z-10 relative">
               <h2 className="mb-4 text-lg font-semibold">
-                {selectedModifiers?.menu_item_name}
-                <span className="ml-5 text-sm font-normal">MODIFIERS</span>
+                {/* {selectedModifiers?.menu_item_name} */}
+                {menu_item_name}
+                {/* <span className="ml-5 text-sm font-normal">MODIFIERS</span> */}
               </h2>
               <hr className="h-[1px] bg-[#929292] my-3" />
 
-              {isFetching ? (
-                "Fetching..."
-              ) : fetchedModifiers.length === 0 ? (
+              {selectedModifiers?.length === 0 ? (
                 "No modifier available for this item"
               ) : (
                 <>
                   <div>
                     {/* <h3 className="font-semibold text-sm mb-2 text-[#414141]">Add-Ons:</h3> */}
                     <ul>
-                      {fetchedModifiers.map((group: any, groupIndex: any) => (
+                      {selectedModifiers?.map((group: any, groupIndex: any) => (
                         <li key={groupIndex} className="mb-4">
                           {/* Display the Modifier Group Name */}
                           <h3 className="text-xl font-bold text-[#414141]">
@@ -763,8 +719,12 @@ const MenuList = () => {
 
         {editModalOpen && (
           <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
-            <div className=" w-[539px] py-[32px] px-[52px]">
-              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">
+            <MenuItemForm
+              onCancel={() => setEditModalOpen(false)}
+              editId={editItemId}
+            />
+            {/* <div className=" w-[539px] py-[32px] px-[52px]">
+              <h2 className="text-[24px] mb-[11px] font-[500] text-gray-500">
                 Edit Menu Item
               </h2>
               <CustomInput
@@ -784,12 +744,12 @@ const MenuList = () => {
                 </button>
                 <button
                   onClick={() => setEditModalOpen(false)}
-                  className="bg-[#F8F8F8] text-[#5855B3] rounded-[6px] px-4 py-2"
+                  className="bg-[#F8F8F8] text-[#121212] rounded-[6px] px-4 py-2"
                 >
                   Cancel
                 </button>
               </div>
-            </div>
+            </div> */}
           </Modal>
         )}
       </div>
