@@ -1,10 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccordionItem } from "./AccordionItem";
+import { SERVER_DOMAIN } from "../../../Api/Api";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const TenantAccordion = () => {
+
+  const { userData } = useSelector(
+    (state: RootState) => state.user
+  );
+
+  const [plans, setPlans] = useState<string[]>([]);
+
+  const fetchPlans = async () => {
+    const token = userData?.token;
+    // /api/plan/getBusinessPlan
+    try {
+      const response = await axios.get(
+        // `${SERVER_DOMAIN}/plan/getPlans?secretKey=trooAdminDev&planType=troo`
+        `${SERVER_DOMAIN}/plan/getBusinessPlan`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const fetchedPlans = response.data.data;
+
+      const formattedPlan = fetchedPlans?.plan?.products.map((item: any) => item.replace(/_/g, " "));
+
+      setPlans(formattedPlan);
+    } catch (error) {
+      console.error("Error fetching plans data:", error);
+    } finally {
+      // setLoading(false);
+    }
+  };
+
+  console.log("Plans fetched:", plans);
+
+  useEffect(() => {
+    fetchPlans();
+  }, [])
+
+
   const initialAccordionState = {
     expanded: false,
-    isEnabled: true,
+    isEnabled: false,
     selectedOption: "entireOrg",
     selectedOutlets: [],
   };
@@ -47,7 +90,19 @@ const TenantAccordion = () => {
     },
   ]);
 
+  useEffect(() => {
+    setAccordionState(prev =>
+      prev.map(item => ({
+        ...item,
+        isEnabled: plans.includes(item.title.toLowerCase()),
+      }))
+    );
+  }, [plans]);
+
   const handleAccordionChange = (index: number, field: string, value: any) => {
+    console.log("Accordion index:", index);
+    console.log("Field being changed:", field);
+    console.log("New value:", value);
     const newState = accordionState.map((item, i) => {
       if (field === "expanded") {
         return { ...item, expanded: i === index ? value : false };
@@ -59,7 +114,7 @@ const TenantAccordion = () => {
     setAccordionState(newState);
   };
   return (
-    <div className="app-width mt-4 mb-4 text-blackish">
+    <div className="mt-4 mb-4 app-width text-blackish">
       {accordionState.map((accordion, index) => (
         <AccordionItem
           key={index}
@@ -68,6 +123,7 @@ const TenantAccordion = () => {
           expanded={accordion.expanded}
           setExpanded={(value: any) => handleAccordionChange(index, "expanded", value)}
           isEnabled={accordion.isEnabled}
+          // isEnabled={plans?.includes(accordion.title.toLowerCase())}
           setIsEnabled={(value: any) => handleAccordionChange(index, "isEnabled", value)}
           selectedOption={accordion.selectedOption}
           setSelectedOption={(value: any) => handleAccordionChange(index, "selectedOption", value)}
@@ -75,6 +131,7 @@ const TenantAccordion = () => {
           setSelectedOutlets={(value: any) =>
             handleAccordionChange(index, "selectedOutlets", value)
           }
+
         />
       ))}
       {accordionState.map(

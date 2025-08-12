@@ -1,28 +1,32 @@
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import { ArrowDropDown, ArrowRight, CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
+import {
+  ArrowDropDown, ArrowRight,
+  // CheckBox,
+  //  CheckBoxOutlineBlank 
+} from "@mui/icons-material";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import ToggleOffIcon from "@mui/icons-material/ToggleOff";
 import IconButton from "@mui/material/IconButton";
 import clsx from "clsx";
-import {
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from "@mui/material";
+// import {
+//   Autocomplete,
+//   Checkbox,
+//   FormControlLabel,
+//   Radio,
+//   RadioGroup,
+//   TextField,
+// } from "@mui/material";
 
-export const allOutlets = [
-  { label: "Abuja outlet" },
-  { label: "Agege outlet" },
-  { label: "Ajah outlet" },
-  { label: "Ikeja outlet" },
-  { label: "Lekki outlet" },
-  { label: "V/Island outlet" },
-];
+// export const allOutlets = [
+//   { label: "Abuja outlet" },
+//   { label: "Agege outlet" },
+//   { label: "Ajah outlet" },
+//   { label: "Ikeja outlet" },
+//   { label: "Lekki outlet" },
+//   { label: "V/Island outlet" },
+// ];
 
 export const AccordionItem = ({
   title,
@@ -31,11 +35,13 @@ export const AccordionItem = ({
   setExpanded,
   isEnabled,
   setIsEnabled,
-  selectedOption,
-  setSelectedOption,
-  selectedOutlets,
-  setSelectedOutlets,
-  setAllDisabled,
+  // selectedOption,
+  // setSelectedOption,
+  // selectedOutlets,
+  // setSelectedOutlets,
+  // setAllDisabled,
+  // plans,
+  // isLoading
 }: any) => {
   const handleChange = (panel: any) => (event: { preventDefault: () => void }, isExpanded: any) => {
     event.preventDefault();
@@ -44,16 +50,18 @@ export const AccordionItem = ({
 
   const handleToggleChange = () => {
     if (!isEnabled) {
-      setAllDisabled(); // Disable all others before enabling this one
+      // setAllDisabled(); // Disable all others before enabling this one
       setIsEnabled(true);
     } else {
       setIsEnabled(false);
     }
   };
 
-  const handleRadioChange = (event: { target: { value: any } }) => {
-    setSelectedOption(event.target.value);
-  };
+  console.log("isEnabled", isEnabled)
+
+  // const handleRadioChange = (event: { target: { value: any } }) => {
+  //   setSelectedOption(event.target.value);
+  // };
 
   return (
     <Accordion
@@ -71,10 +79,10 @@ export const AccordionItem = ({
         {expanded === title ? <ArrowDropDown /> : <ArrowRight />}
         <h5 className="text-[18px] font-normal text-[#121212]">{title}</h5>
       </AccordionSummary>
-      <AccordionDetails className="sm:text-lg flex flex-col gap-4">
-        <p className="text-xs font-normal text-[#606060]">
+      <AccordionDetails className="flex flex-col gap-4 sm:text-lg">
+        {/* <p className="text-xs font-normal text-[#606060]">
           {isEnabled ? "Enabled for entire organization" : "Disabled"}
-        </p>
+        </p> */}
         <p className="text-base font-normal text-[#606060] w-full md:w-[50%]">{subText}</p>
         <div>
           <IconButton onClick={handleToggleChange} color="default">
@@ -91,11 +99,12 @@ export const AccordionItem = ({
             )}
           >
             {isEnabled ? "Enabled" : "Disabled"}
+            {/* {isEnabled ? plans.indexOf(title.toLowerCase()) > -1 : false} */}
           </span>
 
-          <h5 className="text-sm font-normal text-[#606060]">Apply to:</h5>
+          {/* <h5 className="text-sm font-normal text-[#606060]">Apply to:</h5> */}
 
-          <RadioGroup
+          {/* <RadioGroup
             aria-label="apply-to"
             name="apply-to-group"
             value={selectedOption}
@@ -184,7 +193,7 @@ export const AccordionItem = ({
                 }}
               />
             )}
-          </RadioGroup>
+          </RadioGroup> */}
         </div>
       </AccordionDetails>
     </Accordion>
