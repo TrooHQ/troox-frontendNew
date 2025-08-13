@@ -19,6 +19,7 @@ import { DropdownMenu } from "./DropdownMenuOpenTickets";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { truncateText } from "../../utils/truncateText";
 import { RootState } from "@/src/store/store";
+import PaginationComponent from "./PaginationComponent";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -64,11 +65,19 @@ const Tickets = () => {
     setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ totalOrders: number; totalPages: number; currentPage: number; pageSize: number }>({
+    totalOrders: 0,
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 5,
+  });
+
   // const toggleMenu2 = (index: number) => {
   //   setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
   // };
 
-  const getTickets = async () => {
+  const getTickets = async (page: number) => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -81,11 +90,12 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket`,
+        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page}&limit=10`,
         headers
       );
       console.log(response.data);
       setData(response.data.data);
+      setPagination(response.data.pagination);
       // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -118,9 +128,9 @@ const Tickets = () => {
   };
 
   useEffect(() => {
-    getTickets();
+    getTickets(page);
     getClosedTickets();
-  }, [selectedBranch]);
+  }, [selectedBranch, page]);
 
   const handleVoidOrder = async () => {
     if (activeMenuIndex === null) {
@@ -147,7 +157,7 @@ const Tickets = () => {
         headers
       );
       console.log(response.data);
-      getTickets();
+      getTickets(page);
       setVoidOrderMenu(false);
       setActiveMenuIndex(null);
       toast.success(response.data.message || "Successful");
@@ -191,7 +201,7 @@ const Tickets = () => {
   // };
 
   const handleRefresh = () => {
-    getTickets();
+    getTickets(page);
     getClosedTickets();
   };
 
@@ -329,6 +339,9 @@ const Tickets = () => {
                       </div>
                     ))
                   )}
+                  <div className="flex items-center justify-center w-full my-4">
+                    <PaginationComponent setPage={setPage} pagination={pagination} />
+                  </div>
                 </div>
               )}
 

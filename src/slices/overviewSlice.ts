@@ -14,6 +14,12 @@ interface OverviewState {
   customerDataLoading: boolean;
   loading: boolean;
   error: string | null;
+  pagination: {
+    totalOrders: number;
+    totalPages: number;
+    currentPage: number;
+    pageSize: number;
+  };
 }
 
 const initialState: OverviewState = {
@@ -28,6 +34,12 @@ const initialState: OverviewState = {
   customerDataLoading: false,
   loading: false,
   error: null,
+  pagination: {
+    totalOrders: 0,
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
 // Create async thunk for fetching open and closed tickets
@@ -96,12 +108,14 @@ export const fetchCustomerData = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      page,
     }: {
       businessIdentifier: string;
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      page?: number;
     },
     { rejectWithValue }
   ) => {
@@ -120,13 +134,21 @@ export const fetchCustomerData = createAsyncThunk(
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getOrderCustomerData`,
         {
-          params,
+          params: { ...params, page, limit: 10 },
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      return response.data.data;
+      return {
+        data: response.data.data,
+        pagination: {
+          totalOrders: response.data.totalOrders,
+          totalPages: response.data.totalPages,
+          currentPage: response.data.currentPage,
+          pageSize: response.data.pageSize,
+        },
+      };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
@@ -438,9 +460,16 @@ const overviewSlice = createSlice({
       })
       .addCase(
         fetchCustomerData.fulfilled,
-        (state, action: PayloadAction<any[]>) => {
+        (
+          state,
+          action: PayloadAction<{
+            data: any[];
+            pagination: OverviewState["pagination"];
+          }>
+        ) => {
           state.customerDataLoading = false;
-          state.customerData = action.payload;
+          state.customerData = action.payload.data;
+          state.pagination = action.payload.pagination;
         }
       )
       .addCase(fetchCustomerData.rejected, (state, action) => {
