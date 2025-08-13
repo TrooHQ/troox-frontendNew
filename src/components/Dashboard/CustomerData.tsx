@@ -19,6 +19,7 @@ import Papa from "papaparse";
 import { toast } from "react-toastify";
 
 import chip from "../../assets/chip.svg";
+import PaginationComponent from "./PaginationComponent";
 
 const CustomerData = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,7 +29,7 @@ const CustomerData = () => {
   );
   const businessIdentifier = userDetails?._id;
 
-  const { customerData, customerDataLoading, totalCustomerTransaction } =
+  const { customerData, customerDataLoading, totalCustomerTransaction, pagination } =
     useSelector((state: RootState) => state.overview);
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -37,12 +38,18 @@ const CustomerData = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
+  console.log("customerData", customerData)
+  console.log("pagination", pagination)
+  const [page, setPage] = useState(1);
+
+
   useEffect(() => {
     businessIdentifier &&
       dispatch(
         fetchCustomerData({
           businessIdentifier: businessIdentifier.toString(),
           date_filter: "today",
+          page
         })
       );
     dispatch(fetchCustomerTransaction({ date_filter: "today" }));
@@ -62,6 +69,7 @@ const CustomerData = () => {
         startDate,
         endDate,
         number_of_days,
+        page
       })
     )
       .unwrap()
@@ -266,20 +274,23 @@ const CustomerData = () => {
                 ) : customerData ? (
                   customerData.map((data: any, index: any) => (
                     <div
-                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-4 items-center  font-base text-[14px] text-[#414141] ${
-                        index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                      }`}
+                      className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-4 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        }`}
                       key={index}
                     >
                       <p className="text-start ">{data.customerName}</p>
-                      <p className=" ">{data.email}</p>
-                      <p className=" ">{data.phoneNumber}</p>
+                      <p className="">{data.email}</p>
+                      <p className="">{data.phoneNumber}</p>
                       <p className="">{data.address}</p>
                     </div>
                   ))
                 ) : (
                   <div className="px-8">No data during this period</div>
                 )}
+
+                <div className="flex items-center justify-center w-full my-4">
+                  <PaginationComponent setPage={setPage} pagination={pagination} />
+                </div>
               </div>
             </div>
           </div>

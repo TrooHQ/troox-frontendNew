@@ -12,6 +12,7 @@ import { saveAs } from "file-saver"; // To save files locally
 import Papa from "papaparse"; // For CSV export
 import { truncateText } from "../../utils/truncateText";
 import { DatePicker, Space } from "antd";
+import PaginationComponent from "./PaginationComponent";
 
 const { RangePicker } = DatePicker;
 
@@ -57,7 +58,7 @@ const OrderHistory = () => {
   ) => {
     setSelectedFilter(number_of_days as any);
     setSelectedFilter2(filter);
-    getTickets({ date_filter: filter, number_of_days, startDate, endDate });
+    getTickets({ date_filter: filter, number_of_days, startDate, endDate, page });
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
@@ -72,16 +73,27 @@ const OrderHistory = () => {
     setShowDatePicker(false);
   };
   console.log(selectedFilter, "selectedFilter");
+
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{ totalOrders: number; totalPages: number; currentPage: number; pageSize: number }>({
+    totalOrders: 0,
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 5,
+  });
+
   const getTickets = async ({
     date_filter,
     startDate,
     endDate,
     number_of_days,
+    page
   }: {
     date_filter: string;
     startDate?: string;
     endDate?: string;
     number_of_days?: number;
+    page?: number;
   }) => {
     const headers = {
       headers: {
@@ -107,12 +119,13 @@ const OrderHistory = () => {
         `${SERVER_DOMAIN}/order/getOrderbyType/`,
         {
           ...headers,
-          params: { branch_id: selectedBranch.id, ...params, queryType: "history" },
+          params: { branch_id: selectedBranch.id, ...params, queryType: "history", page, limit: "10" },
           paramsSerializer: (params) => new URLSearchParams(params).toString(),
         }
       );
       console.log(response.data, "mmmm");
       setData(response.data?.data);
+      setPagination(response.data?.pagination)
       // toast.success(response.data.message || "Successful");
     } catch (error) {
       toast.error("Error retrieving tickets");
@@ -122,12 +135,12 @@ const OrderHistory = () => {
   };
 
   useEffect(() => {
-    getTickets({ date_filter: "today" });
+    getTickets({ date_filter: "today", page });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBranch]);
 
   const handleRefresh = () => {
-    getTickets({ date_filter: "today" });
+    getTickets({ date_filter: "today", page });
   };
 
   // Function to export data as Excel
@@ -418,6 +431,9 @@ const OrderHistory = () => {
                       </div>
                     ))
                   )}
+                  <div className="flex items-center justify-center w-full my-4">
+                    <PaginationComponent setPage={setPage} pagination={pagination} />
+                  </div>
                 </div>
               </div>
             </div>
