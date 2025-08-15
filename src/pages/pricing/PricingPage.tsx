@@ -413,13 +413,15 @@ const PricingPage = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://payment.trootab.com/api/v1/transaction/subscription_payment/`,
+        // `https://staging.troopay.com/api/v1/transaction/subscription_payment/`,
+        `https://staging.troopay.co/api/v1/transaction/subscription_payment/`,
         {
           plan_id: selectedPlan?._id,
           business_email: userDetails?.business_email,
           amount: selectedPlan?.price,
           plan_description: selectedPlan?.name,
-          callback_url: "https://trootab.com/verified-payment",
+          // callback_url: "https://trootab.com/verified-payment",
+          callback_url: "https://troo-admin.netlify.app/verified-payment",
         }
       );
       dispatch(setPlanDetails(response.data.data));
