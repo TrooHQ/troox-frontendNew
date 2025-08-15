@@ -4,6 +4,9 @@ import { SERVER_DOMAIN } from "../../../Api/Api";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { Accordion, AccordionDetails, AccordionSummary, IconButton, } from "@mui/material";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import { ArrowDropDown, ArrowRight } from "@mui/icons-material";
 
 const TenantAccordion = () => {
 
@@ -12,6 +15,7 @@ const TenantAccordion = () => {
   );
 
   const [plans, setPlans] = useState<string[]>([]);
+  const [trooTill, setTrooTill] = useState<string[]>([]);
 
   const fetchPlans = async () => {
     const token = userData?.token;
@@ -27,10 +31,12 @@ const TenantAccordion = () => {
         }
       );
       const fetchedPlans = response.data.data;
-
-      const formattedPlan = fetchedPlans?.plan?.products.map((item: any) => item.replace(/_/g, " "));
+      console.log("fetchedPlans", fetchedPlans)
+      const formattedPlan = fetchedPlans?.plan?.products?.other.map((item: any) => item.replace(/_/g, " "));
+      const formattedTrooTill = fetchedPlans?.plan?.products?.trooUtil.map((item: any) => item.replace(/_/g, " "));
 
       setPlans(formattedPlan);
+      setTrooTill(formattedTrooTill);
     } catch (error) {
       console.error("Error fetching plans data:", error);
     } finally {
@@ -38,7 +44,7 @@ const TenantAccordion = () => {
     }
   };
 
-  console.log("Plans fetched:", plans);
+  console.log("Plans fetched:", trooTill);
 
   useEffect(() => {
     fetchPlans();
@@ -81,14 +87,28 @@ const TenantAccordion = () => {
       subText:
         "Display dynamic menus, promotions, and order status updates in real-time on digital screens.",
     },
-    {
-      ...initialAccordionState,
-      title: "Troo Till",
-      apps: [],
-      subText:
-        "Description: Comprehensive POS system for managing transactions, inventory, and sales reporting.",
-    },
+    // {
+    //   ...initialAccordionState,
+    //   title: "Troo Till",
+    //   apps: trooTill,
+    //   // apps: [],
+    //   subText:
+    //     "Description: Comprehensive POS system for managing transactions, inventory, and sales reporting.",
+    // },
   ]);
+
+  const trooTillUtility = {
+
+    title: "Troo Till",
+    apps: trooTill,
+    subText:
+      "Description: Comprehensive POS system for managing transactions, inventory, and sales reporting.",
+  };
+
+  console.log("Troo Till Utility:", trooTillUtility);
+
+  const [expanded, setExpanded] = useState<boolean>(false);
+
 
   useEffect(() => {
     setAccordionState(prev =>
@@ -134,6 +154,36 @@ const TenantAccordion = () => {
 
         />
       ))}
+
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
+        <AccordionSummary
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          {expanded ? <ArrowDropDown /> : <ArrowRight />}
+          <h5 className="text-[18px] font-normal text-[#121212]">{trooTillUtility?.title}</h5>
+        </AccordionSummary>
+        <AccordionDetails>
+          <p className="text-base font-normal text-[#606060] w-full md:w-[50%]">{trooTillUtility?.subText}</p>
+          {trooTillUtility?.apps.map((app, appIndex) => (
+            <div key={appIndex}>
+              <IconButton onClick={() => { }} color="default">
+                <ToggleOnIcon style={{ color: "#5855B3", fontSize: "40px" }} />
+                {/* {isEnabled ? (
+            ) : (
+              <ToggleOffIcon style={{ fontSize: "40px" }} />
+            )} */}
+              </IconButton>
+              <span
+                className="text-[#5855b3] text-base font-medium"
+              >                {app}              </span>
+            </div>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+
+
+
       {accordionState.map(
         (accordion, index) =>
           accordion.expanded && (

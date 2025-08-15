@@ -38,8 +38,8 @@ const CustomerData = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  console.log("customerData", customerData)
-  console.log("pagination", pagination)
+  // console.log("customerData", customerData)
+  // console.log("pagination", pagination)
   const [page, setPage] = useState(1);
 
 
