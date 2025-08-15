@@ -62,7 +62,8 @@ const VerifiedPayment: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "https://payment.trootab.com/api/v1/transaction/verify_subscription_payment/",
+        // "https://staging.troopay.com/api/v1/transaction/verify_subscription_payment/",
+        "https://staging.troopay.co/api/v1/transaction/verify_subscription_payment/",
         { reference }
       );
 
@@ -135,7 +136,7 @@ const VerifiedPayment: React.FC = () => {
 
           {!loading && error && (
             <div className="space-y-4">
-              <p className="text-red-600 font-bold text-lg">Payment Failed</p>
+              <p className="text-lg font-bold text-red-600">Payment Failed</p>
               <p className="text-gray-700">{error}</p>
               <p className="text-center font-[500] text-[16px] text-[#FFFFFF] bg-[#0D0D0D] py-[13px] w-full rounded-[5px]">
                 <Link to="/plans">Try Again</Link>

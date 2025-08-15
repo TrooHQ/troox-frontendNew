@@ -50,7 +50,7 @@ const AddOns = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://payment.trootab.com/api/v1/transaction/subscription_payment/`,
+        `https://staging.troopay.com/api/v1/transaction/subscription_payment/`,
         {
           plan_id: selectedPlan?._id,
           business_email: userDetails?.business_email,
@@ -76,8 +76,7 @@ const AddOns = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/plan/getPlanAddons?secretKey=trooAdminDev&billingCycle=${
-          isYearly ? "yearly" : "quarterly"
+        `${SERVER_DOMAIN}/plan/getPlanAddons?secretKey=trooAdminDev&billingCycle=${isYearly ? "yearly" : "quarterly"
         }`
       );
       const fetchedPlans = response.data.data;
@@ -130,12 +129,11 @@ const AddOns = () => {
               <p
                 key={tab}
                 onClick={() => handleToggle(tab.toLowerCase())}
-                className={`text-[16px] font-[500] max-w-[148px] w-full text-center py-[13px] px-[16px] text-[#0D0D0D] cursor-pointer transition-all min-w-[200px] ${
-                  (isYearly && tab === "Yearly") ||
-                  (!isYearly && tab === "Quarterly")
+                className={`text-[16px] font-[500] max-w-[148px] w-full text-center py-[13px] px-[16px] text-[#0D0D0D] cursor-pointer transition-all min-w-[200px] ${(isYearly && tab === "Yearly") ||
+                    (!isYearly && tab === "Quarterly")
                     ? "border rounded-[5px] border-[#CBCAE7] bg-[#121212] text-white"
                     : "border-none"
-                }`}
+                  }`}
               >
                 {tab}
               </p>
