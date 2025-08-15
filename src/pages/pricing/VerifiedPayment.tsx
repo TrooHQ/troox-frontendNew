@@ -60,10 +60,10 @@ const VerifiedPayment: React.FC = () => {
       return;
     }
 
+    // "https://staging.troopay.com/api/v1/transaction/verify_subscription_payment/",
     try {
       const response = await axios.post(
-        // "https://staging.troopay.com/api/v1/transaction/verify_subscription_payment/",
-        "https://staging.troopay.co/api/v1/transaction/verify_subscription_payment/",
+        `https://staging.troopay.co/api/v1/transaction/verify_subscription_payment/`,
         { reference }
       );
 
