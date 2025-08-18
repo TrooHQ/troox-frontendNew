@@ -408,12 +408,12 @@ const PricingPage = () => {
       setLoading(false);
     }
   };
+  // `https://staging.troopay.com/api/v1/transaction/subscription_payment/`,
 
   const SubcribePlan2 = async () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        // `https://staging.troopay.com/api/v1/transaction/subscription_payment/`,
         `https://staging.troopay.co/api/v1/transaction/subscription_payment/`,
         {
           plan_id: selectedPlan?._id,
