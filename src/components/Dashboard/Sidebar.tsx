@@ -14,29 +14,25 @@ import ManageUsersIcon from "../../assets/manageUsers.svg";
 import HubIcon from "../../assets/hub.svg";
 import LogoutIcon from "../../assets/logout.svg";
 import ArrowToggle from "../../assets/arrowToggle.svg";
-import { TextField, Button, Popper, Paper, Modal } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import {
   ArrowCircleRightOutlined,
-  ArrowDropDown,
-  Search,
 } from "@mui/icons-material";
 import GoGrubLogo from "../../assets/business_logo.svg";
 import AddSquare from "../../assets/add-square.svg";
 import AddSquareWhite from "../../assets/add-square-white.svg";
 import UpgradeSVG from "../../assets/upgrade-svg.svg";
 import UpgradeSVGWhite from "../../assets/upgrade-svg-white.svg";
-
-import { CustomAutocomplete } from "./Overview";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
   clearSelectedBranch,
   fetchBranches,
-  userSelectedBranch,
 } from "../../slices/branchSlice";
 import { clearUserData, fetchUserDetails } from "../../slices/UserSlice";
 import getPermittedMenuItems from "../../utils/getPermittedMenuItems";
 import BlinkerSubscribe from "../BlinkerSubscribe";
+import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
 
 interface MenuItems {
   subTitle?: string;
@@ -59,26 +55,14 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const { branches, selectedBranch } = useSelector(
-    (state: RootState) => state.branches
-  );
   const { userData, userDetails } = useSelector(
     (state: RootState) => state.user
   );
 
   const [open, setOpen] = useState(true);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [isAutoOpen, setIsAutoOpen] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState<number | null>(null);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedOutlet, setSelectedOutlet] = useState(
-    selectedBranch
-      ? selectedBranch
-      : {
-        label: "All outlets",
-        id: "",
-      }
-  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -103,31 +87,6 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
     dispatch(fetchBranches());
     dispatch(fetchUserDetails());
   }, [dispatch]);
-
-  const transformedBranches = branches.map((branch: any) => ({
-    label: branch.branch_name,
-    id: branch._id,
-  }));
-  useEffect(() => {
-    if (userData?.user_role === "admin") {
-      const defaultBranch = transformedBranches[0];
-      (selectedBranch === null || selectedBranch === undefined) &&
-        dispatch(userSelectedBranch(defaultBranch as any));
-    } else if (userData?.user_role === "employee") {
-      dispatch(userSelectedBranch(userData?.branch_id));
-    }
-  }, [dispatch, transformedBranches, selectedBranch]);
-  const handleButtonClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-    setIsAutoOpen((prev) => !prev);
-  };
-
-  const handleSelect = (event: any, value: any) => {
-    event.preventDefault();
-    setSelectedOutlet(value ?? { label: "All outlets" });
-    dispatch(userSelectedBranch(value));
-    setIsAutoOpen(false);
-  };
 
   useEffect(() => {
     // Open the submenu if the current location is within its links
@@ -357,68 +316,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
             {/* Insert Button and Popper components here */}
             {userData?.user_role === "admin" ? (
-              <div>
-                <Button
-                  onClick={handleButtonClick}
-                  sx={{
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "#121212",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                    ml: 0,
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                      color: "#121212",
-                      fontSize: "14px",
-                      fontWeight: 500,
-                    },
-                    "&:focus": {
-                      outline: "none",
-                    },
-                  }}
-                >
-                  {selectedBranch?.label} <ArrowDropDown />
-                </Button>
-                <Popper
-                  open={isAutoOpen}
-                  anchorEl={anchorEl}
-                  placement="bottom-start"
-                  sx={{ zIndex: 10, boxShadow: 3 }}
-                >
-                  <Paper sx={{ boxShadow: 3 }}>
-                    <CustomAutocomplete
-                      disablePortal
-                      options={transformedBranches}
-                      value={
-                        selectedBranch
-                          ? selectedBranch.label
-                          : selectedOutlet.label
-                      }
-                      onChange={handleSelect}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          placeholder="Search outlet"
-                          variant="outlined"
-                          style={{ width: "220px", marginLeft: "0px" }}
-                          InputProps={{
-                            ...params.InputProps,
-                            startAdornment: (
-                              <>
-                                <Search
-                                  style={{ color: "gray", marginRight: "4px" }}
-                                />
-                                {params.InputProps.startAdornment}
-                              </>
-                            ),
-                          }}
-                        />
-                      )}
-                    />
-                  </Paper>
-                </Popper>
-              </div>
+              <BranchDropDown />
+
             ) : (
               <div>
                 <Button
@@ -443,6 +342,29 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                   {userData?.branch_name}
                 </Button>
               </div>
+              // <div>
+              //   <Button
+              //     sx={{
+              //       backgroundColor: "transparent",
+              //       border: "none",
+              //       color: "#121212",
+              //       fontSize: "14px",
+              //       fontWeight: 500,
+              //       ml: 0,
+              //       "&:hover": {
+              //         backgroundColor: "transparent",
+              //         color: "#121212",
+              //         fontSize: "14px",
+              //         fontWeight: 500,
+              //       },
+              //       "&:focus": {
+              //         outline: "none",
+              //       },
+              //     }}
+              //   >
+              //     {userData?.branch_name}
+              //   </Button>
+              // </div>
             )}
           </div>
           <hr className="h-[2px] bg-[#929292] my-3" />
