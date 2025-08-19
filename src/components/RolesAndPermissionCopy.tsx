@@ -41,16 +41,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
   setCheckedTickets,
   // selectedPermissions = [],
 }) => {
-  // useEffect(() => {
-  //   // Sync checked arrays with selectedPermissions (initial load)
-  //   const general = accessLabels.find((l) => l.category === "general")?.permissions || [];
-  //   const inventory = accessLabels.find((l) => l.category === "inventory")?.permissions || [];
-  //   const ticket = accessLabels.find((l) => l.category === "ticket")?.permissions || [];
 
-  //   setCheckedGeneral(general.filter((item) => selectedPermissions.includes(item)));
-  //   setCheckedInventory(inventory.filter((item) => selectedPermissions.includes(item)));
-  //   setCheckedTickets(ticket.filter((item) => selectedPermissions.includes(item)));
-  // }, []);
 
   useEffect(() => {
     const allCheckedLabels = [
@@ -59,9 +50,6 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
       ...checkedTickets,
     ];
 
-    console.log("checkedGeneral", checkedGeneral)
-    console.log("checkedInventory", checkedInventory)
-    console.log("checkedTickets", checkedTickets)
 
     const uniqueCheckedLabels = Array.from(new Set(allCheckedLabels));
     setSelectedPermissions(uniqueCheckedLabels);
@@ -74,7 +62,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     const isChecked = event.target.checked;
     const permissions = accessLabels.find((item) => item.category === category)?.permissions || [];
 
-    switch (category) {
+    switch (category.toLocaleLowerCase()) {
       case "general":
         setCheckedGeneral(isChecked ? permissions : []);
         break;
@@ -96,7 +84,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
       }
     };
 
-    switch (category) {
+    switch (category.toLocaleLowerCase()) {
       case "general":
         toggle(checkedGeneral, setCheckedGeneral);
         break;
@@ -113,8 +101,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
     labels: string[],
     checkedState: string[],
     category: string
-  ) =>
-    labels.map((item, index) => (
+  ) => {
+    // console.log("checeked state", checkedState)
+    return labels.map((item, index) => (
       <div
         key={index}
         className="flex flex-row-reverse items-center justify-between mb-6"
@@ -134,6 +123,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
         </label>
       </div>
     ));
+  }
 
   const getCheckedArray = (category: string) => {
     switch (category) {
@@ -150,8 +140,9 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
 
   return (
     <div className="grid gap-[12px]">
+
       {accessLabels.map((item, index) => {
-        const checkedArray = getCheckedArray(item.category);
+        const checkedArray = getCheckedArray(item.category.toLocaleLowerCase());
         const allChecked = item.permissions.every((perm) =>
           checkedArray.includes(perm)
         );

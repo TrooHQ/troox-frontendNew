@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect, useMemo } from "react";
+import { useState, ChangeEvent, useEffect, } from "react";
 import axios from "axios";
 import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
@@ -30,11 +30,9 @@ const NewRoles = () => {
     }
   }, [roleId, dispatch]);
 
-
-  // const role = roles.find((role: any) => role._id === roleId);
-
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [roleName, setRoleName] = useState<string>("");
+  const [newRoleName, setNewRoleName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
@@ -44,15 +42,15 @@ const NewRoles = () => {
     if (roles.length > 0 && roleId) {
       const role = roles.find((role: any) => role._id === roleId);
       if (role) {
-        // setRole(role);
-        // console.log("something light")
         setRoleName(role.name);
+        setNewRoleName(role.name);
         setDescription(role.description);
+
         setSelectedPermissions(role.permissions);
       }
-      // setRole(role);
     }
   }, [roleId, dispatch, roles]);
+
 
   const faqData: FAQItem[] = [
     { question: "Level 1 User", inputValue: "Input 1" },
@@ -68,63 +66,55 @@ const NewRoles = () => {
   const [ticketsAccess, setTicketsAccess] = useState<string[]>([]);
 
 
-  useEffect(() => {
-    // Sync checked arrays with selectedPermissions (initial load)
+  useEffect(() => {    // Sync checked arrays with selectedPermissions (initial load)
     const general = accessLabels.find((l) => l.category?.toLocaleLowerCase() === "general")?.permissions || [];
     const inventory = accessLabels.find((l) => l.category?.toLocaleLowerCase() === "inventory")?.permissions || [];
     const ticket = accessLabels.find((l) => l.category?.toLocaleLowerCase() === "ticket")?.permissions || [];
 
-    // console.log("general", general)
-    // console.log("inventory", inventory)
-    // console.log("ticket", ticket)
-
     setGeneralAccess(general);
     setInventoryAccess(inventory);
     setTicketsAccess(ticket);
-
   }, []);
 
-  console.log("selected general", checkedGeneral)
-  console.log("selected inventory", checkedInventory)
-  console.log("selected tickets", checkedTickets)
-
-  const filterSelectedFunction = (selected: string[], access: string[]) => {
-    return access.filter((item) => selected.includes(item));
-  }
-
-  const checkedGeneralI = useMemo(() => {
-    if (selectedPermissions.length > 0 && generalAccess.length > 0) {
-      return selectedPermissions.filter(item => generalAccess.includes(item));
+  useEffect(() => {
+    if (roleId) {
+      let general_items: string[] = [];
+      if (generalAccess) {
+        general_items = generalAccess.filter((item) => selectedPermissions.includes(item))
+      }
+      setCheckedGeneral(general_items)
     }
-    return [];
-  }, [generalAccess]);
-  console.log("selected general", checkedGeneralI)
+  }, [generalAccess, roleId])
 
-  const checkedInventoryI = useMemo(() => {
-    if (selectedPermissions.length > 0 && inventoryAccess.length > 0) {
-      setCheckedInventory(filterSelectedFunction(selectedPermissions, inventoryAccess));
-    } else {
-      setCheckedInventory([]);
+  useEffect(() => {
+    if (roleId) {
+      let inventory_items: string[] = [];
+      if (inventoryAccess) {
+        inventory_items = inventoryAccess.filter((item) => selectedPermissions.includes(item))
+      }
+      setCheckedInventory(inventory_items)
     }
-  }, [inventoryAccess,]);
-  console.log("selected inventory", checkedInventoryI)
+  }, [roleId, inventoryAccess])
 
-  const checkedTicketsI = useMemo(() => {
-    if (selectedPermissions.length > 0 && ticketsAccess.length > 0) {
-      return selectedPermissions.filter(item => ticketsAccess.includes(item));
+  useEffect(() => {
+    if (roleId) {
+      let tickets_items: string[] = [];
+      if (ticketsAccess) {
+        tickets_items = ticketsAccess.filter((item) => selectedPermissions.includes(item))
+      }
+      setCheckedTickets(tickets_items)
     }
-    return [];
-  }, [ticketsAccess]);
-  console.log("selected tickets", checkedTicketsI)
+  }, [roleId, ticketsAccess])
 
-  console.log("selectedPermissions", selectedPermissions)
+
+
 
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   const handleRoleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRoleName(event.target.value);
+    roleId ? setNewRoleName(event.target.value) : setRoleName(event.target.value);
   };
 
   const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -140,18 +130,28 @@ const NewRoles = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
-      // 1. Create a new role
-      const roleResponse = await axios.post(
-        `${SERVER_DOMAIN}/role/createRole/`,
-        {
-          role_name: roleName,
-          description,
-        },
-        headers
-      );
 
-      toast.success("Role created successfully.");
-      navigate(-1);
+      const payload = (roleId && roleName !== newRoleName) ? {
+        new_name: newRoleName,
+        role_name: roleName,
+        description,
+      } : {
+        role_name: roleName,
+        description,
+      }
+
+      const roleResponse = roleId ? await axios.put(
+        `${SERVER_DOMAIN}/role/editRole`,
+        payload,
+        headers
+      ) :
+        await axios.post(
+          `${SERVER_DOMAIN}/role/createRole/`,
+          payload,
+          headers
+        )
+
+      toast.success(roleId ? "Role created successfully." : "Role Updated successfully");
 
       const { _id: role_id, name: role_name } = roleResponse.data.data;
 
@@ -171,6 +171,7 @@ const NewRoles = () => {
       setCheckedGeneral([]);
       setCheckedInventory([]);
       setCheckedTickets([]);
+      navigate(-1);
     } catch (error: any) {
       // Handle errors (e.g., display error message)
       console.error("Error creating role or assigning permissions:", error);
@@ -199,7 +200,7 @@ const NewRoles = () => {
                   <input
                     type="text"
                     id="role-name"
-                    value={roleName}
+                    value={roleId ? newRoleName : roleName}
                     onChange={handleRoleNameChange}
                     className="px-2 w-full h-[48px] rounded-[5px] border border-grey100"
                   />
