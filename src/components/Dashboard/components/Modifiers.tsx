@@ -40,6 +40,7 @@ const Modifiers = ({
   const [isGroupFetching, setIsGroupFetching] = useState(false);
   const [selectedModifier, setSelectedModifier] = useState({} as any);
 
+  // console.log("selectedMenuItem", selectedMenuItem)
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -148,6 +149,7 @@ const Modifiers = ({
     }
   };
   const handleConfirmGroupDelete = async () => {
+    // console.log(deleteDialog)
     if (deleteDialog.value) {
       await handleDeleteModifierGroup(deleteDialog.value);
       setDeleteDialog({ open: false, value: "" });
@@ -236,6 +238,8 @@ const Modifiers = ({
   const [groupName, setGroupName] = useState("");
 
   const handleAddModifierGroup = async () => {
+
+    // console.log("adding stuffs")
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -243,16 +247,20 @@ const Modifiers = ({
       },
     };
 
+    // const payload = {
+    //   modifier_group_name: groupName,
+    //   branch_id: selectedBranch.id,
+    //   attach_to: "item",
+    //   menu_item_name: selectedMenuItem.menu_item_name,
+    // };
     const payload = {
-      modifier_group_name: groupName,
+      group_name: groupName,
       branch_id: selectedBranch.id,
-      attach_to: "item",
-      menu_item_name: selectedMenuItem.menu_item_name,
     };
     try {
       setModGroupLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/attachMenuModifierGroup/`,
+        `${SERVER_DOMAIN}/menu/createMenuModifierGroup/`,
         payload,
         headers
       );
