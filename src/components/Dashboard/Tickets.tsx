@@ -16,10 +16,12 @@ import VoidOrderMenu from "./ticketComponents/VoidOrderMenu";
 import { useSelector } from "react-redux";
 import { DropdownMenu } from "./DropdownMenuOpenTickets";
 // import { DropdownMenuClosedTickets } from "./DropdownMenuClosedTickets";
-import ChangeBranchForTicket from "./ChangeBranchForTicket";
+// import ChangeBranchForTicket from "./ChangeBranchForTicket";
 import { truncateText } from "../../utils/truncateText";
 import { RootState } from "@/src/store/store";
 import PaginationComponent from "./PaginationComponent";
+import { Paper } from "@mui/material";
+import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -78,6 +80,8 @@ const Tickets = () => {
   // };
 
   const getTickets = async (page: number) => {
+    setData([])
+
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -211,7 +215,12 @@ const Tickets = () => {
         <TopMenuNav pathName="Tickets" />
         <div className="">
           <div className="mt-[40px]">
-            <ChangeBranchForTicket handleRefresh={handleRefresh} />
+            <div className="my-8 w-fit">
+              <Paper sx={{ boxShadow: 3 }}>
+                <BranchDropDown />
+              </Paper>
+            </div>
+            {/* <ChangeBranchForTicket handleRefresh={handleRefresh} /> */}
             <div className="flex items-center justify-between">
               <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-purple500">
                 <button

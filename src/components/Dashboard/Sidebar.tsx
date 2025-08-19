@@ -238,7 +238,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
   const adminMenu: MenuItems[] = [
     { title: "AdminHome", gap: false, icon: HomeIcon },
   ];
-  console.log(userData, "userData here:");
+
   // const userPermissions = userData?.permissions || [];
   const permittedMenu =
     userData?.user_role === "admin"
