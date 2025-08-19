@@ -4,7 +4,7 @@ import DashboardLayout from "./DashboardLayout";
 import TopMenuNav from "./TopMenuNav";
 import Modal from "../Modal";
 import CustomInput from "../inputFields/CustomInput";
-import CustomSelect from "../inputFields/CustomSelect";
+// import CustomSelect from "../inputFields/CustomSelect";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import { fetchBranches } from "../../slices/branchSlice";
@@ -46,11 +46,12 @@ const ManageUsers: React.FC = () => {
         personal_email: selectedUser.personal_email,
         mobile_number: selectedUser.phone_number,
         branch_id: selectedUser.branch,
-        user_role: selectedUser.user_role,
+        role: selectedUser.role,
         employeeType: selectedUser.employeeType,
       });
     }
   }, [selectedUser]);
+  console.log("selectedUser", selectedUser)
   useEffect(() => {
     dispatch(fetchBranches());
     dispatch(fetchRoles());
@@ -161,9 +162,8 @@ const ManageUsers: React.FC = () => {
       const clonedUser = {
         first_name: user.first_name,
         last_name: user.last_name,
-        email: `${user.personal_email.split("@")[0]}cloned@${
-          user.personal_email.split("@")[1]
-        }`,
+        email: `${user.personal_email.split("@")[0]}cloned@${user.personal_email.split("@")[1]
+          }`,
         phone_number: user.phone_number,
         branch_id: user.branch,
         role: user.user_role,
@@ -253,16 +253,15 @@ const ManageUsers: React.FC = () => {
       <DashboardLayout>
         <TopMenuNav pathName="Manage Users" />
         <div className="">
-          <div className="flex justify-between items-center border-b border-grey100 my-10">
+          <div className="flex items-center justify-between my-10 border-b border-grey100">
             <div className="flex items-center gap-10">
               {["Roles", "All Users"].map((tab, index) => (
                 <p
                   key={index}
-                  className={` text-[22px] px-3 py-2 font-GeneralSans  cursor-pointer ${
-                    index === activeTab
-                      ? " text-purple500 font-[500] border-b-4 border-b-[#121212]"
-                      : "text-grey300"
-                  }`}
+                  className={` text-[22px] px-3 py-2 font-GeneralSans  cursor-pointer ${index === activeTab
+                    ? " text-purple500 font-[500] border-b-4 border-b-[#121212]"
+                    : "text-grey300"
+                    }`}
                   onClick={() => handleTabChange(index)}
                 >
                   {tab}
@@ -390,7 +389,7 @@ const ManageUsers: React.FC = () => {
         <Modal isOpen={isModalOpen2} onClose={() => setIsModalOpen2(false)}>
           <div className="">
             <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
-              <div className="flex flex-col justify-center items-center gap-6">
+              <div className="flex flex-col items-center justify-center gap-6">
                 <p className="text-[24px] font-[500] text-purple500">
                   Delete User
                 </p>{" "}
@@ -474,8 +473,9 @@ const ManageUsers: React.FC = () => {
                       }
                     />
                     <div>
-                      <CustomSelect
+                      {/* <CustomSelect
                         options={["Admin", "Operator", "General Users"]}
+                        // options={rolesOptions}
                         label="User Role"
                         value={editingUser?.user_role}
                         onChange={(newValue) =>
@@ -484,7 +484,20 @@ const ManageUsers: React.FC = () => {
                             user_role: newValue,
                           })
                         }
+                      /> */}
+                      <CustomSelect5
+                        options={rolesOptions}
+                        label="User Role"
+                        value={editingUser?.role}
+                        onChange={(newValue) =>
+                          setEditingUser({
+                            ...editingUser,
+                            role: newValue,
+                          })
+                        }
+                      // onChange={handleRoleSelect}
                       />
+
                     </div>
 
                     {/* {renderEmployeeTypeOptions()} */}
