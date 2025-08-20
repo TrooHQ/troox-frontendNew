@@ -91,6 +91,7 @@ const RoomList = ({
     // toast.success("Successful")
   };
 
+  console.log('groupedRooms', groupedRooms);
   return (
     <ul>
       {Object.entries(groupedRooms).map(([groupName, groupItems]) => {
@@ -103,7 +104,7 @@ const RoomList = ({
               <p className="col-span-2 px-3 py-2 font-normal text-[#121212]">
                 {groupName}
               </p>
-              <p className="col-span-7 text-right font-normal px-3 py-2">
+              <p className="col-span-7 px-3 py-2 font-normal text-right">
                 {expandedGroups[groupName] ? (
                   <KeyboardArrowUp className="text-[24px] w-6 h-6" />
                 ) : (
@@ -117,9 +118,8 @@ const RoomList = ({
                 index === groupItems.length - 1 ? (
                   <li
                     key={item._id}
-                    className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                      index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                    }`}
+                    className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                      }`}
                   >
                     <p className="text-[#121212] col-span-3 px-3 py-2">
                       {item.group_name}
@@ -127,7 +127,7 @@ const RoomList = ({
                     <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
                       {groupItems.length}
                     </p>
-                    <p className="px-3 py-2 col-span-2 text-center flex items-center justify-center">
+                    <p className="flex items-center justify-center col-span-2 px-3 py-2 text-center">
                       {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
                     </p>
                     <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
@@ -231,7 +231,7 @@ const RoomList = ({
                 <Close />
               </IconButton>
             </div>
-            <div className="flex flex-col justify-center items-center gap-6">
+            <div className="flex flex-col items-center justify-center gap-6">
               <img
                 src={DeleteAlert}
                 alt="Close"

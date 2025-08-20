@@ -48,6 +48,7 @@ const TablesList = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openEditQR, setOpenEditQR] = useState(false);
 
+  console.log("anchorEl", anchorEl)
   const toggleGroup = (groupName: string) => {
     setExpandedGroups((prev) => ({
       ...prev,
@@ -81,6 +82,7 @@ const TablesList = ({
     setOpenEditQR(false);
     toast.success("Successful");
   };
+  console.log("groupedRooms", groupedRooms)
 
   return (
     <ul>
@@ -93,7 +95,7 @@ const TablesList = ({
             <p className="col-span-2 px-3 py-2 font-normal text-[#121212]">
               {groupName}
             </p>
-            <p className="col-span-7 text-right font-normal px-3 py-2">
+            <p className="col-span-7 px-3 py-2 font-normal text-right">
               {expandedGroups[groupName] ? (
                 <KeyboardArrowUp className="text-[24px] w-6 h-6" />
               ) : (
@@ -106,9 +108,8 @@ const TablesList = ({
             (groupItems as any[]).map((item: any, index: number) => (
               <li
                 key={item._id}
-                className={`grid grid-cols-10 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                  index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                }`}
+                className={`grid grid-cols-10 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                  }`}
               >
                 <p className="text-[#121212] col-span-2 px-3 py-2">
                   {item.group_name}
@@ -119,7 +120,7 @@ const TablesList = ({
                 <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
                   {item.total_guests}
                 </p>
-                <p className="px-3 py-2 col-span-2 text-center flex items-center justify-center">
+                <p className="flex items-center justify-center col-span-2 px-3 py-2 text-center">
                   {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
                 </p>
                 <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
@@ -215,7 +216,7 @@ const TablesList = ({
                 <Close />
               </IconButton>
             </div>
-            <div className="flex flex-col justify-center items-center gap-6">
+            <div className="flex flex-col items-center justify-center gap-6">
               <img
                 src={DeleteAlert}
                 alt="Close"

@@ -71,7 +71,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             readonly={true}
           />
         </div>
-        <div className="mt-6 flex-grow">
+        <div className="flex-grow mt-6">
           <CustomInput
             type="text"
             label="Table number"
@@ -81,7 +81,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             readOnly={true}
           />
         </div>
-        <div className="mt-6 flex-grow">
+        <div className="flex-grow mt-6">
           <CustomInput
             type="text"
             label="Location"
@@ -91,7 +91,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             readOnly={true}
           />
         </div>
-        <div className="mt-6 flex-grow">
+        <div className="flex-grow mt-6">
           <CustomInput
             type="text"
             label="Total Guests"
@@ -100,7 +100,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
             onChange={setTotalGuests}
           />
         </div>
-        <div className="flex justify-end items-center gap-2 mt-7">
+        <div className="flex items-center justify-end gap-2 mt-7">
           <div
             className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
             onClick={onClose}

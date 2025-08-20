@@ -107,7 +107,7 @@ const ManageBranches = () => {
         <div className="">
           <div className="my-[40px]">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-[32px]">
+              {/* <div className="flex items-center gap-[32px]">
                 <div className="">
                   <p className="font-[500] text-[16px] text-[#121212]">Filter by:</p>
                 </div>
@@ -125,10 +125,11 @@ const ManageBranches = () => {
                     <button className="text-[12px]">Manager</button>
                   </div>
                   <div className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]">
-                    <button className="text-[12px]">City</button>
+                    <button className="text-[12px]">Phone Number</button>
                   </div>
                 </div>
-              </div>
+              </div> */}
+              <div></div>
               <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-[#ffffff]">
                 <button className="text-[14px] flex items-center gap-[8px]" onClick={handleAddMenu}>
                   <img src={add} alt="" /> Create New Branch
@@ -136,16 +137,16 @@ const ManageBranches = () => {
               </div>
             </div>
 
-            <div className="overflow-x-auto mt-6">
+            <div className="mt-6 overflow-x-auto">
               <table className="min-w-full border-collapse">
                 <thead>
                   <tr className="bg-[#606060] text-white text-center text-base font-normal">
-                    <th className="py-2 px-4 text-base font-normal">Branch Name</th>
-                    <th className="py-2 px-4 text-base font-normal">Address</th>
-                    <th className="py-2 px-4 text-base font-normal">Manager</th>
-                    <th className="py-2 px-4 text-base font-normal">City</th>
-                    <th className="py-2 px-4 text-base font-normal">Email</th>
-                    <th className="py-2 px-4 text-base font-normal">Actions</th>
+                    <th className="px-4 py-2 text-base font-normal">Branch Name</th>
+                    <th className="px-4 py-2 text-base font-normal">Address</th>
+                    <th className="px-4 py-2 text-base font-normal">Manager</th>
+                    <th className="px-4 py-2 text-base font-normal">Phone Number</th>
+                    <th className="px-4 py-2 text-base font-normal">Email</th>
+                    <th className="px-4 py-2 text-base font-normal">Actions</th>
                   </tr>
                 </thead>
 
@@ -155,21 +156,20 @@ const ManageBranches = () => {
                   {branches.map((branch: any) => (
                     <tr
                       key={branch._id}
-                      className={`${
-                        branches.indexOf(branch) % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                      }`}
+                      className={`${branches.indexOf(branch) % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        }`}
                     >
-                      <td className="text-base font-normal py-2 px-4">{branch.branch_name}</td>
-                      <td className="text-base font-normal py-2 px-4 break-words">
+                      <td className="px-4 py-2 text-base font-normal">{branch.branch_name}</td>
+                      <td className="px-4 py-2 text-base font-normal break-words">
                         {branch.branch_address}
                       </td>
-                      <td className="text-base font-normal py-2 px-4 break-words text-center">
+                      <td className="px-4 py-2 text-base font-normal text-center break-words">
                         {branch.branch_email}
                       </td>
-                      <td className="text-base font-normal py-2 px-4 break-words text-center">
+                      <td className="px-4 py-2 text-base font-normal text-center break-words">
                         {branch.branch_phone_number}
                       </td>
-                      <td className="text-base font-normal py-2 px-4 break-words text-center">
+                      <td className="px-4 py-2 text-base font-normal text-center break-words">
                         {branch.branch_email}
                       </td>
                       <td className="text-center">

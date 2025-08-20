@@ -65,9 +65,10 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             label="Branch"
             value={selectedBranch}
             onChange={setSelectedBranch}
+            readonly={true}
           />
         </div>
-        <div className="mt-6 flex-grow">
+        <div className="flex-grow mt-6">
           <CustomInput
             type="text"
             label="Enter number of rooms"
@@ -76,7 +77,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             onChange={setTableNumber}
           />
         </div>
-        <div className="mt-6 flex-grow">
+        <div className="flex-grow mt-6">
           <CustomInput
             type="text"
             label="Location"
@@ -85,7 +86,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
             onChange={setLocation}
           />
         </div>
-        <div className="flex justify-end items-center gap-2 mt-7">
+        <div className="flex items-center justify-end gap-2 mt-7">
           <div
             className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
             onClick={onClose}
