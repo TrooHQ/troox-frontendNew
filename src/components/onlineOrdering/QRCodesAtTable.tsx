@@ -12,7 +12,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import AddQRCodeForTable from "../Dashboard/AddQRCodeForTable";
-import TablesList from "../Dashboard/TablesList";
+// import TablesList from "../Dashboard/TablesList";
+import NewTablesList from "../Dashboard/NewTablesList";
 
 const QRCodesAtTable = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -131,8 +132,7 @@ const QRCodesAtTable = () => {
         return;
       }
       await axios.delete(
-        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${
-          selectedQRCode?.group_name ?? ""
+        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${selectedQRCode?.group_name ?? ""
         }&branch_id=${selectedQRCode?.branch ?? ""}`,
         {
           headers: {
@@ -146,8 +146,7 @@ const QRCodesAtTable = () => {
     } catch (error) {
       console.error("Error saving QR code:", error);
       toast.error(
-        `Error saving QR code: ${
-          error instanceof Error ? error.message : String(error)
+        `Error saving QR code: ${error instanceof Error ? error.message : String(error)
         }`
       );
     } finally {
@@ -199,7 +198,7 @@ const QRCodesAtTable = () => {
         </div>
       ) : (
         <div>
-          <TablesList
+          <NewTablesList
             rooms={tables}
             branchOptions={branchOptions}
             handleConfirmDelete={handleConfirmDelete}
@@ -209,6 +208,16 @@ const QRCodesAtTable = () => {
             openDeleteQR={openDeleteQR}
             setOpenDeleteQR={setOpenDeleteQR}
           />
+          {/* <TablesList
+            rooms={tables}
+            branchOptions={branchOptions}
+            handleConfirmDelete={handleConfirmDelete}
+            isLoading={loading}
+            selectedQRCode={selectedQRCode}
+            setSelectedQRCode={setSelectedQRCode}
+            openDeleteQR={openDeleteQR}
+            setOpenDeleteQR={setOpenDeleteQR}
+          /> */}
         </div>
       )}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>

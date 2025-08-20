@@ -22,7 +22,7 @@ const QROrdering = () => {
 
   return (
     <DashboardLayout>
-      <TopMenuNav pathName="Online Ordering" />
+      <TopMenuNav pathName="QR Ordering" />
       <div className="mt-6">
         <QRSidebar
           activeComponent={activeComponent}
