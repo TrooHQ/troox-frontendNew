@@ -270,7 +270,7 @@ const Tickets = () => {
                           {item.createdAt.slice(11, 16)}
                         </p>
                         <p onClick={handleTicketMenu}>
-                          {item.table_number || "-"}
+                          {item.customer_asset_number || "-"}
                         </p>
                         <p onClick={handleTicketMenu}>
                           {item.order_number || "-"}
@@ -287,7 +287,7 @@ const Tickets = () => {
                             )
                             : ""}
                         </p>
-                        <p>{item.waiter || "-"}</p>
+                        <p>{item.waiter_name || "-"}</p>
                         <p>{item.channel || ""}</p>
                         <div className="flex items-center justify-center gap-[10px]">
                           {item.status?.toLowerCase() === "cancelled" && (
