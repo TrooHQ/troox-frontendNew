@@ -1,7 +1,7 @@
 import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 
-interface Modifier {
+export interface Modifier {
   branch: string;
   menu_item_name: string;
   modifier_name: string;
@@ -26,6 +26,7 @@ interface DisplayModifiersProps {
   handleEditClick: (modifier: ModifierGroup) => void;
   handleModifierGroupDeleteClick: (modifierGroupName: string) => void;
   handleAddModifier: () => void;
+  setEditModifierData: React.Dispatch<React.SetStateAction<Modifier | null>>;
   truncateText: (text: string, length: number) => string;
   Add: string;
   handleKeepModifierGroupDetail: any;
@@ -42,6 +43,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
   handleEditClick,
   handleModifierGroupDeleteClick,
   handleAddModifier,
+  setEditModifierData,
   handleKeepModifierGroupDetail,
   truncateText,
   Add,
@@ -128,8 +130,8 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                       <div
                         key={index}
                         className={`flex justify-start gap-6 items-center py-2 ${index !== modifierGroup.modifiers.length - 1
-                            ? "border-b border-gray-300"
-                            : ""
+                          ? "border-b border-gray-300"
+                          : ""
                           }`}
                       >
                         {/* Modifier name */}
@@ -144,11 +146,21 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                         <p className="flex-1 text-sm italic text-gray-500">
                           {modifier.menu_item_name}
                         </p>
+                        <div>
 
-                        <DeleteForeverOutlined
-                          onClick={() => handleDeleteClick(modifier._id)}
-                          className="ml-3 text-red-700 cursor-pointer"
-                        />
+                          <EditOutlined
+                            sx={{
+                              fontSize: "20px",
+                              fontWeight: "300",
+                            }}
+                            onClick={() => setEditModifierData(modifier)}
+                            className="ml-3 cursor-pointer"
+                          />
+                          <DeleteForeverOutlined
+                            onClick={() => handleDeleteClick(modifier._id)}
+                            className="ml-3 text-red-700 cursor-pointer"
+                          />
+                        </div>
                       </div>
                     ))
                   ) : (

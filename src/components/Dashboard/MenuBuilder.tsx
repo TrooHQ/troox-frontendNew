@@ -18,7 +18,7 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Menu, MenuItem, IconButton } from "@mui/material";
-import { EditOutlined, MoreVert } from "@mui/icons-material";
+import { CancelOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
 import VisibilityOpen from "./VisibilityOpen";
 import ConfirmationDialog from "./ConfirmationDialog";
 import AddMenuGroup from "./MenuBuilderModals/AddMenuGroup";
@@ -27,6 +27,7 @@ import MenuGroup from "./MenuBuilderModals/MenuGroup";
 import CustomInput from "../inputFields/CustomInput";
 import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
 import MenuItemForm from "./MenuBuilderModals/NewAddMenuModal";
+import { Modifier } from "./components/DisplayModifiers";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -142,6 +143,27 @@ const MenuBuilder = () => {
         setEditLoading(false);
         setEditingCategory(null);
         setNewCategoryName("");
+      }
+    }
+  };
+  const handleDeleteCategory = async (category: any) => {
+
+    if (category) {
+      try {
+        const res = await axios.delete(
+          `${SERVER_DOMAIN}/menu/deleteMenuCategory?category_id=${category._id}&branch_id=${selectedBranch.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        toast.success(res?.data?.message);
+        console.log(res);
+        dispatch(fetchMenuCategories(selectedBranch.id));
+      }
+      catch (e) {
+        toast.error("An error occurred, please try again");
       }
     }
   };
@@ -363,10 +385,22 @@ const MenuBuilder = () => {
     setSelectedMenuItem(item);
   };
 
+  const [editModifierData, setEditModifierData] = useState<Modifier | null>(null);
   // Modifier
   const handleAddModifier = () => {
     setAddModifierModal(true);
   };
+  // console.log("editModifierData", editModifierData)
+
+
+  // const editModifier = (id: string) => {
+  //       setAddModifierModal(true);
+  // };
+  useEffect(() => {
+    // editModifierId
+    editModifierData && setAddModifierModal(true);
+
+  }, [editModifierData])
 
   // Called when the page changes
   const handlePageChange = (
@@ -450,22 +484,22 @@ const MenuBuilder = () => {
                             />
                             <span style={{ fontWeight: "300" }}>Edit</span>
                           </MenuItem>
-                          {/* <MenuItem
-                          onClick={() => handleCategoryDeleteClick(category)}
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                          }}
-                        >
-                          <CancelOutlined
+                          <MenuItem
+                            onClick={() => handleDeleteCategory(category)}
                             sx={{
-                              fontSize: "20px",
-                              fontWeight: "300",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
                             }}
-                          />
-                          <span style={{ fontWeight: "300" }}>Remove</span>
-                        </MenuItem> */}
+                          >
+                            <CancelOutlined
+                              sx={{
+                                fontSize: "20px",
+                                fontWeight: "300",
+                              }}
+                            />
+                            <span style={{ fontWeight: "300" }}>Delete</span>
+                          </MenuItem>
                         </Menu>
                       )}
                       {activeCategory?.name === category.name ? (
@@ -509,6 +543,8 @@ const MenuBuilder = () => {
                   addModifierModar={addModifierModar}
                   setAddModifierModal={setAddModifierModal}
                   handleAddModifier={handleAddModifier}
+                  setEditModifierData={setEditModifierData}
+                  editModifierData={editModifierData}
                 />
               </div>
             </div>
