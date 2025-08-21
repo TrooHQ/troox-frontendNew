@@ -632,7 +632,7 @@ export default function InformationAccordion() {
             <Autocomplete
               fullWidth
               options={banks}
-              disabled={!(userData?.role === "admin" || userData?.role === "manager")}
+              disabled={!(userData?.user_role === "admin" || userData?.user_role === "manager")}
               getOptionLabel={(option) => option?.name || ""}
               value={
                 banks.find(
@@ -732,7 +732,7 @@ export default function InformationAccordion() {
             onChange={handleInputChange("payoutBankDetails", item.field)}
             variant="outlined"
             label={item.label}
-            disabled={userData?.role !== "admin" && userData?.role !== "manager"}
+            disabled={userData?.user_role !== "admin" && userData?.user_role !== "manager"}
             sx={{
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "black" },
