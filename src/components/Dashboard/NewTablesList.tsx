@@ -14,7 +14,7 @@ import { getTables } from "../../slices/TableSlice";
 
 const NewTablesList = ({
   rooms,
-  // branchOptions,
+  branchOptions,
   isLoading,
   handleConfirmDelete,
   selectedQRCode,
@@ -132,6 +132,7 @@ const NewTablesList = ({
         setOpenEditQR={setOpenEditQR}
         selectedQRCode={selectedQRCode}
         handleSave={handleSave}
+        branchOptions={branchOptions}
       />
 
       <DeleteModal
@@ -188,7 +189,7 @@ const TableListDropDown = ({ handleDeleteClick, handleEditClick, item }: any) =>
 }
 
 
-const EditModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave }: any) => {
+const EditModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave, branchOptions }: any) => {
   return (
     <Modal open={openEditQR} onClose={() => setOpenEditQR(false)}>
       <Box
@@ -218,7 +219,7 @@ const EditModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave }: an
         </IconButton>
         {selectedQRCode && (
           <EditQRCodeForTables
-            branchOptions={[]}
+            branchOptions={branchOptions}
             qrCodeData={selectedQRCode}
             onClose={() => setOpenEditQR(false)}
             onSave={handleSave}
