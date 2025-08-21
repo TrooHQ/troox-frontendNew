@@ -28,6 +28,8 @@ const Modifiers = ({
   addModifierModar,
   setAddModifierModal,
   handleAddModifier,
+  setEditModifierData,
+  editModifierData
 }: any) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -41,6 +43,10 @@ const Modifiers = ({
   const [selectedModifier, setSelectedModifier] = useState({} as any);
 
   // console.log("selectedMenuItem", selectedMenuItem)
+
+  useEffect(() => {
+    editModifierData && setModifiers([editModifierData])
+  }, [editModifierData])
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -124,6 +130,46 @@ const Modifiers = ({
       setConfirmSaveModal(false); // Close the confirmation modal
     }
   };
+
+  console.log("selectedModifier", selectedModifier)
+  const handleUpdateMod = async () => {
+
+    setLoading(true);
+
+    const payload = {
+      branch_id: selectedBranch.id,
+      attach_to: "modifier_group",
+      modifier_name: editModifierData.modifier_name,
+      price: parseFloat(editModifierData.modifier_price),
+      modifier_group_id: selectedModifier._id,
+      modifier_id: editModifierData._id,
+    };
+    console.log("payload", payload)
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    // https://troox-backend-new.onrender.com/api/menu/addMenuModifier
+    try {
+      const response = await axios.put(
+        `${SERVER_DOMAIN}/menu/updateMenuModifier?modifier_id=${editModifierData._id}`,
+        payload,
+        headers
+      );
+      toast.success(response.data.message || "Modifiers updated successfully.");
+      setEditModifierData(null);
+      setAddModifierModal(false);
+      fetchModifierGroups();
+    } catch (e: any) {
+      toast.error(e.response?.data?.message || "Failed to add modifiers.");
+    } finally {
+      setLoading(false);
+      setConfirmSaveModal(false); // Close the confirmation modal
+    }
+  }
 
   const [confirmationDialog, setConfirmationDialog] = useState({
     open: false,
@@ -334,6 +380,7 @@ const Modifiers = ({
         handleEditClick={handleEditClick}
         handleModifierGroupDeleteClick={handleModifierGroupDeleteClick}
         handleAddModifier={handleAddModifier}
+        setEditModifierData={setEditModifierData}
         truncateText={truncateText}
         Add={Add}
         handleKeepModifierGroupDetail={handleKeepModifierGroupDetail}
@@ -431,7 +478,10 @@ const Modifiers = ({
         handleConfirmSave={handleConfirmSave}
         modifiers={modifiers}
         setModifiers={setModifiers}
+        editModifierData={editModifierData}
+        setEditModifierData={setEditModifierData}
         loading={loading}
+        handleUpdateMod={handleUpdateMod}
       />
     </div>
   );
