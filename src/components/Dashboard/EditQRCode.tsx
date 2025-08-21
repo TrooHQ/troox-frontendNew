@@ -40,10 +40,12 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
   const handleSave = async () => {
     setLoading(true);
     try {
-      await axios.put(`${SERVER_DOMAIN}/editBusinessAsset`, {
+      // asset/editBusinessAsset
+      await axios.put(`${SERVER_DOMAIN}/asset/editBusinessAsset`, {
         branch: selectedBranch,
         number: tableNumber,
-        location,
+        group_name: location,
+        assetId: qrCodeData._id,
       });
       onSave();
     } catch (error) {
