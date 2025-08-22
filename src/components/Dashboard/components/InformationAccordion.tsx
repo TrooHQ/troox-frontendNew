@@ -229,6 +229,18 @@ export default function InformationAccordion() {
       },
     };
 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      payoutBankDetails: {
+        // ...prevFormData.payoutBankDetails/,
+        accountNumber: "",
+        accountName: "",
+        bankName: "",
+        bvn: "",
+        bankCountry: "Nigeria",
+      },
+    }));
+
     // `${SERVER_DOMAIN}/branch_account_details/${selectedBranch?.id}`,
     try {
       const response = await axios.get(

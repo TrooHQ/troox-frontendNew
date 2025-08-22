@@ -246,7 +246,7 @@ const Tickets = () => {
                     <p className=" text-[14px] text-[#121212]">Table No</p>
                     <p className=" text-[14px] text-[#121212]">Order No</p>
                     <p className=" text-[14px] text-[#121212]">Customer </p>
-                    <p className=" text-[14px] text-[#121212]">Waiter </p>
+                    {/* <p className=" text-[14px] text-[#121212]">Waiter </p> */}
                     <p className=" text-[14px] text-[#121212]">Channel </p>
                     <p className=" text-[14px] text-[#121212]">Status </p>
                     <p className=" text-[14px] text-[#121212]">Bill </p>
@@ -287,7 +287,7 @@ const Tickets = () => {
                             )
                             : ""}
                         </p>
-                        <p>{item.waiter_name || "-"}</p>
+                        {/* <p>{item.waiter_name || "-"}</p> */}
                         <p>{item.channel || ""}</p>
                         <div className="flex items-center justify-center gap-[10px]">
                           {item.status?.toLowerCase() === "cancelled" && (
