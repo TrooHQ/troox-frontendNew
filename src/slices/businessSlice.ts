@@ -123,6 +123,16 @@ const businessSlice = createSlice({
       .addCase(fetchAccountDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.businessDetails = {
+          name: "",
+          id: 0,
+          business_name: "",
+          _id: 0,
+          business_logo: "",
+          tableNumber: "",
+          URL: "",
+          colour_scheme: "",
+        };
       })
       .addCase(fetchAccountDetails.fulfilled, (state, action) => {
         state.loading = false;
