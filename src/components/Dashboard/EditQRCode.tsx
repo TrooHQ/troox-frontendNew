@@ -40,13 +40,22 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
   const handleSave = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
       // asset/editBusinessAsset
       await axios.put(`${SERVER_DOMAIN}/asset/editBusinessAsset`, {
-        branch: selectedBranch,
+        // branch: selectedBranch,
         number: tableNumber,
         group_name: location,
         assetId: qrCodeData._id,
-      });
+      },
+        {
+          headers,
+        }
+      );
       onSave();
     } catch (error) {
       console.error("Error saving QR code:", error);
