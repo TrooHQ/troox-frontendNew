@@ -65,6 +65,8 @@ const RoomList = ({
     }));
   };
 
+  console.log('expandedGroups', expandedGroups);
+
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -72,6 +74,8 @@ const RoomList = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  console.log("selected qr cod from here, ", selectedQRCode);
 
   const handleDeleteClick = (qrCodeData: any) => {
     setSelectedQRCode(qrCodeData);
@@ -91,7 +95,7 @@ const RoomList = ({
     // toast.success("Successful")
   };
 
-  console.log('groupedRooms', groupedRooms);
+  // console.log('groupedRooms', groupedRooms);
   return (
     <ul>
       {Object.entries(groupedRooms).map(([groupName, groupItems]) => {
@@ -125,7 +129,7 @@ const RoomList = ({
                       {item.group_name}
                     </p>
                     <p className="text-[#121212] col-span-2 px-3 py-2 text-center">
-                      {groupItems.length}
+                      {item.number}
                     </p>
                     <p className="flex items-center justify-center col-span-2 px-3 py-2 text-center">
                       {item.qrcode && <img src={item.qrcode} alt="QR Code" />}
@@ -192,7 +196,7 @@ const RoomList = ({
             <EditQRCode
               branchOptions={branchOptions}
               qrCodeData={selectedQRCode}
-              onClose={() => setOpenEditQR(false)}
+              onClose={() => { setOpenEditQR(false); setSelectedQRCode(null) }}
               onSave={handleSave}
             />
           )}

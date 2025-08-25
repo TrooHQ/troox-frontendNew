@@ -3,6 +3,9 @@ import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
+import { AppDispatch } from "@/src/store/store";
+import { useDispatch } from "react-redux";
+import { getRooms } from "../../slices/TableSlice";
 
 interface EditQRCodeProps {
   branchOptions: { label: string; value: string }[];
@@ -30,6 +33,8 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
   const [loading, setLoading] = useState(false);
   const [totalGuests, setTotalGuests] = useState(qrCodeData.total_guests);
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleSave = async () => {
     setLoading(true);
     try {
@@ -49,6 +54,7 @@ const EditQRCodeForTables: React.FC<EditQRCodeProps> = ({
         }
       );
       onSave();
+      dispatch(getRooms());
     } catch (error) {
       console.error("Error saving QR code:", error);
     } finally {

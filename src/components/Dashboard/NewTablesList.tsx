@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { getTables } from "../../slices/TableSlice";
+import EditQRCode from "./EditQRCode";
 
 const NewTablesList = ({
   rooms,
@@ -21,6 +22,7 @@ const NewTablesList = ({
   setSelectedQRCode,
   openDeleteQR,
   setOpenDeleteQR,
+  isRoomList,
 }: {
   rooms: any[];
   branchOptions?: any[];
@@ -30,6 +32,7 @@ const NewTablesList = ({
   setSelectedQRCode: (qrCodeData: any) => void;
   openDeleteQR: boolean;
   setOpenDeleteQR: (open: boolean) => void;
+  isRoomList?: boolean;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -127,13 +130,21 @@ const NewTablesList = ({
         </Accordion>
       ))}
 
-      <EditModal
-        openEditQR={openEditQR}
-        setOpenEditQR={setOpenEditQR}
-        selectedQRCode={selectedQRCode}
-        handleSave={handleSave}
-        branchOptions={branchOptions}
-      />
+      {isRoomList ?
+        <EditRoomModal
+          openEditQR={openEditQR}
+          setOpenEditQR={setOpenEditQR}
+          selectedQRCode={selectedQRCode}
+          handleSave={handleSave}
+          branchOptions={branchOptions}
+        />
+        : <EditTableModal
+          openEditQR={openEditQR}
+          setOpenEditQR={setOpenEditQR}
+          selectedQRCode={selectedQRCode}
+          handleSave={handleSave}
+          branchOptions={branchOptions}
+        />}
 
       <DeleteModal
         openDeleteQR={openDeleteQR}
@@ -189,7 +200,7 @@ const TableListDropDown = ({ handleDeleteClick, handleEditClick, item }: any) =>
 }
 
 
-const EditModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave, branchOptions }: any) => {
+const EditTableModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave, branchOptions }: any) => {
   return (
     <Modal open={openEditQR} onClose={() => setOpenEditQR(false)}>
       <Box
@@ -228,6 +239,49 @@ const EditModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave, bran
       </Box>
     </Modal>
   )
+}
+
+
+const EditRoomModal = ({ openEditQR, setOpenEditQR, selectedQRCode, handleSave, branchOptions }: any) => {
+  return (<Modal open={openEditQR} onClose={() => setOpenEditQR(false)}>
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: "40vw",
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 4,
+        borderRadius: 2,
+      }}
+    >
+      <IconButton
+        aria-label="close"
+        onClick={() => setOpenEditQR(false)}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <Close />
+      </IconButton>
+      {selectedQRCode && (
+        <EditQRCode
+          branchOptions={branchOptions}
+          qrCodeData={selectedQRCode}
+          onClose={() => {
+            setOpenEditQR(false);
+            // setSelectedQRCode(null)                
+          }}
+          onSave={handleSave}
+        />
+      )}
+    </Box>
+  </Modal>)
 }
 
 const DeleteModal = ({ openDeleteQR, setOpenDeleteQR, handleConfirmDelete, isLoading }: any) => {
