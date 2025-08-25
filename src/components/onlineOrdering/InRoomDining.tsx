@@ -11,7 +11,8 @@ import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
 import AddQRCode from "../Dashboard/AddQRCode";
-import RoomList from "../Dashboard/RoomList";
+// import RoomList from "../Dashboard/RoomList";
+import NewTablesList from "../Dashboard/NewTablesList";
 
 const InRoomDining = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -118,7 +119,7 @@ const InRoomDining = () => {
     setState((prevState) => ({ ...prevState, addNewQR: false }));
   };
 
-  console.log(rooms, "branches");
+  // console.log(rooms, "branches");
 
   const handleConfirmDelete = async () => {
     setIsLoading(true);
@@ -131,8 +132,7 @@ const InRoomDining = () => {
       }
 
       await axios.delete(
-        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${
-          selectedQRCode?.group_name ?? ""
+        `${SERVER_DOMAIN}/asset/removeBusinessAsset/?group_name=${selectedQRCode?.group_name ?? ""
         }&branch_id=${selectedQRCode?.branch ?? ""}`,
         {
           headers: {
@@ -146,8 +146,7 @@ const InRoomDining = () => {
     } catch (error) {
       console.error("Error saving QR code:", error);
       toast.error(
-        `Error saving QR code: ${
-          error instanceof Error ? error.message : String(error)
+        `Error saving QR code: ${error instanceof Error ? error.message : String(error)
         }`
       );
     } finally {
@@ -198,7 +197,7 @@ const InRoomDining = () => {
         </div>
       ) : (
         <div>
-          <RoomList
+          <NewTablesList
             rooms={rooms}
             branchOptions={branchOptions}
             handleConfirmDelete={handleConfirmDelete}
@@ -207,7 +206,18 @@ const InRoomDining = () => {
             setSelectedQRCode={setSelectedQRCode}
             openDeleteQR={openDeleteQR}
             setOpenDeleteQR={setOpenDeleteQR}
+            isRoomList={true}
           />
+          {/* <RoomList
+            rooms={rooms}
+            branchOptions={branchOptions}
+            handleConfirmDelete={handleConfirmDelete}
+            isLoading={isLoading}
+            selectedQRCode={selectedQRCode}
+            setSelectedQRCode={setSelectedQRCode}
+            openDeleteQR={openDeleteQR}
+            setOpenDeleteQR={setOpenDeleteQR}
+          /> */}
         </div>
       )}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>

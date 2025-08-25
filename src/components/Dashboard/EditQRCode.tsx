@@ -3,6 +3,10 @@ import CustomSelect5 from "../inputFields/CustomSelect5";
 import CustomInput from "../inputFields/CustomInput";
 import axios from "axios";
 import { SERVER_DOMAIN } from "../../Api/Api";
+import { AppDispatch } from "@/src/store/store";
+import { useDispatch } from "react-redux";
+import { getRooms } from "../../slices/TableSlice";
+import { toast } from "react-toastify";
 
 interface EditQRCodeProps {
   branchOptions: { label: string; value: string }[];
@@ -29,14 +33,14 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
   const [location, setLocation] = useState(qrCodeData.group_name);
   const [loading, setLoading] = useState(false);
   // const tableNumber = qrCodeData.number;
-
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (qrCodeData) {
       setTableNumber(qrCodeData.number as any);
     }
   }, [qrCodeData]);
 
-  console.error(qrCodeData, "Error saving QR code:", tableNumber);
+  // console.error(qrCodeData, "Error saving QR code:", tableNumber);
   const handleSave = async () => {
     setLoading(true);
     try {
@@ -57,6 +61,11 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
         }
       );
       onSave();
+      toast.success("edited successfully..")
+      dispatch(getRooms());
+      setSelectedBranch("")
+      setTableNumber("")
+      setLocation("")
     } catch (error) {
       console.error("Error saving QR code:", error);
     } finally {
@@ -100,7 +109,7 @@ const EditQRCode: React.FC<EditQRCodeProps> = ({
         <div className="flex items-center justify-end gap-2 mt-7">
           <div
             className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
-            onClick={onClose}
+            onClick={() => { onClose(); setSelectedBranch(""); setTableNumber(""); setLocation("") }}
           >
             <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
               Cancel
