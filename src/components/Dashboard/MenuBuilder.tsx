@@ -28,6 +28,10 @@ import CustomInput from "../inputFields/CustomInput";
 import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
 import MenuItemForm from "./MenuBuilderModals/NewAddMenuModal";
 import { Modifier } from "./components/DisplayModifiers";
+import { IoCubeOutline } from "react-icons/io5";
+import { SlDocs } from "react-icons/sl";
+import { LiaTimesSolid } from "react-icons/lia";
+import { Link } from "react-router-dom";
 
 const MenuBuilder = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,6 +48,7 @@ const MenuBuilder = () => {
   const [currentPage, setCurrentPage] = useState(theCurrentPage || 1);
   console.log(totalItems, totalPages, currentPage, "allP");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSingleUpload, setSingleUpload] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
   const [addMenuItem, setAddMenuItem] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
@@ -74,6 +79,9 @@ const MenuBuilder = () => {
   const [editLoading, setEditLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState<any | null>(null);
   const [activeGroup, setActiveGroup] = useState<any | null>(null);
+
+
+  // const router = useRouter();
 
   // Useeffects
   useEffect(() => {
@@ -551,8 +559,42 @@ const MenuBuilder = () => {
           </div>
 
           {/* MODALS */}
+          <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
+            <AddMenuCategory setIsModalOpen={setSingleUpload} />
+          </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <AddMenuCategory setIsModalOpen={setIsModalOpen} />
+            {/* setBulkUpload */}
+            <div className="relative bg-white">
+              <LiaTimesSolid className="absolute cursor-pointer top-4 right-4" onClick={() => setIsModalOpen(false)} />
+
+              <h4 className="text-[16px] font-semibold w-fit mx-auto">New Menu Category</h4>
+              <div>
+                <div className="p-4 rounded-md">
+
+                  <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500">
+                    <div className="p-2 bg-[#FFF5F0] w-fit">
+                      <IoCubeOutline />
+                    </div>
+                    <div>
+                      <h4 className="text-[14px] font-semibold">Single Product</h4>
+                      <p className="text-sm ">Add product manually</p>
+                    </div>
+                  </div>
+                  <Link to="bulk-upload">
+                    <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500" onClick={() => setSingleUpload(true)}>
+                      <div className="p-2 bg-[#FFF5F0] w-fit">
+                        <SlDocs />
+                      </div>
+                      <div>
+                        <h4 className="text-[14px] font-semibold">Bulk Upload</h4>
+                        <p className="text-sm ">Upload products in bulk using a csv file</p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+
+              </div>
+            </div>
           </Modal>
 
           {/* Edit selected category */}
