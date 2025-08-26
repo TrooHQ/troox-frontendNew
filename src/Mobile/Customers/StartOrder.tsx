@@ -13,7 +13,7 @@ import {
   setBusinessIdentifier,
   setBusinessDetails,
   setGroupName,
-  setTableNo,
+  // setTableNo,
   setURL,
   setBranchID,
 } from "../../slices/businessSlice";
@@ -38,24 +38,33 @@ const StartOrder = () => {
 
   const business_identifier = queryParams.get("business_identifier");
   const branch = queryParams.get("branch");
-  const tableNo = queryParams.get("table");
-  const comingFrom = queryParams.get("coming-from");
+  // const tableNo = queryParams.get("table");
+  // const comingFrom = queryParams.get("coming-from");
   const type = queryParams.get("type");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
+  console.log("business_identifier", business_identifier)
+  console.log("branch", branch)
+  // console.log("tableNo", tableNo)
+  // console.log("comingFrom", comingFrom)
+  console.log("type", type)
+  console.log("group_name", group_name)
+
   useEffect(() => {
-    if (business_identifier && tableNo) {
+    // if (business_identifier && tableNo) {
+    if (business_identifier) {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
-      dispatch(setTableNo(tableNo));
+      // dispatch(setTableNo(tableNo));
       dispatch(setBranchID(branch as string));
       dispatch(setURL(fullUrl));
 
       getBusinessDetails();
     } else {
-      navigate("/demo/login/troo-portal");
+      // navigate("/demo/login/troo-portal");
     }
-  }, [business_identifier, tableNo, group_name, navigate, branch, fullUrl]);
+  }, [business_identifier, group_name, navigate, branch, fullUrl]);
+  // }, [business_identifier, tableNo, group_name, navigate, branch, fullUrl]);
 
   const getBusinessDetails = async () => {
     const headers = {
@@ -109,11 +118,11 @@ const StartOrder = () => {
 
   if (type === "room") {
     navigate(
-      `demo/in_room_dining${
-        location.pathname + location.search + location.hash
+      `demo/in_room_dining${location.pathname + location.search + location.hash
       }`
     );
-  } else if (!business_identifier || !tableNo || !comingFrom) {
+    // } else if (!business_identifier || !tableNo || !comingFrom) {
+  } else if (!business_identifier) {
     navigate("/demo/login/troo-portal");
     // return <NotFound />;
   }
@@ -125,7 +134,7 @@ const StartOrder = () => {
           <img
             src={businessDetails?.business_logo}
             alt=""
-            className=" w-full object-cover h-full"
+            className="object-cover w-full h-full "
           />
         </div>
         <p>
@@ -181,9 +190,8 @@ const StartOrder = () => {
             </p>
 
             <p
-              className={`px-[24px] py-[10px] inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] ${
-                !userName ? " cursor-default" : "cursor-pointer"
-              }`}
+              className={`px-[24px] py-[10px] inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] ${!userName ? " cursor-default" : "cursor-pointer"
+                }`}
               onClick={userName ? handleNext : undefined}
               style={{
                 backgroundColor: userName ? color : "#f2f2f2",
@@ -213,9 +221,8 @@ const StartOrder = () => {
             </p>
             <Link to={`demo/category-details/orderandpay`}>
               <p
-                className={`px-[24px] py-[10px] ${
-                  !table ? " cursor-default" : " cursor-pointer"
-                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+                className={`px-[24px] py-[10px] ${!table ? " cursor-default" : " cursor-pointer"
+                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
                 style={{
                   backgroundColor: table ? color : "#f2f2f2",
                 }}
