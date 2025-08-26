@@ -53,6 +53,7 @@ import PricingPage from "./pages/pricing/PricingPage.tsx";
 import AddOns from "./pages/pricing/AddOns.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
+import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 
 export default function App() {
   return (
@@ -83,6 +84,7 @@ export default function App() {
           <Route path="/manage-assets" element={<ManageTables />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
+          <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} />
           <Route path="/menu-list" element={<MenuList />} />
           <Route path="/online-ordering" element={<OnlineOrdering />} />
           <Route path="/qr-ordering" element={<QROrdering />} />

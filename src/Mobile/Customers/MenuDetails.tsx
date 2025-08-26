@@ -8,7 +8,6 @@ import axios from "axios";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCircleCheck } from "react-icons/fa6";
-
 import {
   addItemToBasket,
   removeItemFromBasket,
@@ -95,6 +94,9 @@ const MenuDetails = () => {
   ) as BasketItem[];
 
   const businessIdentifier = userDetails?._id;
+
+  console.log("userDetails", userDetails);
+
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
   const handleCheckboxChange = (option: Modifier) => {
@@ -150,6 +152,7 @@ const MenuDetails = () => {
     setLoading(true);
     try {
       const response = await axios.get(
+        // `${SERVER_DOMAIN}/menu/getMenuItemByID/?id=${businessIdentifier}&menu_item_id=${id}`
         `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${id}`
       );
       setMenuItem(response.data.data);
@@ -294,17 +297,17 @@ const MenuDetails = () => {
   };
 
   return (
-    <div className="menu-description relative">
+    <div className="relative menu-description">
       {loading && <Loader />}
 
       <TopMenuNav />
       {menuItem && (
-        <div className=" relative">
+        <div className="relative ">
           <div className="menu-item-image-container mx-[24px] mt-[32px] max-w-[400px] h-[300px] rounded-[20px] overflow-hidden">
             <img
               src={menuItem.menu_item_image}
               alt={menuItem.menu_item_name}
-              className="w-full object-cover"
+              className="object-cover w-full"
             />
           </div>
 
@@ -350,13 +353,12 @@ const MenuDetails = () => {
                               (opt) => opt.name === option.modifier_name
                             )}
                             onChange={() => handleCheckboxChange(option)}
-                            className={`h-5 w-5 ${
-                              selectedOptions.some(
-                                (opt) => opt.name === option.modifier_name
-                              )
-                                ? "bg-red-600"
-                                : "bg-white"
-                            }`}
+                            className={`h-5 w-5 ${selectedOptions.some(
+                              (opt) => opt.name === option.modifier_name
+                            )
+                              ? "bg-red-600"
+                              : "bg-white"
+                              }`}
                           />
                         </div>
                       </div>
@@ -394,15 +396,15 @@ const MenuDetails = () => {
             {menuItems.some(
               (menu) => menu.is_recommended && menu._id !== id
             ) && (
-              <div className=" flex items-center justify-between my-[20px]">
-                <p className="text-[16px] text-[#121212] font-[500] ">
-                  Recommended Items
-                </p>
-                <div className=" text-[16px]">
-                  <MdKeyboardArrowRight />
+                <div className=" flex items-center justify-between my-[20px]">
+                  <p className="text-[16px] text-[#121212] font-[500] ">
+                    Recommended Items
+                  </p>
+                  <div className=" text-[16px]">
+                    <MdKeyboardArrowRight />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             <div className="flex items-center gap-[50px] overflow-x-scroll py-[11px] border-t border-[#E7E7E7] cursor-pointer">
               {menuItems.map(
@@ -437,7 +439,7 @@ const MenuDetails = () => {
                           {ids.find((item) => item.id === menu._id) ? (
                             <div className="flex items-center justify-between">
                               <div
-                                className="inline-flex cursor-pointer text-white rounded-full"
+                                className="inline-flex text-white rounded-full cursor-pointer"
                                 onClick={() => decrement(menu)}
                                 style={{
                                   backgroundColor: colorScheme || "#414141",
@@ -450,7 +452,7 @@ const MenuDetails = () => {
                                   ?.quantity || 1}
                               </p>
                               <div
-                                className="inline-flex cursor-pointer text-white rounded-full"
+                                className="inline-flex text-white rounded-full cursor-pointer"
                                 onClick={() => increment(menu)}
                                 style={{
                                   backgroundColor: colorScheme || "#414141",
@@ -466,7 +468,7 @@ const MenuDetails = () => {
                               >
                                 <div className="flex items-center justify-end">
                                   <div
-                                    className="inline-flex cursor-pointer text-white rounded-full"
+                                    className="inline-flex text-white rounded-full cursor-pointer"
                                     style={{
                                       backgroundColor: colorScheme || "#414141",
                                     }}
@@ -492,7 +494,7 @@ const MenuDetails = () => {
               </p>
             </div>
 
-            <div className=" ">
+            <div className="">
               <div className="">
                 <textarea
                   className=" text-[16px] w-full h-[153px] border  font-[400] text-[#929292] border-gray-300 rounded-md p-2 shadow-md"
