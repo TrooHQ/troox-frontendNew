@@ -196,7 +196,7 @@ export const fetchOnlineOrderingLink = createAsyncThunk<
   try {
     const token = localStorage.getItem("token");
     const response = await axios.get<OnlineOrderingLinkResponse>(
-      `${SERVER_DOMAIN}/asset/generateOnlineOrderingLink/`,
+      `${SERVER_DOMAIN}/asset/generateOnlineOrderingLink/?branch_id=66ed6de40ba21b866d6c0610`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return response.data.data;
