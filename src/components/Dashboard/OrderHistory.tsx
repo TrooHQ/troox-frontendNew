@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import ChangeBranchForTicket from "./ChangeBranchForTicket";
-import { CalendarMonth } from "@mui/icons-material";
+import { CalendarMonth, SearchRounded } from "@mui/icons-material";
 import * as XLSX from "xlsx"; // For Excel export
 import { saveAs } from "file-saver"; // To save files locally
 import Papa from "papaparse"; // For CSV export
@@ -32,6 +32,9 @@ const OrderHistory = () => {
   const [showCustomerDetail, setShowCustomerDetail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<any>();
+  const [searchValue, setSearchValue] = useState("");
+
+  console.log("searchValue", searchValue);
 
   const userDetails = useSelector((state: any) => state.user);
 
@@ -89,7 +92,7 @@ const OrderHistory = () => {
     number_of_days,
     page
   }: {
-    date_filter: string;
+    date_filter?: string;
     startDate?: string;
     endDate?: string;
     number_of_days?: number;
@@ -111,7 +114,7 @@ const OrderHistory = () => {
       params.number_of_days = number_of_days;
     }
 
-
+    // order_number&customer_name
     // https://troox-backend.onrender.com/api/order/getOrderbyType/?branch_id=685009df72551c42703c5527&queryType=ticket
     try {
       setIsLoading(true);
@@ -119,7 +122,7 @@ const OrderHistory = () => {
         `${SERVER_DOMAIN}/order/getOrderbyType/`,
         {
           ...headers,
-          params: { branch_id: selectedBranch.id, ...params, queryType: "history", page, limit: "10" },
+          params: { branch_id: selectedBranch.id, ...params, queryType: "history", page, limit: "10", order_number: searchValue },
           paramsSerializer: (params) => new URLSearchParams(params).toString(),
         }
       );
@@ -141,6 +144,7 @@ const OrderHistory = () => {
 
   const handleRefresh = () => {
     getTickets({ date_filter: "today", page });
+    setSearchValue("");
   };
 
   // Function to export data as Excel
@@ -265,14 +269,40 @@ const OrderHistory = () => {
         ) : (
           <div className="">
             <div className="mt-[40px]">
-              <ChangeBranchForTicket handleRefresh={handleRefresh} />
+              <div className="flex items-center justify-between mb-[24px]">
+                <ChangeBranchForTicket handleRefresh={handleRefresh} />
+
+                {/* Export buttons */}
+                <div className="flex items-center gap-[12px]">
+                  <div className="relative">
+                    <button
+                      onClick={toggleDropdown}
+                      className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
+                    >
+                      Download
+                    </button>
+                    {dropdownVisible && (
+                      <div className="absolute mt-2 right-0 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                        <button
+                          onClick={handleDownloadCSV}
+                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                        >
+                          Download CSV
+                        </button>
+                        <button
+                          onClick={handleDownloadExcel}
+                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                        >
+                          Download Excel
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[32px]">
-                  <div className="">
-                    <p className="font-[500] text-[16px] text-[#121212]">
-                      Filter by:
-                    </p>
-                  </div>
+                  {/*  */}
                   <div className="flex items-center gap-[8px]">
                     <button
                       className={`border rounded-[5px] px-[16px] py-[8px] font-[400] text-[12px] ${selectedFilter2 === "today"
@@ -348,34 +378,21 @@ const OrderHistory = () => {
                       </Space>
                     )}
                   </div>
-                </div>
-                {/* Export buttons */}
-                <div className="flex items-center gap-[12px]">
-                  <div className="relative">
-                    <button
-                      onClick={toggleDropdown}
-                      className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212]"
-                    >
-                      Download
+
+                  {/* search  */}
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Search by order id"
+                      className="border border-grey300 rounded-[5px] px-[16px] py-[10px] w-[300px]"
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <button className="p-2 bg-black border border-black rounded" onClick={() => getTickets({})}>
+                      <SearchRounded className="text-white" />
                     </button>
-                    {dropdownVisible && (
-                      <div className="absolute mt-2 right-0 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
-                        <button
-                          onClick={handleDownloadCSV}
-                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                        >
-                          Download CSV
-                        </button>
-                        <button
-                          onClick={handleDownloadExcel}
-                          className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                        >
-                          Download Excel
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
+
               </div>
 
               <div className="">
