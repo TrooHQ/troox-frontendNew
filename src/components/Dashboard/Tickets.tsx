@@ -22,6 +22,7 @@ import { RootState } from "@/src/store/store";
 import PaginationComponent from "./PaginationComponent";
 import { Paper } from "@mui/material";
 import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
+import { SearchRounded } from "@mui/icons-material";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -41,7 +42,11 @@ const Tickets = () => {
   const [refundType, setRefundType] = useState<string>("");
   const [refundAmount, setRefundAmount] = useState<string>("");
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
-  // const [activeMenuIndex2, setActiveMenuIndex2] = useState<number | null>(null);
+  const [searchValue, setSearchValue] = useState("");
+
+  // order_number&customer_name
+  console.log("searchValue", searchValue);
+
 
   const token = userDetails?.userData?.token;
 
@@ -79,7 +84,7 @@ const Tickets = () => {
   //   setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
   // };
 
-  const getTickets = async (page: number) => {
+  const getTickets = async (page?: number) => {
     setData([])
 
     const headers = {
@@ -94,7 +99,7 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page}&limit=10`,
+        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page ? page : 1}&limit=10&order_number=${searchValue}`,
         headers
       );
       console.log(response.data);
@@ -206,6 +211,7 @@ const Tickets = () => {
 
   const handleRefresh = () => {
     getTickets(page);
+    setSearchValue("");
     getClosedTickets();
   };
 
@@ -222,6 +228,7 @@ const Tickets = () => {
             </div>
             {/* <ChangeBranchForTicket handleRefresh={handleRefresh} /> */}
             <div className="flex items-center justify-between">
+
               <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-purple500">
                 <button
                   onClick={handleRefresh}
@@ -231,6 +238,21 @@ const Tickets = () => {
                   {isLoading ? "Fetching..." : "Refresh Tickets"}
                 </button>
               </div>
+
+              {/*search component  */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Search tickets"
+                  className="border border-grey300 rounded-[5px] px-[16px] py-[10px] w-[300px]"
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+                <button className="p-2 bg-black border border-black rounded" onClick={() => getTickets()}>
+                  <SearchRounded className="text-white" />
+                </button>
+              </div>
+
+
             </div>
 
             <div className="">

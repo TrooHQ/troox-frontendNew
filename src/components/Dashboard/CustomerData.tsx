@@ -20,9 +20,14 @@ import { toast } from "react-toastify";
 
 import chip from "../../assets/chip.svg";
 import PaginationComponent from "./PaginationComponent";
+import { SearchRounded } from "@mui/icons-material";
+
 
 const CustomerData = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [searchValue, setSearchValue] = useState("");
+
+  console.log("searchValue", searchValue);
 
   const userDetails = useSelector(
     (state: RootState) => state.business.businessDetails
@@ -49,7 +54,9 @@ const CustomerData = () => {
         fetchCustomerData({
           businessIdentifier: businessIdentifier.toString(),
           date_filter: "today",
-          page
+          page,
+          phone_number: searchValue
+
         })
       );
     dispatch(fetchCustomerTransaction({ date_filter: "today" }));
@@ -69,7 +76,8 @@ const CustomerData = () => {
         startDate,
         endDate,
         number_of_days,
-        page
+        page,
+        phone_number: searchValue
       })
     )
       .unwrap()
@@ -222,6 +230,37 @@ const CustomerData = () => {
           </div>
         </div>
 
+        <div>
+          {/* Export buttons */}
+          <div className="flex items-end justify-end gap-[12px] my-6">
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] flex items-center justify-start gap-2"
+              >
+                <img src={chip} alt="" className="" />
+                Export Data
+              </button>
+              {dropdownVisible && (
+                <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
+                  <button
+                    onClick={handleDownloadCSV}
+                    className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                  >
+                    Export in CSV
+                  </button>
+                  <button
+                    onClick={handleDownloadExcel}
+                    className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
+                  >
+                    Export in Excel
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Filter and table */}
         <div className="">
           <div className="mt-[40px]">
@@ -231,33 +270,25 @@ const CustomerData = () => {
                   <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
                     All Customers Data
                   </p>
-                  {/* Export buttons */}
-                  <div className="flex items-center gap-[12px]">
-                    <div className="relative">
-                      <button
-                        onClick={toggleDropdown}
-                        className="border border-[#B6B6B6] rounded-[5px] px-[16px] py-[8px] font-[400] text-[#121212] flex items-center justify-start gap-2"
-                      >
-                        <img src={chip} alt="" className="" />
-                        Export Data
-                      </button>
-                      {dropdownVisible && (
-                        <div className="absolute mt-2 w-[150px] bg-white border border-[#B6B6B6] rounded-[5px] shadow-lg">
-                          <button
-                            onClick={handleDownloadCSV}
-                            className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                          >
-                            Export in CSV
-                          </button>
-                          <button
-                            onClick={handleDownloadExcel}
-                            className="block w-full text-left px-[16px] py-[8px] hover:bg-gray-200"
-                          >
-                            Export in Excel
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                  {/* search button */}
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Search by phone number"
+                      className="border border-grey300 rounded-[5px] px-[16px] py-[10px] w-[300px]"
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <button className="p-2 bg-black border border-black rounded" onClick={() => dispatch(fetchCustomerData({
+                      businessIdentifier: businessIdentifier?.toString(),
+                      date_filter: "today",
+                      // startDate,
+                      // endDate,
+                      // number_of_days,
+                      page,
+                      phone_number: searchValue
+                    }))}>
+                      <SearchRounded className="text-white" />
+                    </button>
                   </div>
                 </div>
 
