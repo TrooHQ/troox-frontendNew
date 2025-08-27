@@ -22,7 +22,6 @@ import { RootState } from "@/src/store/store";
 import PaginationComponent from "./PaginationComponent";
 import { Paper } from "@mui/material";
 import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
-import { SearchRounded } from "@mui/icons-material";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -42,10 +41,9 @@ const Tickets = () => {
   const [refundType, setRefundType] = useState<string>("");
   const [refundAmount, setRefundAmount] = useState<string>("");
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
 
   // order_number&customer_name
-  console.log("searchValue", searchValue);
 
 
   const token = userDetails?.userData?.token;
@@ -77,7 +75,7 @@ const Tickets = () => {
     totalOrders: 0,
     totalPages: 0,
     currentPage: 1,
-    pageSize: 5,
+    pageSize: 10,
   });
 
   // const toggleMenu2 = (index: number) => {
@@ -99,7 +97,7 @@ const Tickets = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page ? page : 1}&limit=10&order_number=${searchValue}`,
+        `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page ? page : 1}&limit=10`,
         headers
       );
       console.log(response.data);
@@ -211,7 +209,7 @@ const Tickets = () => {
 
   const handleRefresh = () => {
     getTickets(page);
-    setSearchValue("");
+    // setSearchValue("");
     getClosedTickets();
   };
 
@@ -238,20 +236,6 @@ const Tickets = () => {
                   {isLoading ? "Fetching..." : "Refresh Tickets"}
                 </button>
               </div>
-
-              {/*search component  */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder="Search tickets"
-                  className="border border-grey300 rounded-[5px] px-[16px] py-[10px] w-[300px]"
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
-                <button className="p-2 bg-black border border-black rounded" onClick={() => getTickets()}>
-                  <SearchRounded className="text-white" />
-                </button>
-              </div>
-
 
             </div>
 
