@@ -571,7 +571,8 @@ const MenuBuilder = () => {
               <div>
                 <div className="p-4 rounded-md">
 
-                  <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500">
+                  <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500"
+                    onClick={() => { setSingleUpload(true); setIsModalOpen(false) }}>
                     <div className="p-2 bg-[#FFF5F0] w-fit">
                       <IoCubeOutline />
                     </div>
@@ -581,7 +582,7 @@ const MenuBuilder = () => {
                     </div>
                   </div>
                   <Link to="bulk-upload">
-                    <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500" onClick={() => setSingleUpload(true)}>
+                    <div className="flex items-center gap-4 p-2 my-6 border border-gray-300 rounded-md cursor-pointer hover:border-orange-500" >
                       <div className="p-2 bg-[#FFF5F0] w-fit">
                         <SlDocs />
                       </div>
