@@ -34,7 +34,7 @@ const OrderHistory = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<any>();
   const [searchValue, setSearchValue] = useState("");
 
-  console.log("searchValue", searchValue);
+
 
   const userDetails = useSelector((state: any) => state.user);
 
@@ -61,7 +61,7 @@ const OrderHistory = () => {
   ) => {
     setSelectedFilter(number_of_days as any);
     setSelectedFilter2(filter);
-    getTickets({ date_filter: filter, number_of_days, startDate, endDate, page });
+    getTickets({ date_filter: filter, number_of_days, startDate, endDate, page, searchValue });
   };
 
   const handleDateChange = (dates: any, dateStrings: [string, string]) => {
@@ -90,13 +90,15 @@ const OrderHistory = () => {
     startDate,
     endDate,
     number_of_days,
-    page
+    page,
+    searchValue
   }: {
     date_filter?: string;
     startDate?: string;
     endDate?: string;
     number_of_days?: number;
     page?: number;
+    searchValue?: string;
   }) => {
     const headers = {
       headers: {
@@ -113,7 +115,7 @@ const OrderHistory = () => {
     } else if (date_filter !== "today") {
       params.number_of_days = number_of_days;
     }
-
+    console.log("searchValue from git ticket", searchValue);
     // order_number&customer_name
     // https://troox-backend.onrender.com/api/order/getOrderbyType/?branch_id=685009df72551c42703c5527&queryType=ticket
     try {
@@ -301,7 +303,7 @@ const OrderHistory = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-[32px]">
+                <div className="flex items-center gap-[32px] flex-wrap">
                   {/*  */}
                   <div className="flex items-center gap-[8px]">
                     <button

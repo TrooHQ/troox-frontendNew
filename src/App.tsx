@@ -94,7 +94,6 @@ export default function App() {
           <Route path="/customer-data" element={<CustomerData />} />
           <Route path="/subscription-plan" element={<PricingPage />} />
           <Route path="/subscription-add-ons" element={<AddOns />} />
-
           <Route path="/verified-payment" element={<VerifiedPayment />} />
           <Route path="/payout-details" element={<PayoutDetails />} />
           <Route path="/overview" element={<Overview />} />
