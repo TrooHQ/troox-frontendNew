@@ -167,13 +167,13 @@ const InRoomDining = () => {
       </div>
       <div
         className={clsx(
-          "mt-[24px] grid grid-cols-9 items-center border-b px-0 text-[16px] font-[400]",
+          "mt-[24px] grid grid-cols-8 items-center border-b px-0 text-[16px] font-[400]",
           state.qrEmpty
             ? "border-b-[#929292] text-[#929292] "
             : "border-b-[#121212] text-[#121212] "
         )}
       >
-        <p className="col-span-3 px-3 py-2 text-start">Location/Group Name</p>
+        <p className="col-span-2 px-3 py-2 text-start">Location/Group Name</p>
         <p className="col-span-2 px-3 py-2 text-center">No. of Rooms</p>
         <p className="col-span-2 px-3 py-2 text-center">QR Code</p>
         <p className="col-span-2 px-3 py-2 text-end">Actions</p>

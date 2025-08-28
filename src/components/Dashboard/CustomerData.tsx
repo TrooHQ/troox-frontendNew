@@ -170,7 +170,7 @@ const CustomerData = () => {
       },
       {
         icon: ArrowUp,
-        title: "Gogrub Customers",
+        title: "Online Ordering",
         time: "12:45 PM",
         amount: totalCustomerTransaction?.channelCounts?.GoGrub || "0",
         statusIcon: ArrowUp,
@@ -266,7 +266,7 @@ const CustomerData = () => {
           <div className="mt-[40px]">
             <div className="">
               <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <div className="flex items-center justify-between pr-8">
+                <div className="flex flex-wrap items-center justify-between pr-8">
                   <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
                     All Customers Data
                   </p>
