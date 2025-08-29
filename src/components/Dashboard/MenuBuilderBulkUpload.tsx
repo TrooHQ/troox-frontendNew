@@ -8,7 +8,7 @@ export default function MenuBuilderBulkUpload() {
     <div>
 
       <DashboardLayout>
-        <TopMenuNav pathName="Bulk Upload" />
+        <TopMenuNav pathName="Bulk Upload" goBack={true} />
 
         <div className='mt-8'>
           <div className='flex bg-[#FFF5F0] p-4 gap-2'>
@@ -24,7 +24,9 @@ export default function MenuBuilderBulkUpload() {
               <div className='w-full px-8 py-3 border border-gray-200 rounded-s-md'>
                 <h4 className="text-[14px] font-semibold">Download the sample csv spreadsheet</h4>
                 <p className="my-3 text-sm">This spreedsheet will serve as a template to organize the menu bulk upload</p>
-                <button className="px-4 py-2 text-xs text-white bg-black rounded">Download Template</button>
+                <a href="/public/bulkupload.xlsx" download="bulkupload.xlsx">
+                  <button className="px-4 py-2 text-xs text-white bg-black rounded">Download Template</button>
+                </a>
               </div>
             </div>
 
