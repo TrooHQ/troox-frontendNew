@@ -6,6 +6,8 @@ import { VscFilePdf } from "react-icons/vsc";
 import { useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import { CancelOutlined, CheckCircle } from "@mui/icons-material";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function BulkUploadComp() {
   const [file, setFile] = useState<File | null>(null);
@@ -15,6 +17,8 @@ export default function BulkUploadComp() {
 
   const { selectedBranch } = useSelector((state: any) => state.branches);
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
 
   // Ref for abort controller to cancel uploads
   const controllerRef = useRef<AbortController | null>(null);
@@ -35,8 +39,8 @@ export default function BulkUploadComp() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await axios.post(
-          `${SERVER_DOMAIN}/menu/bulkUploadMenuCategories/?branch_id=${selectedBranch?.id}`,
+        await axios.post(
+          `${SERVER_DOMAIN}/menu/bulkUploadMenu/?branch_id=${selectedBranch?.id}`,
           formData,
           {
             headers: {
@@ -54,10 +58,13 @@ export default function BulkUploadComp() {
             },
           }
         );
-        console.log("res", res);
         setStatus("success");
-
+        toast.success("File uploaded successfully");
+        setFile(null);
+        setProgress(0);
         setUploading(false);
+        navigate('/menu-builder');
+
       } catch (error: any) {
         if (axios.isCancel(error)) {
           console.log("Upload cancelled");
@@ -147,7 +154,11 @@ const FileUploadProgress = ({
       <div className="flex-1">
         <p className="text-sm font-medium text-gray-700">{file.name}</p>
         <div className="w-full h-2 mt-1 bg-gray-200 rounded">
-          <LinearProgress variant="determinate" value={progress} />
+          <LinearProgress variant="determinate" value={progress} sx={{
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: "#f97316",
+            },
+          }} />
         </div>
         <p className="mt-1 text-xs text-gray-500">
           {progress < 100 ? "Uploading..." : "Completed"}
