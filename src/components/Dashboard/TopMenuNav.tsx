@@ -5,13 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { fetchUserDetails } from "../../slices/UserSlice";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { IoMdArrowBack } from "react-icons/io";
 interface TopMenuNavProps {
   pathName: string;
+  goBack?: boolean;
 }
 
-const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
+const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName, goBack = false }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { userData, userDetails } = useSelector((state: any) => state.user);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     dispatch(fetchUserDetails());
@@ -21,12 +26,13 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
     <div className="">
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <div>
+          <div className="flex items-center gap-4">
+            {(goBack) ? <button onClick={() => navigate(-1)}><IoMdArrowBack /></button> : null}
             <p className="text-[28px] font-[500] Capitalize text-purple500">
               {pathName}
             </p>
           </div>
-          <div className="flex gap-5 items-center">
+          <div className="flex items-center gap-5">
             {/* <div className="relative">
               <input
                 type="text"
@@ -36,11 +42,11 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
               <img
                 src={SearchIcon}
                 alt=""
-                className="absolute left-6 top-3 pointer-events-none"
+                className="absolute pointer-events-none left-6 top-3"
               />
             </div> */}
 
-            <div className=" ml-3 mr-5">
+            <div className="ml-3 mr-5 ">
               <img src={NotificationIcon} alt="" />
             </div>
             <div>
@@ -57,7 +63,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName }) => {
                   <img
                     src={userDetails?.photo || userDetails?.business_logo || ""}
                     alt={`${userDetails?.first_name} ${userDetails?.last_name}`}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="object-cover w-10 h-10 rounded-full"
                   />
                 ) : (
                   <PersonIcon />
