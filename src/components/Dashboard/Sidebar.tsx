@@ -133,7 +133,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           showMenu: true,
         },
         {
-          title: "Customer Data",
+          title: "Customers",
           link: "/customer-data",
           showMenu: true,
         },
