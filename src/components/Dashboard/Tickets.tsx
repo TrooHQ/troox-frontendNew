@@ -47,10 +47,14 @@ const Tickets = () => {
 
 
   const token = userDetails?.userData?.token;
+  const [voidOrderItem, setVoidOrderItem] = useState<any>(null);
 
   const handleVoidOrderMenu = () => {
+
+
     setVoidOrderMenu(!voidOrderMenu);
   };
+
   const handleRefundMenu = () => {
     setRefundMenu(!refundMenu);
   };
@@ -246,7 +250,7 @@ const Tickets = () => {
                     Open tickets
                   </p>
 
-                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
+                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-9 border-b">
                     <p className=" text-[14px] text-[#121212]">Date</p>
                     <p className=" text-[14px] text-[#121212]">Time</p>
                     <p className=" text-[14px] text-[#121212]">Table No</p>
@@ -265,7 +269,7 @@ const Tickets = () => {
                   ) : (
                     data.map((item, index) => (
                       <div
-                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-10 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-9 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                           }`}
                         key={index}
                       >
@@ -347,7 +351,7 @@ const Tickets = () => {
                           </div>
                           {activeMenuIndex === index && (
                             <DropdownMenu
-                              handleVoidOrderMenu={() => handleVoidOrderMenu()}
+                              handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
                             />
                           )}
                         </div>
@@ -366,6 +370,7 @@ const Tickets = () => {
                   handleVoidOrderMenu={handleVoidOrderMenu}
                   setVoidOrderMenu={setVoidOrderMenu}
                   handleVoidOrder={handleVoidOrder}
+                  voidOrderItem={voidOrderItem}
                 />
               ) : (
                 <VoidOrderMenu

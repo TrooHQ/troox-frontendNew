@@ -192,7 +192,7 @@ const CustomerData = () => {
     <div>
       {" "}
       <DashboardLayout>
-        <TopMenuNav pathName="Customer Data" />
+        <TopMenuNav pathName="Customers" />
 
         <div className="rounded-[10px] border border-[#f1f0f0] bg-white px-6 py-7 mt-10">
           <div className="flex items-center justify-between ">
