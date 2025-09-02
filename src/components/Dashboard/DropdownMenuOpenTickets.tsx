@@ -10,10 +10,16 @@ export const DropdownMenu = ({ handleVoidOrderMenu }: { handleVoidOrderMenu: () 
   return (
     <ul className="w-[200px] shadow grid gap-[18px] dropdown-menu absolute bg-white p-[12px] text-black right-[25px] top-[40px] z-10">
       <li
+        // onClick={() => handleItemClick("Void Order")}
+        className="font-[400] text-red-500 cursor-block"
+      >
+        Void Order
+      </li>
+      <li
         onClick={() => handleItemClick("Void Order")}
         className="font-[400] text-red-500 cursor-pointer"
       >
-        Void Order
+        Refund Order
       </li>
     </ul>
   );

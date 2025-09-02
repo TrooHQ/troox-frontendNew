@@ -403,7 +403,7 @@ const OrderHistory = () => {
                     Orders
                   </p>
 
-                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-6 border-b">
+                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-7 border-b">
                     <p className="text-start text-[14px] text-[#121212]">
                       Order No
                     </p>
@@ -411,8 +411,8 @@ const OrderHistory = () => {
                     <p className=" text-[14px] text-[#121212]">Time</p>
                     <p className=" text-[14px] text-[#121212]">Customer </p>
                     <p className=" text-[14px] text-[#121212]">Channel </p>
+                    <p className=" text-[14px] text-[#121212]">Status </p>
                     <p className=" text-[14px] text-[#121212]">Bill </p>
-                    {/* <p className=" text-[14px] text-[#121212]">Actions </p> */}
                   </div>
                   {isLoading ? (
                     <div className="px-8">Loading...</div>
@@ -421,7 +421,7 @@ const OrderHistory = () => {
                   ) : (
                     data.map((item, index) => (
                       <div
-                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-6 items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-7  items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                           }`}
                         key={index}
                       >
@@ -429,10 +429,10 @@ const OrderHistory = () => {
                           {item.order_number || "-"}
                         </p>
                         <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.slice(0, 10)}
+                          {item.createdAt.split("T")[0]}
                         </p>
                         <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.slice(11, 16)}
+                          {item.createdAt.split("T")[1].slice(0, 5)}
                         </p>
                         <p onClick={() => handleCustomerShow(item)}>
                           {item.customer_name
@@ -446,6 +446,12 @@ const OrderHistory = () => {
 
                         <p>{item.channel}</p>
 
+                        <p className={`${item.status.toLowerCase() === "served"
+                          ? "text-green-50 bg-green-500 "
+                          : item.status.toLowerCase() === "pending"
+                            ? "text-orange-50 bg-orange-500"
+                            : "text-red-50 bg-red-500"
+                          } w-fit py-2 px-4 rounded-full  mx-auto`}>{item.status}</p>
                         <p>&#x20A6;{item.total_price.toLocaleString()}</p>
                       </div>
                     ))
