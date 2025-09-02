@@ -10,6 +10,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { SERVER_DOMAIN } from "../../Api/Api";
+// import { SERVER_DOMAIN } from "@/src/Api/Api";
 
 const YourLinkWithNoLogo = ({
   generateOnlineOrderingLink,
@@ -23,8 +25,11 @@ const YourLinkWithNoLogo = ({
   loading?: any;
 }) => {
   const { userData } = useSelector((state: RootState) => state.user);
-
-  // console.log(onlineOrderingLink, businessLogo, "qqqqq", userData);
+  const businessDetails = useSelector(
+    (state: RootState) => state.business.businessDetails
+  );
+  console.log("businessDetails", businessDetails);
+  console.log("onlineOrderingLink", onlineOrderingLink);
 
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,9 +40,9 @@ const YourLinkWithNoLogo = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
-  const [businessFullName, setBusinessFullName] = useState("");
-  const [simpleDescription, setSimpleDescription] = useState("");
-  const [instruction, setInstruction] = useState("");
+  const [businessFullName, setBusinessFullName] = useState(businessDetails?.businessFullName);
+  const [simpleDescription, setSimpleDescription] = useState(businessDetails?.orderingDescription);
+  const [instruction, setInstruction] = useState(businessDetails?.orderingInstruction);
   const [addLoading, setAddLoading] = useState(false);
 
   const [showForm, setShowForm] = useState(true);
@@ -110,9 +115,9 @@ const YourLinkWithNoLogo = ({
     };
     try {
       setAddLoading(true);
+      // "https://troox-backend-new.vercel.app/api/asset/addOrderingDetails",
       // Make the API call to add ordering details
-      const response = await axios.post(
-        "https://troox-backend-new.vercel.app/api/asset/addOrderingDetails",
+      const response = await axios.post(`${SERVER_DOMAIN}/asset/addOrderingDetails`,
         {
           businessFullName: businessFullName,
           orderingDescription: simpleDescription,

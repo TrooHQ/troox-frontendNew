@@ -46,7 +46,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
 
   const handleDownloadQR = () => {
     const link = document.createElement("a");
-    link.href = onlineOrderingLink?.qrCode;
+    link.href = onlineOrderingLink?.qrcode;
     link.download = "qr-code.png"; // Name for the downloaded file
     document.body.appendChild(link);
     link.click();
@@ -90,9 +90,9 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
             <span className="text-[#121212] text-[16px] font-normal">
               {loading
                 ? "Loading..."
-                : onlineOrderingLink?.url
-                ? truncateText(onlineOrderingLink?.url, 30)
-                : "No link generated yet"}
+                : onlineOrderingLink?.onlineOrderingLink
+                  ? truncateText(onlineOrderingLink?.onlineOrderingLink, 30)
+                  : "No link generated yet"}
             </span>
             {copied ? (
               <CheckCircle className="w-5 h-5 text-green-500" />
@@ -105,12 +105,12 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
           </div>
         </div>
         {/* Generated Link Box */}
-        <div className="rounded-lg p-0 w-full flex items-center justify-between">
+        <div className="flex items-center justify-between w-full p-0 rounded-lg">
           <div className="flex items-center gap-4">
             {/* QR Code Placeholder */}
             <div className="w-[50px] h-[50px] bg-gray-300 flex items-center justify-center rounded-md">
               <img
-                src={onlineOrderingLink?.qrCode}
+                src={onlineOrderingLink?.qrcode}
                 alt="QR Code"
                 className="w-full h-full"
               />
@@ -134,7 +134,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
 
       {/* Description and instruction form */}
       {showForm && (
-        <form className="w-4/5 mt-5 flex flex-col gap-4">
+        <form className="flex flex-col w-4/5 gap-4 mt-5">
           <CustomInput
             type="text"
             label="Add Business Full Name *"
@@ -162,7 +162,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
             className="bg-[#0d0d0d] text-center text-white py-3 px-4 rounded w-fit"
             onClick={handleGenerateClick}
           >
-            {loading ? "Generating..." : "Generate  Your link"}
+            {loading ? "Generating..." : "Generate Your link"}
           </button>
         </form>
       )}

@@ -4,6 +4,7 @@ import { FormControlLabel, Switch } from "@mui/material";
 import { useState, useEffect } from "react";
 import { SERVER_DOMAIN } from "../../../Api/Api";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 type VoidOrderMenuProps = {
@@ -40,6 +41,7 @@ const VoidOrderMenu = ({
     }
   };
 
+  console.log("voidOrderItem", voidOrderItem)
 
 
   const handleRefundAmount = (am: string) => {
@@ -57,8 +59,8 @@ const VoidOrderMenu = ({
   const handleRefund = async () => {
 
     const payload = {
-      "orderId": voidOrderItem?.orderID,
-      "transactionRef": voidOrderItem?._id,
+      "orderId": voidOrderItem?._id,
+      "transactionRef": voidOrderItem?.transactionRef,
       "amount": refundAmount
     }
 
@@ -70,7 +72,9 @@ const VoidOrderMenu = ({
         payload
       );
 
+      toast.success("Refund successful");
       console.log("response", response)
+      setVoidOrderMenu(false)
     } catch (error) {
       console.error("Error refunding order:", error);
     } finally {
