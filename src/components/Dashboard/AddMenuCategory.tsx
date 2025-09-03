@@ -11,7 +11,7 @@ import { fetchBranches } from "../../slices/branchSlice";
 import { toast } from "react-toastify";
 import { fetchMenuCategories } from "../../slices/menuSlice";
 
-const AddMenuCategory = ({ setIsModalOpen }: any) => {
+const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfirm, setCategoryEdit }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
 
@@ -23,11 +23,25 @@ const AddMenuCategory = ({ setIsModalOpen }: any) => {
   const [selectedBranch, setSelectedBranch] = useState<string>("");
   const [selectedBranchId, setSelectedBranchId] = useState<string>("");
 
+  console.log("editCategory", editCategory)
+
+
+  useEffect(() => {
+    if (editCategory) {
+      setMenuName(editCategory.old_name);
+      setImage(editCategory.image);
+
+      const branchName = branches.find((branch: any) => branch._id === editCategory.branch_id)?.branch_name;
+      setSelectedBranch(branchName);
+    }
+  }, []);
   const handleInputChange = (key: string, value: string) => {
     if (key === "menuName") {
       setMenuName(value);
+      setCategoryEdit?.((prev: any) => ({ ...prev, name: value }));
     }
   };
+
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
@@ -35,6 +49,8 @@ const AddMenuCategory = ({ setIsModalOpen }: any) => {
     try {
       const base64 = await convertToBase64(file);
       setImage(base64 as string);
+
+      setCategoryEdit?.((prev: any) => ({ ...prev, image: base64 }));
     } catch (error) {
       console.error("Error converting file to base64:", error);
     }
@@ -52,6 +68,7 @@ const AddMenuCategory = ({ setIsModalOpen }: any) => {
     );
     if (selectedBranchObj) {
       setSelectedBranchId(selectedBranchObj._id);
+      setCategoryEdit?.((prev: any) => ({ ...prev, branch_id: selectedBranchObj._id }));
     }
   };
 
@@ -60,8 +77,8 @@ const AddMenuCategory = ({ setIsModalOpen }: any) => {
     value: branch._id,
   }));
 
-  const loggedInUser = useSelector((state: any) => state.user.userData);
-  console.log(loggedInUser);
+  // const loggedInUser = useSelector((state: any) => state.user.userData);
+  // console.log(loggedInUser);
 
   const handleSubmit = async () => {
     if (!menuName || !image) {
@@ -211,10 +228,11 @@ const AddMenuCategory = ({ setIsModalOpen }: any) => {
           <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
             <button
               className="text-[16px]"
-              onClick={handleSubmit}
+              onClick={editCategory ? handleEditCategoryConfirm : handleSubmit}
               disabled={loading}
             >
-              {loading ? "Saving..." : "Save Menu"}
+              {/* {loading ? "Saving..." : "Save Menu"} */}
+              {loading ? (editCategory ? "Updating..." : "Saving...") : editCategory ? "Update Menu" : "Save Menu"}
             </button>
           </div>
         </div>
