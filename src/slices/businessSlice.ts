@@ -11,6 +11,9 @@ interface BusinessDetails {
   tableNumber: string;
   URL: string;
   colour_scheme: string;
+  businessFullName?: string;
+  orderingDescription?: string;
+  orderingInstruction?: string;
 }
 
 interface BusinessState {

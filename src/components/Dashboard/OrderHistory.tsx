@@ -14,11 +14,15 @@ import { truncateText } from "../../utils/truncateText";
 import { DatePicker, Space } from "antd";
 import PaginationComponent from "./PaginationComponent";
 
+import More from "../../assets/more_vert.svg";
+import RefundModal from "./ticketComponents/RefundModal";
+import { DropdownMenu } from "./DropdownMenuOpenTickets";
+
 const { RangePicker } = DatePicker;
 
 const OrderHistory = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
-  console.log(selectedBranch);
+
 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [data, setData] = useState<any[]>([]);
@@ -33,7 +37,7 @@ const OrderHistory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<any>();
   const [searchValue, setSearchValue] = useState("");
-
+  const [voidOrderMenu, setVoidOrderMenu] = useState<boolean>(false);
 
 
   const userDetails = useSelector((state: any) => state.user);
@@ -57,10 +61,14 @@ const OrderHistory = () => {
     filter: string,
     number_of_days?: number,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
   ) => {
     setSelectedFilter(number_of_days as any);
     setSelectedFilter2(filter);
+    setDateFilter(filter);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setNumberOfDays(number_of_days);
     getTickets({ date_filter: filter, number_of_days, startDate, endDate, page, searchValue });
   };
 
@@ -75,7 +83,13 @@ const OrderHistory = () => {
     }
     setShowDatePicker(false);
   };
-  console.log(selectedFilter, "selectedFilter");
+
+  const [_dateFilter, setDateFilter] = useState<string | undefined>("today");
+  const [_startDate, setStartDate] = useState<string | undefined>("");
+  const [_endDate, setEndDate] = useState<string | undefined>("");
+  const [_numberOfDays, setNumberOfDays] = useState<number | undefined>(0);
+
+
 
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState<{ totalOrders: number; totalPages: number; currentPage: number; pageSize: number }>({
@@ -84,6 +98,7 @@ const OrderHistory = () => {
     currentPage: 1,
     pageSize: 5,
   });
+
 
   const getTickets = async ({
     date_filter,
@@ -115,9 +130,6 @@ const OrderHistory = () => {
     } else if (date_filter !== "today") {
       params.number_of_days = number_of_days;
     }
-    console.log("searchValue from git ticket", searchValue);
-    // order_number&customer_name
-    // https://troox-backend.onrender.com/api/order/getOrderbyType/?branch_id=685009df72551c42703c5527&queryType=ticket
     try {
       setIsLoading(true);
       const response = await axios.get(
@@ -128,7 +140,6 @@ const OrderHistory = () => {
           paramsSerializer: (params) => new URLSearchParams(params).toString(),
         }
       );
-      console.log(response.data, "mmmm");
       setData(response.data?.data);
       setPagination(response.data?.pagination)
       // toast.success(response.data.message || "Successful");
@@ -140,13 +151,19 @@ const OrderHistory = () => {
   };
 
   useEffect(() => {
-    getTickets({ date_filter: "today", page });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedBranch]);
+    // getTickets({ date_filter: "today", page, });
+    getTickets({ date_filter: _dateFilter, startDate: _startDate, endDate: _endDate, number_of_days: _numberOfDays, page, searchValue });
+  }, [selectedBranch, page]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const handleRefresh = () => {
     getTickets({ date_filter: "today", page });
     setSearchValue("");
+    setDateFilter
+    setStartDate("");
+    setEndDate("");
+    setNumberOfDays(0);
   };
 
   // Function to export data as Excel
@@ -207,7 +224,17 @@ const OrderHistory = () => {
   const handleBack = () => {
     setShowCustomerDetail(false);
   };
-  console.log(data, "llllll");
+  const [activeMenuIndex, setActiveMenuIndex] = useState<number | null>(null);
+
+  const toggleMenu = (index: number) => {
+    setActiveMenuIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  const handleVoidOrderMenu = () => {
+    setVoidOrderMenu(!voidOrderMenu);
+  };
+
+  const [voidOrderItem, setVoidOrderItem] = useState<any>(null);
 
   return (
     <div>
@@ -389,7 +416,7 @@ const OrderHistory = () => {
                       className="border border-grey300 rounded-[5px] px-[16px] py-[10px] w-[300px]"
                       onChange={(e) => setSearchValue(e.target.value)}
                     />
-                    <button className="p-2 bg-black border border-black rounded" onClick={() => getTickets({})}>
+                    <button className="p-2 bg-black border border-black rounded" onClick={() => getTickets({ date_filter: _dateFilter, startDate: _startDate, endDate: _endDate, number_of_days: _numberOfDays, page, searchValue })}>
                       <SearchRounded className="text-white" />
                     </button>
                   </div>
@@ -403,7 +430,7 @@ const OrderHistory = () => {
                     Orders
                   </p>
 
-                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-7 border-b">
+                  <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-8 border-b">
                     <p className="text-start text-[14px] text-[#121212]">
                       Order No
                     </p>
@@ -413,6 +440,7 @@ const OrderHistory = () => {
                     <p className=" text-[14px] text-[#121212]">Channel </p>
                     <p className=" text-[14px] text-[#121212]">Status </p>
                     <p className=" text-[14px] text-[#121212]">Bill </p>
+                    <p className=" text-[14px] text-[#121212]">Action </p>
                   </div>
                   {isLoading ? (
                     <div className="px-8">Loading...</div>
@@ -421,7 +449,7 @@ const OrderHistory = () => {
                   ) : (
                     data.map((item, index) => (
                       <div
-                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-7  items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                        className={`cursor-pointer text-center py-[14px] px-[32px] grid grid-cols-8  items-center  font-base text-[14px] text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
                           }`}
                         key={index}
                       >
@@ -453,6 +481,25 @@ const OrderHistory = () => {
                             : "text-red-50 bg-red-500"
                           } w-fit py-2 px-4 rounded-full  mx-auto`}>{item.status}</p>
                         <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+
+                        <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
+                          {(item?.transactionRef) && <div
+                            className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
+                            onClick={() => toggleMenu(index)}
+                          >
+                            <img
+                              src={More}
+                              alt="More Options"
+                              className="w-[5px]"
+                            />
+                          </div>}
+                          {activeMenuIndex === index && (
+                            <DropdownMenu
+                              handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
+                            />
+                          )}
+                        </div>
+
                       </div>
                     ))
                   )}
@@ -460,6 +507,13 @@ const OrderHistory = () => {
                     <PaginationComponent setPage={setPage} pagination={pagination} />
                   </div>
                 </div>
+                <RefundModal
+                  voidOrderMenu={voidOrderMenu}
+                  handleVoidOrderMenu={handleVoidOrderMenu}
+                  setVoidOrderMenu={setVoidOrderMenu}
+                  // handleVoidOrder={handleVoidOrder}
+                  voidOrderItem={voidOrderItem}
+                />
               </div>
             </div>
           </div>

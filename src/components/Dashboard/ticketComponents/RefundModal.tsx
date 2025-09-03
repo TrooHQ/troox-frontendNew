@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 
-type VoidOrderMenuProps = {
+type refundModalProps = {
   voidOrderMenu: boolean;
   handleVoidOrderMenu: () => void;
   setVoidOrderMenu: (value: boolean) => void;
@@ -15,13 +15,12 @@ type VoidOrderMenuProps = {
   voidOrderItem?: any;
 };
 
-const VoidOrderMenu = ({
+const RefundModal = ({
   voidOrderMenu,
   handleVoidOrderMenu,
   setVoidOrderMenu,
-  // handleVoidOrder,
   voidOrderItem
-}: VoidOrderMenuProps) => {
+}: refundModalProps) => {
 
   useEffect(() => {
     setRefundAmount(voidOrderItem?.total_price);
@@ -40,9 +39,6 @@ const VoidOrderMenu = ({
       setRefundAmount(0);
     }
   };
-
-  console.log("voidOrderItem", voidOrderItem)
-
 
   const handleRefundAmount = (am: string) => {
     const amount = Number(am);
@@ -76,6 +72,7 @@ const VoidOrderMenu = ({
       console.log("response", response)
       setVoidOrderMenu(false)
     } catch (error) {
+      toast.error("Error refunding order");
       console.error("Error refunding order:", error);
     } finally {
       // setIsLoading(false);
@@ -161,4 +158,4 @@ const VoidOrderMenu = ({
   );
 };
 
-export default VoidOrderMenu;
+export default RefundModal;

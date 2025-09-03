@@ -25,7 +25,7 @@ import AddMenuGroup from "./MenuBuilderModals/AddMenuGroup";
 import MenuGroup from "./MenuBuilderModals/MenuGroup";
 // import AddMenuItem from "./MenuBuilderModals/AddMenuItem";
 import CustomInput from "../inputFields/CustomInput";
-import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
+// import EditCategoryNameModal from "./MenuBuilderModals/EditCategoryNameModal";
 import MenuItemForm from "./MenuBuilderModals/NewAddMenuModal";
 import { Modifier } from "./components/DisplayModifiers";
 import { IoCubeOutline } from "react-icons/io5";
@@ -64,13 +64,13 @@ const MenuBuilder = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
 
-  const [editCategoryModalOpen, setEditCategoryModalOpen] = useState(false);
+  // const [editCategoryModalOpen, setEditCategoryModalOpen] = useState(false);
   const [editGroupModalOpen, setEditGroupModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<{
-    id: string;
-    oldName: string;
-  } | null>(null);
-  const [newCategoryName, setNewCategoryName] = useState<string>("");
+  // const [editingCategory, setEditingCategory] = useState<{
+  //   id: string;
+  //   oldName: string;
+  // } | null>(null);
+  // const [newCategoryName, setNewCategoryName] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [editingGroup, setEditingGroup] = useState<{
     id: string;
@@ -115,24 +115,25 @@ const MenuBuilder = () => {
     setAnchorEl2(null);
   };
 
-  const handleCategoryEdit = (category: any) => {
-    setEditCategoryModalOpen(true);
-    setEditingCategory({ id: category._id, oldName: category.name });
-    setNewCategoryName(category.name);
-    handleClose2();
-  };
-
+  // const handleCategoryEdit = (category: any) => {
+  //   setEditCategoryModalOpen(true);
+  //   setEditingCategory({ id: category._id, oldName: category.name });
+  //   setNewCategoryName(category.name);
+  //   handleClose2();
+  // };
+  const [categoryEdit, setCategoryEdit] = useState<any>({});
   const handleEditCategoryConfirm = async () => {
-    if (editingCategory) {
+    if (categoryEdit) {
       setEditLoading(true);
       try {
+
+        console.log("categoryEdit", categoryEdit)
         const res = await axios.put(
           `${SERVER_DOMAIN}/menu/editMenu`,
           {
-            branch_id: selectedBranch?.id,
+            // branch_id: selectedBranch?.id,
             menu_type: "category",
-            old_name: editingCategory.oldName,
-            name: newCategoryName,
+            ...categoryEdit
           },
           {
             headers: {
@@ -142,15 +143,16 @@ const MenuBuilder = () => {
         );
         if (res.status === 200) {
           toast.success("Category name updated successfully");
-          setEditCategoryModalOpen(false);
+          // setEditCategoryModalOpen(false);
+          setIsModalOpen(false)
           dispatch(fetchMenuCategories(selectedBranch.id));
         }
       } catch (error) {
         toast.error("An error occurred, please try again");
       } finally {
-        setEditLoading(false);
-        setEditingCategory(null);
-        setNewCategoryName("");
+        // setEditLoading(false);
+        setCategoryEdit({});
+        // setNewCategoryName("");
       }
     }
   };
@@ -477,7 +479,8 @@ const MenuBuilder = () => {
                           onClose={handleClose2}
                         >
                           <MenuItem
-                            onClick={() => handleCategoryEdit(category)}
+                            // onClick={() => handleCategoryEdit(category)}
+                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ old_name: category.name, image: category.image, name: category.name, branch_id: category.branch }); handleClose2(); }}
                             sx={{
                               display: "flex",
                               alignItems: "center",
@@ -560,7 +563,8 @@ const MenuBuilder = () => {
 
           {/* MODALS */}
           <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
-            <AddMenuCategory setIsModalOpen={setSingleUpload} />
+            {/* <AddMenuCategory setIsModalOpen={setSingleUpload} /> */}
+            <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} />
           </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             {/* setBulkUpload */}
@@ -599,7 +603,7 @@ const MenuBuilder = () => {
           </Modal>
 
           {/* Edit selected category */}
-          <Modal
+          {/* <Modal
             isOpen={editCategoryModalOpen}
             onClose={() => setEditCategoryModalOpen(false)}
           >
@@ -610,7 +614,7 @@ const MenuBuilder = () => {
               editLoading={editLoading}
               setEditCategoryModalOpen={setEditCategoryModalOpen}
             />
-          </Modal>
+          </Modal> */}
 
           {/* Edit selected group, visibility and delete */}
           <Modal
