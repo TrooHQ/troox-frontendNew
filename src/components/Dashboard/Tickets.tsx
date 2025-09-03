@@ -22,10 +22,11 @@ import { RootState } from "@/src/store/store";
 import PaginationComponent from "./PaginationComponent";
 import { Paper } from "@mui/material";
 import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
+import RefundModal from "./ticketComponents/RefundModal";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
-  console.log(selectedBranch);
+
   const [voidOrderMenu, setVoidOrderMenu] = useState<boolean>(false);
   const [refundMenu, setRefundMenu] = useState<boolean>(false);
   const [vacateTableMenu, setVacateTableMenu] = useState<boolean>(false);
@@ -50,8 +51,6 @@ const Tickets = () => {
   const [voidOrderItem, setVoidOrderItem] = useState<any>(null);
 
   const handleVoidOrderMenu = () => {
-
-
     setVoidOrderMenu(!voidOrderMenu);
   };
 
@@ -104,7 +103,7 @@ const Tickets = () => {
         `${SERVER_DOMAIN}/order/getOrderbyType/?branch_id=${selectedBranch.id}&queryType=ticket&page=${page ? page : 1}&limit=10`,
         headers
       );
-      console.log(response.data);
+
       setData(response.data.data);
       setPagination(response.data.pagination);
       // toast.success(response.data.message || "Successful");
@@ -143,73 +142,6 @@ const Tickets = () => {
     getClosedTickets();
   }, [selectedBranch, page]);
 
-  const handleVoidOrder = async () => {
-    if (activeMenuIndex === null) {
-      toast.error("No active menu selected");
-      return;
-    }
-
-    console.log(data[activeMenuIndex], "pppp");
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/order/updateBranchOrder/`,
-        {
-          branch_id: selectedBranch.id,
-          order_id: data[activeMenuIndex]._id,
-          status: "cancel",
-        },
-        headers
-      );
-      console.log(response.data);
-      getTickets(page);
-      setVoidOrderMenu(false);
-      setActiveMenuIndex(null);
-      toast.success(response.data.message || "Successful");
-    } catch (error) {
-      toast.error("Error voiding order");
-    }
-  };
-
-  // const handleVoidOrder2 = async () => {
-  //   if (activeMenuIndex2 === null) {
-  //     toast.error("No active menu selected");
-  //     return;
-  //   }
-
-  //   console.log(data[activeMenuIndex2], "pppp");
-
-  //   const headers = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   };
-  //   try {
-  //     const response = await axios.put(
-  //       `${SERVER_DOMAIN}/order/updateBranchOrder/`,
-  //       {
-  //         branch_id: selectedBranch.id,
-  //         order_id: data[activeMenuIndex2]._id,
-  //         status: "cancel",
-  //       },
-  //       headers
-  //     );
-  //     console.log(response.data);
-  //     getTickets();
-  //     getClosedTickets();
-  //     setVoidOrderMenu(false);
-  //     toast.success(response.data.message || "Successful");
-  //   } catch (error) {
-  //     toast.error("Error voiding order");
-  //   }
-  // };
 
   const handleRefresh = () => {
     getTickets(page);
@@ -365,11 +297,11 @@ const Tickets = () => {
               )}
 
               {activeMenuIndex !== null ? (
-                <VoidOrderMenu
+                <RefundModal
                   voidOrderMenu={voidOrderMenu}
                   handleVoidOrderMenu={handleVoidOrderMenu}
                   setVoidOrderMenu={setVoidOrderMenu}
-                  handleVoidOrder={handleVoidOrder}
+                  // handleVoidOrder={handleVoidOrder}
                   voidOrderItem={voidOrderItem}
                 />
               ) : (
