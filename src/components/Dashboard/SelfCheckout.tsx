@@ -62,7 +62,7 @@ const SelfCheckoutDisplay = ({ setShowDetails }: any) => {
     <div className='w-full p-4 h-fit '>
       <div className='relative flex flex-col items-center justify-center w-full max-w-[360px]  gap-4 p-5 border border-gray-300 rounded-md cursor-pointer lg:h-[520px]' >
         <IoMdCloseCircleOutline className='absolute text-2xl text-gray-400 cursor-pointer -top-2 -right-2' onClick={() => setShowDetails(false)} />
-        <div style={{ backgroundImage: "url(/public/img1.jpg)" }} className='w-full h-full bg-center bg-cover border-[6px] border-gray-900 rounded-md '>
+        <div style={{ backgroundImage: "url('/img1.jpg')" }} className='w-full h-full bg-center bg-cover border-[6px] border-gray-900 rounded-md '>
           <div className='relative w-full h-full overflow-hidden'>
             <div className='absolute top-0 left-0 bg-black/50 w-full h-[520px] ' />
 
