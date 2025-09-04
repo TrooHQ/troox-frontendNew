@@ -114,27 +114,20 @@ const MenuBuilder = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
-
-  // const handleCategoryEdit = (category: any) => {
-  //   setEditCategoryModalOpen(true);
-  //   setEditingCategory({ id: category._id, oldName: category.name });
-  //   setNewCategoryName(category.name);
-  //   handleClose2();
-  // };
   const [categoryEdit, setCategoryEdit] = useState<any>({});
   const handleEditCategoryConfirm = async () => {
     if (categoryEdit) {
       setEditLoading(true);
       try {
 
-        console.log("categoryEdit", categoryEdit)
+        const payload =
+        {
+          ...categoryEdit,
+        }
+        console.log("payload", payload)
         const res = await axios.put(
-          `${SERVER_DOMAIN}/menu/editMenu`,
-          {
-            // branch_id: selectedBranch?.id,
-            menu_type: "category",
-            ...categoryEdit
-          },
+          `${SERVER_DOMAIN}/menu/editMenuCategory`,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -480,7 +473,7 @@ const MenuBuilder = () => {
                         >
                           <MenuItem
                             // onClick={() => handleCategoryEdit(category)}
-                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ old_name: category.name, image: category.image, name: category.name, branch_id: category.branch }); handleClose2(); }}
+                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); }}
                             sx={{
                               display: "flex",
                               alignItems: "center",
@@ -563,7 +556,6 @@ const MenuBuilder = () => {
 
           {/* MODALS */}
           <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
-            {/* <AddMenuCategory setIsModalOpen={setSingleUpload} /> */}
             <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} />
           </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
