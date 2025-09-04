@@ -114,41 +114,15 @@ const MenuBuilder = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
-
-  // const handleCategoryEdit = (category: any) => {
-  //   setEditCategoryModalOpen(true);
-  //   setEditingCategory({ id: category._id, oldName: category.name });
-  //   setNewCategoryName(category.name);
-  //   handleClose2();
-  // };
   const [categoryEdit, setCategoryEdit] = useState<any>({});
   const handleEditCategoryConfirm = async () => {
     if (categoryEdit) {
       setEditLoading(true);
       try {
 
-        //         {
-        //   "category_id": "64a1b2c3d4e5f6789012345a",
-        //   "menu_category_name": "Updated Category Name",
-        //   "description": "Updated description for the category",
-        //   "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
-        //   "branch_id": "64a1b2c3d4e5f6789012345b" // Only required for admin users
-        // }
-
-
-
-        // {
-        // "menu_type": "category",
-        //     "menu_category_name": "Palazo",
-        //     "branch_id": "6729de3ac6a9cd9c11abdccd",
-        //     "category_id": "68b16522a3a8bae3b7222dd2"
-        // }
-
         const payload =
         {
-          // branch_id: selectedBranch?.id,
-          // menu_type: "category",
-          ...categoryEdit
+          ...categoryEdit,
         }
         console.log("payload", payload)
         const res = await axios.put(
