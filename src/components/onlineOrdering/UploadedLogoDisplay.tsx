@@ -37,7 +37,7 @@ const UploadedLogoDisplay: React.FC<UploadedLogoDisplayProps> = ({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(onlineOrderingLink?.url);
+    navigator.clipboard.writeText(onlineOrderingLink?.onlineOrderingLink);
     setCopied(true);
 
     // Reset the icon after 2 seconds
