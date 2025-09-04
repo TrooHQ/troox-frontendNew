@@ -28,7 +28,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
 
   useEffect(() => {
     if (editCategory) {
-      setMenuName(editCategory.old_name);
+      setMenuName(editCategory.menu_category_name);
       setImage(editCategory.image);
 
       const branchName = branches.find((branch: any) => branch._id === editCategory.branch_id)?.branch_name;
@@ -38,7 +38,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
   const handleInputChange = (key: string, value: string) => {
     if (key === "menuName") {
       setMenuName(value);
-      setCategoryEdit?.((prev: any) => ({ ...prev, name: value }));
+      setCategoryEdit?.((prev: any) => ({ ...prev, menu_category_name: value }));
     }
   };
 
@@ -145,7 +145,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
     <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
       <div>
         <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-          Add menu category
+          {editCategory ? "Update Menu Category" : "Add Menu Category"}
         </p>
 
         <div className="lg:mb-[24px]">

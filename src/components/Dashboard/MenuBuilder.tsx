@@ -127,14 +127,33 @@ const MenuBuilder = () => {
       setEditLoading(true);
       try {
 
-        console.log("categoryEdit", categoryEdit)
+        //         {
+        //   "category_id": "64a1b2c3d4e5f6789012345a",
+        //   "menu_category_name": "Updated Category Name",
+        //   "description": "Updated description for the category",
+        //   "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+        //   "branch_id": "64a1b2c3d4e5f6789012345b" // Only required for admin users
+        // }
+
+
+
+        // {
+        // "menu_type": "category",
+        //     "menu_category_name": "Palazo",
+        //     "branch_id": "6729de3ac6a9cd9c11abdccd",
+        //     "category_id": "68b16522a3a8bae3b7222dd2"
+        // }
+
+        const payload =
+        {
+          // branch_id: selectedBranch?.id,
+          // menu_type: "category",
+          ...categoryEdit
+        }
+        console.log("payload", payload)
         const res = await axios.put(
-          `${SERVER_DOMAIN}/menu/editMenu`,
-          {
-            // branch_id: selectedBranch?.id,
-            menu_type: "category",
-            ...categoryEdit
-          },
+          `${SERVER_DOMAIN}/menu/editMenuCategory`,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -480,7 +499,7 @@ const MenuBuilder = () => {
                         >
                           <MenuItem
                             // onClick={() => handleCategoryEdit(category)}
-                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ old_name: category.name, image: category.image, name: category.name, branch_id: category.branch }); handleClose2(); }}
+                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); }}
                             sx={{
                               display: "flex",
                               alignItems: "center",
@@ -563,7 +582,6 @@ const MenuBuilder = () => {
 
           {/* MODALS */}
           <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
-            {/* <AddMenuCategory setIsModalOpen={setSingleUpload} /> */}
             <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} />
           </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
