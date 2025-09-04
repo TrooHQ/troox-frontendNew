@@ -54,6 +54,7 @@ import AddOns from "./pages/pricing/AddOns.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
+import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 
 export default function App() {
   return (
@@ -82,6 +83,7 @@ export default function App() {
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
           <Route path="/manage-assets" element={<ManageTables />} />
+          <Route path="/troo-kiosk" element={<SelfCheckout />} />
           <Route path="/table-list" element={<TableList />} />
           <Route path="/menu-builder" element={<MenuBuilder />} />
           <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} />
