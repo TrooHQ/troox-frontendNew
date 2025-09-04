@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRoles } from "../../slices/rolesSlice";
 import { AppDispatch } from "../../store/store";
+import Modal from "../Modal";
+import Loader from "../Loader";
 
 const Roles = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +67,37 @@ const Roles = () => {
     }
   };
 
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [roleToDelete, setRoleToDelete] = useState<any | null>(null);
+
+  const deleteRoleFunction = async () => {
+
+    setSaveLoading(true);
+    // delete-/role/deleteRole/
+    const payload = {
+      "role_name": roleToDelete.name
+    }
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    try {
+      const response = await axios.delete(`${SERVER_DOMAIN}/role/deleteRole`, { data: payload, ...headers });
+      toast.success(response.data.message);
+      dispatch(fetchRoles());
+      setShowDeleteModal(false);
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to delete role.");
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   return (
     <div className="">
       <div className="grid grid-cols-5 items-center border-b border-b-grey100 text-grey300 text-[16px]">
@@ -92,9 +125,8 @@ const Roles = () => {
                     } else if (action === "Edit") {
                       window.location.href = `/edit-role?_id=${role._id}`;
                     } else if (action === "Delete") {
-                      // Handle delete action
-                      console.log("Delete action for role:", role);
-                      // You can add a confirmation modal or similar logic here
+                      setShowDeleteModal(true);
+                      setRoleToDelete(role);
                     }
                     // You can add handlers for "Edit" and "Delete" actions here if needed
                   }}
@@ -108,8 +140,26 @@ const Roles = () => {
           </div>
         </div>
       ))}
+      <DeleteModal _isOpen={showDeleteModal} _onClose={() => setShowDeleteModal(false)} _onDelete={deleteRoleFunction} _saveLoading={saveLoading} />
     </div>
   );
 };
 
 export default Roles;
+
+
+const DeleteModal = ({ _isOpen, _onClose, _onDelete, _saveLoading }: any) => {
+  return (
+    <Modal isOpen={_isOpen} onClose={_onClose}>
+      <div className="p-6 rounded-lg w-[400px]">
+        <h4 className="text-2xl font-semibold ">Are you sure you want to delete this role?</h4>
+
+        {_saveLoading && <Loader />}
+        <div className="flex justify-end gap-4 mt-4">
+          <button onClick={_onClose} className="w-full px-6 py-2 border border-black rounded-md">Cancel</button>
+          <button onClick={_onDelete} className="w-full px-6 py-2 text-white bg-black rounded-md" disabled={_saveLoading}>Delete</button>
+        </div>
+      </div>
+    </Modal>
+  )
+}
