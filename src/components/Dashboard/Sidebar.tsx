@@ -202,8 +202,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         },
         {
           title: "Troo Kiosk",
-          link: "#",
-          // link: "/troo-kiosk",
+          link: "/troo-kiosk",
           showMenu: true,
         },
       ],
