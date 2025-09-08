@@ -106,6 +106,10 @@ const RefundModal = ({
                   <h4 className="font-semibold" >#{voidOrderItem?.order_number}</h4>
                 </div>
                 <div className="flex items-center justify-between w-full py-2 border-b border-gray-500">
+                  <h4>Payment Method:</h4>
+                  <h4 className="capitalize">{voidOrderItem?.paymentMethod ?? "-"}</h4>
+                </div>
+                <div className="flex items-center justify-between w-full py-2 border-b border-gray-500">
                   <h4>Customer:</h4>
                   <h4>{voidOrderItem?.customer_name}</h4>
                 </div>
