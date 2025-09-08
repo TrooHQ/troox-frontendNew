@@ -229,7 +229,7 @@ const Tickets = () => {
                             )
                             : ""}
                         </p>
-                        <p className="" onClick={handleTicketMenu}>
+                        <p className="capitalize" onClick={handleTicketMenu}>
                           {item?.paymentMethod ?? ""}
                         </p>
                         {/* <p>{item.waiter_name || "-"}</p> */}

@@ -102,7 +102,7 @@ export default function SelfCheckout() {
         <div className='flex w-full gap-4 px-5 my-20 justify-evenly'>
           <div className='w-full'>
             <div className='mx-auto sm:w-full lg:w-2/3'>
-              <h2 className='text-sm font-semibold'>Upload Self-Checkout images.</h2>
+              <h2 className='text-sm font-semibold'>Upload Troo Kiosk images.</h2>
               <p className='text-sm'>Add 3-5 images as your Kiosk screen saver</p>
               <div className='w-full p-4 mt-4 border border-gray-300 rounded-md h-fit'  {...getRootProps()}>
                 <div className='flex flex-col items-center justify-center w-full gap-4 p-4 border border-gray-300 border-dashed rounded-md cursor-pointer h-fit'>
