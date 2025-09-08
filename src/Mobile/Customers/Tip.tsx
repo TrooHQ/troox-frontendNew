@@ -14,7 +14,7 @@ export const Tip = () => {
   const dispatch = useDispatch();
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<number | null>(null);
-  const tipPercentages = [0.1, 0.125, 0.15];
+  const tipPercentages = [0.05, 0.1, 0.15];
 
   useEffect(() => {
     if (tip !== null) {
@@ -71,7 +71,7 @@ export const Tip = () => {
   const colorScheme = userDetails?.colour_scheme;
 
   return (
-    <div className="  ">
+    <div className="">
       <TopMenuNav exploreMenuText="Tip" />
 
       <div className=" mt-[68px] ">
@@ -102,7 +102,7 @@ export const Tip = () => {
           </div>
         </div>
 
-        <div className=" flex  items-center justify-center">
+        <div className="flex items-center justify-center ">
           <label htmlFor="">&#x20A6;</label>
           <input
             className="border-b border-[#929292] outline-none focus:border-grey500 pb-[8px] text-center"

@@ -77,8 +77,6 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
     value: branch._id,
   }));
 
-  // const loggedInUser = useSelector((state: any) => state.user.userData);
-  // console.log(loggedInUser);
 
   const handleSubmit = async () => {
     if (!menuName || !image) {

@@ -183,11 +183,11 @@ const Tickets = () => {
                   </p>
 
                   <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-9 border-b">
-                    <p className=" text-[14px] text-[#121212]">Date</p>
-                    <p className=" text-[14px] text-[#121212]">Time</p>
+                    <p className=" text-[14px] text-[#121212]">Date/Time</p>
                     <p className=" text-[14px] text-[#121212]">Table No</p>
                     <p className=" text-[14px] text-[#121212]">Order No</p>
                     <p className=" text-[14px] text-[#121212]">Customer </p>
+                    <p className=" text-[14px] text-[#121212]">Payment Method</p>
                     {/* <p className=" text-[14px] text-[#121212]">Waiter </p> */}
                     <p className=" text-[14px] text-[#121212]">Channel </p>
                     <p className=" text-[14px] text-[#121212]">Status </p>
@@ -206,14 +206,14 @@ const Tickets = () => {
                         key={index}
                       >
                         <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.slice(0, 10)}
+                          <span>{item.createdAt.slice(0, 10)}</span> <br />
+                          <span>{item.createdAt.slice(11, 16)}</span>
                         </p>
-                        <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.slice(11, 16)}
-                        </p>
+
                         <p onClick={handleTicketMenu}>
                           {item.customer_asset_number || "-"}
                         </p>
+
                         <p onClick={handleTicketMenu}>
                           {item.order_number || "-"}
                         </p>
@@ -228,6 +228,9 @@ const Tickets = () => {
                               10
                             )
                             : ""}
+                        </p>
+                        <p className="" onClick={handleTicketMenu}>
+                          {item?.paymentMethod ?? ""}
                         </p>
                         {/* <p>{item.waiter_name || "-"}</p> */}
                         <p>{item.channel || ""}</p>

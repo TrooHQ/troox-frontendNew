@@ -57,7 +57,7 @@ import AccountVerified from "./Mobile/Components/AccountVerified";
 
 const MobileLayout = () => {
   return (
-    <div className="overflow-hidden  font-GeneralSans">
+    <div className="overflow-hidden font-GeneralSans">
       <ToastContainer />
       <Router>
         <ScrollToTop />

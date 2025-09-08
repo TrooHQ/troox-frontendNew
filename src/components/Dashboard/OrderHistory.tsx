@@ -434,10 +434,10 @@ const OrderHistory = () => {
                     <p className="text-start text-[14px] text-[#121212]">
                       Order No
                     </p>
-                    <p className=" text-[14px] text-[#121212]">Date</p>
-                    <p className=" text-[14px] text-[#121212]">Time</p>
+                    <p className=" text-[14px] text-[#121212]">Date/Time</p>
                     <p className=" text-[14px] text-[#121212]">Customer </p>
                     <p className=" text-[14px] text-[#121212]">Channel </p>
+                    <p className=" text-[14px] text-[#121212]">Payment Method</p>
                     <p className=" text-[14px] text-[#121212]">Status </p>
                     <p className=" text-[14px] text-[#121212]">Bill </p>
                     <p className=" text-[14px] text-[#121212]">Action </p>
@@ -457,10 +457,9 @@ const OrderHistory = () => {
                           {item.order_number || "-"}
                         </p>
                         <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.split("T")[0]}
-                        </p>
-                        <p className="" onClick={handleTicketMenu}>
-                          {item.createdAt.split("T")[1].slice(0, 5)}
+                          <span>{item.createdAt.split("T")[0]}</span> <br />
+                          <span>{item.createdAt.split("T")[1].slice(0, 5)}</span>
+
                         </p>
                         <p onClick={() => handleCustomerShow(item)}>
                           {item.customer_name
@@ -473,6 +472,9 @@ const OrderHistory = () => {
                         </p>
 
                         <p>{item.channel}</p>
+                        <p className="" onClick={handleTicketMenu}>
+                          {item?.paymentMethod ?? ""}
+                        </p>
 
                         <p className={`${item.status.toLowerCase() === "served"
                           ? "text-green-50 bg-green-500 "
@@ -483,10 +485,9 @@ const OrderHistory = () => {
                         <p>&#x20A6;{item.total_price.toLocaleString()}</p>
 
                         <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                          {(item?.transactionRef) && <div
+                          {<div
                             className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                            onClick={() => toggleMenu(index)}
-                          >
+                            onClick={() => toggleMenu(index)}>
                             <img
                               src={More}
                               alt="More Options"
