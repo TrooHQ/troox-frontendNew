@@ -3,11 +3,95 @@ import DashboardLayout from './DashboardLayout'
 import TopMenuNav from './TopMenuNav'
 import { FiUploadCloud } from 'react-icons/fi'
 import { BsFileEarmarkImage } from "react-icons/bs";
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import axios from 'axios';
+import { SERVER_DOMAIN } from '../../Api/Api';
+import { useDropzone } from 'react-dropzone';
 export default function SelfCheckout() {
 
-  const [_showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [kioskImages, setKioskImages] = useState([]);
+
+
+  // handle fetching and displaying uploaded images
+
+  useEffect(() => {
+
+    const fetchUploadedImages = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.get(
+          `${SERVER_DOMAIN}/self-checkout/assets`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log("response", response.data);
+        setKioskImages(response.data);
+      } catch (error: any) {
+        console.error("Error fetching pickup locations:", error);
+      }
+    }
+
+    fetchUploadedImages();
+  }, []);
+
+  const [isUploading, setIsUploading] = useState(false);
+  // const [blob, setBlob] = useState<File | null>(null);
+  const [files, setFile] = useState<any>({});
+
+  console.log("files", files)
+  console.log("isUploading", isUploading)
+
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (!file) return;
+
+      setIsUploading(true);
+      console.log("upload", file)
+
+      // setBlob(file);
+
+      try {
+        setFile(file);
+
+        setIsUploading(false);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    // [addFile, setCurrentFile, updateTranscript]
+    []
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      // 'audio/*': ['.mp3', '.wav', '.m4a'],
+      // 'video/*': ['.mp4', '.webm', '.mov'],
+      'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
+    },
+    // maxSize: MAX_FILE_SIZE,
+    multiple: false,
+  });
+
+  //  uploading images to the kiosk
+  // const handleFileUpload = () => {
+  //   // Handle file upload logic here
+  // }
+
+  // handle deleting an uploaded image
+  // const handleDeleteImage = (imageId: string) => {
+  //   // Handle delete image logic here
+  // }
+
 
   return (
 
@@ -20,12 +104,13 @@ export default function SelfCheckout() {
             <div className='mx-auto sm:w-full lg:w-2/3'>
               <h2 className='text-sm font-semibold'>Upload Self-Checkout images.</h2>
               <p className='text-sm'>Add 3-5 images as your Kiosk screen saver</p>
-              <div className='w-full p-4 mt-4 border border-gray-300 rounded-md h-fit'>
+              <div className='w-full p-4 mt-4 border border-gray-300 rounded-md h-fit'  {...getRootProps()}>
                 <div className='flex flex-col items-center justify-center w-full gap-4 p-4 border border-gray-300 border-dashed rounded-md cursor-pointer h-fit'>
 
                   <FiUploadCloud className='size-14 stroke-gray-400' />
 
                   <div className='space-y-3 text-center'>
+                    <input {...getInputProps()} />
                     <h4 className='font-semibold '>Select a file or drag and drop here</h4>
                     <p className='text-xs'>JPG, PNG, file size no more than 10MB</p>
                     <p className='text-xs'>1080px by 1920px</p>
@@ -39,14 +124,21 @@ export default function SelfCheckout() {
 
           <div className='w-full'>
             {
-              _showDetails ?
+              showDetails ?
                 <SelfCheckoutDisplay setShowDetails={setShowDetails} />
                 :
-                <div className='my-10'>
-                  <SelfCheckoutList setShowDetails={setShowDetails} />
-                  <SelfCheckoutList setShowDetails={setShowDetails} />
-                  <SelfCheckoutList setShowDetails={setShowDetails} />
-                </div>
+                <>
+                  {
+                    (kioskImages && kioskImages?.length > 0) ?
+                      <div className='my-10'>
+                        <SelfCheckoutList setShowDetails={setShowDetails} />
+                        <SelfCheckoutList setShowDetails={setShowDetails} />
+                        <SelfCheckoutList setShowDetails={setShowDetails} />
+                      </div> : <div>
+                        <p className='text-sm font-semibold text-center'>No uploaded images yet</p>
+                        <p className='text-sm text-center'>Upload images to see them here</p>
+                      </div>
+                  }</>
             }
           </div>
         </div>
