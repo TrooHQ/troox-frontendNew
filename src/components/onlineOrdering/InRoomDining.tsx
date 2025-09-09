@@ -208,16 +208,7 @@ const InRoomDining = () => {
             setOpenDeleteQR={setOpenDeleteQR}
             isRoomList={true}
           />
-          {/* <RoomList
-            rooms={rooms}
-            branchOptions={branchOptions}
-            handleConfirmDelete={handleConfirmDelete}
-            isLoading={isLoading}
-            selectedQRCode={selectedQRCode}
-            setSelectedQRCode={setSelectedQRCode}
-            openDeleteQR={openDeleteQR}
-            setOpenDeleteQR={setOpenDeleteQR}
-          /> */}
+
         </div>
       )}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>

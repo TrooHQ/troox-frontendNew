@@ -208,16 +208,7 @@ const QRCodesAtTable = () => {
             openDeleteQR={openDeleteQR}
             setOpenDeleteQR={setOpenDeleteQR}
           />
-          {/* <TablesList
-            rooms={tables}
-            branchOptions={branchOptions}
-            handleConfirmDelete={handleConfirmDelete}
-            isLoading={loading}
-            selectedQRCode={selectedQRCode}
-            setSelectedQRCode={setSelectedQRCode}
-            openDeleteQR={openDeleteQR}
-            setOpenDeleteQR={setOpenDeleteQR}
-          /> */}
+      
         </div>
       )}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>
