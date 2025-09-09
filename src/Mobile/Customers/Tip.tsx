@@ -4,6 +4,7 @@ import TopMenuNav from "./TopMenuNav";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { setTip } from "../../slices/BasketSlice";
+import { tips } from "../../utils/tipsConstant";
 
 export const Tip = () => {
   const navigate = useNavigate();
@@ -14,11 +15,11 @@ export const Tip = () => {
   const dispatch = useDispatch();
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<number | null>(null);
-  const tipPercentages = [0.05, 0.1, 0.15];
+
 
   useEffect(() => {
     if (tip !== null) {
-      const matchingTip = tipPercentages.find(
+      const matchingTip = tips.find(
         (percentage) => totalPrice * percentage === tip
       );
       if (matchingTip !== undefined) {
@@ -80,7 +81,7 @@ export const Tip = () => {
             Enter Tip
           </p>
           <div className=" grid grid-cols-3 gap-[8px]">
-            {tipPercentages.map((tip, index) => (
+            {tips.map((tip, index) => (
               <div
                 key={index}
                 className={`flex flex-col items-center px-[36px] py-[8px] border border-[#B6B6B6] rounded-[3px] cursor-pointer`}

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { setTip } from "../../slices/BasketSlice";
 import Customer from "../assets/streamline_customer-support-1-solid.svg";
+import { tips } from "../../utils/tipsConstant";
 
 export const OnlineOrderingTip = () => {
   const navigate = useNavigate();
@@ -16,11 +17,11 @@ export const OnlineOrderingTip = () => {
   const [selectedTip, setSelectedTip] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<number | null>(null);
   const basketDetails = useSelector((state: RootState) => state.basket);
-  const tipPercentages = [0.1, 0.125, 0.15];
+
 
   useEffect(() => {
     if (tip !== null) {
-      const matchingTip = tipPercentages.find(
+      const matchingTip = tips.find(
         (percentage) => totalPrice * percentage === tip
       );
       if (matchingTip !== undefined) {
@@ -71,7 +72,7 @@ export const OnlineOrderingTip = () => {
   }, [basketDetails]);
 
   return (
-    <div className="  ">
+    <div className="">
       <TopMenuNav exploreMenuText="Tip" />
 
       <div className=" mt-[68px] ">
@@ -80,12 +81,11 @@ export const OnlineOrderingTip = () => {
             Enter Tip
           </p>
           <div className=" grid grid-cols-3 gap-[8px]">
-            {tipPercentages.map((tip, index) => (
+            {tips.map((tip, index) => (
               <div
                 key={index}
-                className={`flex flex-col items-center px-[36px] py-[8px] border border-[#B6B6B6] rounded-[3px] cursor-pointer ${
-                  selectedTip === tip ? "bg-[#E0E0E0]" : ""
-                }`}
+                className={`flex flex-col items-center px-[36px] py-[8px] border border-[#B6B6B6] rounded-[3px] cursor-pointer ${selectedTip === tip ? "bg-[#E0E0E0]" : ""
+                  }`}
                 onClick={() => handleTipClick(tip)}
               >
                 <p className=" text-[#121212] text-[16px] font-[500]">
@@ -99,7 +99,7 @@ export const OnlineOrderingTip = () => {
           </div>
         </div>
 
-        <div className=" flex  items-center justify-center">
+        <div className="flex items-center justify-center ">
           <label htmlFor="">&#x20A6;</label>
           <input
             className="border-b border-[#929292] outline-none focus:border-grey500 pb-[8px] text-center"
