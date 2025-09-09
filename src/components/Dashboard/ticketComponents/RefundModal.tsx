@@ -29,6 +29,7 @@ const RefundModal = ({
   const [refundStatus, setRefundStatus] = useState<boolean>(true);
   const [refundAmount, setRefundAmount] = useState<number>(voidOrderItem?.total_price);
   const [isValidRefund, setIsValidRefund] = useState<boolean>(true);
+  const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
   const handleToggleRefund = (value: boolean) => {
     setRefundStatus(value);
@@ -71,6 +72,7 @@ const RefundModal = ({
       toast.success("Refund successful");
       console.log("response", response)
       setVoidOrderMenu(false)
+      setShowConfirmationModal(false)
     } catch (error) {
       toast.error("Error refunding order");
       console.error("Error refunding order:", error);
@@ -150,16 +152,36 @@ const RefundModal = ({
               <div className="flex items-center justify-center gap-4 mt-5">
 
                 <button className="font-[500] text-[16px] text-black cursor-pointer border-black rounded px-[24px]  py-[10px] border w-full"
-                  onClick={() => setVoidOrderMenu(false)}                >No                </button>
+                  onClick={() => setVoidOrderMenu(false)}                >Cancel                </button>
 
-                <button onClick={handleRefund} className=" text-[16px] border border-black bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] w-full" disabled={!isValidRefund}>                  Yes                </button>
+                <button onClick={() => setShowConfirmationModal(true)} className=" text-[16px] border border-black bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] w-full" disabled={!isValidRefund}>                  Refund                </button>
               </div>
             </div>
           </div>
         </div>
       </Modal>
+      <RefundConfirmation showConfirmationModal={showConfirmationModal} setShowConfirmationModal={setShowConfirmationModal} confirmRefund={handleRefund} />
     </div>
   );
 };
 
 export default RefundModal;
+
+
+const RefundConfirmation = ({ showConfirmationModal, setShowConfirmationModal, confirmRefund }: any) => {
+  return (
+    <div className="w-full p-6 px-10 bg-gray-100 rounded-md">
+      <Modal isOpen={showConfirmationModal} onClose={() => setShowConfirmationModal(false)}>
+        <div className="px-10">
+
+          <h4 className="my-6 text-2xl font-semibold">Are you sure you want to refund this order?</h4>
+          <div className="flex items-center justify-between w-full gap-6 py-4 border-t border-gray-500">
+            <button className="font-[500] text-sm text-black cursor-pointer border-black rounded px-[24px]  py-[10px] border w-full" onClick={() => setShowConfirmationModal(false)}>No</button>
+            <button className=" text-sm border border-black bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] w-full" onClick={confirmRefund}>Yes</button>
+          </div>
+        </div>
+
+      </Modal>
+    </div>
+  );
+}

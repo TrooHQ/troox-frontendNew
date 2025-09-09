@@ -8,43 +8,46 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import axios from 'axios';
 import { SERVER_DOMAIN } from '../../Api/Api';
 import { useDropzone } from 'react-dropzone';
+import { useSelector } from 'react-redux';
 export default function SelfCheckout() {
 
   const [showDetails, setShowDetails] = useState(false);
   const [kioskImages, setKioskImages] = useState([]);
 
+  const { selectedBranch } = useSelector((state: any) => state.branches);
 
   // handle fetching and displaying uploaded images
+  const fetchUploadedImages = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        // /branches/:branchId/self-checkout/assets
+        // /branches/:branchId/self-checkout/assets
+        // `${SERVER_DOMAIN}/self-checkout/assets`,
+        `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("response", response.data);
+      setKioskImages(response.data);
+    } catch (error: any) {
+      console.error("Error fetching pickup locations:", error);
+    }
+  }
 
   useEffect(() => {
-
-    const fetchUploadedImages = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get(
-          `${SERVER_DOMAIN}/self-checkout/assets`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("response", response.data);
-        setKioskImages(response.data);
-      } catch (error: any) {
-        console.error("Error fetching pickup locations:", error);
-      }
-    }
-
     fetchUploadedImages();
-  }, []);
+  }, [selectedBranch?.id]);
 
   const [isUploading, setIsUploading] = useState(false);
   // const [blob, setBlob] = useState<File | null>(null);
-  const [files, setFile] = useState<any>({});
+  // const [files, setFile] = useState<any>({});
 
-  console.log("files", files)
+  console.log("selected branch", selectedBranch)
   console.log("isUploading", isUploading)
 
   const onDrop = useCallback(
@@ -58,8 +61,27 @@ export default function SelfCheckout() {
       // setBlob(file);
 
       try {
-        setFile(file);
+        // setFile(file);
 
+        const formData = new FormData();
+        formData.append('images', file);
+        // formData.append('branch_id', selectedBranch?.id);
+        // formData.append('is_active', 'true');
+
+        const token = localStorage.getItem("token");
+
+        const response = await axios.post(
+          `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        console.log("response", response);
         setIsUploading(false);
       } catch (error) {
         console.error('Error uploading file:', error);
@@ -74,8 +96,6 @@ export default function SelfCheckout() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      // 'audio/*': ['.mp3', '.wav', '.m4a'],
-      // 'video/*': ['.mp4', '.webm', '.mov'],
       'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
     },
     // maxSize: MAX_FILE_SIZE,

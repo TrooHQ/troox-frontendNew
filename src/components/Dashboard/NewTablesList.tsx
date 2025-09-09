@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { getTables } from "../../slices/TableSlice";
 import EditQRCode from "./EditQRCode";
+import { handleDownloadQRCode } from "../../utils/QRCodeDownload";
 
 const NewTablesList = ({
   rooms,
@@ -23,6 +24,7 @@ const NewTablesList = ({
   openDeleteQR,
   setOpenDeleteQR,
   isRoomList,
+  // handleDownloadQRCode,
 }: {
   rooms: any[];
   branchOptions?: any[];
@@ -33,6 +35,7 @@ const NewTablesList = ({
   openDeleteQR: boolean;
   setOpenDeleteQR: (open: boolean) => void;
   isRoomList?: boolean;
+  // handleDownloadQRCode?: (qrcodeUrl: string, groupName: string) => void;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -123,6 +126,7 @@ const NewTablesList = ({
                   item={item}
                   handleDeleteClick={handleDeleteClick}
                   handleEditClick={handleEditClick}
+                  handleDownloadQRCode={handleDownloadQRCode}
                 />
               </div>
             ))}
@@ -159,7 +163,7 @@ const NewTablesList = ({
 export default NewTablesList;
 
 
-const TableListDropDown = ({ handleDeleteClick, handleEditClick, item }: any) => {
+const TableListDropDown = ({ handleDeleteClick, handleEditClick, item, handleDownloadQRCode }: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -168,6 +172,12 @@ const TableListDropDown = ({ handleDeleteClick, handleEditClick, item }: any) =>
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const qrcodeDownload = () => {
+    handleMenuClose();
+    console.log("item", item);
+    handleDownloadQRCode(item?.qrcode, `${item?.type}_${item?.group_name}_${item?.number}`);
   };
 
   return (
@@ -184,6 +194,11 @@ const TableListDropDown = ({ handleDeleteClick, handleEditClick, item }: any) =>
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         transformOrigin={{ vertical: "top", horizontal: "left" }}
       >
+        {handleDownloadQRCode && <MenuItem
+          onClick={qrcodeDownload}
+        >
+          Download QR Code
+        </MenuItem>}
         <MenuItem
           onClick={() => handleEditClick(item)}
         >
