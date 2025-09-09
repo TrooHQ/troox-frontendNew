@@ -9,9 +9,11 @@ import axios from 'axios';
 import { SERVER_DOMAIN } from '../../Api/Api';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
+import Loader from '../Loader';
+import { toast } from 'react-toastify';
 export default function SelfCheckout() {
 
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(null);
   const [kioskImages, setKioskImages] = useState([]);
 
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -22,9 +24,6 @@ export default function SelfCheckout() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        // /branches/:branchId/self-checkout/assets
-        // /branches/:branchId/self-checkout/assets
-        // `${SERVER_DOMAIN}/self-checkout/assets`,
         `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
         {
           headers: {
@@ -33,11 +32,13 @@ export default function SelfCheckout() {
         }
       );
       console.log("response", response.data);
-      setKioskImages(response.data);
+      setKioskImages(response?.data?.data);
     } catch (error: any) {
       console.error("Error fetching pickup locations:", error);
     }
   }
+
+  console.log("kioskImage", kioskImages)
 
   useEffect(() => {
     fetchUploadedImages();
@@ -47,8 +48,8 @@ export default function SelfCheckout() {
   // const [blob, setBlob] = useState<File | null>(null);
   // const [files, setFile] = useState<any>({});
 
-  console.log("selected branch", selectedBranch)
-  console.log("isUploading", isUploading)
+  // console.log("selected branch", selectedBranch)
+  // console.log("isUploading", isUploading)
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -65,7 +66,7 @@ export default function SelfCheckout() {
 
         const formData = new FormData();
         formData.append('images', file);
-        // formData.append('branch_id', selectedBranch?.id);
+        formData.append('branch_id', selectedBranch?.id);
         // formData.append('is_active', 'true');
 
         const token = localStorage.getItem("token");
@@ -83,6 +84,8 @@ export default function SelfCheckout() {
 
         console.log("response", response);
         setIsUploading(false);
+        toast.success("Image uploaded successfully");
+        fetchUploadedImages();
       } catch (error) {
         console.error('Error uploading file:', error);
       } finally {
@@ -117,7 +120,9 @@ export default function SelfCheckout() {
 
     <DashboardLayout>
       <TopMenuNav pathName="Troo Kiosk" />
-      <div className='w-full min-h-screen my-5 border border-gray-400 rounded-md'>
+      <div className='relative w-full min-h-screen my-5 border border-gray-400 rounded-md'>
+
+        {isUploading && <Loader />}
 
         <div className='flex w-full gap-4 px-5 my-20 justify-evenly'>
           <div className='w-full'>
@@ -133,10 +138,10 @@ export default function SelfCheckout() {
                     <input {...getInputProps()} />
                     <h4 className='font-semibold '>Select a file or drag and drop here</h4>
                     <p className='text-xs'>JPG, PNG, file size no more than 10MB</p>
-                    <p className='text-xs'>1080px by 1920px</p>
+                    {/* <p className='text-xs'>1080px by 1920px</p> */}
                   </div>
 
-                  <button className='px-6 py-2 text-sm text-black bg-transparent border border-black rounded hover:bg-black hover:text-white'>Select Files</button>
+                  <button className='px-6 py-2 text-sm text-black bg-transparent border border-black rounded hover:bg-black hover:text-white'>Select Image</button>
                 </div>
               </div>
             </div>
@@ -145,15 +150,18 @@ export default function SelfCheckout() {
           <div className='w-full'>
             {
               showDetails ?
-                <SelfCheckoutDisplay setShowDetails={setShowDetails} />
+                <SelfCheckoutDisplay setShowDetails={setShowDetails} showDetails={showDetails} />
                 :
                 <>
                   {
                     (kioskImages && kioskImages?.length > 0) ?
                       <div className='my-10'>
-                        <SelfCheckoutList setShowDetails={setShowDetails} />
-                        <SelfCheckoutList setShowDetails={setShowDetails} />
-                        <SelfCheckoutList setShowDetails={setShowDetails} />
+                        {
+                          kioskImages?.map((image: any, index) => (
+                            <SelfCheckoutList setShowDetails={setShowDetails} imageDetails={image} key={index} />
+                          ))
+                        }
+
                       </div> : <div>
                         <p className='text-sm font-semibold text-center'>No uploaded images yet</p>
                         <p className='text-sm text-center'>Upload images to see them here</p>
@@ -169,12 +177,34 @@ export default function SelfCheckout() {
 }
 
 
-const SelfCheckoutDisplay = ({ setShowDetails }: any) => {
+const SelfCheckoutDisplay = ({ setShowDetails, showDetails }: any) => {
+  //   {
+  //     "_id": "68c056bb5e14c8f29efb1a34",
+  //     "business_identifier": "6729de3ac6a9cd9c11abdcbf",
+  //     "branch": {
+  //         "_id": "6729de3ac6a9cd9c11abdccd",
+  //         "branch_name": "Koyi"
+  //     },
+  //     "created_by": "6729de3ac6a9cd9c11abdcbf",
+  //     "image_url": "https://res.cloudinary.com/dp7rramvp/image/upload/v1757435578/SelfCheckoutAssets/qrj8zregkhb3ip08xnzx.png",
+  //     "image_public_id": "SelfCheckoutAssets/qrj8zregkhb3ip08xnzx",
+  //     "original_filename": "4th floor.png",
+  //     "file_size": 3824,
+  //     "mime_type": "image/png",
+  //     "is_active": true,
+  //     "display_order": 0,
+  //     "width": null,
+  //     "height": null,
+  //     "optimized_url": "http://res.cloudinary.com/dp7rramvp/image/upload/c_limit,h_1080,q_auto:good,w_1920/v1/SelfCheckoutAssets/qrj8zregkhb3ip08xnzx.auto",
+  //     "createdAt": "2025-09-09T16:32:59.987Z",
+  //     "updatedAt": "2025-09-09T16:32:59.987Z",
+  //     "__v": 0
+  // }
   return (
     <div className='w-full p-4 h-fit '>
       <div className='relative flex flex-col items-center justify-center w-full max-w-[360px]  gap-4 p-5 border border-gray-300 rounded-md cursor-pointer lg:h-[520px]' >
-        <IoMdCloseCircleOutline className='absolute text-2xl text-gray-400 cursor-pointer -top-2 -right-2' onClick={() => setShowDetails(false)} />
-        <div style={{ backgroundImage: "url('/img1.jpg')" }} className='w-full h-full bg-center bg-cover border-[6px] border-gray-900 rounded-md '>
+        <IoMdCloseCircleOutline className='absolute text-2xl text-gray-400 cursor-pointer -top-2 -right-2' onClick={() => setShowDetails(null)} />
+        <div style={{ backgroundImage: `url(${showDetails?.image_url})` }} className='w-full h-full bg-center bg-cover border-[6px] border-gray-900 rounded-md '>
           <div className='relative w-full h-full overflow-hidden'>
             <div className='absolute top-0 left-0 bg-black/50 w-full h-[520px] ' />
 
@@ -187,7 +217,7 @@ const SelfCheckoutDisplay = ({ setShowDetails }: any) => {
               </div>
               <div className='flex flex-col items-center justify-center space-y-2'>
                 <p className='text-xs text-white '>All Cards and Mobile Payments Accepted</p>
-                <img src="/public/cards.png" />
+                <img src="../../assets/cards.png" />
               </div>
             </div>
           </div>
@@ -199,14 +229,20 @@ const SelfCheckoutDisplay = ({ setShowDetails }: any) => {
   )
 }
 
-const SelfCheckoutList = ({ setShowDetails }: any) => {
+const SelfCheckoutList = ({ setShowDetails, imageDetails }: any) => {
+
+
+
   return (
     <div className='flex items-center justify-between w-[90%] mx-auto gap-4 p-4 mb-4'>
       <div className='flex items-center gap-4'>
-        <BsFileEarmarkImage />
-        <p>File name</p>
+        {imageDetails?.image_url ?
+          <div style={{ backgroundImage: `url(${imageDetails.image_url})` }} className='w-12 h-12 bg-center bg-cover border border-gray-300 rounded-md' />
+          : <BsFileEarmarkImage />
+        }
+        <p>{imageDetails?.original_filename || "File name"}</p>
       </div>
-      <button onClick={() => setShowDetails(true)} className='px-3 py-1 text-[10px] text-black border border-black rounded'>Preview</button>
+      <button onClick={() => setShowDetails(imageDetails)} className='px-3 py-1 text-[10px] text-black border border-black rounded'>Preview</button>
     </div>
   )
 

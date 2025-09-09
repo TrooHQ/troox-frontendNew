@@ -123,7 +123,7 @@ const MenuBuilder = () => {
 
         const payload =
         {
-          ...categoryEdit,
+          ...categoryEdit, name: categoryEdit.menu_category_name,
         }
         console.log("payload", payload)
         const res = await axios.put(
@@ -137,8 +137,10 @@ const MenuBuilder = () => {
         );
         if (res.status === 200) {
           toast.success("Category name updated successfully");
-          // setEditCategoryModalOpen(false);
-          setIsModalOpen(false)
+          setEditGroupModalOpen(false);
+          setIsModalOpen(false);
+          setCategoryEdit({});
+          setEditMode(false);
           dispatch(fetchMenuCategories(selectedBranch.id));
         }
       } catch (error) {
