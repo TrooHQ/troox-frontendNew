@@ -11,7 +11,8 @@ import { fetchBranches } from "../../slices/branchSlice";
 import { toast } from "react-toastify";
 import { fetchMenuCategories } from "../../slices/menuSlice";
 
-const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfirm, setCategoryEdit }: any) => {
+const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfirm, setCategoryEdit, setEditMode,
+  editMode }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
 
@@ -143,7 +144,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
     <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
       <div>
         <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
-          {editCategory ? "Update Menu Category" : "Add Menu Category"}
+          {editMode ? "Update Menu Category" : "Add Menu Category"}
         </p>
 
         <div className="lg:mb-[24px]">
@@ -216,7 +217,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
         <div className="flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
           <div
             className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => { setIsModalOpen(false); setCategoryEdit({}); setEditMode(false); }}
           >
             <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
               Cancel
@@ -226,11 +227,11 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
           <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
             <button
               className="text-[16px]"
-              onClick={editCategory ? handleEditCategoryConfirm : handleSubmit}
+              onClick={editMode ? handleEditCategoryConfirm : handleSubmit}
               disabled={loading}
             >
               {/* {loading ? "Saving..." : "Save Menu"} */}
-              {loading ? (editCategory ? "Updating..." : "Saving...") : editCategory ? "Update Menu" : "Save Menu"}
+              {loading ? (editMode ? "Updating..." : "Saving...") : editMode ? "Update Menu" : "Save Menu"}
             </button>
           </div>
         </div>
