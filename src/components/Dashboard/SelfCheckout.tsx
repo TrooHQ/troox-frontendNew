@@ -25,7 +25,7 @@ export default function SelfCheckout() {
         // /branches/:branchId/self-checkout/assets
         // /branches/:branchId/self-checkout/assets
         // `${SERVER_DOMAIN}/self-checkout/assets`,
-        `${SERVER_DOMAIN}/branches/${selectedBranch?._id}/self-checkout/assets`,
+        `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -41,13 +41,13 @@ export default function SelfCheckout() {
 
   useEffect(() => {
     fetchUploadedImages();
-  }, [selectedBranch?._id]);
+  }, [selectedBranch?.id]);
 
   const [isUploading, setIsUploading] = useState(false);
   // const [blob, setBlob] = useState<File | null>(null);
-  const [files, setFile] = useState<any>({});
+  // const [files, setFile] = useState<any>({});
 
-  console.log("files", files)
+  console.log("selected branch", selectedBranch)
   console.log("isUploading", isUploading)
 
   const onDrop = useCallback(
@@ -61,15 +61,17 @@ export default function SelfCheckout() {
       // setBlob(file);
 
       try {
-        setFile(file);
+        // setFile(file);
 
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('images', file);
+        // formData.append('branch_id', selectedBranch?.id);
+        // formData.append('is_active', 'true');
 
         const token = localStorage.getItem("token");
 
         const response = await axios.post(
-          `${SERVER_DOMAIN}/branches/${selectedBranch?._id}/self-checkout/assets`,
+          `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
           formData,
           {
             headers: {
