@@ -49,6 +49,7 @@ const MenuBuilder = () => {
   console.log(totalItems, totalPages, currentPage, "allP");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSingleUpload, setSingleUpload] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
   const [addMenuItem, setAddMenuItem] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
@@ -473,7 +474,7 @@ const MenuBuilder = () => {
                         >
                           <MenuItem
                             // onClick={() => handleCategoryEdit(category)}
-                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); }}
+                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); setEditMode(true); }}
                             sx={{
                               display: "flex",
                               alignItems: "center",
@@ -556,7 +557,7 @@ const MenuBuilder = () => {
 
           {/* MODALS */}
           <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
-            <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} />
+            <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} setEditMode={setEditMode} editMode={editMode} />
           </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             {/* setBulkUpload */}
