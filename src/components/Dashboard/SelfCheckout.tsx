@@ -12,6 +12,8 @@ import { useSelector } from 'react-redux';
 import Loader from '../Loader';
 import Modal from "../Modal";
 import { toast } from 'react-toastify';
+import card from "../../assets/cards.png"
+import troo_b_logo from "../../assets/troo-b-logo.png"
 // import { Add } from '@mui/icons-material';
 export default function SelfCheckout() {
 
@@ -223,7 +225,7 @@ const SelfCheckoutDisplay = ({ setShowDetails, showDetails, updateImages, setEdi
 
   return (
     <div className='w-full p-4 h-fit '>
-      <div className='relative flex flex-col items-center justify-center w-full max-w-[360px]  gap-4 p-5 border border-gray-300 rounded-md cursor-pointer lg:h-[520px]' >
+      <div className='relative flex flex-col items-center justify-center w-full max-w-[360px]  gap-4 p-5 border border-gray-300 rounded-md cursor-pointer lg:h-[520px] mx-auto' >
         <IoMdCloseCircleOutline className='absolute text-2xl text-gray-400 cursor-pointer -top-2 -right-2' onClick={() => setShowDetails(null)} />
         <div style={{ backgroundImage: `url(${showDetails?.image_url})` }} className='w-full h-full bg-center bg-cover border-[6px] border-gray-900 rounded-md '>
           <div className='relative w-full h-full overflow-hidden'>
@@ -238,13 +240,13 @@ const SelfCheckoutDisplay = ({ setShowDetails, showDetails, updateImages, setEdi
               </div>
               <div className='flex flex-col items-center justify-center space-y-2'>
                 <p className='text-xs text-white '>All Cards and Mobile Payments Accepted</p>
-                <img src="../../assets/cards.png" />
+                <img src={card} />
               </div>
             </div>
           </div>
         </div>
 
-        <img src='/public/troo-b-logo.png' />
+        <img src={troo_b_logo} />
       </div>
 
       <div className='flex items-center justify-between w-full gap-4 mt-4'>
