@@ -7,6 +7,7 @@ import axios from "axios";
 import {
   updateCustomerName,
   updateCustomerTableNumber,
+  updateCustomerPhone
 } from "../../slices/BasketSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +19,7 @@ import {
   setBranchID,
 } from "../../slices/businessSlice";
 import { RootState } from "../../store/store";
+// import { set } from "react-hook-form";
 
 const StartOrder = () => {
   const location = useLocation();
@@ -87,7 +89,9 @@ const StartOrder = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isTableOpen, setTableIsOpen] = useState(false);
+  const [isPhoneOpen, setPhoneIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userPhone, setUserPhone] = useState("");
   const [table, setTable] = useState("");
 
   const businessDetails = useSelector(
@@ -101,6 +105,11 @@ const StartOrder = () => {
     setUserName(name);
     dispatch(updateCustomerName(name));
   };
+  const handleUserPhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const phone = event.target.value;
+    setUserPhone(phone);
+    dispatch(updateCustomerPhone(phone));
+  };
 
   const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
@@ -112,8 +121,13 @@ const StartOrder = () => {
   };
 
   const handleNext = () => {
-    setIsOpen(false);
-    setTableIsOpen(true);
+    if (userName && isOpen) {
+      setIsOpen(false);
+      setPhoneIsOpen(true);
+    } else {
+      setPhoneIsOpen(false);
+      setTableIsOpen(true);
+    }
   };
 
   if (type === "room") {
@@ -195,6 +209,39 @@ const StartOrder = () => {
               onClick={userName ? handleNext : undefined}
               style={{
                 backgroundColor: userName ? color : "#f2f2f2",
+              }}
+            >
+              Next
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isPhoneOpen}>
+        <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
+          <input
+            className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
+            type="tel"
+            placeholder="Enter your phone number"
+            value={userPhone}
+            onChange={handleUserPhoneChange}
+          />
+
+          {/* <span></span> */}
+          <div className="mt-[25px] flex space-x-4">
+            <p
+              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
+              onClick={() => setPhoneIsOpen(false)}
+            >
+              Cancel
+            </p>
+
+            <p
+              className={`px-[24px] py-[10px] inline rounded-[5px] text-[#ffffff] text-[16px] font-[500] ${!userPhone ? " cursor-default" : "cursor-pointer"
+                }`}
+              onClick={userPhone ? handleNext : undefined}
+              style={{
+                backgroundColor: userPhone ? color : "#f2f2f2",
               }}
             >
               Next

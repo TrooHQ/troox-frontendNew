@@ -6,6 +6,7 @@ import axios from "axios";
 import {
   updateCustomerName,
   updateCustomerTableNumber,
+  updateCustomerPhone,
 } from "../../slices/BasketSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -73,7 +74,9 @@ const InRoomStartOrder = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isRoomOpen, setRoomIsOpen] = useState(false);
+  const [isPhoneOpen, setPhoneIsOpen] = useState(false);
   const [userName, setUserName] = useState("");
+  const [userPhone, setUserPhone] = useState("");
   const [room, setRoom] = useState("");
 
   const businessDetails = useSelector(
@@ -87,6 +90,12 @@ const InRoomStartOrder = () => {
     dispatch(updateCustomerName(name));
   };
 
+  const handleUserPhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const phone = event.target.value;
+    setUserPhone(phone);
+    dispatch(updateCustomerPhone(phone));
+  };
+
   const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const roomNumber = event.target.value;
     setRoom(roomNumber);
@@ -94,8 +103,13 @@ const InRoomStartOrder = () => {
   };
 
   const handleNext = () => {
-    setIsOpen(false);
-    setRoomIsOpen(true);
+    if (userName && isOpen) {
+      setIsOpen(false);
+      setPhoneIsOpen(true);
+    } else {
+      setPhoneIsOpen(false);
+      setRoomIsOpen(true);
+    }
   };
 
   if (!business_identifier) {
@@ -109,7 +123,7 @@ const InRoomStartOrder = () => {
           <img
             src={businessDetails?.business_logo}
             alt=""
-            className=" w-full object-cover h-full"
+            className="object-cover w-full h-full "
           />
         </div>
         <p>
@@ -164,12 +178,41 @@ const InRoomStartOrder = () => {
               Cancel
             </p>
             <p
-              className={`px-[24px] py-[10px] ${
-                !userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
-              } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+              className={`px-[24px] py-[10px] ${!userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
               onClick={userName ? handleNext : undefined}
               style={{
                 backgroundColor: userName ? color : "#f2f2f2",
+              }}
+            >
+              Next
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal isOpen={isPhoneOpen}>
+        <div className="w-[330px] h-[228px] flex flex-col items-center justify-center">
+          <input
+            className="border-b border-grey500 outline-none focus:border-grey500 w-full pb-[36px] text-center"
+            type="tel"
+            placeholder="Enter your Phone number"
+            value={userPhone}
+            onChange={handleUserPhoneChange}
+          />
+          <div className="mt-[25px]">
+            <p
+              className="px-[24px] py-[10px] bg-none inline rounded-[5px] text-[#FF0000] text-[16px] font-[500] cursor-pointer"
+              onClick={() => setPhoneIsOpen(false)}
+            >
+              Cancel
+            </p>
+            <p
+              className={`px-[24px] py-[10px] ${!userName ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+              onClick={userPhone ? handleNext : undefined}
+              style={{
+                backgroundColor: userPhone ? color : "#f2f2f2",
               }}
             >
               Next
@@ -196,9 +239,8 @@ const InRoomStartOrder = () => {
             </p>
             <Link to={`/demo/category-details/in_room_dining`}>
               <p
-                className={`px-[24px] py-[10px] ${
-                  !room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
-                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+                className={`px-[24px] py-[10px] ${!room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
                 style={{
                   backgroundColor: room ? color : "#f2f2f2",
                 }}
