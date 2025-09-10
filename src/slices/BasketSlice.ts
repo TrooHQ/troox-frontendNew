@@ -135,6 +135,10 @@ const BasketSlice = createSlice({
       state.customerName = action.payload;
     },
 
+    updateCustomerPhone(state, action: PayloadAction<string>) {
+      state.customerPhone = action.payload;
+    },
+
     updateCustomerDetails(state, action: PayloadAction<CustomerDetailsUpdate>) {
       const { name, phone, streetAddress, town } = action.payload;
       if (name !== undefined) state.customerName = name;
@@ -204,6 +208,7 @@ export const {
   removeItemFromBasket,
   clearBasket,
   updateCustomerName,
+  updateCustomerPhone,
   updateCustomerTableNumber,
   updateCustomerAddress,
   updateCustomerDetails,

@@ -10,11 +10,15 @@ import { SERVER_DOMAIN } from '../../Api/Api';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
 import Loader from '../Loader';
+import Modal from "../Modal";
 import { toast } from 'react-toastify';
+// import { Add } from '@mui/icons-material';
 export default function SelfCheckout() {
 
-  const [showDetails, setShowDetails] = useState(null);
+  const [showDetails, setShowDetails] = useState<any>({});
   const [kioskImages, setKioskImages] = useState([]);
+  const MAX_ITEM_COUNT = 5;
+  const MAX_FILE_SIZE = 1024 * 1024 * 10;
 
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
@@ -31,6 +35,8 @@ export default function SelfCheckout() {
           },
         }
       );
+      setShowDetails({});
+
       console.log("response", response.data);
       setKioskImages(response?.data?.data);
     } catch (error: any) {
@@ -45,11 +51,7 @@ export default function SelfCheckout() {
   }, [selectedBranch?.id]);
 
   const [isUploading, setIsUploading] = useState(false);
-  // const [blob, setBlob] = useState<File | null>(null);
-  // const [files, setFile] = useState<any>({});
-
-  // console.log("selected branch", selectedBranch)
-  // console.log("isUploading", isUploading)
+  const [editMode, setEditMode] = useState(false);
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -57,78 +59,97 @@ export default function SelfCheckout() {
       if (!file) return;
 
       setIsUploading(true);
-      console.log("upload", file)
-
-      // setBlob(file);
 
       try {
-        // setFile(file);
-
         const formData = new FormData();
-        formData.append('images', file);
-        formData.append('branch_id', selectedBranch?.id);
-        // formData.append('is_active', 'true');
+        formData.append("images", file);
+        !editMode && formData.append("branch_id", selectedBranch?.id);
 
         const token = localStorage.getItem("token");
 
-        const response = await axios.post(
-          `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
+        let response;
+
+        if (editMode && showDetails?._id) {
+          // PATCH request for editing
+          response = await axios.patch(
+            `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets/${showDetails?._id}`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          toast.success("Image updated successfully");
+        } else {
+          // POST request for adding new
+          response = await axios.post(
+            `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets`,
+            formData,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          toast.success("Image uploaded successfully");
+        }
 
         console.log("response", response);
-        setIsUploading(false);
-        toast.success("Image uploaded successfully");
         fetchUploadedImages();
+
+        // reset states after upload/update
+        setEditMode(false);
+        setShowDetails(null);
+
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error("Error uploading file:", error);
+        toast.error("Something went wrong while uploading");
       } finally {
         setIsUploading(false);
       }
     },
-    // [addFile, setCurrentFile, updateTranscript]
-    []
+    [editMode, showDetails, selectedBranch?.id]
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
+
+  const { getRootProps, getInputProps, open, } = useDropzone({
     onDrop,
     accept: {
       'image/*': ['.jpeg', '.png', '.jpg', '.webp'],
     },
-    // maxSize: MAX_FILE_SIZE,
+    maxSize: MAX_FILE_SIZE,
     multiple: false,
   });
-
-  //  uploading images to the kiosk
-  // const handleFileUpload = () => {
-  //   // Handle file upload logic here
-  // }
-
-  // handle deleting an uploaded image
-  // const handleDeleteImage = (imageId: string) => {
-  //   // Handle delete image logic here
-  // }
 
 
   return (
 
     <DashboardLayout>
       <TopMenuNav pathName="Troo Kiosk" />
+
+      <div
+        className="bg-white w-full flex items-center gap-[8px] my-5 py-2 px-4"
+      >
+        <button className={`bg-black  w-fit rounded-[5px] px-6 py-3 font-semibold text-white ${kioskImages?.length >= MAX_ITEM_COUNT ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`} onClick={open} disabled={kioskImages?.length < MAX_ITEM_COUNT}>
+          {/* <Add className="w-5 h-5 text-[#0D0D0D]" /> */}
+          Upload Image
+        </button>
+      </div>
+
       <div className='relative w-full min-h-screen my-5 border border-gray-400 rounded-md'>
 
         {isUploading && <Loader />}
 
         <div className='flex w-full gap-4 px-5 my-20 justify-evenly'>
           <div className='w-full'>
-            <div className='mx-auto sm:w-full lg:w-2/3'>
+            <div className='relative mx-auto sm:w-full lg:w-2/3'>
               <h2 className='text-sm font-semibold'>Upload Troo Kiosk images.</h2>
               <p className='text-sm'>Add 3-5 images as your Kiosk screen saver</p>
+              {/* this line prevents the drag and drop from working once 5 items have been uploaded  */}
+              {kioskImages?.length >= MAX_ITEM_COUNT && <div className="absolute top-0 left-0 w-full h-full cursor-not-allowed bg-black opacity-0 z-[99999]" />}
               <div className='w-full p-4 mt-4 border border-gray-300 rounded-md h-fit'  {...getRootProps()}>
                 <div className='flex flex-col items-center justify-center w-full gap-4 p-4 border border-gray-300 border-dashed rounded-md cursor-pointer h-fit'>
 
@@ -136,12 +157,21 @@ export default function SelfCheckout() {
 
                   <div className='space-y-3 text-center'>
                     <input {...getInputProps()} />
-                    <h4 className='font-semibold '>Select a file or drag and drop here</h4>
-                    <p className='text-xs'>JPG, PNG, file size no more than 10MB</p>
+                    {kioskImages?.length < MAX_ITEM_COUNT ?
+                      <>
+                        <h4 className='font-semibold '>Select a file or drag and drop here</h4>
+                        <p className='text-xs'>JPG, PNG, file size no more than 10MB</p>
+                        <button className='px-6 py-2 text-sm text-black bg-transparent border border-black rounded hover:bg-black hover:text-white'>Select Image</button>
+                      </>
+
+                      : <div className='relative overflow-hidden'>
+                        <h4 className='font-semibold '>You can not upload more than 5 images</h4>
+                        <p className='text-xs'>Delete an Item to make room for more</p>
+                      </div>}
                     {/* <p className='text-xs'>1080px by 1920px</p> */}
                   </div>
 
-                  <button className='px-6 py-2 text-sm text-black bg-transparent border border-black rounded hover:bg-black hover:text-white'>Select Image</button>
+
                 </div>
               </div>
             </div>
@@ -149,8 +179,15 @@ export default function SelfCheckout() {
 
           <div className='w-full'>
             {
-              showDetails ?
-                <SelfCheckoutDisplay setShowDetails={setShowDetails} showDetails={showDetails} />
+              showDetails?._id ?
+                <SelfCheckoutDisplay
+                  setShowDetails={setShowDetails}
+                  showDetails={showDetails}
+                  updateImages={open}
+                  editMode={editMode}
+                  setEditMode={setEditMode}
+                  fetchUploadedImages={fetchUploadedImages}
+                />
                 :
                 <>
                   {
@@ -177,29 +214,13 @@ export default function SelfCheckout() {
 }
 
 
-const SelfCheckoutDisplay = ({ setShowDetails, showDetails }: any) => {
-  //   {
-  //     "_id": "68c056bb5e14c8f29efb1a34",
-  //     "business_identifier": "6729de3ac6a9cd9c11abdcbf",
-  //     "branch": {
-  //         "_id": "6729de3ac6a9cd9c11abdccd",
-  //         "branch_name": "Koyi"
-  //     },
-  //     "created_by": "6729de3ac6a9cd9c11abdcbf",
-  //     "image_url": "https://res.cloudinary.com/dp7rramvp/image/upload/v1757435578/SelfCheckoutAssets/qrj8zregkhb3ip08xnzx.png",
-  //     "image_public_id": "SelfCheckoutAssets/qrj8zregkhb3ip08xnzx",
-  //     "original_filename": "4th floor.png",
-  //     "file_size": 3824,
-  //     "mime_type": "image/png",
-  //     "is_active": true,
-  //     "display_order": 0,
-  //     "width": null,
-  //     "height": null,
-  //     "optimized_url": "http://res.cloudinary.com/dp7rramvp/image/upload/c_limit,h_1080,q_auto:good,w_1920/v1/SelfCheckoutAssets/qrj8zregkhb3ip08xnzx.auto",
-  //     "createdAt": "2025-09-09T16:32:59.987Z",
-  //     "updatedAt": "2025-09-09T16:32:59.987Z",
-  //     "__v": 0
-  // }
+const SelfCheckoutDisplay = ({ setShowDetails, showDetails, updateImages, setEditMode, fetchUploadedImages }: any) => {
+
+  console.log("showDetails", showDetails)
+
+  const [deleteModal, setDeleteModal] = useState(false);
+
+
   return (
     <div className='w-full p-4 h-fit '>
       <div className='relative flex flex-col items-center justify-center w-full max-w-[360px]  gap-4 p-5 border border-gray-300 rounded-md cursor-pointer lg:h-[520px]' >
@@ -225,6 +246,18 @@ const SelfCheckoutDisplay = ({ setShowDetails, showDetails }: any) => {
 
         <img src='/public/troo-b-logo.png' />
       </div>
+
+      <div className='flex items-center justify-between w-full gap-4 mt-4'>
+        <button className="w-full px-8 py-2 font-semibold text-black border border-black text-md rounded-xl" onClick={() => { setEditMode(true); updateImages() }}>Edit</button>
+        <button className="w-full px-8 py-2 font-semibold text-red-500 border border-red-500 text-md rounded-xl" onClick={() => setDeleteModal(true)}>Delete</button>
+      </div>
+
+      <DeleteModalConfirmation
+        isOpen={deleteModal}
+        closeModal={() => setDeleteModal(false)}
+        showDetails={showDetails}
+        fetchUploadedImages={fetchUploadedImages}
+      />
     </div>
   )
 }
@@ -246,4 +279,44 @@ const SelfCheckoutList = ({ setShowDetails, imageDetails }: any) => {
     </div>
   )
 
+}
+
+
+const DeleteModalConfirmation = ({ isOpen, closeModal, showDetails, fetchUploadedImages }: any) => {
+  //  /branches/:branchId/self-checkout/assets/:assetId
+  console.log("showDetails in delete", showDetails)
+  const { selectedBranch } = useSelector((state: any) => state.branches);
+  const deleteImage = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(
+        // `${SERVER_DOMAIN}/branches/${showDetails?.branch?._id}/self-checkout/assets/${showDetails?._id}`,
+        `${SERVER_DOMAIN}/branches/${selectedBranch?.id}/self-checkout/assets/${showDetails?._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("response", response.data);
+      fetchUploadedImages();
+    } catch (error: any) {
+      console.error("Error fetching pickup locations:", error);
+    }
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={closeModal}>
+      <div className="w-full max-w-[400px]  p-6 bg-gray-100 rounded-md">
+        <h4>Are you sure you want to delete this image?</h4>
+
+        <div className="flex justify-between gap-6 my-4 item-center ">
+          <button onClick={deleteImage} className="w-full px-6 py-2 text-white bg-black rounded-md">Delete</button>
+          <button onClick={closeModal} className="w-full px-6 py-2 border border-black rounded-md">Cancel</button>
+        </div>
+      </div>
+    </Modal>
+
+  )
 }
