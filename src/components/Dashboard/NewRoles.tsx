@@ -23,6 +23,31 @@ const NewRoles = () => {
   const roleId = params.get("_id");
   const roles = useSelector((state: any) => state.roles.roles);
 
+  useEffect(() => {
+
+    const fetchPermissions = async () => {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+
+      try {
+        const response = await axios.get(
+          `${SERVER_DOMAIN}/role/getAllPermissions/`,
+          headers
+        );
+
+        console.log("response", response?.data);
+        // return response.data;
+      } catch (error: any) {
+        toast.error("could not fetch permission")
+      }
+    }
+
+    fetchPermissions();
+  }, [])
 
   useEffect(() => {
     if (roleId) {
