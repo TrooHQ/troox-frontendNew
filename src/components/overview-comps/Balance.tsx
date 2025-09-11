@@ -15,6 +15,7 @@ import {
   fetchTopMenuItems,
   fetchCustomerTransaction,
 } from "../../slices/overviewSlice";
+import CustomSelect5 from "../inputFields/CustomSelect5";
 
 const BalanceComp = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,15 +29,18 @@ const BalanceComp = () => {
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
   const [endDate, setEndDate] = useState<string | undefined>(undefined);
   const [numberOfDays, setNumberOfDays] = useState<number | undefined>(undefined);
+  const [product, setProduct] = useState("");
+
+  console.log("product", product)
 
   useEffect(() => {
-    dispatch(fetchOpenAndClosedTickets({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
-    dispatch(fetchTotalSales({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
-    dispatch(fetchAverageOrderValue({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
-    dispatch(fetchSalesRevenueGraph({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays }));
-    dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: dateFilter, number_of_days: numberOfDays }));
-    dispatch(fetchCustomerTransaction({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays }));
-  }, [dispatch, selectedBranch?.id, dateFilter, startDate, endDate, numberOfDays]);
+    dispatch(fetchOpenAndClosedTickets({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchTotalSales({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchAverageOrderValue({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchSalesRevenueGraph({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: dateFilter, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchCustomerTransaction({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays, product_type: product }));
+  }, [dispatch, selectedBranch?.id, dateFilter, startDate, endDate, numberOfDays, product]);
 
   const changeVisibility = () => {
     setShowBalance(!showBalance);
@@ -101,11 +105,49 @@ const BalanceComp = () => {
   const closedTickets = openAndClosedTickets?.data?.closed_tickets || 0;
   const processedOrders = openAndClosedTickets?.data?.open_tickets || 0;
 
+  // SELF_CHECKOUT, ONLINE_ORDERING, QR_PAY_TABLE, QR_INROOM, FLEX, TABLY
+  const productsList = [
+    {
+      label: "Self Checkout",
+      value: "SELF_CHECKOUT"
+    },
+    {
+      label: "Online Ordering",
+      value: "ONLINE_ORDERING"
+    },
+    {
+      label: "QRCode-(At Table)",
+      value: "QR_PAY_TABLE"
+    },
+    {
+      label: "QRCode-(In Room)",
+      value: "QR_INROOM"
+    },
+    {
+      label: "Flex",
+      value: "FLEX"
+    },
+    {
+      label: "Tably",
+      value: "TABLY"
+    },
+  ]
+
+
+
   return (
     <div>
       <div className="rounded-[16px] bg-[#3e3e43] px-8 py-6">
         <div className="flex items-start justify-between">
-          <h5 className="text-[#EEEEF7] text-lg font-light">Total Sales</h5>
+          <div className="flex items-center justify-between gap-6">
+            <h5 className="text-[#EEEEF7] text-lg font-light">Total Sales</h5>
+            <CustomSelect5
+              options={productsList}
+              label={product ? "" : "Products"}
+              value={product}
+              onChange={(setProduct)}
+            />
+          </div>
           <DaysTab2
             backgroundColor="#606060"
             selectedBackgroundColor="#f38d41"
