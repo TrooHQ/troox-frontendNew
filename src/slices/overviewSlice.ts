@@ -52,12 +52,14 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
       endDate,
       number_of_days,
       branch_id,
+      product_type,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
       branch_id?: string;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
@@ -73,9 +75,13 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      console.log("branch_id", branch_id);
+      // console.log("branch_id", branch_id);
       if (branch_id) {
         params.branch_id = branch_id;
+      }
+      // console.log("product_type ", product_type );
+      if (product_type) {
+        params.product_type = product_type;
       }
 
       const response = await axios.get(
@@ -171,19 +177,21 @@ export const fetchTopMenuItems = createAsyncThunk(
       startDate,
       endDate,
       number_of_days,
+      product_type,
     }: {
       branch_id: string;
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
     try {
       const token = localStorage.getItem("token");
 
-      const params: any = { branch_id, date_filter };
+      const params: any = { branch_id, date_filter, product_type };
       if (date_filter === "date_range") {
         params.date_filter = "date_range";
         params.startDate = startDate;
@@ -191,6 +199,7 @@ export const fetchTopMenuItems = createAsyncThunk(
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
       }
+
       console.log("params", params);
       const response = await axios.get(
         `${SERVER_DOMAIN}/order/getTopMenuItems/`,
@@ -222,12 +231,14 @@ export const fetchTotalSales = createAsyncThunk(
       endDate,
       number_of_days,
       branch_id,
+      product_type,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
       branch_id?: string;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
@@ -243,6 +254,9 @@ export const fetchTotalSales = createAsyncThunk(
       }
       if (branch_id) {
         params.branch_id = branch_id;
+      }
+      if (product_type) {
+        params.product_type = product_type;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/getTotalSales`, {
@@ -272,12 +286,14 @@ export const fetchCustomerTransaction = createAsyncThunk(
       endDate,
       number_of_days,
       branch_id,
+      product_type,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
       branch_id?: string;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
@@ -293,6 +309,9 @@ export const fetchCustomerTransaction = createAsyncThunk(
       }
       if (branch_id) {
         params.branch_id = branch_id;
+      }
+      if (product_type) {
+        params.product_type = product_type;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/customerTransaction`, {
@@ -322,12 +341,14 @@ export const fetchAverageOrderValue = createAsyncThunk(
       endDate,
       number_of_days,
       branch_id,
+      product_type,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
       branch_id?: string;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
@@ -343,6 +364,9 @@ export const fetchAverageOrderValue = createAsyncThunk(
       }
       if (branch_id) {
         params.branch_id = branch_id;
+      }
+      if (product_type) {
+        params.product_type = product_type;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/averageOrderValue`, {
@@ -372,12 +396,14 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
       endDate,
       number_of_days,
       branch_id,
+      product_type,
     }: {
       date_filter: string;
       startDate?: string;
       endDate?: string;
       number_of_days?: number;
       branch_id?: string;
+      product_type?: string;
     },
     { rejectWithValue }
   ) => {
@@ -393,6 +419,9 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
       }
       if (branch_id) {
         params.branch_id = branch_id;
+      }
+      if (product_type) {
+        params.product_type = product_type;
       }
 
       const response = await axios.get(`${SERVER_DOMAIN}/salesRevenueGraph`, {
