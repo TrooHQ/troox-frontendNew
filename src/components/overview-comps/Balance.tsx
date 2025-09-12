@@ -108,7 +108,11 @@ const BalanceComp = () => {
   // SELF_CHECKOUT, ONLINE_ORDERING, QR_PAY_TABLE, QR_INROOM, FLEX, TABLY
   const productsList = [
     {
-      label: "Self Checkout",
+      label: "All",
+      value: "all"
+    },
+    {
+      label: "Kiosk",
       value: "SELF_CHECKOUT"
     },
     {
@@ -143,8 +147,8 @@ const BalanceComp = () => {
             <h5 className="text-[#EEEEF7] text-lg font-light">Total Sales</h5>
             <CustomSelect5
               options={productsList}
-              label={product ? "" : "Products"}
-              value={product}
+              // label={product ? product : "Products"}
+              value={product?.toLocaleLowerCase() === "all" ? "" : product}
               onChange={(setProduct)}
             />
           </div>
