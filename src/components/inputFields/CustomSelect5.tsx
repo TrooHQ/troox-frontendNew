@@ -58,9 +58,9 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
               {disabledOption}
             </option>
           )}
-          <option value="" disabled>
+          {/* <option value="" disabled>
             {label}
-          </option>
+          </option> */}
           {options.map((option, index) => (
             <option key={index} value={option.value}>
               {option.label}
@@ -71,8 +71,8 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
           <label
             style={{ left: "14px" }}
             className={`absolute transition-all duration-300 cursor-text ${isFocused || value
-                ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
-                : "top-2 left-4 bg-white text-gray-400"
+              ? "text-[14px] -top-3 left-2 bg-white px-2 text-[#000000]"
+              : "top-2 left-4 bg-white text-gray-400"
               } ${error ? "text-red-500" : ""}`}
             onClick={() => selectRef.current?.focus()}
           >
@@ -80,7 +80,7 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
           </label>
         )}
       </div>
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 };

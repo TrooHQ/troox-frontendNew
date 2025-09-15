@@ -108,6 +108,10 @@ const BalanceComp = () => {
   // SELF_CHECKOUT, ONLINE_ORDERING, QR_PAY_TABLE, QR_INROOM, FLEX, TABLY
   const productsList = [
     {
+      label: "All",
+      value: ""
+    },
+    {
       label: "Kiosk",
       value: "SELF_CHECKOUT"
     },
@@ -146,6 +150,7 @@ const BalanceComp = () => {
               // label={product ? product : "Products"}
               value={product}
               onChange={(setProduct)}
+              disabledOption={"All"}
             />
           </div>
           <DaysTab2
