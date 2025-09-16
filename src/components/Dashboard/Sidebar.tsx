@@ -315,9 +315,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         >
           <hr className="h-[2px] bg-[#929292] my-3" />
           <div className="ml-[5px] flex flex-col items-start justify-center gap-2">
-            <h4 className="mb-0 text-base font-medium">
+            {/* <h4 className="mb-0 text-base font-medium">
               {userData?.business_name}
-            </h4>
+            </h4> */}
 
             {/* Insert Button and Popper components here */}
             {userData?.user_role === "admin" ? (

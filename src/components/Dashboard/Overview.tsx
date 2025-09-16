@@ -1,4 +1,4 @@
-import { Autocomplete, Paper } from "@mui/material";
+import { Autocomplete, } from "@mui/material";
 import { styled } from "@mui/system";
 import BalanceComp from "../overview-comps/Balance";
 import KPI from "../overview-comps/KPI";
@@ -11,7 +11,7 @@ import { fetchBranches, } from "../../slices/branchSlice";
 import { fetchBusinessPlan } from "../../slices/businessSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
-import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
+
 
 // export const storeData = {
 //   id: 1,
@@ -68,7 +68,7 @@ const Overview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { userData } = useSelector((state: RootState) => state.user);
-  const { businessPlan } = useSelector((state: RootState) => state.business);
+  // const { businessPlan } = useSelector((state: RootState) => state.business);
 
   // const [selectedOutlet, setSelectedOutlet] = useState(
   //   selectedBranch
@@ -83,7 +83,7 @@ const Overview: React.FC = () => {
     dispatch(fetchBusinessPlan());
   }, [dispatch]);
 
-  console.log(businessPlan, "all out here:");
+  console.log(userData, "all out here:");
 
 
   return (
@@ -95,12 +95,12 @@ const Overview: React.FC = () => {
           <h3 className="text-[#606060] text-[20px] font-normal mr-6">
             Hello,{" "}
             <span className="text-[#121212] text-[24px] font-medium">
-              {userData?.business_name} {""}
+              {userData?.first_name} {""}
             </span>
           </h3>
-          <Paper sx={{ boxShadow: 3 }}>
-            <BranchDropDown />
-          </Paper>
+          {/* <Paper sx={{ boxShadow: 3 }}>
+            <BranchDropDown />  
+          </Paper> */}
         </div>
         {/* Second div */}
         <BalanceComp />

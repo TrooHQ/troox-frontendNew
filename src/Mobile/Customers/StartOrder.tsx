@@ -47,13 +47,11 @@ const StartOrder = () => {
 
   console.log("business_identifier", business_identifier)
   console.log("branch", branch)
-  // console.log("tableNo", tableNo)
-  // console.log("comingFrom", comingFrom)
   console.log("type", type)
   console.log("group_name", group_name)
 
   useEffect(() => {
-    // if (business_identifier && tableNo) {
+
     if (business_identifier) {
       dispatch(setBusinessIdentifier(business_identifier));
       dispatch(setGroupName(group_name));
@@ -63,7 +61,7 @@ const StartOrder = () => {
 
       getBusinessDetails();
     } else {
-      // navigate("/demo/login/troo-portal");
+      navigate("/demo/login/troo-portal");
     }
   }, [business_identifier, group_name, navigate, branch, fullUrl]);
   // }, [business_identifier, tableNo, group_name, navigate, branch, fullUrl]);
