@@ -113,7 +113,7 @@ const BalanceComp = () => {
     },
     {
       label: "Kiosk",
-      value: "SELF_CHECKOUT"
+      value: "KIOSK"
     },
     {
       label: "Online Ordering",

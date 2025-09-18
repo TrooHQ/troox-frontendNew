@@ -23,6 +23,7 @@ import PaginationComponent from "./PaginationComponent";
 import { Paper } from "@mui/material";
 import BranchDropDown from "./AutoCompleteDropdown/AutoCompleteDropdown";
 import RefundModal from "./ticketComponents/RefundModal";
+import ViewTicketModal from "./ticketComponents/ViewTicketModal";
 
 const Tickets = () => {
   const { selectedBranch } = useSelector((state: any) => state.branches);
@@ -80,10 +81,6 @@ const Tickets = () => {
     currentPage: 1,
     pageSize: 10,
   });
-
-  // const toggleMenu2 = (index: number) => {
-  //   setActiveMenuIndex2((prevIndex) => (prevIndex === index ? null : index));
-  // };
 
   const getTickets = async (page?: number) => {
     setData([])
@@ -148,6 +145,20 @@ const Tickets = () => {
     // setSearchValue("");
     getClosedTickets();
   };
+
+
+  // view operations 
+
+  const [viewTicketModal, setViewTicketModal] = useState(false);
+  const [viewTicket, setViewTicket] = useState({});
+  const handleViewTicket = (id: any) => {
+    const ticket = data.find((item: any) => item.id === id);
+    setViewTicket(ticket);
+    setViewTicketModal(true);
+  };
+
+
+  console.log("viewTicket", viewTicket);
 
   return (
     <div>
@@ -272,7 +283,7 @@ const Tickets = () => {
                           )}
                           <p className="capitalize">{item.status}</p>
                         </div>
-                        <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                        <p>&#x20A6;{item.total_amount_with_tips.toLocaleString()}</p>
                         <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
                           <div
                             className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
@@ -287,6 +298,7 @@ const Tickets = () => {
                           {activeMenuIndex === index && (
                             <DropdownMenu
                               handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
+                              handleViewTicket={() => handleViewTicket(item.id)}
                             />
                           )}
                         </div>
@@ -298,6 +310,12 @@ const Tickets = () => {
                   </div>
                 </div>
               )}
+
+              <ViewTicketModal
+                ticketInfo={viewTicket}
+                closeModal={() => setViewTicketModal(false)}
+                viewTicketModal={viewTicketModal}
+              />
 
               {activeMenuIndex !== null ? (
                 <RefundModal
@@ -336,13 +354,8 @@ const Tickets = () => {
                 setVacateTableMenu={setVacateTableMenu}
               />
 
-              {/* <OpenTicketModal
-                openTicket={openTicket}
-                handleTicketMenu={handleTicketMenu}
-                setOpenTicket={setOpenTicket}
-                data={data}
-                openTicketData={() => { }}
-              /> */}
+
+
             </div>
           </div>
         </div>
@@ -352,87 +365,3 @@ const Tickets = () => {
 };
 
 export default Tickets;
-
-
-{/* <div className="py-[32px] border rounded-[10px] border-grey100 mt-[24px]">
-                <p className=" px-[32px]  font-[400] text-[24px] text-[#121212]">
-                  {userData?.onboarding_type !== "gogrub"
-                    ? " Closed tickets"
-                    : "Tickets"}
-                </p>
-
-                <div className=" text-center pb-[16px] mb-[16px] pt-[24px] px-[32px] grid grid-cols-10 border-b">
-                  <p className=" text-[14px] text-[#121212]">Date</p>
-                  <p className=" text-[14px] text-[#121212]">Time</p>
-                  <p className=" text-[14px] text-[#121212]">Table No</p>
-                  <p className=" text-[14px] text-[#121212]">Order No</p>
-                  <p className=" text-[14px] text-[#121212]">Customer </p>
-                  <p className=" text-[14px] text-[#121212]">Waiter </p>
-                  <p className=" text-[14px] text-[#121212]">Channel </p>
-                  <p className=" text-[14px] text-[#121212]">Status </p>
-                  <p className=" text-[14px] text-[#121212]">Bill</p>
-                  <p className=" text-[14px] text-[#121212]">Actions </p>
-                </div>
-                {isLoading ? (
-                  <p className="px-8">Loading...</p>
-                ) : closedData.length === 0 ? (
-                  <p className="px-8">No order available</p>
-                ) : (
-                  closedData.map((item, index) => (
-                    <div
-                      className={`text-center py-[14px] px-[32px] grid grid-cols-10 items-center font-base text-normal text-[#414141] ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                        }`}
-                      key={index}
-                    >
-                      <p className="" onClick={handleTicketMenu}>
-                        {item.createdAt.slice(0, 10)}
-                      </p>
-                      <p className="" onClick={handleTicketMenu}>
-                        {item.createdAt.slice(11, 16)}
-                      </p>
-                      <p onClick={handleTicketMenu}>
-                        {item.table_number || "-"}
-                      </p>
-                      <p onClick={handleTicketMenu}>
-                        {item.order_number || "-"}
-                      </p>
-                      <p
-                        onClick={() => handleTicketMenu2(item)}
-                        className="cursor-pointer"
-                      >
-                        {item.customer_name
-                          ? truncateText(
-                            item.customer_name.charAt(0).toUpperCase() +
-                            item.customer_name.slice(1),
-                            10
-                          )
-                          : ""}
-                      </p>
-                      <p>{item.waiter || "-"}</p>
-                      <p>{item.channel || ""}</p>
-                      <div className="flex items-center justify-center gap-[10px]">
-                        <img src={green} alt="" className="w-[12px] h-[12px]" />
-                        <p>Served</p>
-                      </div>
-                      <p>&#x20A6;{item.total_price.toLocaleString()}</p>
-                      <p className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
-                        <div
-                          className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
-                          onClick={() => toggleMenu2(index)}
-                        >
-                          <img src={More} alt="" className="w-[5px]" />
-                        </div>
-                        {activeMenuIndex2 === index && (
-                          <DropdownMenuClosedTickets
-                            handleVoidOrderMenu={() => handleVoidOrderMenu()}
-                            handleVacateTableMenu={() =>
-                              handleVacateTableMenu()
-                            }
-                            handleRefundMenu={() => handleRefundMenu()}
-                          />
-                        )}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div> */}

@@ -482,7 +482,7 @@ const OrderHistory = () => {
                             ? "text-orange-50 bg-orange-500"
                             : "text-red-50 bg-red-500"
                           } w-fit py-2 px-4 rounded-full  mx-auto`}>{item.status}</p>
-                        <p>&#x20A6;{item.total_price.toLocaleString()}</p>
+                        <p>&#x20A6;{item.total_amount_with_tips.toLocaleString()}</p>
 
                         <div className="flex items-center justify-center py-[10px] px-[20px] rounded-full relative">
                           {<div
