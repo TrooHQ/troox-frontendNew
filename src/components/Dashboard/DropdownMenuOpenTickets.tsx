@@ -1,4 +1,4 @@
-export const DropdownMenu = ({ handleVoidOrderMenu }: { handleVoidOrderMenu: () => void }) => {
+export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket }: { handleVoidOrderMenu: () => void, handleViewTicket: () => void }) => {
   const handleItemClick = (action: string) => {
     if (action === "Void Order") {
       handleVoidOrderMenu();
@@ -10,10 +10,10 @@ export const DropdownMenu = ({ handleVoidOrderMenu }: { handleVoidOrderMenu: () 
   return (
     <ul className="w-[200px] shadow grid gap-[18px] dropdown-menu absolute bg-white p-[12px] text-black right-[25px] top-[40px] z-10">
       <li
-        // onClick={() => handleItemClick("Void Order")}
+        onClick={handleViewTicket}
         className="font-[400] text-gray-500 cursor-block"
       >
-        Void Order
+        View Order
       </li>
       <li
         onClick={() => handleItemClick("Void Order")}

@@ -1,20 +1,28 @@
 import TopMenuNav from "./InRoomTopMenuNav";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import System from "../../SelfCheckout/assets/system.png";
 // import QRCode from "../../SelfCheckout/assets//qrcodeScan.png";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { clearBasket } from "../../slices/BasketSlice";
 import axios from "axios";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import {
+  PAYMENT_DOMAIN,
+  SERVER_DOMAIN
+} from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
 export const InRoomSelectPayment = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  // const [selectedOption, setSelectedOption] = useState("");
+
+  const searchParams = new URLSearchParams(window.location.search);
+
+  console.log("searchParams", searchParams);
+
+  const reference = searchParams.get("reference") ?? null;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,6 +40,7 @@ export const InRoomSelectPayment = () => {
   );
 
   const colorScheme = BusinessDetails?.colour_scheme;
+
 
   const items = basketDetails.items.map((item) => ({
     id: item.id,
@@ -52,6 +61,7 @@ export const InRoomSelectPayment = () => {
     })),
     tableNumber: item.tableNumber,
   }));
+
   const payload = {
     is_paid: "true",
     channel: "in-room-dining",
@@ -66,6 +76,49 @@ export const InRoomSelectPayment = () => {
     ordered_by: basketDetails?.customerName || "User",
     menu_items: items,
     total_price: basketDetails?.totalPrice,
+    tip,
+  };
+
+  const IntiatePayment = async () => {
+    setLoading(true);
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "",
+        },
+      };
+
+      localStorage.setItem("order_jjv5q", JSON.stringify(payload));
+
+      const response = await axios.post(
+        `${PAYMENT_DOMAIN}/transaction/initiate_paystack_transaction/`,
+        {
+          business_id: business?.businessDetails?._id,
+          name: basketDetails.customerName || "User",
+          platform: "Online",
+          // amount: parseInt(pricePlusTax.toString()) + parseInt(deliveryFee ? deliveryFee.toString() : "0"),
+          amount: totalPrice + tip,
+          email: "user@example.com",
+          callback_url: "https://troo-admin.netlify.app/demo/payment-type/in_room_dining",
+          // callback_url: window.location.href.includes("netlify.app") ?            
+          // "// https://troo-admin.netlify.app/demo/payment-type/in_room_dining" : "https://gogrub.shop/demo/payment-type/online_ordering",
+
+          menu_items: items,
+        },
+        headers
+      );
+
+      sessionStorage.setItem("reference", response?.data?.transaction?.ref);
+      console.log("reference", response?.data?.transaction?.ref);
+      // route this to a blank page
+      window.location.href = response.data.paystack_data.data.authorization_url;
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePayment = async () => {
@@ -73,7 +126,7 @@ export const InRoomSelectPayment = () => {
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadBranchUserOrder`,
-        payload
+        { ...payload, transactionRef: reference }
       );
       setLoading(false);
       sessionStorage.setItem(
@@ -98,6 +151,47 @@ export const InRoomSelectPayment = () => {
       setLoading(false);
     }
   };
+
+
+  const verifyPayment = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/order/confirmOrderPayment/`,
+        { reference: reference, businessId: business?.businessDetails?._id });
+      // { reference: reference, businessId: uniqueId?.split("_").join(" ") });
+
+
+      if (response.data?.status !== false) {
+        console.log("Payment verification response:", response);
+        // handleOrderUpload();
+        handlePayment();
+        toast.success("Payment Successful!");
+        sessionStorage.removeItem("reference");
+      } else {
+        toast.error("Payment could not be verified.");
+      }
+    } catch (error) {
+      console.error("Error confirming payment:", error);
+      toast.error("An error occurred. Please try again.");
+      navigate(`/demo/payment-type/online_ordering/`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
+    if (!reference) {
+      localStorage.removeItem("order_jjv5q");
+      return;
+    }
+
+    business?.businessDetails?._id && verifyPayment();
+  }, [business?.businessDetails?._id]);
+
+
+
   return (
     <div className="relative ">
       <TopMenuNav exploreMenuText="Select Payment" />
@@ -139,7 +233,8 @@ export const InRoomSelectPayment = () => {
       <div className="flex items-center justify-center my-10">
         <p
           className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
-          onClick={handlePayment}
+          onClick={IntiatePayment}
+          // onClick={handlePayment}
           style={{
             backgroundColor: colorScheme || "#FF0000",
             borderColor: colorScheme || "#ff0000",

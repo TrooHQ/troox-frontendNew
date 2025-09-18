@@ -310,9 +310,9 @@ const CustomerData = () => {
                       key={index}
                     >
                       <p className="text-start ">{data.customerName}</p>
-                      <p className="">{data.email}</p>
-                      <p className="">{data.customerPhone}</p>
-                      <p className="">{data.address}</p>
+                      <p className="">{data.email ?? "-"}</p>
+                      <p className="">{data.phoneNumber ?? "-"}</p>
+                      <p className="">{data.address ?? "-"}</p>
                     </div>
                   ))
                 ) : (
