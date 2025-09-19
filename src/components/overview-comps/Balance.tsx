@@ -46,62 +46,6 @@ const BalanceComp = () => {
     setShowBalance(!showBalance);
   };
 
-  // const handleDateFilterChange = (
-  //   date_filter: string,
-  //   startDate?: string,
-  //   endDate?: string,
-  //   number_of_days?: number
-  // ) => {
-  // dispatch(
-  //   fetchOpenAndClosedTickets({
-  //     date_filter,
-  //     startDate,
-  //     endDate,
-  //     number_of_days,
-  //     branch_id: selectedBranch?.id
-  //   })
-  // );
-  // dispatch(
-  //   fetchTotalSales({ date_filter, startDate, endDate, number_of_days, branch_id: selectedBranch?.id })
-  // );
-  // dispatch(
-  //   fetchAverageOrderValue({
-  //     date_filter,
-  //     startDate,
-  //     endDate,
-  //     number_of_days,
-  //     branch_id: selectedBranch?.id
-  //   })
-  // );
-  // dispatch(
-  //   fetchSalesRevenueGraph({
-  //     date_filter,
-  //     startDate,
-  //     endDate,
-  //     number_of_days,
-  //     branch_id: selectedBranch?.id
-  //   })
-  // );
-  // dispatch(
-  //   fetchCustomerTransaction({
-  //     date_filter,
-  //     startDate,
-  //     endDate,
-  //     number_of_days,
-  //     branch_id: selectedBranch?.id
-  //   })
-  // );
-  // dispatch(
-  //   fetchTopMenuItems({
-  //     branch_id: selectedBranch.id,
-  //     date_filter,
-  //     startDate,
-  //     endDate,
-  //     number_of_days,
-  //   })
-  // );
-  // };
-
   const closedTickets = openAndClosedTickets?.data?.closed_tickets || 0;
   const processedOrders = openAndClosedTickets?.data?.open_tickets || 0;
 
@@ -143,8 +87,9 @@ const BalanceComp = () => {
     <div>
       <div className="rounded-[16px] bg-[#3e3e43] px-8 py-6">
         <div className="flex items-start justify-between">
+          <h5 className="text-[#EEEEF7] text-lg font-light">Total Sales</h5>
+
           <div className="flex items-center justify-between gap-6">
-            <h5 className="text-[#EEEEF7] text-lg font-light">Total Sales</h5>
             <CustomSelect5
               options={productsList}
               // label={product ? product : "Products"}
@@ -152,19 +97,19 @@ const BalanceComp = () => {
               onChange={(setProduct)}
               disabledOption={"All"}
             />
+            <DaysTab2
+              backgroundColor="#606060"
+              selectedBackgroundColor="#f38d41"
+              selectedColor="white"
+              nonSelectedColor="#C7C6CF"
+              iconClassName={clsx("text-white")}
+              // onDateFilterChange={handleDateFilterChange}
+              setDateFilter={setDateFilter}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              setNumberOfDays={setNumberOfDays}
+            />
           </div>
-          <DaysTab2
-            backgroundColor="#606060"
-            selectedBackgroundColor="#f38d41"
-            selectedColor="white"
-            nonSelectedColor="#C7C6CF"
-            iconClassName={clsx("text-white")}
-            // onDateFilterChange={handleDateFilterChange}
-            setDateFilter={setDateFilter}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            setNumberOfDays={setNumberOfDays}
-          />
         </div>
         <div className="flex justify-start gap-10 items-center w-full mb-[55px]">
           <h2 className={clsx(styles.figure)}>
