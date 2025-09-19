@@ -17,6 +17,7 @@ import PaginationComponent from "./PaginationComponent";
 import More from "../../assets/more_vert.svg";
 import RefundModal from "./ticketComponents/RefundModal";
 import { DropdownMenu } from "./DropdownMenuOpenTickets";
+import ViewTicketModal from "./ticketComponents/ViewTicketModal";
 
 const { RangePicker } = DatePicker;
 
@@ -235,6 +236,16 @@ const OrderHistory = () => {
   };
 
   const [voidOrderItem, setVoidOrderItem] = useState<any>(null);
+
+
+
+  const [viewTicketModal, setViewTicketModal] = useState(false);
+  const [viewTicket, setViewTicket] = useState({});
+  const handleViewTicket = (id: any) => {
+    const ticket = data.find((item: any) => item.id === id);
+    setViewTicket(ticket);
+    setViewTicketModal(true);
+  };
 
   return (
     <div>
@@ -497,6 +508,7 @@ const OrderHistory = () => {
                           {activeMenuIndex === index && (
                             <DropdownMenu
                               handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
+                              handleViewTicket={() => handleViewTicket(item.id)}
                             />
                           )}
                         </div>
@@ -508,6 +520,13 @@ const OrderHistory = () => {
                     <PaginationComponent setPage={setPage} pagination={pagination} />
                   </div>
                 </div>
+
+                <ViewTicketModal
+                  ticketInfo={viewTicket}
+                  closeModal={() => setViewTicketModal(false)}
+                  viewTicketModal={viewTicketModal}
+                />
+
                 <RefundModal
                   voidOrderMenu={voidOrderMenu}
                   handleVoidOrderMenu={handleVoidOrderMenu}
