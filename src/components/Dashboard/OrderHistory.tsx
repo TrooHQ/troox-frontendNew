@@ -237,6 +237,8 @@ const OrderHistory = () => {
 
   const [voidOrderItem, setVoidOrderItem] = useState<any>(null);
 
+
+
   const [viewTicketModal, setViewTicketModal] = useState(false);
   const [viewTicket, setViewTicket] = useState({});
   const handleViewTicket = (id: any) => {
@@ -244,6 +246,7 @@ const OrderHistory = () => {
     setViewTicket(ticket);
     setViewTicketModal(true);
   };
+
   return (
     <div>
       <DashboardLayout>
@@ -517,11 +520,13 @@ const OrderHistory = () => {
                     <PaginationComponent setPage={setPage} pagination={pagination} />
                   </div>
                 </div>
+
                 <ViewTicketModal
                   ticketInfo={viewTicket}
                   closeModal={() => setViewTicketModal(false)}
                   viewTicketModal={viewTicketModal}
                 />
+
                 <RefundModal
                   voidOrderMenu={voidOrderMenu}
                   handleVoidOrderMenu={handleVoidOrderMenu}
