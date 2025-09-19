@@ -1,20 +1,25 @@
 import TopMenuNav from "./TopMenuNav";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import System from "../../SelfCheckout/assets/system.png";
-import QRCode from "../../SelfCheckout/assets//qrcodeScan.png";
+import { useEffect, useState } from "react";
+// import System from "../../SelfCheckout/assets/system.png";
+// import QRCode from "../../SelfCheckout/assets//qrcodeScan.png";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { clearBasket } from "../../slices/BasketSlice";
 import axios from "axios";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import { PAYMENT_DOMAIN, SERVER_DOMAIN } from "../../Api/Api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
 export const SelectPayment = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState("");
+
+  const searchParams = new URLSearchParams(window.location.search);
+
+  console.log("searchParams", searchParams);
+
+  const reference = searchParams.get("reference") ?? null;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -67,6 +72,49 @@ export const SelectPayment = () => {
     menu_items: items,
     total_price: basketDetails.totalPrice,
   };
+
+  const IntiatePayment = async () => {
+    setLoading(true);
+    try {
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "",
+        },
+      };
+
+      localStorage.setItem("order_x445ij", JSON.stringify(payload));
+
+      const response = await axios.post(
+        `${PAYMENT_DOMAIN}/transaction/initiate_paystack_transaction/`,
+        {
+          business_id: business?.businessDetails?._id,
+          name: basketDetails.customerName || "User",
+          platform: "Online",
+          // amount: parseInt(pricePlusTax.toString()) + parseInt(deliveryFee ? deliveryFee.toString() : "0"),
+          amount: totalPrice + tip,
+          email: "user@example.com",
+          callback_url: "https://troo-admin.netlify.app/demo/payment-type/in_room_dining",
+          // callback_url: window.location.href.includes("netlify.app") ?            
+          // "// https://troo-admin.netlify.app/demo/payment-type/in_room_dining" : "https://gogrub.shop/demo/payment-type/online_ordering",
+
+          menu_items: items,
+        },
+        headers
+      );
+
+      sessionStorage.setItem("reference", response?.data?.transaction?.ref);
+      console.log("reference", response?.data?.transaction?.ref);
+      // route this to a blank page
+      window.location.href = response.data.paystack_data.data.authorization_url;
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handlePayment = async () => {
     try {
       setLoading(true);
@@ -98,8 +146,48 @@ export const SelectPayment = () => {
       setLoading(false);
     }
   };
+
+  const verifyPayment = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${SERVER_DOMAIN}/order/confirmOrderPayment/`,
+        { reference: reference, businessId: business?.businessDetails?._id });
+      // { reference: reference, businessId: uniqueId?.split("_").join(" ") });
+
+
+      if (response.data?.status !== false) {
+        console.log("Payment verification response:", response);
+        // handleOrderUpload();
+        handlePayment();
+        toast.success("Payment Successful!");
+        sessionStorage.removeItem("reference");
+      } else {
+        toast.error("Payment could not be verified.");
+      }
+    } catch (error) {
+      console.error("Error confirming payment:", error);
+      toast.error("An error occurred. Please try again.");
+      navigate(`/demo/payment-type/online_ordering/`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (!reference) {
+      localStorage.removeItem("order_x445ij");
+      return;
+    }
+
+    business?.businessDetails?._id && verifyPayment();
+  }, [business?.businessDetails?._id]);
+
+
   return (
-    <div className="  relative">
+    <div className="relative ">
       <TopMenuNav exploreMenuText="Select Payment" />
       {loading && <Loader />}
 
@@ -111,7 +199,7 @@ export const SelectPayment = () => {
           </span>
         </p>
         <p className=" text-[#000000] text-[18px] font-[500]">
-          Tip: ₦ {}{" "}
+          Tip: ₦ { }{" "}
           <span className=" text-[#000000]">{tip.toLocaleString() || 0} </span>
         </p>
 
@@ -127,169 +215,21 @@ export const SelectPayment = () => {
         </p>
       </div>
 
-      <div className=" mt-[30px] border border-[#E7E7E7] px-[12px] py-[32px] rounded-[10px] flex items-center gap-[8px] mx-[8px] overflow-x-auto">
+
+      <div className="flex items-center justify-center my-10">
         <p
-          className={`text-[14px] font-[500] border-4 min-w-[120px] w-full cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] `}
-          onClick={() => setSelectedOption("Bank Transfer")}
+          className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
+          onClick={IntiatePayment}
+          // onClick={handlePayment}
           style={{
-            borderColor:
-              selectedOption === "Bank Transfer"
-                ? colorScheme || "#5855B3"
-                : "#B6B6B6",
-            color:
-              selectedOption === "Bank Transfer"
-                ? colorScheme || "#5855B3"
-                : "#414141",
+            backgroundColor: colorScheme || "#FF0000",
+            borderColor: colorScheme || "#ff0000",
           }}
         >
-          Bank Transfer
-        </p>
-        <p
-          className={`min-w-[120px] w-full border-4 text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px] `}
-          onClick={() => setSelectedOption("WebPay")}
-          style={{
-            borderColor:
-              selectedOption === "WebPay"
-                ? colorScheme || "#5855B3"
-                : "#B6B6B6",
-            color:
-              selectedOption === "WebPay"
-                ? colorScheme || "#5855B3"
-                : "#414141",
-          }}
-        >
-          WebPay
-        </p>
-        <p
-          className={`min-w-[120px] border-4 w-full text-[14px] font-[500] cursor-pointer text-center py-[16px] px-[8px] bg-white rounded-[10px]`}
-          onClick={() => setSelectedOption("Terminals")}
-          style={{
-            borderColor:
-              selectedOption === "Terminals"
-                ? colorScheme || "#5855B3"
-                : "#B6B6B6",
-            color:
-              selectedOption === "Terminals"
-                ? colorScheme || "#5855B3"
-                : "#414141",
-          }}
-        >
-          Terminals
+          Proceed to Pay
         </p>
       </div>
 
-      {selectedOption && (
-        <div className=" mx-[42px] mt-[20px]">
-          {selectedOption === "Bank Transfer" && (
-            <div className="">
-              <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
-                Bank Transfer
-              </p>
-              <hr
-                className=" border"
-                style={{
-                  borderColor: colorScheme || "#929292",
-                }}
-              />
-
-              <div className=" my-[10px] max-w-[566px] mx-auto text-center">
-                <p className=" text-[14px]  font-[400] text-[#121212]">
-                  Scan QR Code below in your bank app to complete this payment
-                </p>
-
-                <div className=" flex justify-center">
-                  <img src={QRCode} alt="" className=" mt-[40px]" />
-                </div>
-              </div>
-
-              <div className=" flex items-center  justify-center">
-                <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
-                  onClick={handlePayment}
-                  style={{
-                    backgroundColor: colorScheme || "#FF0000",
-                    borderColor: colorScheme || "#ff0000",
-                  }}
-                >
-                  Proceed to Pay
-                </p>
-              </div>
-            </div>
-          )}
-          {selectedOption === "WebPay" && (
-            <div className="">
-              <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
-                WebPay
-              </p>
-              <hr
-                className=" border"
-                style={{
-                  borderColor: colorScheme || "#929292",
-                }}
-              />
-
-              <div className=" my-[10px] max-w-[566px] mx-auto text-center">
-                <p className=" text-[14px]  font-[400] text-[#121212]">
-                  Scan QR Code with your phone camera
-                </p>
-
-                <div className=" flex justify-center">
-                  <img src={QRCode} alt="" className=" mt-[40px]" />
-                </div>
-              </div>
-
-              <div className=" flex items-center  justify-center">
-                <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
-                  onClick={handlePayment}
-                  style={{
-                    backgroundColor: colorScheme || "#FF0000",
-                    borderColor: colorScheme || "#ff0000",
-                  }}
-                >
-                  Proceed to Pay
-                </p>
-              </div>
-            </div>
-          )}
-          {selectedOption === "Terminals" && (
-            <div className="">
-              <p className=" text-[18px] font-[500] text-[#414141] px-[28px] py-[15px]">
-                Terminals
-              </p>
-              <hr
-                className=" border"
-                style={{
-                  borderColor: colorScheme || "#929292",
-                }}
-              />
-
-              <div className=" my-[10px] max-w-[566px] mx-auto text-center">
-                <p className=" text-[14px]  font-[400] text-[#121212]">
-                  Tap attached NFC device
-                </p>
-
-                <div className=" flex justify-center">
-                  <img src={System} alt="" className=" mt-[40px]" />
-                </div>
-              </div>
-
-              <div className=" flex items-center  justify-center">
-                <p
-                  className=" cursor-pointer inline font-[500] text-[18px] rounded-[10px] border   text-white py-[11px] px-[20px]"
-                  onClick={handlePayment}
-                  style={{
-                    backgroundColor: colorScheme || "#FF0000",
-                    borderColor: colorScheme || "#ff0000",
-                  }}
-                >
-                  Proceed to Pay
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
