@@ -86,6 +86,7 @@ export default function BulkUploadComp() {
       "text/csv": [".csv"],
     },
     multiple: false,
+    noClick: true
   });
 
   const handleCancel = () => {
