@@ -14,6 +14,7 @@ import {
   fetchSalesRevenueGraph,
   fetchTopMenuItems,
   fetchCustomerTransaction,
+  fetchSalesGrowthRate,
 } from "../../slices/overviewSlice";
 import CustomSelect5 from "../inputFields/CustomSelect5";
 
@@ -40,6 +41,7 @@ const BalanceComp = () => {
     dispatch(fetchSalesRevenueGraph({ date_filter: dateFilter, branch_id: selectedBranch?.id, startDate, endDate, number_of_days: numberOfDays, product_type: product }));
     dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: dateFilter, number_of_days: numberOfDays, product_type: product }));
     dispatch(fetchCustomerTransaction({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays, product_type: product }));
+    dispatch(fetchSalesGrowthRate({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays, product_type: product }));
   }, [dispatch, selectedBranch?.id, dateFilter, startDate, endDate, numberOfDays, product]);
 
   const changeVisibility = () => {

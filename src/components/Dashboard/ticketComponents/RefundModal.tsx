@@ -13,13 +13,15 @@ type refundModalProps = {
   setVoidOrderMenu: (value: boolean) => void;
   handleVoidOrder?: () => void;
   voidOrderItem?: any;
+  getTickets?: () => void
 };
 
 const RefundModal = ({
   voidOrderMenu,
   handleVoidOrderMenu,
   setVoidOrderMenu,
-  voidOrderItem
+  voidOrderItem,
+  getTickets
 }: refundModalProps) => {
 
   useEffect(() => {
@@ -71,6 +73,7 @@ const RefundModal = ({
 
       toast.success("Refund successful");
       console.log("response", response)
+      getTickets && getTickets();
       setVoidOrderMenu(false)
       setShowConfirmationModal(false)
     } catch (error) {

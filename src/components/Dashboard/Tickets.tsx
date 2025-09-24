@@ -299,6 +299,7 @@ const Tickets = () => {
                             <DropdownMenu
                               handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
                               handleViewTicket={() => handleViewTicket(item.id)}
+                              isRefundable={item?.isRefunded}
                             />
                           )}
                         </div>
@@ -324,6 +325,7 @@ const Tickets = () => {
                   setVoidOrderMenu={setVoidOrderMenu}
                   // handleVoidOrder={handleVoidOrder}
                   voidOrderItem={voidOrderItem}
+                  getTickets={() => getTickets(page)}
                 />
               ) : (
                 <VoidOrderMenu
