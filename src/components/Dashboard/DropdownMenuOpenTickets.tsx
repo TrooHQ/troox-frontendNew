@@ -1,7 +1,7 @@
 // handleVoidOrderMenu
 // handleVoidOrderMenu
 // setVoidOrderItem
-export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket }: { handleVoidOrderMenu: () => void, handleViewTicket: () => void }) => {
+export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket, isRefundable }: { handleVoidOrderMenu: () => void, handleViewTicket: () => void, isRefundable: boolean }) => {
   const handleItemClick = (action: string) => {
     if (action === "Void Order") {
       handleVoidOrderMenu();
@@ -19,8 +19,8 @@ export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket }: { handle
         View Order
       </li>
       <li
-        onClick={() => handleItemClick("Void Order")}
-        className="font-[400] text-red-500 cursor-pointer"
+        onClick={() => { !isRefundable && handleItemClick("Void Order") }}
+        className={`font-[400]  ${!isRefundable ? "text-red-500 cursor-pointer" : "cursor-not-allowed text-gray-300"} `}
       >
         Refund Order
       </li>
