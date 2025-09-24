@@ -508,6 +508,7 @@ const OrderHistory = () => {
                             <DropdownMenu
                               handleVoidOrderMenu={() => { handleVoidOrderMenu(); setVoidOrderItem(item); }}
                               handleViewTicket={() => handleViewTicket(item.id)}
+                              isRefundable={item?.isRefunded}
                             />
                           )}
                         </div>
