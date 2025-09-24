@@ -1,7 +1,7 @@
 // handleVoidOrderMenu
 // handleVoidOrderMenu
 // setVoidOrderItem
-export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket, isRefundable }: { handleVoidOrderMenu: () => void, handleViewTicket: () => void, isRefundable: boolean }) => {
+export const DropdownMenu = ({ handleVoidOrderMenu, handleViewTicket, isRefundable }: { handleVoidOrderMenu: () => void, handleViewTicket: () => void, isRefundable?: boolean }) => {
   const handleItemClick = (action: string) => {
     if (action === "Void Order") {
       handleVoidOrderMenu();
