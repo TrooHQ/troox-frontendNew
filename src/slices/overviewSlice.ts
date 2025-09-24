@@ -444,11 +444,40 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
 
 export const fetchSalesGrowthRate = createAsyncThunk(
   "overview/fetchSalesGrowthRate",
-  async () => {
+  async ({
+    date_filter,
+    startDate,
+    endDate,
+    number_of_days,
+    branch_id,
+    product_type,
+  }: {
+    date_filter: string;
+    startDate?: string;
+    endDate?: string;
+    number_of_days?: number;
+    branch_id?: string;
+    product_type?: string;
+  }) => {
     try {
       const token = localStorage.getItem("token");
 
+      const params: any = { date_filter };
+      if (date_filter === "date_range") {
+        params.startDate = startDate;
+        params.endDate = endDate;
+      } else if (date_filter !== "today") {
+        params.number_of_days = number_of_days;
+      }
+      if (branch_id) {
+        params.branch_id = branch_id;
+      }
+      if (product_type) {
+        params.product_type = product_type;
+      }
+
       const response = await axios.get(`${SERVER_DOMAIN}/salesGrowthRate`, {
+        params,
         headers: {
           Authorization: `Bearer ${token}`,
         },

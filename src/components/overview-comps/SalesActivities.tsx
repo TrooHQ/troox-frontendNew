@@ -3,17 +3,26 @@ import ArrowUp from "../../assets/ArrowUp.svg";
 import ArrowNeutral from "../../assets/activeArrow.svg";
 import clsx from "clsx";
 import styles from "./Header.module.css";
-import { fetchSalesGrowthRate } from "../../slices/overviewSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { useEffect, useState } from "react";
+// import { fetchSalesGrowthRate } from "../../slices/overviewSlice";
+import {
+  // useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  //  AppDispatch,
+  RootState
+} from "../../store/store";
+import {
+  // useEffect,
+  useState
+} from "react";
 import { MoreVert } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 // import { ArrowDownward, ArrowUpward, Remove } from "@mui/icons-material";
 
 const SalesActivities = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -34,9 +43,9 @@ const SalesActivities = () => {
     totalCustomerTransaction,
   } = useSelector((state: RootState) => state.overview);
 
-  useEffect(() => {
-    dispatch(fetchSalesGrowthRate());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchSalesGrowthRate());
+  // }, [dispatch]);
 
   // Assuming salesGrowthRate.data is available
   const salesGrowthRateData = salesGrowthRate?.data || {
@@ -79,9 +88,8 @@ const SalesActivities = () => {
         icon: statusIcon,
         title: "Sales Growth Rate",
         time: "12:45 PM",
-        amount: `${
-          salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0
-        }%`,
+        amount: `${salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0
+          }%`,
         statusIcon: statusIcon,
         status: status,
       },
