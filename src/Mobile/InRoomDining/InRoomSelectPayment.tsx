@@ -157,7 +157,7 @@ export const InRoomSelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/confirmOrderPayment/`,
+        `${SERVER_DOMAIN}/order/confirmOrderPayment`,
         { reference: reference, businessId: business?.businessDetails?._id });
       // { reference: reference, businessId: uniqueId?.split("_").join(" ") });
 
