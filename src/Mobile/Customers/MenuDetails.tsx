@@ -95,7 +95,7 @@ const MenuDetails = () => {
 
   const businessIdentifier = userDetails?._id;
 
-  console.log("userDetails", userDetails);
+  // console.log("userDetails", userDetails);
 
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
@@ -147,6 +147,9 @@ const MenuDetails = () => {
   useEffect(() => {
     getRecommendedItems();
   }, []);
+
+  console.log("menuItems", menuItems);
+  console.log("menuModifiers", menuModifiers);
 
   const getItems = async () => {
     setLoading(true);
