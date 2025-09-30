@@ -137,10 +137,10 @@ export const SelectPayment = () => {
         if (error.response) {
           toast.error(error.response.data.message);
         } else {
-          toast.error("An error occurred. Please try again later.");
+          // toast.error("An error occurred. Please try again later.");
         }
       } else {
-        toast.error("An error occurred. Please try again later.");
+        // toast.error("An error occurred. Please try again later.");
       }
     } finally {
       setLoading(false);
@@ -151,7 +151,7 @@ export const SelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/confirmOrderPayment/`,
+        `${SERVER_DOMAIN}/order/confirmOrderPayment`,
         { reference: reference, businessId: business?.businessDetails?._id });
       // { reference: reference, businessId: uniqueId?.split("_").join(" ") });
 
@@ -167,7 +167,7 @@ export const SelectPayment = () => {
       }
     } catch (error) {
       console.error("Error confirming payment:", error);
-      toast.error("An error occurred. Please try again.");
+      // toast.error("An error occurred. Please try again.");
       navigate(`/demo/payment-type/online_ordering/`);
     } finally {
       setLoading(false);
