@@ -58,9 +58,9 @@ const CustomSelect5: React.FC<CustomSelectProps> = ({
               {disabledOption}
             </option>
           )}
-          {/* <option value="" disabled>
-            {label}
-          </option> */}
+          {!value && <option value="" disabled>
+            Select Branch
+          </option>}
           {options.map((option, index) => (
             <option key={index} value={option.value}>
               {option.label}
