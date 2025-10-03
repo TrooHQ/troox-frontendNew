@@ -658,31 +658,31 @@ const MenuSetupForm: React.FC<Props> = () => {
                                       <div className="" key={index}>
                                         {group.name ===
                                           item.menu_group_name && (
-                                          <div
-                                            className="flex items-center justify-between"
-                                            onClick={() =>
-                                              toggleItem(item.menu_item_name)
-                                            }
-                                            style={{ cursor: "pointer" }}
-                                          >
-                                            <p className=" font-[500] py-[8px]">
-                                              {item.menu_item_name}
-                                            </p>
-                                            <img
-                                              src={Arrow}
-                                              alt=""
-                                              style={{
-                                                transform: expandedItem[
-                                                  item.menu_item_name
-                                                ]
-                                                  ? "rotate(180deg)"
-                                                  : "rotate(0deg)",
-                                                transition:
-                                                  "transform 0.3s ease",
-                                              }}
-                                            />
-                                          </div>
-                                        )}
+                                            <div
+                                              className="flex items-center justify-between"
+                                              onClick={() =>
+                                                toggleItem(item.menu_item_name)
+                                              }
+                                              style={{ cursor: "pointer" }}
+                                            >
+                                              <p className=" font-[500] py-[8px]">
+                                                {item.menu_item_name}
+                                              </p>
+                                              <img
+                                                src={Arrow}
+                                                alt=""
+                                                style={{
+                                                  transform: expandedItem[
+                                                    item.menu_item_name
+                                                  ]
+                                                    ? "rotate(180deg)"
+                                                    : "rotate(0deg)",
+                                                  transition:
+                                                    "transform 0.3s ease",
+                                                }}
+                                              />
+                                            </div>
+                                          )}
 
                                         {expandedItem[item.menu_item_name] && (
                                           <div className=" grid gap-[10px]">
@@ -731,51 +731,51 @@ const MenuSetupForm: React.FC<Props> = () => {
                                                   {expandedModifierGroup[
                                                     modifier.modifier_group_name
                                                   ] && (
-                                                    <div className="grid gap-[10px]">
-                                                      {modifiers
-                                                        .filter(
-                                                          (MainModifier) =>
-                                                            MainModifier.modifier_group_name ===
-                                                            modifier.modifier_group_name
-                                                        )
-                                                        .map(
-                                                          (
-                                                            MainModifier,
-                                                            index
-                                                          ) => (
-                                                            <div
-                                                              key={index}
-                                                              className="flex items-center justify-between bg-slate-50 p-[8px]"
-                                                            >
-                                                              <p>
-                                                                {
-                                                                  MainModifier.modifier_name
-                                                                }
-                                                              </p>
-                                                              <p>
-                                                                &#x20A6;
-                                                                {
-                                                                  MainModifier.modifier_price
-                                                                }
-                                                              </p>
-                                                            </div>
+                                                      <div className="grid gap-[10px]">
+                                                        {modifiers
+                                                          .filter(
+                                                            (MainModifier) =>
+                                                              MainModifier.modifier_group_name ===
+                                                              modifier.modifier_group_name
                                                           )
-                                                        )}
+                                                          .map(
+                                                            (
+                                                              MainModifier,
+                                                              index
+                                                            ) => (
+                                                              <div
+                                                                key={index}
+                                                                className="flex items-center justify-between bg-slate-50 p-[8px]"
+                                                              >
+                                                                <p>
+                                                                  {
+                                                                    MainModifier.modifier_name
+                                                                  }
+                                                                </p>
+                                                                <p>
+                                                                  &#x20A6;
+                                                                  {
+                                                                    MainModifier.modifier_price
+                                                                  }
+                                                                </p>
+                                                              </div>
+                                                            )
+                                                          )}
 
-                                                      <p
-                                                        className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
-                                                        onClick={() =>
-                                                          setModifierModal(true)
-                                                        }
-                                                      >
-                                                        <img
-                                                          src={AddWhite}
-                                                          alt=""
-                                                        />
-                                                        Add Modifier
-                                                      </p>
-                                                    </div>
-                                                  )}
+                                                        <p
+                                                          className="text-[#5855B3] py-[11px] px-[4px] text-[14px] font-[400] flex items-center cursor-pointer"
+                                                          onClick={() =>
+                                                            setModifierModal(true)
+                                                          }
+                                                        >
+                                                          <img
+                                                            src={AddWhite}
+                                                            alt=""
+                                                          />
+                                                          Add Modifier
+                                                        </p>
+                                                      </div>
+                                                    )}
                                                 </>
                                               ))}
 
@@ -817,17 +817,15 @@ const MenuSetupForm: React.FC<Props> = () => {
           <div className=" grid py-[32px] gap-[8px]">
             {hasMenu === false && (
               <div
-                className={`${
-                  menuData?.length > 0 ? " bg-purple500" : "bg-[#B6B6B6]"
-                } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
+                className={`${menuData?.length > 0 ? " bg-black" : "bg-[#B6B6B6]"
+                  } text-[16px] font-[500] text-[#ffffff] border w-full text-center py-3 rounded`}
               >
                 {menuData?.length > 0 ? (
                   <Link
-                    to={`${
-                      businessType === "Hotel & Lodgings"
-                        ? "/demo/room/troo-portal"
-                        : "/demo/table/troo-portal"
-                    }`}
+                    to={`${businessType === "Hotel & Lodgings"
+                      ? "/demo/room/troo-portal"
+                      : "/demo/table/troo-portal"
+                      }`}
                   >
                     <p>Save and continue</p>
                   </Link>
@@ -942,7 +940,7 @@ const MenuSetupForm: React.FC<Props> = () => {
               </div>
             </div>
             {base64String && menuCategory && (
-              <div className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff] mt-[72px]">
+              <div className="border borderblack cursor-pointer text-center bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff] mt-[72px]">
                 <button
                   className="text-[16px]"
                   type="submit"
@@ -1091,7 +1089,7 @@ const MenuSetupForm: React.FC<Props> = () => {
               )}
             </div>
             <div
-              className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff] "
+              className="border borderblack cursor-pointer text-center bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff] "
               onClick={createGroup}
             >
               <button className="text-[16px]" type="submit" disabled={loading}>
@@ -1177,7 +1175,7 @@ const MenuSetupForm: React.FC<Props> = () => {
             </div>
             {!loading && (
               <div
-                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                className="border borderblack cursor-pointer text-center bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
                 onClick={createItem}
               >
                 <button className=" text-[16px] ">Save</button>
@@ -1215,7 +1213,7 @@ const MenuSetupForm: React.FC<Props> = () => {
 
             {!loading && (
               <div
-                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                className="border borderblack cursor-pointer text-center bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
                 onClick={createModifierGroup}
               >
                 <button className=" text-[16px] ">Save</button>
@@ -1291,7 +1289,7 @@ const MenuSetupForm: React.FC<Props> = () => {
             </div>
             {base64String && (
               <div
-                className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
+                className="border borderblack cursor-pointer text-center bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[34px]"
                 onClick={createModifier}
               >
                 <button className=" text-[16px] ">Save</button>

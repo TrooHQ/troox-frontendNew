@@ -87,7 +87,7 @@ const ResetPassword = () => {
           {error && <p className="text-red-500 text-center">{error}</p>}
           <p className="text-[14px]">Both passwords must match</p>
           <button
-            className="bg-purple500 w-full text-center text-white py-3 rounded"
+            className="bg-black w-full text-center text-white py-3 rounded"
             onClick={handleSubmit}
             disabled={loading}
           >
@@ -95,7 +95,7 @@ const ResetPassword = () => {
           </button>
           <div className="text-center py-3">
             <div onClick={() => navigate(-1)}>
-              <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Go Back</p>
+              <p className="font-[500] text-[16px] text-black cursor-pointer">Go Back</p>
             </div>
           </div>
         </div>

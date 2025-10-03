@@ -19,7 +19,7 @@ const ManageThemes = ({ userDetails }: any) => {
     { name: "Blue", colorCode: "#3450B0" },
     { name: "Black", colorCode: "#000000" },
     { name: "Green", colorCode: "#097F7C" },
-    { name: "Purple", colorCode: "#121212" },
+    { name: "black", colorCode: "#121212" },
     { name: "Red", colorCode: "#FF0000" },
   ];
 
@@ -90,9 +90,8 @@ const ManageThemes = ({ userDetails }: any) => {
         {colors.map((color) => (
           <div
             key={color.name}
-            className={`py-[16px] border-b border-b-[#E7E7E7] flex gap-[8px] cursor-pointer ${
-              loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`py-[16px] border-b border-b-[#E7E7E7] flex gap-[8px] cursor-pointer ${loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={() => handleColorSelect(color)}
           >
             <div

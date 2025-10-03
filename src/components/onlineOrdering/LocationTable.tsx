@@ -150,9 +150,8 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
             {branches.map((branch, index) => (
               <tr
                 key={index}
-                className={`${
-                  index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
-                }`}
+                className={`${index % 2 === 1 ? "bg-[#ffffff]" : "bg-[#F8F8F8]"
+                  }`}
               >
                 <td className="text-base font-normal py-2 px-4">
                   {branch.state}
@@ -221,7 +220,7 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
       {/* Edit Modal */}
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
         <form>
-          <p className="text-[24px] mb-[24px] font-[500] text-purple500">
+          <p className="text-[24px] mb-[24px] font-[500] text-black">
             Edit Pickup Location
           </p>
 
@@ -257,14 +256,14 @@ const LocationTable: React.FC<LocationTableProps> = ({ branches }) => {
 
           <div className="flex justify-end items-center gap-2 mt-7">
             <div
-              className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+              className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
               onClick={() => setIsEditModalOpen(false)}
             >
-              <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+              <p className="font-[500] text-[16px] text-black cursor-pointer">
                 Cancel
               </p>
             </div>
-            <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
+            <div className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
               <button
                 type="button"
                 onClick={handleEditConfirm}

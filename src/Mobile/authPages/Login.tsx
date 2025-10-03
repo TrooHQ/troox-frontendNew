@@ -122,7 +122,7 @@ const Login = () => {
 
           <div className="flex justify-end mt-[16px] mb-[32px]">
             <Link to="/demo/forgot-password/troo-portal">
-              <p className="text-purple500">Forgot password?</p>
+              <p className="text-black">Forgot password?</p>
             </Link>
           </div>
           <div className="" onClick={handleLogin}>
@@ -136,7 +136,7 @@ const Login = () => {
         </div>
         <div className=" mt-[100px]">
           <Link to="/demo/register/troo-portal">
-            <p className="font-[500] text-[16px] text-purple500">
+            <p className="font-[500] text-[16px] text-black">
               Create a business account
             </p>
           </Link>

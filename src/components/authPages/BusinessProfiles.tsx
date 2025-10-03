@@ -92,19 +92,17 @@ const BusinessProfiles: React.FC = () => {
         {stepTitles.map((_, index) => (
           <div key={index} className="flex items-center">
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                currentStep >= index
-                  ? "bg-purple500 text-white"
-                  : "bg-gray-300 text-gray-600"
-              }`}
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= index
+                ? "bg-black text-white"
+                : "bg-gray-300 text-gray-600"
+                }`}
             >
               {index + 1}
             </div>
             {index < stepTitles.length - 1 && (
               <div
-                className={`flex-1 h-1 ${
-                  currentStep > index ? "bg-purple500" : "bg-gray-300"
-                }`}
+                className={`flex-1 h-1 ${currentStep > index ? "bg-black" : "bg-gray-300"
+                  }`}
               ></div>
             )}
           </div>
@@ -122,7 +120,7 @@ const BusinessProfiles: React.FC = () => {
       )}
       <div className="bg-white py-10 px-8 w-full md:w-3/5 rounded shadow-md h-[85vh] overflow-y-auto border-[1.5px] border-[#121212]">
         {renderStepProgress()}
-        <p className="text-2xl font-medium text-purple500 mb-2">
+        <p className="text-2xl font-medium text-black mb-2">
           {stepTitles[currentStep]}
         </p>
         <p className="text-gray-600 mb-8">{stepDescriptions[currentStep]}</p>
@@ -132,7 +130,7 @@ const BusinessProfiles: React.FC = () => {
         {currentStep > 0 ? (
           <button
             onClick={handleBack}
-            className="border-2 border-purple500 rounded px-6 py-3 font-semibold text-purple500"
+            className="border-2 borderblack rounded px-6 py-3 font-semibold text-black"
             disabled={loading}
           >
             Back
@@ -140,7 +138,7 @@ const BusinessProfiles: React.FC = () => {
         ) : (
           <Link to="/">
             <button
-              className="border-2 border-purple500 rounded px-6 py-3 font-semibold text-purple500"
+              className="border-2 borderblack rounded px-6 py-3 font-semibold text-black"
               disabled={loading}
             >
               Back
@@ -150,19 +148,19 @@ const BusinessProfiles: React.FC = () => {
         {currentStep < stepTitles.length - 1 ? (
           <button
             onClick={handleNext}
-            className="ml-auto border-2 border-purple500 bg-purple500 rounded px-6 py-3 font-semibold text-white"
+            className="ml-auto border-2 borderblack bg-black rounded px-6 py-3 font-semibold text-white"
             disabled={loading}
           >
             {loading
               ? "Loading..."
               : currentStep === 0
-              ? "Next"
-              : "Save and continue"}
+                ? "Next"
+                : "Save and continue"}
           </button>
         ) : (
           <button
             onClick={handleNext}
-            className="ml-auto border-2 border-purple500 bg-purple500 rounded px-6 py-3 font-semibold text-white"
+            className="ml-auto border-2 borderblack bg-black rounded px-6 py-3 font-semibold text-white"
             disabled={loading}
           >
             {loading ? "Loading..." : "Save and continue"}

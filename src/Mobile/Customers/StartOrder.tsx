@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "../Components/Modal";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 
@@ -98,14 +98,26 @@ const StartOrder = () => {
 
   const color = businessDetails?.colour_scheme;
 
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    phone: "",
+    tableNumber: "",
+    roomNumber: "",
+    type: type || ""
+  })
+
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setUserName(name);
+
+    setCustomerInfo((prev: any) => ({ ...prev, name }));
     dispatch(updateCustomerName(name));
   };
   const handleUserPhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phone = event.target.value;
     setUserPhone(phone);
+
+    setCustomerInfo((prev: any) => ({ ...prev, phone }));
     dispatch(updateCustomerPhone(phone));
   };
 
@@ -115,6 +127,7 @@ const StartOrder = () => {
     const tableNumber = inputValue.replace(/\D/g, "");
 
     setTable(tableNumber);
+    setCustomerInfo((prev: any) => ({ ...prev, tableNumber }));
     dispatch(updateCustomerTableNumber(tableNumber));
   };
 
@@ -122,9 +135,14 @@ const StartOrder = () => {
     if (userName && isOpen) {
       setIsOpen(false);
       setPhoneIsOpen(true);
-    } else {
+    } else if (userPhone && isPhoneOpen) {
       setPhoneIsOpen(false);
       setTableIsOpen(true);
+    } else {
+      localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
+      setTableIsOpen(false);
+      // navigate(`demo/category-details/in_room_dining`);
+      navigate(`/category-details`);
     }
   };
 
@@ -264,17 +282,18 @@ const StartOrder = () => {
             >
               Cancel
             </p>
-            <Link to={`demo/category-details/orderandpay`}>
-              <p
-                className={`px-[24px] py-[10px] ${!table ? " cursor-default" : " cursor-pointer"
-                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
-                style={{
-                  backgroundColor: table ? color : "#f2f2f2",
-                }}
-              >
-                Submit
-              </p>
-            </Link>
+            {/* <Link to={`demo/category-details/orderandpay`}> */}
+            <p
+              onClick={table ? handleNext : undefined}
+              className={`px-[24px] py-[10px] ${!table ? " cursor-default" : " cursor-pointer"
+                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+              style={{
+                backgroundColor: table ? color : "#f2f2f2",
+              }}
+            >
+              Submit
+            </p>
+            {/* </Link> */}
           </div>
         </div>
       </Modal>

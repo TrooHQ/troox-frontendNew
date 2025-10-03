@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Modal from "../Components/Modal";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SERVER_DOMAIN } from "../../Api/Api";
 import axios from "axios";
 import {
@@ -72,6 +72,16 @@ const InRoomStartOrder = () => {
     }
   };
 
+
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    phone: "",
+    tableNumber: "",
+    roomNumber: "",
+    type: "in room dining"
+  })
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [isRoomOpen, setRoomIsOpen] = useState(false);
   const [isPhoneOpen, setPhoneIsOpen] = useState(false);
@@ -87,28 +97,36 @@ const InRoomStartOrder = () => {
   const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     setUserName(name);
+    setCustomerInfo((prev: any) => ({ ...prev, name }));
     dispatch(updateCustomerName(name));
   };
 
   const handleUserPhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const phone = event.target.value;
     setUserPhone(phone);
+    setCustomerInfo((prev: any) => ({ ...prev, phone }));
     dispatch(updateCustomerPhone(phone));
   };
 
   const handleTableChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const roomNumber = event.target.value;
     setRoom(roomNumber);
+    setCustomerInfo((prev: any) => ({ ...prev, roomNumber }));
     dispatch(updateCustomerTableNumber(roomNumber));
   };
 
+  const navigate = useNavigate();
   const handleNext = () => {
     if (userName && isOpen) {
       setIsOpen(false);
       setPhoneIsOpen(true);
-    } else {
+    } else if (userPhone && isPhoneOpen) {
       setPhoneIsOpen(false);
       setRoomIsOpen(true);
+    } else {
+      localStorage.setItem("customerInfo", JSON.stringify(customerInfo));
+      setRoomIsOpen(false);
+      navigate(`/category-details`);
     }
   };
 
@@ -237,17 +255,18 @@ const InRoomStartOrder = () => {
             >
               Cancel
             </p>
-            <Link to={`/demo/category-details/in_room_dining`}>
-              <p
-                className={`px-[24px] py-[10px] ${!room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
-                  } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
-                style={{
-                  backgroundColor: room ? color : "#f2f2f2",
-                }}
-              >
-                Submit
-              </p>
-            </Link>
+            {/* <Link to={`/demo/category-details/in_room_dining`}> */}
+            <p
+              onClick={room ? handleNext : undefined}
+              className={`px-[24px] py-[10px] ${!room ? "bg-[#F8C9C9]" : "bg-[#FF0000] cursor-pointer"
+                } inline rounded-[5px] text-[#ffffff] text-[16px] font-[500]`}
+              style={{
+                backgroundColor: room ? color : "#f2f2f2",
+              }}
+            >
+              Submit
+            </p>
+            {/* </Link> */}
           </div>
         </div>
       </Modal>

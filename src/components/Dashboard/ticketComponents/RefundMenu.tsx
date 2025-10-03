@@ -21,7 +21,7 @@ const RefundMenu = ({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <div className="">
-            <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
+            <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
               Request Refund
             </p>
             <hr className="border border-[#E7E7E7] mb-[24px]" />
@@ -73,17 +73,17 @@ const RefundMenu = ({
 
               <div className="flex items-center justify-end gap-4 mt-5">
                 <div
-                  className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+                  className="border cursor-pointer borderblack rounded px-[24px]  py-[10px] font-[600] text-black"
                   onClick={() => {
                     setRefundMenu(false);
                     setOpenInput(false);
                     setRefundType("");
                   }}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+                  <p className="font-[500] text-[16px] text-black cursor-pointer">Cancel</p>
                 </div>
 
-                <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
+                <div className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                   <button className=" text-[16px] font-normal">Make Refund</button>
                 </div>
               </div>

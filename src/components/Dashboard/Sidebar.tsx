@@ -313,7 +313,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           className={`cursor-pointer duration-500 ${!open ? "hidden" : "block"
             } `}
         >
-          <hr className="h-[2px] bg-[#929292] my-3" />
+          <hr className="h-[2px] bg-gray-400 my-3" />
           <div className="ml-[5px] flex flex-col items-start justify-center gap-2">
             {/* <h4 className="mb-0 text-base font-medium">
               {userData?.business_name}
@@ -372,7 +372,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               // </div>
             )}
           </div>
-          <hr className="h-[2px] bg-[#929292] my-3" />
+          <hr className="h-[2px] bg-gray-400 my-3" />
         </div>
       </div>
 
@@ -390,9 +390,9 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <div
                 className={`flex relative ${menu.title && "px-[4px] cursor-pointer py-[8px]"
                   }  ${menu.subTitle && "text-[12px] font-normal text-[#121212]"
-                  } text-purple200  items-center gap-x-2
+                  } text-black200  items-center gap-x-2
             ${menu.gap ? " mt-28" : ""} ${menu.Subgap && "my-5"} ${isMenuItemActive(menu.link || "", menu.subMenu)
-                    ? "  bg-[#d3d3d3] font-semibold text-[16px] text-[#606060] "
+                    ? "  bg-gray-300 font-semibold text-[16px] text-[#606060] "
                     : !isMenuItemActive(menu.link || "", menu.subMenu) &&
                       !menu.subTitle
                       ? " "
@@ -459,7 +459,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
                         <li
                           className={`flex p-2 cursor-pointer py-2  text-sm items-center gap-x-4 ${isMenuItemActive(subMenuItem.link || "")
                             ? "text-[#000] font-bold"
-                            : "text-purple200"
+                            : "text-black200"
                             }`}
                         >
                           {subMenuItem.title}
@@ -475,7 +475,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       </ul>
 
       <div className="mb-10">
-        <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
+        <hr className="h-[2px] bg-gray-400 mt-5 mb-3" />
         <p className="text-[10px] font-medium ml-3.5"></p>
 
         <div className="flex items-start justify-start gap-0">
@@ -509,7 +509,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
             </div>
           )}
         </div>
-        <hr className="h-[2px] bg-[#929292] mt-5 mb-3" />
+        <hr className="h-[2px] bg-gray-400 mt-5 mb-3" />
       </div>
 
       <div
@@ -554,7 +554,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
           </div>
           <div className="flex gap-[30px] items-center justify-center mb-[0px] cursor-pointer">
             <div
-              className="flex flex-col gap-5 items-center border border-[#b6b6b6] rounded-[10px] p-8 hover:bg-[#0d0d0d] text-[#121212] hover:text-white transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-5 items-center border border-[#efefef] rounded-[10px] p-8 hover:bg-[#0d0d0d] text-[#121212] hover:text-white transition-all duration-300 cursor-pointer"
               onClick={handleViewAddOns}
               onMouseEnter={() => setHovered("add-ons")}
               onMouseLeave={() => setHovered(null)}
@@ -567,7 +567,7 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
               <p className="text-[16px] font-[500]">View Add-Ons</p>
             </div>
             <div
-              className="flex flex-col gap-5 items-center border border-[#b6b6b6] rounded-[10px] p-8 hover:bg-[#0d0d0d] hover:text-white transition-all duration-300 cursor-pointer"
+              className="flex flex-col gap-5 items-center border border-[#efefef] rounded-[10px] p-8 hover:bg-[#0d0d0d] hover:text-white transition-all duration-300 cursor-pointer"
               onClick={handleUpgradePlan}
               onMouseEnter={() => setHovered("upgrade")}
               onMouseLeave={() => setHovered(null)}

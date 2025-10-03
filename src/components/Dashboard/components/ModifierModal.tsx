@@ -33,7 +33,7 @@ const ModifierModal = ({
     <Modal isOpen={addModifierModar} onClose={() => setAddModifierModal(false)}>
       <div className=" w-[539px] py-[32px] px-[52px]">
         <div className="">
-          <p className=" text-[24px] mb-[11px] font-[500] text-purple500">Add modifier</p>
+          <p className=" text-[24px] mb-[11px] font-[500] text-black">Add modifier</p>
           <hr className="border my-[24px] border-[#E7E7E7]" />
 
           {/* Render input fields for each modifier */}
@@ -91,14 +91,14 @@ const ModifierModal = ({
 
           <div className="flex items-center justify-end gap-2">
             <div
-              className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+              className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
               onClick={() => { setEditModifierData(null); setAddModifierModal(false); setModifiers([]) }}
             >
-              <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+              <p className="font-[500] text-[16px] text-black cursor-pointer">Cancel</p>
             </div>
 
             <div
-              className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+              className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
               onClick={() => { editModifierData ? handleUpdateMod() : handleConfirmSave(modifiers) }}
             >
               {editModifierData ? <button className=" text-[16px]">Update item</button> : <button className=" text-[16px]">{loading ? "Saving..." : "Save item"}</button>}

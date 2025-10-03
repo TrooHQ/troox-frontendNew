@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import MobileLayout from "./MobileLayout";
+// import MobileLayout from "./MobileLayout";
+import QRRoutesLayout from "./QRRoutesLayout";
 import SelfCheckoutLayout from "./SelfCheckoutLayout";
 import "./index.css";
 
@@ -34,7 +35,8 @@ function Root() {
   let rootComponent;
 
   if (isMobileScreen) {
-    rootComponent = <MobileLayout />;
+    // rootComponent = <MobileLayout />;
+    rootComponent = <QRRoutesLayout />;
   } else if (isLargeScreen) {
     rootComponent = <SelfCheckoutLayout />;
   } else {

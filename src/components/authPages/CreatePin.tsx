@@ -91,7 +91,7 @@ const CreatePin = () => {
 
           {/* Button and loading state */}
           <button
-            className="bg-purple500 w-full text-center text-white py-3 rounded mt-4 hover:bg-purple600 transition"
+            className="bg-black w-full text-center text-white py-3 rounded mt-4 hover:bg-black600 transition"
             onClick={handleSubmit}
             disabled={loading}
           >
@@ -100,7 +100,7 @@ const CreatePin = () => {
 
           {/* Go back option */}
           <div className="text-center mt-4">
-            <p className="font-medium text-purple500 cursor-pointer" onClick={() => navigate(-1)}>
+            <p className="font-medium text-black cursor-pointer" onClick={() => navigate(-1)}>
               Go Back
             </p>
           </div>

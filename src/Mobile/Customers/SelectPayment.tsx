@@ -17,7 +17,6 @@ export const SelectPayment = () => {
 
   const searchParams = new URLSearchParams(window.location.search);
 
-  console.log("searchParams", searchParams);
 
   const reference = searchParams.get("reference") ?? null;
 
@@ -25,6 +24,7 @@ export const SelectPayment = () => {
   const dispatch = useDispatch();
 
   const basketDetails = useSelector((state: RootState) => state.basket);
+  console.log("basketDetails", basketDetails);
 
   const branchId = useSelector((state: RootState) => state.business?.branchID);
 
@@ -94,7 +94,8 @@ export const SelectPayment = () => {
           // amount: parseInt(pricePlusTax.toString()) + parseInt(deliveryFee ? deliveryFee.toString() : "0"),
           amount: totalPrice + tip,
           email: "user@example.com",
-          callback_url: "https://troo-admin.netlify.app/demo/payment-type/in_room_dining",
+          callback_url: window.location.href,
+          // callback_url: "https://troo-admin.netlify.app/demo/payment-type/in_room_dining",
           // callback_url: window.location.href.includes("netlify.app") ?            
           // "// https://troo-admin.netlify.app/demo/payment-type/in_room_dining" : "https://gogrub.shop/demo/payment-type/online_ordering",
 
@@ -104,7 +105,7 @@ export const SelectPayment = () => {
       );
 
       sessionStorage.setItem("reference", response?.data?.transaction?.ref);
-      console.log("reference", response?.data?.transaction?.ref);
+      // console.log("reference", response?.data?.transaction?.ref);
       // route this to a blank page
       window.location.href = response.data.paystack_data.data.authorization_url;
     } catch (error) {
@@ -116,11 +117,17 @@ export const SelectPayment = () => {
   };
 
   const handlePayment = async () => {
+
+
+    const _order = localStorage.getItem("order_x445ij")
+
+    const order = _order ? JSON.parse(_order) : null;
+
     try {
       setLoading(true);
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadBranchUserOrder`,
-        payload
+        { ...order, transactionRef: reference, }
       );
       setLoading(false);
       console.log(response.data);
@@ -151,13 +158,15 @@ export const SelectPayment = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${SERVER_DOMAIN}/order/confirmOrderPayment`,
-        { reference: reference, businessId: business?.businessDetails?._id });
-      // { reference: reference, businessId: uniqueId?.split("_").join(" ") });
+        // `${SERVER_DOMAIN}/order/confirmOrderPayment`,
+        `${PAYMENT_DOMAIN}/transaction/confirm_transaction_by_ref/`,
+        { reference: reference });
+      // { reference: reference, businessId: business?.businessDetails?._id });
+
 
 
       if (response.data?.status !== false) {
-        console.log("Payment verification response:", response);
+        // console.log("Payment verification response:", response);
         // handleOrderUpload();
         handlePayment();
         toast.success("Payment Successful!");
@@ -168,7 +177,7 @@ export const SelectPayment = () => {
     } catch (error) {
       console.error("Error confirming payment:", error);
       // toast.error("An error occurred. Please try again.");
-      navigate(`/demo/payment-type/online_ordering/`);
+      // navigate(`/demo/payment-type/online_ordering/`);
     } finally {
       setLoading(false);
     }
