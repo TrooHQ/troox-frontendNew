@@ -165,7 +165,7 @@ const RolesAndPermission: React.FC<RolesAndPermissionProps> = ({
                 <div className="flex flex-col">
                   <Tooltip title={item?.description}>
                     <div className="flex items-start p-4 space-x-2 bg-white border border-gray-200 rounded-md shadow-sm">
-                      <div className="text-purple500">
+                      <div className="text-black">
                         <InfoOutlined className="text-2xl cursor-pointer" />
                       </div>
                       <div className="text-gray-700">

@@ -434,7 +434,7 @@ const MenuBuilder = () => {
         <div>
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
-              <div className="border border-purple500 bg-purple500 w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
+              <div className="border borderblack bg-black w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
                 <button
                   className="text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddMenu}
@@ -453,8 +453,8 @@ const MenuBuilder = () => {
                       onClick={() => getSubCategory(category)}
                       key={category._id}
                       className={`${activeCategory?.name === category?.name &&
-                        "bg-purple100 text-purple600 font-[500]"
-                        } text-grey200 hover:bg-purple100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] cursor-pointer`}
+                        "bg-black100 text-black600 font-[500]"
+                        } text-grey200 hover:bg-black100 uppercase flex justify-between items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px] cursor-pointer`}
                     >
                       {truncateText(category.name, 10)}
                       {activeCategory?.name === category.name && (
@@ -625,7 +625,7 @@ const MenuBuilder = () => {
           >
             {/* <EditOpen setIsEditOpen={setIsEditOpen} /> */}
             <div className=" w-[539px] py-[32px] px-[52px]">
-              <h2 className="text-[24px] mb-[11px] font-[500] text-purple500">
+              <h2 className="text-[24px] mb-[11px] font-[500] text-black">
                 Edit Group Name
               </h2>
               <CustomInput

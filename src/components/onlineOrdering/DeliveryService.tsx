@@ -107,12 +107,12 @@ const DeliveryService = () => {
       {state.showLocation && !deliveryDetails && !loading ? (
         <div className="flex flex-col gap-6 items-center justify-center h-full w-full mt-[-100px]">
           <p>No location has been set yet</p>
-          <div className="border border-purple500 bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
+          <div className="border borderblack bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-black">
             <button
               className="text-[16px] flex items-center gap-[8px]"
               onClick={handleCreateLocation}
             >
-              <FaPlus className="w-5 h-5 text-purple500" />
+              <FaPlus className="w-5 h-5 text-black" />
               Add location
             </button>
           </div>

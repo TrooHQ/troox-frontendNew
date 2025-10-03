@@ -108,18 +108,18 @@ const Login = () => {
 
           <div className="flex justify-end mt-[16px] mb-[32px]">
             <Link to="/forgot-password">
-              <p className="text-purple500">Forgot password?</p>
+              <p className="text-black">Forgot password?</p>
             </Link>
           </div>
           <div className="" onClick={handleLogin}>
-            <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+            <button className="bg-black w-full text-center text-white py-3 rounded">
               {loading ? "Please wait..." : "Login"}
             </button>
           </div>
         </div>
         <div className=" mt-[40px]">
           <Link to="/business-profile">
-            <p className="font-[500] text-[16px] text-purple500">
+            <p className="font-[500] text-[16px] text-black">
               Create a business account
             </p>
           </Link>

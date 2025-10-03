@@ -54,8 +54,9 @@ import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrdering
 import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 import OrderHistory from "./Mobile/Components/OrderHistory";
 import AccountVerified from "./Mobile/Components/AccountVerified";
+import { AllMenuItems } from "./Mobile/Customers/Aligning_Routes/AllMenuItems";
 
-const MobileLayout = () => {
+const QRRoutesLayout = () => {
   return (
     <div className="overflow-hidden font-GeneralSans">
       <ToastContainer />
@@ -66,8 +67,8 @@ const MobileLayout = () => {
 
           <Route path="/restaurants" element={<ListofRestaurants />} />
 
-          <Route path="/:id?" element={<StartOrder />} />
-          <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
+
+
           <Route
             path="/demo/:id/explore-menu/orderandpay"
             element={<MenuPage />}
@@ -79,17 +80,27 @@ const MobileLayout = () => {
 
 
           {/* Unifying routes */}
+          <Route path="/:id?" element={<StartOrder />} />
+          <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
+
+          {/*  */}
           <Route
-            path="demo/category-details"
+            path="/category-details"
+            element={<AllMenuItems />}
+          />
+          <Route
+            path="/item-details/:id"
             element={<MenuDetails />}
           />
 
+          <Route path="/demo/basket/orderandpay" element={<Basket />} />
+
+          {/* unifying routes */}
 
           <Route
             path="/demo/menu-details/:id/orderandpay"
             element={<MenuDetails />}
           />
-          <Route path="/demo/basket/orderandpay" element={<Basket />} />
           <Route path="/demo/tip/orderandpay" element={<Tip />} />
           <Route
             path="/demo/payment-type/orderandpay"
@@ -242,4 +253,4 @@ const MobileLayout = () => {
   );
 };
 
-export default MobileLayout;
+export default QRRoutesLayout;

@@ -91,14 +91,14 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                     {editId === modifierGroup._id ? (
                       <button
                         onClick={() => handleSaveClick(modifierGroup)}
-                        className="mr-3 cursor-pointer text-purple500"
+                        className="mr-3 cursor-pointer text-black"
                       >
                         Save
                       </button>
                     ) : (
                       <EditOutlined
                         onClick={() => handleEditClick(modifierGroup)}
-                        className="mr-0 cursor-pointer text-purple500"
+                        className="mr-0 cursor-pointer text-black"
                         fontSize="small"
                       />
                     )}
@@ -112,7 +112,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                   </div>
                 </div>
                 <button
-                  className="px-[16px] py-[8px] font-[500] rounded-[5px] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className="px-[16px] py-[8px] font-[500] rounded-[5px] text-black text-[16px] flex items-center gap-[8px]"
                   onClick={() => {
                     handleAddModifier();
                     handleKeepModifierGroupDetail(modifierGroup);
@@ -124,7 +124,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
 
               {/* Display modifiers when the group is expanded */}
               {expandedGroupId === modifierGroup._id && (
-                <div className="p-4 mt-2 border-l-4 border-purple-500 rounded-md bg-gray-50">
+                <div className="p-4 mt-2 border-l-4 border-black-500 rounded-md bg-gray-50">
                   {modifierGroup.modifiers.length > 0 ? (
                     modifierGroup.modifiers.map((modifier, index) => (
                       <div

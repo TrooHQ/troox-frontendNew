@@ -13,7 +13,7 @@ const VacateTableModal = ({ vacateTableMenu, handleVacateTableMenu, setVacateTab
             <img src={Close} alt="" className=" " />
           </div>
           <div className="flex flex-col justify-center items-center gap-6">
-            <p className="text-[24px] font-[500] text-purple500">Vacate Table</p>
+            <p className="text-[24px] font-[500] text-black">Vacate Table</p>
 
             <div>
               <p className="text-[16px] font-[400] text-grey500">
@@ -21,7 +21,7 @@ const VacateTableModal = ({ vacateTableMenu, handleVacateTableMenu, setVacateTab
               </p>
               <div className="flex items-center justify-center gap-4 mt-5">
                 <div
-                  className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
+                  className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
                   onClick={() => setVacateTableMenu(false)}
                 >
                   <button className=" text-[16px]">Continue</button>

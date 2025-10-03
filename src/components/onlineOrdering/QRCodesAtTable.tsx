@@ -157,7 +157,7 @@ const QRCodesAtTable = () => {
   return (
     <div className="relative">
       <div
-        className="border border-purple500 bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#0D0D0D] absolute -top-[115px] -right-6"
+        className="border borderblack bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#0D0D0D] absolute -top-[115px] -right-6"
         onClick={handleAddNewQRCode}
       >
         <button className="text-[16px] flex items-center gap-[8px]">
@@ -186,7 +186,7 @@ const QRCodesAtTable = () => {
               No QR Code has been added yet
             </p>
             <div
-              className="border border-purple500 bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#0D0D0D]"
+              className="border borderblack bg-white w-fit rounded-[5px] px-[24px] py-[10px] font-[500] text-[#0D0D0D]"
               onClick={handleAddNewQRCode}
             >
               <button className="text-[16px] flex items-center gap-[8px]">
@@ -208,7 +208,7 @@ const QRCodesAtTable = () => {
             openDeleteQR={openDeleteQR}
             setOpenDeleteQR={setOpenDeleteQR}
           />
-      
+
         </div>
       )}
       <Modal open={openAddQR} onClose={handleCloseAddQR}>

@@ -60,13 +60,13 @@ const Register: React.FC = () => {
           />
           <div className=" ">
             <Link to="/business-profile">
-              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              <button className="bg-black w-full text-center text-white py-3 rounded">
                 Create Account
               </button>
             </Link>
             <div className=" flex items-center justify-center my-5">
               <div onClick={() => navigate(-1)}>
-                <p className=" font-[500] text-[16px] text-purple500 cursor-pointer">Go Back</p>
+                <p className=" font-[500] text-[16px] text-black cursor-pointer">Go Back</p>
               </div>
             </div>
           </div>

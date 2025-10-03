@@ -154,7 +154,7 @@ const VerifyAccount = () => {
           {allInputsFilled() ? (
             <div className=" mt-[16px]" onClick={verify}>
               <button
-                className="bg-purple500 w-full text-center text-white py-3 rounded"
+                className="bg-black w-full text-center text-white py-3 rounded"
                 disabled={loading}
               >
                 {loading ? "Loading..." : "Activate Account"}

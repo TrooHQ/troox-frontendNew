@@ -13,12 +13,12 @@ const MenuHome = () => {
         <div className="">
           <div className="mt-[40px]">
             <div className="flex items-center justify-between">
-              <div className="border border-purple500 bg-purple500 w-[196px] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
+              <div className="border borderblack bg-black w-[196px] rounded-[5px] px-[24px] py-[10px] font-[500] text-[#ffffff]">
                 <button className="text-[16px] flex items-center gap-[8px]">
                   <img src={Print} alt="" /> Print menu list
                 </button>
               </div>
-              <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500">
+              <div className="rounded-[5px] px-[24px] py-[10px] font-[500] text-black">
                 <button className="text-[14px] flex items-center gap-[8px]">
                   <img src={Publish} alt="" /> Publish changes
                 </button>

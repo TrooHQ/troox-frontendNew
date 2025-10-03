@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Grey from "../assets/GreyStroke.svg";
 import Purple from "../assets/PurpleStroke.svg";
-import Logo from "../../Mobile/assets/trooLogoDark.svg";
-
+import Logo from "../../assets/trooLogo.svg";
 import CustomInput from "../inputFields/CustomInput";
 import PasswordInput from "../inputFields/PasswordInput";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -441,9 +440,8 @@ const RegistrationStepForm = () => {
             <p className=" text-red-500">{errorDuplicate}</p>
             <div className=" grid gap-3  my-5 w-full md:w-[530px] ">
               <div
-                className={`${
-                  fieldsError && " border border-red-500 rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500 rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="text"
@@ -453,10 +451,9 @@ const RegistrationStepForm = () => {
                 />
               </div>
               <div
-                className={`${
-                  emailError ||
+                className={`${emailError ||
                   (fieldsError && " border border-red-500  rounded-[5px]")
-                }`}
+                  }`}
               >
                 <CustomInput
                   type="email"
@@ -478,9 +475,8 @@ const RegistrationStepForm = () => {
               )}
 
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="text"
@@ -491,9 +487,8 @@ const RegistrationStepForm = () => {
               </div>
 
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="text"
@@ -504,9 +499,8 @@ const RegistrationStepForm = () => {
               </div>
 
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="text"
@@ -517,9 +511,8 @@ const RegistrationStepForm = () => {
               </div>
 
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="text"
@@ -530,9 +523,8 @@ const RegistrationStepForm = () => {
               </div>
 
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomInput
                   type="number"
@@ -547,10 +539,9 @@ const RegistrationStepForm = () => {
               </div>
 
               <div
-                className={`${
-                  passwordError ||
+                className={`${passwordError ||
                   (fieldsError && "border border-red-500 rounded-[5px]")
-                }`}
+                  }`}
               >
                 <PasswordInput
                   label="Password"
@@ -563,9 +554,8 @@ const RegistrationStepForm = () => {
               )}
               {password && !passwordError && (
                 <div
-                  className={`${
-                    fieldsError && "border border-red-500 rounded-[5px]"
-                  }`}
+                  className={`${fieldsError && "border border-red-500 rounded-[5px]"
+                    }`}
                 >
                   <PasswordInput
                     label="Confirm Password"
@@ -580,9 +570,8 @@ const RegistrationStepForm = () => {
                 </p>
               )}
               <div
-                className={`${
-                  fieldsError && " border border-red-500  rounded-[5px]"
-                }`}
+                className={`${fieldsError && " border border-red-500  rounded-[5px]"
+                  }`}
               >
                 <CustomSelect4
                   options={["Restaurant", "Hotel & Lodgings", "Bar & Lounge"]}
@@ -622,7 +611,7 @@ const RegistrationStepForm = () => {
                 {!emailError && !passwordError && !confirmPasswordError && (
                   <div className="" onClick={handleNext}>
                     <button
-                      className="bg-grey700 w-full text-center text-white py-3 rounded"
+                      className="bg-purple500 w-full text-center text-white py-3 rounded"
                       disabled={loading}
                     >
                       {loading ? "Next..." : "Next"}
@@ -630,7 +619,7 @@ const RegistrationStepForm = () => {
                   </div>
                 )}
                 <Link to="/">
-                  <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
+                  <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
                     Cancel
                   </button>
                 </Link>
@@ -708,9 +697,8 @@ const RegistrationStepForm = () => {
                 {!loading && (
                   <div className="" onClick={createBusinessAccount}>
                     <button
-                      className={`${
-                        loading ? `bg-gray-400` : `bg-grey700`
-                      } w-full text-center text-white py-3 rounded`}
+                      className={`${loading ? `bg-gray-400` : `bg-purple500`
+                        } w-full text-center text-white py-3 rounded`}
                       disabled={loading}
                     >
                       Next
@@ -719,7 +707,7 @@ const RegistrationStepForm = () => {
                 )}
                 {!loading && (
                   <div onClick={() => setCurrentStep(currentStep - 1)}>
-                    <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
+                    <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
                       Cancel
                     </button>
                   </div>
@@ -796,9 +784,8 @@ const RegistrationStepForm = () => {
                 {!bvnError && (
                   <div className="" onClick={createAccountDetails}>
                     <button
-                      className={`${
-                        loading ? `bg-gray-400` : `bg-grey700`
-                      } w-full text-center text-white py-3 rounded`}
+                      className={`${loading ? `bg-gray-400` : `bg-purple500`
+                        } w-full text-center text-white py-3 rounded`}
                       disabled={loading}
                     >
                       {loading ? "Saving..." : "Save and continue"}
@@ -806,7 +793,7 @@ const RegistrationStepForm = () => {
                   </div>
                 )}
                 <Link to="/">
-                  <button className=" text-[16px] font-[500] text-grey700 border border-grey700 w-full text-center py-3 rounded">
+                  <button className=" text-[16px] font-[500] text-purple500 border border-purple500 w-full text-center py-3 rounded">
                     Cancel
                   </button>
                 </Link>

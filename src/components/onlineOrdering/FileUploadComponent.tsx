@@ -134,7 +134,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
         <div className="flex justify-start items-center">
           <button
             onClick={getYourLink}
-            className="px-4 py-2 text-purple500 border border-purple500 rounded-lg hover:bg-purple-100"
+            className="px-4 py-2 text-black border borderblack rounded-lg hover:bg-black-100"
           >
             Get Your Link
           </button>
@@ -161,7 +161,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
             </p>
             <p
               onClick={handlePreviewClick}
-              className="text-purple500 underline text-sm"
+              className="text-black underline text-sm"
             >
               Preview
             </p>
@@ -181,13 +181,13 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
         </p>
         <div className="flex justify-between items-center mb-4 mt-4">
           <button
-            className="px-4 py-2 text-purple500 border border-purple500 rounded-[5px] hover:bg-purple-100"
+            className="px-4 py-2 text-black border borderblack rounded-[5px] hover:bg-black-100"
             onClick={backFromSelection}
           >
             Cancel
           </button>
           <button
-            className="px-4 py-2 text-white bg-purple500 rounded-[5px]"
+            className="px-4 py-2 text-white bg-black rounded-[5px]"
             onClick={handleUploadClick}
           >
             {loading ? "Uploading..." : "Upload"}
@@ -207,7 +207,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
       </button>
       <p className="text-gray-700 text-lg font-medium mb-4">File Added</p>
       <div className="flex items-center gap-4 mb-4">
-        <TaskOutlined className="text-purple500 text-2xl" />
+        <TaskOutlined className="text-black text-2xl" />
         <p className="text-gray-700 truncate">
           {uploadedLogo ? uploadedLogo.name : ""}
         </p>
@@ -217,21 +217,20 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
       </div>
       <div className="w-full bg-gray-200 rounded-full h-1 mb-4">
         <div
-          className="bg-purple500 h-1 rounded-full"
+          className="bg-black h-1 rounded-full"
           style={{ width: `${uploadProgress}%` }}
         ></div>
       </div>
       <div className="flex justify-between items-center mb-4">
         <button
-          className="px-4 py-2 text-purple500 border borderpurple-500 rounded-lg hover:bg-purple-100"
+          className="px-4 py-2 text-black border borderblack-500 rounded-lg hover:bg-black-100"
           onClick={backFromSelection}
         >
           Cancel
         </button>
         <button
-          className={`px-4 py-2 text-white rounded-lg ${
-            uploadProgress === 100 ? "bgpurple-500" : "bg-purple-300"
-          }`}
+          className={`px-4 py-2 text-white rounded-lg ${uploadProgress === 100 ? "bg-black-500" : "bg-black-300"
+            }`}
           disabled={uploadProgress < 100}
         >
           Upload

@@ -457,7 +457,7 @@ const MenuSettings = () => {
               Add new menu item
             </p>
             <Link to="">
-              <div className="border border-purple500 text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[72px]">
+              <div className="border borderblack text-center bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[72px]">
                 <button className=" text-[16px] ">Save</button>
               </div>
             </Link>
@@ -692,7 +692,7 @@ const MenuSettings = () => {
               <button
                 type="submit"
                 onClick={handleEditSuccessModal}
-                className="bg-purple500 w-full text-center text-white py-3 rounded mt-[32px]"
+                className="bg-black w-full text-center text-white py-3 rounded mt-[32px]"
               >
                 Save
               </button>
@@ -784,7 +784,7 @@ const MenuSettings = () => {
               </div>
             </div>
             <div
-              className="border border-purple500 cursor-pointer text-center bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[72px]"
+              className="border borderblack cursor-pointer text-center bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff] mt-[72px]"
               onClick={handleSuccessModal}
             >
               <button className=" text-[16px] ">Save</button>
@@ -814,7 +814,7 @@ const MenuSettings = () => {
                   : handleDeleteSuccessModal2()
               }
               disabled={loading}
-              className="bg-purple500 w-full text-center text-white py-3 rounded mt-[66px]"
+              className="bg-black w-full text-center text-white py-3 rounded mt-[66px]"
             >
               Proceed
             </button>

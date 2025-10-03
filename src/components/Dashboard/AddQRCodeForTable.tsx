@@ -56,7 +56,7 @@ const AddQRCodeForTable: React.FC<AddQRCodeProps> = ({
   return (
     <div className="w-[100%]">
       <div className="mt-3">
-        <p className="text-[24px] mb-[24px] font-[500] text-purple500">
+        <p className="text-[24px] mb-[24px] font-[500] text-black">
           Asset Arrangement
         </p>
 
@@ -82,14 +82,14 @@ const AddQRCodeForTable: React.FC<AddQRCodeProps> = ({
 
             <div className="flex justify-end items-center gap-2 mt-7">
               <button
-                className="border border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                className="border borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                 onClick={onClose}
               >
                 Cancel
               </button>
 
               <button
-                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-white"
+                className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-white"
                 onClick={handleNext}
               >
                 Next
@@ -147,14 +147,14 @@ const AddQRCodeForTable: React.FC<AddQRCodeProps> = ({
 
             <div className="flex justify-end items-center gap-2 mt-7">
               <button
-                className="border border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                className="border borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                 onClick={handleBack}
               >
                 Back
               </button>
 
               <button
-                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-white"
+                className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-white"
                 onClick={handleCreateAsset}
                 disabled={loading}
               >

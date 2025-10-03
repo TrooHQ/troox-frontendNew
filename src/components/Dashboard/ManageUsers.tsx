@@ -259,7 +259,7 @@ const ManageUsers: React.FC = () => {
                 <p
                   key={index}
                   className={` text-[22px] px-3 py-2 font-GeneralSans  cursor-pointer ${index === activeTab
-                    ? " text-purple500 font-[500] border-b-4 border-b-[#121212]"
+                    ? " text-black font-[500] border-b-4 border-b-[#121212]"
                     : "text-grey300"
                     }`}
                   onClick={() => handleTabChange(index)}
@@ -268,7 +268,7 @@ const ManageUsers: React.FC = () => {
                 </p>
               ))}
             </div>
-            <div className="border-2 border-purple500 bg-purple500 rounded px-[16px] py-[8px] font-[500] text-[14px] text-[#ffffff]">
+            <div className="border-2 borderblack bg-black rounded px-[16px] py-[8px] font-[500] text-[14px] text-[#ffffff]">
               <Link to={`${activeTab === 0 && "/new-roles"}`}>
                 <button
                   className=""
@@ -307,7 +307,7 @@ const ManageUsers: React.FC = () => {
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
           <div className="py-[28px] 2xl:py-[56px] px-[28px] 2xl:px-[56px] bg-white relative rounded-[20px] w-[800px]">
             <div>
-              <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
+              <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
                 Invite User
               </p>
               <hr className="border border-grey100" />
@@ -365,16 +365,16 @@ const ManageUsers: React.FC = () => {
               <hr className="border border-grey100" />
               <div className="flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
                 <div
-                  className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                  className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                   onClick={() => setIsModalOpen(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                  <p className="font-[500] text-[16px] text-black cursor-pointer">
                     Cancel
                   </p>
                 </div>
 
                 <div
-                  className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+                  className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                   onClick={handleSendInvite}
                 >
                   <button className="text-[16px]">
@@ -390,7 +390,7 @@ const ManageUsers: React.FC = () => {
           <div className="">
             <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
               <div className="flex flex-col items-center justify-center gap-6">
-                <p className="text-[24px] font-[500] text-purple500">
+                <p className="text-[24px] font-[500] text-black">
                   Delete User
                 </p>{" "}
                 <p className="text-[16px] font-[400] text-grey500">
@@ -398,10 +398,10 @@ const ManageUsers: React.FC = () => {
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-5">
                   <div
-                    className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                    className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                     onClick={() => setIsModalOpen2(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    <p className="font-[500] text-[16px] text-black cursor-pointer">
                       No
                     </p>
                   </div>
@@ -423,7 +423,7 @@ const ManageUsers: React.FC = () => {
           <Modal isOpen={isModalOpen3} onClose={() => setIsModalOpen3(false)}>
             <div className="py-[28px] 2xl:py-[56px] px-[28px] 2xl:px-[56px] bg-white relative rounded-[20px] w-[800px]">
               <div>
-                <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
+                <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
                   Edit user
                 </p>
                 <hr className="border border-grey100" />
@@ -516,16 +516,16 @@ const ManageUsers: React.FC = () => {
                 <hr className="border border-grey100" />
                 <div className="flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
                   <div
-                    className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                    className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                     onClick={() => setIsModalOpen3(false)}
                   >
-                    <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                    <p className="font-[500] text-[16px] text-black cursor-pointer">
                       Cancel
                     </p>
                   </div>
 
                   <div
-                    className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+                    className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                     onClick={handleEditUser}
                   >
                     <button className="text-[16px]">

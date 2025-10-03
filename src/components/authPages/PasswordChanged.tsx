@@ -22,12 +22,12 @@ const PasswordChanged = () => {
               </div>
             </div>
             <Link to="/create-pin">
-              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              <button className="bg-black w-full text-center text-white py-3 rounded">
                 Click to create pin
               </button>
             </Link>
             <Link to="/">
-              <button className="bg-purple500 w-full text-center text-white py-3 rounded">
+              <button className="bg-black w-full text-center text-white py-3 rounded">
                 Login to Continue
               </button>
             </Link>

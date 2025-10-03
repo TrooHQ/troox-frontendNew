@@ -363,7 +363,7 @@ const Modifiers = ({
   return (
     <div className="">
       <div className=" mt-[32px] max-w-[628px]">
-        <p className=" text-[20px] font-[500] text-purple500 mb-[8px]">
+        <p className=" text-[20px] font-[500] text-black mb-[8px]">
           Modifiers
         </p>
         <hr className=" border-[#B6B6B6]" />
@@ -403,7 +403,7 @@ const Modifiers = ({
                 />
 
                 <button
-                  className=" border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className=" border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-black text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddModifierGroup}
                 >
                   {modGroupLoading ? "Loading..." : "Save"}
@@ -452,7 +452,7 @@ const Modifiers = ({
                 Are you sure you want to save the modifier(s)?
               </p>
               <div
-                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+                className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                 onClick={handleConfirmSave}
               >
                 <button className="text-[16px]">

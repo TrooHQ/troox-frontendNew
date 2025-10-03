@@ -1,24 +1,25 @@
 import { useEffect, useRef, useState } from "react";
-import TopMenuNav from "./TopMenuNav";
+
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { SERVER_DOMAIN } from "../../Api/Api";
-import { RootState } from "../../store/store";
+import { SERVER_DOMAIN } from "../../../Api/Api";
+import { RootState } from "../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../components/Loader";
+import Loader from "../../../components/Loader";
 import {
   addItemToBasket,
   removeItemFromBasket,
   updateItemQuantity,
-} from "../../slices/BasketSlice";
+} from "../../../slices/BasketSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import Swipe from "../assets/swipe.png";
+import Swipe from "../../assets/swipe.png";
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import TopMenuNav from "../TopMenuNav";
 
 interface MenuItem {
   _id: string;
@@ -46,7 +47,7 @@ interface GroupedMenuItems {
   [groupName: string]: MenuItem[];
 }
 
-export const CategoryDetails = () => {
+export const AllMenuItems = () => {
 
   useEffect(() => {
     // delete existing orders in the localstorage.
@@ -343,7 +344,8 @@ export const CategoryDetails = () => {
                     className="max-w-[170px] h-[167px] mx-auto pb-[34px]  p-[5px] rounded-[10px]   border-2 drop-shadow bg-[#FFFFFF] border-[#E7E7E7] flex-shrink-0"
                     key={index}
                   >
-                    <Link to={`/demo/menu-details/${menu._id}/orderandpay`}>
+                    {/* <Link to={`/demo/menu-details/${menu._id}/orderandpay`}> */}
+                    <Link to={`/item-details/${menu._id}`}>
                       <div>
                         <div className=" w-full h-[112px] relative">
                           <img

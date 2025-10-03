@@ -83,11 +83,10 @@ const MenuGroup: React.FC<Props> = ({
                   className="flex items-center justify-between"
                 >
                   <p
-                    className={`${
-                      activeGroup?.name === group?.name
-                        ? "font-[500] text-[#5855B3]"
-                        : "text-grey200"
-                    } hover:bg-purple100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
+                    className={`${activeGroup?.name === group?.name
+                      ? "font-[500] text-[#5855B3]"
+                      : "text-grey200"
+                      } hover:bg-black100 flex justify-between cursor-pointer items-center w-[201px] text-[16px] font-[400] py-[12px] px-[8px]`}
                     key={group._id}
                     onClick={() => {
                       handleFetchMenuItems(group);
@@ -174,7 +173,7 @@ const MenuGroup: React.FC<Props> = ({
             ) : null}
 
             <div
-              className=" w-[196px]  px-[10px] py-[6px] font-[500] text-purple500"
+              className=" w-[196px]  px-[10px] py-[6px] font-[500] text-black"
               onClick={handleAddMenuGroup}
             >
               <button className="text-[16px] flex items-center gap-[8px]">
@@ -192,7 +191,7 @@ const MenuGroup: React.FC<Props> = ({
               <p className=" text-[16px] font-[500] text-[#5855B3]">Type</p>
               <div className=" ">
                 <button
-                  className="w-[196px]  px-[10px] py-[6px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className="w-[196px]  px-[10px] py-[6px] font-[500] text-black text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddMenuItem}
                 >
                   <img src={AddWhite} alt="" /> Add Menu Item
@@ -216,11 +215,10 @@ const MenuGroup: React.FC<Props> = ({
                     <div className="" key={index}>
                       <div
                         className={`flex items-center justify-between py-[8px] px-[16px] cursor-pointer mb-2
-          ${
-            selectedMenuItem?._id === item?._id
-              ? "bg-[#ebebeb] text-purple500"
-              : "bg-[#F8F8F8] text-grey500"
-          }`}
+          ${selectedMenuItem?._id === item?._id
+                            ? "bg-[#ebebeb] text-black"
+                            : "bg-[#F8F8F8] text-grey500"
+                          }`}
                         onClick={() => handleMenuItemClick(item)}
                       >
                         <div className="flex gap-[8px] items-center">
@@ -289,7 +287,7 @@ const MenuGroup: React.FC<Props> = ({
             {subMenuContent.length > 1 && (
               <div className=" flex items-center justify-end">
                 <button
-                  className="w-[196px] border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-purple500 text-[16px] flex items-center gap-[8px]"
+                  className="w-[196px] border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-black text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddMenuItem}
                 >
                   <img src={AddWhite} alt="" /> Add Menu Item

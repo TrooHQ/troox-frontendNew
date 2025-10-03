@@ -174,7 +174,7 @@ const Tickets = () => {
             {/* <ChangeBranchForTicket handleRefresh={handleRefresh} /> */}
             <div className="flex items-center justify-between">
 
-              <div className="border border-purple500 bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-purple500">
+              <div className="border borderblack bg-white w-[196px] rounded-[5px] px-[16px] py-[10px] font-[500] text-black">
                 <button
                   onClick={handleRefresh}
                   className="text-[16px] flex items-center gap-[8px]"

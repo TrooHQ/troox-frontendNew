@@ -211,7 +211,7 @@ const NewRoles = () => {
       <TopMenuNav pathName="Manage Users" />
       <div className="  max-w-[897px] 2xl:max-w-[1070px]">
         <div className="my-10 ">
-          <p className="text-[24px] font-[500] text-purple500">New Roles</p>
+          <p className="text-[24px] font-[500] text-black">New Roles</p>
           <div className="w-full my-8">
             <div className=" grid gap-[48px]">
               <div className="flex items-start">
@@ -253,7 +253,7 @@ const NewRoles = () => {
 
         <div className="my-10 ">
           <div className="flex items-center justify-between">
-            <p className="text-[24px] font-[500] text-purple500">Permissions Setting</p>
+            <p className="text-[24px] font-[500] text-black">Permissions Setting</p>
           </div>
           <div className="w-full my-8">
             <div className=" grid gap-[48px]">
@@ -275,13 +275,13 @@ const NewRoles = () => {
         </div>
         <div className="flex items-center justify-end gap-2">
           <div
-            className="border border-purple500 rounded px-[24px] py-[13px] font-[600] text-purple500 cursor-pointer"
+            className="border borderblack rounded px-[24px] py-[13px] font-[600] text-black cursor-pointer"
             onClick={() => navigate(-1)}
           >
             Cancel
           </div>
           <div
-            className="border border-purple500 bg-purple500 rounded px-[24px] py-[13px] font-[500] text-[#ffffff] cursor-pointer"
+            className="border borderblack bg-black rounded px-[24px] py-[13px] font-[500] text-[#ffffff] cursor-pointer"
             onClick={handleSaveAndContinue}
           >
             {saveLoading ? "Saving..." : "Save"}

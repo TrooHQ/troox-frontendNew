@@ -120,7 +120,7 @@ const DeliveryTable = ({ deliveryDetails }: any) => {
       {/* Edit Delivery Details Modal */}
       <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
         <form className="p-6 bg-white rounded-[20px] w-[500px]">
-          <h2 className="text-[24px] mb-[24px] font-[500] text-purple500">
+          <h2 className="text-[24px] mb-[24px] font-[500] text-black">
             Edit Delivery Details
           </h2>
 
@@ -157,14 +157,14 @@ const DeliveryTable = ({ deliveryDetails }: any) => {
 
           <div className="flex justify-end items-center gap-2 mt-7">
             <button
-              className="border border-purple500 text-purple500 px-6 py-2 rounded"
+              className="border borderblack text-black px-6 py-2 rounded"
               onClick={handleCloseEditModal}
             >
               Cancel
             </button>
             <button
               type="button"
-              className="bg-purple500 text-white px-6 py-2.5 rounded"
+              className="bg-black text-white px-6 py-2.5 rounded"
               onClick={handleSaveChanges}
             >
               {isLoading ? "Saving..." : "Save Changes"}

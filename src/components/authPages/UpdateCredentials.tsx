@@ -131,7 +131,7 @@ const UpdateCredentials = () => {
 
           {/* Submit Button */}
           <button
-            className="bg-purple500 w-full text-center text-white py-3 rounded"
+            className="bg-black w-full text-center text-white py-3 rounded"
             onClick={handleSubmit}
             disabled={loading}
           >
@@ -142,7 +142,7 @@ const UpdateCredentials = () => {
           <div className="text-center py-3">
             <p
               onClick={() => navigate(-1)}
-              className="font-[500] text-[16px] text-purple500 cursor-pointer"
+              className="font-[500] text-[16px] text-black cursor-pointer"
             >
               Go Back
             </p>

@@ -28,7 +28,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({ pathName, goBack = false }) => 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             {(goBack) ? <button onClick={() => navigate(-1)}><IoMdArrowBack /></button> : null}
-            <p className="text-[28px] font-[500] Capitalize text-purple500">
+            <p className="text-[28px] font-[500] Capitalize text-black">
               {pathName}
             </p>
           </div>

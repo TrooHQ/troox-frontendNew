@@ -34,6 +34,12 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
   ];
   const hideCart = hideCartOnPaths.includes(location.pathname);
 
+  const [home, setHome] = useState("");
+  useEffect(() => {
+    setHome(localStorage.getItem("mark") || "");
+
+  }, [])
+
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -78,9 +84,8 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
 
   return (
     <div
-      className={`${
-        isSticky ? "fixed top-0 left-0 right-0 shadow-md" : ""
-      } z-10 transition-all duration-300 ease-in-out`}
+      className={`${isSticky ? "fixed top-0 left-0 right-0 shadow-md" : ""
+        } z-10 transition-all duration-300 ease-in-out`}
     >
       <div
         className="grid grid-cols-3 items-center py-4 shadow"
@@ -93,7 +98,7 @@ const TopMenuNav: React.FC<TopMenuNavProps> = ({
               color: textColor,
               cursor: "pointer",
             }}
-            onClick={() => navigate(-1)}
+            onClick={() => window.location.href.includes("receipt") ? window.location.href = home : navigate(-1)}
           >
             <span className="text-4xl" style={{ color: textColor }}>
               <img src={BackArrow} alt="Go back" />

@@ -130,9 +130,9 @@ const AddOns = () => {
                 key={tab}
                 onClick={() => handleToggle(tab.toLowerCase())}
                 className={`text-[16px] font-[500] max-w-[148px] w-full text-center py-[13px] px-[16px] text-[#0D0D0D] cursor-pointer transition-all min-w-[200px] ${(isYearly && tab === "Yearly") ||
-                    (!isYearly && tab === "Quarterly")
-                    ? "border rounded-[5px] border-[#CBCAE7] bg-[#121212] text-white"
-                    : "border-none"
+                  (!isYearly && tab === "Quarterly")
+                  ? "border rounded-[5px] border-[#CBCAE7] bg-[#121212] text-white"
+                  : "border-none"
                   }`}
               >
                 {tab}
@@ -198,7 +198,7 @@ const AddOns = () => {
             <Close />
           </div>
           <div className="flex flex-col justify-center items-center gap-6">
-            <p className="text-[24px] font-[500] text-purple500">Subscribe</p>
+            <p className="text-[24px] font-[500] text-black">Subscribe</p>
 
             <div>
               <p className="text-[16px] font-[400] text-grey500">
@@ -206,15 +206,15 @@ const AddOns = () => {
               </p>
               <div className="flex items-center justify-center gap-4 mt-5">
                 <div
-                  className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+                  className="border cursor-pointer borderblack rounded px-[24px]  py-[10px] font-[600] text-black"
                   onClick={() => setAreYouSure(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                  <p className="font-[500] text-[16px] text-black cursor-pointer">
                     No
                   </p>
                 </div>
 
-                <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
+                <div className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                   <button
                     onClick={() => SubcribePlan2()}
                     className=" text-[16px]"

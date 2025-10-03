@@ -30,7 +30,7 @@ const AddMenuGroup: React.FC<Props> = ({
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div className=" ">
-        <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
+        <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
           Add menu group
         </p>
         <hr className="border border-[#E7E7E7] mb-[24px]" />
@@ -63,7 +63,7 @@ const AddMenuGroup: React.FC<Props> = ({
                   value="yes"
                   checked={applyPriceToAll === true}
                   onChange={handleOptionChange}
-                  className={`mr-2 ${applyPriceToAll === true ? "bg-purple500" : ""}`}
+                  className={`mr-2 ${applyPriceToAll === true ? "bg-black" : ""}`}
                 />
                 <label htmlFor="yes" className="mr-4  text-grey500 text-[16px] font-[400]">
                   Yes
@@ -76,7 +76,7 @@ const AddMenuGroup: React.FC<Props> = ({
                   value="no"
                   checked={applyPriceToAll === false}
                   onChange={handleOptionChange}
-                  className={`mr-2 ${applyPriceToAll === false ? "bg-purple500" : ""}`}
+                  className={`mr-2 ${applyPriceToAll === false ? "bg-black" : ""}`}
                 />
                 <label htmlFor="no" className=" text-grey500 text-[16px] font-[400]">
                   No
@@ -98,15 +98,15 @@ const AddMenuGroup: React.FC<Props> = ({
 
         <div className=" flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
           <div
-            className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+            className="border cursor-pointer borderblack rounded px-[24px]  py-[10px] font-[600] text-black"
             onClick={() => setAddMenuGroup(false)}
           >
-            <p className="font-[500] text-[16px] text-purple500 cursor-pointer">Cancel</p>
+            <p className="font-[500] text-[16px] text-black cursor-pointer">Cancel</p>
             {/* <CancelButton text="Cancel" /> */}
           </div>
 
           <div
-            className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
+            className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]"
             onClick={handleSaveMenuGroup}
           >
             <button className=" text-[16px]">{menuGroupLoading ? "Saving..." : "Save Menu"}</button>

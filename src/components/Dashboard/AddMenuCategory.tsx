@@ -143,7 +143,7 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
   return (
     <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
       <div>
-        <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-purple500">
+        <p className="text-[24px] pb-[24px] font-[500] leading-[36px] text-black">
           {editMode ? "Update Menu Category" : "Add Menu Category"}
         </p>
 
@@ -216,15 +216,15 @@ const AddMenuCategory = ({ setIsModalOpen, editCategory, handleEditCategoryConfi
 
         <div className="flex justify-end items-center pt-[12px] lg:pt-[24px] gap-2">
           <div
-            className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+            className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
             onClick={() => { setIsModalOpen(false); setCategoryEdit({}); setEditMode(false); }}
           >
-            <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+            <p className="font-[500] text-[16px] text-black cursor-pointer">
               Cancel
             </p>
           </div>
 
-          <div className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
+          <div className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]">
             <button
               className="text-[16px]"
               onClick={editMode ? handleEditCategoryConfirm : handleSubmit}
