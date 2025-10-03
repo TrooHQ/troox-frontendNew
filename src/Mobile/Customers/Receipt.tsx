@@ -1,7 +1,7 @@
 import TopMenuNav from "./TopMenuNav";
 import html2canvas from "html2canvas";
 import dayjs from "dayjs";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface MenuItem {
   menu_item_name: string;
@@ -14,8 +14,11 @@ interface SelectedOption {
 }
 
 interface Menu {
-  menuItem: MenuItem;
   selectedOptions: SelectedOption[];
+  menuItem: MenuItem;
+  quantity?: number;
+  menu_item_name?: string;
+  menu_item_price?: number;
 }
 
 interface OrderDetails {
@@ -26,13 +29,24 @@ interface OrderDetails {
 }
 
 export const Receipt = () => {
+
+  const [home, setHome] = useState("");
+  useEffect(() => {
+    setHome(localStorage.getItem("mark") || "");
+
+  }, [])
+
+
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const storedOrderDetails = sessionStorage.getItem("OrderDetails");
+
+
   const orderDetails: OrderDetails | null = storedOrderDetails
     ? JSON.parse(storedOrderDetails)
     : null;
 
+  console.log("orderDetails", orderDetails);
   const handleDownloadImage = async () => {
     const element = receiptRef.current;
     if (element) {
@@ -43,7 +57,7 @@ export const Receipt = () => {
       link.download = "receipt.png";
       link.click();
 
-      window.location.href = "/demo/get-receipt/orderandpay";
+      window.location.href = home;
     }
   };
   return (
@@ -59,8 +73,8 @@ export const Receipt = () => {
           <p className="text-[#121212] text-[14px] font-[400] text-center">
             {orderDetails?.createdAt
               ? dayjs(orderDetails.createdAt).format(
-                  "HH:mm:ss dddd, DD MMM YYYY"
-                )
+                "HH:mm:ss dddd, DD MMM YYYY"
+              )
               : "08:02:27 Wednesday, 30 Apr 2020"}
           </p>
         </div>
@@ -68,11 +82,11 @@ export const Receipt = () => {
         <div className="border-b border-[#929292]">
           {orderDetails?.menu_items?.map((menu, index) => (
             <div key={index} className="">
-              <div className="space-y-[8px] pb-[24px]">
+              <div className="space-y-[8px] py-5">
                 <div className="font-[400] text-[16px] text-[#121212] flex items-center justify-between">
-                  <p>{menu?.menuItem?.menu_item_name || ""}</p>
+                  <p>{menu?.menu_item_name || ""} ({menu?.quantity})</p>
                   <p>
-                    ₦{menu?.menuItem?.menu_item_price?.toLocaleString() || "0"}
+                    ₦{menu?.menu_item_price?.toLocaleString() || "0"}
                   </p>
                 </div>
 
@@ -105,10 +119,10 @@ export const Receipt = () => {
             <p>₦{orderDetails?.total_price?.toLocaleString()}</p>
           </div>
 
-          <div className="font-[400] text-[16px] text-[#121212] flex items-center justify-between">
+          {/* <div className="font-[400] text-[16px] text-[#121212] flex items-center justify-between">
             <p className="">VAT</p>
             <p>₦0</p>
-          </div>
+          </div> */}
 
           <div className="font-[500] text-[18px] text-[#121212] flex items-center justify-between">
             <p className="">Paid</p>

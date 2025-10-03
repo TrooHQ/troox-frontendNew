@@ -182,13 +182,13 @@ const YourLinkWithNoLogo = ({
               </div>
               <div className="flex gap-4">
                 <button
-                  className="px-4 py-2 text-white rounded bg-purple500"
+                  className="px-4 py-2 text-white rounded bg-black"
                   onClick={handleGenerateClick}
                 >
                   Generate link
                 </button>
                 <button
-                  className="px-4 py-2 bg-white border border-purple-500 rounded text-purple500"
+                  className="px-4 py-2 bg-white border border-black-500 rounded text-black"
                   onClick={handleCancelClick}
                 >
                   Cancel
@@ -280,8 +280,8 @@ const YourLinkWithNoLogo = ({
                             {truncateText(uploadedLogo.name, 16)}
                           </p>
                           <div className="flex gap-4">
-                            <p className="text-purple500">Uploading...</p>
-                            <p className="text-purple500">{uploadProgress}%</p>
+                            <p className="text-black">Uploading...</p>
+                            <p className="text-black">{uploadProgress}%</p>
                           </div>
                         </div>
                       ) : (
@@ -306,7 +306,7 @@ const YourLinkWithNoLogo = ({
                           </div>
                           <div className="flex items-center justify-center gap-4">
                             <button
-                              className="px-4 py-2 mt-6 bg-white border rounded border-purple500 text-purple500"
+                              className="px-4 py-2 mt-6 bg-white border rounded borderblack text-black"
                               onClick={handleFileUpload}
                               disabled={isUploading}
                             >
@@ -316,7 +316,7 @@ const YourLinkWithNoLogo = ({
                         </div>
                       )}
                       {isUploading ? (
-                        <p className="text-purple500">
+                        <p className="text-black">
                           Uploading... {uploadProgress}%
                         </p>
                       ) : null}

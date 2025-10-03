@@ -46,9 +46,8 @@ const DropdownMenu = ({
       </li>
       <li
         onClick={() => handleItemClick("Enable Table")}
-        className={`font-[400] cursor-pointer ${
-          !isEnabled ? "  text-slate-300" : " text-black"
-        }`}
+        className={`font-[400] cursor-pointer ${!isEnabled ? "  text-slate-300" : " text-black"
+          }`}
       >
         {isEnabled ? (
           <ToggleOn className="mr-2 text-[#5955eb]" />
@@ -240,7 +239,7 @@ const ManageTables: React.FC = () => {
         <TopMenuNav pathName="Manage Branch Assets" />
         <div className=" mt-[40px]">
           <div
-            className="border inline-block border-purple500 bg-white  rounded-[5px] px-[24px] py-[10px] font-[500] text-purple500"
+            className="border inline-block borderblack bg-white  rounded-[5px] px-[24px] py-[10px] font-[500] text-black"
             onClick={handleAddModifier}
           >
             <button className="text-[16px] flex items-center gap-[8px]">
@@ -267,9 +266,8 @@ const ManageTables: React.FC = () => {
                     onClick={() => toggleOwner(category)}
                     src={ArrowToggle}
                     alt=""
-                    className={`transform inline transition-transform duration-300 ${
-                      expandedOwner === category ? "rotate-180" : ""
-                    }`}
+                    className={`transform inline transition-transform duration-300 ${expandedOwner === category ? "rotate-180" : ""
+                      }`}
                   />
                 </div>
               </div>
@@ -324,9 +322,8 @@ const ManageTables: React.FC = () => {
                               (item: any, index: number) => (
                                 <li
                                   key={item._id}
-                                  className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${
-                                    index % 2 === 0 ? "bg-[#F8F8F8]" : ""
-                                  }`}
+                                  className={`grid grid-cols-9 items-center px-5 py-[16px] text-grey300 text-[16px] font-[400] ${index % 2 === 0 ? "bg-[#F8F8F8]" : ""
+                                    }`}
                                 >
                                   <p className="col-span-2 px-3 py-2">
                                     {item.group_name}
@@ -344,11 +341,10 @@ const ManageTables: React.FC = () => {
                                   </p>
                                   <div className="flex items-center justify-end gap-[16px] relative col-span-2 px-3 py-2">
                                     <div
-                                      className={`${
-                                        activeMenuIndex === item._id
-                                          ? "bg-slate-200"
-                                          : ""
-                                      } py-[10px] px-[20px] rounded-full`}
+                                      className={`${activeMenuIndex === item._id
+                                        ? "bg-slate-200"
+                                        : ""
+                                        } py-[10px] px-[20px] rounded-full`}
                                     >
                                       <div
                                         className="w-[30px] h-[30px] flex items-center justify-center cursor-pointer"
@@ -395,7 +391,7 @@ const ManageTables: React.FC = () => {
         >
           <div className=" w-[539px] py-[32px] px-[52px]">
             <div className="">
-              <p className=" text-[24px] mb-[11px] font-[500] text-purple500">
+              <p className=" text-[24px] mb-[11px] font-[500] text-black">
                 Asset Arrangement
               </p>
               <hr className="border my-[24px] border-[#E7E7E7]" />
@@ -439,17 +435,17 @@ const ManageTables: React.FC = () => {
 
               <div className=" flex justify-end items-center  gap-2">
                 <div
-                  className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+                  className="border cursor-pointer borderblack rounded px-[24px]  py-[10px] font-[600] text-black"
                   onClick={() => setAddModifierModal(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                  <p className="font-[500] text-[16px] text-black cursor-pointer">
                     Cancel
                   </p>
                   {/* <CancelButton text="Cancel" /> */}
                 </div>
 
                 {/* <Link to="/table-list"> */}
-                <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
+                <div className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                   <button onClick={handleCreateAsset} className=" text-[16px]">
                     {loading ? "Saving..." : "Save"}
                   </button>
@@ -468,7 +464,7 @@ const ManageTables: React.FC = () => {
             <div className="">
               <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[539px]">
                 <div className="flex flex-col justify-center items-center gap-6">
-                  <p className="text-[24px] font-[500] text-purple500">
+                  <p className="text-[24px] font-[500] text-black">
                     Delete Table
                   </p>{" "}
                   <p className="text-[16px] font-[400] text-grey500">
@@ -476,10 +472,10 @@ const ManageTables: React.FC = () => {
                   </p>
                   <div className="flex items-center justify-center gap-4 mt-5">
                     <div
-                      className="border cursor-pointer border-purple500 rounded px-[24px] py-[10px] font-[600] text-purple500"
+                      className="border cursor-pointer borderblack rounded px-[24px] py-[10px] font-[600] text-black"
                       onClick={() => setIsDeleteModalOpen(false)}
                     >
-                      <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                      <p className="font-[500] text-[16px] text-black cursor-pointer">
                         No
                       </p>
                     </div>

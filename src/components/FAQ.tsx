@@ -62,9 +62,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
       {faqData.map((faq, index) => (
         <div
           key={index}
-          className={`text-purple500 border p-4 focus:outline-[#121212] w-full rounded border-[#484590] ${
-            openIndex === index ? "overflow-y-scroll max-h-96" : ""
-          }`}
+          className={`text-black border p-4 focus:outline-[#121212] w-full rounded border-[#484590] ${openIndex === index ? "overflow-y-scroll max-h-96" : ""
+            }`}
         >
           <div
             className="flex items-center justify-between cursor-pointer font-bold "
@@ -81,9 +80,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
               <img
                 src={Arrow}
                 alt=""
-                className={`transform transition-transform duration-300 ${
-                  openIndex === index ? "rotate-180" : ""
-                }`}
+                className={`transform transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""
+                  }`}
               />
             </div>
           </div>
@@ -105,12 +103,11 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                       <div className="grid md:grid-cols-2 gap-4 my-5">
                         <label
                           htmlFor="soleTrader"
-                          className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
-                            checkedLegalType ===
+                          className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${checkedLegalType ===
                             "Sole trader/Private Individual"
-                              ? "bg-purple500 text-white"
-                              : "bg-[#E7E7E7] text-grey500"
-                          }`}
+                            ? "bg-black text-white"
+                            : "bg-[#E7E7E7] text-grey500"
+                            }`}
                         >
                           <input
                             type="radio"
@@ -133,11 +130,10 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                         </label>
                         <label
                           htmlFor="otherLegalType"
-                          className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${
-                            checkedLegalType === "Other legal type"
-                              ? "bg-purple500 text-white"
-                              : "bg-[#E7E7E7] text-grey500"
-                          }`}
+                          className={`flex flex-col items-center px-4 py-3 rounded cursor-pointer ${checkedLegalType === "Other legal type"
+                            ? "bg-black text-white"
+                            : "bg-[#E7E7E7] text-grey500"
+                            }`}
                         >
                           <input
                             type="radio"
@@ -211,8 +207,8 @@ const FAQ: React.FC<FAQProps> = ({ faqData, openIndex, toggleAnswer }) => {
                               type="checkbox"
                               id="rememberMe"
                               className="h-6 w-6 mr-2"
-                              // checked={auth.rememberMe}
-                              // onChange={handleRememberMeToggle}
+                            // checked={auth.rememberMe}
+                            // onChange={handleRememberMeToggle}
                             />
                             <label
                               htmlFor="rememberMe"

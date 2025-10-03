@@ -9,6 +9,9 @@ import {
 } from "../../slices/BasketSlice";
 import { TiDelete } from "react-icons/ti";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import { useEffect, useState } from "react";
+
+
 
 export const Basket = () => {
   const navigate = useNavigate();
@@ -18,6 +21,16 @@ export const Basket = () => {
   const userDetails = useSelector(
     (state: RootState) => state.business.businessDetails
   );
+
+  const [customerInfo, setCustomerInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const info = localStorage.getItem("customerInfo");
+    setCustomerInfo(info ? JSON.parse(info) : null);
+  }, [])
+
+  console.log("customerInfo", customerInfo);
+
 
   const colorScheme = userDetails?.colour_scheme;
 
@@ -32,7 +45,7 @@ export const Basket = () => {
   };
 
   return (
-    <div className=" ">
+    <div className="">
       <TopMenuNav exploreMenuText="Basket" />
 
       <div className="mt-[68px]">
@@ -40,14 +53,23 @@ export const Basket = () => {
           <div className="py-[20px] mx-[24px] grid gap-[10px]">
             <p className="">
               Hello{" "}
-              <span className="font-bold">{basketDetails?.customerName}</span>
+              {/* <span className="font-bold">{basketDetails?.customerName}</span> */}
+              <span className="font-bold">{customerInfo?.name}</span>
             </p>
-            <p>
+            {customerInfo?.tableNumber && <p>
               Table Number:{" "}
               <span className="font-bold">
-                {basketDetails?.customerTableNumber}
+                {/* {customerInfo?.customerTableNumber} */}
+                {customerInfo?.tableNumber}
               </span>
-            </p>
+            </p>}
+            {customerInfo?.roomNumber && <p>
+              Room Number:{" "}
+              <span className="font-bold">
+                {/* {customerInfo?.customerTableNumber} */}
+                {customerInfo?.roomNumber}
+              </span>
+            </p>}
             <p>Below are the items you ordered:</p>
           </div>
         )}
@@ -68,7 +90,7 @@ export const Basket = () => {
                       </Link>
                       <div className="flex items-center justify-center w-full max-w-[100px] ">
                         <div
-                          className="  cursor-pointer text-white   rounded-full"
+                          className="text-white rounded-full cursor-pointer "
                           onClick={() =>
                             handleDecreaseQuantity(item.id, item.quantity)
                           }
@@ -88,7 +110,7 @@ export const Basket = () => {
                           x{item?.quantity}
                         </p>
                         <div
-                          className="  cursor-pointer text-white   rounded-full"
+                          className="text-white rounded-full cursor-pointer "
                           onClick={() =>
                             handleIncreaseQuantity(item.id, item.quantity)
                           }
@@ -146,7 +168,7 @@ export const Basket = () => {
           ))
         ) : (
           <div className="py-[20px] mx-[24px] text-center text-[16px] text-[#121212] font-[500] grid place-items-center items-center">
-            <p className=" text-7xl font-bold text-black">
+            <p className="font-bold text-black text-7xl">
               {/* <GiShoppingCart /> */}
             </p>
             <p>Your cart is empty.</p>

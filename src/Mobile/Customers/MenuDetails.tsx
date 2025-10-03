@@ -57,6 +57,7 @@ export interface BasketItem {
   totalPrice: number;
   name: string;
   tableNumber: string;
+  complimentary?: string[];
 }
 
 interface Details extends MenuItem {
@@ -78,7 +79,10 @@ const MenuDetails = () => {
   const ids = useSelector((state: RootState) => state.basket.items);
 
   const [menuModifiers, setMenuModifiers] = useState<Option[]>([]);
+  const [complimentary, setComplimentary] = useState<Option[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+
+  // console.log("complimentary", complimentary);
 
   const [itemCount, setItemCount] = useState<number>(1);
   const dispatch = useDispatch();
@@ -136,6 +140,7 @@ const MenuDetails = () => {
         `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${businessIdentifier}&branch=${branchId}`,
         headers
       );
+
       setMenuItems(response?.data?.data);
     } catch (error) {
       console.error("Error getting Menu Items:", error);
@@ -148,8 +153,8 @@ const MenuDetails = () => {
     getRecommendedItems();
   }, []);
 
-  console.log("menuItems", menuItems);
-  console.log("menuModifiers", menuModifiers);
+  // console.log("menuItems", menuItems);
+  // console.log("menuModifiers", menuModifiers);
 
   const getItems = async () => {
     setLoading(true);
@@ -170,13 +175,32 @@ const MenuDetails = () => {
     getItems();
   }, [id]);
 
+  const [selectedComplimentary, setSelectedComplimentary] = useState<string>("");
+  const [selectedComplimentaryArr, setSelectedComplimentaryArr] = useState<string[]>([]);
+  const handleComplimentaryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    // console.log("selectedValue", selectedValue);
+    setSelectedComplimentary(selectedValue);
+    setSelectedComplimentaryArr([selectedValue]);
+  };
+
+
+
   const getModifiers = async () => {
     setLoading(true);
     try {
       const response = await axios.get(
         `${SERVER_DOMAIN}/menu/getbusinessMenuModifierGroupByItem/?business_identifier=${businessIdentifier}&attach_to=item&name=${menuItem?.menu_item_name}&branch=${branchId}`
       );
-      setMenuModifiers(response.data.data);
+      // console.log("response?.data?.data?.modifier_groups", response?.data?.data?.modifier_groups);
+      setMenuModifiers(response.data.data?.modifier_groups || []);
+
+      // Map through the menuModifiers to create the complimentaryMenu
+      const comp = response.data.data?.modifier_groups.reduce((acc: any, group: any) => {
+        return acc.concat(group.modifiers);
+      }, []);
+      setComplimentary(comp || []);
+
     } catch (error) {
       console.error("Error getting Modifiers", error);
     } finally {
@@ -242,6 +266,7 @@ const MenuDetails = () => {
         totalPrice,
         name: menuItem.menu_item_name,
         tableNumber: userDetails?.tableNumber ?? "",
+        complimentary: selectedComplimentaryArr,
       };
 
       if (itemCount === 0) {
@@ -325,9 +350,30 @@ const MenuDetails = () => {
             </p>
           </div>
 
+          {complimentary?.length > 0 && (
+            <div className="w-full">
+              <p className="text-grey300 mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
+                Complimentary
+              </p>
+
+              <select
+                value={selectedComplimentary}
+                onChange={handleComplimentaryChange}
+                className="w-[90%] py-3 px-2 mx-4 text-center border border-gray-300 rounded-md">
+                {complimentary.map((menu, index) => (
+                  <option key={index} value={menu.modifier_name}>
+                    {menu.modifier_name}
+                  </option>
+                ))}
+              </select>
+
+            </div>
+          )}
+
+
           {menuModifiers.length > 0 && (
             <div className="menu-item-modifiers pb-[16px] border-b">
-              <p className="text-[#FF0000] mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
+              <p className="mx-[24px] font-[500] text-[18px] pb-[16px] pt-[24px]">
                 Customize
               </p>
               <>

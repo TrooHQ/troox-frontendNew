@@ -670,13 +670,13 @@ const PricingPage = () => {
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div className="py-[28px] 2xl:py-[36px] px-[28px] 2xl:px-[51px] bg-white relative rounded-[20px] w-[372px]">
           <div className="text-center ">
-            <p className="text-[24px] font-[500] text-purple500">Payment</p>
+            <p className="text-[24px] font-[500] text-black">Payment</p>
             <p className="text-[16px] font-[400] text-grey500">
               Make payment to selected plan
             </p>
             <div className="flex items-center justify-center gap-4 mt-[50px]">
               <div
-                className="border cursor-pointer border-[#FF4F00] rounded px-[24px] py-[10px] font-[600] text-purple500"
+                className="border cursor-pointer border-[#FF4F00] rounded px-[24px] py-[10px] font-[600] text-black"
                 onClick={() => setIsOpen(false)}
               >
                 <p className="font-[500] text-[16px] text-[#FF4F00] cursor-pointer">
@@ -684,7 +684,7 @@ const PricingPage = () => {
                 </p>
               </div>
               <button
-                className="border border-purple500 bg-purple500 rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
+                className="border borderblack bg-black rounded px-[24px] py-[10px] font-[500] text-[#ffffff]"
                 onClick={() => SubcribePlan()}
                 disabled={loading}
               >
@@ -704,7 +704,7 @@ const PricingPage = () => {
             <Close />
           </div>
           <div className="flex flex-col items-center justify-center gap-6">
-            <p className="text-[24px] font-[500] text-purple500">Subscribe</p>
+            <p className="text-[24px] font-[500] text-black">Subscribe</p>
 
             <div>
               <p className="text-[16px] font-[400] text-grey500">
@@ -712,15 +712,15 @@ const PricingPage = () => {
               </p>
               <div className="flex items-center justify-center gap-4 mt-5">
                 <div
-                  className="border cursor-pointer border-purple500 rounded px-[24px]  py-[10px] font-[600] text-purple500"
+                  className="border cursor-pointer borderblack rounded px-[24px]  py-[10px] font-[600] text-black"
                   onClick={() => setAreYouSure(false)}
                 >
-                  <p className="font-[500] text-[16px] text-purple500 cursor-pointer">
+                  <p className="font-[500] text-[16px] text-black cursor-pointer">
                     No
                   </p>
                 </div>
 
-                <div className="border border-purple500 bg-purple500 rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
+                <div className="border borderblack bg-black rounded px-[24px]  py-[10px] font-[500] text-[#ffffff]">
                   <button
                     onClick={() => SubcribePlan()}
                     className=" text-[16px]"
