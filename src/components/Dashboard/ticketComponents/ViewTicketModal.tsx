@@ -10,7 +10,7 @@ interface Props {
 
 export default function ViewTicketModal({ ticketInfo, closeModal, viewTicketModal }: Props) {
 
-  console.log("ticketInfo", ticketInfo);
+  // console.log("ticketInfo", ticketInfo);
 
   return (
     <Modal
@@ -18,9 +18,9 @@ export default function ViewTicketModal({ ticketInfo, closeModal, viewTicketModa
       onClose={closeModal}
     >
       <div className='w-full lg:w-[55vw] max-w-[860px] bg-white rounded-md h-[65vh]  max-h-[540px] overflow-hidden z-50 relative'>
-        <div className='grid w-full h-full overflow-y-hidden grid-col-1'>
-          {/* <div className='grid w-full h-full overflow-y-hidden grid-col-1 lg:grid-cols-5'> */}
-          <CloseRounded onClick={closeModal} className='absolute top-0 right-0 text-black cursor-pointer fill-black ' />
+        {/* <div className='grid w-full h-full overflow-y-hidden grid-col-1'> */}
+        <div className='grid w-full h-full overflow-y-hidden grid-col-1 lg:grid-cols-5'>
+          {/* <CloseRounded onClick={closeModal} className='absolute top-0 right-0 text-black cursor-pointer fill-black ' /> */}
           <div className='flex items-center justify-center w-full h-full col-span-2 p-8 bg-gray-100'>
             <div className='w-full h-full '>
               <div className="flex items-center gap-[10px] text-orange-100 px-[10px] w-fit py-[5px] rounded-full text-sm"
@@ -66,7 +66,7 @@ export default function ViewTicketModal({ ticketInfo, closeModal, viewTicketModa
           </div>
 
 
-          {/* <div className='col-span-3 px-5 py-8 overflow-y-scroll'>
+          <div className='col-span-3 px-5 py-8 overflow-y-scroll'>
 
             <div className='relative flex flex-col items-center justify-center my-4 gap-y-3'>
               <img
@@ -89,7 +89,7 @@ export default function ViewTicketModal({ ticketInfo, closeModal, viewTicketModa
 
 
             </div>
-          </div> */}
+          </div>
         </div>
 
       </div >
@@ -98,21 +98,25 @@ export default function ViewTicketModal({ ticketInfo, closeModal, viewTicketModa
 }
 
 
-// const OrderItemComp = ({ item }: any) => {
+const OrderItemComp = ({ item }: any) => {
 
-//   const { name, quantity, selectedOptions, specialInstructions, complimentary } = item;
+  const { name, quantity, selectedOptions, specialInstructions, complimentary } = item;
 
-//   console.log("selectedOptions", selectedOptions)
+  console.log("item", item)
+  console.log("name", name)
+  console.log("quantity", quantity)
+  console.log("specialInstructions", specialInstructions)
+  console.log("selectedOptions", selectedOptions)
 
-//   return (
-//     <div className="w-full p-3 my-3 bg-gray-100 rounded-md">
-//       <div className='flex items-center justify-between pb-2 mb-2 border-b border-gray-200'>
-//         <p className='text-sm font-medium text-gray-900'>{name}</p>
-//         <p className='text-xs font-medium text-gray-900'>{quantity}x</p>
-//       </div>
-//       {complimentary.length > 0 && <p className='mt-1 mb-2.5 text-xs text-gray-500 pb-2 border-b border-gray-200'><span className="mr-2 font-semibold">Complimentary:</span>{complimentary.map((opt: any) => opt).join(", ")}</p>}
-//       {selectedOptions.length > 0 && <p className='mt-1 mb-2.5 text-xs text-gray-500 pb-2 border-b border-gray-200'><span className="mr-2 font-semibold">Extras:</span>{selectedOptions.map((opt: any) => opt.name).join(", ")}</p>}
-//       <p className='text-xs font-semibold text-gray-800'>Special Instructions: <span className='font-medium text-gray-500'>{specialInstructions ?? "not specified"}</span></p>
-//     </div>
-//   )
-// }
+  return (
+    <div className="w-full p-3 my-3 bg-gray-100 rounded-md">
+      <div className='flex items-center justify-between pb-2 mb-2 border-b border-gray-200'>
+        <p className='text-sm font-medium text-gray-900'>{name}</p>
+        <p className='text-xs font-medium text-gray-900'>{quantity}x</p>
+      </div>
+      {complimentary?.length > 0 && <p className='mt-1 mb-2.5 text-xs text-gray-500 pb-2 border-b border-gray-200'><span className="mr-2 font-semibold">Complimentary:</span>{complimentary?.map((opt: any) => opt).join(", ")}</p>}
+      {selectedOptions?.length > 0 && <p className='mt-1 mb-2.5 text-xs text-gray-500 pb-2 border-b border-gray-200'><span className="mr-2 font-semibold">Extras:</span>{selectedOptions.map((opt: any) => opt.name).join(", ")}</p>}
+      <p className='text-xs font-semibold text-gray-800'>Special Instructions: <span className='font-medium text-gray-500'>{specialInstructions ?? "not specified"}</span></p>
+    </div>
+  )
+}
