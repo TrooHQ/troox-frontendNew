@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../src/store/store';
 import { fetchAverageOrderValue, fetchCustomerTransaction, fetchOpenAndClosedTickets, fetchSalesGrowthRate, fetchSalesRevenueGraph, fetchTopMenuItems, fetchTotalSales } from '../../slices/overviewSlice';
 import DaysTab3 from '../overview-comps/DaysTab3';
+import { Loader2 } from 'lucide-react';
 
 export default function NewOverview() {
 
@@ -18,6 +19,7 @@ export default function NewOverview() {
     totalSales,
     averageOrderValue,
     totalCustomerTransaction,
+    loading,
   } = useSelector((state: RootState) => state.overview);
 
   console.log("salesGrowthRate", salesGrowthRate);
@@ -92,7 +94,10 @@ export default function NewOverview() {
   ]
 
   return (
-    <LayoutComponent>
+    <LayoutComponent title="Overview" description="Track your sales and performance for your business. ">
+      {loading && <div className='fixed top-0 left-0 flex items-center justify-center w-full min-h-screen bg-gray-100/75'>
+        <Loader2 className='w-20 h-20 text-[#DC6803] animate-spin' />
+      </div>}
       <Tabs
         value={activeTab}
         onChange={handleChange}

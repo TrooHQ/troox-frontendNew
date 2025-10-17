@@ -120,13 +120,13 @@ export default function SideBar() {
         },
       ],
     },
-    {
-      title: "Profile",
-      gap: false,
-      icon: <RiFileEditLine />,
-      link: "/profile-page",
-      showMenu: true,
-    },
+    // {
+    //   title: "Profile",
+    //   gap: false,
+    //   icon: <RiFileEditLine />,
+    //   link: "/profile-page",
+    //   showMenu: true,
+    // },
   ];
 
   const url = window.location.pathname;
