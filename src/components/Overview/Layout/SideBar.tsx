@@ -3,6 +3,7 @@ import { LuNotepadText, LuUtensils, LuUserRoundCog, LuUserRoundPlus } from "reac
 import { GrGroup } from "react-icons/gr";
 import { GoArrowUpRight } from 'react-icons/go';
 import { RxCaretRight } from 'react-icons/rx';
+import { NavLink } from 'react-router-dom';
 
 
 export default function SideBar() {
@@ -44,23 +45,22 @@ export default function SideBar() {
     {
       title: "Menu",
       icon: <LuUtensils />,
-      link: "/tickets",
+      link: "/menu-list",
       showMenu: true,
       subMenu: [
         {
-          title: "Tickets",
-          // link: "/new-overview",
-          link: "/tickets",
+          title: "Menu List",
+          link: "/menu-list",
           showMenu: true,
         },
         {
-          title: "Order history",
-          link: "/order-history",
+          title: "Menu Builder",
+          link: "/menu-builder",
           showMenu: true,
         },
         {
-          title: "Customers",
-          link: "/customer-data",
+          title: "Price List",
+          link: "/price-list",
           showMenu: true,
         },
       ],
@@ -68,32 +68,65 @@ export default function SideBar() {
     {
       title: "Restaurant Details",
       icon: <GrGroup />,
-      link: "/menu-list",
+      link: "/business-information",
       showMenu: true,
-      subMenu: [],
+      subMenu: [
+        {
+          title: "Business Information",
+          link: "/business-information",
+          showMenu: true,
+        },
+        {
+          title: "Manage Branches",
+          link: "/manage-branches",
+          showMenu: true,
+        },
+      ],
     },
     {
       title: "Manage Users",
       icon: <LuUserRoundCog />,
-      link: "/business-information",
+      link: "/manage-users",
       showMenu: true,
       subMenu: [],
     },
     {
       title: "Tenant Settings",
       icon: <LuUserRoundPlus />,
-      link: "/business-information",
+      link: "/tenant-settings",
       showMenu: true,
       subMenu: [],
     },
     {
       title: "Manage Assets",
       icon: <RiFileEditLine />,
-      link: "/business-information",
+      link: "/qr-ordering",
       showMenu: true,
-      subMenu: [],
+      subMenu: [
+        {
+          title: "QR Ordering",
+          link: "/qr-ordering",
+          showMenu: true,
+        },
+        {
+          title: "Online Ordering",
+          link: "/online-ordering",
+          showMenu: true,
+        },
+        {
+          title: "Troo Kiosk",
+          link: "/troo-kiosk",
+          showMenu: true,
+        },
+      ],
     },
-
+    {
+      title: "Profile",
+      gap: false,
+      icon: <RiFileEditLine />,
+      link: "/profile-page",
+      showMenu: true,
+    },
   ];
 
   const url = window.location.pathname;
@@ -116,19 +149,19 @@ export default function SideBar() {
         {commonMenu.map((menu, index) => (
           <div key={index} className='flex flex-col justify-between gap-3 cursor-pointer group '  >
             <div className={`flex items-center justify-between p-4  ${menu.title === url || menu.subMenu && menu.subMenu.some(item => item.link === url) ? 'bg-gray-200 border-l-4 border-l-[#DC6803]' : 'hover:bg-gray-200 group-hover:border-l-4 group-hover:border-l-[#DC6803]'} `}>
-              <div className='flex items-center gap-3 ' >
+              <NavLink to={menu.link} className='flex items-center gap-3 ' >
                 <p className={`text-xl group-hover:text-[#DC6803] ${menu.title === url || menu.subMenu && menu.subMenu.some(item => item.link === url) ? 'text-[#DC6803]' : 'group-hover:text-[#DC6803]'}`}>{menu.icon}</p>
                 <p className={`${menu.title === url || menu.subMenu && menu.subMenu.some(item => item.link === url) ? 'text-[#DC6803] font-semibold' : 'group-hover:text-[#DC6803] group-hover:font-semibold'}`}>{menu.title}</p>
-              </div>
+              </NavLink>
               {menu.subMenu && menu.subMenu.length > 0 && <RxCaretRight className={`${menu.title === url || menu.subMenu && menu.subMenu.some(item => item.link === url) ? 'rotate-90 text-[#DC6803]' : 'group-hover:rotate-90 group-hover:text-[#DC6803]'}`} />}
             </div>
 
             {menu.subMenu && menu.subMenu.length > 0 && (
               <div className={` transition-all duration-500 delay-500  ${menu.title === url || menu.subMenu && menu.subMenu.some(item => item.link === url) ? 'block' : 'hidden group-hover:block group-hover:delay-500'}`}>
                 {menu.subMenu.map((subItem, subIndex) => (
-                  <div key={subIndex} className={`flex items-center gap-3 p-4 pl-12 hover:bg-gray-200 ${subItem.link === url ? 'bg-gray-200 border-l-4 border-l-[#DC6803]' : 'hover:bg-gray-200 hover:border-l-4 hover:border-l-[#DC6803]'}`}>
+                  <NavLink to={subItem.link} key={subIndex} className={`flex items-center gap-3 p-4 pl-12 hover:bg-gray-200 ${subItem.link === url ? 'bg-gray-200 border-l-4 border-l-[#DC6803]' : 'hover:bg-gray-200 hover:border-l-4 hover:border-l-[#DC6803]'}`}>
                     <p className=''>{subItem.title}</p>
-                  </div>
+                  </NavLink>
                 ))}
               </div>
             )}

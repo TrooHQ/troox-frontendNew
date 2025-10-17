@@ -122,9 +122,7 @@ export default function NewOverview() {
 
 
       </div>
-      {/* E0F2FE
-FFEFE3
-F3F4F6 */}
+
       {/* overview card sections */}
       <div className='grid grid-cols-1 gap-4 my-10 md:grid-cols-2 lg:grid-cols-4'>
         <OverviewCard bgColor="#F3F4F6" title="Total Revenue" data={`₦ ${Number(totalSales?.data || 0).toLocaleString("en-US", {
