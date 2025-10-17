@@ -12,7 +12,7 @@ import Register from "./components/authPages/Register.tsx";
 import VerifyAccount from "./components/authPages/VerifyAccount.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
-import Overview from "./components/Dashboard/Overview.tsx";
+// import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
 import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
@@ -55,6 +55,7 @@ import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
+import NewOverview from "./components/Overview/NewOverview.tsx";
 
 export default function App() {
   return (
@@ -98,7 +99,9 @@ export default function App() {
           <Route path="/subscription-add-ons" element={<AddOns />} />
           <Route path="/verified-payment" element={<VerifiedPayment />} />
           <Route path="/payout-details" element={<PayoutDetails />} />
-          <Route path="/overview" element={<Overview />} />
+          {/* <Route path="/overview" element={<Overview />} /> */}
+          <Route path="/overview" element={<NewOverview />} />
+          <Route path="/new-overview" element={<NewOverview />} />
           <Route path="/overview-admin" element={<OverviewAdmin />} />
           <Route path="/roles" element={<Roles />} />
           <Route path="/new-roles" element={<NewRoles />} />
