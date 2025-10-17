@@ -83,7 +83,6 @@ const Overview: React.FC = () => {
     dispatch(fetchBusinessPlan());
   }, [dispatch]);
 
-  console.log(userData, "all out here:");
 
 
   return (
