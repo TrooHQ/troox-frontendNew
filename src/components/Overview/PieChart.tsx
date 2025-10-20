@@ -44,7 +44,7 @@ export default function PieChartComp({ data, colorCode, title }: any) {
                 paddingAngle={1}
                 dataKey="value"
               >
-                {emptyStateData.map((entry: any, index: number) => (
+                {emptyStateData.map((_entry: any, index: number) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={GRAY_COLORS[index % GRAY_COLORS.length]}
@@ -84,7 +84,7 @@ export default function PieChartComp({ data, colorCode, title }: any) {
                   paddingAngle={1}
                   dataKey="value"
                 >
-                  {formattedData.map((entry: any, index: number) => (
+                  {formattedData.map((_entry: any, index: number) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={colorCode[index % colorCode.length]}

@@ -66,7 +66,7 @@ export default function LocationPriceBarChart() {
               radius={[10, 10, 10, 10]}
               barSize={25}
             >
-              {formattedData.map((entry: any, index: number) => (
+              {formattedData.map((_entry: any, index: number) => (
                 <Cell key={`cell-${index}`} fill={colors[index]} />
               ))}
             </Bar>
