@@ -8,6 +8,9 @@ import { AppDispatch, RootState } from '../../../src/store/store';
 import { fetchAverageOrderValue, fetchCustomerTransaction, fetchOpenAndClosedTickets, fetchSalesGrowthRate, fetchSalesRevenueGraph, fetchTopMenuItems, fetchTotalSales } from '../../slices/overviewSlice';
 import DaysTab3 from '../overview-comps/DaysTab3';
 import { Loader2 } from 'lucide-react';
+import PieChartComp from './PieChart';
+import TopSellingItems from './TopSellingItems';
+import LocationPriceBarChart from './LocationPriceBarChart';
 
 export default function NewOverview() {
 
@@ -19,6 +22,7 @@ export default function NewOverview() {
     totalSales,
     averageOrderValue,
     totalCustomerTransaction,
+    topMenuItems,
     loading,
   } = useSelector((state: RootState) => state.overview);
 
@@ -52,6 +56,9 @@ export default function NewOverview() {
     event.preventDefault();
     setActiveTab(newValue);
   };
+
+  const ORANGE_COLORS = ["#F86C17", "#FCB675", "#FA8D3E", "#FED4AA",];
+  const BLUE_COLORS = ["#1570EF", "#D1E9FF", "#2E90FA", "#84CAFF",];
 
   const tabList = [
     {
@@ -130,17 +137,17 @@ export default function NewOverview() {
 
       {/* overview card sections */}
       <div className='grid grid-cols-1 gap-4 my-10 md:grid-cols-2 lg:grid-cols-4'>
-        <OverviewCard bgColor="#F3F4F6" title="Total Revenue" data={`₦ ${Number(totalSales?.data || 0).toLocaleString("en-US", {
+        <OverviewCard bgColor="#EAECF0" title="Total Revenue" data={`₦ ${Number(totalSales?.data || 0).toLocaleString("en-US", {
           minimumFractionDigits: 2,
         })}`} />
-        <OverviewCard bgColor="#E0F2FE" title="Total Orders" data={totalCustomerTransaction?.totalOrders?.toLocaleString("en-US") || 0} />
-        <OverviewCard bgColor="#FFEFE3" title="Avg. Order Value" data={`₦ ${Number(
+        <OverviewCard bgColor="#B8DEFF" title="Total Orders" data={totalCustomerTransaction?.totalOrders?.toLocaleString("en-US") || 0} />
+        <OverviewCard bgColor="#FFE1CC" title="Avg. Order Value" data={`₦ ${Number(
           averageOrderValue?.data?.averageOrderValue || 0
         ).toLocaleString("en-US", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`} />
-        <OverviewCard bgColor="#E0F2FE" title="Sales Growth Rate" data={`${salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0
+        <OverviewCard bgColor="#CDE2FF" title="Sales Growth Rate" data={`${salesGrowthRate?.data?.salesGrowthRate?.toLocaleString("en-US") || 0
           }%`} />
       </div>
 
@@ -151,6 +158,18 @@ export default function NewOverview() {
         setEndDate={setDateFilter}
         setNumberOfDays={setDateFilter}
       />
+
+      <div className='grid grid-cols-1 gap-8 my-10 md:grid-cols-2 lg:grid-cols-2'>
+        <div>
+          <PieChartComp data={topMenuItems?.data} colorCode={ORANGE_COLORS} title="Revenue By Channel" />
+          <LocationPriceBarChart />
+
+        </div>
+        <div>
+          <PieChartComp data={topMenuItems?.data} colorCode={BLUE_COLORS} title="Top Selling Products" />
+          <TopSellingItems />
+        </div>
+      </div>
 
 
     </LayoutComponent>
