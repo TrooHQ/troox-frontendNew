@@ -4,12 +4,17 @@ import { GrGroup } from "react-icons/gr";
 import { GoArrowUpRight } from 'react-icons/go';
 import { RxCaretRight } from 'react-icons/rx';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 
 export default function SideBar() {
 
+  const { userData } = useSelector(
+    (state: RootState) => state.user
+  );
 
-
+  console.log("userData", userData);
 
   const commonMenu = [
 
@@ -120,24 +125,12 @@ export default function SideBar() {
         },
       ],
     },
-    // {
-    //   title: "Profile",
-    //   gap: false,
-    //   icon: <RiFileEditLine />,
-    //   link: "/profile-page",
-    //   showMenu: true,
-    // },
+
   ];
 
   const url = window.location.pathname;
 
-  // const handleMenuClick = (index: number) => {
-  //   if (showSubMenu === index) {
-  //     setShowSubMenu(null); // Close the submenu if it's already open
-  //   } else {
-  //     setShowSubMenu(index); // Open the clicked submenu
-  //   }
-  // };
+
 
 
   // Access more features to boost your business
@@ -170,14 +163,14 @@ export default function SideBar() {
       </div>
       <div className='flex flex-col gap-4 px-4 mb-5'>
 
-        <div className='flex flex-col gap-2 p-3 bg-gray-300 border border-gray-400 rounded-md'>
+        <NavLink to={'/subscription-plan'} className='flex flex-col gap-2 p-3 bg-gray-300 border border-gray-400 rounded-md'>
           <p className='text-sm text-gray-500'>Access more features to boost your business </p><p className='text-[#F86C17] flex items-center gap-2'>Upgrade Plan <GoArrowUpRight /></p>
-        </div>
+        </NavLink >
 
         <div className='flex flex-row gap-2 p-3 bg-gray-100 border border-gray-400 rounded-md'>
-          <div style={{ backgroundImage: "url('/troo_logo_black.png')" }} className='w-12 h-12 bg-center bg-no-repeat border border-gray-300 rounded-md bg-container' />
-          <div><h3 className='font-semibold text-gray-700'>User Name</h3>
-            <p className='text-gray-500 '>user@name.com</p>
+          <div style={{ backgroundImage: `url(${userData?.business_logo})` }} className='w-12 h-12 bg-center bg-no-repeat bg-cover border border-gray-300 rounded-md' />
+          <div><h3 className='font-semibold text-gray-700'>{userData?.first_name + " " + userData?.last_name}</h3>
+            <p className='text-gray-500 '>{userData?.business_email}</p>
           </div>
         </div>
       </div>
