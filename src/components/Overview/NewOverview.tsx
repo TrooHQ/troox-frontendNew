@@ -26,10 +26,6 @@ export default function NewOverview() {
     loading,
   } = useSelector((state: RootState) => state.overview);
 
-  console.log("salesGrowthRate", salesGrowthRate);
-  console.log("totalSales", totalSales);
-  console.log("averageOrderValue", averageOrderValue);
-  console.log("totalCustomerTransaction", totalCustomerTransaction);
 
   const [dateFilter, setDateFilter] = useState<string>("today");
   const [startDate, setStartDate] = useState<string | undefined>(undefined);
@@ -86,18 +82,7 @@ export default function NewOverview() {
       label: "KDS"
     },
 
-    //  {
-    //   label: "QRCode-(In Room)",
-    //   value: "QR_INROOM"
-    // },
-    //    {
-    //   label: "Flex",
-    //   value: "FLEX"
-    // },
-    // {
-    //   label: "Tably",
-    //   value: "TABLY"
-    // },
+
   ]
 
   return (
