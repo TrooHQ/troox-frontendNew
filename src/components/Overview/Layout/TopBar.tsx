@@ -27,10 +27,10 @@ export default function TopBar() {
         <img src='/troo_logo_black.png' alt='' />
       </div>
 
-      <div className='flex items-center justify-between w-full col-span-5 px-4 py-5 border-l border-l-gray-300'>
+      <div className='flex items-center justify-between w-full col-span-5 px-4 py-5 border-l border-l-gray-100'>
 
         <div className='flex items-center gap-6'>
-          <div className='flex items-center px-4 border-r border-r-gray-500'>
+          <div className='flex items-center px-4 border-r border-r-gray-100'>
             <div
               style={{ backgroundImage: `url(${userData?.business_logo})` }} className="w-10 h-10 mr-2 bg-center bg-cover shadow-sm" />
             <h3>{userData?.business_name}</h3>

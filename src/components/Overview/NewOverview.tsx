@@ -98,7 +98,7 @@ export default function NewOverview() {
         TabIndicatorProps={{
           style: { backgroundColor: "#DC6803", height: "3px", borderRadius: "3px" },
         }}
-        className="border-b border-gray-200"
+        className="border-b border-gray-100"
       >
         {
           tabList.map((tab) => (
@@ -109,7 +109,7 @@ export default function NewOverview() {
         }
       </Tabs>
 
-      <div className='pb-4 mt-4 mb-10 border-b border-b-200'>
+      <div className='pb-4 mt-4 mb-10 border-b border-b--gray-200'>
         <DaysTab3
           setDateFilter={setDateFilter}
           setStartDate={setStartDate}
@@ -121,7 +121,7 @@ export default function NewOverview() {
       </div>
 
       {/* overview card sections */}
-      <div className='grid grid-cols-1 gap-4 my-10 md:grid-cols-2 lg:grid-cols-4'>
+      <div className='grid grid-cols-1 gap-6 my-10 md:grid-cols-2 lg:grid-cols-4'>
         <OverviewCard bgColor="#EAECF0" title="Total Revenue" data={`₦ ${Number(totalSales?.data || 0).toLocaleString("en-US", {
           minimumFractionDigits: 2,
         })}`} />
