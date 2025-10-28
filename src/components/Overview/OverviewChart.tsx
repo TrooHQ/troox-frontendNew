@@ -79,7 +79,7 @@ export default function OverviewChart({ setDateFilter,
   const chartData = formatChartData(salesRevenueGraph.data);
 
   return (
-    <div className="w-full border border-gray-400 rounded-lg">
+    <div className="w-full border border-gray-100 rounded-lg">
 
       <div className="flex items-center justify-between w-full p-4">
         <h3 className="font-semibold">Sales Performance</h3>

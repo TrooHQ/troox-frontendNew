@@ -12,9 +12,9 @@ export default function LayoutComponent({ children, title, description }: { chil
         <div className='w-full min-h-screen col-span-1 '>
           <SideBar />
         </div>
-        <div className='w-full min-h-screen col-span-5 border-l border-l-gray-300'>
+        <div className='w-full min-h-screen col-span-5 border-l border-l-gray-100'>
           <div className='w-full h-screen overflow-y-scroll'>
-            <div className='w-full p-4 border-b border-b-gray-300'>
+            <div className='w-full p-4 border-b border-b-gray-100'>
               <h3 className='mb-2 text-xl font-semibold'>{title}</h3>
               <p className='text-sm '>{description}</p>
             </div>

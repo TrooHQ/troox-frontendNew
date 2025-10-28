@@ -15,7 +15,7 @@ export default function OverviewCard({ title, bgColor, data }: Props) {
   return (
     // #E0F2FE
     // #FFEFE3
-    <div style={{ backgroundColor: bgColor }} className='rounded-md w-[90%] mx-auto' >
+    <div style={{ backgroundColor: bgColor }} className='w-full rounded-md' >
       <h3 className='w-full mx-4 my-2 text-base font-semibold text-gray-900 '>{title}</h3>
       <div style={{ border: `2px solid ${bgColor}` }} className='px-4 py-2 bg-white rounded-md '>
         <h3 className='text-2xl font-semibold'>{data ?? ""}</h3>
