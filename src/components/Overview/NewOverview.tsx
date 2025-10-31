@@ -5,7 +5,7 @@ import OverviewCard from './OverviewCard';
 import OverviewChart from './OverviewChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../src/store/store';
-import { fetchAverageOrderValue, fetchCustomerTransaction, fetchOpenAndClosedTickets, fetchSalesGrowthRate, fetchSalesRevenueGraph, fetchTopMenuItems, fetchTotalSales } from '../../slices/overviewSlice';
+import { fetchAverageOrderValue, fetchCustomerTransaction, fetchOpenAndClosedTickets, fetchRevenueByBranch, fetchSalesGrowthRate, fetchSalesRevenueGraph, fetchTopMenuItems, fetchTotalSales } from '../../slices/overviewSlice';
 import DaysTab3 from '../overview-comps/DaysTab3';
 import { Loader2 } from 'lucide-react';
 import PieChartComp from './PieChart';
@@ -43,6 +43,7 @@ export default function NewOverview() {
     dispatch(fetchTopMenuItems({ branch_id: selectedBranch?.id, date_filter: dateFilter, number_of_days: numberOfDays, product_type: activeTab }));
     dispatch(fetchCustomerTransaction({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays, product_type: activeTab }));
     dispatch(fetchSalesGrowthRate({ date_filter: dateFilter, branch_id: selectedBranch?.id, number_of_days: numberOfDays, product_type: activeTab }));
+    dispatch(fetchRevenueByBranch({ date_filter: dateFilter, startDate, endDate, number_of_days: numberOfDays, product_type: activeTab }));
   }, [dispatch, selectedBranch?.id, dateFilter, startDate, endDate, numberOfDays, activeTab]);
 
 

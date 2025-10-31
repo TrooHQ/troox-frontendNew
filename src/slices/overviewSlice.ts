@@ -10,6 +10,7 @@ interface OverviewState {
   totalCustomerTransaction: any;
   averageOrderValue: any;
   salesRevenueGraph: any;
+  revenueByBranch: any;
   salesGrowthRate: any;
   customerDataLoading: boolean;
   loading: boolean;
@@ -32,6 +33,7 @@ const initialState: OverviewState = {
   averageOrderValue: "",
   salesRevenueGraph: "",
   customerDataLoading: false,
+  revenueByBranch: [],
   loading: false,
   error: null,
   pagination: {
@@ -492,7 +494,64 @@ export const fetchSalesGrowthRate = createAsyncThunk(
     }
   }
 );
+// revenue by branch
+// this guy is fetching by branch so we dont need to filter the branch filter for this guy here ⬇
+export const fetchRevenueByBranch = createAsyncThunk(
+  "overview/fetchRevenueByBranch",
+  async ({
+    date_filter,
+    startDate,
+    endDate,
+    number_of_days,
+    // branch_id,
+    product_type,
+  }: {
+    date_filter: string;
+    startDate?: string;
+    endDate?: string;
+    number_of_days?: number;
+    // branch_id?: string;
+    product_type?: string;
+  }) => {
+    try {
+      const token = localStorage.getItem("token");
 
+      const params: any = { date_filter };
+      if (date_filter === "date_range") {
+        params.startDate = startDate;
+        params.endDate = endDate;
+      } else if (date_filter !== "today") {
+        params.number_of_days = number_of_days;
+      }
+      // if (branch_id) {
+      //   params.branch_id = branch_id;
+      // }
+      if (product_type) {
+        params.channels = product_type;
+      }
+      //  /api/dashboard/revenue/by-branch?startDate=2025-09-01&endDate=2025-09-30&channels=Online
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/dashboard/revenue/by-branch`,
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("resp", response);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        return error.response.data;
+      } else {
+        return "An unknown error occurred";
+      }
+    }
+  }
+);
+
+// overview slice
 const overviewSlice = createSlice({
   name: "overview",
   initialState,
@@ -611,6 +670,8 @@ const overviewSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // sales graph
       .addCase(fetchSalesRevenueGraph.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -623,6 +684,23 @@ const overviewSlice = createSlice({
         }
       )
       .addCase(fetchSalesRevenueGraph.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // revenue by branch
+      .addCase(fetchRevenueByBranch.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchRevenueByBranch.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.loading = false;
+          state.revenueByBranch = action.payload;
+        }
+      )
+      .addCase(fetchRevenueByBranch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
