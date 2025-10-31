@@ -56,6 +56,9 @@ import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
+import ItemsList from "./Api/newCustomerFlow/pages/ItemsList.tsx";
+import ItemDetails from "./Api/newCustomerFlow/pages/ItemDetails.tsx";
+import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary.tsx";
 
 export default function App() {
   return (
@@ -128,6 +131,14 @@ export default function App() {
             element={<BusinessInformation />}
           />
           <Route path="/manage-branches" element={<ManageBranches />} />
+
+
+          {/* New Customer facing */}
+          {/* these routes dont need to be protected */}
+          <Route path="/new-facing" element={<ItemsList />} />
+          <Route path="/new-facing/id" element={<ItemDetails />} />
+          <Route path="/new-facing/order-summary" element={<OrderSummary />} />
+
         </Routes>
       </Router>
     </div>
