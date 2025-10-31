@@ -8,9 +8,11 @@ const colors = ["#E5E7EB", "#E5E7EB", "#E5E7EB", "#E5E7EB", "#E5E7EB"];
 
 export default function LocationPriceBarChart() {
 
-  const { topMenuItems } = useSelector(
+  const { topMenuItems, revenueByBranch } = useSelector(
     (state: RootState) => state.overview
   );
+
+  console.log("revenueByBranch", revenueByBranch);
 
   const formattedData = Array.isArray(topMenuItems?.data)
     ? topMenuItems?.data
@@ -24,9 +26,9 @@ export default function LocationPriceBarChart() {
 
   console.log("formatted Data", formattedData)
   return (
-    <div className="w-full mx-auto rounded-xl shadow-md overflow-hidden my-10">
+    <div className="w-full mx-auto my-10 overflow-hidden shadow-md rounded-xl">
 
-      <div className="border-b border-gray-200 p-4">
+      <div className="p-4 border-b border-gray-200">
         <h3 className="text-sm font-semibold text-gray-600">
           {"Revenue By Location"}
         </h3>

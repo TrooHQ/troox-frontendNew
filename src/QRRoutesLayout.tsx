@@ -55,6 +55,9 @@ import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 import OrderHistory from "./Mobile/Components/OrderHistory";
 import AccountVerified from "./Mobile/Components/AccountVerified";
 import { AllMenuItems } from "./Mobile/Customers/Aligning_Routes/AllMenuItems";
+import ItemsList from "./Api/newCustomerFlow/pages/ItemsList";
+import ItemDetails from "./Api/newCustomerFlow/pages/ItemDetails";
+import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary";
 
 const QRRoutesLayout = () => {
   return (
@@ -246,7 +249,19 @@ const QRRoutesLayout = () => {
           <Route path="/demo/table/troo-portal" element={<TableSetupForm />} />
           <Route path="/demo/room/troo-portal" element={<RoomSetupForm />} />
 
+
+
+          {/* new routes commenced */}
+          <Route path="/new-facing" element={<ItemsList />} />
+          <Route path="/new-facing/id" element={<ItemDetails />} />
+          <Route path="/new-facing/order-summary" element={<OrderSummary />} />
+          {/* new routes ended */}
+
+
           <Route path="*" element={<NotFound />} />
+
+
+
         </Routes>
       </Router>
     </div>
