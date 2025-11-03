@@ -69,7 +69,7 @@ export default function ItemsList() {
       <div className="w-full py-1 bg-gray-200">
         <h3 className="p-4 text-sm font-semibold text-gray-900">Menu Category</h3>
       </div>
-      <div className="mx-4 mt-4 ">
+      <div className="mt-4 ">
 
         {Array.from({ length: 10 }).map((_, index) => (
           <ItemCard key={index} />
@@ -86,7 +86,7 @@ export default function ItemsList() {
 
 const ItemCard = () => {
   return (
-    <div className="grid w-full grid-cols-3 gap-2 py-3 my-3 border-b border-b-gray-200 h-fit">
+    <div className="grid w-full grid-cols-3 gap-2 px-4 py-3 my-3 border-b border-b-gray-200 h-fit">
 
       <div className="col-span-2" >
         <h4 className="text-base font-semibold text-gray-900">Menu Item</h4>
@@ -94,11 +94,11 @@ const ItemCard = () => {
         <p className="text-sm font-semibold text-gtay-900">₦1,000</p>
       </div>
 
-      <div className="relative w-full col-span-1 bg-contain">
+      <div className="relative w-full col-span-1">
         <img
           src='/bg-banner.png'
           alt='bg-banner'
-          className='object-cover object-center w-full h-24 overflow-hidden rounded-lg'
+          className='object-cover object-center w-full h-full overflow-hidden rounded-lg'
         />
         <FiPlus className="absolute bg-gray-200 rounded-full bottom-2 right-2" />
       </div>
