@@ -25,7 +25,7 @@ export default function ItemDetails() {
         <p className="flex items-center text-sm">Required <span><GoDotFill className="w-2 mx-2" /></span> Select 1</p>
 
 
-        <div className="flex flex-col gap-2 mx-2 my-2">
+        <div className="flex flex-col mx-2 my-2 gap-y-4">
           <label className="space-x-2">
             <input type="radio" name="selection" />
             <span className="font-semibold ">Small</span>
@@ -41,12 +41,12 @@ export default function ItemDetails() {
         </div>
       </div>
 
-      <div className="px-4 my-4 border-b border-b-gray-200">
-        <h3 className="mb-1 font-semibold text-gray-900">Add Toppings</h3>
-        <p className="flex items-center text-sm">Optional <span><GoDotFill className="w-2 mx-2" /></span> Select up to 3</p>
+      <div className="my-4 border-b border-b-gray-200">
+        <h3 className="px-4 mb-1 font-semibold text-gray-900">Add Toppings</h3>
+        <p className="flex items-center px-4 text-sm">Optional <span><GoDotFill className="w-2 mx-2" /></span> Select up to 3</p>
 
-        <div className="flex flex-col gap-2 mx-2 my-6">
-          <label className="flex items-center justify-between px-2 py-2 space-x-2 border-t border-t-gray-200">
+        <div className="flex flex-col my-6">
+          <label className="flex items-center justify-between px-4 py-3 space-x-2 border-t border-t-gray-200">
             <div className="flex items-center gap-2">
               <input type="checkbox" name="selection" />
               <span className="font-semibold ">Extra Cheese</span>
@@ -54,7 +54,7 @@ export default function ItemDetails() {
             <span className="text-sm text-gray-500">+₦200</span>
           </label>
 
-          <label className="flex items-center justify-between px-2 py-2 space-x-2 border-t border-t-gray-200">
+          <label className="flex items-center justify-between px-4 py-3 space-x-2 border-t border-t-gray-200">
             <div className="flex items-center gap-2">
               <input type="checkbox" name="selection" />
               <span className="font-semibold ">Extra Chicken</span>
@@ -62,7 +62,7 @@ export default function ItemDetails() {
             <span className="text-sm text-gray-500">+₦200</span>
           </label>
 
-          <label className="flex items-center justify-between px-2 py-2 space-x-2 border-t border-t-gray-200">
+          <label className="flex items-center justify-between px-4 py-3 space-x-2 border-y border-y-gray-200">
             <div className="flex items-center gap-2">
               <input type="checkbox" name="selection" />
               <span className="font-semibold ">Large</span>
