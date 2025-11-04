@@ -1,9 +1,10 @@
 import { MinusIcon, PlusIcon } from 'lucide-react'
-import { FaArrowLeftLong } from 'react-icons/fa6'
+import { FaArrowLeftLong, FaCirclePlus } from 'react-icons/fa6'
+// import { ReactComponent as Utensils } from '/assets/utensils.svg'
 
 export default function OrderSummary() {
   return (
-    <div className="relative w-full min-h-screen pb-14">
+    <div className="relative w-full min-h-screen mb-24">
 
 
       <p className='flex items-center gap-3 px-4 py-3 border-y border-y-gray-300'>
@@ -20,11 +21,44 @@ export default function OrderSummary() {
 
 
 
-      {/* <div className='border-y border-y-gray-300'>
-        <FaCirclePlus className='' />
-      </div> */}
+      <div className='flex items-center gap-2 px-4 py-3 border-y border-y-gray-300'>
+        <FaCirclePlus className='fill-blue-600' />
+        <p className='text-sm font-semibold text-blue-600'>Add more items</p>
+      </div>
 
-      <button className="flex items-center justify-between fixed bottom-0 left-0 right-0 w-[90%] px-4 py-3 mx-auto mb-4 text-white bg-black rounded-full">
+      <div className='px-4 py-3 border-b border-b-gray-300'>
+        <div className='flex items-center justify-between gap-2 py-3'>
+          <div className='flex items-center gap-2'>
+            <img src="/utensils.svg" alt="" className='w-5 h-5' />
+            <p>Dining</p>
+          </div>
+          <input type='radio' />
+        </div>
+
+        <div className='flex items-center justify-between gap-2 py-3'>
+          <div className='flex items-center gap-2'>
+            <img src="/takeout.svg" alt="" className='w-5 h-5' />
+            <p>Pick Up</p>
+          </div>
+          <input type='radio' />
+        </div>
+      </div>
+
+      <div className='px-4 py-3 border-b border-b-gray-300'>
+        <div className='flex items-center justify-between py-2'>
+          <p className='text-sm font-medium'>SubTotal</p>
+          <p className='font-semibold'>₦4,500</p>
+        </div>
+        <div className='flex items-center justify-between py-2'>
+          <p className='text-sm font-medium'>Service Charge</p>
+          <p className='font-semibold'>₦500</p>
+        </div>
+      </div>
+
+      <div className='flex items-center justify-between px-4 py-3 border-y border-y-gray-300'>
+        <p className='text-sm font-medium '>Total</p><p className='font-semibold'>₦5,000</p></div>
+
+      <button className="text-center flex items-center justify-between fixed bottom-0 left-0 right-0 w-[90%] px-4 py-3 mx-auto mb-4 text-white bg-black rounded-full">
         Place Order
       </button>
     </div>
