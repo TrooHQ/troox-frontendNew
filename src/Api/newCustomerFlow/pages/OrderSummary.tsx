@@ -44,6 +44,11 @@ export default function OrderSummary() {
         </div>
       </div>
 
+      <div className="px-4 py-4 border-b border-b-gray-200">
+        <label className="block mb-2 text-sm font-medium text-gray-900">Leave a note</label>
+        <input className="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="tell the restaurant your preference" />
+      </div>
+
       <div className='px-4 py-3 border-b border-b-gray-300'>
         <div className='flex items-center justify-between py-2'>
           <p className='text-sm font-medium'>SubTotal</p>
@@ -56,11 +61,14 @@ export default function OrderSummary() {
       </div>
 
       <div className='flex items-center justify-between px-4 py-3 border-y border-y-gray-300'>
-        <p className='text-sm font-medium '>Total</p><p className='font-semibold'>₦5,000</p></div>
+        <p className='text-sm font-medium '>Total</p><p className='font-semibold'>₦5,000</p>
+      </div>
 
-      <button className="text-center flex items-center justify-between fixed bottom-0 left-0 right-0 w-[90%] px-4 py-3 mx-auto mb-4 text-white bg-black rounded-full">
-        Place Order
-      </button>
+      <div className='fixed bottom-0 left-0 right-0 flex items-center justify-between w-full py-2 bg-white'>
+        <button className="text-center  w-[90%] px-4 py-3 mx-auto  text-white bg-black rounded-full">
+          Place Order
+        </button>
+      </div>
     </div>
   )
 }

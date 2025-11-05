@@ -31,7 +31,9 @@ export default function ItemsList() {
           <IoSearchOutline className="p-1 text-2xl bg-gray-200 rounded-full bottom-2 right-2" />
         </div>
         {/*  */}
-        <TiWaves className="absolute z-10 p-2 text-6xl text-orange-400 bg-orange-200 rounded-full -bottom-7 left-4" />
+        <div className="absolute z-10 rounded-full shadow-md p-1 bg-white -bottom-7 left-4 size-16 flex items-center justify-center overflow-hidden ">
+          <TiWaves className="w-full h-full rounded-full text-orange-400 bg-orange-200 " />
+        </div>
       </div>
 
       {/* <div className=""> */}
