@@ -45,10 +45,10 @@ const StartOrder = () => {
   const type = queryParams.get("type");
   const group_name = queryParams.get("group_name") ?? "default_group_name";
 
-  console.log("business_identifier", business_identifier)
-  console.log("branch", branch)
-  console.log("type", type)
-  console.log("group_name", group_name)
+  // console.log("business_identifier", business_identifier)
+  // console.log("branch", branch)
+  // console.log("type", type)
+  // console.log("group_name", group_name)
 
   useEffect(() => {
 

@@ -17,7 +17,7 @@ import EmployeeSettingsPage from "./Mobile/Employee/EmployeeSettingsPage";
 import EnterPassword from "./Mobile/authPages/EnterPassword";
 import CreatePassword from "./Mobile/authPages/CreatePassword";
 import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
-import StartOrder from "./Mobile/Customers/StartOrder";
+// import StartOrder from "./Mobile/Customers/StartOrder";
 import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
 import "react-toastify/dist/ReactToastify.css";
@@ -83,7 +83,8 @@ const QRRoutesLayout = () => {
 
 
           {/* Unifying routes */}
-          <Route path="/:id?" element={<StartOrder />} />
+          {/* <Route path="/:id?" element={<StartOrder />} /> */}
+          <Route path="/:id?" element={<ItemsList />} />
           <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
 
           {/*  */}
