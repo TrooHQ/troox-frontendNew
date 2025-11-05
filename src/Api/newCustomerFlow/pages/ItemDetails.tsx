@@ -72,15 +72,17 @@ export default function ItemDetails() {
         </div>
       </div>
 
-      <div className="px-4 py-4 mb-10 border-b border-b-gray-200">
+      {/* <div className="px-4 py-4 mb-10 border-b border-b-gray-200">
         <label className="block mb-2 text-sm font-medium text-gray-900">Leave a note</label>
         <input className="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="tell the restaurant your preference" />
-      </div>
+      </div> */}
 
-      <button className="flex items-center justify-between fixed bottom-0 left-0 right-0 w-[90%] px-4 py-3 mx-auto mb-4 text-white bg-black rounded-full">
-        <span>Add to order</span>
-        <span>$4,300</span>
-      </button>
+      <div className="fixed bottom-0 left-0 right-0  w-full py-2 bg-white">
+        <button className=" w-[90%] px-4 py-3 mx-auto  text-white bg-black rounded-full flex items-center justify-between">
+          <span>Add to order</span>
+          <span>$4,300</span>
+        </button>
+      </div>
     </div>
   )
 }
