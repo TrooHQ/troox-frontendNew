@@ -18,7 +18,7 @@ import EnterPassword from "./Mobile/authPages/EnterPassword";
 import CreatePassword from "./Mobile/authPages/CreatePassword";
 import ListofRestaurants from "./Mobile/Customers/ListofRestaurants";
 // import StartOrder from "./Mobile/Customers/StartOrder";
-import MenuDetails from "./Mobile/Customers/MenuDetails";
+// import MenuDetails from "./Mobile/Customers/MenuDetails";
 import { MenuPage } from "./Mobile/Customers/MenuPage";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
@@ -36,7 +36,7 @@ import RoomSetupForm from "./Mobile/Components/RoomSetupForm";
 import InRoomStartOrder from "./Mobile/InRoomDining/InRoomStartOrder";
 import { InRoomMenuPage } from "./Mobile/InRoomDining/InRoomMenuPage";
 import { InRoomCategoryDetails } from "./Mobile/InRoomDining/InRoomCategoryDetails";
-import InRoomMenuDetails from "./Mobile/InRoomDining/InRoomMenuDetails";
+// import InRoomMenuDetails from "./Mobile/InRoomDining/InRoomMenuDetails";
 import { InRoomBasket } from "./Mobile/InRoomDining/InRoomBasket";
 import { InRoomTip } from "./Mobile/InRoomDining/InRoomTip";
 import { InRoomSelectPayment } from "./Mobile/InRoomDining/InRoomSelectPayment";
@@ -45,7 +45,7 @@ import { InRoomReceipt } from "./Mobile/InRoomDining/InRoomReceipt";
 import OnlineOrderingStartOrder from "./Mobile/OnlineOrdering/OnlineOrderingStartOrder";
 import { OnlineOrderingMenuPage } from "./Mobile/OnlineOrdering/OnlineOrderingMenuPage";
 import { OnlineOrderingCategoryDetails } from "./Mobile/OnlineOrdering/OnlineOrderingCategoryDetails";
-import OnlineOrderingMenuDetails from "./Mobile/OnlineOrdering/OnlineOrderingMenuDetails";
+// import OnlineOrderingMenuDetails from "./Mobile/OnlineOrdering/OnlineOrderingMenuDetails";
 import { OnlineOrderingBasket } from "./Mobile/OnlineOrdering/OnlineOrderingBasket";
 import { OnlineOrderingTip } from "./Mobile/OnlineOrdering/OnlineOrderingTip";
 import { OnlineOrderingSelectPayment } from "./Mobile/OnlineOrdering/OnlineOrderingSelectPayment";
@@ -54,14 +54,14 @@ import { OnlineOrderingGetReceipt } from "./Mobile/OnlineOrdering/OnlineOrdering
 import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 import OrderHistory from "./Mobile/Components/OrderHistory";
 import AccountVerified from "./Mobile/Components/AccountVerified";
-import { AllMenuItems } from "./Mobile/Customers/Aligning_Routes/AllMenuItems";
+// import { AllMenuItems } from "./Mobile/Customers/Aligning_Routes/AllMenuItems";
 import ItemsList from "./Api/newCustomerFlow/pages/ItemsList";
 import ItemDetails from "./Api/newCustomerFlow/pages/ItemDetails";
 import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary";
 
 const QRRoutesLayout = () => {
   return (
-    <div className="overflow-hidden font-GeneralSans">
+    <div className="overflow-hidden font-Inter">
       <ToastContainer />
       <Router>
         <ScrollToTop />
@@ -88,23 +88,31 @@ const QRRoutesLayout = () => {
           <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
 
           {/*  */}
-          <Route
+          {/* <Route
             path="/category-details"
             element={<AllMenuItems />}
-          />
+          /> */}
           <Route
-            path="/item-details/:id"
-            element={<MenuDetails />}
+            path="/item-details"
+            element={<ItemDetails />}
+          // element={<MenuDetails />}
           />
 
-          <Route path="/demo/basket/orderandpay" element={<Basket />} />
+          <Route
+            path="/demo/basket/orderandpay"
+            element={<Basket />}
+          />
+          <Route
+            path="/demo/order-summary"
+            element={<OrderSummary />}
+          />
 
           {/* unifying routes */}
 
-          <Route
+          {/* <Route
             path="/demo/menu-details/:id/orderandpay"
             element={<MenuDetails />}
-          />
+          /> */}
           <Route path="/demo/tip/orderandpay" element={<Tip />} />
           <Route
             path="/demo/payment-type/orderandpay"
@@ -126,10 +134,10 @@ const QRRoutesLayout = () => {
             path="demo/category-details/in_room_dining"
             element={<InRoomCategoryDetails />}
           />
-          <Route
+          {/* <Route
             path="/demo/menu-details/:id/in_room_dining"
             element={<InRoomMenuDetails />}
-          />
+          /> */}
           <Route
             path="/demo/basket/in_room_dining"
             element={<InRoomBasket />}
@@ -161,10 +169,10 @@ const QRRoutesLayout = () => {
             path="demo/:id/items/online_ordering"
             element={<OnlineOrderingCategoryDetails />}
           />
-          <Route
+          {/* <Route
             path="/demo/menu-details/:id/online_ordering"
             element={<OnlineOrderingMenuDetails />}
-          />
+          /> */}
           <Route
             path="/demo/basket/online_ordering"
             element={<OnlineOrderingBasket />}
