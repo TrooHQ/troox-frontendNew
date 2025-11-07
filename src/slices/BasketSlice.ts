@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 interface SelectedOption {
   value: string;
@@ -42,7 +43,13 @@ export interface BasketItem {
   id: string;
   quantity: number;
   menuItem?: MenuItem;
-  selectedOptions: Option[];
+  selectedOptions: {
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+  complimentary?: string[];
+  itemPrice?: number;
   totalPrice: number;
   name: string;
   tableNumber: string | number;
@@ -80,6 +87,8 @@ const BasketSlice = createSlice({
   reducers: {
     addItemToBasket(state, action: PayloadAction<BasketItem>) {
       const newItem = action.payload;
+
+      console.log("new item", newItem);
       const existingItemIndex = state.items.findIndex(
         (item) =>
           item.id === newItem.id &&
@@ -103,6 +112,7 @@ const BasketSlice = createSlice({
         (sum, item) => sum + item.quantity,
         0
       );
+      toast.success("Item added to basket");
     },
 
     removeItemFromBasket(state, action: PayloadAction<{ id: string }>) {

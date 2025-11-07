@@ -1,8 +1,23 @@
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { FaArrowLeftLong, FaCirclePlus } from 'react-icons/fa6'
-// import { ReactComponent as Utensils } from '/assets/utensils.svg'
+import { useSelector } from 'react-redux';
+import { RootState } from "../../../store/store";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function OrderSummary() {
+
+  const basketItems = useSelector((state: RootState) => state.basket.items);
+
+  console.log("basketItems", basketItems)
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (basketItems.length < 1) navigate(-1);
+  }, [basketItems.length, navigate])
+
+
   return (
     <div className="relative w-full min-h-screen mb-24">
 
@@ -14,12 +29,16 @@ export default function OrderSummary() {
       <h4 className='px-4 py-3 font-semibold border-b border-b-gray-300'>Order Summary</h4>
 
       <div className='px-4'>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {/* {Array.from({ length: 3 }).map((_, index) => (
           <OrderSummaryCard key={index} />
-        ))}
+        ))} */}
+
+        {
+          basketItems.map((item, index) => (
+            <OrderSummaryCard key={index} item={item} />
+          ))
+        }
       </div>
-
-
 
       <div className='flex items-center gap-2 px-4 py-3 border-y border-y-gray-300'>
         <FaCirclePlus className='fill-blue-600' />
@@ -74,34 +93,36 @@ export default function OrderSummary() {
 }
 
 
-const OrderSummaryCard = () => {
+const OrderSummaryCard = ({ item }: any) => {
   return (
     <div className="my-4 bg-white ">
 
       <div className='flex items-center justify-between w-full gap-4 '>
-        <p className="text-base font-semibold">Item Name</p>
-        <p className="text-gray-700">₦4,300</p>
+        <p className="text-base font-semibold text-gray-700">{item.name}</p>
+        <p className="text-gray-900  ">₦{item.totalPrice.toLocaleString()}</p>
       </div>
 
-      <div className='grid items-start justify-center w-full grid-cols-5 gap-4 my-2'>
+      <div className='flex  w-full gap-4 my-2'>
+        {item.selectedOptions.length > 0 && <div className='flex flex-wrap items-center w-full gap-2 text-xs'>
+          {
+            item.selectedOptions.map((option: any, index: number) => (
+              <span key={index} className='px-2 py-1 text-gray-600 bg-gray-100 rounded-lg text-[12px]'>{option.quantity}{" "}{option.name}</span>
+            ))
+          }
+        </div>}
 
-        <div className='flex flex-wrap items-center w-full col-span-3 gap-2 text-xs'>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <span key={index} className='px-2 py-1 text-blue-700 bg-blue-200 rounded-lg text-[12px]'>{index} Plantain</span>
-          ))}
-        </div>
+      </div>
+      <div className='flex items-center gap-2 justify-between'>
 
-        <div className='flex items-center justify-center w-full col-span-2 gap-2 px-3 py-2 border border-gray-100 rounded-2xl'>
-          <MinusIcon className='w-5 ' />
+        <div className='flex items-center justify-center w-fit gap-2 px-2 py-1 border border-gray-100 rounded-2xl my-2'>
+          <MinusIcon className='w-4 ' />
           <input className='w-12 text-center bg-gray-100 rounded-lg focus:border-none' value={1} />
-          <PlusIcon className='w-5 ' />
+          <PlusIcon className='w-4 ' />
         </div>
-
         <div className='flex items-center gap-2 '>
           <span className='text-sm font-semibold text-blue-500'>Edit</span>
           <span className='text-sm font-semibold text-red-500'>Remove</span>
         </div>
-
       </div>
 
     </div>
