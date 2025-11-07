@@ -108,7 +108,7 @@ const VerifiedPayment: React.FC = () => {
   return (
     <div className="h-screen transition-all duration-500 ease-in-out bg-[#EFEFEF] py-[40px]">
       <div className="max-w-[536px] min-h-[541px] mx-auto w-full py-[50px]">
-        <div className="flex flex-col items-center justify-center space-y-[40px] font-GeneralSans text-center">
+        <div className="flex flex-col items-center justify-center space-y-[40px] font-Inter text-center">
           {renderLogo()}
 
           {loading && <p>Verifying your payment...</p>}

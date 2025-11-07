@@ -10,14 +10,21 @@ import { useEffect, useState } from "react";
 import { TiWaves } from "react-icons/ti"
 import { RxShare2 } from "react-icons/rx";
 import { IoSearchOutline } from "react-icons/io5";
-import { FiPlus } from "react-icons/fi";
+import { FiMinus, FiPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { setBranchID, setBusinessDetails, setBusinessIdentifier, setGroupName, setURL } from "../../../slices/businessSlice";
 import { SERVER_DOMAIN } from "../../Api";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../../store/store";
 import { GoDotFill } from "react-icons/go";
+import {
+  addItemToBasket,
+  removeItemFromBasket,
+  // removeItemFromBasket,
+  // updateItemInBasket,
+  // updateItemQuantity,
+} from "../../../slices/BasketSlice";
 
 
 interface MenuItem {
@@ -35,6 +42,34 @@ interface MenuItem {
   createdAt: string;
   updatedAt: string;
   __v: number;
+}
+
+interface Modifier {
+  modifier_name: string;
+  modifier_price: number;
+  value: string;
+}
+
+interface Option {
+  modifier_name: string;
+  modifier_price: number;
+  value: string;
+  price: number;
+  name: string;
+  label?: string;
+  modifiers?: Modifier[];
+  modifier_group_name?: string;
+}
+
+export interface BasketItem {
+  id: string;
+  quantity: number;
+  menuItem: MenuItem;
+  selectedOptions: Option[];
+  totalPrice: number;
+  name: string;
+  tableNumber: string;
+  complimentary?: string[];
 }
 
 // interface GroupedByCategory {
@@ -108,11 +143,7 @@ export default function ItemsList() {
     localStorage.setItem("mark", window.location.href)
   }, [])
 
-
-
-
   const [menuItems, setMenuItems] = useState<Array<any>>([]);
-
 
   useEffect(() => {
 
@@ -159,6 +190,8 @@ export default function ItemsList() {
     acc[item.menu_category_name].push(item);
     return acc;
   }, {});
+
+  const basketItems = useSelector((state: RootState) => state.basket.items);
 
 
   if (loading) {
@@ -217,40 +250,68 @@ export default function ItemsList() {
           <div className="mt-4 ">
 
             {items.map((item, index) => (
-              <ItemCard key={index} item={item} />
+              <ItemCard
+                key={index}
+                item={item}
+                business_identifier={business_identifier} />
             ))}
           </div>
         </div>
       ))}
 
 
-      <div className="fixed bottom-0 left-0 right-0  w-full py-2 bg-white">
+      {basketItems.length > 0 && <Link to="/demo/order-summary" className="fixed bottom-0 left-0 right-0  w-full py-2 bg-white z-50">
         <button className=" w-[90%] px-4 py-3 mx-auto  text-white bg-black rounded-full flex items-center justify-between">
-          <span className="flex items-center">Cart <span><GoDotFill className="w-2 mx-2" /></span> 1 item </span>
-          <span>₦4,300</span>
+
+          <span className="flex items-center">Cart <span><GoDotFill className="w-2 mx-2" /></span>{basketItems.length} {basketItems.length === 1 ? "item" : "items"} </span>
+          <span>₦{basketItems.reduce((total, item) => total + item.totalPrice, 0).toLocaleString()}</span>
+
         </button>
-      </div>
+      </Link>}
     </div>
-    // </div>
   )
 }
 
 
 
 
-const ItemCard = ({ item }: { item: any }) => {
+const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_identifier: string | null }) => {
 
-  const formatPrice = (price: number) => {
-    return `₦${price.toLocaleString()}`;
+  const dispatch = useDispatch();
+  const basketItems = useSelector((state: RootState) => state.basket.items);
+
+  const handleAddToBasket = (menuItem: MenuItem) => {
+
+    const isInCart = basketItems.find((item) => item.id === menuItem._id);
+
+    if (!isInCart) {
+      const basketItem = {
+        id: menuItem._id,
+        quantity: 1,
+        selectedOptions: [],
+        itemPrice: menuItem.menu_item_price,
+        totalPrice: menuItem.menu_item_price,
+        name: menuItem.menu_item_name,
+        tableNumber: "",
+      };
+      dispatch(addItemToBasket(basketItem));
+    }
   };
 
+  const handleRemoveFromBasket = (menuItem: MenuItem,) => {
+    dispatch(removeItemFromBasket({ id: menuItem._id }));
+  }
+
   return (
-    <div className="grid w-full grid-cols-3 gap-2 px-4 py-3  border-b border-b-gray-200 min-h-32">
+    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3  border-b border-b-gray-200 min-h-32">
+      <Link to={`/item-details?id=${item._id}&bid=${business_identifier}`}
+        className="absolute w-full h-full z-10" />
 
       <div className="col-span-2" >
         <h4 className="text-base font-semibold text-gray-900">{item?.menu_item_name}</h4>
         <p className="my-2 text-sm text-gray-700">{item?.description}</p>
-        <p className="text-sm font-semibold text-gray-900">{formatPrice(Number(item?.menu_item_price))}</p>
+        <p className="text-sm font-semibold text-gray-900">{Number(item?.menu_item_price).toLocaleString()}</p>
+        {/* <p className="text-sm font-semibold text-gray-900">{formatPrice(Number(item?.menu_item_price))}</p> */}
       </div>
 
       <div className="relative w-full col-span-1">
@@ -260,7 +321,16 @@ const ItemCard = ({ item }: { item: any }) => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-          <FiPlus className="absolute bg-gray-200 rounded-full bottom-2 right-2" />
+          <div className="absolute bottom-2 right-2 z-50">
+
+            {!basketItems.find((b) => b.id === item._id) ? <FiPlus
+              className="bg-gray-200 rounded-full  "
+              onClick={() => handleAddToBasket(item)}
+            /> : <FiMinus
+              className="bg-gray-200 rounded-full "
+              onClick={() => handleRemoveFromBasket(item)}
+            />}
+          </div>
         </div>
       </div>
     </div >
