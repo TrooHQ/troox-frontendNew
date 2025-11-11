@@ -85,7 +85,8 @@ const QRRoutesLayout = () => {
           {/* Unifying routes */}
           {/* <Route path="/:id?" element={<StartOrder />} /> */}
           <Route path="/:id?" element={<ItemsList />} />
-          <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} />
+          <Route path="demo/in_room_dining/" element={<ItemsList />} />
+          {/* <Route path="demo/in_room_dining/" element={<InRoomStartOrder />} /> */}
 
           {/*  */}
           {/* <Route
