@@ -91,6 +91,10 @@ export default function ItemsList() {
     location.hash;
   sessionStorage.setItem("url", fullUrl);
 
+  useEffect(() => {
+    localStorage.setItem("home_url", window.location.href);
+  }, [])
+
   const business_identifier = queryParams.get("business_identifier");
   const branch = queryParams.get("branch");
   // const type = queryParams.get("type");
@@ -217,8 +221,8 @@ export default function ItemsList() {
           <IoSearchOutline className="p-1 text-2xl bg-gray-200 rounded-full bottom-2 right-2" />
         </div>
         {/*  */}
-        <div className="absolute z-10 rounded-full shadow-md p-1 bg-white -bottom-7 left-4 size-16 flex items-center justify-center overflow-hidden ">
-          <TiWaves className="w-full h-full rounded-full text-orange-400 bg-orange-200 " />
+        <div className="absolute z-10 flex items-center justify-center p-1 overflow-hidden bg-white rounded-full shadow-md -bottom-7 left-4 size-16 ">
+          <TiWaves className="w-full h-full text-orange-400 bg-orange-200 rounded-full " />
         </div>
       </div>
 
@@ -260,7 +264,7 @@ export default function ItemsList() {
       ))}
 
 
-      {basketItems.length > 0 && <Link to="/demo/order-summary" className="fixed bottom-0 left-0 right-0  w-full py-2 bg-white z-50">
+      {basketItems.length > 0 && <Link to="/demo/order-summary" className="fixed bottom-0 left-0 right-0 z-50 w-full py-2 bg-white">
         <button className=" w-[90%] px-4 py-3 mx-auto  text-white bg-black rounded-full flex items-center justify-between">
 
           <span className="flex items-center">Cart <span><GoDotFill className="w-2 mx-2" /></span>{basketItems.length} {basketItems.length === 1 ? "item" : "items"} </span>
@@ -303,9 +307,9 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
   }
 
   return (
-    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3  border-b border-b-gray-200 min-h-32">
+    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3 border-b border-b-gray-200 min-h-32">
       <Link to={`/item-details?id=${item._id}&bid=${business_identifier}`}
-        className="absolute w-full h-full z-10" />
+        className="absolute z-10 w-full h-full" />
 
       <div className="col-span-2" >
         <h4 className="text-base font-semibold text-gray-900">{item?.menu_item_name}</h4>
@@ -315,16 +319,16 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
       </div>
 
       <div className="relative w-full col-span-1">
-        <div className="w-full h-28 overflow-hidden rounded-lg relative" style={{
+        <div className="relative w-full overflow-hidden rounded-lg h-28" style={{
           background: `url(${item?.menu_item_image ?? '/bg-banner.png'})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-          <div className="absolute bottom-2 right-2 z-50">
+          <div className="absolute z-50 bottom-2 right-2">
 
             {!basketItems.find((b) => b.id === item._id) ? <FiPlus
-              className="bg-gray-200 rounded-full  "
+              className="bg-gray-200 rounded-full "
               onClick={() => handleAddToBasket(item)}
             /> : <FiMinus
               className="bg-gray-200 rounded-full "
