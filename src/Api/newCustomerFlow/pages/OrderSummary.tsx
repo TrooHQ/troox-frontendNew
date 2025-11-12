@@ -13,6 +13,7 @@ import axios from "axios";
 import { PAYMENT_DOMAIN, SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import Loader from "../../../components/Loader";
+import CloseLineIcon from 'remixicon-react/CloseLineIcon';
 
 export default function OrderSummary() {
   const basketItems = useSelector((state: RootState) => state.basket.items);
@@ -25,7 +26,12 @@ export default function OrderSummary() {
   const dispatch = useDispatch();
 
   const [home, setHome] = useState("");
-  const [orderType, setOrderType] = useState<'dining' | 'pickup'>('dining');
+  const [orderType, setOrderType] = useState<'dine in' | 'pickup' | null>(null);
+  const [showCheckOut, setShowCheckOut] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerTable, setCustomerTable] = useState("");
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -65,13 +71,13 @@ export default function OrderSummary() {
     totalPrice: item.totalPrice,
     menuItem: item.menuItem
       ? {
-          _id: item.menuItem._id,
-          menu_category_name: item.menuItem.menu_category_name,
-          menu_group_name: item.menuItem.menu_group_name,
-          menu_item_name: item.menuItem.menu_item_name,
-          menu_item_price: item.menuItem.menu_item_price,
-          menu_item_image: item.menuItem.menu_item_image,
-        }
+        _id: item.menuItem._id,
+        menu_category_name: item.menuItem.menu_category_name,
+        menu_group_name: item.menuItem.menu_group_name,
+        menu_item_name: item.menuItem.menu_item_name,
+        menu_item_price: item.menuItem.menu_item_price,
+        menu_item_image: item.menuItem.menu_item_image,
+      }
       : undefined,
     name: item.name,
     selectedOptions: item.selectedOptions.map((option) => ({
@@ -191,15 +197,17 @@ export default function OrderSummary() {
     IntiatePayment();
   };
 
+
+
   return (
     <div className="relative w-full min-h-screen mb-24">
       {loading && <Loader />}
-      <p className='flex items-center gap-3 px-4 py-3 cursor-pointer border-y border-y-gray-300' onClick={() => navigate(-1)}>
-        <FaArrowLeftLong className='text-gray-600' />
-        Back
-      </p>
 
-      <h4 className='px-4 py-3 font-semibold border-b border-b-gray-300'>Order Summary</h4>
+      <div className='flex items-center w-full gap-4 px-4 py-3 border-b-2 border-b-gray-100'>
+        <FaArrowLeftLong className='text-gray-600' onClick={() => navigate(-1)} />
+
+        <h4 className='flex-1 font-semibold text-center'>Order Summary</h4>
+      </div>
 
       <div className='px-4'>
         {basketItems.map((item, index) => (
@@ -207,24 +215,24 @@ export default function OrderSummary() {
         ))}
       </div>
 
-      <Link to={home} className='flex items-center gap-2 px-4 py-3 border-y border-y-gray-300'>
+      <Link to={home} className='flex items-center gap-2 px-4 py-3 border-y-2 border-y-gray-100'>
         <FaCirclePlus className='fill-blue-600' />
         <p className='text-sm font-semibold text-blue-600'>Add more items</p>
       </Link>
 
-      <div className='px-4 py-3 border-b border-b-gray-300'>
+      <div className='px-4 py-3 border-b-2 border-b-gray-100'>
         <div
           className='flex items-center justify-between gap-2 py-3 cursor-pointer'
-          onClick={() => setOrderType('dining')}
+          onClick={() => { setOrderType('dine in'); setShowCheckOut(false) }}
         >
           <div className='flex items-center gap-2'>
             <img src="/utensils.svg" alt="" className='w-5 h-5' />
-            <p>Dining</p>
+            <p>Dine In</p>
           </div>
           <input
             type='radio'
-            checked={orderType === 'dining'}
-            onChange={() => setOrderType('dining')}
+            checked={orderType === 'dine in'}
+            onChange={() => { setOrderType('dine in'); setShowCheckOut(false) }}
             className='cursor-pointer'
           />
         </div>
@@ -246,17 +254,17 @@ export default function OrderSummary() {
         </div>
       </div>
 
-      <div className="px-4 py-4 border-b border-b-gray-200">
-        <label className="block mb-2 text-sm font-medium text-gray-900">Leave a note</label>
+      <div className="px-4 py-4 border-b-2 border-b-gray-100">
+        <label className="block mb-2 font-medium text-gray-900">Leave a note</label>
         <input
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="tell the restaurant your preference"
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
       </div>
 
-      <div className='px-4 py-3 border-b border-b-gray-300'>
+      <div className='px-4 py-3 border-b-2 border-b-gray-100'>
         <div className='flex items-center justify-between py-2'>
           <p className='text-sm font-medium'>SubTotal</p>
           <p className='font-semibold'>₦{subtotal.toLocaleString()}</p>
@@ -267,24 +275,47 @@ export default function OrderSummary() {
         </div>
       </div>
 
-      <div className='flex items-center justify-between px-4 py-3 border-y border-y-gray-300'>
+      <div className='flex items-center justify-between px-4 py-3 border-b-2 border-b-gray-100'>
         <p className='text-sm font-medium'>Total</p>
         <p className='font-semibold'>₦{total.toLocaleString()}</p>
       </div>
 
-      <div className='fixed bottom-0 left-0 right-0 flex items-center justify-between w-full py-2 bg-white shadow-lg'>
+
+      {(orderType !== null && !showCheckOut) && <div className='fixed top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-end w-full h-full shadow-lg bg-gray-600/50'>
+        <UserInfoCard
+          orderType={orderType}
+          setOrderType={() => setOrderType(null)}
+          customerName={customerName}
+          setCustomerName={setCustomerName}
+          customerPhone={customerPhone}
+          setCustomerPhone={setCustomerPhone}
+          customerEmail={customerEmail}
+          setCustomerEmail={setCustomerEmail}
+          customerTable={customerTable}
+          setCustomerTable={setCustomerTable}
+          setShowCheckOut={setShowCheckOut}
+
+        />
+      </div>}
+
+
+      {(orderType === "dine in" && customerPhone.trim().length > 0) || (orderType === "pickup" && customerPhone.trim().length > 0) && <div className='fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between w-full py-2 bg-white shadow-lg'>
         <button
           className="text-center w-[90%] px-4 py-3 mx-auto text-white bg-black rounded-full hover:bg-gray-800 transition-colors"
           onClick={handlePlaceOrder}
         >
           Place Order
         </button>
-      </div>
+      </div>}
+
     </div>
   )
 }
 
-const OrderSummaryCard = ({ item, businessIdentifier }: any) => {
+const OrderSummaryCard = ({
+  item,
+  businessIdentifier,
+}: any) => {
 
   const navigate = useNavigate();
 
@@ -334,8 +365,8 @@ const OrderSummaryCard = ({ item, businessIdentifier }: any) => {
   return (
     <div className="my-4 bg-white">
       <div className='flex items-center justify-between w-full gap-4'>
-        <p className="text-base font-semibold text-gray-700">{item.name}</p>
-        <p className="text-gray-900">₦{(item.totalPrice * quantity).toLocaleString()}</p>
+        <p className="text-base font-medium text-gray-700">{item.name}</p>
+        <p className="font-semibold text-gray-900">₦{(item.totalPrice * quantity).toLocaleString()}</p>
       </div>
 
       <div className='flex w-full gap-4 my-2'>
@@ -351,25 +382,25 @@ const OrderSummaryCard = ({ item, businessIdentifier }: any) => {
       </div>
 
       <div className='flex items-center justify-between gap-2'>
-        <div className='flex items-center justify-center gap-2 px-2 py-1 my-2 border border-gray-100 w-fit rounded-2xl'>
+        <div className='flex items-center justify-center gap-2 px-2 py-1 my-2 border-2 border-gray-100 w-fit rounded-2xl'>
           <Minus
-            className='w-4 transition-colors cursor-pointer hover:text-red-500'
+            className='w-5 transition-colors cursor-pointer hover:text-red-500'
             onClick={handleDecrement}
           />
           <input
-            className='w-12 text-center bg-gray-100 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
+            className='w-12 text-center rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
             value={quantity}
             onChange={handleQuantityChange}
             type="number"
             min="1"
           />
           <Plus
-            className='w-4 transition-colors cursor-pointer hover:text-green-500'
+            className='w-5 transition-colors cursor-pointer hover:text-green-500'
             onClick={handleIncrement}
           />
         </div>
 
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-4'>
           <span
             className='text-sm font-semibold text-blue-500 cursor-pointer hover:text-blue-700'
             onClick={handleEdit}
@@ -384,6 +415,93 @@ const OrderSummaryCard = ({ item, businessIdentifier }: any) => {
           </span>
         </div>
       </div>
+    </div>
+  )
+}
+
+
+const UserInfoCard = ({ orderType, setOrderType,
+  customerName,
+  setCustomerName,
+  customerPhone,
+  setCustomerPhone,
+  customerEmail,
+  setCustomerEmail,
+  customerTable,
+  setCustomerTable,
+  setShowCheckOut
+}: any) => {
+  // Dine In
+  // Your order will be brought to your table when ready
+  // phone number
+
+  // Pick Up Details
+  // name
+  // email
+  // Phone number
+
+  const [errorState, setErrorState] = useState<string | null>(null)
+
+  const handleSaveUserInfo = () => {
+    // Save user info to localStorage
+    if (orderType === "dine in" && customerTable) {
+      setShowCheckOut(true)
+    } else if (orderType === "pick up" && customerName && customerPhone && customerEmail) {
+      setShowCheckOut(true)
+    } else {
+      setErrorState("Please fill in the above fields")
+    }
+  };
+
+
+  return (
+    <div className='w-full p-4 bg-white rounded-t-2xl'>
+      <div className="w-full mb-2">
+        <div className="flex items-center justify-between w-full">
+          <h4 className="font-semibold">{orderType} details</h4>
+          <CloseLineIcon onClick={setOrderType} />
+        </div>
+        <p className='mt-2 text-sm'>{orderType === "dine in" && "Your order will be brought to your table when ready"}</p>
+      </div>
+
+      {orderType === "pickup" && <div className="flex flex-col justify-center w-full space-y-4 item-center">
+        <input
+          placeholder='Full name'
+          className='w-full p-2 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+        />
+        <input
+          placeholder='Email'
+          className='w-full p-2 my-4 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          value={customerEmail}
+          onChange={(e) => setCustomerEmail(e.target.value)}
+
+        />
+        <div className="flex items-center overflow-hidden border border-gray-100 rounded-xl">
+          <span className='p-2 font-semibold bg-gray-100'>+234</span>
+          <input
+            placeholder='Phone Number'
+            className='w-full p-2 rounded-xl active:outline-none focus:outline-none'
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            type='number'
+          />
+        </div>
+      </div>}
+
+
+      {orderType === "dine in" && <div className="flex flex-col justify-center w-full space-y-4 item-center">
+        <input
+          placeholder='Table number'
+          className='w-full p-2 my-4 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          value={customerTable}
+          onChange={(e) => setCustomerTable(e.target.value)}
+          type='number'
+        />
+      </div>}
+      <p className='text-xs text-red-500 '>{errorState}</p>
+      <button className='px-4 py-2 mx-auto my-4 text-white bg-black rounded-lg w-fit' onClick={handleSaveUserInfo}>Done</button>
     </div>
   )
 }
