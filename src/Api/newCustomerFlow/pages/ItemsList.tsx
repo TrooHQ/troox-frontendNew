@@ -197,6 +197,7 @@ export default function ItemsList() {
 
   const basketItems = useSelector((state: RootState) => state.basket.items);
 
+  console.log("active", activeTab)
 
   if (loading) {
     return (
@@ -216,9 +217,9 @@ export default function ItemsList() {
           className='object-cover object-center w-full h-64 mb-10'
         />
 
-        <div className="absolute flex items-center gap-2 top-2 right-2">
-          <RxShare2 className="p-1 text-2xl bg-gray-200 rounded-full bottom-2 right-2" />
-          <IoSearchOutline className="p-1 text-2xl bg-gray-200 rounded-full bottom-2 right-2" />
+        <div className="absolute flex items-center gap-4 top-4 right-4">
+          <RxShare2 className="p-1 text-3xl bg-gray-200 rounded-full bottom-2 right-2" />
+          <IoSearchOutline className="p-1 text-3xl bg-gray-200 rounded-full bottom-2 right-2" />
         </div>
         {/*  */}
         <div className="absolute z-10 flex items-center justify-center p-1 overflow-hidden bg-white rounded-full shadow-md -bottom-7 left-4 size-16 ">
@@ -238,11 +239,11 @@ export default function ItemsList() {
       </div>
 
 
-      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto whitespace-nowrap">
+      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto border-b-2 whitespace-nowrap border-b-gray-100">
         {categories.map((category, index) => <span
           key={index}
           onClick={() => setActiveTab(category)}
-          className={`px-2 py-3 border-b-2 text-xs text-gray-600 hover:text-blue-600 border-b-transparent hover:border-b-blue-600 ${activeTab === category ? "border-b-blue-600" : ""}`}>{category}</span>)}
+          className={`cursor-pointer px-2 py-3 border-b-2 text-xs text-gray-600  border-b-transparent  ${activeTab === category ? "border-b-blue-600 font-semibold text-blue-600" : ""}`}>{category}</span>)}
       </div>
 
       {(Object.entries(groupedByCategory) as [string, MenuItem[]][]).map(([category, items]) => (
@@ -307,14 +308,14 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
   }
 
   return (
-    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3 border-b border-b-gray-200 min-h-32">
+    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3 border-b-2 border-b-gray-100 min-h-32">
       <Link to={`/item-details?id=${item._id}&bid=${business_identifier}`}
         className="absolute z-10 w-full h-full" />
 
       <div className="col-span-2" >
         <h4 className="text-base font-semibold text-gray-900">{item?.menu_item_name}</h4>
         <p className="my-2 text-sm text-gray-700">{item?.description}</p>
-        <p className="text-sm font-semibold text-gray-900">{Number(item?.menu_item_price).toLocaleString()}</p>
+        <p className="text-sm font-semibold text-gray-900">₦{Number(item?.menu_item_price).toLocaleString()}</p>
         {/* <p className="text-sm font-semibold text-gray-900">{formatPrice(Number(item?.menu_item_price))}</p> */}
       </div>
 
@@ -328,10 +329,10 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
           <div className="absolute z-50 bottom-2 right-2">
 
             {!basketItems.find((b) => b.id === item._id) ? <FiPlus
-              className="bg-gray-200 rounded-full "
+              className="text-xl bg-gray-200 rounded-full"
               onClick={() => handleAddToBasket(item)}
             /> : <FiMinus
-              className="bg-gray-200 rounded-full "
+              className="text-xl bg-gray-200 rounded-full"
               onClick={() => handleRemoveFromBasket(item)}
             />}
           </div>

@@ -62,7 +62,9 @@ import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary";
 const QRRoutesLayout = () => {
   return (
     <div className="overflow-hidden font-Inter">
-      <ToastContainer />
+      <ToastContainer hideProgressBar={true}
+        autoClose={3000}
+      />
       <Router>
         <ScrollToTop />
         <Routes>

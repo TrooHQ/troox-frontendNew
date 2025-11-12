@@ -193,10 +193,10 @@ export default function ItemDetails() {
 
     if (isInCart) {
       dispatch(updateItemInBasket(basketItem));
-      toast.success("Cart updated successfully");
+      toast.info("Cart updated successfully");
     } else {
       dispatch(addItemToBasket(basketItem));
-      toast.success("Item added to cart");
+      toast.info("Item added to cart");
     }
 
     navigate(-1);
@@ -251,12 +251,12 @@ export default function ItemDetails() {
         <div className="px-4 py-4 border-b border-b-gray-200">
           <h3 className="mb-1 font-semibold text-gray-900">Select Complimentary</h3>
           <p className="flex items-center text-sm">
-            Required <GoDotFill className="w-2 mx-2" /> Select 1
+            Required <GoDotFill className="w-2 mx-2" /> Select One
           </p>
 
-          <div className="flex flex-col mx-2 my-2 gap-y-4">
+          <div className="flex flex-col my-2 ">
             {complimentaryList?.map((opt) => (
-              <label key={opt.modifier_name} className="space-x-2 cursor-pointer">
+              <label key={opt.modifier_name} className="flex items-center space-x-2 cursor-pointer ">
                 <input
                   type="radio"
                   name="complimentary"
@@ -326,24 +326,6 @@ export default function ItemDetails() {
           </div>
         </div>
       )}
-
-      {/* Item Quantity Control */}
-      {/* <div className="px-4 py-4">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold text-gray-900">Quantity</span>
-          <div className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-full">
-            <MinusIcon
-              className="w-5 cursor-pointer"
-              onClick={handleItemDecrease}
-            />
-            <span className="w-8 text-center">{itemQuantity}</span>
-            <PlusIcon
-              className="w-5 cursor-pointer"
-              onClick={handleItemIncrease}
-            />
-          </div>
-        </div>
-      </div> */}
 
       {/* Add to Cart Button */}
       <div className="fixed bottom-0 left-0 right-0 w-full py-2 bg-white shadow-lg">

@@ -58,7 +58,8 @@ import AccountVerified from "./Mobile/Components/AccountVerified";
 const MobileLayout = () => {
   return (
     <div className="overflow-hidden font-Inter">
-      <ToastContainer />
+      <ToastContainer hideProgressBar={true}
+        autoClose={3000} />
       <Router>
         <ScrollToTop />
         <Routes>
