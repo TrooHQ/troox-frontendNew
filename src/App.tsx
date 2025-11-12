@@ -61,7 +61,10 @@ export default function App() {
   return (
     <div className=" font-Inter">
       <Router>
-        <ToastContainer />
+        <ToastContainer
+          autoClose={3000}
+          hideProgressBar={true}
+        />
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LoginPage />} />
