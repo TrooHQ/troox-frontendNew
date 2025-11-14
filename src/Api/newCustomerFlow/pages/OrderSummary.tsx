@@ -9,6 +9,7 @@ import {
   updateItemInBasket
 } from "../../../slices/BasketSlice";
 import { clearBasket } from "../../../slices/BasketSlice";
+// removed persistent customer info actions per updated flow
 import axios from "axios";
 import { PAYMENT_DOMAIN, SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
@@ -49,7 +50,7 @@ export default function OrderSummary() {
 
   useEffect(() => {
     if (!reference) {
-      localStorage.removeItem("order_jjv5q");
+      sessionStorage.removeItem("order_jjv5q");
       return;
     }
 
@@ -92,17 +93,20 @@ export default function OrderSummary() {
     channel: "in-room-dining",
     branch_id: branchId,
     businessIdentifier: business?.businessIdentifier,
-    customerName: basketDetails?.customerName,
-    customerPhone: basketDetails?.customerPhone,
-    customerTableNumber: basketDetails?.customerTableNumber,
+    customerName: customerName,
+    customerPhone: customerPhone,
+    customerTableNumber: customerTable,
     items: items,
     totalPrice: basketDetails?.totalPrice,
     totalQuantity: basketDetails?.totalQuantity,
-    ordered_by: basketDetails?.customerName || "User",
+    ordered_by: customerName || "User",
     menu_items: items,
     total_price: basketDetails?.totalPrice,
     tip,
   };
+
+  console.log("payload", payload)
+  // Always show user info card after selecting an option; close via Done
 
   const IntiatePayment = async () => {
     setLoading(true);
@@ -114,16 +118,16 @@ export default function OrderSummary() {
         },
       };
 
-      localStorage.setItem("order_jjv5q", JSON.stringify(payload));
+      sessionStorage.setItem("order_jjv5q", JSON.stringify(payload));
 
       const response = await axios.post(
         `${PAYMENT_DOMAIN}/transaction/initiate_paystack_transaction/`,
         {
           business_id: business?.businessDetails?._id,
-          name: basketDetails.customerName || "User",
+          name: (customerName || "User"),
           platform: "Online",
           amount: total + tip,
-          email: "user@example.com",
+          email: (customerEmail || "user@example.com"),
           callback_url: window.location.href,
           menu_items: items,
         },
@@ -144,13 +148,19 @@ export default function OrderSummary() {
   const handlePayment = async () => {
     try {
       setLoading(true);
+
+      const order = localStorage.getItem("order_jjv5q");
+
+      const orderObj = JSON.parse(order || "{}");
+
       const response = await axios.post(
         `${SERVER_DOMAIN}/order/uploadBranchUserOrder`,
-        { ...payload, transactionRef: reference }
+        { ...orderObj, transactionRef: reference }
       );
       setLoading(false);
       sessionStorage.setItem("OrderDetails", JSON.stringify(response.data.data));
       dispatch(clearBasket());
+      sessionStorage.removeItem("order_jjv5q");
       navigate("/demo/receipt/in_room_dining");
       toast.success(response.data.message);
     } catch (error) {
@@ -181,13 +191,14 @@ export default function OrderSummary() {
         handlePayment();
         toast.success("Payment Successful!");
         sessionStorage.removeItem("reference");
+        sessionStorage.removeItem("order_jjv5q");
       } else {
         toast.error("Payment could not be verified.");
       }
     } catch (error) {
       console.error("Error confirming payment:", error);
       toast.error("An error occurred. Please try again.");
-      navigate(`/demo/payment-type/online_ordering/`);
+      // navigate(`/demo/payment-type/online_ordering/`);
     } finally {
       setLoading(false);
     }
@@ -197,6 +208,10 @@ export default function OrderSummary() {
     IntiatePayment();
   };
 
+  // Derived checkout visibility
+  const canCheckout =
+    (orderType === 'dine in' && customerTable.trim().length > 0) ||
+    (orderType === 'pickup' && customerName.trim().length > 0 && customerPhone.trim().length > 0 && customerEmail.trim().length > 0);
 
 
   return (
@@ -239,7 +254,7 @@ export default function OrderSummary() {
 
         <div
           className='flex items-center justify-between gap-2 py-3 cursor-pointer'
-          onClick={() => setOrderType('pickup')}
+          onClick={() => { setOrderType('pickup'); setShowCheckOut(false); }}
         >
           <div className='flex items-center gap-2'>
             <img src="/takeout.svg" alt="" className='w-5 h-5' />
@@ -248,7 +263,7 @@ export default function OrderSummary() {
           <input
             type='radio'
             checked={orderType === 'pickup'}
-            onChange={() => setOrderType('pickup')}
+            onChange={() => { setOrderType('pickup'); setShowCheckOut(false); }}
             className='cursor-pointer'
           />
         </div>
@@ -299,7 +314,7 @@ export default function OrderSummary() {
       </div>}
 
 
-      {(orderType === "dine in" && customerPhone.trim().length > 0) || (orderType === "pickup" && customerPhone.trim().length > 0) && <div className='fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between w-full py-2 bg-white shadow-lg'>
+      {(showCheckOut && canCheckout) && <div className='fixed bottom-0 left-0 right-0 z-10 flex items-center justify-between w-full py-2 bg-white shadow-lg'>
         <button
           className="text-center w-[90%] px-4 py-3 mx-auto text-white bg-black rounded-full hover:bg-gray-800 transition-colors"
           onClick={handlePlaceOrder}
@@ -443,13 +458,30 @@ const UserInfoCard = ({ orderType, setOrderType,
   const [errorState, setErrorState] = useState<string | null>(null)
 
   const handleSaveUserInfo = () => {
-    // Save user info to localStorage
-    if (orderType === "dine in" && customerTable) {
-      setShowCheckOut(true)
-    } else if (orderType === "pick up" && customerName && customerPhone && customerEmail) {
-      setShowCheckOut(true)
+    // Validate required fields for the selected order type
+    const isDineInValid = orderType === "dine in" && Boolean(customerTable);
+    const isPickupValid = orderType === "pickup" && Boolean(customerName && customerPhone && customerEmail);
+
+    if (isDineInValid || isPickupValid) {
+      // Persist latest details without prefilling on next visit
+      try {
+        const persisted = {
+          orderType,
+          customerName,
+          customerPhone,
+          customerEmail,
+          customerTableNumber: customerTable,
+          updatedAt: Date.now(),
+        };
+        localStorage.setItem("last_customer_info", JSON.stringify(persisted));
+      } catch (e) {
+        // Ignore storage failures; do not block checkout
+      }
+
+      setShowCheckOut(true);
+      setErrorState(null);
     } else {
-      setErrorState("Please fill in the above fields")
+      setErrorState("Please fill in the above fields");
     }
   };
 
