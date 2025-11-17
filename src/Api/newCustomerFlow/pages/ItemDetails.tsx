@@ -13,6 +13,7 @@ import {
 } from "../../../slices/BasketSlice";
 import { RootState } from "../../../store/store";
 import { SERVER_DOMAIN } from "../../Api";
+import CustomAddToCartToast from "../CustomToast";
 
 interface MenuItem {
   _id: string;
@@ -193,10 +194,25 @@ export default function ItemDetails() {
 
     if (isInCart) {
       dispatch(updateItemInBasket(basketItem));
-      toast.info("Cart updated successfully");
+      toast(<CustomAddToCartToast count={itemQuantity} text="Item updated successfully" />, {
+        position: "top-center",
+        className: "p-0 my-0 bg-transparent shadow-none",
+        style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+        closeButton: false,
+        hideProgressBar: true,
+        icon: false,
+      });
+
     } else {
       dispatch(addItemToBasket(basketItem));
-      toast.info("Item added to cart");
+      toast(<CustomAddToCartToast count={itemQuantity} text="Item added to cart" />, {
+        position: "top-center",
+        className: "p-0 my-0 bg-transparent shadow-none",
+        style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+        closeButton: false,
+        hideProgressBar: true,
+        icon: false,
+      });
     }
 
     navigate(-1);
