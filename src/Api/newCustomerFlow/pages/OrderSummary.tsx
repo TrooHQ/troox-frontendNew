@@ -45,8 +45,8 @@ export default function OrderSummary() {
   }, [])
 
   useEffect(() => {
-    if (basketItems.length < 1) navigate(-1);
-  }, [basketItems.length, navigate])
+    if (basketItems.length < 1) navigate(home);
+  }, [basketItems.length, navigate, home])
 
   useEffect(() => {
     if (!reference) {
@@ -96,6 +96,7 @@ export default function OrderSummary() {
     customerName: customerName,
     customerPhone: customerPhone,
     customerTableNumber: customerTable,
+    note: note,
     items: items,
     totalPrice: basketDetails?.totalPrice,
     totalQuantity: basketDetails?.totalQuantity,
@@ -107,7 +108,6 @@ export default function OrderSummary() {
 
   console.log("payload", payload)
   // Always show user info card after selecting an option; close via Done
-
   const IntiatePayment = async () => {
     setLoading(true);
     try {
@@ -149,7 +149,7 @@ export default function OrderSummary() {
     try {
       setLoading(true);
 
-      const order = localStorage.getItem("order_jjv5q");
+      const order = sessionStorage.getItem("order_jjv5q");
 
       const orderObj = JSON.parse(order || "{}");
 

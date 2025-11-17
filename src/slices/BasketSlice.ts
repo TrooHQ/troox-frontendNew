@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 
 interface SelectedOption {
   value: string;
@@ -112,7 +111,7 @@ const BasketSlice = createSlice({
         (sum, item) => sum + item.quantity,
         0
       );
-      toast.success("Item added to basket");
+      // toast.success("Item added to basket");
     },
 
     removeItemFromBasket(state, action: PayloadAction<{ id: string }>) {
