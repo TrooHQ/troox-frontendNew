@@ -25,6 +25,8 @@ import {
   // updateItemInBasket,
   // updateItemQuantity,
 } from "../../../slices/BasketSlice";
+import { toast } from "react-toastify";
+import CustomAddToCartToast from "../CustomToast";
 
 
 interface MenuItem {
@@ -300,11 +302,27 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
         tableNumber: "",
       };
       dispatch(addItemToBasket(basketItem));
+      toast(<CustomAddToCartToast count={1} text="Item added to cart" />, {
+        position: "top-center",
+        className: "p-0 my-0 bg-transparent shadow-none",
+        style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+        closeButton: false,
+        hideProgressBar: true,
+        icon: false,
+      });
     }
   };
 
   const handleRemoveFromBasket = (menuItem: MenuItem,) => {
     dispatch(removeItemFromBasket({ id: menuItem._id }));
+    toast(<CustomAddToCartToast count={1} text="Item removed from cart" />, {
+      position: "top-center",
+      className: "p-0 my-0 bg-transparent shadow-none",
+      style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+      closeButton: false,
+      hideProgressBar: true,
+      icon: false,
+    });
   }
 
   return (

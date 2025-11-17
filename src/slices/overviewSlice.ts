@@ -503,14 +503,14 @@ export const fetchRevenueByBranch = createAsyncThunk(
     startDate,
     endDate,
     number_of_days,
-    branch_id,
+    // branch_id,
     product_type,
   }: {
     date_filter: string;
     startDate?: string;
     endDate?: string;
     number_of_days?: number;
-    branch_id?: string;
+    // branch_id?: string;
     product_type?: string;
   }) => {
     try {
@@ -523,9 +523,9 @@ export const fetchRevenueByBranch = createAsyncThunk(
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
       }
-      if (branch_id) {
-        params.branch_id = branch_id;
-      }
+      // if (branch_id) {
+      //   params.branch_id = branch_id;
+      // }
       if (product_type) {
         params.channels = product_type;
       }
