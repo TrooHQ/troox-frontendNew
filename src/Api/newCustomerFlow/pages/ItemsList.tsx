@@ -200,6 +200,7 @@ export default function ItemsList() {
   const basketItems = useSelector((state: RootState) => state.basket.items);
 
   console.log("active", activeTab)
+  console.log("category", categories)
 
   if (loading) {
     return (
@@ -241,11 +242,11 @@ export default function ItemsList() {
       </div>
 
 
-      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto border-b-2 whitespace-nowrap border-b-gray-100">
-        {categories.map((category, index) => <span
+      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto whitespace-nowrap">
+        {categories.map((category, index) => <p
           key={index}
           onClick={() => setActiveTab(category)}
-          className={`cursor-pointer px-2 py-3 border-b-2 text-xs text-gray-600  border-b-transparent  ${activeTab === category ? "border-b-blue-600 font-semibold text-blue-600" : ""}`}>{category}</span>)}
+          className={`cursor-pointer px-2 py-3 border-b-2 text-xs  ${activeTab === category ? "border-b-blue-600 font-semibold text-blue-600" : "text-gray-600  border-b-transparent"}`}>{category}</p>)}
       </div>
 
       {(Object.entries(groupedByCategory) as [string, MenuItem[]][]).map(([category, items]) => (

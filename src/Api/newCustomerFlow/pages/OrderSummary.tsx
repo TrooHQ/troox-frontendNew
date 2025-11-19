@@ -39,6 +39,7 @@ export default function OrderSummary() {
   const searchParams = new URLSearchParams(window.location.search);
   const reference = searchParams.get("reference") ?? null;
 
+  console.log(window.location.origin)
   useEffect(() => {
     const home_url = localStorage.getItem("home_url");
     if (home_url) setHome(home_url);
@@ -128,7 +129,8 @@ export default function OrderSummary() {
           platform: "Online",
           amount: total + tip,
           email: (customerEmail || "user@example.com"),
-          callback_url: window.location.href,
+          callback_url: window.location.origin + "/demo/order-status",
+          // callback_url: (window.location.href.includes("trxref") || window.location.href.includes("reference")) ? window.location.href.split("?")[0] : window.location.href,
           menu_items: items,
         },
         headers
@@ -161,7 +163,7 @@ export default function OrderSummary() {
       sessionStorage.setItem("OrderDetails", JSON.stringify(response.data.data));
       dispatch(clearBasket());
       sessionStorage.removeItem("order_jjv5q");
-      navigate("/demo/receipt/in_room_dining");
+      navigate("/demo/order-status");
       toast.success(response.data.message);
     } catch (error) {
       console.error("Error occurred:", error);
@@ -197,7 +199,8 @@ export default function OrderSummary() {
       }
     } catch (error) {
       console.error("Error confirming payment:", error);
-      toast.error("An error occurred. Please try again.");
+      toast.error((error as any).response?.data?.message || "An error occurred. Please try again.");
+      // toast.error("An error occurred. Please try again.");
       // navigate(`/demo/payment-type/online_ordering/`);
     } finally {
       setLoading(false);
@@ -247,14 +250,14 @@ export default function OrderSummary() {
           <input
             type='radio'
             checked={orderType === 'dine in'}
-            onChange={() => { setOrderType('dine in'); setShowCheckOut(false) }}
+            onChange={() => { setOrderType('dine in'); setShowCheckOut(false); setCustomerTable(''); setCustomerName(''); setCustomerPhone(''); setCustomerEmail(''); }}
             className='cursor-pointer'
           />
         </div>
 
         <div
           className='flex items-center justify-between gap-2 py-3 cursor-pointer'
-          onClick={() => { setOrderType('pickup'); setShowCheckOut(false); }}
+          onClick={() => { setOrderType('pickup'); setShowCheckOut(false); setCustomerName(''); setCustomerPhone(''); setCustomerEmail(''); setCustomerTable(''); }}
         >
           <div className='flex items-center gap-2'>
             <img src="/takeout.svg" alt="" className='w-5 h-5' />

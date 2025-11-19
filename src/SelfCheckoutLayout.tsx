@@ -14,7 +14,11 @@ import SuccessPage from "./SelfCheckout/SuccessPage";
 const SelfCheckoutLayout = () => {
   return (
     <div className=" font-Inter overflow-hidden">
-      <ToastContainer />
+      <ToastContainer
+        autoClose={3000}
+        hideProgressBar={true}
+        stacked={true}
+      />
       <Router>
         <ScrollToTop />
         <Routes>
