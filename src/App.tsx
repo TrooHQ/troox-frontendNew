@@ -64,6 +64,7 @@ export default function App() {
         <ToastContainer
           autoClose={3000}
           hideProgressBar={true}
+          stacked={true}
         />
         <ScrollToTop />
         <Routes>
