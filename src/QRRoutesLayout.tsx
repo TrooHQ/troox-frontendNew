@@ -58,12 +58,14 @@ import AccountVerified from "./Mobile/Components/AccountVerified";
 import ItemsList from "./Api/newCustomerFlow/pages/ItemsList";
 import ItemDetails from "./Api/newCustomerFlow/pages/ItemDetails";
 import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary";
+import OrderStatus from "./Api/newCustomerFlow/pages/OrderStatus";
 
 const QRRoutesLayout = () => {
   return (
     <div className="overflow-hidden font-Inter">
       <ToastContainer hideProgressBar={true}
         autoClose={3000}
+        stacked={true}
       />
       <Router>
         <ScrollToTop />
@@ -108,6 +110,10 @@ const QRRoutesLayout = () => {
           <Route
             path="/demo/order-summary"
             element={<OrderSummary />}
+          />
+          <Route
+            path="/demo/order-status"
+            element={<OrderStatus />}
           />
 
           {/* unifying routes */}

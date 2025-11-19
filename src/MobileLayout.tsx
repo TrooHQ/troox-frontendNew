@@ -59,7 +59,9 @@ const MobileLayout = () => {
   return (
     <div className="overflow-hidden font-Inter">
       <ToastContainer hideProgressBar={true}
-        autoClose={3000} />
+        autoClose={3000}
+        stacked={true}
+      />
       <Router>
         <ScrollToTop />
         <Routes>
