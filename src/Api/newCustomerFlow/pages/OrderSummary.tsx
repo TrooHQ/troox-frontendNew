@@ -1,4 +1,4 @@
-import { Minus, Plus } from 'lucide-react'
+// import { Minus, Plus } from 'lucide-react'
 import { FaArrowLeftLong, FaCirclePlus } from 'react-icons/fa6'
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../../store/store";
@@ -15,6 +15,7 @@ import { PAYMENT_DOMAIN, SERVER_DOMAIN } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import Loader from "../../../components/Loader";
 import CloseLineIcon from 'remixicon-react/CloseLineIcon';
+import ProdCount from './ProdCount';
 
 export default function OrderSummary() {
   const basketItems = useSelector((state: RootState) => state.basket.items);
@@ -275,7 +276,7 @@ export default function OrderSummary() {
       <div className="px-4 py-4 border-b-2 border-b-gray-100">
         <label className="block mb-2 font-medium text-gray-900">Leave a note</label>
         <input
-          className="w-full px-3 py-2 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="tell the restaurant your preference"
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -400,23 +401,13 @@ const OrderSummaryCard = ({
       </div>
 
       <div className='flex items-center justify-between gap-2'>
-        <div className='flex items-center justify-center gap-2 px-2 py-1 my-2 border-2 border-gray-100 w-fit rounded-2xl'>
-          <Minus
-            className='w-5 transition-colors cursor-pointer hover:text-red-500'
-            onClick={handleDecrement}
-          />
-          <input
-            className='w-12 text-center rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500'
-            value={quantity}
-            onChange={handleQuantityChange}
-            type="number"
-            min="1"
-          />
-          <Plus
-            className='w-5 transition-colors cursor-pointer hover:text-green-500'
-            onClick={handleIncrement}
-          />
-        </div>
+
+        <ProdCount
+          handleDecrement={handleDecrement}
+          quantity={quantity}
+          handleQuantityChange={handleQuantityChange}
+          handleIncrement={handleIncrement}
+        />
 
         <div className='flex items-center gap-4'>
           <span
@@ -493,7 +484,7 @@ const UserInfoCard = ({ orderType, setOrderType,
     <div className='w-full p-4 bg-white rounded-t-2xl'>
       <div className="w-full mb-2">
         <div className="flex items-center justify-between w-full">
-          <h4 className="font-semibold">{orderType} details</h4>
+          <h4 className="font-semibold capitalize">{orderType} Details</h4>
           <CloseLineIcon onClick={setOrderType} />
         </div>
         <p className='mt-2 text-sm'>{orderType === "dine in" && "Your order will be brought to your table when ready"}</p>
@@ -502,18 +493,18 @@ const UserInfoCard = ({ orderType, setOrderType,
       {orderType === "pickup" && <div className="flex flex-col justify-center w-full space-y-4 item-center">
         <input
           placeholder='Full name'
-          className='w-full p-2 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          className='w-full p-2 border border-gray-200 active:outline-none focus:outline-none rounded-xl'
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
         />
         <input
           placeholder='Email'
-          className='w-full p-2 my-4 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          className='w-full p-2 my-4 border border-gray-200 active:outline-none focus:outline-none rounded-xl'
           value={customerEmail}
           onChange={(e) => setCustomerEmail(e.target.value)}
 
         />
-        <div className="flex items-center overflow-hidden border border-gray-100 rounded-xl">
+        <div className="flex items-center overflow-hidden border border-gray-200 rounded-xl">
           <span className='p-2 font-semibold bg-gray-100'>+234</span>
           <input
             placeholder='Phone Number'
@@ -529,14 +520,14 @@ const UserInfoCard = ({ orderType, setOrderType,
       {orderType === "dine in" && <div className="flex flex-col justify-center w-full space-y-4 item-center">
         <input
           placeholder='Table number'
-          className='w-full p-2 my-4 border border-gray-100 active:outline-none focus:outline-none rounded-xl'
+          className='w-full p-2 my-4 border border-gray-200 active:outline-none focus:outline-none rounded-xl'
           value={customerTable}
           onChange={(e) => setCustomerTable(e.target.value)}
           type='number'
         />
       </div>}
       <p className='text-xs text-red-500 '>{errorState}</p>
-      <button className='px-4 py-2 mx-auto my-4 text-white bg-black rounded-lg w-fit' onClick={handleSaveUserInfo}>Done</button>
+      <button className='px-4 py-2 mx-auto my-4 text-white bg-black rounded-lg w-full' onClick={handleSaveUserInfo}>Done</button>
     </div>
   )
 }
