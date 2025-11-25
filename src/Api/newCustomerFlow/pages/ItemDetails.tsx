@@ -1,6 +1,6 @@
 import { GoDotFill } from "react-icons/go";
 import { IoMdClose } from "react-icons/io";
-import { MinusIcon, PlusIcon } from "lucide-react";
+// import { MinusIcon, PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
 import { RootState } from "../../../store/store";
 import { SERVER_DOMAIN } from "../../Api";
 import CustomAddToCartToast from "../CustomToast";
+import ProdCount from "./ProdCount";
 
 interface MenuItem {
   _id: string;
@@ -317,7 +318,7 @@ export default function ItemDetails() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-100 rounded-2xl">
+                    {/* <div className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-100 rounded-2xl">
                       <MinusIcon
                         className="w-5 cursor-pointer"
                         onClick={() => handleModifierDecrease(opt.modifier_name)}
@@ -331,7 +332,14 @@ export default function ItemDetails() {
                         className="w-5 cursor-pointer"
                         onClick={() => handleModifierIncrease(opt.modifier_name)}
                       />
-                    </div>
+                    </div> */}
+
+                    <ProdCount
+                      handleDecrement={() => handleModifierDecrease(opt.modifier_name)}
+                      quantity={selectedItem ? selectedItem.quantity : 0}
+                      // handleQuantityChange={(e) => handleModifierQuantityChange(opt.modifier_name, e)}
+                      handleIncrement={() => handleModifierIncrease(opt.modifier_name)}
+                    />
                     <span className="text-sm text-gray-500">
                       ₦{opt.modifier_price.toLocaleString()}
                     </span>

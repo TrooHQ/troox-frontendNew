@@ -221,8 +221,8 @@ export default function ItemsList() {
         />
 
         <div className="absolute flex items-center gap-4 top-4 right-4">
-          <RxShare2 className="p-1 text-3xl bg-gray-200 rounded-full bottom-2 right-2" />
-          <IoSearchOutline className="p-1 text-3xl bg-gray-200 rounded-full bottom-2 right-2" />
+          <RxShare2 className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
+          <IoSearchOutline className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
         </div>
         {/*  */}
         <div className="absolute z-10 flex items-center justify-center p-1 overflow-hidden bg-white rounded-full shadow-md -bottom-7 left-4 size-16 ">
@@ -233,20 +233,20 @@ export default function ItemsList() {
       {/* <div className=""> */}
       <div className="px-4">
         <h2 className="text-base font-semibold text-gray-900">{businessDetails?.businessFullName}</h2>
-        <p className="my-2 text-xs text-gray-700">{businessDetails?.orderingDescription}</p>
+        <p className="my-2 text-base text-gray-700">{businessDetails?.orderingDescription}</p>
 
-        <p className="flex items-center gap-2 my-2 text-xs text-gray-700">{businessDetails?.orderingInstruction}
+        <p className="flex items-center gap-2 my-2 text-base text-gray-700">{businessDetails?.orderingInstruction}
           {/* <span className="flex items-center gap-2"> <FaStar className="fill-orange-500" /> 4.5</span> */}
         </p>
         {/* <p className="flex items-center gap-2 my-2 text-xs text-gray-700"><span>Opens 8AM - 8PM</span> <span className="flex items-center gap-2"> <FaStar className="fill-orange-500" /> 4.5</span></p> */}
       </div>
 
 
-      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto whitespace-nowrap">
+      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto whitespace-nowrap no-scrollbar">
         {categories.map((category, index) => <p
           key={index}
           onClick={() => setActiveTab(category)}
-          className={`cursor-pointer px-2 py-3 border-b-2 text-xs  ${activeTab === category ? "border-b-blue-600 font-semibold text-blue-600" : "text-gray-600  border-b-transparent"}`}>{category}</p>)}
+          className={`cursor-pointer px-2 py-3 border-b-2 text-base  ${activeTab === category ? "border-b-blue-600 font-semibold text-blue-600" : "text-gray-600  border-b-transparent"}`}>{category}</p>)}
       </div>
 
       {(Object.entries(groupedByCategory) as [string, MenuItem[]][]).map(([category, items]) => (
@@ -348,7 +348,7 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
           <div className="absolute z-50 bottom-2 right-2">
 
             {!basketItems.find((b) => b.id === item._id) ? <FiPlus
-              className="text-xl bg-gray-200 rounded-full"
+              className="text-2xl bg-gray-200 rounded-full"
               onClick={() => handleAddToBasket(item)}
             /> : <FiMinus
               className="text-xl bg-gray-200 rounded-full"
