@@ -27,6 +27,7 @@ import {
 } from "../../../slices/BasketSlice";
 import { toast } from "react-toastify";
 import CustomAddToCartToast from "../CustomToast";
+import SearchModal from "./SearchModal";
 
 
 interface MenuItem {
@@ -85,6 +86,7 @@ export default function ItemsList() {
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const fullUrl =
     window.location.origin +
@@ -105,6 +107,8 @@ export default function ItemsList() {
   const businessDetails = useSelector(
     (state: RootState) => state.business?.businessDetails
   );
+
+  console.log("businessDetails", businessDetails);
 
   useEffect(() => {
 
@@ -182,6 +186,7 @@ export default function ItemsList() {
 
   // Get unique categories for tabs
   const categories = ['All items', ...new Set(menuItems.map(item => item.menu_category_name))];
+  const menuItemNames = [...new Set(menuItems.map(item => ({ name: item.menu_item_name, id: item._id })))];
 
   // Filter items based on active tab
   const filteredItems = activeTab === 'All items'
@@ -199,8 +204,31 @@ export default function ItemsList() {
 
   const basketItems = useSelector((state: RootState) => state.basket.items);
 
-  console.log("active", activeTab)
-  console.log("category", categories)
+  const handleCopyLink = async () => {
+    try {
+      const url = window.location.href;
+      await navigator.clipboard.writeText(url);
+      // toast.success("Link copied to clipboard");
+      toast(<CustomAddToCartToast text="Link Copied to clipboard" />, {
+        position: "top-center",
+        className: "p-0 my-0 bg-transparent shadow-none",
+        style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+        closeButton: false,
+        hideProgressBar: true,
+        icon: false,
+      });
+    } catch (e) {
+      // toast.error("Unable to copy link. Please try again.");
+      toast(<CustomAddToCartToast text="Unable to copy link. Please try again." />, {
+        position: "top-center",
+        className: "p-0 my-0 bg-transparent shadow-none",
+        style: { background: "transparent", boxShadow: "none", padding: 0, margin: "0 auto" },
+        closeButton: false,
+        hideProgressBar: true,
+        icon: false,
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -211,8 +239,8 @@ export default function ItemsList() {
   }
 
   return (
-    <div className="w-full min-h-screen">
-
+    <div className="w-full min-h-screen relative">
+      {showSearch && (<SearchModal setShowSearch={setShowSearch} allMenuItems={menuItemNames} business_identifier={business_identifier} />)}
       <div className='relative w-full h-64 mb-12'>
         <img
           src='/bg-banner.png'
@@ -221,12 +249,22 @@ export default function ItemsList() {
         />
 
         <div className="absolute flex items-center gap-4 top-4 right-4">
-          <RxShare2 className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
-          <IoSearchOutline className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
+          <RxShare2 onClick={handleCopyLink} className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2 cursor-pointer" />
+          <IoSearchOutline
+            onClick={() => setShowSearch(true)}
+            className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
         </div>
         {/*  */}
         <div className="absolute z-10 flex items-center justify-center p-1 overflow-hidden bg-white rounded-full shadow-md -bottom-7 left-4 size-16 ">
-          <TiWaves className="w-full h-full text-orange-400 bg-orange-200 rounded-full " />
+          {businessDetails?.business_logo ?
+            <img
+              src={businessDetails?.business_logo}
+              alt={businessDetails?.businessFullName}
+              className='w-full h-full object-cover object-center rounded-full'
+            />
+            :
+            <TiWaves className="w-full h-full text-orange-400 bg-orange-200 rounded-full " />
+          }
         </div>
       </div>
 
@@ -351,7 +389,7 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
               className="text-2xl bg-gray-200 rounded-full"
               onClick={() => handleAddToBasket(item)}
             /> : <FiMinus
-              className="text-xl bg-gray-200 rounded-full"
+              className="text-2xl bg-gray-200 rounded-full"
               onClick={() => handleRemoveFromBasket(item)}
             />}
           </div>
@@ -360,3 +398,4 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
     </div >
   )
 }
+
