@@ -13,7 +13,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { setBranchID, setBusinessDetails, setBusinessIdentifier, setGroupName, setURL } from "../../../slices/businessSlice";
-import { SERVER_DOMAIN } from "../../Api";
+import { SERVER_DOMAIN } from "../../../Api/Api";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../../store/store";
@@ -28,6 +28,7 @@ import {
 import { toast } from "react-toastify";
 import CustomAddToCartToast from "../CustomToast";
 import SearchModal from "./SearchModal";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 
 
 interface MenuItem {
@@ -80,12 +81,24 @@ export interface BasketItem {
 // }
 
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 5 * 60 * 1000, refetchOnWindowFocus: false } }
+});
+
 export default function ItemsList() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ItemsListContent />
+    </QueryClientProvider>
+  );
+}
+
+function ItemsListContent() {
 
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [bizLoading, setBizLoading] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
   const fullUrl =
@@ -114,7 +127,7 @@ export default function ItemsList() {
 
     const getBusinessDetails = async () => {
 
-      setLoading(true);
+      setBizLoading(true);
       const headers = {
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +143,7 @@ export default function ItemsList() {
       } catch (error) {
         console.error("Error getting Business Details:", error);
       } finally {
-        setLoading(false);
+        setBizLoading(false);
       }
     };
 
@@ -153,45 +166,33 @@ export default function ItemsList() {
     localStorage.setItem("mark", window.location.href)
   }, [])
 
-  const [menuItems, setMenuItems] = useState<Array<any>>([]);
+  // Use query data directly
 
-  useEffect(() => {
+  const { data: menuQueryData = [], isLoading: menuIsLoading } = useQuery({
+    queryKey: ["menu", business_identifier, branch],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${business_identifier}&branch=${branch}`,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      return response?.data?.data ?? [];
+    },
+    enabled: Boolean(business_identifier && branch),
+  });
 
-    const getItems = async () => {
-      setLoading(true);
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      try {
-        const response = await axios.get(
-          `${SERVER_DOMAIN}/menu/getAllMenuItem/?business_identifier=${business_identifier}&branch=${branch}`,
-          headers
-        );
-        setMenuItems(response?.data?.data);
-      } catch (error) {
-        console.error("Error getting Menu Items:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getItems();
-
-  }, [business_identifier, branch]);
+  const loading = menuIsLoading || bizLoading;
 
   const [activeTab, setActiveTab] = useState("All items");
 
 
   // Get unique categories for tabs
-  const categories = ['All items', ...new Set(menuItems.map(item => item.menu_category_name))];
-  const menuItemNames = [...new Set(menuItems.map(item => ({ name: item.menu_item_name, id: item._id })))];
+  const categories = ['All items', ...new Set((menuQueryData as any[]).map((item: any) => item.menu_category_name))];
+  const menuItemNames = [...new Set((menuQueryData as any[]).map((item: any) => ({ name: item.menu_item_name, id: item._id })))]
 
   // Filter items based on active tab
   const filteredItems = activeTab === 'All items'
-    ? menuItems
-    : menuItems.filter(item => item.menu_category_name === activeTab);
+    ? (menuQueryData as any[])
+    : (menuQueryData as any[]).filter((item: any) => item.menu_category_name === activeTab);
 
   // Group items by category
   const groupedByCategory = filteredItems.reduce((acc, item) => {
@@ -200,7 +201,7 @@ export default function ItemsList() {
     }
     acc[item.menu_category_name].push(item);
     return acc;
-  }, {});
+  }, {} as Record<string, MenuItem[]>);
 
   const basketItems = useSelector((state: RootState) => state.basket.items);
 
@@ -232,38 +233,38 @@ export default function ItemsList() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full min-h-screen">
+      <div className="flex justify-center items-center w-full min-h-screen">
         <p>Loading...</p>
       </div>
     )
   }
 
   return (
-    <div className="w-full min-h-screen relative">
+    <div className="relative w-full min-h-screen">
       {showSearch && (<SearchModal setShowSearch={setShowSearch} allMenuItems={menuItemNames} business_identifier={business_identifier} />)}
-      <div className='relative w-full h-64 mb-12'>
+      <div className='relative mb-12 w-full h-64'>
         <img
           src='/bg-banner.png'
           alt='bg-banner'
-          className='object-cover object-center w-full h-64 mb-10'
+          className='object-cover object-center mb-10 w-full h-64'
         />
 
-        <div className="absolute flex items-center gap-4 top-4 right-4">
-          <RxShare2 onClick={handleCopyLink} className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2 cursor-pointer" />
+        <div className="flex absolute top-4 right-4 gap-4 items-center">
+          <RxShare2 onClick={handleCopyLink} className="right-2 bottom-2 p-1 text-4xl bg-gray-200 rounded-full cursor-pointer" />
           <IoSearchOutline
             onClick={() => setShowSearch(true)}
-            className="p-1 text-4xl bg-gray-200 rounded-full bottom-2 right-2" />
+            className="right-2 bottom-2 p-1 text-4xl bg-gray-200 rounded-full" />
         </div>
         {/*  */}
-        <div className="absolute z-10 flex items-center justify-center p-1 overflow-hidden bg-white rounded-full shadow-md -bottom-7 left-4 size-16 ">
+        <div className="flex overflow-hidden absolute left-4 -bottom-7 z-10 justify-center items-center p-1 bg-white rounded-full shadow-md size-16">
           {businessDetails?.business_logo ?
             <img
               src={businessDetails?.business_logo}
               alt={businessDetails?.businessFullName}
-              className='w-full h-full object-cover object-center rounded-full'
+              className='object-cover object-center w-full h-full rounded-full'
             />
             :
-            <TiWaves className="w-full h-full text-orange-400 bg-orange-200 rounded-full " />
+            <TiWaves className="w-full h-full text-orange-400 bg-orange-200 rounded-full" />
           }
         </div>
       </div>
@@ -273,14 +274,14 @@ export default function ItemsList() {
         <h2 className="text-base font-semibold text-gray-900">{businessDetails?.businessFullName}</h2>
         <p className="my-2 text-base text-gray-700">{businessDetails?.orderingDescription}</p>
 
-        <p className="flex items-center gap-2 my-2 text-base text-gray-700">{businessDetails?.orderingInstruction}
-          {/* <span className="flex items-center gap-2"> <FaStar className="fill-orange-500" /> 4.5</span> */}
+        <p className="flex gap-2 items-center my-2 text-base text-gray-700">{businessDetails?.orderingInstruction}
+          {/* <span className="flex gap-2 items-center"> <FaStar className="fill-orange-500" /> 4.5</span> */}
         </p>
-        {/* <p className="flex items-center gap-2 my-2 text-xs text-gray-700"><span>Opens 8AM - 8PM</span> <span className="flex items-center gap-2"> <FaStar className="fill-orange-500" /> 4.5</span></p> */}
+        {/* <p className="flex gap-2 items-center my-2 text-xs text-gray-700"><span>Opens 8AM - 8PM</span> <span className="flex gap-2 items-center"> <FaStar className="fill-orange-500" /> 4.5</span></p> */}
       </div>
 
 
-      <div className="flex items-center gap-4 px-4 my-4 overflow-x-auto whitespace-nowrap no-scrollbar">
+      <div className="flex overflow-x-auto gap-4 items-center px-4 my-4 whitespace-nowrap no-scrollbar">
         {categories.map((category, index) => <p
           key={index}
           onClick={() => setActiveTab(category)}
@@ -289,11 +290,11 @@ export default function ItemsList() {
 
       {(Object.entries(groupedByCategory) as [string, MenuItem[]][]).map(([category, items]) => (
         <div key={category}>
-          <div className="w-full py-1 bg-gray-200">
+          <div className="py-1 w-full bg-gray-200">
             <h3 className="p-4 text-sm font-semibold text-gray-900">{category}</h3>
           </div>
 
-          <div className="mt-4 ">
+          <div className="mt-4">
 
             {items.map((item, index) => (
               <ItemCard
@@ -306,10 +307,10 @@ export default function ItemsList() {
       ))}
 
 
-      {basketItems.length > 0 && <Link to="/demo/order-summary" className="fixed bottom-0 left-0 right-0 z-50 w-full py-2 bg-white">
+      {basketItems.length > 0 && <Link to="/demo/order-summary" className="fixed right-0 bottom-0 left-0 z-50 py-2 w-full bg-white">
         <button className=" w-[90%] px-4 py-3 mx-auto  text-white bg-black rounded-full flex items-center justify-between">
 
-          <span className="flex items-center">Cart <span><GoDotFill className="w-2 mx-2" /></span>{basketItems.length} {basketItems.length === 1 ? "item" : "items"} </span>
+          <span className="flex items-center">Cart <span><GoDotFill className="mx-2 w-2" /></span>{basketItems.length} {basketItems.length === 1 ? "item" : "items"} </span>
           <span>₦{basketItems.reduce((total, item) => total + item.totalPrice, 0).toLocaleString()}</span>
 
         </button>
@@ -365,7 +366,7 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
   }
 
   return (
-    <div className="relative grid w-full grid-cols-3 gap-2 px-4 py-3 border-b-2 border-b-gray-100 min-h-32">
+    <div className="grid relative grid-cols-3 gap-2 px-4 py-3 w-full border-b-2 border-b-gray-100 min-h-32">
       <Link to={`/item-details?id=${item._id}&bid=${business_identifier}`}
         className="absolute z-10 w-full h-full" />
 
@@ -376,14 +377,14 @@ const ItemCard = ({ item, business_identifier }: { item: MenuItem, business_iden
         {/* <p className="text-sm font-semibold text-gray-900">{formatPrice(Number(item?.menu_item_price))}</p> */}
       </div>
 
-      <div className="relative w-full col-span-1">
-        <div className="relative w-full overflow-hidden rounded-lg h-28" style={{
+      <div className="relative col-span-1 w-full">
+        <div className="overflow-hidden relative w-full h-28 rounded-lg" style={{
           background: `url(${item?.menu_item_image ?? '/bg-banner.png'})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}>
-          <div className="absolute z-50 bottom-2 right-2">
+          <div className="absolute right-2 bottom-2 z-50">
 
             {!basketItems.find((b) => b.id === item._id) ? <FiPlus
               className="text-2xl bg-gray-200 rounded-full"
