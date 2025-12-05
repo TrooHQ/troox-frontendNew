@@ -15,7 +15,12 @@ import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
 // import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
-import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
+// 
+import MenuItems from "./components/Dashboard/NewMenuBuilder/MenuItems.tsx";
+import AddMenuItem from "./components/Dashboard/NewMenuBuilder/AddNewMenuItem.tsx";
+
+import OldMenuItems from "./components/Dashboard/MenuBuilder.tsx";
+// 
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
@@ -40,7 +45,7 @@ import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
-import MenuList from "./components/Dashboard/MenuList.tsx";
+// import MenuList from "./components/Dashboard/MenuList.tsx";
 import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
 import CreatePin from "./components/authPages/CreatePin.tsx";
 import PinCreated from "./components/authPages/PinCreated.tsx";
@@ -56,10 +61,12 @@ import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
+import Categories from "./components/Dashboard/NewMenuBuilder/Categories.tsx";
+import AddMenuCategory from "./components/Dashboard/AddMenuCategory.tsx";
 
 export default function App() {
   return (
-    <div className=" font-Inter">
+    <div className="font-Inter">
       <Router>
         <ToastContainer
           autoClose={3000}
@@ -90,9 +97,20 @@ export default function App() {
           <Route path="/manage-assets" element={<ManageTables />} />
           <Route path="/troo-kiosk" element={<SelfCheckout />} />
           <Route path="/table-list" element={<TableList />} />
-          <Route path="/menu-builder" element={<MenuBuilder />} />
+          {/* Menu  */}
+          {/* Current */}
+          <Route path="/menu-list" element={<MenuItems />} />
+          <Route path="/menu-list/add" element={<AddMenuItem />} />
+          <Route path="/menu-categories" element={<Categories />} />
+          <Route path="/menu-categories/add" element={<AddMenuCategory />} />
+          <Route path="/menu-modifiers" element={<MenuItems />} />
+          <Route path="/menu-modifiers/add" element={<MenuItems />} />
+
+          {/* Previous */}
+          <Route path="/old-menu-builder" element={<OldMenuItems />} />
           <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} />
-          <Route path="/menu-list" element={<MenuList />} />
+          {/* <Route path="/menu-list" element={<MenuList />} /> */}
+          {/* Menu */}
           <Route path="/online-ordering" element={<OnlineOrdering />} />
           <Route path="/qr-ordering" element={<QROrdering />} />
           <Route path="/price-list" element={<PriceList />} />
