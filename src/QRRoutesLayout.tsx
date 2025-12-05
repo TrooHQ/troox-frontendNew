@@ -55,10 +55,10 @@ import ChooseColor from "./Mobile/Components/Settings/ChooseColor";
 import OrderHistory from "./Mobile/Components/OrderHistory";
 import AccountVerified from "./Mobile/Components/AccountVerified";
 // import { AllMenuItems } from "./Mobile/Customers/Aligning_Routes/AllMenuItems";
-import ItemsList from "./Api/newCustomerFlow/pages/ItemsList";
-import ItemDetails from "./Api/newCustomerFlow/pages/ItemDetails";
-import OrderSummary from "./Api/newCustomerFlow/pages/OrderSummary";
-import OrderStatus from "./Api/newCustomerFlow/pages/OrderStatus";
+import ItemsList from "./Mobile/newCustomerFlow/pages/ItemsList";
+import ItemDetails from "./Mobile/newCustomerFlow/pages/ItemDetails";
+import OrderSummary from "./Mobile/newCustomerFlow/pages/OrderSummary";
+import OrderStatus from "./Mobile/newCustomerFlow/pages/OrderStatus";
 
 const QRRoutesLayout = () => {
   return (
