@@ -1,6 +1,7 @@
 import React from 'react';
 import LayoutComponent from '../../Overview/Layout/LayoutComponent';
 import ReusableDropdown from './components/ReusableDropdown';
+import MultiSelectDropdown from './components/MultiSelectDropdown';
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <div className="grid grid-cols-1 md:grid-cols-12 gap-6 py-6 border-b border-gray-200 last:border-0">
@@ -53,9 +54,7 @@ export default function AddMenuItem() {
                 buttonLabel="Select category"
                 width={220}
               />
-              {/* <select className="w-full px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300 bg-white overflow-hidden">
-                <option>Select category</option>
-              </select> */}
+
             </div>
           </div>
 
@@ -108,21 +107,32 @@ export default function AddMenuItem() {
 
 
         <FormSection title="Variants">
-          <button className="w-fit py-3 px-4 border border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-400 flex items-center justify-center gap-2 font-medium">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add options like size
-          </button>
+          <ReusableDropdown
+            options={[
+              { label: 'Variant 1', id: '1' },
+              { label: 'Variant 2', id: '2' },
+              { label: 'Variant 3', id: '3' },
+            ]}
+            onChange={() => { }}
+            placeholder="Search variant"
+            buttonLabel="Select variant"
+            width={220}
+          />
         </FormSection>
 
         <FormSection title="Modifiers">
-          <button className="w-fit py-3 px-4 border border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-400 flex items-center justify-center gap-2 font-medium">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Add modifier group
-          </button>
+          <MultiSelectDropdown
+            options={[
+              { label: 'Modifier 1', value: '1' },
+              { label: 'Modifier 2', value: '2' },
+              { label: 'Modifier 3', value: '3' },
+            ]}
+            onChange={() => { }}
+            placeholder="Search modifier"
+            width={220}
+            selectedValues={[]}
+          />
+
         </FormSection>
 
 
