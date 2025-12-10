@@ -62,7 +62,9 @@ import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
 import Categories from "./components/Dashboard/NewMenuBuilder/Categories.tsx";
-import AddMenuCategory from "./components/Dashboard/AddMenuCategory.tsx";
+import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/AddMenuCategory.tsx";
+import MenuModifiers from "./components/Dashboard/NewMenuBuilder/MenuModifiers.tsx";
+import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/AddMenuModifier.tsx";
 
 export default function App() {
   return (
@@ -103,8 +105,8 @@ export default function App() {
           <Route path="/menu-list/add" element={<AddMenuItem />} />
           <Route path="/menu-categories" element={<Categories />} />
           <Route path="/menu-categories/add" element={<AddMenuCategory />} />
-          <Route path="/menu-modifiers" element={<MenuItems />} />
-          <Route path="/menu-modifiers/add" element={<MenuItems />} />
+          <Route path="/menu-modifiers" element={<MenuModifiers />} />
+          <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
 
           {/* Previous */}
           <Route path="/old-menu-builder" element={<OldMenuItems />} />
