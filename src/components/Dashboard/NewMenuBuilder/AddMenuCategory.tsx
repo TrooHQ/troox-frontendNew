@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomInput from "../inputFields/CustomInput";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import CustomInput from "../../inputFields/CustomInput";
+import { SERVER_DOMAIN } from "../../../Api/Api";
 import { useDispatch, useSelector } from "react-redux";
 // import CustomSelect5 from "../inputFields/CustomSelect5";
-import { AppDispatch } from "../../store/store";
-import { fetchBranches } from "../../slices/branchSlice";
+import { AppDispatch } from "../../../store/store";
+import { fetchBranches } from "../../../slices/branchSlice";
 import { toast } from "react-toastify";
-import { fetchMenuCategories } from "../../slices/menuSlice";
+import { fetchMenuCategories } from "../../../slices/menuSlice";
 import { FaPlus } from "react-icons/fa6";
-import LayoutComponent from "../Overview/Layout/LayoutComponent";
-import MultiSelectDropdown from "./NewMenuBuilder/components/MultiSelectDropdown";
-import AddSubCategoryModal from "./AddMenuCategory/AddSubCategoryModal";
+import LayoutComponent from "../../Overview/Layout/LayoutComponent";
+import MultiSelectDropdown from "./components/MultiSelectDropdown";
+import AddSubCategoryModal from "../AddMenuCategory/AddSubCategoryModal";
 
 interface SubCategoryItem {
   name: string;
@@ -175,7 +175,7 @@ const AddMenuCategory = ({
           </button>
         </div>
       }>
-        <div className="h-[1px] w-full bg-grey100 mb-[32px]" />
+        {/* <div className="h-[1px] w-full bg-grey100 mb-[32px]" /> */}
 
         <div className="space-y-[32px]">
           {/* Category Section */}

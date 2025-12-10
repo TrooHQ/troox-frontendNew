@@ -41,7 +41,7 @@ const Categories: React.FC = () => {
 
   return (
     <LayoutComponent title="Menu Categories" description="Organize your menu with categories and subcategories" HeaderAction={
-      <Link to="#" className="flex gap-2 items-center px-4 py-2 text-white bg-black rounded-lg min-w-fit no-wrap">
+      <Link to="/menu-categories/add" className="flex gap-2 items-center px-4 py-2 text-white bg-black rounded-lg min-w-fit no-wrap">
         <span className="text-lg">+</span>
         <span>Add Categories</span>
       </Link>
@@ -111,11 +111,20 @@ const Categories: React.FC = () => {
                         index={index}
                         isDragDisabled={isDragDisabled}
                       >
-                        {(provided) => (
+                        {(provided, snapshot) => (
                           <tr
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className={`transition-colors hover:bg-gray-50 ${isDragDisabled ? '' : 'bg-white'}`}
+                            style={{
+                              ...provided.draggableProps.style,
+                              display: snapshot.isDragging ? "table" : undefined,
+                              tableLayout: "fixed",
+                              width: snapshot.isDragging ? "100%" : undefined,
+                            }}
+                            className={`transition-all duration-200 ${isDragDisabled ? '' : 'hover:bg-gray-50'} ${snapshot.isDragging
+                              ? 'bg-white shadow-xl scale-[1.01] border-2 border-indigo-500/20 z-50 rounded-lg relative'
+                              : 'bg-white'
+                              }`}
                           >
                             <td className="px-6 py-4">
                               <button
@@ -128,7 +137,7 @@ const Categories: React.FC = () => {
                               </button>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="text-sm font-medium text-gray-900">{category.name}</span>
+                              <span className={`text-sm ${snapshot.isDragging ? 'font-bold text-indigo-900' : 'font-medium text-gray-900'}`}>{category.name}</span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
