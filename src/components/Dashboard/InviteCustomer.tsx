@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "./DashboardLayout";
-import TopMenuNav from "./TopMenuNav";
-import CustomInput from "../inputFields/CustomInput";
-import CustomSelect5 from "../inputFields/CustomSelect5";
+// import DashboardLayout from "./DashboardLayout";
+// import TopMenuNav from "./TopMenuNav";
+// import CustomInput from "../inputFields/CustomInput";
+// import CustomSelect5 from "../inputFields/CustomSelect5";
+import LayoutComponent from "../Overview/Layout/LayoutComponent";
 
 const InviteCustomer: React.FC = () => {
   const navigate = useNavigate();
@@ -57,19 +58,12 @@ const InviteCustomer: React.FC = () => {
 
   return (
     <div className="">
-      <DashboardLayout>
-    
+      <LayoutComponent title=" Invite User" description=" Send an invitation to a new user to join the system.">
+
         <div className="mt-6">
           {/* Title and Buttons */}
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-semibold text-[#101828] mb-2">
-                Invite User
-              </h1>
-              <p className="text-base text-[#344054]">
-                Send an invitation to a new user to join the system.
-              </p>
-            </div>
+            <div></div>
             <div className="flex items-center gap-4">
               <button
                 onClick={handleCancel}
@@ -87,7 +81,7 @@ const InviteCustomer: React.FC = () => {
           </div>
 
           {/* Form */}
-          <div className=" p-6">
+          <div className="p-6 ">
             <div className="grid grid-cols-3 gap-8">
               {/* User Information Title Column */}
               <div className="flex items-start">
@@ -97,7 +91,7 @@ const InviteCustomer: React.FC = () => {
               </div>
 
               {/* Form Fields - 2 Column Layout */}
-              <div className="col-span-2 grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 col-span-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-[#475467] mb-2">
                     First Name
@@ -210,7 +204,7 @@ const InviteCustomer: React.FC = () => {
             </div>
           </div>
         </div>
-      </DashboardLayout>
+      </LayoutComponent>
     </div>
   );
 };
