@@ -215,6 +215,13 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
       showMenu: true,
     },
     {
+      title: "Manage Users",
+      gap: false,
+      icon: ManageUsersIcon,
+      link: "/manage-customers",
+      showMenu: true,
+    },
+    {
       title: "Tenant Settings",
       gap: false,
       icon: HubIcon,
@@ -281,8 +288,8 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
 
   return (
     <div
-      className={`p-2 ${open ? "w-[230px]" : "w-20"
-        }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-[#f8f8f8]`}
+      className={`p-2 ${open ? "w-[280px]" : "w-20"
+        }  h-screen relative overflow-y-auto left-0 top-0 duration-300 bg-white border-r border-[#EAECF0]`}
       style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
     >
       <div className="grid items-center gap-3">
