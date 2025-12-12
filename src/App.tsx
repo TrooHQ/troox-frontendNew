@@ -11,7 +11,7 @@ import BusinessProfiles from "./components/authPages/BusinessProfiles.tsx";
 import Register from "./components/authPages/Register.tsx";
 import VerifyAccount from "./components/authPages/VerifyAccount.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
-import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
+// import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
 import ManageCustomers from "./components/Dashboard/ManageCustomers.tsx";
 import InviteCustomer from "./components/Dashboard/InviteCustomer.tsx";
 import AddNewRole from "./components/Dashboard/AddNewRole.tsx";
@@ -97,8 +97,8 @@ export default function App() {
 
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/manage-users" element={<ManageUsers />} />
-          <Route path="/manage-customers" element={<ManageCustomers />} />
+          <Route path="/manage-users" element={<ManageCustomers />} />
+          {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
           <Route path="/invite-customer" element={<InviteCustomer />} />
           <Route path="/add-new-role" element={<AddNewRole />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
