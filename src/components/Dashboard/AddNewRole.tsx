@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
+import LayoutComponent from "../Overview/Layout/LayoutComponent";
 
 const AddNewRole: React.FC = () => {
   const navigate = useNavigate();
@@ -48,18 +49,11 @@ const AddNewRole: React.FC = () => {
 
   return (
     <div className="">
-      <DashboardLayout>
+      <LayoutComponent title=" Add New Role" description=" Define a new role with specific permissions and access levels.">
         <div className="mt-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-semibold text-[#101828] mb-2">
-                Add New Role
-              </h1>
-              <p className="text-base text-[#344054]">
-                Define a new role with specific permissions and access levels.
-              </p>
-            </div>
+            <div>            </div>
             <div className="flex items-center gap-4">
               <button
                 onClick={handleCancel}
@@ -281,7 +275,7 @@ const AddNewRole: React.FC = () => {
             </div>
           </div>
         </div>
-      </DashboardLayout>
+      </LayoutComponent>
     </div>
   );
 };
