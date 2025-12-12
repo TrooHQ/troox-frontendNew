@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DashboardLayout from "./DashboardLayout";
-import TopMenuNav from "./TopMenuNav";
+// import DashboardLayout from "./DashboardLayout";
+// import TopMenuNav from "./TopMenuNav";
 import Modal from "../Modal";
+import LayoutComponent from "../Overview/Layout/LayoutComponent";
 
 const ManageCustomers: React.FC = () => {
   const navigate = useNavigate();
@@ -126,18 +127,9 @@ const ManageCustomers: React.FC = () => {
 
   return (
     <div className="">
-      <DashboardLayout>
-      
+      {/* <LayoutComponent> */}
+      <LayoutComponent title="Manage Users" description="Manage your team members and their account permissions here.">
         <div className="mt-6">
-          {/* Title and Description */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-[#101828] mb-2">
-              Manage Users
-            </h1>
-            <p className="text-base text-[#344054]">
-              Manage your team members and their account permissions here.
-            </p>
-          </div>
 
           {/* Tabs */}
           <div className="flex items-center justify-between mb-6 border-b border-[#EAECF0]">
@@ -145,11 +137,10 @@ const ManageCustomers: React.FC = () => {
               {["All Users", "Roles"].map((tab, index) => (
                 <button
                   key={index}
-                  className={`pb-3 px-1 font-medium transition-colors ${
-                    index === activeTab
-                      ? "text-[#1D2939] font-semibold border-b-2 border-[#1D2939]"
-                      : "text-[#667085] font-medium"
-                  }`}
+                  className={`pb-3 px-1 font-medium transition-colors ${index === activeTab
+                    ? "text-[#1D2939] font-semibold border-b-2 border-[#1D2939]"
+                    : "text-[#667085] font-medium"
+                    }`}
                   onClick={() => handleTabChange(index)}
                 >
                   {tab}
@@ -164,7 +155,7 @@ const ManageCustomers: React.FC = () => {
               {/* Search and Invite Button */}
               <div className="flex items-center justify-between mb-8">
                 <div className="relative flex-1 max-w-md">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       className="w-5 h-5 text-[#98A2B3]"
                       fill="none"
@@ -462,7 +453,7 @@ const ManageCustomers: React.FC = () => {
               </div>
 
               {/* Roles Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {/* Head Office Admin Card */}
                 <div className="border border-[#EAECF0] rounded-lg p-6 bg-white">
                   <div className="flex items-center justify-between mb-2">
@@ -625,7 +616,7 @@ const ManageCustomers: React.FC = () => {
             </>
           )}
         </div>
-      </DashboardLayout>
+      </LayoutComponent>
 
       {/* Edit Role Modal (for role cards) */}
       <Modal isOpen={isEditRoleModalOpen} onClose={() => setIsEditRoleModalOpen(false)}>
@@ -733,7 +724,7 @@ const ManageCustomers: React.FC = () => {
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end items-center pt-6 gap-4">
+          <div className="flex items-center justify-end gap-4 pt-6">
             <button
               onClick={() => setIsEditRoleModalOpen(false)}
               className="px-6 py-2 border border-[#EAECF0] text-[#101828] rounded-md hover:bg-gray-50 transition-colors"
@@ -944,7 +935,7 @@ const ManageCustomers: React.FC = () => {
           </div>
 
           {/* Footer */}
-          <div className="flex justify-end items-center pt-6 gap-4">
+          <div className="flex items-center justify-end gap-4 pt-6">
             <button
               onClick={() => setIsEditModalOpen(false)}
               className="px-6 py-2 border border-[#EAECF0] text-[#101828] rounded-md hover:bg-gray-50 transition-colors"
