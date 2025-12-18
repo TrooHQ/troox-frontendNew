@@ -112,28 +112,35 @@ export default function SideBar() {
       showMenu: true,
       subMenu: [],
     },
-    {
-      title: "Manage Assets",
-      icon: <RiFileEditLine />,
-      link: "/qr-ordering",
+    // {
+    //   title: "Manage Assets",
+    //   icon: <RiFileEditLine />,
+    //   link: "/qr-ordering",
+    //   showMenu: true,
+    //   subMenu: [
+    //     {
+    //       title: "QR Ordering",
+    //       link: "/qr-ordering",
+    //       showMenu: true,
+    //     },
+    //     {
+    //       title: "Online Ordering",
+    //       link: "/online-ordering",
+    //       showMenu: true,
+    //     },
+    //     {
+    //       title: "Troo Kiosk",
+    //       link: "/troo-kiosk",
+    //       showMenu: true,
+    //     },
+    //   ],
+    // },
+
+     {
+      title: "Manage Assest",
+       icon: <RiFileEditLine />,
+      link: "/manage-assest",
       showMenu: true,
-      subMenu: [
-        {
-          title: "QR Ordering",
-          link: "/qr-ordering",
-          showMenu: true,
-        },
-        {
-          title: "Online Ordering",
-          link: "/online-ordering",
-          showMenu: true,
-        },
-        {
-          title: "Troo Kiosk",
-          link: "/troo-kiosk",
-          showMenu: true,
-        },
-      ],
     },
 
   ];
