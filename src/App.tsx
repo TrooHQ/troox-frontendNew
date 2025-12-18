@@ -26,6 +26,8 @@ import OldMenuItems from "./components/Dashboard/MenuBuilder.tsx";
 // 
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
+import ManageAssets from "./components/Dashboard/ManageAssets.tsx";
+import ManageAssest from "./components/Dashboard/ManageAssest.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
 import PosPage from "./LandingPage/Products/PosPage.tsx";
@@ -102,7 +104,8 @@ export default function App() {
           <Route path="/invite-customer" element={<InviteCustomer />} />
           <Route path="/add-new-role" element={<AddNewRole />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
-          <Route path="/manage-assets" element={<ManageTables />} />
+          <Route path="/manage-assets" element={<ManageAssets />} />
+          <Route path="/manage-assest" element={<ManageAssest />} />
           <Route path="/troo-kiosk" element={<SelfCheckout />} />
           <Route path="/table-list" element={<TableList />} />
           {/* Menu  */}
