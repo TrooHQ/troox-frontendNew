@@ -184,28 +184,34 @@ const SideBar: React.FC<SideBarProps> = ({ userType }) => {
         },
       ],
     },
+    // {
+    //   title: "Manage Assets",
+    //   icon: ManageTablesIcon,
+    //   link: "/qr-ordering",
+    //   showMenu: true,
+    //   subMenu: [
+    //     {
+    //       title: "QR Ordering",
+    //       link: "/qr-ordering",
+    //       showMenu: true,
+    //     },
+    //     {
+    //       title: "Online Ordering",
+    //       link: "/online-ordering",
+    //       showMenu: true,
+    //     },
+    //     {
+    //       title: "Troo Kiosk",
+    //       link: "/troo-kiosk",
+    //       showMenu: true,
+    //     },
+    //   ],
+    // },
     {
-      title: "Manage Assets",
+      title: "Manage Assest",
       icon: ManageTablesIcon,
-      link: "/qr-ordering",
+      link: "/manage-assest",
       showMenu: true,
-      subMenu: [
-        {
-          title: "QR Ordering",
-          link: "/qr-ordering",
-          showMenu: true,
-        },
-        {
-          title: "Online Ordering",
-          link: "/online-ordering",
-          showMenu: true,
-        },
-        {
-          title: "Troo Kiosk",
-          link: "/troo-kiosk",
-          showMenu: true,
-        },
-      ],
     },
     {
       title: "Manage Users",
