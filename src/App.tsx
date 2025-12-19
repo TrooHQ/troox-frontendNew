@@ -25,7 +25,6 @@ import AddMenuItem from "./components/Dashboard/NewMenuBuilder/AddNewMenuItem.ts
 import OldMenuItems from "./components/Dashboard/MenuBuilder.tsx";
 // 
 import PriceList from "./components/Dashboard/PriceList.tsx";
-import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import ManageAssets from "./components/Dashboard/ManageAssets.tsx";
 import ManageAssest from "./components/Dashboard/ManageAssest.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";

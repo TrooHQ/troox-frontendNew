@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Box, Typography, IconButton, Button, Modal } from "@mui/material";
-import { Close, Add, DeleteOutline } from "@mui/icons-material";
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 interface TableQRCodeProps {
   onOpenEditModal: () => void;
