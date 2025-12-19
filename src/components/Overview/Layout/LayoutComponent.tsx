@@ -7,7 +7,7 @@ export default function LayoutComponent({ children, title, description, showTopB
 
   return (
     <div className='w-full'>
-      {/* {showTopBar && <TopBar />} */}
+      {showTopBar && <TopBar />}
       <div className='grid w-full grid-cols-6'>
         <div className='w-full min-h-screen col-span-1 '>
           <SideBar />

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LayoutComponent from "../Overview/Layout/LayoutComponent";
 import { Modal, Box, Typography, IconButton, Button } from "@mui/material";
-import { Close, Add, DeleteOutline } from "@mui/icons-material";
+import { Close, Add } from "@mui/icons-material";
 import InRoomDining from "./InRoomDining";
 import TableQRCode from "./TableQRCode";
 import OnlineOrdering from "./OnlineOrdering";
@@ -85,7 +85,7 @@ const ManageAssest: React.FC = () => {
 
   return (
     <div className="">
-      <LayoutComponent title="Manage Assets" description="Configure QR codes, online ordering, and kiosk settings for your business.">
+      <LayoutComponent title="Manage Assets" description="Configure QR codes, online ordering, and kiosk settings for your business." showTopBar={false}>
         <div className="mt-6">
 
           {/* Main Tabs */}
