@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, } from 'react-router-dom';
-import { mockCategories } from './components/mockData';
+import { mockCategories, Category } from './components/mockData';
 import LayoutComponent from '../../Overview/Layout/LayoutComponent';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import CategoryDetailsSidebar from './components/CategoryDetailsSidebar';
 
 const Categories: React.FC = () => {
   // const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Categories: React.FC = () => {
 
   // Local state for categories to allow reordering
   const [categories, setCategories] = useState(mockCategories);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     setCategories(mockCategories);
@@ -39,6 +41,24 @@ const Categories: React.FC = () => {
     setCategories(newCategories);
   };
 
+  const handleCategoryClick = (category: Category) => {
+    setSelectedCategory(category);
+  };
+
+  const handleCloseSidebar = () => {
+    setSelectedCategory(null);
+  };
+
+  const handleEditCategory = (category: Category) => {
+    console.log("Edit category:", category);
+    // Implement edit logic or navigation here
+  };
+
+  const handleDeleteCategory = (category: Category) => {
+    console.log("Delete category:", category);
+    // Implement delete logic here
+  };
+
   return (
     <LayoutComponent title="Menu Categories" description="Organize your menu with categories and subcategories" HeaderAction={
       <Link to="/menu-categories/add" className="flex gap-2 items-center px-4 py-2 text-white bg-black rounded-lg min-w-fit no-wrap">
@@ -46,7 +66,7 @@ const Categories: React.FC = () => {
         <span>Add Categories</span>
       </Link>
     }>
-      <div className="min-h-screen">
+      <div className="min-h-screen relative">
         {/* Header */}
         <div className="mb-8">
 
@@ -121,12 +141,13 @@ const Categories: React.FC = () => {
                               tableLayout: "fixed",
                               width: snapshot.isDragging ? "100%" : undefined,
                             }}
-                            className={`transition-all duration-200 ${isDragDisabled ? '' : 'hover:bg-gray-50'} ${snapshot.isDragging
+                            className={`transition-all duration-200 cursor-pointer ${isDragDisabled ? '' : 'hover:bg-gray-50'} ${snapshot.isDragging
                               ? 'bg-white shadow-xl scale-[1.01] border-2 border-indigo-500/20 z-50 rounded-lg relative'
                               : 'bg-white'
-                              }`}
+                              } ${selectedCategory?.id === category.id ? 'bg-gray-50' : ''}`}
+                            onClick={() => handleCategoryClick(category)}
                           >
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
                               <button
                                 className={`text-gray-400 ${isDragDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-move hover:text-gray-600'}`}
                                 {...provided.dragHandleProps}
@@ -163,14 +184,20 @@ const Categories: React.FC = () => {
                                 {category.branch}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-right whitespace-nowrap">
+                            <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                               <div className="flex gap-2 justify-end items-center">
-                                <button className="p-1 text-gray-400 rounded transition-colors hover:text-gray-600 hover:bg-gray-100">
+                                <button
+                                  className="p-1 text-gray-400 rounded transition-colors hover:text-gray-600 hover:bg-gray-100"
+                                  onClick={() => handleEditCategory(category)}
+                                >
                                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                   </svg>
                                 </button>
-                                <button className="p-1 text-red-400 rounded transition-colors hover:text-red-600 hover:bg-red-50">
+                                <button
+                                  className="p-1 text-red-400 rounded transition-colors hover:text-red-600 hover:bg-red-50"
+                                  onClick={() => handleDeleteCategory(category)}
+                                >
                                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                   </svg>
@@ -198,6 +225,14 @@ const Categories: React.FC = () => {
             </div>
           )}
         </div>
+
+        <CategoryDetailsSidebar
+          isOpen={!!selectedCategory}
+          category={selectedCategory}
+          onClose={handleCloseSidebar}
+          onEdit={handleEditCategory}
+          onDelete={handleDeleteCategory}
+        />
       </div>
     </LayoutComponent>
   );
