@@ -58,13 +58,16 @@ import PricingPage from "./pages/pricing/PricingPage.tsx";
 import AddOns from "./pages/pricing/AddOns.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
-import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
+// import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
 import Categories from "./components/Dashboard/NewMenuBuilder/Categories.tsx";
 import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/AddMenuCategory.tsx";
 import MenuModifiers from "./components/Dashboard/NewMenuBuilder/MenuModifiers.tsx";
 import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/AddMenuModifier.tsx";
+import Settings from "./components/Dashboard/Settings/Settings.tsx";
+import NewSettings from "./components/Dashboard/Settings/Settings.tsx";
+import MenuList from "./components/Dashboard/MenuList.tsx";
 
 export default function App() {
   return (
@@ -96,6 +99,10 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageUsers />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
+          {/* New Settings */}
+          <Route path="/settings" element={<NewSettings />} />
+          {/* Old Settings */}
+          <Route path="/old-settings" element={<Settings />} />
           <Route path="/manage-assets" element={<ManageTables />} />
           <Route path="/troo-kiosk" element={<SelfCheckout />} />
           <Route path="/table-list" element={<TableList />} />
@@ -110,8 +117,8 @@ export default function App() {
 
           {/* Previous */}
           <Route path="/old-menu-builder" element={<OldMenuItems />} />
-          <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} />
-          {/* <Route path="/menu-list" element={<MenuList />} /> */}
+          {/* <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} /> */}
+          <Route path="/old-menu-list" element={<MenuList />} />
           {/* Menu */}
           <Route path="/online-ordering" element={<OnlineOrdering />} />
           <Route path="/qr-ordering" element={<QROrdering />} />
