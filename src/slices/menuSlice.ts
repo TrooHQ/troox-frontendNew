@@ -154,7 +154,7 @@ export const fetchMenuGroups = createAsyncThunk<
 
 export const fetchMenuItems = createAsyncThunk<
   MenuItem[],
-  { branch_id: string; menu_group_name?: any },
+  { branch_id?: string; menu_group_name?: any },
   { rejectValue: string }
 >(
   "menu/fetchMenuItems",
@@ -162,8 +162,12 @@ export const fetchMenuItems = createAsyncThunk<
     try {
       const token = localStorage.getItem("token");
 
+      console.log("inside fetch");
       // Construct the query string
-      let queryString = `branch_id=${branch_id}`;
+      let queryString = ``;
+      if (branch_id !== undefined && branch_id !== null) {
+        queryString += `branch_id=${branch_id}`;
+      }
       if (menu_group_name !== undefined && menu_group_name !== null) {
         queryString += `&menu_group_name=${menu_group_name}`;
       }
@@ -237,7 +241,7 @@ export const fetchMenuItems2 = createAsyncThunk<
 
 export const fetchMenuItemsWithoutStatus = createAsyncThunk<
   MenuItemsByGroupResponse,
-  { branch_id: string; menu_group_name?: string; page?: number },
+  { branch_id?: string; menu_group_name?: string; page?: number },
   { rejectValue: string }
 >(
   "menu/fetchMenuItemsWithoutStatus",
@@ -246,7 +250,11 @@ export const fetchMenuItemsWithoutStatus = createAsyncThunk<
       const token = localStorage.getItem("token");
 
       // Construct the query string
-      let queryString = `branch_id=${branch_id}`;
+      let queryString = "";
+
+      if (branch_id !== undefined && branch_id !== null) {
+        queryString += `&branch_id=${branch_id}`;
+      }
       if (menu_group_name !== undefined && menu_group_name !== null) {
         queryString += `&menu_group_name=${menu_group_name}`;
       }
