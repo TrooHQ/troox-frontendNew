@@ -11,13 +11,23 @@ import BusinessProfiles from "./components/authPages/BusinessProfiles.tsx";
 import Register from "./components/authPages/Register.tsx";
 import VerifyAccount from "./components/authPages/VerifyAccount.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
-import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
+// import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
+import ManageCustomers from "./components/Dashboard/ManageCustomers.tsx";
+import InviteCustomer from "./components/Dashboard/InviteCustomer.tsx";
+import AddNewRole from "./components/Dashboard/AddNewRole.tsx";
 // import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
-import MenuBuilder from "./components/Dashboard/MenuBuilder.tsx";
+// 
+import MenuItems from "./components/Dashboard/NewMenuBuilder/MenuItems.tsx";
+import AddMenuItem from "./components/Dashboard/NewMenuBuilder/AddNewMenuItem.tsx";
+
+import OldMenuItems from "./components/Dashboard/MenuBuilder.tsx";
+// 
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
+import ManageAssets from "./components/Dashboard/ManageAssets.tsx";
+import ManageAssest from "./components/Dashboard/ManageAssest.tsx";
 import TableList from "./components/Dashboard/TableList.tsx";
 import BusinessTabs from "./LandingPage/BusinessTabs.tsx";
 import PosPage from "./LandingPage/Products/PosPage.tsx";
@@ -40,7 +50,7 @@ import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
-import MenuList from "./components/Dashboard/MenuList.tsx";
+// import MenuList from "./components/Dashboard/MenuList.tsx";
 import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
 import CreatePin from "./components/authPages/CreatePin.tsx";
 import PinCreated from "./components/authPages/PinCreated.tsx";
@@ -53,13 +63,20 @@ import PricingPage from "./pages/pricing/PricingPage.tsx";
 import AddOns from "./pages/pricing/AddOns.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
-import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
+// import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
+import Categories from "./components/Dashboard/NewMenuBuilder/Categories.tsx";
+import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/AddMenuCategory.tsx";
+import MenuModifiers from "./components/Dashboard/NewMenuBuilder/MenuModifiers.tsx";
+import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/AddMenuModifier.tsx";
+import Settings from "./components/Dashboard/Settings/Settings.tsx";
+import NewSettings from "./components/Dashboard/Settings/Settings.tsx";
+import MenuList from "./components/Dashboard/MenuList.tsx";
 
 export default function App() {
   return (
-    <div className=" font-Inter">
+    <div className="font-Inter">
       <Router>
         <ToastContainer
           autoClose={3000}
@@ -85,14 +102,34 @@ export default function App() {
 
           <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/manage-users" element={<ManageUsers />} />
+          <Route path="/manage-users" element={<ManageCustomers />} />
+          {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
+          <Route path="/invite-customer" element={<InviteCustomer />} />
+          <Route path="/add-new-role" element={<AddNewRole />} />
           <Route path="/tenant-settings" element={<TenantSettings />} />
+          {/* New Settings */}
+          <Route path="/settings" element={<NewSettings />} />
+          {/* Old Settings */}
+          <Route path="/old-settings" element={<Settings />} />
           <Route path="/manage-assets" element={<ManageTables />} />
+          <Route path="/manage-assets" element={<ManageAssets />} />
+          <Route path="/manage-assest" element={<ManageAssest />} />
           <Route path="/troo-kiosk" element={<SelfCheckout />} />
           <Route path="/table-list" element={<TableList />} />
-          <Route path="/menu-builder" element={<MenuBuilder />} />
-          <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} />
-          <Route path="/menu-list" element={<MenuList />} />
+          {/* Menu  */}
+          {/* Current */}
+          <Route path="/menu-list" element={<MenuItems />} />
+          <Route path="/menu-list/add" element={<AddMenuItem />} />
+          <Route path="/menu-categories" element={<Categories />} />
+          <Route path="/menu-categories/add" element={<AddMenuCategory />} />
+          <Route path="/menu-modifiers" element={<MenuModifiers />} />
+          <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
+
+          {/* Previous */}
+          <Route path="/old-menu-builder" element={<OldMenuItems />} />
+          {/* <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} /> */}
+          <Route path="/old-menu-list" element={<MenuList />} />
+          {/* Menu */}
           <Route path="/online-ordering" element={<OnlineOrdering />} />
           <Route path="/qr-ordering" element={<QROrdering />} />
           <Route path="/price-list" element={<PriceList />} />

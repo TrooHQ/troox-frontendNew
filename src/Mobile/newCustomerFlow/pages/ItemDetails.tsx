@@ -12,9 +12,10 @@ import {
   // removeItemFromBasket,
 } from "../../../slices/BasketSlice";
 import { RootState } from "../../../store/store";
-import { SERVER_DOMAIN } from "../../Api";
+import { SERVER_DOMAIN } from "../../../Api/Api";
 import CustomAddToCartToast from "../CustomToast";
 import ProdCount from "./ProdCount";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 
 interface MenuItem {
   _id: string;
@@ -54,7 +55,19 @@ interface SelectedModifier {
   price: number;
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 10 * 60 * 1000, refetchOnWindowFocus: false } }
+});
+
 export default function ItemDetails() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ItemDetailsContent />
+    </QueryClientProvider>
+  );
+}
+
+function ItemDetailsContent() {
   const [modifierList, setModifierList] = useState<Option[]>([]);
   const [selectedModifiers, setSelectedModifiers] = useState<SelectedModifier[]>([]);
   const [complimentaryList, setComplimentaryList] = useState<Option[]>([]);
@@ -73,34 +86,31 @@ export default function ItemDetails() {
   const businessIdentifier = queryParams.get("bid");
   const id = queryParams.get("id");
 
-  // Fetch menu item data
+  const { data: itemData, isLoading: itemIsLoading } = useQuery({
+    queryKey: ["menuItem", businessIdentifier, id],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${id}`
+      );
+      return response.data;
+    },
+    enabled: Boolean(businessIdentifier && id),
+  });
+
   useEffect(() => {
-    const getItems = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${SERVER_DOMAIN}/menu/getMenuItemByID/?business_identifier=${businessIdentifier}&menu_item_id=${id}`
-        );
-
-        setMenuItem(response.data.data);
-        setModifierList(response.data.modifiers);
-        setComplimentaryList(response.data.complimentary);
-
-        // Check if item exists in cart and load its selections
-        const itemInCart = basketItems.find((item) => item.id === response.data.data._id);
-        if (itemInCart) {
-          setSelectedModifiers(itemInCart.selectedOptions || []);
-          setSelectedComplimentary(itemInCart.complimentary || []);
-          setItemQuantity(itemInCart.quantity || 1);
-        }
-      } catch (error) {
-        console.error("Error getting menu item:", error);
-      } finally {
-        setLoading(false);
+    setLoading(itemIsLoading);
+    if (itemData) {
+      setMenuItem(itemData.data);
+      setModifierList(itemData.modifiers);
+      setComplimentaryList(itemData.complimentary);
+      const itemInCart = basketItems.find((item) => item.id === itemData.data._id);
+      if (itemInCart) {
+        setSelectedModifiers(itemInCart.selectedOptions || []);
+        setSelectedComplimentary(itemInCart.complimentary || []);
+        setItemQuantity(itemInCart.quantity || 1);
       }
-    };
-    getItems();
-  }, [id, businessIdentifier]);
+    }
+  }, [itemData, itemIsLoading, basketItems]);
 
   // Calculate total price whenever modifiers or quantity changes
   const calculateTotalPrice = (): number => {
@@ -229,7 +239,7 @@ export default function ItemDetails() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full min-h-screen">
+      <div className="flex justify-center items-center w-full min-h-screen">
         <p>Loading...</p>
       </div>
     );
@@ -238,16 +248,16 @@ export default function ItemDetails() {
   const isInCart = menuItem && basketItems.some((item) => item.id === menuItem._id);
 
   return (
-    <div className="relative w-full min-h-screen pb-14">
+    <div className="relative pb-14 w-full min-h-screen">
       {/* Image Header */}
       <div className="relative w-full h-64">
         <img
           src={menuItem?.menu_item_image ?? "/bg-banner.png"}
           alt="menu-item"
-          className="object-cover object-center w-full h-64 mb-10"
+          className="object-cover object-center mb-10 w-full h-64"
         />
         <IoMdClose
-          className="absolute flex items-center gap-2 p-1 text-2xl bg-gray-200 rounded-full cursor-pointer top-2 left-2"
+          className="flex absolute top-2 left-2 gap-2 items-center p-1 text-2xl bg-gray-200 rounded-full cursor-pointer"
           onClick={() => navigate(-1)}
         />
       </div>
@@ -268,12 +278,12 @@ export default function ItemDetails() {
         <div className="px-4 py-4 border-b border-b-gray-200">
           <h3 className="mb-1 font-semibold text-gray-900">Select Complimentary</h3>
           <p className="flex items-center text-sm">
-            Required <GoDotFill className="w-2 mx-2" /> Select One
+            Required <GoDotFill className="mx-2 w-2" /> Select One
           </p>
 
-          <div className="flex flex-col my-2 ">
+          <div className="flex flex-col my-2">
             {complimentaryList?.map((opt) => (
-              <label key={opt.modifier_name} className="flex items-center space-x-2 cursor-pointer ">
+              <label key={opt.modifier_name} className="flex items-center space-x-2 cursor-pointer">
                 <input
                   type="radio"
                   name="complimentary"
@@ -292,7 +302,7 @@ export default function ItemDetails() {
         <div className="my-4 border-b border-b-gray-200">
           <h3 className="px-4 mb-1 font-semibold text-gray-900">Add Toppings</h3>
           <p className="flex items-center px-4 text-sm">
-            Optional <GoDotFill className="w-2 mx-2" /> Select up to 3
+            Optional <GoDotFill className="mx-2 w-2" /> Select up to 3
           </p>
 
           <div className="flex flex-col my-6">
@@ -305,9 +315,9 @@ export default function ItemDetails() {
               return (
                 <div
                   key={opt.modifier_name}
-                  className="flex items-center justify-between px-4 py-3 space-x-2 border-t border-t-gray-200"
+                  className="flex justify-between items-center px-4 py-3 space-x-2 border-t border-t-gray-200"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2 items-center">
                     <input
                       type="checkbox"
                       name="modifiers"
@@ -317,8 +327,8 @@ export default function ItemDetails() {
                     <span className="font-semibold">{opt.modifier_name}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {/* <div className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-100 rounded-2xl">
+                  <div className="flex gap-2 items-center">
+                    {/* <div className="flex gap-2 justify-center items-center px-3 py-2 rounded-2xl border border-gray-100">
                       <MinusIcon
                         className="w-5 cursor-pointer"
                         onClick={() => handleModifierDecrease(opt.modifier_name)}
@@ -352,7 +362,7 @@ export default function ItemDetails() {
       )}
 
       {/* Add to Cart Button */}
-      <div className="fixed bottom-0 left-0 right-0 w-full py-2 bg-white shadow-lg">
+      <div className="fixed right-0 bottom-0 left-0 py-2 w-full bg-white shadow-lg">
         <button
           className="w-[90%] px-4 py-3 mx-auto text-white bg-black rounded-full flex items-center justify-between"
           onClick={handleAddToBasket}

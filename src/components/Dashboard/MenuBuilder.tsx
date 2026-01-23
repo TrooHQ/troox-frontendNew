@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Modal from "../Modal";
 import { useDispatch, useSelector } from "react-redux";
 import Modifiers from "./components/Modifiers";
-import AddMenuCategory from "./AddMenuCategory";
+import AddMenuCategory from "./NewMenuBuilder/AddMenuCategory";
 import { AppDispatch } from "@/src/store/store";
 import {
   fetchMenuCategories,
