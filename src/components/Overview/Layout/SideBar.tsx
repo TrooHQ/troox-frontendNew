@@ -140,7 +140,7 @@ export default function SideBar() {
           />
           {settingPopup && (
             <div className="w-full absolute bottom-0 left-[100%] z-30 border border-solid-black bg-gray-300 rounded-md overflow-hidden">
-              <div className="rounded-md bg-white">
+              <div className="rounded-md bg-white overflow-hidden">
                 {popupMenu.map((item) => (
                   <NavLink
                     to={item?.link}
