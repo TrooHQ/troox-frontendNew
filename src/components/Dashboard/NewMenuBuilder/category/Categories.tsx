@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, } from 'react-router-dom';
-import { mockCategories, Category } from './components/mockData';
-import LayoutComponent from '../../Overview/Layout/LayoutComponent';
+import { mockCategories, Category } from '../components/mockData';
+import LayoutComponent from '../../../Overview/Layout/LayoutComponent';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import CategoryDetailsSidebar from './components/CategoryDetailsSidebar';
+import CategoryDetailsSidebar from '../components/CategoryDetailsSidebar';
 
 const Categories: React.FC = () => {
   // const navigate = useNavigate();

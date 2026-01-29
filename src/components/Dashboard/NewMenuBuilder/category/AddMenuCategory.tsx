@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomInput from "../../inputFields/CustomInput";
-import { SERVER_DOMAIN } from "../../../Api/Api";
+import CustomInput from "../../../inputFields/CustomInput";
+import { SERVER_DOMAIN } from "../../../../Api/Api";
 import { useDispatch, useSelector } from "react-redux";
 // import CustomSelect5 from "../inputFields/CustomSelect5";
-import { AppDispatch } from "../../../store/store";
-import { fetchBranches } from "../../../slices/branchSlice";
+import { AppDispatch } from "../../../../store/store";
+import { fetchBranches } from "../../../../slices/branchSlice";
 import { toast } from "react-toastify";
-import { fetchMenuCategories } from "../../../slices/menuSlice";
+import { fetchMenuCategories } from "../../../../slices/menuSlice";
 import { FaPlus } from "react-icons/fa6";
-import LayoutComponent from "../../Overview/Layout/LayoutComponent";
-import MultiSelectDropdown from "./components/MultiSelectDropdown";
-import AddSubCategoryModal from "../AddMenuCategory/AddSubCategoryModal";
+import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
+// import MultiSelectDropdown from "./components/MultiSelectDropdown";
+import AddSubCategoryModal from "../../AddMenuCategory/AddSubCategoryModal";
 
 interface SubCategoryItem {
   name: string;
@@ -35,6 +35,8 @@ const AddMenuCategory = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [selectedBranchIds, setSelectedBranchIds] = useState<string[]>([]);
+  
+    const [modVisibility, setModVisibility] = useState(false);
 
   // Update sub-category state to generic object array
   const [subCategories, setSubCategories] = useState<SubCategoryItem[]>([]);
@@ -67,19 +69,19 @@ const AddMenuCategory = ({
     }
   };
 
-  const handleBranchChange = (ids: string[]) => {
-    setSelectedBranchIds(ids);
-    setCategoryEdit?.((prev: any) => ({
-      ...prev,
-      branch_ids: ids,
-      branch_id: ids[0], // fallback
-    }));
-  };
+  // const handleBranchChange = (ids: string[]) => {
+  //   setSelectedBranchIds(ids);
+  //   setCategoryEdit?.((prev: any) => ({
+  //     ...prev,
+  //     branch_ids: ids,
+  //     branch_id: ids[0], // fallback
+  //   }));
+  // };
 
-  const branchOptions = branches.map((branch: any) => ({
-    label: branch.branch_name,
-    value: branch._id,
-  }));
+  // const branchOptions = branches.map((branch: any) => ({
+  //   label: branch.branch_name,
+  //   value: branch._id,
+  // }));
 
   const handleOpenSubCategoryModal = () => {
     setIsSubCategoryModalOpen(true);
@@ -214,30 +216,6 @@ const AddMenuCategory = ({
 
           <div className="h-[1px] w-full bg-grey100" />
 
-          {/* Assign Location */}
-          <div className="grid grid-cols-12 gap-[24px]">
-            <div className="col-span-3">
-              <h3 className="text-[16px] font-[600] text-[#101010]">
-                Assign Location
-              </h3>
-              <p className="text-[14px] text-grey300 mt-[4px]">
-                Select the branches where this category will appear.
-              </p>
-            </div>
-            <div className="col-span-9">
-              <div className="w-full max-w-[539px]">
-                <MultiSelectDropdown
-                  options={branchOptions}
-                  placeholder="All location"
-                  selectedValues={selectedBranchIds}
-                  onChange={handleBranchChange}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="h-[1px] w-full bg-grey100" />
-
           {/* Sub-categories */}
           <div className="grid grid-cols-12 gap-[24px]">
             <div className="col-span-3">
@@ -271,6 +249,52 @@ const AddMenuCategory = ({
               </button>
             </div>
           </div>
+
+          {/* Assign Location */}
+          {/* <div className="grid grid-cols-12 gap-[24px]">
+            <div className="col-span-3">
+              <h3 className="text-[16px] font-[600] text-[#101010]">
+                Assign Location
+              </h3>
+              <p className="text-[14px] text-grey300 mt-[4px]">
+                Select the branches where this category will appear.
+              </p>
+            </div>
+            <div className="col-span-9">
+              <div className="w-full max-w-[539px]">
+                <MultiSelectDropdown
+                  options={branchOptions}
+                  placeholder="All location"
+                  selectedValues={selectedBranchIds}
+                  onChange={handleBranchChange}
+                />
+              </div>
+            </div>
+          </div> */}
+
+          <div className="h-[1px] w-full bg-grey100" />
+
+ {/* Visibility Toggle */}
+            <div className="max-w-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-700">Show as active</p>
+                  <p className="text-xs text-gray-500 mt-0.5">This category  will be visible on the menu</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setModVisibility(!modVisibility)}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${modVisibility ? 'bg-black' : 'bg-gray-200'
+                    }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${modVisibility ? 'translate-x-5' : 'translate-x-0'
+                      }`}
+                  />
+                </button>
+              </div>
+            </div>
+
         </div>
 
         {error && <p className="text-center text-red-500 mt-4">{error}</p>}

@@ -2,9 +2,9 @@ import { RiHome4Fill } from "react-icons/ri";
 import { LuNotepadText, LuUtensils } from "react-icons/lu";
 import { GoArrowUpRight } from "react-icons/go";
 import { RxCaretSort } from "react-icons/rx";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store/store";
 import { useState } from "react";
 import { IoLogOutOutline } from "react-icons/io5";
 import { IoIosHelpCircleOutline } from "react-icons/io";
@@ -13,10 +13,12 @@ import { MdOutlineManageAccounts } from "react-icons/md";
 import { PiStackLight, PiUsersLight } from "react-icons/pi";
 import { LiaConciergeBellSolid } from "react-icons/lia";
 import { CiShoppingTag } from "react-icons/ci";
+import { clearUserData } from "../../../slices/UserSlice";
+import { clearSelectedBranch } from "../../../slices/branchSlice";
 export default function SideBar() {
   const { userData } = useSelector((state: RootState) => state.user);
 
-  console.log("userData", userData);
+
   const commonMenu = [
     {
       title: "Overview",
@@ -33,10 +35,16 @@ export default function SideBar() {
       icon: <LiaConciergeBellSolid />,
       link: "/menu-list",
     },
+    
     {
       title: "Modifiers",
       icon: <PiStackLight />,
-      link: "/menu-builder",
+      link: "/menu-modifiers",
+    },
+    {
+      title: "Variations",
+      icon: <PiStackLight />,
+      link: "/menu-variation",
     },
     {
       title: "Ticketing",
@@ -79,6 +87,17 @@ export default function SideBar() {
   // Upgrade now
 
   const [settingPopup, setSettingPopup] = useState(false);
+
+  // handle logout
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+    const handleLogout = () => {
+      dispatch(clearUserData());
+      dispatch(clearSelectedBranch());
+  
+      navigate("/");
+    };
 
   return (
     <div className="flex flex-col justify-between w-full h-[90vh] ">
@@ -155,7 +174,8 @@ export default function SideBar() {
               </div>
               <div>
                 <div
-                  className={`flex items-center gap-3 p-3   hover:border-l-red-400 hover:border-l-4`}
+                  className={`flex items-center gap-3 p-3 cursor-pointer hover:border-l-red-400 hover:border-l-4`}
+                  onClick={handleLogout}
                 >
                   {/* <div className="w-full flex items-center gap-4"> */}
                   <IoLogOutOutline className="text-red-500 text-xl" />
