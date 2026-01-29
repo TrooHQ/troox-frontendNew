@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LayoutComponent from '../../Overview/Layout/LayoutComponent';
-import AddModifierModal from './components/AddModifierModal';
+import LayoutComponent from '../../../Overview/Layout/LayoutComponent';
+import AddModifierModal from '../components/AddModifierModal';
 
 interface Modifier {
   id: number;
@@ -13,7 +13,7 @@ const AddMenuModifier: React.FC = () => {
   const [groupName, setGroupName] = useState('');
   const [minSelections, setMinSelections] = useState('0');
   const [maxSelections, setMaxSelections] = useState('1');
-  const [isRequired, setIsRequired] = useState(false);
+  const [modVisibility, setModVisibility] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modifiers, setModifiers] = useState<Modifier[]>([]);
 
@@ -115,21 +115,21 @@ const AddMenuModifier: React.FC = () => {
               </div>
             </div>
 
-            {/* Required Toggle */}
+            {/* Visibility Toggle */}
             <div className="max-w-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">Required selection</p>
-                  <p className="text-xs text-gray-500 mt-0.5">This is required to complete the menu.</p>
+                  <p className="text-sm font-medium text-gray-700">Show as active</p>
+                  <p className="text-xs text-gray-500 mt-0.5">This modifier group will be visible on the menu</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setIsRequired(!isRequired)}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isRequired ? 'bg-black' : 'bg-gray-200'
+                  onClick={() => setModVisibility(!modVisibility)}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${modVisibility ? 'bg-black' : 'bg-gray-200'
                     }`}
                 >
                   <span
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${isRequired ? 'translate-x-5' : 'translate-x-0'
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${modVisibility ? 'translate-x-5' : 'translate-x-0'
                       }`}
                   />
                 </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LayoutComponent from '../../Overview/Layout/LayoutComponent';
+import LayoutComponent from '../../../Overview/Layout/LayoutComponent';
 
 // Mock data based on the screenshot
 const mockModifiers = [

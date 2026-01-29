@@ -66,13 +66,15 @@ import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
 // import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
-import Categories from "./components/Dashboard/NewMenuBuilder/Categories.tsx";
-import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/AddMenuCategory.tsx";
-import MenuModifiers from "./components/Dashboard/NewMenuBuilder/MenuModifiers.tsx";
-import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/AddMenuModifier.tsx";
+import Categories from "./components/Dashboard/NewMenuBuilder/category/Categories.tsx";
+import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/category/AddMenuCategory.tsx";
+import MenuModifiers from "./components/Dashboard/NewMenuBuilder/modifiers/MenuModifiers.tsx";
+import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/modifiers/AddMenuModifier.tsx";
 import Settings from "./components/Dashboard/Settings/Settings.tsx";
 import NewSettings from "./components/Dashboard/Settings/Settings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
+import MenuVariation from "./components/Dashboard/NewMenuBuilder/variation/Variations.tsx";
+import AddMenuVariation from "./components/Dashboard/NewMenuBuilder/variation/AddMenuVariation.tsx";
 
 export default function App() {
   return (
@@ -124,6 +126,8 @@ export default function App() {
           <Route path="/menu-categories/add" element={<AddMenuCategory />} />
           <Route path="/menu-modifiers" element={<MenuModifiers />} />
           <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
+          <Route path="/menu-variation" element={<MenuVariation />} />
+          <Route path="/menu-variation/add" element={<AddMenuVariation />} />
 
           {/* Previous */}
           <Route path="/old-menu-builder" element={<OldMenuItems />} />
