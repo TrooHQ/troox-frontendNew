@@ -12,6 +12,7 @@ import { FaPlus } from "react-icons/fa6";
 import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
 // import MultiSelectDropdown from "./components/MultiSelectDropdown";
 import AddSubCategoryModal from "../../AddMenuCategory/AddSubCategoryModal";
+import MultiSelectDropdown from "../components/MultiSelectDropdown";
 
 interface SubCategoryItem {
   name: string;
@@ -35,8 +36,9 @@ const AddMenuCategory = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [selectedBranchIds, setSelectedBranchIds] = useState<string[]>([]);
-  
-    const [modVisibility, setModVisibility] = useState(false);
+
+  const [modVisibility, setModVisibility] = useState(false);
+  const [locationStatus, setLocationStatus] = useState(false);
 
   // Update sub-category state to generic object array
   const [subCategories, setSubCategories] = useState<SubCategoryItem[]>([]);
@@ -65,23 +67,26 @@ const AddMenuCategory = ({
   const handleInputChange = (key: string, value: string) => {
     if (key === "menuName") {
       setMenuName(value);
-      setCategoryEdit?.((prev: any) => ({ ...prev, menu_category_name: value }));
+      setCategoryEdit?.((prev: any) => ({
+        ...prev,
+        menu_category_name: value,
+      }));
     }
   };
 
-  // const handleBranchChange = (ids: string[]) => {
-  //   setSelectedBranchIds(ids);
-  //   setCategoryEdit?.((prev: any) => ({
-  //     ...prev,
-  //     branch_ids: ids,
-  //     branch_id: ids[0], // fallback
-  //   }));
-  // };
+  const handleBranchChange = (ids: string[]) => {
+    setSelectedBranchIds(ids);
+    setCategoryEdit?.((prev: any) => ({
+      ...prev,
+      branch_ids: ids,
+      branch_id: ids[0], // fallback
+    }));
+  };
 
-  // const branchOptions = branches.map((branch: any) => ({
-  //   label: branch.branch_name,
-  //   value: branch._id,
-  // }));
+  const branchOptions = branches.map((branch: any) => ({
+    label: branch.branch_name,
+    value: branch._id,
+  }));
 
   const handleOpenSubCategoryModal = () => {
     setIsSubCategoryModalOpen(true);
@@ -122,19 +127,19 @@ const AddMenuCategory = ({
           description: description,
           sub_categories: subCategories, // Sending array of objects
         },
-        headers
+        headers,
       );
 
       if (response.status === 200) {
-        dispatch(fetchMenuCategories(selectedBranchIds[0])); // Refresh 
+        dispatch(fetchMenuCategories(selectedBranchIds[0])); // Refresh
         toast.success(
-          response.data.message || "Menu category added successfully."
+          response.data.message || "Menu category added successfully.",
         );
         setIsModalOpen(false);
       } else {
         setError("Something went wrong. Please try again.");
         toast.error(
-          response.data.message || "Something went wrong. Please try again."
+          response.data.message || "Something went wrong. Please try again.",
         );
       }
     } catch (error) {
@@ -156,34 +161,46 @@ const AddMenuCategory = ({
 
   return (
     <>
-      <LayoutComponent title={editMode ? "Update Menu Category" : "New Menu Category"} description="Create a new menu categories to organize your menu." HeaderAction={
-        <div className="flex gap-3">
-          <button
-            className="px-[24px] py-[10px] rounded border border-grey200 text-[#101010] font-[600] hover:bg-gray-50 bg-white"
-            onClick={() => {
-              setIsModalOpen(false);
-              setCategoryEdit({});
-              setEditMode(false);
-            }}
-          >
-            Cancel
-          </button>
-          <button
-            className="px-[24px] py-[10px] rounded bg-[#0A0A0A] text-white font-[500] hover:bg-black/90 disabled:opacity-70"
-            onClick={editMode ? handleEditCategoryConfirm : handleSubmit}
-            disabled={loading}
-          >
-            {loading ? (editMode ? "Updating..." : "Saving...") : editMode ? "Update changes" : "Save changes"}
-          </button>
-        </div>
-      }>
+      <LayoutComponent
+        title={editMode ? "Update Menu Category" : "New Menu Category"}
+        description="Create a new menu categories to organize your menu."
+        HeaderAction={
+          <div className="flex gap-3">
+            <button
+              className="px-[24px] py-[10px] rounded border border-grey200 text-[#101010] font-[600] hover:bg-gray-50 bg-white"
+              onClick={() => {
+                setIsModalOpen(false);
+                setCategoryEdit({});
+                setEditMode(false);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-[24px] py-[10px] rounded bg-[#0A0A0A] text-white font-[500] hover:bg-black/90 disabled:opacity-70"
+              onClick={editMode ? handleEditCategoryConfirm : handleSubmit}
+              disabled={loading}
+            >
+              {loading
+                ? editMode
+                  ? "Updating..."
+                  : "Saving..."
+                : editMode
+                  ? "Update changes"
+                  : "Save changes"}
+            </button>
+          </div>
+        }
+      >
         {/* <div className="h-[1px] w-full bg-grey100 mb-[32px]" /> */}
 
         <div className="space-y-[32px]">
           {/* Category Section */}
           <div className="grid grid-cols-12 gap-[24px]">
             <div className="col-span-3">
-              <h3 className="text-[16px] font-[600] text-[#101010]">Category</h3>
+              <h3 className="text-[16px] font-[600] text-[#101010]">
+                Category
+              </h3>
             </div>
             <div className="col-span-9 space-y-[24px]">
               <div className="w-full max-w-[539px]">
@@ -195,7 +212,9 @@ const AddMenuCategory = ({
                   label="Enter name"
                   value={menuName}
                   error=""
-                  onChange={(newValue) => handleInputChange("menuName", newValue)}
+                  onChange={(newValue) =>
+                    handleInputChange("menuName", newValue)
+                  }
                   className="!py-[10px]"
                 />
               </div>
@@ -227,18 +246,30 @@ const AddMenuCategory = ({
               </p>
             </div>
             <div className="col-span-9 space-y-[16px]">
-              {subCategories.length > 0 && subCategories.map((sub, index) => (
-                // Simple display valid for now, usually needs edit/delete controls
-                <div key={index} className="w-full max-w-[539px] p-3 border border-grey200 rounded flex justify-between items-center bg-gray-50">
-                  <div>
-                    <p className="font-[500] text-[14px] text-[#101010]">{sub.name}</p>
-                    {sub.description && <p className="text-[12px] text-grey300 truncate">{sub.description}</p>}
+              {subCategories.length > 0 &&
+                subCategories.map((sub, index) => (
+                  // Simple display valid for now, usually needs edit/delete controls
+                  <div
+                    key={index}
+                    className="w-full max-w-[539px] p-3 border border-grey200 rounded flex justify-between items-center bg-gray-50"
+                  >
+                    <div>
+                      <p className="font-[500] text-[14px] text-[#101010]">
+                        {sub.name}
+                      </p>
+                      {sub.description && (
+                        <p className="text-[12px] text-grey300 truncate">
+                          {sub.description}
+                        </p>
+                      )}
+                    </div>
+                    <div
+                      className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${sub.isActive ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-500"}`}
+                    >
+                      {sub.isActive ? "Active" : "Inactive"}
+                    </div>
                   </div>
-                  <div className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${sub.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-500'}`}>
-                    {sub.isActive ? 'Active' : 'Inactive'}
-                  </div>
-                </div>
-              ))}
+                ))}
 
               <button
                 className="flex items-center gap-[8px] px-[16px] py-[10px] border border-grey200 rounded-[8px] text-[#344054] font-[600] text-[14px] hover:bg-gray-50"
@@ -250,51 +281,85 @@ const AddMenuCategory = ({
             </div>
           </div>
 
-          {/* Assign Location */}
-          {/* <div className="grid grid-cols-12 gap-[24px]">
-            <div className="col-span-3">
-              <h3 className="text-[16px] font-[600] text-[#101010]">
-                Assign Location
-              </h3>
-              <p className="text-[14px] text-grey300 mt-[4px]">
-                Select the branches where this category will appear.
-              </p>
-            </div>
-            <div className="col-span-9">
-              <div className="w-full max-w-[539px]">
-                <MultiSelectDropdown
-                  options={branchOptions}
-                  placeholder="All location"
-                  selectedValues={selectedBranchIds}
-                  onChange={handleBranchChange}
-                />
-              </div>
-            </div>
-          </div> */}
-
           <div className="h-[1px] w-full bg-grey100" />
 
- {/* Visibility Toggle */}
-            <div className="max-w-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-700">Show as active</p>
-                  <p className="text-xs text-gray-500 mt-0.5">This category  will be visible on the menu</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setModVisibility(!modVisibility)}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${modVisibility ? 'bg-black' : 'bg-gray-200'
-                    }`}
-                >
-                  <span
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${modVisibility ? 'translate-x-5' : 'translate-x-0'
-                      }`}
-                  />
-                </button>
+          {/* Visibility Toggle */}
+          <div className="max-w-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Show as active
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  This category will be visible on the menu
+                </p>
               </div>
+              <button
+                type="button"
+                onClick={() => setModVisibility(!modVisibility)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  modVisibility ? "bg-black" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    modVisibility ? "translate-x-5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+          {/* location Toggle */}
+          <div className="max-w-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-700">
+                  Set By Location
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Toggle off to manually select specific branches for this
+                  category.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setLocationStatus(!locationStatus)}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                  locationStatus ? "bg-black" : "bg-gray-200"
+                }`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    locationStatus ? "translate-x-5" : "translate-x-0"
+                  }`}
+                />
+              </button>
             </div>
 
+            {/* Assign Location */}
+           { !locationStatus  && <div className="my-5">
+              {/* <div className="col-span-3">
+                <h3 className="text-[16px] font-[600] text-[#101010]">
+                  Assign Location
+                </h3>
+                <p className="text-[14px] text-grey300 mt-[4px]">
+                  Select the branches where this category will appear.
+                </p>
+              </div> */}
+
+              <div className="">
+                <div className="w-full max-w-[539px]">
+                  <MultiSelectDropdown
+                    options={branchOptions}
+                    placeholder="Select Location"
+                    selectedValues={selectedBranchIds}
+                    onChange={handleBranchChange}
+                  />
+                </div>
+              </div>
+            </div>}
+
+          </div>
         </div>
 
         {error && <p className="text-center text-red-500 mt-4">{error}</p>}

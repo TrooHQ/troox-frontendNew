@@ -1,6 +1,9 @@
-import React, { useState } from "react";
-import { Box, Typography, IconButton, Button, Modal } from "@mui/material";
-import { Close, Add, DeleteOutline } from "@mui/icons-material";
+// import React, { useState } from "react";
+// import { Box, Typography, IconButton, Button, Modal } from "@mui/material";
+// import { Close, Add, DeleteOutline } from "@mui/icons-material";
+
+import { Box, Typography, Button } from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 interface InRoomDiningProps {
   isGenerated: boolean;
@@ -61,13 +64,13 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
             alt="QR Code"
             width="100"
             height="100"
-            style={{ color: '#1D2939' }}
+            style={{ color: "#1D2939" }}
           />
         </div>
 
         {/* Right Side */}
         <Box flex={1}>
-          <Typography variant="h6" sx={{ color: '#101828', mb: 1 }}>
+          <Typography variant="h6" sx={{ color: "#101828", mb: 1 }}>
             Island branch
           </Typography>
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F2F4F7] text-[#475467]">
@@ -76,14 +79,37 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
 
           {/* Buttons below QR */}
           <Box display="flex" gap={2} mt={4}>
-            <Button variant="outlined" sx={{ borderColor: '#EAECF0', color: '#101828', textTransform: 'none' }}>
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: "#EAECF0",
+                color: "#101828",
+                textTransform: "none",
+              }}
+            >
               Print
             </Button>
-            <Button onClick={onOpenEditModal} variant="outlined" sx={{ borderColor: '#EAECF0', color: '#101828', textTransform: 'none' }}>
+            <Button
+              onClick={onOpenEditModal}
+              variant="outlined"
+              sx={{
+                borderColor: "#EAECF0",
+                color: "#101828",
+                textTransform: "none",
+              }}
+            >
               Edit
             </Button>
-            <Button onClick={onOpenDeleteModal} variant="outlined" sx={{ borderColor: '#EAECF0', color: '#D92D20', textTransform: 'none' }}>
-               Remove
+            <Button
+              onClick={onOpenDeleteModal}
+              variant="outlined"
+              sx={{
+                borderColor: "#EAECF0",
+                color: "#D92D20",
+                textTransform: "none",
+              }}
+            >
+              Remove
             </Button>
           </Box>
         </Box>
@@ -95,24 +121,29 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
       {/* Hotel Configuration */}
       <Box display="flex" gap={3} mb={4}>
         <div className="w-12 h-12 border border-[#EAECF0] bg-[#EAECF0] rounded flex items-center justify-center">
-          <img
-            src="/hotels.svg"
-            alt="Hotels"
-            width="20"
-            height="20"
-          />
+          <img src="/hotels.svg" alt="Hotels" width="20" height="20" />
         </div>
         <Box flex={1}>
-          <Typography variant="h6" sx={{ color: '#101828' }}>
+          <Typography variant="h6" sx={{ color: "#101828" }}>
             Hotel configuration
           </Typography>
-          <Typography variant="body2" sx={{ color: '#475467' }}>
+          <Typography variant="body2" sx={{ color: "#475467" }}>
             Configure the number of floors in your hotel.
           </Typography>
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F2F4F7] text-[#475467] mt-1 block">
             4 floors
           </span>
-          <Button onClick={onOpenConfigureModal} variant="outlined" sx={{ borderColor: '#EAECF0', color: '#101828', mt: 1, display: 'block', textTransform: 'none' }}>
+          <Button
+            onClick={onOpenConfigureModal}
+            variant="outlined"
+            sx={{
+              borderColor: "#EAECF0",
+              color: "#101828",
+              mt: 1,
+              display: "block",
+              textTransform: "none",
+            }}
+          >
             Configure Floor
           </Button>
         </Box>
@@ -122,16 +153,30 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
       <hr className="border-[#EAECF0] mb-4" />
 
       {/* Assign Rooms */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
         <Box>
-          <Typography variant="h6" sx={{ color: '#1D2939' }}>
+          <Typography variant="h6" sx={{ color: "#1D2939" }}>
             Assign Rooms
           </Typography>
-          <Typography variant="body2" sx={{ color: '#1D2939' }}>
+          <Typography variant="body2" sx={{ color: "#1D2939" }}>
             Manage rooms that use this QR code
           </Typography>
         </Box>
-        <Button onClick={onOpenAddRoomModal} sx={{ bgcolor: '#101828', color: 'white', '&:hover': { bgcolor: '#101828' }, textTransform: 'none' }} startIcon={<Add />}>
+        <Button
+          onClick={onOpenAddRoomModal}
+          sx={{
+            bgcolor: "#101828",
+            color: "white",
+            "&:hover": { bgcolor: "#101828" },
+            textTransform: "none",
+          }}
+          startIcon={<Add />}
+        >
           New Room
         </Button>
       </Box>
@@ -140,43 +185,69 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-[#F9FAFB]">
-            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">Room Number</th>
-            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">Floors</th>
-            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">Status</th>
+            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">
+              Room Number
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">
+              Floors
+            </th>
+            <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]">
+              Status
+            </th>
             <th className="px-4 py-3 text-left text-sm font-medium text-[#667085]"></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">101</td>
-            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">1st floor</td>
+            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">
+              101
+            </td>
+            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">
+              1st floor
+            </td>
             <td className="px-4 py-3 border-b border-[#EAECF0]">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#039855]/10 text-[#039855]">
                 Active
               </span>
             </td>
             <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-right">
-              <Button variant="text" sx={{ color: '#1D2939', minWidth: 'auto', p: 0, mr: 2 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#1D2939", minWidth: "auto", p: 0, mr: 2 }}
+              >
                 Edit
               </Button>
-              <Button variant="text" sx={{ color: '#D92D20', minWidth: 'auto', p: 0 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#D92D20", minWidth: "auto", p: 0 }}
+              >
                 Delete
               </Button>
             </td>
           </tr>
           <tr>
-            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">102</td>
-            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">2nd floor</td>
+            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">
+              102
+            </td>
+            <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-[#1D2939]">
+              2nd floor
+            </td>
             <td className="px-4 py-3 border-b border-[#EAECF0]">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#039855]/10 text-[#039855]">
                 Active
               </span>
             </td>
             <td className="px-4 py-3 border-b border-[#EAECF0] text-sm text-right">
-              <Button variant="text" sx={{ color: '#1D2939', minWidth: 'auto', p: 0, mr: 2 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#1D2939", minWidth: "auto", p: 0, mr: 2 }}
+              >
                 Edit
               </Button>
-              <Button variant="text" sx={{ color: '#D92D20', minWidth: 'auto', p: 0 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#D92D20", minWidth: "auto", p: 0 }}
+              >
                 Delete
               </Button>
             </td>
@@ -190,10 +261,16 @@ const InRoomDining: React.FC<InRoomDiningProps> = ({
               </span>
             </td>
             <td className="px-4 py-3 text-sm text-right">
-              <Button variant="text" sx={{ color: '#1D2939', minWidth: 'auto', p: 0, mr: 2 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#1D2939", minWidth: "auto", p: 0, mr: 2 }}
+              >
                 Edit
               </Button>
-              <Button variant="text" sx={{ color: '#D92D20', minWidth: 'auto', p: 0 }}>
+              <Button
+                variant="text"
+                sx={{ color: "#D92D20", minWidth: "auto", p: 0 }}
+              >
                 Delete
               </Button>
             </td>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import LayoutComponent from "../Overview/Layout/LayoutComponent";
 import { Modal, Box, Typography, IconButton, Button } from "@mui/material";
-import { Close, Add, DeleteOutline } from "@mui/icons-material";
+// import { Close, Add, DeleteOutline } from "@mui/icons-material";
+import { Close, Add,  } from "@mui/icons-material";
 import InRoomDining from "./InRoomDining";
 import TableQRCode from "./TableQRCode";
 import OnlineOrdering from "./OnlineOrdering";

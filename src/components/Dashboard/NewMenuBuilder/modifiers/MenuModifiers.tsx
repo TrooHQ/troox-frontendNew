@@ -80,9 +80,7 @@ const MenuModifiers: React.FC = () => {
                 <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
                   Modifier groups
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
-                  Category
-                </th>
+               
                 <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-left text-gray-700 uppercase">
                   Modifiers
                 </th>
@@ -101,9 +99,7 @@ const MenuModifiers: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm font-medium text-gray-900">{modifier.name}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-600">{modifier.category}</span>
-                  </td>
+                 
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-gray-600">{modifier.modifierCount} modifiers</span>
                   </td>
