@@ -4,7 +4,7 @@ import CustomInput from "../../inputFields/CustomInput";
 
 interface SubCategory {
   name: string;
-  description: string;
+  // description: string;
   isActive: boolean;
 }
 
@@ -22,15 +22,21 @@ const AddSubCategoryModal = ({
   parentCategoryName = "[Category_name]",
 }: AddSubCategoryModalProps) => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [isActive, setIsActive] = useState(false);
+  // const [description, setDescription] = useState("");
+  const [isActive, setIsActive] = useState(true);
+
+  //  {
+//       "name": "string",
+//       "sort_order": 0,
+//       "is_active": true
+//     }
 
   const handleAdd = () => {
     if (!name) return; // Add validation logic/error message
-    onAdd({ name, description, isActive });
+    onAdd({ name, isActive });
     setName("");
-    setDescription("");
-    setIsActive(false);
+    // setDescription("");
+    // setIsActive(false);
     onClose();
   };
 
@@ -67,7 +73,7 @@ const AddSubCategoryModal = ({
             />
           </div>
 
-          <div>
+          {/* <div>
             <p className="text-[14px] font-[500] text-[#344054] mb-[6px]">
               Description
             </p>
@@ -76,7 +82,7 @@ const AddSubCategoryModal = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-          </div>
+          </div> */}
 
           <div className="flex justify-between items-center">
             <div>
