@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
-const BASE_PATH = "/api/v1/menu";
+const BASE_PATH = "/api/v1/catalog";
 
 export interface ModifierGroup {
   id: string;

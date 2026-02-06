@@ -55,10 +55,25 @@ export default function AuthCallback() {
         }
 
         const data = await res.json();
-        const accessToken = data.access_token || data.access;
+        let accessToken = data.access_token || data.access;
 
         if (!accessToken) {
           throw new Error('No access token in response');
+        }
+
+        // Call /auth/refresh/ to establish session (refresh_token is in HttpOnly cookie from exchange)
+        const refreshRes = await fetch(`${SERVER_DOMAIN}/auth/refresh/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({}),
+        });
+        if (refreshRes.ok) {
+          const refreshData = await refreshRes.json();
+          const refreshedToken = refreshData.access_token || refreshData.access;
+          if (refreshedToken) {
+            accessToken = refreshedToken;
+          }
         }
 
         // Dual storage (Option C): sessionStorage for new flows, localStorage for backward compatibility
