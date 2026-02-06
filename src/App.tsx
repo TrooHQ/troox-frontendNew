@@ -72,6 +72,7 @@ import Categories from "./components/Dashboard/NewMenuBuilder/category/Categorie
 import AddMenuCategory from "./components/Dashboard/NewMenuBuilder/category/AddMenuCategory.tsx";
 import MenuModifiers from "./components/Dashboard/NewMenuBuilder/modifiers/MenuModifiers.tsx";
 import AddMenuModifier from "./components/Dashboard/NewMenuBuilder/modifiers/AddMenuModifier.tsx";
+import EditMenuModifier from "./components/Dashboard/NewMenuBuilder/modifiers/EditMenuModifier.tsx";
 import Settings from "./components/Dashboard/Settings/Settings.tsx";
 import NewSettings from "./components/Dashboard/Settings/Settings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
@@ -132,6 +133,7 @@ export default function App() {
           <Route path="/menu-categories/add" element={<AddMenuCategory />} />
           <Route path="/menu-modifiers" element={<MenuModifiers />} />
           <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
+          <Route path="/menu-modifiers/:id/edit" element={<EditMenuModifier />} />
           <Route path="/menu-variation" element={<MenuVariation />} />
           <Route path="/menu-variation/add" element={<AddMenuVariation />} />
 
