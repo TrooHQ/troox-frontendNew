@@ -59,15 +59,7 @@ export default function AddMenuItem() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">
-                Base price <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300"
-              />
-            </div>
+           
             <div>
               <label className="block text-sm font-medium text-gray-400 mb-1">
                 Prep Time (minutes) <span className="text-red-500">*</span>
@@ -76,6 +68,24 @@ export default function AddMenuItem() {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300"
               />
+            </div>
+
+             <div className='overflow-x-hidden'>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+               Station (Optional)<span className=""></span>
+              </label>
+              <ReusableDropdown
+                options={[
+                  { label: 'Category 1', id: '1' },
+                  { label: 'Category 2', id: '2' },
+                  { label: 'Category 3', id: '3' },
+                ]}
+                onChange={() => { }}
+                placeholder="Search category"
+                buttonLabel="Select category"
+                width={220}
+              />
+
             </div>
           </div>
 
@@ -106,6 +116,17 @@ export default function AddMenuItem() {
         </FormSection>
 
 
+        <FormSection title="Pricing">
+          <div>
+              <label className="block text-sm font-medium text-gray-400 mb-1">
+                Base price <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                className="w-52 px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300"
+              />
+            </div>
+        </FormSection>
         <FormSection title="Variants">
           <ReusableDropdown
             options={[
@@ -142,7 +163,7 @@ export default function AddMenuItem() {
             <p className="text-sm text-gray-500 mb-2">Add searchable tags like "spicy", "bestseller", "new"</p>
             <input
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300"
+              className="w-1/2 px-3 py-2 border border-gray-300 rounded-lg  focus:ring-0 focus:border-gray-300"
             />
           </div>
         </FormSection>

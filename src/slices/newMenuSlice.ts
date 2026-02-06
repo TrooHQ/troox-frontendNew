@@ -1,75 +1,75 @@
-/**
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { api } from "../Api/Api";
 
-    post endpoint : 
-/api/v1/catalog/items/
+const BASE_PATH = "/api/v1/catalog";
 
-payload {
-  "name": "string",
-  "description": "string",
-  "is_active": true,
-  "sort_order": 2147483647,
-  "all_locations": true,
-  "category_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "subcategory_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "tag_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "allergy_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "location_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "station_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "modifier_groups": [
-    {
-      "modifier_group_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "name": "string",
-      "description": "",
-      "sort_order": 0,
-      "is_active": true,
-      "required": true,
-      "min_selections": 0,
-      "max_selections": 0,
-      "modifiers": [
-        {
-          "name": "string",
-          "price_delta": "0.00",
-          "sort_order": 0,
-          "is_active": true
-        }
-      ]
-    }
-  ],
-  "variants": [
-    {
-      "variant_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "sort_order": 0,
-      "required": true,
-      "min_selections": 0,
-      "max_selections": 0,
-      "options": [
-        {
-          "name": "string",
-          "sort_order": 0,
-          "price_delta": "0.00",
-          "is_active": true
-        }
-      ]
-    }
-  ],
-  "auto_generate_variations": true,
-  "default_variation": {
-    "price": "0.00",
-    "sku": "",
-    "is_taxable": false,
-    "tax_ids": [
-      "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    ]
-  }
+export interface MenuItem {
+    id: string;
+    name: string;
+    description: string;
+    category: string;
+    subcategory: string;
+    is_active: boolean;
+    sort_order: number;
+    all_locations: boolean;
+    item_variants: string;
+    variations: string;
 }
 
+const getHeaders = () => ({
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
 
+export const fetchMenuItems = createAsyncThunk<
+    MenuItem[],
+    string | undefined,
+    { rejectValue: string }
+>("newMenu/fetchMenuItems", async (branch_id, { rejectWithValue }) => {
+    try {
+        const url = branch_id
+            ? `${BASE_PATH}/items/?location_id=${branch_id}`
+            : `${BASE_PATH}/items/`;
+        const response = await api.get<MenuItem[]>(url, getHeaders());
+        return Array.isArray(response.data) ? response.data : [];
+    } catch (error: any) {
+        const message = error.response?.data?.message || "Failed to fetch menu items";
+        return rejectWithValue(message);
+    }
+});
 
+interface MenuState {
+    items: MenuItem[];
+    loading: boolean;
+    error: string | null;
+}
 
- */
+const initialState: MenuState = {
+    items: [],
+    loading: false,
+    error: null,
+};
+
+const newMenuSlice = createSlice({
+    name: "newMenu",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchMenuItems.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchMenuItems.fulfilled, (state, action: PayloadAction<MenuItem[]>) => {
+                state.loading = false;
+                state.items = action.payload;
+            })
+            .addCase(fetchMenuItems.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+    },
+});
+
+export default newMenuSlice.reducer;
