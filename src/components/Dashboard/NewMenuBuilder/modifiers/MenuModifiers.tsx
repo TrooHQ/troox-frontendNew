@@ -1,24 +1,25 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store/store";
 import {
   fetchModifierGroups,
   fetchModifiers,
-  updateModifierGroup,
   deleteModifierGroup,
 } from "../../../../slices/modifierSlice";
 import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
 
 const MenuModifiers: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { modifierGroups, modifiers, loading } = useSelector(
     (state: RootState) => state.modifier
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
-  const [editGroupName, setEditGroupName] = useState("");
-  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   useEffect(() => {
     dispatch(fetchModifierGroups());
@@ -26,14 +27,24 @@ const MenuModifiers: React.FC = () => {
   }, [dispatch]);
 
   const tableRows = useMemo(() => {
-    return modifierGroups.map((group) => ({
-      id: group.id,
-      name: group.name,
-      modifierCount: modifiers.filter((m) => m.modifier_group === group.id)
-        .length,
-      minSelection: group.min_selections ?? 0,
-      maxSelection: group.max_selections ?? 1,
-    }));
+    return modifierGroups.map((group) => {
+      const count =
+        group.modifiers?.length ??
+        modifiers.filter(
+          (m) =>
+            (m as { modifier_group?: string; group_id?: string }).modifier_group ===
+              group.id ||
+            (m as { modifier_group?: string; group_id?: string }).group_id ===
+              group.id
+        ).length;
+      return {
+        id: group.id,
+        name: group.name,
+        modifierCount: count,
+        minSelection: group.min_selections ?? 0,
+        maxSelection: group.max_selections ?? 1,
+      };
+    });
   }, [modifierGroups, modifiers]);
 
   const filteredRows = useMemo(() => {
@@ -44,35 +55,17 @@ const MenuModifiers: React.FC = () => {
   }, [tableRows, searchQuery]);
 
   const handleEditClick = (row: (typeof tableRows)[0]) => {
-    setEditingGroupId(row.id);
-    setEditGroupName(row.name);
+    navigate(`/menu-modifiers/${row.id}/edit`);
   };
 
-  const handleSaveEdit = async () => {
-    if (!editingGroupId || !editGroupName.trim()) return;
-    try {
-      await dispatch(
-        updateModifierGroup({ id: editingGroupId, name: editGroupName.trim() })
-      ).unwrap();
-      setEditingGroupId(null);
-    } catch {
-      // Toast handled by thunk
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditingGroupId(null);
-    setEditGroupName("");
-  };
-
-  const handleDeleteClick = (groupId: string) => {
-    setDeleteConfirmId(groupId);
+  const handleDeleteClick = (row: (typeof tableRows)[0]) => {
+    setDeleteConfirm({ id: row.id, name: row.name });
   };
 
   const handleConfirmDelete = async () => {
-    if (deleteConfirmId) {
-      await dispatch(deleteModifierGroup(deleteConfirmId));
-      setDeleteConfirmId(null);
+    if (deleteConfirm) {
+      await dispatch(deleteModifierGroup(deleteConfirm.id));
+      setDeleteConfirm(null);
     }
   };
 
@@ -178,33 +171,9 @@ const MenuModifiers: React.FC = () => {
                     className="transition-colors hover:bg-gray-50"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {editingGroupId === row.id ? (
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            value={editGroupName}
-                            onChange={(e) => setEditGroupName(e.target.value)}
-                            className="block w-48 px-2 py-1.5 border border-gray-200 rounded text-sm"
-                            autoFocus
-                          />
-                          <button
-                            onClick={handleSaveEdit}
-                            className="text-sm font-medium text-black hover:underline"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={handleCancelEdit}
-                            className="text-sm text-gray-500 hover:underline"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-sm font-medium text-gray-900">
-                          {row.name}
-                        </span>
-                      )}
+                      <span className="text-sm font-medium text-gray-900">
+                        {row.name}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm text-gray-600">
@@ -222,8 +191,7 @@ const MenuModifiers: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right whitespace-nowrap">
-                      {editingGroupId !== row.id && (
-                        <div className="flex gap-2 justify-end items-center">
+                      <div className="flex gap-2 justify-end items-center">
                           <button
                             onClick={() => handleEditClick(row)}
                             className="p-2 text-gray-400 rounded-lg border border-gray-200 transition-colors hover:text-gray-600 hover:bg-gray-50"
@@ -243,7 +211,7 @@ const MenuModifiers: React.FC = () => {
                             </svg>
                           </button>
                           <button
-                            onClick={() => handleDeleteClick(row.id)}
+                            onClick={() => handleDeleteClick(row)}
                             className="p-2 text-red-500 rounded-lg border border-red-100 transition-colors hover:bg-red-50"
                           >
                             <svg
@@ -261,7 +229,6 @@ const MenuModifiers: React.FC = () => {
                             </svg>
                           </button>
                         </div>
-                      )}
                     </td>
                   </tr>
                 ))
@@ -294,15 +261,20 @@ const MenuModifiers: React.FC = () => {
           )}
         </div>
 
-        {deleteConfirmId && (
+        {deleteConfirm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-sm">
-              <p className="text-gray-700 mb-4">
-                Are you sure you want to delete this modifier group?
+            <div className="bg-white rounded-lg p-6 max-w-sm shadow-xl">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Delete modifier group
+              </h3>
+              <p className="text-gray-700 mb-6">
+                You are about to delete{" "}
+                <span className="font-semibold">{deleteConfirm.name}</span>{" "}
+                group. This action cannot be undone.
               </p>
               <div className="flex gap-2 justify-end">
                 <button
-                  onClick={() => setDeleteConfirmId(null)}
+                  onClick={() => setDeleteConfirm(null)}
                   className="px-4 py-2 text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
