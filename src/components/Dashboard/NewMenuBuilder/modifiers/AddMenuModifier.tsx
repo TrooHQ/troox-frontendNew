@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../store/store";
-import {
-  createModifierGroup,
-  createModifier,
-} from "../../../../slices/modifierSlice";
+import { createModifierGroup } from "../../../../slices/modifierSlice";
 import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
 import AddModifierModal from "../components/AddModifierModal";
 
@@ -27,10 +24,17 @@ const AddMenuModifier: React.FC = () => {
   const [modifiers, setModifiers] = useState<ModifierFormItem[]>([]);
   const [saving, setSaving] = useState(false);
 
-  const handleAddModifier = (newModifier: { name: string; price: string }) => {
-    setModifiers([
-      ...modifiers,
-      { id: Date.now(), name: newModifier.name, price: newModifier.price },
+  const handleAddModifiers = (
+    newModifiers: { name: string; price: string }[]
+  ) => {
+    const baseId = Date.now();
+    setModifiers((prev) => [
+      ...prev,
+      ...newModifiers.map((m, i) => ({
+        id: baseId + i,
+        name: m.name,
+        price: m.price,
+      })),
     ]);
   };
 
@@ -42,29 +46,31 @@ const AddMenuModifier: React.FC = () => {
     if (!groupName.trim()) return;
     setSaving(true);
     try {
+      const maxVal =
+        maxSelections === "Unlimited" ? 999 : Number(maxSelections);
       const groupPayload = {
         name: groupName.trim(),
         description: description.trim() || undefined,
         is_active: modVisibility,
+        sort_order: 0,
+        required: minSelections > 0,
         min_selections: minSelections,
-        max_selections:
-          maxSelections === "Unlimited" ? 999 : Number(maxSelections),
+        max_selections: maxVal,
+        modifiers:
+          modifiers.length > 0
+            ? modifiers
+                .filter((m) => m.name.trim())
+                .map((m, i) => ({
+                  name: m.name.trim(),
+                  price_delta: (
+                    Number.parseFloat(m.price || "0") || 0
+                  ).toFixed(2),
+                  is_active: true,
+                  sort_order: i,
+                }))
+            : undefined,
       };
-      const createdGroup = await dispatch(
-        createModifierGroup(groupPayload)
-      ).unwrap();
-
-      for (const mod of modifiers) {
-        if (mod.name.trim()) {
-          await dispatch(
-            createModifier({
-              name: mod.name.trim(),
-              modifier_group: createdGroup.id,
-              price: String(Number.parseFloat(mod.price || "0") || 0),
-            })
-          ).unwrap();
-        }
-      }
+      await dispatch(createModifierGroup(groupPayload)).unwrap();
       navigate("/menu-modifiers");
     } catch {
       // Toast handled by thunk
@@ -272,7 +278,7 @@ const AddMenuModifier: React.FC = () => {
         <AddModifierModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          onSave={handleAddModifier}
+          onSave={handleAddModifiers}
           groupName={groupName}
         />
       </div>

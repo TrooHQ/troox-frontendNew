@@ -55,14 +55,34 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
+function isAuthError(status: number | undefined, data: unknown): boolean {
+  if (status === 401 || status === 403) return true;
+  if (status && data && typeof data === "object") {
+    const detail = (data as { detail?: string }).detail;
+    if (typeof detail === "string") {
+      const lower = detail.toLowerCase();
+      if (
+        lower.includes("invalid jwt") ||
+        lower.includes("signature has expired") ||
+        lower.includes("token expired")
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
+    const status = error.response?.status;
+    const data = error.response?.data;
 
-    if (error.response?.status !== 401) {
+    if (!isAuthError(status, data)) {
       return Promise.reject(error);
     }
 
