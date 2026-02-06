@@ -5,7 +5,7 @@ import { MenuItemProp } from '../types';
 const DataTable = ({ items }: { items: MenuItemProp[] }) => {
   return (
     <div className="overflow-hidden bg-white border-b shadow-sm border-b-gray-200">
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -31,7 +31,7 @@ const DataTable = ({ items }: { items: MenuItemProp[] }) => {
                 Tags
               </th>
               <th scope="col" className="relative px-6 py-3">
-                <span className="sr-only">Actions</span>
+                {/* <span className="sr-only">Actions </span> */}
               </th>
             </tr>
           </thead>

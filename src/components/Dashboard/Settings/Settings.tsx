@@ -6,13 +6,17 @@ import OperationsSettings from './OperationsSettings';
 import NotificationSettings from './NotificationSettings';
 
 const NewSettings: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'General' | 'Locations' | 'Operations apps' | 'Notifications'>('General');
+  const [activeTab, setActiveTab] = useState<'General' | 'Locations' | 'Operations apps' | 'Notifications'
+  //  | 'Manage Users' | 'Manage Assets'
+   >('General');
 
   const tabs = [
     { id: 'General', label: 'General' },
     { id: 'Locations', label: 'Locations' },
     { id: 'Operations apps', label: 'Operations apps' },
     { id: 'Notifications', label: 'Notifications' },
+    // { id: 'Manage Users', label: 'Manage Users' },
+    // { id: 'Manage Assets', label: 'Manage Assets' },
   ];
 
   return (
@@ -48,6 +52,8 @@ const NewSettings: React.FC = () => {
           {activeTab === 'Locations' && <LocationSettings />}
           {activeTab === 'Operations apps' && <OperationsSettings />}
           {activeTab === 'Notifications' && <NotificationSettings />}
+          {/* {activeTab === 'Manage Users' && <NotificationSettings />}
+          {activeTab === 'Manage Assets' && <NotificationSettings />} */}
         </div>
       </div>
     </LayoutComponent>
