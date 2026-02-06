@@ -19,7 +19,7 @@ export default function MenuItems() {
   const {
     items: menuItems,
     loading,
-    error,
+    // error,
   } = useSelector((state: any) => state.menuItem);
 
   const { totalItems, totalPages } = useSelector((state: any) => state.menu);
