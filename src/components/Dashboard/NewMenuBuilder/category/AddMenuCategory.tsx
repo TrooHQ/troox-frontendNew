@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomInput from "../../../inputFields/CustomInput";
-import { CORE_SERVER_DOMAIN, } from "../../../../Api/Api";
+import { SERVER_DOMAIN, } from "../../../../Api/Api";
 import { useDispatch, useSelector } from "react-redux";
 // import CustomSelect5 from "../inputFields/CustomSelect5";
 import { AppDispatch } from "../../../../store/store";
@@ -154,7 +154,7 @@ const headers = {
       // `${SERVER_DOMAIN}/menu/addMenuCategory`,
       const response = await axios.post(
         
-        `${CORE_SERVER_DOMAIN}/api/v1/catalog/categories/`,
+        `${SERVER_DOMAIN}/api/v1/catalog/categories/`,
         payload,
         headers,
       );
