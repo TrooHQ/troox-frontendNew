@@ -48,7 +48,7 @@ const MenuBuilder = () => {
   console.log(totalItems, totalPages, currentPage, "allP");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSingleUpload, setSingleUpload] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  // const [editMode, setEditMode] = useState(false);
   const [addMenuGroup, setAddMenuGroup] = useState(false);
   const [addMenuItem, setAddMenuItem] = useState(false);
   const [addModifierModar, setAddModifierModal] = useState(false);
@@ -114,43 +114,43 @@ const MenuBuilder = () => {
   const handleClose2 = () => {
     setAnchorEl2(null);
   };
-  const [categoryEdit, setCategoryEdit] = useState<any>({});
-  const handleEditCategoryConfirm = async () => {
-    if (categoryEdit) {
-      setEditLoading(true);
-      try {
+  // const [categoryEdit, setCategoryEdit] = useState<any>({});
+  // const handleEditCategoryConfirm = async () => {
+  //   if (categoryEdit) {
+  //     setEditLoading(true);
+  //     try {
 
-        const payload =
-        {
-          ...categoryEdit, name: categoryEdit.menu_category_name,
-        }
-        console.log("payload", payload)
-        const res = await api.put(
-          "/menu/editMenuCategory",
-          payload,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        if (res.status === 200) {
-          toast.success("Category name updated successfully");
-          setEditGroupModalOpen(false);
-          setIsModalOpen(false);
-          setCategoryEdit({});
-          setEditMode(false);
-          dispatch(fetchMenuCategories(selectedBranch.id));
-        }
-      } catch (error) {
-        toast.error("An error occurred, please try again");
-      } finally {
-        // setEditLoading(false);
-        setCategoryEdit({});
-        // setNewCategoryName("");
-      }
-    }
-  };
+  //       const payload =
+  //       {
+  //         ...categoryEdit, name: categoryEdit.menu_category_name,
+  //       }
+  //       console.log("payload", payload)
+  //       const res = await api.put(
+  //         "/menu/editMenuCategory",
+  //         payload,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //         }
+  //       );
+  //       if (res.status === 200) {
+  //         toast.success("Category name updated successfully");
+  //         setEditGroupModalOpen(false);
+  //         setIsModalOpen(false);
+  //         setCategoryEdit({});
+  //         setEditMode(false);
+  //         dispatch(fetchMenuCategories(selectedBranch.id));
+  //       }
+  //     } catch (error) {
+  //       toast.error("An error occurred, please try again");
+  //     } finally {
+  //       // setEditLoading(false);
+  //       setCategoryEdit({});
+  //       // setNewCategoryName("");
+  //     }
+  //   }
+  // };
   const handleDeleteCategory = async (category: any) => {
 
     if (category) {
@@ -469,7 +469,9 @@ const MenuBuilder = () => {
                         >
                           <MenuItem
                             // onClick={() => handleCategoryEdit(category)}
-                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); setEditMode(true); }}
+                            onClick={() => { setSingleUpload(true); setIsModalOpen(false); 
+                              // setCategoryEdit({ image: category.image, menu_category_name: category.name, branch_id: category.branch, category_id: category._id }); handleClose2(); setEditMode(true); 
+                            }}
                             sx={{
                               display: "flex",
                               alignItems: "center",
@@ -552,7 +554,8 @@ const MenuBuilder = () => {
 
           {/* MODALS */}
           <Modal isOpen={isSingleUpload} onClose={() => setSingleUpload(false)}>
-            <AddMenuCategory setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} setEditMode={setEditMode} editMode={editMode} />
+            <AddMenuCategory />
+            {/* setIsModalOpen={setSingleUpload} editCategory={categoryEdit} handleEditCategoryConfirm={handleEditCategoryConfirm} setCategoryEdit={setCategoryEdit} setEditMode={setEditMode} editMode={editMode} */}
           </Modal>
           <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             {/* setBulkUpload */}
