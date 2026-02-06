@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 import BusinessInfoForm from "../forms/BusinessInfoForm";
 import PersonalInfoForm from "../forms/PersonalInfoForm";
 import { selectTransformedRegisterState } from "../../slices/registerSlice";
-import { SERVER_DOMAIN } from "../../Api/Api";
-import axios from "axios";
+import { api } from "../../Api/Api";
 import { toast } from "react-toastify";
 
 const BusinessProfiles: React.FC = () => {
@@ -24,9 +23,9 @@ const BusinessProfiles: React.FC = () => {
       // Send request to sample endpoint
       try {
         const endpoint = isFromGoGrub
-          ? `${SERVER_DOMAIN}/onboardGoGrubBusiness/`
-          : `${SERVER_DOMAIN}/onboardBusiness/`;
-        const sampleResponse = await axios.post(endpoint, transformedState);
+          ? "/onboardGoGrubBusiness/"
+          : "/onboardBusiness/";
+        const sampleResponse = await api.post(endpoint, transformedState);
 
         if (sampleResponse.status === 200) {
           localStorage.setItem("businessId", sampleResponse.data.business_id);

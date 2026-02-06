@@ -1,378 +1,220 @@
 import { Close } from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../../../Api/Api";
-import { toast } from "react-toastify";
+import { useEffect, useState, useMemo } from "react";
 import Modal from "../../Modal";
-// import OutletSelectionRadioGroup from "../OutletSelectionRadioGroup";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../store/store";
 import { fetchBranches } from "../../../slices/branchSlice";
+import {
+  fetchModifierGroups,
+  fetchModifiers,
+  createModifierGroup,
+  updateModifierGroup,
+  deleteModifierGroup,
+  createModifier,
+  updateModifier,
+  deleteModifier,
+  ModifierGroup,
+} from "../../../slices/modifierSlice";
+import type { DisplayModifierGroup } from "./DisplayModifiers";
 import ConfirmationDialog from "../ConfirmationDialog";
 import Add from "../../../assets/addWhite.svg";
 import { truncateText } from "../../../utils/truncateText";
 import ModifierModal from "./ModifierModal";
 import DisplayModifiers from "./DisplayModifiers";
 
-
-interface Modifier {
+interface ModifierFormItem {
   id: number;
   name: string;
   price: string;
 }
 
 const Modifiers = ({
-  activeSubMenu,
-  selectedBranch,
-  selectedMenuItem,
+  activeSubMenu: _activeSubMenu,
+  selectedBranch: _selectedBranch,
+  selectedMenuItem: _selectedMenuItem,
   addModifierModar,
   setAddModifierModal,
   handleAddModifier,
   setEditModifierData,
-  editModifierData
+  editModifierData,
 }: any) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { modifierGroups, modifiers, loading } = useSelector(
+    (state: RootState) => state.modifier
+  );
 
-  const [modifiers, setModifiers] = useState<Modifier[]>([
+  const [modifierFormItems, setModifierFormItems] = useState<ModifierFormItem[]>([
     { id: 1, name: "", price: "" },
   ]);
   const [confirmSaveModal, setConfirmSaveModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
-  const [isGroupFetching, setIsGroupFetching] = useState(false);
-  const [selectedModifier, setSelectedModifier] = useState({} as any);
+  const [localLoading, setLocalLoading] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState<ModifierGroup | null>(null);
+  const [confirmationDialog, setConfirmationDialog] = useState({
+    open: false,
+    id: "",
+  });
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, value: "" });
+  const [modGroupLoading, setModGroupLoading] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [editId, setEditId] = useState<string | null>(null);
+  const [newGroupName, setNewGroupName] = useState("");
 
-  // console.log("selectedMenuItem", selectedMenuItem)
+  const setEditModifierDataHandler = (data: typeof editModifierData) => {
+    if (setEditModifierData) setEditModifierData(data);
+  };
 
   useEffect(() => {
-    editModifierData && setModifiers([editModifierData])
-  }, [editModifierData])
+    if (editModifierData) {
+      setModifierFormItems([
+        {
+          id: 1,
+          name: editModifierData.name,
+          price: String(editModifierData.price ?? ""),
+        },
+      ]);
+    }
+  }, [editModifierData]);
 
   useEffect(() => {
     dispatch(fetchBranches());
   }, [dispatch]);
 
-  const handleKeepModifierGroupDetail = (modifier: any) => {
-    setSelectedModifier(modifier);
-  };
-
-
   useEffect(() => {
-    // Clear the fetched modifiers when activeSubMenu changes
-  }, [activeSubMenu]);
+    dispatch(fetchModifierGroups());
+    dispatch(fetchModifiers());
+  }, [dispatch]);
 
-  const fetchModifierGroups = async () => {
-    setIsGroupFetching(true);
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    try {
-      const response = await axios.get(
-        // /menu/getAllModifierGroups/?branch_id=669e67afbe2d93ee11921119
-        `${SERVER_DOMAIN}/menu/getAllModifierGroups/?branch_id=${selectedBranch?.id}`,
-        // `${SERVER_DOMAIN}/menu/getMenuModifierGroupByItem/?attach_to=item&name=${selectedMenuItem.menu_item_name}&branch_id=${selectedBranch?.id}`,
-        headers
-      );
-      console.log("resp", response);
-      setFetchedModifierGroups(response.data.data || []);
-      // toast.success("Modifier groups fetched successfully.");
-    } catch (error) {
-      // toast.error("Failed to fetch modifiers.");
-    } finally {
-      setIsGroupFetching(false);
-    }
+  const groupsWithModifiers: DisplayModifierGroup[] = useMemo(() => {
+    return modifierGroups.map((group) => ({
+      id: group.id,
+      name: group.name,
+      modifiers: modifiers.filter((m) => m.modifier_group === group.id),
+    }));
+  }, [modifierGroups, modifiers]);
+
+  const handleKeepModifierGroupDetail = (group: DisplayModifierGroup) => {
+    setSelectedGroup(group);
   };
-
-  useEffect(() => {
-    fetchModifierGroups()
-  }, []);
 
   const removeModifier = (id: number) => {
-    setModifiers((prev) => prev.filter((modifier) => modifier.id !== id));
+    setModifierFormItems((prev) => prev.filter((m) => m.id !== id));
   };
 
   const handleConfirmSave = async () => {
-    setLoading(true);
-    // Create the payload with branch_id, modifier_group_name, and modifiers array
-    const payload = {
-      branch_id: selectedBranch.id,
-      attach_to: "modifier_group",
-      modifier_name: modifiers[0].name,
-      // modifier_group_name: selectedModifier.modifier_group_name,
-      price: parseFloat(modifiers[0].price),
-      modifier_group_id: selectedModifier._id,
-    };
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
+    if (!selectedGroup || !modifierFormItems[0]?.name) return;
+    setLocalLoading(true);
     try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addMenuModifier`,
-        payload,
-        headers
-      );
-      toast.success(response.data.message || "Modifiers added successfully.");
+      await dispatch(
+        createModifier({
+          name: modifierFormItems[0].name,
+          modifier_group: selectedGroup.id,
+          price: String(Number.parseFloat(modifierFormItems[0].price || "0") || 0),
+        })
+      ).unwrap();
       setAddModifierModal(false);
-      fetchModifierGroups();
-      setModifiers([{ id: 1, name: "", price: "" }]); // Reset modifiers state
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to add modifiers.");
+      setModifierFormItems([{ id: 1, name: "", price: "" }]);
+      setSelectedGroup(null);
+    } catch {
+      // Toast handled by thunk
     } finally {
-      setLoading(false);
-      setConfirmSaveModal(false); // Close the confirmation modal
+      setLocalLoading(false);
+      setConfirmSaveModal(false);
     }
   };
 
-  console.log("selectedModifier", selectedModifier)
   const handleUpdateMod = async () => {
-
-    setLoading(true);
-
-    const payload = {
-      branch_id: selectedBranch.id,
-      attach_to: "modifier_group",
-      modifier_name: editModifierData.modifier_name,
-      price: parseFloat(editModifierData.modifier_price),
-      modifier_group_id: selectedModifier._id,
-      modifier_id: editModifierData._id,
-    };
-    console.log("payload", payload)
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-    // https://troox-backend-new.onrender.com/api/menu/addMenuModifier
+    if (!editModifierData) return;
+    setLocalLoading(true);
     try {
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/menu/updateMenuModifier?modifier_id=${editModifierData._id}`,
-        payload,
-        headers
-      );
-      toast.success(response.data.message || "Modifiers updated successfully.");
-      setEditModifierData(null);
+      await dispatch(
+        updateModifier({
+          id: editModifierData.id,
+          name: editModifierData.name ?? "",
+          price: String(Number.parseFloat(String(editModifierData.price ?? "0")) || 0),
+        })
+      ).unwrap();
+      setEditModifierDataHandler(null);
       setAddModifierModal(false);
-      fetchModifierGroups();
-    } catch (e: any) {
-      toast.error(e.response?.data?.message || "Failed to add modifiers.");
+      setModifierFormItems([{ id: 1, name: "", price: "" }]);
+    } catch {
+      // Toast handled by thunk
     } finally {
-      setLoading(false);
-      setConfirmSaveModal(false); // Close the confirmation modal
+      setLocalLoading(false);
+      setConfirmSaveModal(false);
     }
-  }
-
-  const [confirmationDialog, setConfirmationDialog] = useState({
-    open: false,
-    id: "",
-  });
-
-  const [deleteDialog, setDeleteDialog] = useState({
-    open: false,
-    value: "",
-  });
+  };
 
   const handleDeleteClick = (modifierId: string) => {
     setConfirmationDialog({ open: true, id: modifierId });
   };
-  const handleModifierGroupDeleteClick = (modifierName: string) => {
-    setDeleteDialog({ open: true, value: modifierName });
+
+  const handleModifierGroupDeleteClick = (groupId: string) => {
+    setDeleteDialog({ open: true, value: groupId });
   };
 
   const handleConfirmDelete = async () => {
     if (confirmationDialog.id) {
-      await handleDeleteModifier(confirmationDialog.id);
+      await dispatch(deleteModifier(confirmationDialog.id));
       setConfirmationDialog({ open: false, id: "" });
     }
   };
+
   const handleConfirmGroupDelete = async () => {
-    // console.log(deleteDialog)
     if (deleteDialog.value) {
-      await handleDeleteModifierGroup(deleteDialog.value);
+      await dispatch(deleteModifierGroup(deleteDialog.value));
       setDeleteDialog({ open: false, value: "" });
     }
   };
 
-  const handleDeleteModifierGroup = async (modifierName: string) => {
-    try {
-      const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
-      const response = await axios.delete(
-        `${SERVER_DOMAIN}/menu/deleteModifierGroup/?branch_id=${selectedBranch.id}&modifier_group_name=${modifierName}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        // Optionally refresh the list of modifiers after deletion
-        toast.success("Deleted successfully");
-        fetchModifierGroups();
-      } else {
-        toast.error("Failed to delete modifier");
-      }
-    } catch (error) {
-      console.error("Error deleting modifier:", error);
-      toast.error("An error occurred while deleting the modifier");
-    }
-  };
-
-  const handleDeleteModifier = async (modifierId: string) => {
-    try {
-      const authToken = localStorage.getItem("token"); // Retrieve the auth token from local storage
-
-      const response = await axios.delete(
-        `${SERVER_DOMAIN}/menu/deleteMenuModifier/`,
-        {
-          params: {
-            branch_id: selectedBranch.id,
-            modifier_id: modifierId,
-          },
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        // Optionally refresh the list of modifiers after deletion
-        toast.success("Modifier deleted successfully");
-        fetchModifierGroups();
-      } else {
-        toast.error("Failed to delete modifier");
-      }
-    } catch (error) {
-      console.error("Error deleting modifier:", error);
-      toast.error("An error occurred while deleting the modifier");
-    }
-  };
-
-  // const rules: { label: string; key: keyof ModifierRules }[] = [
-  //   {
-  //     label: "Servers must make a selection for this group",
-  //     key: "requireSelection",
-  //   },
-  //   {
-  //     label: "This group is optional and is shown on add",
-  //     key: "optionalShown",
-  //   },
-  //   {
-  //     label: "This group is optional and is not shown on add",
-  //     key: "optionalNotShown",
-  //   },
-  //   {
-  //     label: "More than one modifier can be chosen",
-  //     key: "multipleChoices",
-  //   },
-  //   {
-  //     label: "Only one modifier can be chosen",
-  //     key: "singleChoice",
-  //   },
-  // ];
-
-  const [modGroupLoading, setModGroupLoading] = useState(false);
-  const [groupName, setGroupName] = useState("");
-
   const handleAddModifierGroup = async () => {
-
-    // console.log("adding stuffs")
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
-    // const payload = {
-    //   modifier_group_name: groupName,
-    //   branch_id: selectedBranch.id,
-    //   attach_to: "item",
-    //   menu_item_name: selectedMenuItem.menu_item_name,
-    // };
-    const payload = {
-      group_name: groupName,
-      branch_id: selectedBranch.id,
-    };
+    if (!groupName.trim()) return;
+    setModGroupLoading(true);
     try {
-      setModGroupLoading(true);
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/createMenuModifierGroup/`,
-        payload,
-        headers
-      );
-      toast.success(response.data.message || "Successful");
-      fetchModifierGroups();
+      await dispatch(
+        createModifierGroup({
+          name: groupName.trim(),
+          is_active: true,
+          min_selections: 0,
+          max_selections: 1,
+        })
+      ).unwrap();
       setGroupName("");
-    } catch (error: any) {
-      toast.error(error.response.data.message);
+    } catch {
+      // Toast handled by thunk
     } finally {
       setModGroupLoading(false);
     }
   };
 
-  const [editId, setEditId] = useState(null); // Track the currently edited modifier
-  const [newGroupName, setNewGroupName] = useState(""); // Store the new group name
-
-  const handleEditClick = (modifier: any) => {
-    setEditId(modifier._id); // Set the ID of the modifier being edited
-    setNewGroupName(modifier.modifier_group_name); // Initialize with the current group name
+  const handleEditClick = (group: DisplayModifierGroup) => {
+    setEditId(group.id);
+    setNewGroupName(group.name);
   };
 
-  const handleSaveClick = async (modifier: any) => {
-    const payload = {
-      branch_id: selectedBranch.id, // Replace with the correct branch ID
-      modifier_group_name: modifier.modifier_group_name,
-      new_group_name: newGroupName,
-      menu_item_name: selectedMenuItem,
-      rule: "single", // Adjust as necessary
-    };
-
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
+  const handleSaveClick = async (group: DisplayModifierGroup) => {
+    if (!newGroupName.trim()) return;
     try {
-      await axios.put(
-        `${SERVER_DOMAIN}/menu/updateModifierGroup/`,
-        payload,
-        headers
-      );
-      // Handle success (e.g., refetch data or update UI)
-      setEditId(null); // Exit edit mode
-      fetchModifierGroups();
-    } catch (error: any) {
-      console.error("Error updating modifier group:", error);
-      // Handle error
-      toast.error(error.response.data.message);
+      await dispatch(
+        updateModifierGroup({ id: group.id, name: newGroupName.trim() })
+      ).unwrap();
+      setEditId(null);
+    } catch {
+      // Toast handled by thunk
     }
   };
+
+  const isLoading = loading || localLoading;
 
   return (
     <div className="">
       <div className=" mt-[32px] max-w-[628px]">
-        <p className=" text-[20px] font-[500] text-black mb-[8px]">
-          Modifiers
-        </p>
+        <p className=" text-[20px] font-[500] text-black mb-[8px]">Modifiers</p>
         <hr className=" border-[#B6B6B6]" />
       </div>
 
-      {/* Display Fetched Modifiers */}
       <DisplayModifiers
-        isGroupFetching={isGroupFetching}
-        fetchedModifierGroups={fetchedModifierGroups}
+        isGroupFetching={loading}
+        fetchedModifierGroups={groupsWithModifiers}
         editId={editId}
         newGroupName={newGroupName}
         setNewGroupName={setNewGroupName}
@@ -380,20 +222,18 @@ const Modifiers = ({
         handleEditClick={handleEditClick}
         handleModifierGroupDeleteClick={handleModifierGroupDeleteClick}
         handleAddModifier={handleAddModifier}
-        setEditModifierData={setEditModifierData}
+        setEditModifierData={setEditModifierDataHandler}
         truncateText={truncateText}
         Add={Add}
         handleKeepModifierGroupDetail={handleKeepModifierGroupDetail}
         handleDeleteClick={handleDeleteClick}
       />
 
-      {/* Modifier Form Section */}
       <div className=" grid gap-[56px]">
         <div>
-          {modifiers.map((modifier) => (
+          {modifierFormItems.map((modifier) => (
             <div key={modifier.id} className="grid gap-[8px]">
               <div className=" mt-[16px] flex items-center gap-[8px]">
-
                 <input
                   type="text"
                   className=" border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] w-[402px] px-[20px]"
@@ -401,7 +241,6 @@ const Modifiers = ({
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
                 />
-
                 <button
                   className=" border border-[#121212] rounded-[5px]  px-[16px] py-[8px] font-[500] text-black text-[16px] flex items-center gap-[8px]"
                   onClick={handleAddModifierGroup}
@@ -409,22 +248,16 @@ const Modifiers = ({
                   {modGroupLoading ? "Loading..." : "Save"}
                 </button>
                 <div className="flex items-center">
-                  {modifiers.length > 1 && (
+                  {modifierFormItems.length > 1 && (
                     <Close onClick={() => removeModifier(modifier.id)} />
                   )}
                 </div>
-
               </div>
             </div>
           ))}
-          <div className="mt-4 flex items-center gap-[8px]">
-
-          </div>
         </div>
-
       </div>
 
-      {/* Confirmation Modals */}
       <ConfirmationDialog
         open={confirmationDialog.open}
         onClose={() => setConfirmationDialog({ open: false, id: "" })}
@@ -456,7 +289,7 @@ const Modifiers = ({
                 onClick={handleConfirmSave}
               >
                 <button className="text-[16px]">
-                  {loading ? "Sending..." : "Yes"}
+                  {isLoading ? "Sending..." : "Yes"}
                 </button>
               </div>
             </div>
@@ -471,16 +304,15 @@ const Modifiers = ({
         message={`Are you sure you want to delete this modifier group?`}
       />
 
-      {/* Add modifier modal */}
       <ModifierModal
         addModifierModar={addModifierModar}
         setAddModifierModal={setAddModifierModal}
         handleConfirmSave={handleConfirmSave}
-        modifiers={modifiers}
-        setModifiers={setModifiers}
+        modifiers={modifierFormItems}
+        setModifiers={setModifierFormItems}
         editModifierData={editModifierData}
-        setEditModifierData={setEditModifierData}
-        loading={loading}
+        setEditModifierData={setEditModifierDataHandler}
+        loading={isLoading}
         handleUpdateMod={handleUpdateMod}
       />
     </div>

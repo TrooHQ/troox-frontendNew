@@ -19,10 +19,10 @@ const AddModifierModal: React.FC<AddModifierModalProps> = ({
   if (!isOpen) return null;
 
   const handleSave = () => {
-    if (name && price) {
-      onSave({ name, price });
-      setName('');
-      setPrice('');
+    if (name.trim()) {
+      onSave({ name: name.trim(), price: price.trim() || "0" });
+      setName("");
+      setPrice("");
       onClose();
     }
   };

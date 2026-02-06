@@ -12,8 +12,8 @@ import {
   selectEmail,
   selectPassword,
 } from "../../slices/authSlice.js";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../../Api/Api.js";
+import { isAxiosError } from "axios";
+import { api } from "../../Api/Api";
 import { setUserData } from "../../slices/UserSlice.js";
 
 const Login = () => {
@@ -40,7 +40,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${SERVER_DOMAIN}/login`, {
+      const response = await api.post("/login", {
         email: Email,
         password: Password,
       });
@@ -59,16 +59,12 @@ const Login = () => {
           history("/overview");
         }
       }
-    } catch (error) {
-      console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data.message);
-          if (error.response.data.message === "Your Email is not verified") {
-            history("/verify");
-          }
-        } else {
-          setError("An error occurred. Please try again later.");
+    } catch (err) {
+      console.error("Error occurred:", err);
+      if (isAxiosError(err) && err.response) {
+        setError(err.response.data.message);
+        if (err.response.data.message === "Your Email is not verified") {
+          history("/verify");
         }
       } else {
         setError("An error occurred. Please try again later.");

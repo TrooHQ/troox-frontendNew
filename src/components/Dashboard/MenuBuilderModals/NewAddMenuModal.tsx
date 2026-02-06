@@ -1,13 +1,12 @@
 import { convertToBase64 } from "../../../utils/imageToBase64";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import imageIcon from "../../../assets/image.svg";
 import CustomInput from "../../inputFields/CustomInput";
-// import { RxCaretDown } from "react-icons/rx";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../../../Api/Api";
+import { api } from "../../../Api/Api";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMenuItemsByMenuGroup, fetchMenuItemsWithoutStatus } from "../../../slices/menuSlice";
+import { fetchModifierGroups } from "../../../slices/modifierSlice";
 import { AppDispatch } from "@/src/store/store";
 import MultiSelectCustomComp from "./MultiSelectCustomComp";
 
@@ -33,7 +32,6 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
     }
   }, [editId, menuItems])
 
-  console.log("editData", editData)
 
   const { selectedBranch } = useSelector((state: any) => state.branches);
 
@@ -67,10 +65,6 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
     }
   };
 
-  const [fetchedModifierGroups, setFetchedModifierGroups] = useState<any[]>([]);
-  const [isGroupFetching, setIsGroupFetching] = useState(false);
-
-  // const [selectedMod, setSelectedMod] = useState<string[]>([]);
   const [extras, setExtras] = useState<string[]>([]);
   const [complimentary, setComplimentary] = useState<string[]>([]);
 
@@ -80,8 +74,6 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
   // };
 
   // console.log("selectedMod", selectedMod);
-  console.log("extras", extras);
-  console.log("complimentary", complimentary);
 
   const [menuName, setMenuName] = useState("");
   const [menuDescription, setMenuDescription] = useState("");
@@ -108,9 +100,8 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
       console.log("editData?.modifierGroups", editData?.modifierGroups)
 
       if (editData?.modifierGroups) {
-        const mod = editData?.modifierGroups.map((item: any) => item.modifier_group_name);
-        const com = editData?.complimentary.map((item: any) => item.modifier_group_name);
-        console.log(mod)
+        const mod = editData.modifierGroups.map((item: any) => item.modifier_group_name ?? item.name);
+        const com = (editData?.complimentary ?? []).map((item: any) => item.modifier_group_name ?? item.name);
         setExtras(mod);
         setComplimentary(com);
       }
@@ -135,8 +126,24 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
 
 
   const dispatch = useDispatch<AppDispatch>();
+  const { modifierGroups, loading: isGroupFetching } = useSelector(
+    (state: any) => state.modifier
+  );
+
+  const fetchedModifierGroups = useMemo(
+    () =>
+      modifierGroups.map((g: { id: string; name: string }) => ({
+        id: g.id,
+        modifier_group_name: g.name,
+      })),
+    [modifierGroups]
+  );
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchModifierGroups());
+  }, [dispatch]);
 
   const handleSaveMenuItem = async () => {
     setLoading(true);
@@ -144,14 +151,11 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    // /menu/editGogrubMenuItem
-    // const endpoint = editId ? `${SERVER_DOMAIN}/menu/editGogrubMenuItem/` : `${SERVER_DOMAIN}/menu/addMenuItem`;
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/menu/addMenuItem`,
+      const response = await api.post("/menu/addMenuItem",
         {
           menu_category_name: activeCategory?.name,
           branch_id: selectedBranch.id,
@@ -202,12 +206,10 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
 
 
   const handleUpdateMenuItem = async () => {
-    // if (editingItem) {
     setLoading(true)
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
@@ -224,8 +226,7 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
     }
 
     try {
-      // setEditLoading(true);
-      const response = await axios.put(`${SERVER_DOMAIN}/menu/editGogrubMenuItem`, { ...payload, menu_item_id: editId }, headers);
+      const response = await api.put("/menu/editGogrubMenuItem", { ...payload, menu_item_id: editId }, headers);
 
       // console.log("response", response);
       setLoading(false)
@@ -248,39 +249,6 @@ const MenuItemForm: React.FC<Props> = ({ onCancel, activeCategory, activeGroup, 
     }
     // }
   };
-
-
-  useEffect(() => {
-    const fetchModifierGroups = async () => {
-      setIsGroupFetching(true);
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-
-
-
-      try {
-        const response = await axios.get(
-          `${SERVER_DOMAIN}/menu/getAllModifierGroups/?branch_id=${selectedBranch?.id}`,
-          headers
-        );
-        console.log("resp", response);
-        setFetchedModifierGroups(response.data.data || []);
-      } catch (error) {
-        toast.error("Failed to fetch modifiers.");
-      } finally {
-        setIsGroupFetching(false);
-      }
-    };
-
-    fetchModifierGroups()
-  }, [selectedBranch?.id]);
-
-  // console.log("fetchedModifierGroups", fetchedModifierGroups);
-
 
 
   return (

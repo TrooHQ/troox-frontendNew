@@ -14,8 +14,7 @@ import {
   fetchMenuItemsWithoutStatus,
 } from "../../slices/menuSlice";
 import { truncateText } from "../../utils/truncateText";
-import { SERVER_DOMAIN } from "../../Api/Api";
-import axios from "axios";
+import { api } from "../../Api/Api";
 import { toast } from "react-toastify";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import { CancelOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
@@ -126,8 +125,8 @@ const MenuBuilder = () => {
           ...categoryEdit, name: categoryEdit.menu_category_name,
         }
         console.log("payload", payload)
-        const res = await axios.put(
-          `${SERVER_DOMAIN}/menu/editMenuCategory`,
+        const res = await api.put(
+          "/menu/editMenuCategory",
           payload,
           {
             headers: {
@@ -156,8 +155,8 @@ const MenuBuilder = () => {
 
     if (category) {
       try {
-        const res = await axios.delete(
-          `${SERVER_DOMAIN}/menu/deleteMenuCategory?category_id=${category._id}&branch_id=${selectedBranch.id}`,
+        const res = await api.delete(
+          `/menu/deleteMenuCategory?category_id=${category._id}&branch_id=${selectedBranch.id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -216,8 +215,8 @@ const MenuBuilder = () => {
     if (editingGroup) {
       setEditLoading(true);
       try {
-        const res = await axios.put(
-          `${SERVER_DOMAIN}/menu/editMenu`,
+        const res = await api.put(
+          "/menu/editMenu",
           {
             branch_id: selectedBranch?.id,
             menu_type: "group",
@@ -271,16 +270,11 @@ const MenuBuilder = () => {
 
   const handleDeleteMenuName = async (item: any) => {
     try {
-      const authToken = localStorage.getItem("token");
-
-      const response = await axios.delete(`${SERVER_DOMAIN}/menu/removeMenu/`, {
+      const response = await api.delete("/menu/removeMenu/", {
         params: {
           menu_type: "group",
           name: item.name,
           branch_id: item.branch,
-        },
-        headers: {
-          Authorization: `Bearer ${authToken}`,
         },
       });
       if (response.status === 200) {
@@ -324,7 +318,6 @@ const MenuBuilder = () => {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
 
@@ -337,8 +330,8 @@ const MenuBuilder = () => {
     };
 
     try {
-      const response = await axios.post(
-        `${SERVER_DOMAIN}/menu/addMenuGroup`,
+      const response = await api.post(
+        "/menu/addMenuGroup",
         payload,
         headers
       );

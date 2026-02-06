@@ -56,6 +56,8 @@ import CreatePin from "./components/authPages/CreatePin.tsx";
 import PinCreated from "./components/authPages/PinCreated.tsx";
 import UpdateCredentials from "./components/authPages/UpdateCredentials.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
+import ProtectedLayout from "./components/ProtectedLayout.tsx";
 import OnlineOrdering from "./components/Dashboard/OnlineOrdering.tsx";
 import QROrdering from "./components/Dashboard/QROrdering.tsx";
 import CustomerData from "./components/Dashboard/CustomerData.tsx";
@@ -89,6 +91,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          {/* Public landing pages */}
           <Route path="/pos" element={<PosPage />} />
           <Route path="/kds" element={<KDSPage />} />
           <Route path="/table-ordering" element={<TableOrderingPage />} />
@@ -102,7 +106,9 @@ export default function App() {
           <Route path="/food-truck" element={<FoodTruckPage />} />
           <Route path="/request-demo" element={<DemoPage />} />
 
-          <Route path="/tabs" element={<BusinessTabs />} />
+          {/* Protected routes - redirect to Auth UI when unauthenticated */}
+          <Route element={<ProtectedLayout />}>
+            <Route path="/tabs" element={<BusinessTabs />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/manage-users" element={<ManageCustomers />} />
           {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
@@ -166,15 +172,14 @@ export default function App() {
           <Route path="/profile-page" element={<ProfilePage />} />
 
           <Route path="/till" element={<Till />} />
-          <Route path="*" element={<NotFound />} />
-
           <Route
             path="/business-information"
             element={<BusinessInformation />}
           />
           <Route path="/manage-branches" element={<ManageBranches />} />
+          </Route>
 
-
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>
