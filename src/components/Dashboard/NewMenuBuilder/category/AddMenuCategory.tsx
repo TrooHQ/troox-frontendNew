@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import CustomInput from "../../../inputFields/CustomInput";
-import { SERVER_DOMAIN, } from "../../../../Api/Api";
+// import { SERVER_DOMAIN, } from "../../../../Api/Api";
 import { useDispatch, useSelector } from "react-redux";
 // import CustomSelect5 from "../inputFields/CustomSelect5";
 import { AppDispatch } from "../../../../store/store";
 import { fetchBranches } from "../../../../slices/branchSlice";
 import { toast } from "react-toastify";
-import { fetchMenuCategories } from "../../../../slices/menuSlice";
+// import { fetchMenuCategories } from "../../../../slices/menuSlice";
 import { FaPlus } from "react-icons/fa6";
 import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
+import { createCategory, updateCategory } from "../../../../slices/categorySlice";
 // import MultiSelectDropdown from "./components/MultiSelectDropdown";
 import AddSubCategoryModal from "../../AddMenuCategory/AddSubCategoryModal";
+import { useNavigate, useParams } from "react-router-dom";
 // import MultiSelectDropdown from "../components/MultiSelectDropdown";
 
 interface SubCategoryItem {
@@ -20,24 +22,16 @@ interface SubCategoryItem {
   isActive: boolean;
 }
 
-// {
-//   setIsModalOpen,
-//   editCategory,
-//   handleEditCategoryConfirm,
-//   setCategoryEdit,
-//   setEditMode,
-//   editMode,
-// }: any
-
 const AddMenuCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector((state: any) => state.branches.branches);
+  const navigate = useNavigate();
 
   const [menuName, setMenuName] = useState<string>("");
   // const [description, setDescription] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [selectedBranchIds, setSelectedBranchIds] = useState<string[]>([]);
+  const { categories, loading, error } = useSelector((state: any) => state.category);
+  const { id } = useParams<{ id: string }>();
+  // const [selectedBranchIds, setSelectedBranchIds] = useState<string[]>([]);
 
   const [modVisibility, setModVisibility] = useState(false);
   // const [locationStatus, setLocationStatus] = useState(false);
@@ -51,20 +45,26 @@ const AddMenuCategory = () => {
   const [isSubCategoryModalOpen, setIsSubCategoryModalOpen] = useState(false);
 
   useEffect(() => {
-    if (editCategory) {
-      setMenuName(editCategory.menu_category_name);
-      // setDescription(editCategory.description || "");
-      // Assuming editCategory has sub_categories field, might need mapping if API format differs
-      setSubCategories(editCategory.sub_categories || []);
-
-      // Handle legacy single branch_id or new array if available
-      if (editCategory.branch_ids && Array.isArray(editCategory.branch_ids)) {
-        setSelectedBranchIds(editCategory.branch_ids);
-      } else if (editCategory.branch_id) {
-        setSelectedBranchIds([editCategory.branch_id]);
+    if (id && categories.length > 0) {
+      const categoryToEdit = categories.find((cat: any) => cat.id === id);
+      if (categoryToEdit) {
+        setMenuName(categoryToEdit.name);
+        setModVisibility(categoryToEdit.is_active);
+        setSubCategories(
+          categoryToEdit.subcategories.map((sub: any) => ({
+            name: sub.name,
+            isActive: sub.is_active,
+          }))
+        );
+        setEditMode(true);
       }
+    } else {
+      setEditMode(false);
+      setMenuName("");
+      setModVisibility(false);
+      setSubCategories([]);
     }
-  }, [editCategory, branches]);
+  }, [id, categories]);
 
   useEffect(() => {
     dispatch(fetchBranches());
@@ -80,20 +80,6 @@ const AddMenuCategory = () => {
     }
   };
 
-  // const handleBranchChange = (ids: string[]) => {
-  //   setSelectedBranchIds(ids);
-  //   setCategoryEdit?.((prev: any) => ({
-  //     ...prev,
-  //     branch_ids: ids,
-  //     branch_id: ids[0], // fallback
-  //   }));
-  // };
-
-  // const branchOptions = branches.map((branch: any) => ({
-  //   label: branch.branch_name,
-  //   value: branch._id,
-  // }));
-
   const handleOpenSubCategoryModal = () => {
     setIsSubCategoryModalOpen(true);
   };
@@ -102,89 +88,38 @@ const AddMenuCategory = () => {
     setSubCategories([...subCategories, newSub]);
   };
 
-  // const handleRemoveSubCategory = (index: number) => {
-  //   const newSubCategories = subCategories.filter((_, i) => i !== index);
-  //   setSubCategories(newSubCategories);
-  // };
-
   const handleSubmit = async () => {
+    if (!menuName) {
+      toast.error("Please fill in the Category name");
+      return;
+    }
 
-// {
-//   "name": "string",
-//   "sort_order": 2147483647,
-//   "is_active": true,
-//   "subcategories": [
-//     {
-//       "name": "string",
-//       "sort_order": 0,
-//       "is_active": true
-//     }
-//   ]
-// }
+    const payload = {
+      name: menuName,
+      sort_order: 0, // Default sort order
+      is_active: modVisibility,
+      subcategories: subCategories.map((sub, index) => ({
+        name: sub.name,
+        sort_order: index,
+        is_active: sub.isActive,
+      })),
+    };
 
-const payload ={
-  name : menuName,
-  is_active : modVisibility,
-  subcategories : subCategories.map((sub) => ({
-    name : sub.name,
-    is_active : sub.isActive,
-  }))
-}
-
-console.log("Payload to submit:", payload);
-
-
-if (!menuName) {
-  setError("Please fill in the Category name");
-  return;
-}
-
-const headers = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-};
-// return;
-
-    setLoading(true);
-    setError("");
+    console.log("Payload to submit:", payload);
 
     try {
-      // `${SERVER_DOMAIN}/menu/addMenuCategory`,
-      const response = await axios.post(
-        
-        `${SERVER_DOMAIN}/api/v1/catalog/categories/`,
-        payload,
-        headers,
-      );
-
-      toast.success(
-        response.data.message || "Menu category added successfully.",
-      );
-      if (response.status === 200) {
-        dispatch(fetchMenuCategories(selectedBranchIds[0])); // Refresh
-        // setIsModalOpen(false);
+      if (editMode && id) {
+        await dispatch(updateCategory({ id, payload })).unwrap();
       } else {
-        setError("Something went wrong. Please try again.");
-        toast.error(
-          response.data.message || "Something went wrong. Please try again.",
-        );
+        await dispatch(createCategory(payload)).unwrap();
       }
-    } catch (error) {
-      console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          setError(error.response.data.message);
-          toast.error(error.response.data.message);
-        } else {
-          toast.error("An error occurred. Please try again later.");
-        }
-      } else {
-        toast.error("An error occurred. Please try again later.");
-      }
-    } finally {
-      setLoading(false);
+      // Handle success if needed, though thunks toast success and refresh
+      setMenuName("");
+      setSubCategories([]);
+      navigate("/menu-categories/");
+    } catch (err: any) {
+      console.error("Error occurred:", err);
+      // Error is handled by the thunk (toast and state)
     }
   };
 
@@ -207,7 +142,7 @@ const headers = {
             </button>
             <button
               className="px-[24px] py-[10px] rounded bg-[#0A0A0A] text-white font-[500] hover:bg-black/90 disabled:opacity-70"
-              onClick={editMode ? ()=>{console.log("")} : handleSubmit}
+              onClick={handleSubmit}
               disabled={loading}
             >
               {loading
@@ -248,17 +183,6 @@ const headers = {
                 />
               </div>
 
-              {/* <div className="w-full max-w-[539px]">
-                <p className="text-[14px] font-[500] text-[#344054] mb-[6px]">
-                  Description
-                </p>
-                <textarea
-                  className="w-full h-[120px] border border-grey200 rounded-[8px] p-[12px] text-[16px] text-[#101010] outline-none resize-none focus:border-[#101010]"
-                  placeholder=""
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div> */}
             </div>
           </div>
 
@@ -286,11 +210,7 @@ const headers = {
                       <p className="font-[500] text-[14px] text-[#101010]">
                         {sub.name}
                       </p>
-                      {/* {sub.description && (
-                        <p className="text-[12px] text-grey300 truncate">
-                          {sub.description}
-                        </p>
-                      )} */}
+
                     </div>
                     <div
                       className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${sub.isActive ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-500"}`}
@@ -326,62 +246,17 @@ const headers = {
               <button
                 type="button"
                 onClick={() => setModVisibility(!modVisibility)}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  modVisibility ? "bg-black" : "bg-gray-200"
-                }`}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${modVisibility ? "bg-black" : "bg-gray-200"
+                  }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                    modVisibility ? "translate-x-5" : "translate-x-0"
-                  }`}
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${modVisibility ? "translate-x-5" : "translate-x-0"
+                    }`}
                 />
               </button>
             </div>
           </div>
           {/* location Toggle */}
-          {/* <div className="max-w-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-700">
-                  Set By Location
-                </p>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Toggle off to manually select specific branches for this
-                  category.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setLocationStatus(!locationStatus)}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  locationStatus ? "bg-black" : "bg-gray-200"
-                }`}
-              >
-                <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                    locationStatus ? "translate-x-5" : "translate-x-0"
-                  }`}
-                />
-              </button>
-            </div>
-
-            Assign Location
-           { !locationStatus  && <div className="my-5">
-             
-
-              <div className="">
-                <div className="w-full max-w-[539px]">
-                  <MultiSelectDropdown
-                    options={branchOptions}
-                    placeholder="Select Location"
-                    selectedValues={selectedBranchIds}
-                    onChange={handleBranchChange}
-                  />
-                </div>
-              </div>
-            </div>}
-
-          </div> */}
         </div>
 
         {error && <p className="text-center text-red-500 mt-4">{error}</p>}

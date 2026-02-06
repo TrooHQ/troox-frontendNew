@@ -109,74 +109,75 @@ export default function App() {
           {/* Protected routes - redirect to Auth UI when unauthenticated */}
           <Route element={<ProtectedLayout />}>
             <Route path="/tabs" element={<BusinessTabs />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/manage-users" element={<ManageCustomers />} />
-          {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
-          <Route path="/invite-customer" element={<InviteCustomer />} />
-          <Route path="/add-new-role" element={<AddNewRole />} />
-          <Route path="/tenant-settings" element={<TenantSettings />} />
-          {/* New Settings */}
-          <Route path="/settings" element={<NewSettings />} />
-          {/* Old Settings */}
-          <Route path="/old-settings" element={<Settings />} />
-          <Route path="/manage-assets" element={<ManageTables />} />
-          <Route path="/manage-assets" element={<ManageAssets />} />
-          <Route path="/manage-assest" element={<ManageAssest />} />
-          <Route path="/troo-kiosk" element={<SelfCheckout />} />
-          <Route path="/table-list" element={<TableList />} />
-          {/* Menu  */}
-          {/* Current */}
-          <Route path="/menu-list" element={<MenuItems />} />
-          <Route path="/menu-list/add" element={<AddMenuItem />} />
-          <Route path="/menu-categories" element={<Categories />} />
-          <Route path="/menu-categories/add" element={<AddMenuCategory />} />
-          <Route path="/menu-modifiers" element={<MenuModifiers />} />
-          <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
-          <Route path="/menu-variation" element={<MenuVariation />} />
-          <Route path="/menu-variation/add" element={<AddMenuVariation />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/manage-users" element={<ManageCustomers />} />
+            {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
+            <Route path="/invite-customer" element={<InviteCustomer />} />
+            <Route path="/add-new-role" element={<AddNewRole />} />
+            <Route path="/tenant-settings" element={<TenantSettings />} />
+            {/* New Settings */}
+            <Route path="/settings" element={<NewSettings />} />
+            {/* Old Settings */}
+            <Route path="/old-settings" element={<Settings />} />
+            <Route path="/manage-assets" element={<ManageTables />} />
+            <Route path="/manage-assets" element={<ManageAssets />} />
+            <Route path="/manage-assest" element={<ManageAssest />} />
+            <Route path="/troo-kiosk" element={<SelfCheckout />} />
+            <Route path="/table-list" element={<TableList />} />
+            {/* Menu  */}
+            {/* Current */}
+            <Route path="/menu-list" element={<MenuItems />} />
+            <Route path="/menu-list/add" element={<AddMenuItem />} />
+            <Route path="/menu-categories" element={<Categories />} />
+            <Route path="/menu-categories/add" element={<AddMenuCategory />} />
+            <Route path="/menu-categories/edit/:id" element={<AddMenuCategory />} />
+            <Route path="/menu-modifiers" element={<MenuModifiers />} />
+            <Route path="/menu-modifiers/add" element={<AddMenuModifier />} />
+            <Route path="/menu-variation" element={<MenuVariation />} />
+            <Route path="/menu-variation/add" element={<AddMenuVariation />} />
 
-          {/* Previous */}
-          <Route path="/old-menu-builder" element={<OldMenuItems />} />
-          {/* <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} /> */}
-          <Route path="/old-menu-list" element={<MenuList />} />
-          {/* Menu */}
-          <Route path="/online-ordering" element={<OnlineOrdering />} />
-          <Route path="/qr-ordering" element={<QROrdering />} />
-          <Route path="/price-list" element={<PriceList />} />
-          <Route path="/tickets" element={<Tickets />} />
-          <Route path="/order-history" element={<OrderHistory />} />
-          <Route path="/customer-data" element={<CustomerData />} />
-          <Route path="/subscription-plan" element={<PricingPage />} />
-          <Route path="/subscription-add-ons" element={<AddOns />} />
-          <Route path="/verified-payment" element={<VerifiedPayment />} />
-          <Route path="/payout-details" element={<PayoutDetails />} />
-          {/* <Route path="/overview" element={<Overview />} /> */}
-          <Route path="/overview" element={<NewOverview />} />
-          <Route path="/new-overview" element={<NewOverview />} />
-          <Route path="/overview-admin" element={<OverviewAdmin />} />
-          <Route path="/roles" element={<Roles />} />
-          <Route path="/new-roles" element={<NewRoles />} />
-          <Route path="/edit-role" element={<NewRoles />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/business-profile" element={<BusinessProfiles />} />
-          <Route path="/verify-account" element={<VerifyAccount />} />
-          <Route path="/checkmail" element={<CheckMail />} />
-          <Route path="/password-changed" element={<PasswordChanged />} />
-          <Route path="/pin-created" element={<PinCreated />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/create-pin" element={<CreatePin />} />
-          <Route path="/create-pin" element={<CreatePin />} />
-          <Route path="/update-credentials" element={<UpdateCredentials />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* Previous */}
+            <Route path="/old-menu-builder" element={<OldMenuItems />} />
+            {/* <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} /> */}
+            <Route path="/old-menu-list" element={<MenuList />} />
+            {/* Menu */}
+            <Route path="/online-ordering" element={<OnlineOrdering />} />
+            <Route path="/qr-ordering" element={<QROrdering />} />
+            <Route path="/price-list" element={<PriceList />} />
+            <Route path="/tickets" element={<Tickets />} />
+            <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/customer-data" element={<CustomerData />} />
+            <Route path="/subscription-plan" element={<PricingPage />} />
+            <Route path="/subscription-add-ons" element={<AddOns />} />
+            <Route path="/verified-payment" element={<VerifiedPayment />} />
+            <Route path="/payout-details" element={<PayoutDetails />} />
+            {/* <Route path="/overview" element={<Overview />} /> */}
+            <Route path="/overview" element={<NewOverview />} />
+            <Route path="/new-overview" element={<NewOverview />} />
+            <Route path="/overview-admin" element={<OverviewAdmin />} />
+            <Route path="/roles" element={<Roles />} />
+            <Route path="/new-roles" element={<NewRoles />} />
+            <Route path="/edit-role" element={<NewRoles />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/business-profile" element={<BusinessProfiles />} />
+            <Route path="/verify-account" element={<VerifyAccount />} />
+            <Route path="/checkmail" element={<CheckMail />} />
+            <Route path="/password-changed" element={<PasswordChanged />} />
+            <Route path="/pin-created" element={<PinCreated />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/create-pin" element={<CreatePin />} />
+            <Route path="/create-pin" element={<CreatePin />} />
+            <Route path="/update-credentials" element={<UpdateCredentials />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          <Route path="/profile-page" element={<ProfilePage />} />
+            <Route path="/profile-page" element={<ProfilePage />} />
 
-          <Route path="/till" element={<Till />} />
-          <Route
-            path="/business-information"
-            element={<BusinessInformation />}
-          />
-          <Route path="/manage-branches" element={<ManageBranches />} />
+            <Route path="/till" element={<Till />} />
+            <Route
+              path="/business-information"
+              element={<BusinessInformation />}
+            />
+            <Route path="/manage-branches" element={<ManageBranches />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
