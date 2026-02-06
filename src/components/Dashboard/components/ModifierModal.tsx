@@ -55,15 +55,15 @@ const ModifierModal = ({
                       type="text"
                       className="border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] px-[8px] w-[300px]"
                       placeholder=" Enter modifier name "
-                      value={editModifierData.modifier_name}
-                      onChange={(e) => editModifier("modifier_name", e.target.value)}
+                      value={editModifierData.name ?? ""}
+                      onChange={(e) => editModifier("name", e.target.value)}
                     />
                     <input
                       type="text"
                       className="border border-[#929292] rounded-[5px] placeholder:text-[#929292] py-[12px] px-[8px] w-[100px]"
                       placeholder=" Enter price "
-                      value={editModifierData.modifier_price}
-                      onChange={(e) => editModifier("modifier_price", e.target.value)}
+                      value={editModifierData.price ?? ""}
+                      onChange={(e) => editModifier("price", e.target.value)}
                     />
                   </div> :
                   <div className="flex items-center gap-[8px]">

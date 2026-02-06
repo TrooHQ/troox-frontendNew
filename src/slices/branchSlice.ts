@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
 interface Branch {
@@ -35,12 +34,7 @@ export const createBranch = createAsyncThunk<Branch, Omit<Branch, "id">, { rejec
   "branches/createBranch",
   async (branchData, { rejectWithValue, dispatch }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(`${SERVER_DOMAIN}/branch/createBranch`, branchData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.post("/branch/createBranch", branchData);
       toast.success("Branch created successfully");
       dispatch(fetchBranches());
       return response.data;
@@ -56,12 +50,7 @@ export const fetchBranches = createAsyncThunk<Branch[], void, { rejectValue: str
   "branches/fetchBranches",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${SERVER_DOMAIN}/branch/getBranch`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/branch/getBranch");
       return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "An error occurred");
@@ -74,16 +63,10 @@ export const deleteBranch = createAsyncThunk<
   { branchId: string },
   { branchId: string; reason: string },
   { rejectValue: string }
->("branches/deleteBranch", async ({ branchId, reason }, { rejectWithValue, dispatch }) => {
+>("branches/deleteBranch",   async ({ branchId, reason }, { rejectWithValue, dispatch }) => {
   try {
-    const token = localStorage.getItem("token");
-    await axios.delete(
-      `${SERVER_DOMAIN}/branch/removeBranch?branch_id=${branchId}&reason=${reason}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    await api.delete(
+      `/branch/removeBranch?branch_id=${branchId}&reason=${reason}`
     );
     toast.success("Branch deleted successfully");
     dispatch(fetchBranches());
@@ -99,12 +82,7 @@ export const fetchBranchById = createAsyncThunk<Branch, string, { rejectValue: s
   "branches/fetchBranchById",
   async (branchId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${SERVER_DOMAIN}/branch/getBranch/${branchId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/branch/getBranch/${branchId}`);
       return response.data.data;
     } catch (error: any) {
       if (error.response && error.response.status === 404) {
@@ -120,12 +98,7 @@ export const updateBranch = createAsyncThunk<Branch, Branch, { rejectValue: stri
   "branches/updateBranch",
   async (branchData, { rejectWithValue, dispatch }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.put(`${SERVER_DOMAIN}/branch/editBranch`, branchData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.put("/branch/editBranch", branchData);
       toast.success("Branch updated successfully");
       dispatch(fetchBranches());
       return response.data;

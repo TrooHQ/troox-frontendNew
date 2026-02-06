@@ -1,6 +1,6 @@
-import { SERVER_DOMAIN } from "../../Api/Api";
 import { RootState } from "../../store/store";
-import axios from "axios";
+import { isAxiosError } from "axios";
+import { api } from "../../Api/Api";
 import Logo from "../../assets/TrooGrey.svg";
 import GoGrubLogo from "../../assets/business_logo.svg";
 import { useEffect, useState } from "react";
@@ -53,14 +53,14 @@ const VerifyAccount = () => {
   const resendOTP = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${SERVER_DOMAIN}/resendOTP`, {
+      const response = await api.post("/resendOTP", {
         email: userEmail,
       });
       setLoading(false);
       toast.success(response.data.message || "Token has been resent");
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {
@@ -78,7 +78,7 @@ const VerifyAccount = () => {
     try {
       setLoading(true);
       const token = parseInt(digits.join(""));
-      const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
+      const response = await api.post("/emailVerification", {
         token,
       });
       setLoading(false);
@@ -86,7 +86,7 @@ const VerifyAccount = () => {
       history("/login");
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {

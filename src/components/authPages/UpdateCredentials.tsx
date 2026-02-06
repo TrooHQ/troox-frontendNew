@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { isAxiosError } from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import PasswordInput from "../inputFields/PasswordInput";
 import PinInput from "../inputFields/PinInput";
 import { useNavigate, useLocation } from "react-router-dom";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import { api } from "../../Api/Api";
 
 const UpdateCredentials = () => {
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ const UpdateCredentials = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/employee/updateEmployeePassword/`, {
+      const response = await api.post("/employee/updateEmployeePassword/", {
         id: employeeId,
         password,
         confirm_password: confirmPassword,
@@ -76,7 +76,7 @@ const UpdateCredentials = () => {
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {

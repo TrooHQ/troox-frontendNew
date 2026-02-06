@@ -17,6 +17,7 @@ import assetReducer from "../slices/assetSlice";
 import tableReducer from "../slices/TableSlice";
 import outletReducer from "../slices/OutletSlice";
 import overviewReducer from "../slices/overviewSlice";
+import modifierReducer from "../slices/modifierSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   tables: tableReducer,
   outlet: outletReducer,
   overview: overviewReducer,
+  modifier: modifierReducer,
 });
 
 const persistConfig = {

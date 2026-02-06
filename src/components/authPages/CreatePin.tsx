@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
+import { isAxiosError } from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import PinInput from "../inputFields/PinInput";
 import { useNavigate } from "react-router-dom";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import { api } from "../../Api/Api";
 
 const CreatePin = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const CreatePin = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/createPin`, {
+      const response = await api.post("/createPin", {
         pin,
         confirm_pin: confirmPin,
       });
@@ -43,7 +43,7 @@ const CreatePin = () => {
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {

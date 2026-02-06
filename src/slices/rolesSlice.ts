@@ -1,22 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { api } from "../Api/Api";
 
 // Async thunk for fetching roles
 export const fetchRoles = createAsyncThunk(
   "roles/fetchRoles",
   async (_, { rejectWithValue }) => {
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
     try {
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/role/getAllRolesByBusiness`,
-        headers
-      );
+      const response = await api.get("/role/getAllRolesByBusiness", {
+        headers: { "Content-Type": "application/json" },
+      });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);

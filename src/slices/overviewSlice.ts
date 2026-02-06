@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { isAxiosError } from "axios";
+import { api } from "../Api/Api";
 
 interface OverviewState {
   openAndClosedTickets: any;
@@ -66,8 +66,6 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.date_filter = "date_range";
@@ -77,27 +75,17 @@ export const fetchOpenAndClosedTickets = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      // console.log("branch_id", branch_id);
       if (branch_id) {
         params.branch_id = branch_id;
       }
-      // console.log("product_type ", product_type );
       if (product_type) {
         params.product_type = product_type;
       }
 
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/getOpenAndClosedTickets`,
-        {
-          params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/getOpenAndClosedTickets", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -130,8 +118,6 @@ export const fetchCustomerData = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { businessIdentifier, date_filter };
       if (date_filter === "date_range") {
         params.date_filter = "date_range";
@@ -141,15 +127,9 @@ export const fetchCustomerData = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getOrderCustomerData`,
-        {
-          params: { ...params, page, limit: 10, phone_number },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/order/getOrderCustomerData", {
+        params: { ...params, page, limit: 10, phone_number },
+      });
       return {
         data: response.data.data,
         pagination: {
@@ -160,7 +140,7 @@ export const fetchCustomerData = createAsyncThunk(
         },
       };
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -191,8 +171,6 @@ export const fetchTopMenuItems = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { branch_id, date_filter, product_type };
       if (date_filter === "date_range") {
         params.date_filter = "date_range";
@@ -202,19 +180,10 @@ export const fetchTopMenuItems = createAsyncThunk(
         params.number_of_days = number_of_days;
       }
 
-      console.log("params", params);
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/order/getTopMenuItems/`,
-        {
-          params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/order/getTopMenuItems/", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -245,8 +214,6 @@ export const fetchTotalSales = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -261,15 +228,10 @@ export const fetchTotalSales = createAsyncThunk(
         params.product_type = product_type;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/getTotalSales`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/getTotalSales", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -300,8 +262,6 @@ export const fetchCustomerTransaction = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -316,15 +276,10 @@ export const fetchCustomerTransaction = createAsyncThunk(
         params.product_type = product_type;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/customerTransaction`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/customerTransaction", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -355,8 +310,6 @@ export const fetchAverageOrderValue = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -371,15 +324,10 @@ export const fetchAverageOrderValue = createAsyncThunk(
         params.product_type = product_type;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/averageOrderValue`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/averageOrderValue", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -410,8 +358,6 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -426,16 +372,10 @@ export const fetchSalesRevenueGraph = createAsyncThunk(
         params.product_type = product_type;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/salesRevenueGraph`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log("response data", response.data);
+      const response = await api.get("/salesRevenueGraph", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -462,8 +402,6 @@ export const fetchSalesGrowthRate = createAsyncThunk(
     product_type?: string;
   }) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -478,15 +416,10 @@ export const fetchSalesGrowthRate = createAsyncThunk(
         params.product_type = product_type;
       }
 
-      const response = await axios.get(`${SERVER_DOMAIN}/salesGrowthRate`, {
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/salesGrowthRate", { params });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return error.response.data;
       } else {
         return "An unknown error occurred";
@@ -514,8 +447,6 @@ export const fetchRevenueByBranch = createAsyncThunk(
     product_type?: string;
   }) => {
     try {
-      const token = localStorage.getItem("token");
-
       const params: any = { date_filter };
       if (date_filter === "date_range") {
         params.startDate = startDate;
@@ -523,26 +454,16 @@ export const fetchRevenueByBranch = createAsyncThunk(
       } else if (date_filter !== "today") {
         params.number_of_days = number_of_days;
       }
-      // if (branch_id) {
-      //   params.branch_id = branch_id;
-      // }
       if (product_type) {
         params.channels = product_type;
       }
-      //  /api/dashboard/revenue/by-branch?startDate=2025-09-01&endDate=2025-09-30&channels=Online
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/dashboard/revenue/by-branch`,
-        {
-          params,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("resp", response);
+
+      const response = await api.get("/dashboard/revenue/by-branch", {
+        params,
+      });
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return error.response.data;
       } else {
         return "An unknown error occurred";

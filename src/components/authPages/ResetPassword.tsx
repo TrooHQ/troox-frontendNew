@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
+import { isAxiosError } from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import PasswordInput from "../inputFields/PasswordInput";
 import { useNavigate } from "react-router-dom";
-import { SERVER_DOMAIN } from "../../Api/Api";
+import { api } from "../../Api/Api";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const ResetPassword = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/emailVerification`, {
+      const response = await api.post("/emailVerification", {
         // token,
         password,
         confirm_password: confirmPassword,
@@ -49,7 +49,7 @@ const ResetPassword = () => {
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {

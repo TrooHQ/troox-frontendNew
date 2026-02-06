@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
 interface Table {
@@ -35,12 +34,7 @@ export const getRooms = createAsyncThunk<Table[], void, { rejectValue: string }>
   "tables/getRooms",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${SERVER_DOMAIN}/asset/getBusinessAsset?type=room`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/asset/getBusinessAsset?type=room");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "An error occurred");
@@ -53,12 +47,7 @@ export const getTables = createAsyncThunk<Table[], void, { rejectValue: string }
   "tables/getTables",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${SERVER_DOMAIN}/asset/getBusinessAsset?type=table`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/asset/getBusinessAsset?type=table");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message || "An error occurred");

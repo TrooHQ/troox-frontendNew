@@ -10,6 +10,16 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { setTokenUpdateCallback } from "./Api/Api";
+import { setUserData, clearUserData } from "./slices/UserSlice";
+
+setTokenUpdateCallback((token) => {
+  if (token) {
+    store.dispatch(setUserData({ token }));
+  } else {
+    store.dispatch(clearUserData());
+  }
+});
 
 function Root() {
   const [isMobileScreen, setIsMobileScreen] = useState(
