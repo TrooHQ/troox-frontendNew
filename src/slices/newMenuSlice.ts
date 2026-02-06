@@ -1,75 +1,166 @@
-/**
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { api } from "../Api/Api";
+import { toast } from "react-toastify";
 
-    post endpoint : 
-/api/v1/catalog/items/
+const BASE_PATH = "/api/v1/catalog";
 
-payload {
-  "name": "string",
-  "description": "string",
-  "is_active": true,
-  "sort_order": 2147483647,
-  "all_locations": true,
-  "category_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "subcategory_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "tag_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "allergy_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "location_ids": [
-    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-  ],
-  "station_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "modifier_groups": [
-    {
-      "modifier_group_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "name": "string",
-      "description": "",
-      "sort_order": 0,
-      "is_active": true,
-      "required": true,
-      "min_selections": 0,
-      "max_selections": 0,
-      "modifiers": [
-        {
-          "name": "string",
-          "price_delta": "0.00",
-          "sort_order": 0,
-          "is_active": true
-        }
-      ]
+export interface MenuItem {
+    id: string;
+    name: string;
+    description: string;
+    category: string;
+    subcategory: string;
+    is_active: boolean;
+    sort_order: number;
+    all_locations: boolean;
+    item_variants: string;
+    variations: string;
+}
+
+const getHeaders = () => ({
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+export const fetchMenuItems = createAsyncThunk<
+    MenuItem[],
+    string | undefined,
+    { rejectValue: string }
+>("newMenu/fetchMenuItems", async (_, { rejectWithValue }) => {
+    try {
+        const url = `${BASE_PATH}/items/`;
+        const response = await api.get<MenuItem[]>(url, getHeaders());
+        return Array.isArray(response.data) ? response.data : [];
+    } catch (error: any) {
+        const message = error.response?.data?.message || "Failed to fetch menu items";
+        return rejectWithValue(message);
     }
-  ],
-  "variants": [
-    {
-      "variant_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "sort_order": 0,
-      "required": true,
-      "min_selections": 0,
-      "max_selections": 0,
-      "options": [
-        {
-          "name": "string",
-          "sort_order": 0,
-          "price_delta": "0.00",
-          "is_active": true
-        }
-      ]
+});
+
+// Create dynamic menu item
+export const createMenuItem = createAsyncThunk<
+    MenuItem,
+    CreateMenuItemPayload,
+    { rejectValue: string }
+>("newMenu/createMenuItem", async (payload, { rejectWithValue, dispatch }) => {
+    try {
+        const response = await api.post<MenuItem>(
+            `${BASE_PATH}/items/`,
+            payload,
+            getHeaders()
+        );
+        toast.success("Menu item created successfully");
+        dispatch(fetchMenuItems(undefined)); // Refresh the list
+        return response.data;
+    } catch (error: any) {
+        const message = error.response?.data?.message || "Failed to create menu item";
+        toast.error(message);
+        return rejectWithValue(message);
     }
-  ],
-  "auto_generate_variations": true,
-  "default_variation": {
-    "price": "0.00",
-    "sku": "",
-    "is_taxable": false,
-    "tax_ids": [
-      "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    ]
-  }
+});
+
+
+// Interface for creating a new menu item
+export interface CreateMenuItemModifier {
+    name: string;
+    price_delta: string;
+    sort_order: number;
+    is_active: boolean;
+}
+
+export interface CreateMenuItemModifierGroup {
+    modifier_group_id: string;
+    name: string;
+    description: string;
+    sort_order: number;
+    is_active: boolean;
+    required: boolean;
+    min_selections: number;
+    max_selections: number;
+    modifiers: CreateMenuItemModifier[];
+}
+
+export interface CreateMenuItemVariantOption {
+    name: string;
+    sort_order: number;
+    price_delta: string;
+    is_active: boolean;
+}
+
+export interface CreateMenuItemVariant {
+    variant_id: string;
+    sort_order: number;
+    required: boolean;
+    min_selections: number;
+    max_selections: number;
+    options: CreateMenuItemVariantOption[];
+}
+
+export interface CreateMenuItemPayload {
+    name: string;
+    is_active: boolean;
+    sort_order: number;
+    all_locations: boolean;
+    category_id: string;
+    subcategory_id?: string;
+    station_id?: string;
+    modifier_groups: CreateMenuItemModifierGroup[];
+    variants: CreateMenuItemVariant[];
+    auto_generate_variations: boolean;
+    default_variation: {
+        price: string;
+        sku: string;
+        is_taxable: boolean;
+        tax_ids: string[];
+    };
 }
 
 
+interface MenuState {
+    items: MenuItem[];
+    loading: boolean;
+    error: string | null;
+}
 
+const initialState: MenuState = {
+    items: [],
+    loading: false,
+    error: null,
+};
 
- */
+const newMenuSlice = createSlice({
+    name: "newMenu",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchMenuItems.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchMenuItems.fulfilled, (state, action: PayloadAction<MenuItem[]>) => {
+                state.loading = false;
+                state.items = action.payload;
+            })
+            .addCase(fetchMenuItems.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+            // Create Menu Item
+            .addCase(createMenuItem.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createMenuItem.fulfilled, (state, action: PayloadAction<MenuItem>) => {
+                state.loading = false;
+                state.items.push(action.payload);
+            })
+            .addCase(createMenuItem.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            });
+    },
+});
+
+export default newMenuSlice.reducer;

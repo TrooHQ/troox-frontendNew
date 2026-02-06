@@ -19,6 +19,7 @@ import outletReducer from "../slices/OutletSlice";
 import overviewReducer from "../slices/overviewSlice";
 import modifierReducer from "../slices/modifierSlice";
 import categoryReducer from "../slices/categorySlice";
+import menuItemReducer from "../slices/newMenuSlice";
 
 
 const rootReducer = combineReducers({
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   overview: overviewReducer,
   modifier: modifierReducer,
   category: categoryReducer,
+  menuItem: menuItemReducer,
 });
 
 const persistConfig = {
