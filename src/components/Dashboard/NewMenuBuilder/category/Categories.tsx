@@ -1,26 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Link, } from 'react-router-dom';
-import { mockCategories, Category } from '../components/mockData';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchCategories, deleteCategory, Category as CategoryType } from '../../../../slices/categorySlice';
 import LayoutComponent from '../../../Overview/Layout/LayoutComponent';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import CategoryDetailsSidebar from '../components/CategoryDetailsSidebar';
+import DeleteCategoryModal from '../components/DeleteCategoryModal';
+import { AppDispatch, RootState } from "../../../../store/store";
+import { useDispatch, useSelector } from "react-redux";
 
 const Categories: React.FC = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'Active' | 'Inactive'>('all');
 
+  const dispatch = useDispatch<AppDispatch>();
+  const { categories: reduxCategories, loading, error } = useSelector((state: RootState) => state.category);
+
   // Local state for categories to allow reordering
-  const [categories, setCategories] = useState(mockCategories);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<any | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<CategoryType | null>(null);
 
   useEffect(() => {
-    setCategories(mockCategories);
-  }, []);
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (reduxCategories && reduxCategories.length > 0) {
+      setCategories(reduxCategories);
+    }
+  }, [reduxCategories]);
 
   const filteredCategories = categories.filter((category) => {
     const matchesSearch = category.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || category.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || (statusFilter === 'Active' ? category.is_active : !category.is_active);
     return matchesSearch && matchesStatus;
   });
 
@@ -41,22 +55,32 @@ const Categories: React.FC = () => {
     setCategories(newCategories);
   };
 
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = (category: CategoryType) => {
     setSelectedCategory(category);
   };
 
-  const handleCloseSidebar = () => {
-    setSelectedCategory(null);
+  // const handleCloseSidebar = () => {
+  //   setSelectedCategory(null);
+  // };
+
+  const handleEditCategory = (category: CategoryType) => {
+    navigate(`/menu-categories/edit/${category.id}`);
   };
 
-  const handleEditCategory = (category: Category) => {
-    console.log("Edit category:", category);
-    // Implement edit logic or navigation here
+  const handleDeleteCategory = (category: CategoryType) => {
+    setCategoryToDelete(category);
+    setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteCategory = (category: Category) => {
-    console.log("Delete category:", category);
-    // Implement delete logic here
+  const confirmDelete = () => {
+    if (categoryToDelete) {
+      dispatch(deleteCategory(categoryToDelete.id));
+      if (selectedCategory?.id === categoryToDelete.id) {
+        setSelectedCategory(null);
+      }
+      setIsDeleteModalOpen(false);
+      setCategoryToDelete(null);
+    }
   };
 
   return (
@@ -97,6 +121,10 @@ const Categories: React.FC = () => {
             </select>
           </div>
         </div>
+
+        {/* Loading/Error States */}
+        {loading && <p className="text-center py-4">Loading categories...</p>}
+        {error && <p className="text-center py-4 text-red-500">{error}</p>}
 
         {/* Table */}
         <div className="overflow-hidden bg-white rounded-xl border border-gray-200 shadow-sm">
@@ -162,26 +190,22 @@ const Categories: React.FC = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${category.status === 'Active'
+                                className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium ${category.is_active
                                   ? 'bg-green-50 text-green-700'
                                   : 'bg-gray-100 text-gray-600'
                                   }`}
                               >
-                                {category.status}
+                                {category.is_active ? "Active" : "Inactive"}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium ${category.branch === 'Local'
-                                  ? 'bg-blue-50 text-blue-700'
-                                  : 'bg-pink-50 text-pink-700'
-                                  }`}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700`}
                               >
                                 <span
-                                  className={`w-1.5 h-1.5 rounded-full ${category.branch === 'Local' ? 'bg-blue-600' : 'bg-pink-600'
-                                    }`}
+                                  className={`w-1.5 h-1.5 rounded-full bg-blue-600`}
                                 ></span>
-                                {category.branch}
+                                Local
                               </span>
                             </td>
                             <td className="px-6 py-4 text-right whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
@@ -228,10 +252,18 @@ const Categories: React.FC = () => {
 
         <CategoryDetailsSidebar
           isOpen={!!selectedCategory}
+          onClose={() => setSelectedCategory(null)}
           category={selectedCategory}
-          onClose={handleCloseSidebar}
           onEdit={handleEditCategory}
           onDelete={handleDeleteCategory}
+        />
+
+        <DeleteCategoryModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+          categoryName={categoryToDelete?.name || ""}
+          subCategoryCount={categoryToDelete?.subcategories?.length || 0}
         />
       </div>
     </LayoutComponent>
