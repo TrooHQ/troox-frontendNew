@@ -1,10 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
+import { isAxiosError } from "axios";
 import Logo from "../../assets/trooLogo.svg";
 import lockIcon from "../../assets/passwordlockIcon2.png";
 import EmailInput from "../inputFields/CustomInput";
 import { useNavigate } from "react-router-dom";
-import { SERVER_DOMAIN } from "../../Api/Api"; // Make sure to import SERVER_DOMAIN
+import { api } from "../../Api/Api";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setError("");
 
     try {
-      const response = await axios.post(`${SERVER_DOMAIN}/requestForgotPassword`, {
+      const response = await api.post("/requestForgotPassword", {
         email: value,
       });
 
@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       }
     } catch (error) {
       console.error("Error occurred:", error);
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         if (error.response) {
           setError(error.response.data.message);
         } else {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import LayoutComponent from './Layout/LayoutComponent'
 import { Tabs, Tab } from '@mui/material'
 import OverviewCard from './OverviewCard';
@@ -6,6 +7,7 @@ import OverviewChart from './OverviewChart';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../src/store/store';
 import { fetchAverageOrderValue, fetchCustomerTransaction, fetchOpenAndClosedTickets, fetchRevenueByBranch, fetchSalesGrowthRate, fetchSalesRevenueGraph, fetchTopMenuItems, fetchTotalSales } from '../../slices/overviewSlice';
+import { setUserData } from '../../slices/UserSlice';
 import DaysTab3 from '../overview-comps/DaysTab3';
 import { Loader2 } from 'lucide-react';
 import PieChartComp from './PieChart';
@@ -15,7 +17,24 @@ import LocationPriceBarChart from './LocationPriceBarChart';
 export default function NewOverview() {
 
   const dispatch = useDispatch<AppDispatch>()
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { selectedBranch } = useSelector((state: any) => state.branches);
+
+  // Handle token from URL query param (e.g. from magic link / email invite)
+  useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user_data', JSON.stringify({ token }));
+      dispatch(setUserData({ token }));
+      // Remove token from URL for security (avoids token in browser history)
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete('token');
+      const newSearch = newParams.toString();
+      navigate(`/overview${newSearch ? `?${newSearch}` : ''}`, { replace: true });
+    }
+  }, [searchParams, dispatch, navigate]);
 
   const {
     salesGrowthRate,

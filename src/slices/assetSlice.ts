@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
 // Define TypeScript interfaces for the data structure
@@ -82,17 +81,10 @@ export const fetchPickupLocations = createAsyncThunk<
   PickupLocation[],
   void,
   { rejectValue: string }
->("asset/fetchPickupLocations", async (_, { rejectWithValue }) => {
+>("asset/fetchPickupLocations",   async (_, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-
-    const response = await axios.get<PickupLocationResponse>(
-      `${SERVER_DOMAIN}/asset/getPickUpLocation/`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await api.get<PickupLocationResponse>(
+      "/asset/getPickUpLocation/"
     );
     return response.data.data;
   } catch (error: any) {
@@ -107,18 +99,11 @@ export const addPickupLocation = createAsyncThunk<
   PickupLocation,
   AddPickupLocationPayload,
   { rejectValue: string }
->("asset/addPickupLocation", async (pickupData, { rejectWithValue }) => {
+>("asset/addPickupLocation",   async (pickupData, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-
-    const response = await axios.post<PickupLocation>(
-      `${SERVER_DOMAIN}/asset/addPickUpLocation/`,
-      pickupData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await api.post<PickupLocation>(
+      "/asset/addPickUpLocation/",
+      pickupData
     );
     return response.data;
   } catch (error: any) {
@@ -132,12 +117,10 @@ export const fetchDeliveryDetails = createAsyncThunk<
   DeliveryDetails,
   void,
   { rejectValue: string }
->("asset/fetchDeliveryDetails", async (_, { rejectWithValue }) => {
+>("asset/fetchDeliveryDetails",   async (_, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get<DeliveryDetailsResponse>(
-      `${SERVER_DOMAIN}/asset/getDeliveryDetails/`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const response = await api.get<DeliveryDetailsResponse>(
+      "/asset/getDeliveryDetails/"
     );
     return response.data.data;
   } catch (error: any) {
@@ -152,13 +135,11 @@ export const addDeliveryDetails = createAsyncThunk<
   DeliveryDetails,
   DeliveryDetailsPayload,
   { rejectValue: string }
->("asset/addDeliveryDetails", async (deliveryData, { rejectWithValue }) => {
+>("asset/addDeliveryDetails",   async (deliveryData, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.post<DeliveryDetails>(
-      `${SERVER_DOMAIN}/asset/addDeliveryDetails/`,
-      deliveryData,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const response = await api.post<DeliveryDetails>(
+      "/asset/addDeliveryDetails/",
+      deliveryData
     );
     return response.data;
   } catch (error: any) {
@@ -172,13 +153,11 @@ export const updateDeliveryDetails = createAsyncThunk<
   DeliveryDetails,
   DeliveryDetailsPayload,
   { rejectValue: string }
->("asset/updateDeliveryDetails", async (deliveryData, { rejectWithValue }) => {
+>("asset/updateDeliveryDetails",   async (deliveryData, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.put<DeliveryDetails>(
-      `${SERVER_DOMAIN}/asset/editDeliveryDetails/`,
-      deliveryData,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const response = await api.put<DeliveryDetails>(
+      "/asset/editDeliveryDetails/",
+      deliveryData
     );
     return response.data;
   } catch (error: any) {
@@ -192,12 +171,10 @@ export const fetchOnlineOrderingLink = createAsyncThunk<
   OnlineOrderingLink,
   void,
   { rejectValue: string }
->("asset/fetchOnlineOrderingLink", async (_, { rejectWithValue }) => {
+>("asset/fetchOnlineOrderingLink",   async (_, { rejectWithValue }) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get<OnlineOrderingLinkResponse>(
-      `${SERVER_DOMAIN}/asset/generateOnlineOrderingLink`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const response = await api.get<OnlineOrderingLinkResponse>(
+      "/asset/generateOnlineOrderingLink"
     );
     return response.data.data;
   } catch (error: any) {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { isAxiosError } from "axios";
+import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
 interface UserState {
@@ -36,16 +36,10 @@ export const fetchUserDetails = createAsyncThunk(
   "user/fetchUserDetails",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.get(`${SERVER_DOMAIN}/userDetails`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get("/userDetails");
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");
@@ -58,21 +52,11 @@ export const updateUserDetails = createAsyncThunk(
   "user/updateUserDetails",
   async (updatedDetails: UpdateUserDetailsPayload, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await axios.put(
-        `${SERVER_DOMAIN}/updateUserDetails`,
-        updatedDetails,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.put("/updateUserDetails", updatedDetails);
       toast.success("Successful!");
       return response.data;
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (isAxiosError(error) && error.response) {
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue("An unknown error occurred");

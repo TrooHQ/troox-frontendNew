@@ -1,36 +1,37 @@
 import { DeleteForeverOutlined, EditOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 
-export interface Modifier {
-  branch: string;
-  menu_item_name: string;
-  modifier_name: string;
-  modifier_price: number;
-  attached_to: string;
-  _id: string;
+export interface DisplayModifier {
+  id: string;
+  name: string;
+  price: string;
+  modifier_group: string;
 }
 
-interface ModifierGroup {
-  _id: string;
-  modifier_group_name: string;
-  modifiers: Modifier[];
+/** @deprecated Use DisplayModifier - kept for backward compatibility */
+export type Modifier = DisplayModifier;
+
+export interface DisplayModifierGroup {
+  id: string;
+  name: string;
+  modifiers: DisplayModifier[];
 }
 
 interface DisplayModifiersProps {
   isGroupFetching: boolean;
-  fetchedModifierGroups: ModifierGroup[];
+  fetchedModifierGroups: DisplayModifierGroup[];
   editId: string | null;
   newGroupName: string;
   setNewGroupName: (value: string) => void;
-  handleSaveClick: (modifier: ModifierGroup) => void;
-  handleEditClick: (modifier: ModifierGroup) => void;
-  handleModifierGroupDeleteClick: (modifierGroupName: string) => void;
+  handleSaveClick: (group: DisplayModifierGroup) => void;
+  handleEditClick: (group: DisplayModifierGroup) => void;
+  handleModifierGroupDeleteClick: (groupId: string) => void;
   handleAddModifier: () => void;
-  setEditModifierData: React.Dispatch<React.SetStateAction<Modifier | null>>;
+  setEditModifierData: React.Dispatch<React.SetStateAction<DisplayModifier | null>>;
   truncateText: (text: string, length: number) => string;
   Add: string;
-  handleKeepModifierGroupDetail: any;
-  handleDeleteClick: any;
+  handleKeepModifierGroupDetail: (group: DisplayModifierGroup) => void;
+  handleDeleteClick: (modifierId: string) => void;
 }
 
 const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
@@ -49,11 +50,10 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
   Add,
   handleDeleteClick,
 }) => {
-  // State to track expanded modifier group
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
 
   const toggleExpandGroup = (groupId: string) => {
-    setExpandedGroupId(expandedGroupId === groupId ? null : groupId); // Toggle the group
+    setExpandedGroupId(expandedGroupId === groupId ? null : groupId);
   };
 
   return (
@@ -65,15 +65,15 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
       ) : (
         <>
           {fetchedModifierGroups.map((modifierGroup) => (
-            <div key={modifierGroup._id} className="flex flex-col gap-2">
+            <div key={modifierGroup.id} className="flex flex-col gap-2">
               <div className="flex items-center justify-start gap-6">
                 <div className="flex items-center justify-between border border-[#929292] rounded-[5px] py-[12px] px-[20px] w-[402px]">
                   <div
                     className="flex items-center gap-4 cursor-pointer"
-                    onClick={() => toggleExpandGroup(modifierGroup._id)}
+                    onClick={() => toggleExpandGroup(modifierGroup.id)}
                   >
                     <div className="flex-1">
-                      {editId === modifierGroup._id ? (
+                      {editId === modifierGroup.id ? (
                         <input
                           type="text"
                           value={newGroupName}
@@ -82,13 +82,13 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                         />
                       ) : (
                         <p className="text-[18px] font-[500] text-gray-800 capitalize">
-                          {truncateText(modifierGroup.modifier_group_name, 22)}
+                          {truncateText(modifierGroup.name, 22)}
                         </p>
                       )}
                     </div>
                   </div>
                   <div>
-                    {editId === modifierGroup._id ? (
+                    {editId === modifierGroup.id ? (
                       <button
                         onClick={() => handleSaveClick(modifierGroup)}
                         className="mr-3 cursor-pointer text-black"
@@ -104,7 +104,7 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                     )}
                     <DeleteForeverOutlined
                       onClick={() =>
-                        handleModifierGroupDeleteClick(modifierGroup.modifier_group_name)
+                        handleModifierGroupDeleteClick(modifierGroup.id)
                       }
                       className="ml-3 text-red-700 cursor-pointer"
                       fontSize="small"
@@ -122,32 +122,22 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                 </button>
               </div>
 
-              {/* Display modifiers when the group is expanded */}
-              {expandedGroupId === modifierGroup._id && (
+              {expandedGroupId === modifierGroup.id && (
                 <div className="p-4 mt-2 border-l-4 border-black-500 rounded-md bg-gray-50">
                   {modifierGroup.modifiers.length > 0 ? (
-                    modifierGroup.modifiers.map((modifier, index) => (
+                    modifierGroup.modifiers.map((modifier) => (
                       <div
-                        key={index}
-                        className={`flex justify-start gap-6 items-center py-2 ${index !== modifierGroup.modifiers.length - 1
-                          ? "border-b border-gray-300"
-                          : ""
-                          }`}
+                        key={modifier.id}
+                        className="flex justify-start gap-6 items-center py-2 border-b border-gray-300 last:border-b-0"
                       >
-                        {/* Modifier name */}
-                        <p className="flex-1 text-sm text-gray-700">{modifier.modifier_name}</p>
-
-                        {/* Modifier price */}
+                        <p className="flex-1 text-sm text-gray-700">
+                          {modifier.name}
+                        </p>
                         <p className="flex-none text-sm font-semibold text-gray-700">
-                          ₦{modifier.modifier_price}
+                          ₦{modifier.price}
                         </p>
-
-                        {/* Menu item name */}
-                        <p className="flex-1 text-sm italic text-gray-500">
-                          {modifier.menu_item_name}
-                        </p>
+                        <div className="flex-1" />
                         <div>
-
                           <EditOutlined
                             sx={{
                               fontSize: "20px",
@@ -157,14 +147,16 @@ const DisplayModifiers: React.FC<DisplayModifiersProps> = ({
                             className="ml-3 cursor-pointer"
                           />
                           <DeleteForeverOutlined
-                            onClick={() => handleDeleteClick(modifier._id)}
+                            onClick={() => handleDeleteClick(modifier.id)}
                             className="ml-3 text-red-700 cursor-pointer"
                           />
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-600">No modifiers found for this group.</p>
+                    <p className="text-sm text-gray-600">
+                      No modifiers found for this group.
+                    </p>
                   )}
                 </div>
               )}

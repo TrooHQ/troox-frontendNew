@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { SERVER_DOMAIN } from "../Api/Api";
+import { api } from "../Api/Api";
 
 interface BusinessDetails {
   name: string;
@@ -51,11 +50,8 @@ export const fetchAccountDetails = createAsyncThunk(
   "business/fetchAccountDetails",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${SERVER_DOMAIN}/getAccountDetails`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+      const response = await api.get("/getAccountDetails", {
+        headers: { "Content-Type": "application/json" },
       });
 
       return response.data.data.business_information;
@@ -72,15 +68,9 @@ export const fetchBusinessPlan = createAsyncThunk(
   "business/fetchBusinessPlan",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `${SERVER_DOMAIN}/plan/getBusinessPlan`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.get("/plan/getBusinessPlan", {
+        headers: { "Content-Type": "application/json" },
+      });
 
       return response.data;
     } catch (error: any) {
