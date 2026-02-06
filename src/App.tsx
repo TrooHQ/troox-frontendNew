@@ -11,19 +11,12 @@ import BusinessProfiles from "./components/authPages/BusinessProfiles.tsx";
 import Register from "./components/authPages/Register.tsx";
 import VerifyAccount from "./components/authPages/VerifyAccount.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
-// import ManageUsers from "./components/Dashboard/ManageUsers.tsx";
-import ManageCustomers from "./components/Dashboard/ManageCustomers.tsx";
-import InviteCustomer from "./components/Dashboard/InviteCustomer.tsx";
-import AddNewRole from "./components/Dashboard/AddNewRole.tsx";
-// import Overview from "./components/Dashboard/Overview.tsx";
 import Roles from "./components/Dashboard/Roles.tsx";
 import NewRoles from "./components/Dashboard/NewRoles.tsx";
-// 
 import MenuItems from "./components/Dashboard/NewMenuBuilder/MenuItems.tsx";
 import AddMenuItem from "./components/Dashboard/NewMenuBuilder/AddNewMenuItem.tsx";
 
 import OldMenuItems from "./components/Dashboard/MenuBuilder.tsx";
-// 
 import PriceList from "./components/Dashboard/PriceList.tsx";
 import ManageTables from "./components/Dashboard/ManageTables.tsx";
 import ManageAssets from "./components/Dashboard/ManageAssets.tsx";
@@ -50,7 +43,6 @@ import OverviewAdmin from "./components/Dashboard/OverviewAdmin.tsx";
 import BusinessInformation from "./components/Dashboard/BusinessInformation.tsx";
 import ManageBranches from "./components/Dashboard/ManageBranches.tsx";
 import TenantSettings from "./components/Dashboard/TenantSettings.tsx";
-// import MenuList from "./components/Dashboard/MenuList.tsx";
 import OrderHistory from "./components/Dashboard/OrderHistory.tsx";
 import CreatePin from "./components/authPages/CreatePin.tsx";
 import PinCreated from "./components/authPages/PinCreated.tsx";
@@ -65,7 +57,6 @@ import PricingPage from "./pages/pricing/PricingPage.tsx";
 import AddOns from "./pages/pricing/AddOns.tsx";
 import VerifiedPayment from "./pages/pricing/VerifiedPayment.tsx";
 import PayoutDetails from "./pages/pricing/PayoutDetails.tsx";
-// import MenuBuilderBulkUpload from "./components/Dashboard/MenuBuilderBulkUpload.tsx";
 import SelfCheckout from "./components/Dashboard/SelfCheckout.tsx";
 import NewOverview from "./components/Overview/NewOverview.tsx";
 import Categories from "./components/Dashboard/NewMenuBuilder/category/Categories.tsx";
@@ -77,6 +68,9 @@ import NewSettings from "./components/Dashboard/Settings/Settings.tsx";
 import MenuList from "./components/Dashboard/MenuList.tsx";
 import MenuVariation from "./components/Dashboard/NewMenuBuilder/variation/Variations.tsx";
 import AddMenuVariation from "./components/Dashboard/NewMenuBuilder/variation/AddMenuVariation.tsx";
+import ManageCustomers from "./components/Dashboard/ManageCustomers.tsx";
+import InviteCustomer from "./components/Dashboard/InviteCustomer.tsx";
+import AddNewRole from "./components/Dashboard/AddNewRole.tsx";
 
 export default function App() {
   return (
@@ -111,7 +105,6 @@ export default function App() {
             <Route path="/tabs" element={<BusinessTabs />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/manage-users" element={<ManageCustomers />} />
-            {/* <Route path="/manage-customers" element={<ManageCustomers />} /> */}
             <Route path="/invite-customer" element={<InviteCustomer />} />
             <Route path="/add-new-role" element={<AddNewRole />} />
             <Route path="/tenant-settings" element={<TenantSettings />} />
@@ -138,7 +131,6 @@ export default function App() {
 
             {/* Previous */}
             <Route path="/old-menu-builder" element={<OldMenuItems />} />
-            {/* <Route path="/menu-builder/bulk-upload" element={<MenuBuilderBulkUpload />} /> */}
             <Route path="/old-menu-list" element={<MenuList />} />
             {/* Menu */}
             <Route path="/online-ordering" element={<OnlineOrdering />} />
@@ -151,7 +143,6 @@ export default function App() {
             <Route path="/subscription-add-ons" element={<AddOns />} />
             <Route path="/verified-payment" element={<VerifiedPayment />} />
             <Route path="/payout-details" element={<PayoutDetails />} />
-            {/* <Route path="/overview" element={<Overview />} /> */}
             <Route path="/overview" element={<NewOverview />} />
             <Route path="/new-overview" element={<NewOverview />} />
             <Route path="/overview-admin" element={<OverviewAdmin />} />

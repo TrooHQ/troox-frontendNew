@@ -70,7 +70,7 @@ export default function MenuItems() {
   useEffect(() => {
     // if (selectedBranch) {
     // dispatch(fetchMenuItemsWithoutStatus(selectedBranch.id));
-    dispatch(fetchMenuItems(selectedBranch.id));
+    dispatch(fetchMenuItems(selectedBranch?.id));
     console.log("logging fetch menu items")
     // }
   }, [dispatch]);
