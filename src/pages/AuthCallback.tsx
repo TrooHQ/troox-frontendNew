@@ -38,7 +38,8 @@ export default function AuthCallback() {
 
     const exchange = async () => {
       try {
-        const res = await fetch(`${SERVER_DOMAIN}/auth/exchange/`, {
+        // const res = await fetch(`${SERVER_DOMAIN}/auth/exchange/`, {
+        const res = await fetch(`https://core-staging.trootab.com/auth/exchange/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
