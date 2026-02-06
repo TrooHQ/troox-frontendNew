@@ -1,43 +1,30 @@
 import { useEffect, useState } from "react";
-// import axios from "axios";
 import CustomInput from "../../../inputFields/CustomInput";
-// import { SERVER_DOMAIN, } from "../../../../Api/Api";
 import { useDispatch, useSelector } from "react-redux";
-// import CustomSelect5 from "../inputFields/CustomSelect5";
 import { AppDispatch } from "../../../../store/store";
 import { fetchBranches } from "../../../../slices/branchSlice";
 import { toast } from "react-toastify";
-// import { fetchMenuCategories } from "../../../../slices/menuSlice";
 import { FaPlus } from "react-icons/fa6";
 import LayoutComponent from "../../../Overview/Layout/LayoutComponent";
 import { createCategory, updateCategory } from "../../../../slices/categorySlice";
-// import MultiSelectDropdown from "./components/MultiSelectDropdown";
 import AddSubCategoryModal from "../../AddMenuCategory/AddSubCategoryModal";
 import { useNavigate, useParams } from "react-router-dom";
-// import MultiSelectDropdown from "../components/MultiSelectDropdown";
 
 interface SubCategoryItem {
   name: string;
-  // description?: string;
   isActive: boolean;
 }
 
 const AddMenuCategory = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const branches = useSelector((state: any) => state.branches.branches);
   const navigate = useNavigate();
 
   const [menuName, setMenuName] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
   const { categories, loading, error } = useSelector((state: any) => state.category);
   const { id } = useParams<{ id: string }>();
-  // const [selectedBranchIds, setSelectedBranchIds] = useState<string[]>([]);
 
   const [modVisibility, setModVisibility] = useState(false);
-  // const [locationStatus, setLocationStatus] = useState(false);
 
-  // 
-  const [editCategory, setCategoryEdit] = useState<any>(null);
   const [editMode, setEditMode] = useState(false);
 
   // Update sub-category state to generic object array
@@ -73,10 +60,6 @@ const AddMenuCategory = () => {
   const handleInputChange = (key: string, value: string) => {
     if (key === "menuName") {
       setMenuName(value);
-      setCategoryEdit?.((prev: any) => ({
-        ...prev,
-        menu_category_name: value,
-      }));
     }
   };
 
@@ -105,7 +88,6 @@ const AddMenuCategory = () => {
       })),
     };
 
-    console.log("Payload to submit:", payload);
 
     try {
       if (editMode && id) {
@@ -133,8 +115,6 @@ const AddMenuCategory = () => {
             <button
               className="px-[24px] py-[10px] rounded border border-grey200 text-[#101010] font-[600] hover:bg-gray-50 bg-white"
               onClick={() => {
-                // setIsModalOpen(false);
-                setCategoryEdit({});
                 setEditMode(false);
               }}
             >
@@ -156,7 +136,6 @@ const AddMenuCategory = () => {
           </div>
         }
       >
-        {/* <div className="h-[1px] w-full bg-grey100 mb-[32px]" /> */}
 
         <div className="space-y-[32px]">
           {/* Category Section */}
@@ -201,7 +180,6 @@ const AddMenuCategory = () => {
             <div className="col-span-9 space-y-[16px]">
               {subCategories.length > 0 &&
                 subCategories.map((sub, index) => (
-                  // Simple display valid for now, usually needs edit/delete controls
                   <div
                     key={index}
                     className="w-full max-w-[539px] p-3 border border-grey200 rounded flex justify-between items-center bg-gray-50"

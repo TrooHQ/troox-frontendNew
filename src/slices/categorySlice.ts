@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../Api/Api";
 import { toast } from "react-toastify";
 
-
 const BASE_PATH = "/api/v1/catalog";
 
 
@@ -20,18 +19,6 @@ export interface Category {
   subcategories: SubCategory[];
 }
 
-//   {
-//   "name": "string",
-//   "sort_order": 2147483647,
-//   "is_active": true,
-//   "subcategories": [
-//     {
-//       "name": "string",
-//       "sort_order": 0,
-//       "is_active": true
-//     }
-//   ]
-// }
 
 export interface CreateSubCategories {
   name: string;
@@ -66,7 +53,7 @@ export const fetchCategories = createAsyncThunk<
     return Array.isArray(response.data) ? response.data : [];
   } catch (error: any) {
     const message =
-      error.response?.data?.message || "Failed to fetch modifier groups";
+      error.response?.data?.message || "Failed to fetch categories";
     return rejectWithValue(message);
   }
 });

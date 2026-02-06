@@ -28,8 +28,6 @@ const Categories: React.FC = () => {
 
   useEffect(() => {
     if (reduxCategories && reduxCategories.length > 0) {
-      // Sync local state with Redux categories for reordering/filtering
-      // We keep a local copy to allow Drag & Drop reordering
       setCategories(reduxCategories);
     }
   }, [reduxCategories]);
@@ -61,9 +59,9 @@ const Categories: React.FC = () => {
     setSelectedCategory(category);
   };
 
-  const handleCloseSidebar = () => {
-    setSelectedCategory(null);
-  };
+  // const handleCloseSidebar = () => {
+  //   setSelectedCategory(null);
+  // };
 
   const handleEditCategory = (category: CategoryType) => {
     navigate(`/menu-categories/edit/${category.id}`);
